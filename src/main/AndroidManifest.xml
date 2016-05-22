@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.wmstein.tourcount"
+          android:largeHeap="true"
+          android:versionCode="201"
+          android:versionName="2.0.1">
+    
+    <uses-sdk android:minSdkVersion="17"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- Permission needed for GPS location provider -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Permission needed for network location provider -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+<!-- android:screenOrientation="portrait" in all activities (Smartphone-Version)
+     android:allowBackup="false" prevents backup of app data to google cloud -->
+
+    <application
+        android:name=".TourCountApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="TourCount"
+        android:theme="@style/AppTheme">
+        
+        <activity
+            android:name="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.wmstein.tourcount.NewSectionActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:label="@string/title_activity_new_section"
+            android:parentActivityName="com.wmstein.tourcount.ListSectionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ListSectionActivity"/>
+        </activity>
+        
+        <activity
+            android:name="com.wmstein.tourcount.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/action_settings"
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="WelcomeActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.ListSectionActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_list_section"
+            android:theme="@style/Theme.AppCompat"
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="WelcomeActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.LoadTaskActivity"
+            android:label="@string/title_activity_load_task"
+            android:theme="@style/Theme.AppCompat"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="WelcomeActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.EditMetaActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_meta"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="WelcomeActivity"/>
+        </activity>
+        
+        <activity
+            android:name="com.wmstein.tourcount.ListSpeciesActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_list_species"
+            android:theme="@style/Theme.AppCompat"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="WelcomeActivity"/>
+        </activity>
+        
+        <activity
+            android:name="com.wmstein.tourcount.CountingActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_counting"
+            android:theme="@style/Theme.AppCompat"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.wmstein.tourcount.ListSectionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ListSectionActivity"/>
+        </activity>
+        
+        <activity
+            android:name="com.wmstein.tourcount.CountOptionsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            android:label="@string/title_activity_count_options"
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="CountingActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.EditIndividualActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            android:label="@string/title_activity_edit_individual"
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="CountingActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.EditSectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            android:label="@string/title_activity_edit_section"
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="CountingActivity"/>
+        </activity>
+
+        <uses-library
+            android:required="false"
+            android:name="com.sec.android.app.multiwindow"/>
+
+        <meta-data
+            android:name="com.sec.android.support.multiwindow"
+            android:value="true"/>
+        <meta-data
+            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
+            android:resource="@dimen/app_defaultsize_w"/>
+        <meta-data
+            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
+            android:resource="@dimen/app_defaultsize_h"/>
+        <meta-data
+            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
+            android:resource="@dimen/app_minimumsize_w"/>
+        <meta-data
+            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
+            android:resource="@dimen/app_minimumsize_h"/>
+
+    </application>
+
+</manifest>
