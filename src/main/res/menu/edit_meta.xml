@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+    
+<!--
+  - Menu edit_meta is used by EditMetaActivity
+  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.wmstein.tourcount.EditMetaActivity">
+
+    <item
+        android:id="@+id/menuSaveExit"
+        android:title="@string/saveCountsButton"
+        android:icon="@android:drawable/ic_menu_save"
+        app:showAsAction="ifRoom"/>
+
+</menu>

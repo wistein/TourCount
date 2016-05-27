@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+    
+<!-- 
+  - widget_counting.xml is used by CountingWidget.java
+  - Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:baselineAligned="false"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="2dp"
+              android:layout_marginTop="5dp"
+              android:layout_marginEnd="2dp"
+              android:background="@drawable/rounded_corner"
+              android:padding="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="10"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="0dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="38dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="18sp"
+                android:id="@+id/countName"
+                android:hint="@string/countNameHint"
+                android:layout_marginStart="1dp"
+                android:layout_weight="9.7"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="38dp">
+
+            <!-- perhaps replace with ImageButton http://developer.android.com/guide/topics/ui/controls/button.html -->
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:onClick="edit"
+                android:src="@android:drawable/ic_menu_edit"
+                android:id="@+id/buttonEdit"
+                android:layout_weight="2.2"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.8"/>
+
+            <com.wmstein.tourcount.AutoFitText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.4"
+                android:id="@+id/countCount"
+                android:hint="@string/charZero"
+                android:textAlignment="center"
+                android:singleLine="true"
+                android:paddingBottom="1dp"
+                android:paddingTop="1dp"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/count_background"
+                android:layout_gravity="center|top"
+                android:gravity="center_vertical|center_horizontal"
+                android:inputType="number"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:onClick="countDown"
+                android:src="@drawable/minus"
+                android:scaleType="fitCenter"
+                android:textStyle="bold"
+                android:id="@+id/buttonDown"
+                android:layout_weight="1.2"/>
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:onClick="countUp"
+                android:src="@drawable/plus"
+                android:scaleType="fitCenter"
+                android:textStyle="bold"
+                android:id="@+id/buttonUp"
+                android:layout_weight="1.6"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+

@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <style type='text/css'>
+      a            { color:#a0a0e0 }
+      div.title    { 
+          color:#C0F0C0; 
+          font-size:1.2em; 
+          font-weight:bold; 
+          margin-top:1em; 
+          margin-bottom:0.5em; 
+          text-align:center }
+      div.subtitle { 
+          color:#C0F0C0; 
+          font-size:1.0em;
+          font-weight:bold;
+          margin-bottom:1em;
+          text-align:center }
+      div.freetext { color:#F0F0F0 }
+      div.list     { color:#C0C0F0 }
+    </style>
+  </head>
+  <body>
+$ 10
+  % 1. Introduction
+  !
+  ! This counting app should support you when recording butterflies. 
+  ! It facilitates this comfortably without field book and pencil on every stay in nature.
+  _ 
+  ! The integrated database can be individually created and adapted regarding expected butterfly species.
+  ! The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into the butterfly registration system or transferred to a PC for your own processing.
+  _ 
+  ! The app is open source (published under https://github.com/wistein/TourCount), has no tracking or advertising functions, demands only for permits which are needed for recording the data.
+  ! It needs access rights to storage media and uses GPS to register positions while counting.
+
+$ 9
+  % 2. Set up
+  !
+  ! Before initial use you must set up an empty basic database (Basic DB).
+  ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tapping on the saving symbol. The meta data may be modified anytime later. 
+  ! Then edit the species list on "Counting List". Use the Pencil-Button for that.
+  ! Get this list a name (e.g.: Ahrtal, Germany), a remark and subsequently via (+)-button an entry for each expected species, e.g.:
+  _ 
+  ! Ahrtal, Germany
+  ! --------------------
+  ! ...
+  ! Pieris napi
+  ! Pieris rapae
+  ! Pieris na./ra.-compl.
+  ! ...
+  _ 
+  ! This list can be changed or supplemented anytime afterwards.
+  ! With "Save List" you get it stored into the database.
+  _ 
+  ! When you have created the meta data and the counting list for all expected species, the database is ready for export as the "Basic Database".
+  ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page.
+  ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models).
+  ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you modified its structure or inserted new species. 
+  
+$ 8
+  % 3. Usage
+  !
+  ! Start with "Counting List". 
+  ! To count just tap on the "+"-Button of the corresponding species.
+  ! The "-"-Buttons allows for corrections. Mind that the "-"-Button reduces the individuals list for the last entry of an species. 
+  ! While storing the counting results the current date and time of the registration will be stored either for this list. The date and a possible list remark will then be shown in the page of counting lists.   
+  _ 
+  ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for adding remarks for the list and editing the names of the list and species. The list-related remarks will be shown at the end of the list and within the “Counting Lists” page.
+  _
+  ! The Pencil-Button in each species row of the counting page opens the species editing page that lets you add remarks for each species and set its counters to any value. Mind that this leads to different numbers in sum and individual table.
+  ! Here you may also set pop-up alarms which show up while reaching a set value on the corresponding internal counter (e.g. to realize on site if a certain species is more abundant than on a previous tour). 
+  ! If you enter a species related remark this will be shown in an extra line beneath the row. 
+  _ 
+  ! To move back one page you can use the arrow in the left upper corner. You should leave TourCount always from its starting page, as in this state the database is safely closed and GPS no longer used.
+  _ 
+  ! Some app pages have a specific context menu. You can activate it with the 3-point-symbol in the upper right corner.
+  _ 
+  ! When you have a large list or have collected big amounts of data the start of pages may be delayed, especially when entering the counting page or the result page, as those need heavy calculations.
+  _  
+  ! From the Starting page you can open the results page with "Show Results". It shows the meta data of the tour and the list of butterfly counts. It may take a few seconds to show up.
+
+$ 7
+  % 4. Further functions
+  !
+  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds and alerts. 
+  ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
+  _ 
+  ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
+  _
+  ! For preparing a new tour you may use “Reset Data” to reset the tour-specific meta data and count data. Alternatively you may import the Basic DB from /sdcard/tourcount0.db 
+  ! By “Export Basic DB” you may export the DB as empty "Basic DB" which is reasonable, when lasting changes of a counting list have been made (e.g. new species added).
+  ! Exporting the current database (Export DB) writes a copy of the complete DB to /sdcard/tourcount_YYYY-MM-DD_hhmmss.db.
+  ! The function “Export Data -> CSV File” writes the counting results into a MS Excel readable .csv-file to /sdcard/tourcount_YYYY-MM-DD_hhmmss.csv.
+  _
+  ! Under "App Info" you find the email address of the author, the history of the app and the license note.
+  _ 
+  ! The counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
+  _ 
+  ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" or csv-files to a PC. 
+  ! There you may examine the db-file with the free tool like "SqliteBrowser" (sqlitebrowser.org) or you may import the .csv-file as UTF-8 text file into Excel for further processing.
+  !
+  
+$ END_OF_VIEW_HELP
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings.xml English strings -->
+<resources>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_new_section">New List</string>
+    <string name="title_activity_meta">Meta Data</string>
+    <string name="title_activity_list_section">Counting Lists</string>
+    <string name="title_activity_counting">CountingActivity</string>
+    <string name="title_activity_list_species">ListSpeciesActivity</string>
+    <string name="title_activity_load_task">LoadTaskActivity</string>
+    <string name="title_activity_count_options">CountOptionsActivity</string>
+    <string name="title_activity_edit_individual">EditIndividualActivity</string>
+    <string name="title_activity_edit_section">EditSectionActivity</string>
+    <string name="hello_world">Hello!</string>
+
+    <!-- generic -->
+    <string name="app_name">TourCount</string>
+    <string name="customMissing">Your custom background image could not be found; the default will be used instead.</string>
+    <string name="customNotDefined">A custom background image is not defined; the default will be used instead.</string>
+    <string name="customTooBig">Sorry, trying to set the background image has caused an out of memory error.</string>
+
+    <!-- WelcomeActivity -->
+    <string name="hello">Butterfly Monitoring App\n\nSupports species-specific counting of butterflies in transect sections.\n\nYou can find instructions for the App under the menu \"Help\".</string>
+    <string name="viewCountButton">Counting List</string>
+    <string name="viewSpeciesButton">Show Results</string>
+    <string name="editMetaButton">Prepare Recording</string>
+    <string name="newSectTitle">New List</string>
+    <string name="changeLogTitle">App Info</string>
+    <string name="viewHelpTitle">Help</string>
+    <string name="noCard">Your sdcard could not be accessed!</string>
+    <string name="saveFail">Your database could not be exported!</string>
+    <string name="saveWin">Your database has been exported to the sdcard.</string>
+    <string name="reset2basic">Your database has been resetted.</string>
+    <string name="exportMenu">Export DB</string>
+    <string name="exportBasisMenu">Export Basic DB</string>
+    <string name="exportCSVMenu">Export Data -> CSV File</string>
+    <string name="resetDBMenu">Reset Data</string>
+    <string name="importBasisMenu">Import Basic DB</string>
+    <string name="importFail">Your database could not be imported!</string>
+    <string name="importWin">Your database has been imported.</string>
+    <string name="noDb">Please put \'tourcount0.db\' on your /sdcard partition.</string>
+    <string name="importButton">Import</string>
+    <string name="importCancelButton">Cancel</string>
+    <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
+    <string name="confirmResetDB">Are you sure you want to reset the Transect DB? Your current data will be deleted!</string>
+
+    <!-- EditMetaActivity -->
+    <string name="zlist">Count List</string>
+    <string name="zlnotes">Count List Notes</string>
+    <string name="spec">Species</string>
+    <string name="speccode">Spec. Code</string>
+    <string name="cnts">Counts</string>
+    <string name="bema">Spec. Notes</string>
+    <string name="bemi">Indiv. Notes</string>
+    <string name="editHeadTitle">Meta Data</string>
+    <string name="country">Country</string>
+    <string name="inspector">Observer Name</string>
+    <string name="temperature">Temp. (°C)</string>
+    <string name="wind">Wind (0-4)</string>
+    <string name="clouds">Clouds (%)</string>
+    <string name="hinttap">Tap here</string>
+    <string name="valTemp">Unrealistic temperature</string>
+    <string name="valWind">Wind out of range</string>
+    <string name="valClouds">Clouds out of range</string>
+    <string name="date">Date</string>
+    <string name="plz">Po. Code</string>
+    <string name="city">City</string>
+    <string name="place">Place</string>
+    <string name="starttm">Time from</string>
+    <string name="endtm">until</string>
+    
+    <!-- EditIndividualActivity -->
+    <string name="saveIndividualButton">Save</string>
+    <string name="indivdel">Deleted: Individual with ID:</string>
+    <string name="indivdel1">Deleted: 1x</string>
+    <string name="xcoord">Latitude</string>
+    <string name="ycoord">Longitude</string>
+    <string name="uncerti">Uncertainty (m)</string>
+    <string name="time">Time</string>
+    <string name="locality">Locality</string>
+    <string name="sex">Sex</string>
+    <string name="sex1">Sex (f/m)</string>
+    <string name="valSex">Check sex!</string>
+    <string name="stadium">Phase</string>
+    <string name="stadium1">Phase (B/P/L/E)</string>
+    <string name="stadium_1">Butterfly</string>
+    <string name="stadium_2">Pupa</string>
+    <string name="stadium_3">Larva</string>
+    <string name="stadium_4">Egg</string>
+    <string name="state">State (0-6)</string>
+    <string name="state1">State (1-6)</string>
+    <string name="valState">State out of range!</string>
+    <string name="note">Individual Notes</string>
+
+    <!-- NewSectionActivity -->
+    <string name="labelNewsectSaveButton">Save</string>
+    <string name="labelNewsect">Enter list Name here</string>
+    <string name="labelNewCountButton">Add Species</string>
+    <string name="clearCountButton">Remove Spec.</string>
+    <string name="emptyBox">Please fill in the empty boxes!</string>
+    <string name="noCounts">You must define at least one count!</string>
+    <string name="duplicate">Each count name must be unique!</string>
+    <string name="boxFill">Species Name </string>
+    <string name="sectionSaved">List saved!</string>
+
+    <!-- CountingActivity -->
+    <string name="saveCountsButton">Save &amp; Exit</string>
+    <string name="sectSaving">Saving </string>
+    <string name="alertTitle">Buzz!</string>
+    <string name="cloneButton">Duplicate Counting List</string>
+    <string name="newName">You must enter a name for the new list.</string>
+    <string name="newCopyCreated">has been created!</string>
+
+    <!-- CountingActivity Menu -->
+    <string name="editSectTitle">Edit List</string>
+    <string name="dpSectTitle">New list name</string>
+    <string name="confirmDelete">Are you sure you want to delete this list?</string>
+    <string name="willAlert">- %1$s will show alert at  %2$d.</string>
+    <string name="deleteButton">Delete</string>
+    <string name="cancelButton">Cancel</string>
+    <string name="action_share">Share</string>
+    <string name="send_to">Share notes</string>
+
+    <!-- EditSectionActivity -->
+    <string name="titleEdit">List Name</string>
+    <string name="notesHere">Notes</string>
+    <string name="notesHint">Type notes here&#8230;</string>
+    <string name="deleteCount">Delete Item</string>
+    <string name="reallyDeleteCount">Are you sure? This count will be deleted immediately.</string>
+    <string name="deletedList">Deleted: List with ID: "</string>
+    <string name="isdouble"> is double!</string>
+
+    <!-- ChangeLog -->
+    <string name="changelog_full_title">App Info</string>
+    <string name="changelog_title">What\'s New</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">more&#8230;</string>
+
+    <!-- ViewHelp -->
+    <string name="viewhelp_full_title">Help</string>
+    <string name="viewhelp_title">What can the app do?</string>
+    <string name="viewhelp_ok_button">OK</string>
+
+    <!-- Preferences -->
+    <string name="pref_bg">Background</string>
+    <string name="pref_bg_summ">Choose default, custom or no background image.</string>
+    <string name="pref_awake">Keep screen on</string>
+    <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
+    <string name="chooseImg">Image</string>
+    <string name="explainImg">Select the background image to be used when a custom image is selected.</string>
+    <string name="prefs_appearance">Appearance</string>
+    <string name="prefs_sound">Sound</string>
+    <string name="prefs_counting">Counting</string>
+    <string name="image_error">Error setting custom image! Please try using the gallery rather than a file manager.</string>
+    <string name="pref_note_font">Note font</string>
+    <string name="pref_note_font_summ">Select this option to increase the size of note fonts on the counting screen.</string>
+    <string name="pref_sort_order">Sorting</string>
+    <string name="pref_sort_order_summ">Sort order of your section list.</string>
+    <string name="pref_sound">Audible alerts</string>
+    <string name="pref_sound_summary">Sound an audible alert when an alert is triggered.</string>
+    <string name="choose_alert">Notification sound</string>
+    <string name="explain_alert">Choose a notification tone for alerts.</string>
+    <string name="pref_duplicate">Prevent duplicate counts</string>
+    <string name="pref_duplicate_summary">When selected, the names in each species list must be unique.</string>
+    <string name="pref_button_sound">Count button sounds</string>
+    <string name="pref_button_sound_summary">Make a sound upon pressing the count up or count down buttons.</string>
+    <string name="choose_button_alert">Button Sound</string>
+    <string name="explain_button_alert">Choose a sound for buttons.</string>
+
+    <!-- CountOptionsActivity -->
+    <string name="editCountValue">You may change the internal count value of %1$s from its current value of %2$d by editing it here.</string>
+    <string name="addSomeAlerts">Each internal species counter may have alerts which will be triggered when the count reaches that level. Use the Add Button to the right to add an alert and the Delete Button on each alert to remove it.</string>
+    <string name="alertName">New Alert</string>
+    <string name="countName">New Species</string>
+    <string name="deleteAlert">Delete Alert</string>
+    <string name="reallyDeleteAlert">Are you sure? The alert will be deleted immediately.</string>
+    <string name="yesDeleteIt">Delete</string>
+    <string name="noCancel">Cancel</string>
+
+    <!-- ListViewSpecies -->
+    <string name="viewSpecTitle">Counting Results</string>
+    <string name="wait">View gets calculated&#8230;</string>
+
+    <!-- other stuff -->
+    <string name="charZero">0</string>
+    <string name="countNameHint">Name of Species</string>
+    <string name="hintTitle">Title</string>
+    <string name="hintSectionNotes">Section notes.</string>
+    <string name="hintInstructions">Instructions.</string>
+    <string name="getHelp">Sorry, there was a problem with your database. Please email if you need assistance, attaching your exported \'tourcount.db\'.</string>
+    <string name="activate_GPS">Please, activate GPS in Location Mode.</string>
+    <string name="no_GPS">Sorry, no position, GPS is not activated.</string>
+
+</resources>

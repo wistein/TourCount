@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_bg_entries">
+        <item>Kein</item>
+        <item>Ausgewählt (Liste unten)</item>
+        <item>TourCount (Standard)</item>
+    </string-array>
+    <string-array name="pref_bg_values">
+        <item>none</item>
+        <item>custom</item>
+        <item>default</item>
+    </string-array>
+    <string-array name="pref_sort_entries">
+        <item>Name, aufsteigend</item>
+        <item>Name, absteigend</item>
+    </string-array>
+    <string-array name="pref_sort_values">
+        <item>name_asc</item>
+        <item>name_desc</item>
+    </string-array>
+</resources>

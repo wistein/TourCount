@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <style type='text/css'>
+      a            { color:#a0a0e0 }
+      div.title    { 
+          color:#C0F0C0; 
+          font-size:1.2em; 
+          font-weight:bold; 
+          margin-top:1em; 
+          margin-bottom:0.5em; 
+          text-align:center }
+      div.subtitle { 
+          color:#C0F0C0; 
+          font-size:0.8em; 
+          margin-bottom:1em; 
+          text-align:center }
+      div.freetext { color:#F0F0F0 }
+      div.list     { color:#C0C0F0 }
+    </style>
+  </head>
+  <body>
+
+  % TourCount
+  _ Copyright (C) 2016, Wilhelm Stein
+  _
+  _ email: stein.wm@web.de
+  _
+$ 2.0.2
+  % Version 2.0.2
+  _ 2016-05-27
+    * Sortierter csv-Export
+    * Nur noch 1 Zählliste
+    * Code bereinigt
+
+$ 2.0.1
+  % Version 2.0.1
+  _ 2016-05-19
+    * Functionality of individual data handling completed
+    * Ergebnisseite und Export nach CSV komplettiert
+
+$ 1.0.2
+  % Version 1.0.2
+  _ 19.05.2016
+    * Zähl Button aktiviert Edit-Seite für Individuum-Daten
+    * Neue Tabelle "individuals" mit Zeit, Koordinaten, Geschlecht, Stadium, Zustand
+
+$ 1.0.1
+  % Version 1.0.1
+  _ 14.05.2016
+    * Meta-Daten (Datum, Zeit) ergänzt
+    * Plausi-Kontrolle für Meta-Daten
+    * Vorbereitet für GPS-Rekording
+
+$ 1.0.0
+  % Version 1.0.0
+  _ 18.04.2016
+  ! 1. Release.
+    * Funktion "Reset Daten"
+    * App läuft immer im Portraitmodus
+    * Exportiert Ergebnisse in csv-Format
+    * Ergebnisseite mit Stammdaten
+    * Eingabeseite für Stammdaten
+    * Geeignet für Android 17 (JellyBean) - 23 (Marshmallow)
+    * Ausführliche Hilfe-Seite
+    * Basis-DB-Import/Export: Leere Datenbank 'tourcount0.db'
+    * DB-Export: Datenbank 'tourcount_jjjjmmtt-hhmmss.db'
+    * Deutsche und englische Texte
+    * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
+    * Basiert auf TransektCount von wmstein, siehe:
+    * https://github.com/wistein/ TransektCount.git
+    * - das abgeleitet ist von BeeCount von knirirr
+    * https://github.com/knirirr/ BeeCount.git
+    * Modifizierte AutoFitText.java, original Code von Autor: pheuschk
+    * Modifizierte ChangeLog.java original Code von Autor: Karsten Priegnitz
+    * Modifizierte CSVWriter.java original Code Copyright 2015 Bytecode Pty Ltd.
+  _
+  ! Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+  _ 
+  ! http://www.apache.org/licenses/LICENSE-2.0
+  _ 
+  ! Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+  _
+
+$ END_OF_CHANGE_LOG
+  </body>
+</html>

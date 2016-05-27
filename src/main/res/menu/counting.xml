@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.wmstein.tourcount.CountingActivity">
+
+    <item
+        android:id="@+id/menuEditSection"
+        android:title="@string/editSectTitle"
+        android:icon="@android:drawable/ic_menu_edit"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menuSaveExit"
+        android:title="@string/saveCountsButton"
+        android:icon="@android:drawable/ic_menu_save"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/action_share"
+        android:orderInCategory="200"
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="ifRoom"/>
+</menu>

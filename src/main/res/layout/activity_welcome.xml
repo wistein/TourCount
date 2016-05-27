@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_welcome.xml is used by WelcomeActivity.java -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/baseLayout"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:layout_margin="20sp"
+            android:id="@+id/welcomeTitle"
+            android:textColor="@android:color/white"
+            android:text="@string/app_name"/>
+    </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="0dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/welcomeWaffle"
+            android:textColor="@android:color/white"
+            android:text="@string/hello"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:layout_margin="20dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2"/>
+        
+        <Button
+            android:id="@+id/editMetaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:onClick="editMeta"
+            android:text="@string/editMetaButton"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"/>
+
+        <LinearLayout
+            android:id="@+id/welcomeButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/viewCountButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="viewCounts"
+                android:text="@string/viewCountButton"
+                />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="0dp"
+                />
+
+            <Button
+                android:id="@+id/viewSpeciesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="viewSpecies"
+                android:text="@string/viewSpeciesButton"
+                />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+
+    </LinearLayout>
+</ScrollView>

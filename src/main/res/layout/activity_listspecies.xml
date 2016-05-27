@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_listspecies.xml is used by ListSpeciesActivity.java -->
+
+<ScrollView android:id="@+id/listSpecScreen"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+<!--        
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="15dip"
+            android:paddingTop="15dip"
+            />
+-->
+        
+        <LinearLayout
+            android:id="@+id/listSpecLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+

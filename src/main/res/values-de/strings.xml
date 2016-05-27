@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings.xml German strings -->
+<resources>
+
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_activity_new_section">Neue Liste</string>
+    <string name="title_activity_meta">Meta Daten</string>
+    <string name="title_activity_list_section">Zähllisten</string>
+    <string name="title_activity_counting">CountingActivity</string>
+    <string name="title_activity_list_species">ListSpeciesActivity</string>
+    <string name="title_activity_load_task">LoadTaskActivity</string>
+    <string name="title_activity_count_options">CountOptionsActivity</string>
+    <string name="title_activity_edit_individual">EditIndividualActivity</string>
+    <string name="title_activity_edit_section">EditSectionActivity</string>
+    <string name="hello_world">Hallo!</string>
+
+    <!-- generic -->
+    <string name="app_name">TourCount</string>
+    <string name="customMissing">Dein Hintergrundbild wurde nicht gefunden; es wird der Standard-Hintergrund verwendet.</string>
+    <string name="customNotDefined">Es wurde kein Hintergrundbild gewählt; es wird der Standard-Hintergrund verwendet.</string>
+    <string name="customTooBig">Leider ist der interne Speicher für das gewählte Hintergrundbild zu klein.</string>
+
+    <!-- WelcomeActivity -->
+    <string name="hello">App zur Registrierung von Tagfaltern\n\nUnterstützt die artspezifische Erfassung von Schmetterlingen unterwegs.\n\nEine Anleitung zur App gibt es unter dem Menüpunkt \"Hilfe\".</string>
+    <string name="viewCountButton">Zählliste</string>
+    <string name="viewSpeciesButton">Zeige Ergebnis</string>
+    <string name="editMetaButton">Erfassung vorbereiten</string>
+    <string name="newSectTitle">Neue Liste</string>
+    <string name="changeLogTitle">App-Info</string>
+    <string name="viewHelpTitle">Hilfe</string>
+    <string name="noCard">Die Sdcard kann nicht verwendet werden!</string>
+    <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
+    <string name="saveWin">Die Datenbank wurde auf die Sdcard exportiert.</string>
+    <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
+    <string name="exportMenu">Export DB</string>
+    <string name="exportBasisMenu">Export Basis-DB</string>
+    <string name="exportCSVMenu">Export Daten -> CSV-Datei</string>
+    <string name="resetDBMenu">Reset Daten</string>
+    <string name="importBasisMenu">Import Basis-DB</string>
+    <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
+    <string name="importWin">Die Datenbank wurde importiert.</string>
+    <string name="noDb">Bitte kopiere die Datenbankdatei \"tourcount0.db\" auf die /sdcard Partition.</string>
+    <string name="importButton">Import</string>
+    <string name="importCancelButton">Abbrechen</string>
+    <string name="confirmBasisImport">Willst Du wirklich die leere Basis-Datenbank \"tourcount0.db\" importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
+    <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
+
+    <!-- EditMetaActivity -->
+    <string name="zlist">Zählliste</string>
+    <string name="zlnotes">Bem. zur Liste</string>
+    <string name="spec">Spezies</string>
+    <string name="speccode">Spez.-Code</string>
+    <string name="cnts">Anzahl</string>
+    <string name="bema">Art-Bemerkung</string>
+    <string name="bemi">Indiv.-Bemerkung</string>
+    <string name="editHeadTitle">Meta-Daten</string>
+    <string name="country">Land</string>
+    <string name="inspector">Melder(in)</string>
+    <string name="temperature">Temp. (°C)</string>
+    <string name="wind">Wind (0-4)</string>
+    <string name="clouds">Wolken (%)</string>
+    <string name="hinttap">Tippe hier</string>
+    <string name="valTemp">Unrealistische Temperatur</string>
+    <string name="valWind">Wind überprüfen!</string>
+    <string name="valClouds">Wolken überprüfen!</string>
+    <string name="date">Datum</string>
+    <string name="plz">PLZ</string>
+    <string name="city">Stadt</string>
+    <string name="place">Ort</string>
+    <string name="starttm">Zeit von</string>
+    <string name="endtm">bis</string>
+
+    <!-- EditIndividualActivity -->
+    <string name="saveIndividualButton">Speichern</string>
+    <string name="indivdel">Gelöscht: Individuum mit ID:</string>
+    <string name="indivdel1">Gelöscht: 1x</string>
+    <string name="xcoord">Breitengrad</string>
+    <string name="ycoord">Längengrad</string>
+    <string name="uncerti">Unsicherheit (m)</string>
+    <string name="time">Zeit</string>
+    <string name="locality">Lokalität</string>
+    <string name="sex">Geschlecht</string>
+    <string name="sex1">Sex (f/m)</string>
+    <string name="valSex">Sex überprüfen!</string>
+    <string name="stadium">Stadium</string>
+    <string name="stadium1">Stad. (F/P/L/E)</string>
+    <string name="stadium_1">Falter</string>
+    <string name="stadium_2">Puppe</string>
+    <string name="stadium_3">Larve</string>
+    <string name="stadium_4">Ei</string>
+    <string name="state">Zust. (0-6)</string>
+    <string name="state1">Zust. (1-6)</string>
+    <string name="valState">Zustand überprüfen!</string>
+    <string name="note">Bemerkung zum Individuum</string>
+
+    <!-- NewSectionActivity -->
+    <string name="labelNewsectSaveButton">Speichern</string>
+    <string name="labelNewsect">Hier Listename eingeben</string>
+    <string name="labelNewCountButton">Art hinzuf.</string>
+    <string name="clearCountButton">Art entf.</string>
+    <string name="emptyBox">Bitte die leeren Felder ausfüllen!</string>
+    <string name="noCounts">Es muss mindestens ein Eintrag vorhanden sein!</string>
+    <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
+    <string name="boxFill">Eintrag </string>
+    <string name="sectionSaved">Liste gespeichert!</string>
+
+    <!-- CountingActivity -->
+    <string name="saveCountsButton">Sichern</string>
+    <string name="sectSaving">Speichern </string>
+    <string name="alertTitle">Buzz!</string>
+    <string name="cloneButton">Zählliste duplizieren</string>
+    <string name="newName">Bitte einen Namen für die neue Liste eingeben.</string>
+    <string name="newCopyCreated">wurde erstellt!</string>
+
+    <!-- CountingActivity Menu -->
+    <string name="editSectTitle">Liste bearbeiten</string>
+    <string name="dpSectTitle">Neuer Listenname</string>
+    <string name="confirmDelete">Soll die Liste wirklich gelöscht werden?</string>
+    <string name="willAlert">- %1$s wird bei %2$d ein Signal geben.</string>
+    <string name="deleteButton">Löschen</string>
+    <string name="cancelButton">Abbrechen</string>
+    <string name="action_share">Mitteilen</string>
+    <string name="send_to">Versenden</string>
+
+    <!-- EditSectionActivity -->
+    <string name="titleEdit">Listenname</string>
+    <string name="notesHere">Bemerkung</string>
+    <string name="notesHint">Bemerkung einfügen&#8230;</string>
+    <string name="deleteCount">Element löschen</string>
+    <string name="reallyDeleteCount">Bist Du sicher? Das Element wird sofort gelöscht.</string>
+    <string name="deletedList">Gelöscht: Liste mit ID: "</string>
+    <string name="isdouble"> ist doppelt!</string>
+
+    <!-- ChangeLog -->
+    <string name="changelog_full_title">App Info</string>
+    <string name="changelog_title">Was ist neu?</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">mehr&#8230;</string>
+
+    <!-- ViewHelp -->
+    <string name="viewhelp_full_title">Hilfe</string>
+    <string name="viewhelp_title">Was kann die App?</string>
+    <string name="viewhelp_ok_button">OK</string>
+
+    <!-- Preferences -->
+    <string name="pref_bg">Hintergrund</string>
+    <string name="pref_bg_summ">Wähle Standard-, eigenen oder keinen Hintergrund.</string>
+    <string name="pref_awake">Lass Bildschirm an</string>
+    <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
+    <string name="chooseImg">Hintergrundbild</string>
+    <string name="explainImg">Wähle ein Hintergrundbild aus, wenn ein eigenes Bild angezeigt werden soll.</string>
+    <string name="prefs_appearance">Aussehen</string>
+    <string name="prefs_sound">Sound</string>
+    <string name="prefs_counting">Zählen</string>
+    <string name="image_error">Hintergrundbild setzen fehlgeschlagen! Versuche es mit der Gallery anstelle von File Manager.</string>
+    <string name="pref_note_font">Anmerkungs-Font</string>
+    <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
+    <string name="pref_sort_order">Sortierung</string>
+    <string name="pref_sort_order_summ">Sortierung der Abschnittsliste.</string>
+    <string name="pref_sound">Tonalarm</string>
+    <string name="pref_sound_summary">Erzeuge einen Benachrichtigungston wenn ein Zählalarm ausgelöst wird.</string>
+    <string name="choose_alert">Benachrichtigungston</string>
+    <string name="explain_alert">Wähle einen Benachrichtigungston aus.</string>
+    <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
+    <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
+    <string name="pref_button_sound">Zähler-Button Sound</string>
+    <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
+    <string name="choose_button_alert">Button Sound</string>
+    <string name="explain_button_alert">Wähle einen Button-Sound aus.</string>
+
+    <!-- CountOptionsActivity -->
+    <string name="editCountValue">Du kannst den momentanen Intern-Zählerstand %2$d von \"%1$s\" hier ändern.</string>
+    <string name="addSomeAlerts">Jedem internen Zähler einer Art können Alarme zugewiesen werden, die ausgelöst werden, wenn der jeweils vorgegebene Wert erreicht wird. Verwende den \"+\"-Button rechts um Alarme hinzuzufügen und den jeweiligen Lösch-Button um ihn zu entfernen.</string>
+    <string name="alertName">Neuer Alarm</string>
+    <string name="countName">Neue Art</string>
+    <string name="deleteAlert">Lösche Alarm</string>
+    <string name="reallyDeleteAlert">Bist Du sicher? Der Alarm wird sofort gelöscht.</string>
+    <string name="yesDeleteIt">Löschen</string>
+    <string name="noCancel">Abbrechen</string>
+
+    <!-- ListViewSpecies -->
+    <string name="viewSpecTitle">Zählergebnis</string>
+    <string name="wait">Liste wird berechnet&#8230;</string>
+
+    <!-- other stuff -->
+    <string name="charZero">0</string>
+    <string name="countNameHint">Art-Name</string>
+    <string name="hintTitle">Titel</string>
+    <string name="hintSectionNotes">Abschnittsnotizen.</string>
+    <string name="hintInstructions">Anleitung.</string>
+    <string name="getHelp">Leider gibt es ein Problem mit Deiner Datenbank. Bitte sende eine E-Mail mit Deiner exportierten \"tourcount.db\", falls Du Hilfe brauchst.</string>
+    <string name="activate_GPS">Bitte GPS im Standort-Modus aktivieren.</string>
+    <string name="no_GPS">Keine Positionsbestimmung, GPS ist nicht aktiviert.</string>
+
+</resources>

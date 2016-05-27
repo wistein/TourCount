@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/prefs_appearance">
+        android:key="key_prefs_appearance">
+        <ListPreference
+            android:key="pref_back"
+            android:title="@string/pref_bg"
+            android:summary="@string/pref_bg_summ"
+            android:entries="@array/pref_bg_entries"
+            android:entryValues="@array/pref_bg_values"/>
+        <Preference
+            android:title="@string/chooseImg"
+            android:key="button"
+            android:summary="@string/explainImg"/>
+        <ListPreference
+            android:key="pref_sort"
+            android:title="@string/pref_sort_order"
+            android:summary="@string/pref_sort_order_summ"
+            android:entries="@array/pref_sort_entries"
+            android:entryValues="@array/pref_sort_values"/>
+        <CheckBoxPreference
+            android:key="pref_note_font"
+            android:title="@string/pref_note_font"
+            android:summary="@string/pref_note_font_summ"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefs_sound">
+        android:key="key_prefs_sound">
+        <CheckBoxPreference
+            android:key="pref_sound"
+            android:title="@string/pref_sound"
+            android:summary="@string/pref_sound_summary"
+            android:defaultValue="false"/>
+        <Preference
+            android:title="@string/choose_alert"
+            android:key="alert_sound"
+            android:summary="@string/explain_alert"/>
+        <CheckBoxPreference
+            android:key="pref_button_sound"
+            android:title="@string/pref_button_sound"
+            android:summary="@string/pref_button_sound_summary"
+            android:defaultValue="false"/>
+        <Preference
+            android:title="@string/choose_button_alert"
+            android:key="alert_button_sound"
+            android:summary="@string/explain_button_alert"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefs_counting">
+        android:key="key_prefs_counting">
+        <CheckBoxPreference
+            android:key="pref_awake"
+            android:title="@string/pref_awake"
+            android:summary="@string/pref_awake_summ"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="pref_duplicate"
+            android:title="@string/pref_duplicate"
+            android:summary="@string/pref_duplicate_summary"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
