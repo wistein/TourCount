@@ -4,6 +4,12 @@
       tools:context="com.wmstein.tourcount.WelcomeActivity">
 
     <item
+        android:id="@+id/editMeta"
+        android:title="@string/editMetaButton"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_edit">
+    </item>
+    <item
         android:id="@+id/viewCounts"
         android:title="@string/viewCountButton"
         app:showAsAction="always"
@@ -12,7 +18,7 @@
     <item
         android:id="@+id/viewSpecies"
         android:title="@string/viewSpeciesButton"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_view">
     </item>
     <item

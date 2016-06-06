@@ -10,12 +10,4 @@
         <item>custom</item>
         <item>default</item>
     </string-array>
-    <string-array name="pref_sort_entries">
-        <item>Name, ascending</item>
-        <item>Name, decending</item>
-    </string-array>
-    <string-array name="pref_sort_values">
-        <item>name_asc</item>
-        <item>name_desc</item>
-    </string-array>
 </resources>

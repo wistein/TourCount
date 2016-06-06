@@ -11,19 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-<!--        
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="15dip"
-            android:paddingTop="15dip"
-            />
--->
-        
         <LinearLayout
             android:id="@+id/listSpecLayout"
             android:layout_width="fill_parent"

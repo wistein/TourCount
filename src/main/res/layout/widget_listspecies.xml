@@ -27,28 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="30dp">
 
-    <!-- Name of transect section -->
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="3.2"
-        android:id="@+id/txtSectName"
-        android:gravity="start|center_vertical"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:padding="4sp"
-        android:textStyle="bold"/>
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"/>
-
     <!-- Name of species -->
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="5.2"
+        android:layout_weight="8.6"
         android:id="@+id/txtSpecName"
         android:gravity="start"
         android:textColor="#FFFFFF"
@@ -79,22 +62,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-    <!-- Remark of transect section -->
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="3.2"
-        android:id="@+id/txtSectRem"
-        android:gravity="start|top"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:padding="4sp"/>
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"/>
 
     <!-- Remark of species -->
     <TextView
