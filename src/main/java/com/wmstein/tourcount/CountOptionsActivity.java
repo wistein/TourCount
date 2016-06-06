@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * Created by milo on 05/05/2014.
  * Changed by wmstein on 18.02.2016
- * Supplemented with functions for transect externel counter
  */
 
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -130,7 +129,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         enw = new EditTitleWidget(this, null);
         enw.setSectionName(count.notes);
-        enw.setWidgetTitle(getString(R.string.notesHere));
+        enw.setWidgetTitle(getString(R.string.notesSpecies));
         enw.setHint(getString(R.string.notesHint));
         enw.requestFocus();
 

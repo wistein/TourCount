@@ -21,6 +21,7 @@ import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
+import com.wmstein.tourcount.widgets.EditTitleWidget;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,7 +49,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private SectionDataSource sectionDataSource;
 
     LinearLayout head_area;
-    
+
+    EditTitleWidget ett;
     EditHeadWidget ehw;
     EditMetaWidget etw;
     
@@ -83,17 +85,23 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         
         //clear existing view
         head_area.removeAllViews();
-        
+
         //setup data sources
         headDataSource = new HeadDataSource(this);
         headDataSource.open();
         sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
-        
+
         //load head and meta data
         head = headDataSource.getHead();
-        section = sectionDataSource.getSection(); 
-        
+        section = sectionDataSource.getSection();
+
+        // display an editable list title
+        ett = new EditTitleWidget(this, null);
+        ett.setSectionName(section.name);
+        ett.setWidgetTitle(getString(R.string.titleEdit));
+        head_area.addView(ett);
+
         // display the editable head data
         ehw = new EditHeadWidget(this, null);
         ehw.setWidgetCo1(getString(R.string.country));
@@ -124,9 +132,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         etw.setWidgetEndTm2(section.end_tm);
         head_area.addView(etw);
 
+/*
         // check for focus
-        String newTransectNo = head.country;
-        if (StringUtils.isNotEmpty(newTransectNo))
+        String newCountry = section.country;
+        if (StringUtils.isNotEmpty(newCountry))
         {
             etw.requestFocus();
         }
@@ -134,7 +143,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         {
             ehw.requestFocus();
         }
-
+*/
     }
 
     // getSDate()
@@ -217,6 +226,12 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         headDataSource.saveHead(head);
 
         // Save meta data
+        String newtitle = ett.getSectionName();
+        if (StringUtils.isNotEmpty(newtitle))
+        {
+            section.name = newtitle;
+        }
+
         section.country = ehw.setWidgetCo2();
         section.temp = etw.getWidgetTemp2();
         if (section.temp > 50 || section.temp < 0)

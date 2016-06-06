@@ -217,6 +217,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             startActivity(new Intent(this, CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
+        else if (id == R.id.editMeta)
+        {
+            startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            return true;
+        }
         else if (id == R.id.viewSpecies)
         {
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
@@ -539,7 +544,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 //    Date, Time, Sex, Stadium, State, Indiv.-Notes 
                 String arrIndHead[] =
                     {
-                        getString(R.string.spec),
+                        getString(R.string.individuals),
                         getString(R.string.speccode),
                         getString(R.string.locality),
                         getString(R.string.ycoord),
@@ -718,7 +723,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database.execSQL(sql);
 
         sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
-            + DbHelper.S_CREATED_AT + " = '', "
             + DbHelper.S_PLZ + " = '', "
             + DbHelper.S_CITY + " = '', "
             + DbHelper.S_PLACE + " = '', "

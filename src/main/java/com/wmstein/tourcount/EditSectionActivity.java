@@ -55,7 +55,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     int section_id;
     LinearLayout counts_area;
     LinearLayout notes_area;
-    EditTitleWidget etw;
     EditTitleWidget enw;
     private View markedForDelete;
     private int idToDelete;
@@ -154,12 +153,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         {
             Log.i(TAG, "NullPointerException: No section name!");
         }
-
-        // display an editable section title
-        etw = new EditTitleWidget(this, null);
-        etw.setSectionName(section.name);
-        etw.setWidgetTitle(getString(R.string.titleEdit));
-        notes_area.addView(etw);
 
         // display editable section notes; the same class
         // is being used for both due to being lazy
@@ -263,13 +256,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         // save section title and notes only if they have changed
         boolean savesection = false;
 
-        String newtitle = etw.getSectionName();
-        if (StringUtils.isNotEmpty(newtitle))
-        {
-            section.name = newtitle;
-            savesection = true;
-        }
-
         String newnotes = enw.getSectionName();
         // Always add notes if the user has written some...
         if (StringUtils.isNotEmpty(newnotes))
@@ -299,7 +285,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         childcount = counts_area.getChildCount();
         //Log.i(TAG, "childcount: " + String.valueOf(childcount));
 
-        // check for unique names
+        // check for unique species names
         if (dupPref)
         {
             isDbl = compCountNames();

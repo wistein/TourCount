@@ -17,6 +17,7 @@ import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.ListHeadWidget;
 import com.wmstein.tourcount.widgets.ListMetaWidget;
 import com.wmstein.tourcount.widgets.ListSpeciesWidget;
+import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private SectionDataSource sectionDataSource;
     private HeadDataSource headDataSource;
 
+    ListTitleWidget elw;
+    ListTitleWidget erw;
     ListHeadWidget ehw;
     ListMetaWidget etw;
 
@@ -107,7 +110,19 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         head = headDataSource.getHead();
         section = sectionDataSource.getSection(); 
 
-        // display the editable transect No.
+        // display the list name
+        elw = new ListTitleWidget(this, null);
+        elw.setListTitle(getString(R.string.titleEdit));
+        elw.setListName(section.name);
+        spec_area.addView(elw);
+
+        // display the list remark
+        erw = new ListTitleWidget(this, null);
+        erw.setListTitle(getString(R.string.zlnotes));
+        erw.setListName(section.notes);
+        spec_area.addView(erw);
+
+        // display the head data
         ehw = new ListHeadWidget(this, null);
         ehw.setWidgetLCo(getString(R.string.country));
         ehw.setWidgetLCo1(section.country);
@@ -115,7 +130,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         ehw.setWidgetLName1(head.observer);
         spec_area.addView(ehw);
 
-        // display the editable meta data
+        // display the meta data
         etw = new ListMetaWidget(this, null);
         etw.setWidgetLMeta1(getString(R.string.temperature));
         etw.setWidgetLItem1(section.temp);
@@ -140,10 +155,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         //List of species
         List<Count> specs; 
         
-        int sect_id;
-        // preset for unused id of section as starting criteria in if-clause of for-loop
-        int sect_idOld = 0;
-        
         // setup the data sources
         countDataSource.open();
 
@@ -154,7 +165,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         for (Count spec : specs)
         {
             // set section ID from count table and prepare to get section name from section table
-            sect_id = spec.section_id;
             section = sectionDataSource.getSection();
 
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
@@ -164,13 +174,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
             // fill widget only for counted species
             if (spec_count > 0)
             {
-                if (sect_id == sect_idOld)
-                {
-                    widget.setCount1(spec, section);
-                }
-                
                 spec_area.addView(widget);
-                sect_idOld = sect_id;
             }
         }
     }

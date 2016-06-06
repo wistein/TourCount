@@ -205,7 +205,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
         } catch (Exception e)
         {
-            Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Exception" + e + getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
         }
             
         // clear any existing views
@@ -230,8 +230,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             finish();
         }
 
-        //Log.i(TAG, "Got section: " + section.name);
-        // Actionbar: Zeile wegen Holo auskommentiert, funktioniert trotzdem nicht
         getSupportActionBar().setTitle(section.name);
 
         List<String> extras = new ArrayList<>();
@@ -258,7 +256,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 count_area.addView(count_notes);
             }
 
-            // get add all alerts for this section
+            // get all alerts for this section
             List<Alert> tmpAlerts = alertDataSource.getAllAlertsForCount(count.id);
             for (Alert a : tmpAlerts)
             {
@@ -297,7 +295,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     protected void onPause()
     {
         super.onPause();
-
         locationManager.removeUpdates(locationListener);
 
         // save the data
@@ -323,7 +320,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     /**************************************************
-     * Zählerstände sichern und Zähldatum nach S_CREATED_AT schreiben
+     * Zählerstände sichern
      */
     private void saveData()
     {
@@ -332,11 +329,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         for (Count count : counts)
         {
             countDataSource.saveCount(count);
-        }
-        if (hasChanged)
-        {
-            sectionDataSource.saveDateSection(section);
-            hasChanged = false;
         }
     }
 
@@ -349,9 +341,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         super.finish();
     }
 
-    /*
-     * The functions below are triggered by the count buttons
-     */
+    // Triggered by count up button
+    // starts EditIndividualActivity
     public void countUp(View view)
     {
         buttonSound();
@@ -383,17 +374,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, uncert, datestamp, timestamp));
 
-        // get edited info for individual
+        // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("indiv_id", i_Id);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         startActivity(intent);
-
     }
 
-    
+    // Triggered by count down button
+    // deletes last last count only when directly followed
     public void countDown(View view)
     {
         buttonSound();
