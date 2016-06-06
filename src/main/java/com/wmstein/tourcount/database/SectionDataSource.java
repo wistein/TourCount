@@ -23,7 +23,6 @@ public class SectionDataSource
     private DbHelper dbHandler;
     private String[] allColumns = {
         DbHelper.S_ID,
-        DbHelper.S_CREATED_AT,
         DbHelper.S_NAME,
         DbHelper.S_COUNTRY,
         DbHelper.S_PLZ,
@@ -83,7 +82,6 @@ public class SectionDataSource
     {
         Section section = new Section();
         section.id = cursor.getInt(cursor.getColumnIndex(DbHelper.S_ID));
-        section.created_at = cursor.getLong(cursor.getColumnIndex(DbHelper.S_CREATED_AT));
         section.name = cursor.getString(cursor.getColumnIndex(DbHelper.S_NAME));
         section.country = cursor.getString(cursor.getColumnIndex(DbHelper.S_COUNTRY));
         section.plz = cursor.getString(cursor.getColumnIndex(DbHelper.S_PLZ));
@@ -117,20 +115,6 @@ public class SectionDataSource
         String where = DbHelper.S_ID + " = ?";
         String[] whereArgs = {String.valueOf(section.id)};
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
-    }
-
-    /******************************/
-    // called from CountingActivity
-    public void saveDateSection(Section section)
-    {
-        Date date = new Date();
-        long timeMsec = date.getTime();
-
-        ContentValues values = new ContentValues();
-        values.put(DbHelper.S_CREATED_AT, timeMsec);
-        String where = DbHelper.S_ID + " = ?";
-        String[] whereArgs = {String.valueOf(section.id)};
-        database.update(DbHelper.SECTION_TABLE, values, where, whereArgs);
     }
 
     // called from CountingActivity and EditSectionActivity

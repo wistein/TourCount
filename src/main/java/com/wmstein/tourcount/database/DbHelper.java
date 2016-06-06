@@ -26,7 +26,6 @@ public class DbHelper extends SQLiteOpenHelper
     
     // fields
     public static final String S_ID = "_id";
-    public static final String S_CREATED_AT = "created_at";
     public static final String S_NAME = "name";
     public static final String S_COUNTRY = "country";
     public static final String S_PLZ = "plz";
@@ -88,7 +87,6 @@ public class DbHelper extends SQLiteOpenHelper
         //Log.i(TAG, "Creating database: " + DATABASE_NAME);
         String sql = "create table " + SECTION_TABLE + " (" 
             + S_ID + " integer primary key, " 
-            + S_CREATED_AT + " int, " 
             + S_NAME + " text, "
             + S_COUNTRY + " text, "
             + S_PLZ + " text, "

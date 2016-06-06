@@ -11,7 +11,6 @@ import java.util.Date;
 public class Section
 {
     public int id;
-    public long created_at;
     public String name;
     public String country;
     public String plz;
@@ -24,13 +23,5 @@ public class Section
     public String start_tm;
     public String end_tm;
     public String notes;
-
-    //Get Date from DB table sections field created_at
-    public String getDate()
-    {
-        Date date = new Date(created_at);
-        DateFormat df = SimpleDateFormat.getDateInstance();
-        return df.format(date);
-    }
-
+    
 }
