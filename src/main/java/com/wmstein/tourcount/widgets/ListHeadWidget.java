@@ -15,6 +15,8 @@ import com.wmstein.tourcount.R;
 
 public class ListHeadWidget extends LinearLayout
 {
+    public static String TAG = "tourcountListHeadWidget";
+
     TextView widget_lco; // used for country title
     TextView widget_lco1; // used for country
     TextView widget_lname; // used for observer title
@@ -23,6 +25,7 @@ public class ListHeadWidget extends LinearLayout
     public ListHeadWidget(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_list_head, this, true);
         widget_lco = (TextView) findViewById(R.id.widgetLCo);

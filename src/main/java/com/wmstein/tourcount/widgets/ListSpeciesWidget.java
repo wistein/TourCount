@@ -18,8 +18,6 @@ public class ListSpeciesWidget extends RelativeLayout
 {
     public static String TAG = "tourcountListSpeciesWidget";
 
-    private TextView txtSectName;
-    private TextView txtSectRem;
     private TextView txtSpecName;
     private TextView specCount;
     private TextView txtSpecRem;
@@ -34,8 +32,6 @@ public class ListSpeciesWidget extends RelativeLayout
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_listspecies, this, true);
-		txtSectName = (TextView) findViewById(R.id.txtSectName);
-        txtSectRem = (TextView) findViewById(R.id.txtSectRem);
         txtSpecName = (TextView) findViewById(R.id.txtSpecName);
         specCount = (TextView) findViewById(R.id.specCount);
 		txtSpecRem = (TextView) findViewById(R.id.txtSpecRem);
@@ -43,18 +39,10 @@ public class ListSpeciesWidget extends RelativeLayout
 
     public void setCount(Count spec, Section section)
     {
-        txtSectName.setText(section.name);
-        txtSectRem.setText(section.notes);
         txtSpecName.setText(spec.name);
         specCount.setText(String.valueOf(spec.count));
 		txtSpecRem.setText(spec.notes);
 	}
-
-    public void setCount1(Count spec, Section section)
-    {
-        txtSectName.setText("");
-        txtSectRem.setText("");
-    }
 
     //Parameter spec_count for use in ListSpeciesActivity
     public int getSpec_count(Count newcount)
