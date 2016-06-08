@@ -118,7 +118,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
 
         // display the list remark
         erw = new ListTitleWidget(this, null);
-        erw.setListTitle(getString(R.string.zlnotes));
+        erw.setListTitle(getString(R.string.notesHere));
         erw.setListName(section.notes);
         spec_area.addView(erw);
 

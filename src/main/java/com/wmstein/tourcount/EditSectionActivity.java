@@ -54,8 +54,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     int section_id;
     LinearLayout counts_area;
-    LinearLayout notes_area;
-    EditTitleWidget enw;
     private View markedForDelete;
     private int idToDelete;
     AlertDialog.Builder areYouSure;
@@ -82,7 +80,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         countIds = new ArrayList<>();
         savedCounts = new ArrayList<>();
 
-        notes_area = (LinearLayout) findViewById(R.id.editingNotesLayout);
         counts_area = (LinearLayout) findViewById(R.id.editingCountsLayout);
 
         section_id = 1;
@@ -134,7 +131,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
         // clear any existing views
         counts_area.removeAllViews();
-        notes_area.removeAllViews();
 
         // setup the data sources
         sectionDataSource = new SectionDataSource(this);
@@ -154,15 +150,15 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             Log.i(TAG, "NullPointerException: No section name!");
         }
 
+/*
         // display editable section notes; the same class
-        // is being used for both due to being lazy
         enw = new EditTitleWidget(this, null);
         enw.setSectionName(section.notes);
         enw.setWidgetTitle(getString(R.string.notesHere));
         enw.setHint(getString(R.string.notesHint));
         enw.requestFocus();
         notes_area.addView(enw);
-
+*/
         // load the counts data
         counts = countDataSource.getAllCountsForSection(section.id);
 
@@ -253,31 +249,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     public boolean saveData()
     {
-        // save section title and notes only if they have changed
-        boolean savesection = false;
-
-        String newnotes = enw.getSectionName();
-        // Always add notes if the user has written some...
-        if (StringUtils.isNotEmpty(newnotes))
-        {
-            section.notes = newnotes;
-            savesection = true;
-        }
-        //...if they haven't, only save if the current notes have a value (i.e.
-        else
-        {
-            if (StringUtils.isNotEmpty(section.notes))
-            {
-                section.notes = newnotes;
-                savesection = true;
-            }
-        }
-
-        if (savesection)
-        {
-            sectionDataSource.saveSection(section);
-        }
-
         // save counts (species list)
         boolean retValue = true;
         String isDbl = "";

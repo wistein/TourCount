@@ -50,7 +50,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
     LinearLayout head_area;
 
-    EditTitleWidget ett;
+    EditTitleWidget ett, enw;
     EditHeadWidget ehw;
     EditMetaWidget etw;
     
@@ -101,6 +101,13 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         ett.setSectionName(section.name);
         ett.setWidgetTitle(getString(R.string.titleEdit));
         head_area.addView(ett);
+
+        // display editable section notes; the same class
+        enw = new EditTitleWidget(this, null);
+        enw.setSectionName(section.notes);
+        enw.setWidgetTitle(getString(R.string.notesHere));
+        enw.setHint(getString(R.string.notesHint));
+        head_area.addView(enw);
 
         // display the editable head data
         ehw = new EditHeadWidget(this, null);
@@ -226,11 +233,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         headDataSource.saveHead(head);
 
         // Save meta data
-        String newtitle = ett.getSectionName();
-        if (StringUtils.isNotEmpty(newtitle))
-        {
-            section.name = newtitle;
-        }
+        section.name = ett.getSectionName();
+        section.notes = enw.getSectionName();
 
         section.country = ehw.setWidgetCo2();
         section.temp = etw.getWidgetTemp2();
