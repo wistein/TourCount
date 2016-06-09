@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="18sp"
+                android:textColor="#bfffff"
                 android:id="@+id/countName"
                 android:hint="@string/countNameHint"
                 android:layout_marginStart="1dp"

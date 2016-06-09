@@ -11,21 +11,21 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/countCountLayout"
-            android:orientation="vertical"
-            android:fillViewport="true"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <!-- insert the new counts as they are created in here -->
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/countNotesLayout"
             android:orientation="vertical"
             android:fillViewport="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <!-- insert the new notes as they are created in here -->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/countCountLayout"
+            android:orientation="vertical"
+            android:fillViewport="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <!-- insert the new counts as they are created in here -->
         </LinearLayout>
 
     </LinearLayout>
