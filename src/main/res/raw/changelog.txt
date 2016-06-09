@@ -25,11 +25,13 @@
   _
   _ email: stein.wm@web.de
   _
-$ 2.0.2
+$ 2.0.3
   % Version 2.0.3
   _ 2016-06-06
     * DB structure improved
     * Results view improved
+    * Input masks improved
+    * Bug fixes
 
 $ 2.0.2
   % Version 2.0.2

@@ -30,6 +30,8 @@ $ 2.0.3
   _ 2016-06-06
     * DB-Struktur verbessert
     * Resultatansicht verbessert
+    * Eingabemasken verbessert
+    * Fehlerbehebung
 
 $ 2.0.2
   % Version 2.0.2
