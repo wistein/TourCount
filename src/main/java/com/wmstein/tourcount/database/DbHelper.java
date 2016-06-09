@@ -40,7 +40,6 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String S_NOTES = "notes";
     
     public static final String C_ID = "_id";
-    public static final String C_SECTION_ID = "section_id";
     public static final String C_COUNT = "count";
     public static final String C_NAME = "name";
     public static final String C_NOTES = "notes";
@@ -102,7 +101,6 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL(sql);
         sql = "create table " + COUNT_TABLE + " (" 
             + C_ID + " integer primary key, " 
-            + C_SECTION_ID + " int, " 
             + C_COUNT + " int, " 
             + C_NAME + " text, " 
             + C_NOTES + " text default NULL)";

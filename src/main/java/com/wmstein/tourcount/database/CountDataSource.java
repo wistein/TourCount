@@ -20,7 +20,6 @@ public class CountDataSource
     private DbHelper dbHandler;
     private String[] allColumns = {
         DbHelper.C_ID,
-        DbHelper.C_SECTION_ID,
         DbHelper.C_COUNT,
         DbHelper.C_NAME,
         DbHelper.C_NOTES
@@ -43,11 +42,10 @@ public class CountDataSource
         dbHandler.close();
     }
 
-    public Count createCount(int section_id, String name)
+    public Count createCount(String name)
     {
         ContentValues values = new ContentValues();
         values.put(DbHelper.C_NAME, name);
-        values.put(DbHelper.C_SECTION_ID, section_id);
         values.put(DbHelper.C_COUNT, 0);
         // notes should be default null and so isn't created here
 
@@ -65,7 +63,6 @@ public class CountDataSource
         Count newcount = new Count();
         newcount.id = cursor.getInt(cursor.getColumnIndex(DbHelper.C_ID));
         newcount.name = cursor.getString(cursor.getColumnIndex(DbHelper.C_NAME));
-        newcount.section_id = cursor.getInt(cursor.getColumnIndex(DbHelper.C_SECTION_ID));
         newcount.count = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT));
         newcount.notes = cursor.getString(cursor.getColumnIndex(DbHelper.C_NOTES));
         return newcount;
@@ -100,25 +97,6 @@ public class CountDataSource
         database.update(DbHelper.COUNT_TABLE, dataToInsert, where, whereArgs);
     }
 
-    public List<Count> getAllCountsForSection(int section_id)
-    {
-        List<Count> counts = new ArrayList<>();
-
-        Cursor cursor = database.query(DbHelper.COUNT_TABLE, allColumns,
-            DbHelper.C_SECTION_ID + " = " + section_id, null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())
-        {
-            Count count = cursorToCount(cursor);
-            counts.add(count);
-            cursor.moveToNext();
-        }
-        // Make sure to close the cursor
-        cursor.close();
-        return counts;
-    }
-
     public Count getCountById(int count_id)
     {
         Cursor cursor = database.query(DbHelper.COUNT_TABLE, allColumns,
@@ -142,7 +120,6 @@ public class CountDataSource
         while (!cursor.isAfterLast())
         {
             Count count = cursorToCount(cursor);
-            
             speci.add(count);
             cursor.moveToNext();
         }

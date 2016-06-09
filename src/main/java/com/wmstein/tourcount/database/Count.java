@@ -8,7 +8,6 @@ package com.wmstein.tourcount.database;
 public class Count
 {
     public int id;
-    public int section_id;
     public int count;
     public String name;
     public String notes;
@@ -33,12 +32,6 @@ public class Count
     public void setC_ID (int C_id)
     {
         this.id = C_id;
-    }
-    //setting C_SECTION_ID
-    // added by wmstein
-    public void setC_SECTION_ID (int C_sectid)
-    {
-        this.section_id = C_sectid;
     }
     //setting C_COUNT
     // added by wmstein

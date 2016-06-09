@@ -119,13 +119,22 @@ public class IndividualsDataSource
         return individuals.id;
     }
 
+    public int readLastIndividual(int c_Id)
+    {
+        Individuals individuals;
+        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_COUNT_ID + " = ?", new String[]{String.valueOf(c_Id)}, null, null, null);
+        cursor.moveToLast();
+        individuals = cursorToIndividuals(cursor);
+        cursor.close();
+        return individuals.id;
+    }
+
     public Individuals getIndividual(int indiv_id)
     {
         Individuals individuals;
         Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID + " = ?", new String[]{String.valueOf(indiv_id)}, null, null, null);
         cursor.moveToFirst();
         individuals = cursorToIndividuals(cursor);
-        // Make sure to close the cursor
         cursor.close();
         return individuals;
     }
