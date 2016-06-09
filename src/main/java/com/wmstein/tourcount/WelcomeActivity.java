@@ -528,10 +528,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     spcode = curCSVCnt.getInt(0);
                     String arrStr[] =
                         {
-                            curCSVCnt.getString(3), // species name
+                            curCSVCnt.getString(2), // species name
                             String.valueOf(spcode), // species code 
-                            curCSVCnt.getString(2), // count
-                            curCSVCnt.getString(4)  // species notes
+                            curCSVCnt.getString(1), // count
+                            curCSVCnt.getString(3)  // species notes
                         };
                     csvWrite.writeNext(arrStr);
                 }

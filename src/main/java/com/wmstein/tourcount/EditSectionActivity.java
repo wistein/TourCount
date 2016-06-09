@@ -52,7 +52,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private CountDataSource countDataSource;
     private AlertDataSource alertDataSource;
 
-    int section_id;
     LinearLayout counts_area;
     private View markedForDelete;
     private int idToDelete;
@@ -82,8 +81,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
         counts_area = (LinearLayout) findViewById(R.id.editingCountsLayout);
 
-        section_id = 1;
-
         /*
          * Restore any edit widgets the user has added previously
          */
@@ -96,7 +93,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
 
         tourCount = (TourCountApplication) getApplication();
-        //section_id = tourCount.section_id;
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -160,7 +156,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         notes_area.addView(enw);
 */
         // load the counts data
-        counts = countDataSource.getAllCountsForSection(section.id);
+        counts = countDataSource.getAllSpecies();
 
         // display all the counts by adding them to countCountLayout
         for (Count count : counts)
@@ -274,7 +270,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                         {
                             //Log.i(TAG, "Creating!");
                             //returns newCount
-                            countDataSource.createCount(section_id, cew.getCountName());
+                            countDataSource.createCount(cew.getCountName());
                         }
                         else
                         {
@@ -406,7 +402,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         else if (id == R.id.home)
         {
             Intent intent = NavUtils.getParentActivityIntent(this);
-            intent.putExtra("section_id", section_id);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             NavUtils.navigateUpTo(this, intent);
         }

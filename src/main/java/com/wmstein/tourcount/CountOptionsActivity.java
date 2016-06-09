@@ -45,13 +45,11 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
     private Count count;
     private int count_id;
-    private List<Alert> alerts;
     private CountDataSource countDataSource;
     private AlertDataSource alertDataSource;
     private AlertDialog.Builder areYouSure;
     private View markedForDelete;
     private int deleteAnAlert;
-    private int section_id;
     
     private Bitmap bMap;
     private BitmapDrawable bg;
@@ -86,7 +84,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         if (extras != null)
         {
             count_id = extras.getInt("count_id");
-            section_id = extras.getInt("section_id");
         }
 
         savedAlerts = new ArrayList<>();
@@ -334,7 +331,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         else if (id == R.id.home)
         {
             Intent intent = NavUtils.getParentActivityIntent(this);
-            intent.putExtra("section_id", section_id);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             NavUtils.navigateUpTo(this, intent);
         }

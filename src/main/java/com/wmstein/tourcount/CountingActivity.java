@@ -60,7 +60,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private AlertDialog.Builder row_alert;
     TourCountApplication tourCount;
     SharedPreferences prefs;
-    int section_id;
     LinearLayout count_area;
     LinearLayout notes_area;
     public ArrayList<String> cmpSectionNames;
@@ -74,10 +73,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private boolean fontPref;
     private boolean soundPref;
     private boolean buttonSoundPref;
-    private boolean hasChanged = false;
     private String alertSound;
     private String buttonAlertSound;
-    private String latitude, longitude, lat_long;
+    private String latitude, longitude;
 
     // the actual data
     Section section;
@@ -100,15 +98,12 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counting);
         
-        section_id = 1;
-        
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
         alertDataSource = new AlertDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
 
         tourCount = (TourCountApplication) getApplication();
-        //section_id = tourCount.section_id;
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
@@ -232,48 +227,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         getSupportActionBar().setTitle(section.name);
 
-        List<String> extras = new ArrayList<>();
-
-        // counts
-        countingWidgets = new ArrayList<>();
-        counts = countDataSource.getAllCountsForSection(section.id);
-
-        // display all the counts by adding them to countCountLayout
-        alerts = new ArrayList<>();
-        for (Count count : counts)
-        {
-            CountingWidget widget = new CountingWidget(this, null);
-            widget.setCount(count);
-            countingWidgets.add(widget);
-            count_area.addView(widget);
-
-            // add a section note widget if there are any notes
-            if (StringUtils.isNotBlank(count.notes))
-            {
-                NotesWidget count_notes = new NotesWidget(this, null);
-                count_notes.setNotes(count.notes);
-                count_notes.setFont(fontPref);
-                count_area.addView(count_notes);
-            }
-
-            // get all alerts for this section
-            List<Alert> tmpAlerts = alertDataSource.getAllAlertsForCount(count.id);
-            for (Alert a : tmpAlerts)
-            {
-                alerts.add(a);
-                extras.add(String.format(getString(R.string.willAlert), count.name, a.alert));
-            }
-        }
-
-        if (!extras.isEmpty())
-        {
-            NotesWidget extra_notes = new NotesWidget(this, null);
-            extra_notes.setNotes(StringUtils.join(extras, "\n"));
-            notes_area.addView(extra_notes);
-        }
-
-        // display region notes
-        // moved to bottom so it doesn't look like a species note
+        // display list notes
         if (section.notes != null)
         {
             if (!section.notes.isEmpty())
@@ -282,6 +236,45 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 section_notes.setNotes(section.notes);
                 section_notes.setFont(fontPref);
                 notes_area.addView(section_notes);
+            }
+        }
+
+        // display counts with notes and alerts
+        countingWidgets = new ArrayList<>();
+        counts = countDataSource.getAllSpecies();
+
+        // display all the counts by adding them to countCountLayout
+        for (Count count : counts)
+        {
+            CountingWidget widget = new CountingWidget(this, null);
+            widget.setCount(count);
+            countingWidgets.add(widget);
+            count_area.addView(widget);
+
+            // add a species note widget if there are any notes
+            if (StringUtils.isNotBlank(count.notes))
+            {
+                NotesWidget count_notes = new NotesWidget(this, null);
+                count_notes.setNotes(count.notes);
+                count_notes.setFont(fontPref);
+                count_area.addView(count_notes);
+            }
+
+            // get all alerts for this species
+            alerts = new ArrayList<>();
+            List<String> extras = new ArrayList<>();
+
+            List<Alert> tmpAlerts = alertDataSource.getAllAlertsForCount(count.id);
+            for (Alert a : tmpAlerts)
+            {
+                alerts.add(a);
+                extras.add(String.format(getString(R.string.willAlert), count.name, a.alert));
+            }
+            if (!extras.isEmpty())
+            {
+                NotesWidget alert_notes = new NotesWidget(this, null);
+                alert_notes.setNotes(StringUtils.join(extras, "\n"));
+                count_area.addView(alert_notes);
             }
         }
 
@@ -299,10 +292,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         // save the data
         saveData();
-        // save section id in case it is lost on pause
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong("pref_section_id", section_id);
-        editor.commit();
 
         // close the data sources
         sectionDataSource.close();
@@ -311,7 +300,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         individualsDataSource.close();
 
         // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
-        // has denied wakelock permission to tourcount
+        // has denied wakelock permission to TourCount
         if (awakePref)
         {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -353,10 +342,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             widget.countUp();
             checkAlert(widget.count.id, widget.count.count);
         }
-        hasChanged = true;
 
         // Show coords latitude, longitude for current count
-        // Toast.makeText(CountingActivity.this, "Breite: " + latitude + "\nLänge: " + longitude, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(CountingActivity.this, "Latitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_SHORT).show();
         
         // append individual with its Id, coords, date and time
         int uncert; // uncertainty about position (m)
@@ -390,18 +378,18 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.valueOf(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = widget.count.name;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         if (widget != null)
         {
             widget.countDown();
             checkAlert(widget.count.id, widget.count.count);
+            i_Id = individualsDataSource.readLastIndividual(count_id);
             if (i_Id > 0)
             {
                 deleteIndividual(i_Id);
                 i_Id--;
             }
         }
-        hasChanged = widget.count.count != 0;
     }
 
     // delete individual for count_id
@@ -443,7 +431,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         int count_id = Integer.valueOf(view.getTag().toString());
         Intent intent = new Intent(CountingActivity.this, CountOptionsActivity.class);
         intent.putExtra("count_id", count_id);
-        intent.putExtra("section_id", section_id);
         startActivity(intent);
     }
 
@@ -471,6 +458,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         for (Alert a : alerts)
         {
+            Toast.makeText(CountingActivity.this, count_id + " " + count_value, Toast.LENGTH_SHORT).show();
             if (a.count_id == count_id && a.alert == count_value)
             {
                 row_alert = new AlertDialog.Builder(this);
@@ -483,6 +471,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                         // Cancelled.
                     }
                 });
+                //Toast.makeText(CountingActivity.this, "CheckAlert2", Toast.LENGTH_SHORT).show();
                 row_alert.show();
                 soundAlert();
                 break;
@@ -569,7 +558,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         else if (id == R.id.menuEditSection)
         {
             Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
-            intent.putExtra("section_id", section_id);
             startActivity(intent);
             return true;
         }
@@ -581,8 +569,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
         else if (id == R.id.action_share)
         {
-            String section_notes = section.notes;
-            String section_name = section.name;
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, section.notes);
