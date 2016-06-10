@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    
+
 <!-- widget_listspecies.xml used by ListSpeciesWidget.java and ListSpeciesActivity.java.
      Shows purged list of species counts -->
 
@@ -27,54 +27,54 @@
             android:layout_width="match_parent"
             android:layout_height="30dp">
 
-    <!-- Name of species -->
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="8.6"
-        android:id="@+id/txtSpecName"
-        android:gravity="start"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:padding="4sp"
-        android:textStyle="bold"/>
+            <!-- Name of species -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="8.6"
+                android:id="@+id/txtSpecName"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="4sp"
+                android:textStyle="bold"/>
 
-	<!-- count -->
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_weight="1.4"
-        android:id="@+id/specCount"
-        android:hint="@string/charZero"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:singleLine="true"
-        android:padding="0dp"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/count_background"
-        android:layout_marginBottom="0dp"
-        android:layout_gravity="center|top"
-        android:gravity="center|center_vertical|center_horizontal"/>
-            
-    </LinearLayout>
+            <!-- count -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1.4"
+                android:id="@+id/specCount"
+                android:hint="@string/charZero"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:singleLine="true"
+                android:padding="0dp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/count_background"
+                android:layout_marginBottom="0dp"
+                android:layout_gravity="center|top"
+                android:gravity="center|center_vertical|center_horizontal"/>
 
-    <LinearLayout
+        </LinearLayout>
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <!-- Remark of species -->
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="4.6"
-        android:id="@+id/txtSpecRem"
-        android:gravity="start|top"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:padding="6sp"/>
+            <!-- Remark of species -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4.6"
+                android:id="@+id/txtSpecRem"
+                android:gravity="start|top"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:padding="6sp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
 </LinearLayout>

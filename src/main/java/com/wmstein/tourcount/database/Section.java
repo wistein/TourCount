@@ -1,9 +1,5 @@
 package com.wmstein.tourcount.database;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by milo on 05/05/2014.
  * Changed by wmstein on 18.02.2016
@@ -23,5 +19,5 @@ public class Section
     public String start_tm;
     public String end_tm;
     public String notes;
-    
+
 }

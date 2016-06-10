@@ -25,7 +25,7 @@ public class ListHeadWidget extends LinearLayout
     public ListHeadWidget(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_list_head, this, true);
         widget_lco = (TextView) findViewById(R.id.widgetLCo);

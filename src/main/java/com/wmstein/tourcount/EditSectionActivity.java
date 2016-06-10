@@ -53,7 +53,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private View markedForDelete;
     private int idToDelete;
     AlertDialog.Builder areYouSure;
-    
+
     public ArrayList<String> countNames;
     public ArrayList<String> cmpCountNames;
     public ArrayList<Integer> countIds;
@@ -209,14 +209,14 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         String name = "";
         String isDbl = "";
         cmpCountNames = new ArrayList<String>();
-        
+
         int childcount = counts_area.getChildCount();
         // for all CountEditWidgets
         for (int i = 0; i < childcount; i++)
         {
             CountEditWidget cew = (CountEditWidget) counts_area.getChildAt(i);
             name = cew.getCountName();
-            
+
             if (cmpCountNames.contains(name))
             {
                 isDbl = name;
@@ -281,7 +281,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                 retValue = false;
             }
         }
-        
+
         if (retValue)
         {
             Toast.makeText(EditSectionActivity.this, getString(R.string.sectSaving) + " " + section.name + "!", Toast.LENGTH_SHORT).show();
@@ -350,7 +350,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                     // go ahead for the delete
                     countDataSource.deleteCountById(idToDelete);
                     counts_area.removeView((CountEditWidget) markedForDelete.getParent().getParent());
-                    new_count_name ="";
+                    new_count_name = "";
                 }
             });
             areYouSure.setNegativeButton(R.string.noCancel, new DialogInterface.OnClickListener()

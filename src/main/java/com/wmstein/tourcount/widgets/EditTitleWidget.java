@@ -46,5 +46,5 @@ public class EditTitleWidget extends LinearLayout
     {
         section_name.setHint(hint);
     }
-    
+
 }

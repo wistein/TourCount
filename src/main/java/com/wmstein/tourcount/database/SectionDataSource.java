@@ -2,15 +2,10 @@ package com.wmstein.tourcount.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.wmstein.tourcount.R;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -128,5 +123,5 @@ public class SectionDataSource
         cursor.close();
         return section;
     }
-    
+
 }

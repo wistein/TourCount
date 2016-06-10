@@ -37,10 +37,10 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     Section section;
 
     public int spec_count;
-    
+
     // preferences
     private boolean awakePref;
-    
+
     // the actual data
     private CountDataSource countDataSource;
     private SectionDataSource sectionDataSource;
@@ -108,7 +108,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
 
         //load head and meta data
         head = headDataSource.getHead();
-        section = sectionDataSource.getSection(); 
+        section = sectionDataSource.getSection();
 
         // display the list name
         elw = new ListTitleWidget(this, null);
@@ -153,8 +153,8 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         spec_area.addView(etw);
 
         //List of species
-        List<Count> specs; 
-        
+        List<Count> specs;
+
         // setup the data sources
         countDataSource.open();
 
@@ -178,7 +178,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
             }
         }
     }
-    
+
     @Override
     protected void onPause()
     {
@@ -188,7 +188,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         headDataSource.close();
         countDataSource.close();
         sectionDataSource.close();
-        
+
         if (awakePref)
         {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

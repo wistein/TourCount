@@ -12,29 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <ImageView
-            android:id="@+id/logo"
-            android:gravity="center"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:layout_margin="20sp"
-            android:id="@+id/welcomeTitle"
-            android:textColor="@android:color/white"
-            android:text="@string/app_name"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_launcher"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:layout_margin="20sp"
+                android:id="@+id/welcomeTitle"
+                android:textColor="@android:color/white"
+                android:text="@string/app_name"/>
+        </LinearLayout>
 
         <Space
             android:layout_width="0dp"
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="2"/>
-        
+
         <Button
             android:id="@+id/editMetaButton"
             android:layout_width="wrap_content"
@@ -87,6 +87,7 @@
                 android:onClick="viewCounts"
                 android:text="@string/viewCountButton"
                 />
+
             <Space
                 android:layout_width="10dp"
                 android:layout_height="0dp"

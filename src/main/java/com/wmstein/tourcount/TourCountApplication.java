@@ -39,8 +39,7 @@ public class TourCountApplication extends Application
         try
         {
             prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        } 
-		catch (Exception e)
+        } catch (Exception e)
         {
             Log.e(TAG, e.toString());
         }
@@ -76,7 +75,7 @@ public class TourCountApplication extends Application
         display.getSize(size);
         width = size.x;
         height = size.y;
-        
+
         if (backgroundPref.equals("none"))
         {
             // boring black screen
@@ -100,8 +99,7 @@ public class TourCountApplication extends Application
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
                         options.inDither = true;
                         bMap = BitmapFactory.decodeFile(pictPref, options);
-                    } 
-					catch (OutOfMemoryError e)
+                    } catch (OutOfMemoryError e)
                     {
                         Toast.makeText(this, getString(R.string.customTooBig), Toast.LENGTH_LONG).show();
                         bMap = null;
@@ -175,8 +173,7 @@ public class TourCountApplication extends Application
         try
         {
             return BitmapFactory.decodeResource(getResources(), resId, options);
-        } 
-		catch (OutOfMemoryError e)
+        } catch (OutOfMemoryError e)
         {
             Toast.makeText(getApplicationContext(), getString(R.string.customTooBig), Toast.LENGTH_LONG).show();
             return null;

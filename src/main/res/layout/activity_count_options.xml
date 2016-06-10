@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/dynamic_widget_area">
             <!-- all the count widgets will go in here -->
-            
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

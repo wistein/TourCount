@@ -72,6 +72,7 @@ public class EditMetaWidget extends LinearLayout
     {
         widget_temp1.setText(title);
     }
+
     public void setWidgetTemp2(int name)
     {
         widget_temp2.setText(String.valueOf(name));
@@ -82,6 +83,7 @@ public class EditMetaWidget extends LinearLayout
     {
         widget_wind1.setText(title);
     }
+
     public void setWidgetWind2(int name)
     {
         widget_wind2.setText(String.valueOf(name));
@@ -92,6 +94,7 @@ public class EditMetaWidget extends LinearLayout
     {
         widget_clouds1.setText(title);
     }
+
     public void setWidgetClouds2(int name)
     {
         widget_clouds2.setText(String.valueOf(name));
@@ -102,24 +105,29 @@ public class EditMetaWidget extends LinearLayout
     {
         widget_plz1.setText(title);
     }
+
     public void setWidgetPlz2(String name)
     {
         widget_plz2.setText(name);
     }
+
     // city
     public void setWidgetCity1(String title)
     {
         widget_city1.setText(title);
     }
+
     public void setWidgetCity2(String name)
     {
         widget_city2.setText(name);
     }
+
     // place
     public void setWidgetPlace1(String title)
     {
         widget_place1.setText(title);
     }
+
     public void setWidgetPlace2(String name)
     {
         widget_place2.setText(name);

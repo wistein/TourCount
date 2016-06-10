@@ -22,7 +22,7 @@ public class HeadDataSource
     };
 
     public List<Head> head_list;
-    
+
     public HeadDataSource(Context context)
     {
         dbHandler = new DbHelper(context);

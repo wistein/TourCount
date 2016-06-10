@@ -23,8 +23,6 @@ import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,10 +39,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
     Head head;
     Section section;
-    
+
     private Bitmap bMap;
     private BitmapDrawable bg;
-    
+
     private HeadDataSource headDataSource;
     private SectionDataSource sectionDataSource;
 
@@ -53,7 +51,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     EditTitleWidget ett, enw;
     EditHeadWidget ehw;
     EditMetaWidget etw;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -61,7 +59,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         setContentView(R.layout.activity_edit_head);
 
         head_area = (LinearLayout) findViewById(R.id.edit_head);
-        
+
         tourCount = (TourCountApplication) getApplication();
 
         ScrollView editHead_screen = (ScrollView) findViewById(R.id.editHeadScreen);
@@ -82,7 +80,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     protected void onResume()
     {
         super.onResume();
-        
+
         //clear existing view
         head_area.removeAllViews();
 

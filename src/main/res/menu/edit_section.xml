@@ -8,7 +8,7 @@
         android:title="@string/labelNewCountButton"
         app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_add"/>
-    
+
     <item
         android:id="@+id/menuSaveExit"
         android:title="@string/saveCountsButton"

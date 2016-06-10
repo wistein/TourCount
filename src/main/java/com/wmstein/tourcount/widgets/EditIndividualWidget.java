@@ -66,6 +66,7 @@ public class EditIndividualWidget extends LinearLayout
     {
         widget_locality1.setText(title);
     }
+
     public void setWidgetLocality2(String name)
     {
         widget_locality2.setText(String.valueOf(name));
@@ -76,6 +77,7 @@ public class EditIndividualWidget extends LinearLayout
     {
         widget_sex1.setText(title);
     }
+
     public void setWidgetSex2(String name)
     {
         widget_sex2.setText(name);
@@ -86,6 +88,7 @@ public class EditIndividualWidget extends LinearLayout
     {
         widget_stadium1.setText(title);
     }
+
     public void setWidgetStadium2(String name)
     {
         widget_stadium2.setText(name);
@@ -96,24 +99,29 @@ public class EditIndividualWidget extends LinearLayout
     {
         widget_state1.setText(title);
     }
+
     public void setWidgetState2(int name)
     {
         widget_state2.setText(String.valueOf(name));
     }
+
     // note
     public void setWidgetIndivNote1(String title)
     {
         widget_indivnote1.setText(title);
     }
+
     public void setWidgetIndivNote2(String name)
     {
         widget_indivnote2.setText(name);
     }
+
     // x-coord
     public void setWidgetXCoord1(String title)
     {
         widget_xcoord1.setText(title);
     }
+
     public void setWidgetXCoord2(String name)
     {
         widget_xcoord2.setText(name);

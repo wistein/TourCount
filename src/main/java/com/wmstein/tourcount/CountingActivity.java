@@ -74,7 +74,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
-    
+
     private int i_Id = 0;
     private String spec_name;
 
@@ -83,7 +83,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counting);
-        
+
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
@@ -177,7 +177,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     protected void onResume()
     {
         super.onResume();
-        
+
         try
         {
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
@@ -185,7 +185,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             Toast.makeText(this, "Exception" + e + getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
         }
-            
+
         // clear any existing views
         count_area.removeAllViews();
         notes_area.removeAllViews();
@@ -308,20 +308,20 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         // Show coords latitude, longitude for current count
         // Toast.makeText(CountingActivity.this, "Latitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_SHORT).show();
-        
+
         // append individual with its Id, coords, date and time
         int uncert; // uncertainty about position (m)
-        
+
         if (latitude != null)
             uncert = 20;
         else
             uncert = 10000;
-        
+
         String name, datestamp, timestamp;
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
-        
+
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, uncert, datestamp, timestamp));
 
@@ -493,5 +493,5 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         counting_screen.setBackground(tourCount.setBackground());
         getPrefs();
     }
-    
+
 }

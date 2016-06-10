@@ -38,6 +38,7 @@ public class EditHeadWidget extends LinearLayout
     {
         widget_co1.setText(title);
     }
+
     public void setWidgetCo2(String name)
     {
         widget_co2.setText(name);
@@ -48,6 +49,7 @@ public class EditHeadWidget extends LinearLayout
     {
         widget_name1.setText(title);
     }
+
     public void setWidgetName2(String name)
     {
         widget_name2.setText(name);

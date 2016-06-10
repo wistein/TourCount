@@ -35,7 +35,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private CountDataSource countDataSource;
     private View markedForDelete;
     private int deleteAnAlert;
-    
+
     private Bitmap bMap;
     private BitmapDrawable bg;
 
@@ -150,7 +150,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         int scroll_amount = scrlV.getBottom();
         int scrollY = scroll_amount;
         boolean pageend = false;
-        while(!pageend)
+        while (!pageend)
         {
             scrlV.scrollTo(0, scroll_amount);              //scrollen
             scroll_amount = scroll_amount + scroll_amount; //scroll_amount erhöhen

@@ -15,14 +15,14 @@ public class DbHelper extends SQLiteOpenHelper
     static final String TAG = "TourCount DB";
     public static final String DATABASE_NAME = "tourcount.db";
     static final int DATABASE_VERSION = 1;
-    
+
     // tables
     public static final String SECTION_TABLE = "sections";
     public static final String COUNT_TABLE = "counts";
     public static final String HEAD_TABLE = "head";
     public static final String INDIVIDUALS_TABLE = "individuals";
     public static final String TEMP_TABLE = "temp";
-    
+
     // fields
     public static final String S_ID = "_id";
     public static final String S_NAME = "name";
@@ -37,15 +37,15 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String S_START_TM = "start_tm";
     public static final String S_END_TM = "end_tm";
     public static final String S_NOTES = "notes";
-    
+
     public static final String C_ID = "_id";
     public static final String C_COUNT = "count";
     public static final String C_NAME = "name";
     public static final String C_NOTES = "notes";
-    
+
     public static final String H_ID = "_id";
     public static final String H_OBSERVER = "observer";
-    
+
     public static final String I_ID = "_id";
     public static final String I_COUNT_ID = "count_id";
     public static final String I_NAME = "name";
@@ -62,10 +62,10 @@ public class DbHelper extends SQLiteOpenHelper
 
     public static final String T_ID = "_id";
     public static final String T_TEMP_LOC = "temp_loc";
-    
+
     private Context mContext;
     private SQLiteDatabase db;
-    
+
     // constructor
     public DbHelper(Context context)
     {
@@ -78,8 +78,8 @@ public class DbHelper extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         //Log.i(TAG, "Creating database: " + DATABASE_NAME);
-        String sql = "create table " + SECTION_TABLE + " (" 
-            + S_ID + " integer primary key, " 
+        String sql = "create table " + SECTION_TABLE + " ("
+            + S_ID + " integer primary key, "
             + S_NAME + " text, "
             + S_COUNTRY + " text, "
             + S_PLZ + " text, "
@@ -93,14 +93,14 @@ public class DbHelper extends SQLiteOpenHelper
             + S_END_TM + " text, "
             + S_NOTES + " text)";
         db.execSQL(sql);
-        sql = "create table " + COUNT_TABLE + " (" 
-            + C_ID + " integer primary key, " 
-            + C_COUNT + " int, " 
-            + C_NAME + " text, " 
+        sql = "create table " + COUNT_TABLE + " ("
+            + C_ID + " integer primary key, "
+            + C_COUNT + " int, "
+            + C_NAME + " text, "
             + C_NOTES + " text default NULL)";
         db.execSQL(sql);
-        sql = "create table " + HEAD_TABLE + " (" 
-            + H_ID + " integer primary key, " 
+        sql = "create table " + HEAD_TABLE + " ("
+            + H_ID + " integer primary key, "
             + H_OBSERVER + " text)";
         db.execSQL(sql);
         sql = "create table " + TEMP_TABLE + " ("
@@ -122,14 +122,14 @@ public class DbHelper extends SQLiteOpenHelper
             + I_STATE_1_6 + " int, "
             + I_NOTES + " text)";
         db.execSQL(sql);
-        
+
         //create empty row for SECTION_TABLE, HEAD_TABLE and TEMP_TABLE
-        
+
         ContentValues values1 = new ContentValues();
         values1.put(S_ID, 1);
         values1.put(S_NAME, "");
         db.insert(SECTION_TABLE, null, values1);
-        
+
         values1 = new ContentValues();
         values1.put(H_ID, 1);
         values1.put(H_OBSERVER, "");

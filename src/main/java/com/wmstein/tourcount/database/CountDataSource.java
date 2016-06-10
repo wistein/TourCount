@@ -105,7 +105,7 @@ public class CountDataSource
         cursor.close();
         return count;
     }
-    
+
     // Used by ListSpeciesActivity
     public List<Count> getAllSpecies()
     {

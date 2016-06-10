@@ -29,27 +29,30 @@ public class Count
 
     //setting C_ID
     // added by wmstein
-    public void setC_ID (int C_id)
+    public void setC_ID(int C_id)
     {
         this.id = C_id;
     }
+
     //setting C_COUNT
     // added by wmstein
-    public void setC_COUNT (int C_count)
+    public void setC_COUNT(int C_count)
     {
         this.count = C_count;
     }
+
     //setting C_NAME
     // added by wmstein
-    public void setC_NAME (String C_name)
+    public void setC_NAME(String C_name)
     {
         this.name = C_name;
     }
+
     //setting C_NOTES
     // added by wmstein
-    public void setC_NOTES (String C_notes)
+    public void setC_NOTES(String C_notes)
     {
         this.notes = C_notes;
     }
-    
+
 }

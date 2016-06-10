@@ -13,6 +13,8 @@
  * @see: http://code.google.com/p/android-change-log/
  * <p/>
  * Changed by wmstein on 18.02.2016
+ * <p/>
+ * Changed by wmstein on 18.02.2016
  */
 
 /**
@@ -144,7 +146,7 @@ public class ChangeLog
                     : R.string.changelog_title))
             .setView(wv)
             .setCancelable(false)
-                // OK button
+            // OK button
             .setPositiveButton(
                 context.getResources().getString(
                     R.string.changelog_ok_button),

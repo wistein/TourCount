@@ -4,19 +4,19 @@
           android:largeHeap="true"
           android:versionCode="204"
           android:versionName="2.0.4">
-    
+
     <uses-sdk android:minSdkVersion="17"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- Permission needed for GPS location provider -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- Permission needed for network location provider -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
-<!-- android:screenOrientation="portrait" in all activities (Smartphone-Version)
-     android:allowBackup="false" prevents backup of app data to google cloud -->
+    <!-- android:screenOrientation="portrait" in all activities (Smartphone-Version)
+         android:allowBackup="false" prevents backup of app data to google cloud -->
 
     <application
         android:name=".TourCountApplication"
@@ -24,7 +24,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="TourCount"
         android:theme="@style/AppTheme">
-        
+
         <activity
             android:name="com.wmstein.tourcount.WelcomeActivity"
             android:screenOrientation="portrait"
@@ -32,11 +32,12 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
             </intent-filter>
         </activity>
-        
+
         <activity
             android:name="com.wmstein.tourcount.SettingsActivity"
             android:screenOrientation="portrait"
@@ -58,7 +59,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
         </activity>
-        
+
         <activity
             android:name="com.wmstein.tourcount.ListSpeciesActivity"
             android:screenOrientation="portrait"
@@ -70,7 +71,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
         </activity>
-        
+
         <activity
             android:name="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
@@ -82,7 +83,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
         </activity>
-        
+
         <activity
             android:name="com.wmstein.tourcount.CountOptionsActivity"
             android:screenOrientation="portrait"

@@ -22,7 +22,7 @@ public class TempDataSource
     };
 
     public List<Temp> temp_list;
-    
+
     public TempDataSource(Context context)
     {
         dbHandler = new DbHelper(context);

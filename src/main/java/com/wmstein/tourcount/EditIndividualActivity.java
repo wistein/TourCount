@@ -109,7 +109,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             getString(R.string.stadium_3),
             getString(R.string.stadium_4)
         };
-        
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
             (this, android.R.layout.simple_dropdown_item_1line, stateArray);
 

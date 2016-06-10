@@ -47,5 +47,5 @@ public class CountEditWidget extends LinearLayout implements Serializable
         countId = id;
         deleteButton.setTag(Integer.valueOf(id));
     }
-    
+
 }

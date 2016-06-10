@@ -51,6 +51,7 @@ public class ViewHelp
     /**
      * Constructor  <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
+     *
      * @param context
      */
     public ViewHelp(Context context)
@@ -61,6 +62,7 @@ public class ViewHelp
     /**
      * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
+     *
      * @param context
      * @param sp      the shared preferences to store the last version name into
      */
@@ -109,7 +111,7 @@ public class ViewHelp
                     : R.string.viewhelp_title))
             .setView(wv)
             .setCancelable(false)
-                // OK button
+            // OK button
             .setPositiveButton(
                 context.getResources().getString(
                     R.string.viewhelp_ok_button),

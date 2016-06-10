@@ -65,7 +65,7 @@
     <string name="place">Place</string>
     <string name="starttm">Time from</string>
     <string name="endtm">until</string>
-    
+
     <!-- EditIndividualActivity -->
     <string name="saveIndividualButton">Save</string>
     <string name="indivdel">Deleted: Individual with ID:</string>

@@ -39,9 +39,9 @@ import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
 
 /**
- * WelcomeActivity provides the starting page with menu and buttons for 
+ * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and ListSectionActivity/ListSpeciesActivity.
- * 
+ * <p/>
  * Originally based an BeeCount (GitHub) created by milo on 05/05/2014.
  * Changes and additions by wmstein on 18.04.2016
  */
@@ -139,7 +139,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 this.canGetLocation = true;
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -275,7 +276,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     /**************************************************************************
-     * The six activities below are for exporting and importing the database. 
+     * The six activities below are for exporting and importing the database.
      * They've been put here because no database should be open at this point.
      ***********************************************************************/
     // Exports DB to SdCard/tourcount_yyyy-MM-dd_HHmmss.db
@@ -343,7 +344,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // purged data set into appropriate table
     // Excel can import this csv file with Unicode UTF-8 filter
     // 15.05.2016, wm.stein
-
     @SuppressLint("SdCardPath")
     public void exportDb2CSV()
     {
@@ -357,7 +357,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         Section section;
         String sectName;
         String sectNotes;
-        
+
         Head head;
         String country, inspecName;
         int temp, wind, clouds;
@@ -462,7 +462,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrLocHead);
 
                 // set location dataline
-                
+
                 String arrLocation[] =
                     {
                         country,
@@ -472,7 +472,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         sectNotes
                     };
                 csvWrite.writeNext(arrLocation);
-                
+
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
 
@@ -487,7 +487,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         getString(R.string.endtm)
                     };
                 csvWrite.writeNext(arrEnvHead);
-                
+
                 // set environment data
                 temp = section.temp;
                 wind = section.wind;
@@ -521,7 +521,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         getString(R.string.bema)
                     };
                 csvWrite.writeNext(arrCntHead);
-                
+
                 // write counts data
                 while (curCSVCnt.moveToNext())
                 {
@@ -560,9 +560,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrIndHead);
 
                 // build the sorted individuals array
-                Cursor curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE 
+                Cursor curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                     + " order by " + DbHelper.I_COUNT_ID, null);
-                  
+
                 while (curCSVInd.moveToNext())
                 {
                     spcode = curCSVInd.getInt(1);
@@ -584,7 +584,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         };
                     csvWrite.writeNext(arrIndividual);
                 }
-                
+
                 csvWrite.close();
                 curCSVCnt.close();
                 curCSVInd.close();

@@ -34,15 +34,15 @@ public class ListSpeciesWidget extends RelativeLayout
         inflater.inflate(R.layout.widget_listspecies, this, true);
         txtSpecName = (TextView) findViewById(R.id.txtSpecName);
         specCount = (TextView) findViewById(R.id.specCount);
-		txtSpecRem = (TextView) findViewById(R.id.txtSpecRem);
+        txtSpecRem = (TextView) findViewById(R.id.txtSpecRem);
     }
 
     public void setCount(Count spec, Section section)
     {
         txtSpecName.setText(spec.name);
         specCount.setText(String.valueOf(spec.count));
-		txtSpecRem.setText(spec.notes);
-	}
+        txtSpecRem.setText(spec.notes);
+    }
 
     //Parameter spec_count for use in ListSpeciesActivity
     public int getSpec_count(Count newcount)
