@@ -1,8 +1,5 @@
 package com.wmstein.tourcount;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.CursorIndexOutOfBoundsException;
@@ -15,21 +12,16 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.wmstein.tourcount.database.Alert;
-import com.wmstein.tourcount.database.AlertDataSource;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
@@ -55,14 +47,12 @@ import java.util.Locale;
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = CountingActivity.class.getSimpleName();
-    //private static String TAG = "tourcountCountingActivity";
+    // private static String TAG = "tourcountCountingActivity";
 
-    private AlertDialog.Builder row_alert;
     TourCountApplication tourCount;
     SharedPreferences prefs;
     LinearLayout count_area;
     LinearLayout notes_area;
-    public ArrayList<String> cmpSectionNames;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -71,22 +61,18 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // preferences
     private boolean awakePref;
     private boolean fontPref;
-    private boolean soundPref;
     private boolean buttonSoundPref;
-    private String alertSound;
     private String buttonAlertSound;
     private String latitude, longitude;
 
     // the actual data
     Section section;
     List<Count> counts;
-    List<Alert> alerts;
 
     List<CountingWidget> countingWidgets;
 
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
-    private AlertDataSource alertDataSource;
     private IndividualsDataSource individualsDataSource;
     
     private int i_Id = 0;
@@ -100,7 +86,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
-        alertDataSource = new AlertDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
 
         tourCount = (TourCountApplication) getApplication();
@@ -184,8 +169,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         awakePref = prefs.getBoolean("pref_awake", true);
         fontPref = prefs.getBoolean("pref_note_font", false);
-        soundPref = prefs.getBoolean("pref_sound", false);
-        alertSound = prefs.getString("alert_sound", null);
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
     }
@@ -210,7 +193,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // setup the data sources
         sectionDataSource.open();
         countDataSource.open();
-        alertDataSource.open();
         individualsDataSource.open();
 
         // load the data
@@ -259,23 +241,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 count_notes.setFont(fontPref);
                 count_area.addView(count_notes);
             }
-
-            // get all alerts for this species
-            alerts = new ArrayList<>();
-            List<String> extras = new ArrayList<>();
-
-            List<Alert> tmpAlerts = alertDataSource.getAllAlertsForCount(count.id);
-            for (Alert a : tmpAlerts)
-            {
-                alerts.add(a);
-                extras.add(String.format(getString(R.string.willAlert), count.name, a.alert));
-            }
-            if (!extras.isEmpty())
-            {
-                NotesWidget alert_notes = new NotesWidget(this, null);
-                alert_notes.setNotes(StringUtils.join(extras, "\n"));
-                count_area.addView(alert_notes);
-            }
         }
 
         if (awakePref)
@@ -296,7 +261,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // close the data sources
         sectionDataSource.close();
         countDataSource.close();
-        alertDataSource.close();
         individualsDataSource.close();
 
         // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
@@ -340,7 +304,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         if (widget != null)
         {
             widget.countUp();
-            checkAlert(widget.count.id, widget.count.count);
         }
 
         // Show coords latitude, longitude for current count
@@ -382,7 +345,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         if (widget != null)
         {
             widget.countDown();
-            checkAlert(widget.count.id, widget.count.count);
             i_Id = individualsDataSource.readLastIndividual(count_id);
             if (i_Id > 0)
             {
@@ -448,62 +410,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
         }
         return null;
-    }
-
-    //**************************************
-  /*
-   * alert checking...
-   */
-    public void checkAlert(int count_id, int count_value)
-    {
-        for (Alert a : alerts)
-        {
-            Toast.makeText(CountingActivity.this, count_id + " " + count_value, Toast.LENGTH_SHORT).show();
-            if (a.count_id == count_id && a.alert == count_value)
-            {
-                row_alert = new AlertDialog.Builder(this);
-                row_alert.setTitle(getString(R.string.alertTitle));
-                row_alert.setMessage(a.alert_text);
-                row_alert.setNegativeButton("OK", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int whichButton)
-                    {
-                        // Cancelled.
-                    }
-                });
-                //Toast.makeText(CountingActivity.this, "CheckAlert2", Toast.LENGTH_SHORT).show();
-                row_alert.show();
-                soundAlert();
-                break;
-            }
-        }
-    }
-
-    /*
-     * If the user has set the preference for an audible alert, then sound it here.
-     */
-    public void soundAlert()
-    {
-        if (soundPref)
-        {
-            try
-            {
-                Uri notification;
-                if (StringUtils.isNotBlank(alertSound) && alertSound != null)
-                {
-                    notification = Uri.parse(alertSound);
-                }
-                else
-                {
-                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                }
-                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                r.play();
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void buttonSound()

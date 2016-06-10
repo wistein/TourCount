@@ -19,7 +19,6 @@ public class DbHelper extends SQLiteOpenHelper
     // tables
     public static final String SECTION_TABLE = "sections";
     public static final String COUNT_TABLE = "counts";
-    public static final String ALERT_TABLE = "alerts";
     public static final String HEAD_TABLE = "head";
     public static final String INDIVIDUALS_TABLE = "individuals";
     public static final String TEMP_TABLE = "temp";
@@ -43,11 +42,6 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String C_COUNT = "count";
     public static final String C_NAME = "name";
     public static final String C_NOTES = "notes";
-    
-    public static final String A_ID = "_id";
-    public static final String A_COUNT_ID = "count_id";
-    public static final String A_ALERT = "alert";
-    public static final String A_ALERT_TEXT = "alert_text";
     
     public static final String H_ID = "_id";
     public static final String H_OBSERVER = "observer";
@@ -104,12 +98,6 @@ public class DbHelper extends SQLiteOpenHelper
             + C_COUNT + " int, " 
             + C_NAME + " text, " 
             + C_NOTES + " text default NULL)";
-        db.execSQL(sql);
-        sql = "create table " + ALERT_TABLE + " (" 
-            + A_ID + " integer primary key, " 
-            + A_COUNT_ID + " int, " 
-            + A_ALERT + " int, " 
-            + A_ALERT_TEXT + " text)";
         db.execSQL(sql);
         sql = "create table " + HEAD_TABLE + " (" 
             + H_ID + " integer primary key, " 

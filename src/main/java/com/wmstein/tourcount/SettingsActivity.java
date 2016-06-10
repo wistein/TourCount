@@ -28,7 +28,6 @@ public class SettingsActivity extends PreferenceActivity
     String imageFilePath;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    Uri alert_uri;
     Uri alert_button_uri;
 
     @Override
@@ -51,22 +50,6 @@ public class SettingsActivity extends PreferenceActivity
         });
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Sound for alerts
-        String strRingtonePreference = prefs.getString("alert_sound", "DEFAULT_SOUND");
-        alert_uri = Uri.parse(strRingtonePreference);
-        //Log.i(TAG,"ALERT_URI: " + String.valueOf(alert_uri));
-
-        Preference alert_sound = findPreference("alert_sound");
-        alert_sound.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference arg0)
-            {
-                getSound(alert_uri, 5);
-                return true;
-            }
-        });
 
         // Sound for keypresses
         String strButtonSoundPreference = prefs.getString("alert_button_sound", "DEFAULT_SOUND");
@@ -91,8 +74,6 @@ public class SettingsActivity extends PreferenceActivity
     protected void onResume()
     {
         super.onResume();
-        String strRingtonePreference = prefs.getString("alert_sound", "DEFAULT_SOUND");
-        alert_uri = Uri.parse(strRingtonePreference);
     }
 
     @Override
@@ -170,11 +151,7 @@ public class SettingsActivity extends PreferenceActivity
             if (uri != null)
             {
                 ringtone = uri.toString();
-                if (requestCode == 5)
-                {
-                    editor.putString("alert_sound", ringtone);
-                }
-                else if (requestCode == 10)
+                if (requestCode == 10)
                 {
                     editor.putString("alert_button_sound", ringtone);
                 }

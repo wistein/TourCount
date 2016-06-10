@@ -73,8 +73,6 @@ public class CountDataSource
         System.out.println("Gelöscht: Zähler mit ID: " + id);
         database.delete(DbHelper.COUNT_TABLE, DbHelper.C_ID + " = " + id, null);
 
-        // delete associated alerts
-        database.delete(DbHelper.ALERT_TABLE, DbHelper.A_COUNT_ID + " = " + id, null);
     }
 
     public void saveCount(Count count)

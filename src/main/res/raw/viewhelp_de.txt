@@ -38,9 +38,8 @@ $ 9
   ! Vor der erstmaligen Verwendung muss einmalig eine leere Datenbank (Basis-DB) angelegt werden. 
   ! Dazu werden zunächst die allgemeinen Meta-Daten zur Erfassung unter „Erfassung vorbereiten“ eingegeben. Mit Tippen aufs Speichersymbol abschließen. Die Meta-Daten können jederzeit weiter bearbeitet werden.
   ! Dann editiert man die Artenliste unter "Zählliste". Aufruf mittels Bleistift-Button.
-  ! Die Artenliste erhält zunächst eine Bezeichnung (z.B.: Ahrtal), ggf. eine Bemerkung und per (+)-Button für jede erwartete Art einen Eintrag, z.B.:
+  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag, z.B.:
   _ 
-  ! Ahrtal
   ! --------------------
   ! ...
   ! Pieris napi
@@ -54,24 +53,24 @@ $ 9
   ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als leere Basis-Datenbank exportiert werden.
   ! Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite.
   ! Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im Home-Verzeichnis /sdcard (oder /sdcard0, bzw. /storage/emulated/0, ist je nach Smartphone-Modell unterschiedlich) abgelegt.
-  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann auch später, z.B. nach Änderungen an Listen, erneut exportiert werden.  
+  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann auch später, z.B. nach Änderung der Liste, erneut exportiert werden.  
   
 $ 8
   % 3. Benutzung
   !
   ! Beginne mit "Zählliste". 
-  ! Zum Zählen tippe jeweils auf den entsprechenden "+"-Button der gesichteten Art. 
+  ! Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Art. 
   ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Mittels Speicher-Button geht es zurück zur Zählseite.
-  ! Mit dem "-"-Button kann ggf. korrigiert werden. Beachte, dass der "-"-Button den letzten Eintrag der Art aus der Individuen-Liste löscht. 
+  ! Mit dem (-)-Button kann ggf. korrigiert werden. Beachte, dass der (-)-Button den letzten Eintrag der Art aus der Individuen-Liste löscht. 
   ! Beim Speichern der Zählung werden ebenfalls Datum und Uhrzeit listen-spezifisch gespeichert. Das Datum und ggf. eine Bemerkung zur Liste erscheinen anschließend in der Übersicht der Zähllisten.     
   _ 
-  ! Mit dem Bleistift-Button in der Kopfzeile der Zählerseite lassen sich Bemerkungen zur Zählliste hinzufügen sowie deren Name und Art-Einträge editieren. Bemerkungen werden unterhalb der Zählliste angezeigt.
+  ! Mit dem Bleistift-Button in der Kopfzeile der Zählerseite lassen sich die Art-Einträge editieren. 
   _
   ! Der Bleistift-Button in der Art-Zeile auf der Zählerseite ruft die Art-Editieren-Seite auf. Hier können Art-spezifische Bemerkungen hinzugefügt und die Zähler auf beliebige Werte gesetzt werden. Letzteres hat zur Folge, dass die Zahl der Individueneinträge und ihre Summe divergieren.
-  ! Hier können auch Pop-Up-Alarme gesetzt werden, die bei Erreichen des eingestellten Werts beim internen Zähler einen entsprechenden Hinweis anzeigen (z.B. um schon vor Ort festzustellen, ob eine Art in dieser Lokalität häufiger angetroffen wurde, als beim letzten Mal.
   ! Ein Art-spezifischer Kommentar wird anschließend in der Liste direkt unter der Art eingeblendet.
   _ 
-  ! Eine Ebene zurück in der App gelangt man jeweils am besten mit dem Pfeil in der oberen linken Ecke. TourCount sollte immer über seine Startseite verlassen werden, damit die Datenbank geschlossen ist und kein GPS mehr verwendet wird.
+  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil in der oberen linken Ecke. Um sicher geänderten Inhalt zu übernehmen, sollte der Speichern-Button benutzt werden. 
+  ! TourCount sollte immer über seine Startseite verlassen werden, damit die Datenbank geschlossen ist und TourCount kein GPS mehr verwendet.
   _ 
   ! Einige App-Seiten haben ein spezifisches Kontext-Menü, das jeweils mit dem 3-Punkt-Symbol oben rechts aufgerufen werden kann.
   _ 
@@ -82,7 +81,7 @@ $ 8
 $ 7
   % 4. Weitere Funktionen
   !
-  ! Die Seite „Einstellungen“ wird von einigen App-Seiten aus erreicht. Hier können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds und Alarme. 
+  ! Die Seite „Einstellungen“ wird von einigen App-Seiten aus erreicht. Hier können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds und Hintergrund. 
   ! Die Auswahl eines eigenen Hintergrundbildes klappt dabei mittels Galerie-App, erreichbar über das linke Seitenmenü der Hintergrundbild-Option (ggf. wischen vom linken Rand).
   _ 
   ! Das Menü auf der Eingangsseite bietet Reset-, Import-, Export-, Hilfe-, Info- und die Einstellungsfunktionen. 

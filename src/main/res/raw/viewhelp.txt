@@ -38,9 +38,8 @@ $ 9
   ! Before initial use you must set up an empty basic database (Basic DB).
   ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tapping on the saving symbol. The meta data may be modified anytime later. 
   ! Then edit the species list on "Counting List". Use the Pencil-Button for that.
-  ! Get this list a name (e.g.: Ahrtal, Germany), a remark and subsequently via (+)-button an entry for each expected species, e.g.:
+  ! Get this list an entry for each expected species via (+)-button, e.g.:
   _ 
-  ! Ahrtal, Germany
   ! --------------------
   ! ...
   ! Pieris napi
@@ -54,23 +53,23 @@ $ 9
   ! When you have created the meta data and the counting list for all expected species, the database is ready for export as the "Basic Database".
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page.
   ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models).
-  ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you modified its structure or inserted new species. 
+  ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. 
   
 $ 8
   % 3. Usage
   !
   ! Start with "Counting List". 
-  ! To count just tap on the "+"-Button of the corresponding species.
-  ! The "-"-Buttons allows for corrections. Mind that the "-"-Button reduces the individuals list for the last entry of an species. 
+  ! To count just tap on the (+)-Button of the corresponding species.
+  ! The (-)-Buttons allows for corrections. Mind that the (-)-Button reduces the individuals list for the last entry of an species. 
   ! While storing the counting results the current date and time of the registration will be stored either for this list. The date and a possible list remark will then be shown in the page of counting lists.   
   _ 
-  ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for adding remarks for the list and editing the names of the list and species. The list-related remarks will be shown at the end of the list and within the “Counting Lists” page.
+  ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for editing the list of species. 
   _
   ! The Pencil-Button in each species row of the counting page opens the species editing page that lets you add remarks for each species and set its counters to any value. Mind that this leads to different numbers in sum and individual table.
-  ! Here you may also set pop-up alarms which show up while reaching a set value on the corresponding internal counter (e.g. to realize on site if a certain species is more abundant than on a previous tour). 
   ! If you enter a species related remark this will be shown in an extra line beneath the row. 
   _ 
-  ! To move back one page you can use the arrow in the left upper corner. You should leave TourCount always from its starting page, as in this state the database is safely closed and GPS no longer used.
+  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by tapping the Save-Button. 
+  ! You should leave TourCount always from its starting page, as in this state the database is safely closed and GPS no longer used by TourCount.
   _ 
   ! Some app pages have a specific context menu. You can activate it with the 3-point-symbol in the upper right corner.
   _ 
@@ -81,7 +80,7 @@ $ 8
 $ 7
   % 4. Further functions
   !
-  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds and alerts. 
+  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds and background. 
   ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
   _ 
   ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 

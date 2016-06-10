@@ -97,9 +97,7 @@
     <!-- CountingActivity -->
     <string name="saveCountsButton">Sichern</string>
     <string name="sectSaving">Speichern </string>
-    <string name="alertTitle">Buzz!</string>
     <string name="editSectTitle">Liste bearbeiten</string>
-    <string name="willAlert">- %1$s wird bei %2$d ein Signal geben.</string>
     <string name="deleteButton">Löschen</string>
     <string name="action_share">Mitteilen</string>
     <string name="send_to">Versenden</string>
@@ -137,9 +135,6 @@
     <string name="pref_note_font">Anmerkungs-Font</string>
     <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
     <string name="pref_sound">Tonalarm</string>
-    <string name="pref_sound_summary">Erzeuge einen Benachrichtigungston wenn ein Zählalarm ausgelöst wird.</string>
-    <string name="choose_alert">Benachrichtigungston</string>
-    <string name="explain_alert">Wähle einen Benachrichtigungston aus.</string>
     <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
     <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
     <string name="pref_button_sound">Zähler-Button Sound</string>
@@ -148,13 +143,9 @@
     <string name="explain_button_alert">Wähle einen Button-Sound aus.</string>
 
     <!-- CountOptionsActivity -->
-    <string name="editCountValue">Du kannst den momentanen Intern-Zählerstand %2$d von \"%1$s\" hier ändern.</string>
-    <string name="addSomeAlerts">Jedem internen Zähler einer Art können Alarme zugewiesen werden, die ausgelöst werden, wenn der jeweils vorgegebene Wert erreicht wird. Verwende den \"+\"-Button rechts um Alarme hinzuzufügen und den jeweiligen Lösch-Button um ihn zu entfernen.</string>
+    <string name="editCountValue">Du kannst den momentanen Intern-Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>
     <string name="notesSpecies">Bemerkung zur Art</string>
-    <string name="alertName">Neuer Alarm</string>
     <string name="countName">Neue Art</string>
-    <string name="deleteAlert">Lösche Alarm</string>
-    <string name="reallyDeleteAlert">Bist Du sicher? Der Alarm wird sofort gelöscht.</string>
     <string name="yesDeleteIt">Löschen</string>
     <string name="noCancel">Abbrechen</string>
 

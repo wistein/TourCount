@@ -1,7 +1,5 @@
 package com.wmstein.tourcount;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,28 +7,17 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.wmstein.tourcount.database.Alert;
-import com.wmstein.tourcount.database.AlertDataSource;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
-import com.wmstein.tourcount.widgets.AddAlertWidget;
-import com.wmstein.tourcount.widgets.AlertCreateWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 import com.wmstein.tourcount.widgets.OptionsWidget;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by milo on 05/05/2014.
@@ -46,8 +33,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private Count count;
     private int count_id;
     private CountDataSource countDataSource;
-    private AlertDataSource alertDataSource;
-    private AlertDialog.Builder areYouSure;
     private View markedForDelete;
     private int deleteAnAlert;
     
@@ -58,9 +43,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     LinearLayout dynamic_widget_area;
     OptionsWidget curr_val_widget;
     EditTitleWidget enw;
-    AddAlertWidget aa_widget;
-
-    ArrayList<AlertCreateWidget> savedAlerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -86,14 +68,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
             count_id = extras.getInt("count_id");
         }
 
-        savedAlerts = new ArrayList<>();
-        if (savedInstanceState != null)
-        {
-            if (savedInstanceState.getSerializable("savedAlerts") != null)
-            {
-                savedAlerts = (ArrayList<AlertCreateWidget>) savedInstanceState.getSerializable("savedAlerts");
-            }
-        }
     }
 
     @Override
@@ -108,13 +82,9 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         // get the data sources
         countDataSource = new CountDataSource(this);
         countDataSource.open();
-        alertDataSource = new AlertDataSource(this);
-        alertDataSource.open();
 
         count = countDataSource.getCountById(count_id);
         getSupportActionBar().setTitle(count.name);
-
-        List<Alert> alerts = alertDataSource.getAllAlertsForCount(count_id);
 
         // setup the static widgets in the following order
         // 1. Current count value (internal counter)
@@ -132,28 +102,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         static_widget_area.addView(enw);
 
-        aa_widget = new AddAlertWidget(this, null);
-        static_widget_area.addView(aa_widget);
-
-    /*
-     * There should be a method to add all counts in order to re-draw when one is deleted.
-     */
-        for (Alert alert : alerts)
-        {
-            AlertCreateWidget acw = new AlertCreateWidget(this, null);
-            acw.setAlertName(alert.alert_text);
-            acw.setAlertValue(alert.alert);
-            acw.setAlertId(alert.id);
-            dynamic_widget_area.addView(acw);
-        }
-
-    /*
-     * Add saved alert create widgets
-     */
-        for (AlertCreateWidget acw : savedAlerts)
-        {
-            dynamic_widget_area.addView(acw);
-        }
     }
 
     @Override
@@ -164,11 +112,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
      * trying to add them to a new parent causes a crash because they've already got one.
      */
         super.onSaveInstanceState(outState);
-        for (AlertCreateWidget acw : savedAlerts)
-        {
-            ((ViewGroup) acw.getParent()).removeView(acw);
-        }
-        outState.putSerializable("savedAlerts", savedAlerts);
     }
 
     @Override
@@ -178,14 +121,12 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         // finally, close the database
         countDataSource.close();
-        alertDataSource.close();
 
     }
 
     public void saveAndExit(View view)
     {
         saveData();
-        savedAlerts.clear();
         super.finish();
     }
 
@@ -198,32 +139,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         countDataSource.saveCount(count);
 
-    /*
-     * Get all the alerts from the dynamic_widget_area and save each one.
-     * If it has an id value set to anything higher than 0 then it should be an update, if it is 0
-     * then it's a new alert and should be created instead.
-     */
-        int childcount = dynamic_widget_area.getChildCount();
-        for (int i = 0; i < childcount; i++)
-        {
-            AlertCreateWidget acw = (AlertCreateWidget) dynamic_widget_area.getChildAt(i);
-            if (StringUtils.isNotEmpty(acw.getAlertName()))
-            {
-                // save or create
-                if (acw.getAlertId() == 0)
-                {
-                    alertDataSource.createAlert(count_id, acw.getAlertValue(), acw.getAlertName());
-                }
-                else
-                {
-                    alertDataSource.saveAlert(acw.getAlertId(), acw.getAlertValue(), acw.getAlertName());
-                }
-            }
-            else
-            {
-                Log.i(TAG, "Failed to save alert: " + acw.getAlertId());
-            }
-        }
     }
 
     /*
@@ -244,67 +159,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
             {
                 pageend = true;
             }
-        }
-    }
-
-    public void addAnAlert(View view)
-    {
-        AlertCreateWidget acw = new AlertCreateWidget(this, null);
-        savedAlerts.add(acw);
-        // Scroll to end of view
-        View scrollV=findViewById(R.id.count_options);
-        ScrollToEndOfView(scrollV);
-        acw.requestFocus();
-        dynamic_widget_area.addView(acw);
-    }
-
-    public void deleteWidget(View view)
-    {
-    /*
-     * These global variables keep a track of the view containing an alert to be deleted and also the id
-     * of the alert itself, to make sure that they're available inside the code for the alert dialog by
-     * which they will be deleted.
-     */
-        markedForDelete = view;
-        deleteAnAlert = (Integer) view.getTag();
-        if (deleteAnAlert == 0)
-        {
-            //Log.i(TAG, "(1) View tag was " + String.valueOf(deleteAnAlert));
-            // the actual AlertCreateWidget is two levels up from the button in which it is embedded
-            dynamic_widget_area.removeView((AlertCreateWidget) view.getParent().getParent());
-        }
-        else
-        {
-            //Log.i(TAG, "(2) View tag was " + String.valueOf(deleteAnAlert));
-            // before removing this widget it is necessary to do the following:
-            // (1) Check the user is sure they want to delete it and, if so...
-            // (2) Delete the associated alert from the database.
-            areYouSure = new AlertDialog.Builder(this);
-            areYouSure.setTitle(getString(R.string.deleteAlert));
-            areYouSure.setMessage(getString(R.string.reallyDeleteAlert));
-            areYouSure.setPositiveButton(R.string.yesDeleteIt, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    // go ahead for the delete
-                    try
-                    {
-                        alertDataSource.deleteAlertById(deleteAnAlert);
-                        dynamic_widget_area.removeView((AlertCreateWidget) markedForDelete.getParent().getParent());
-                    } catch (Exception e)
-                    {
-                        Log.i(TAG, "Failed to delete a widget: " + e.toString());
-                    }
-                }
-            });
-            areYouSure.setNegativeButton(R.string.noCancel, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    // Cancelled.
-                }
-            });
-            areYouSure.show();
         }
     }
 

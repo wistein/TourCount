@@ -24,15 +24,6 @@
         android:title="@string/prefs_sound">
         android:key="key_prefs_sound">
         <CheckBoxPreference
-            android:key="pref_sound"
-            android:title="@string/pref_sound"
-            android:summary="@string/pref_sound_summary"
-            android:defaultValue="false"/>
-        <Preference
-            android:title="@string/choose_alert"
-            android:key="alert_sound"
-            android:summary="@string/explain_alert"/>
-        <CheckBoxPreference
             android:key="pref_button_sound"
             android:title="@string/pref_button_sound"
             android:summary="@string/pref_button_sound_summary"

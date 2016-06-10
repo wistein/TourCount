@@ -735,9 +735,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             + DbHelper.S_NOTES + " = '';";
         database.execSQL(sql);
 
-        sql = "DELETE FROM " + DbHelper.ALERT_TABLE;
-        database.execSQL(sql);
-
         sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
         database.execSQL(sql);
 

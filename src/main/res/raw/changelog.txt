@@ -25,6 +25,12 @@
   _
   _ email: stein.wm@web.de
   _
+$ 2.0.4
+  % Version 2.0.4
+  _ 2016-06-10
+    * Unused functions (alert) removed
+    * DB structure adapted
+
 $ 2.0.3
   % Version 2.0.3
   _ 2016-06-06

@@ -18,13 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.wmstein.tourcount.database.AlertDataSource;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountEditWidget;
-import com.wmstein.tourcount.widgets.EditTitleWidget;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,7 +48,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
-    private AlertDataSource alertDataSource;
 
     LinearLayout counts_area;
     private View markedForDelete;
@@ -133,8 +130,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         sectionDataSource.open();
         countDataSource = new CountDataSource(this);
         countDataSource.open();
-        alertDataSource = new AlertDataSource(this);
-        alertDataSource.open();
 
         // load the sections data
         section = sectionDataSource.getSection();
@@ -182,7 +177,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         // close the data sources
         sectionDataSource.close();
         countDataSource.close();
-        alertDataSource.close();
 
     }
 
@@ -333,15 +327,10 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     }
 
     /*
-     * These are required for purging counts (with associated alerts)
+     * These are required for purging counts
      */
     public void deleteCount(View view)
     {
-    /*
-     * These global variables keep a track of the view containing an alert to be deleted and also the id
-     * of the alert itself, to make sure that they're available inside the code for the alert dialog by
-     * which they will be deleted.
-     */
         markedForDelete = view;
         idToDelete = (Integer) view.getTag();
         if (idToDelete == 0)
@@ -351,10 +340,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
         else
         {
-            //Log.i(TAG, "(2) View tag was " + String.valueOf(deleteAnAlert));
-            // before removing this widget it is necessary to do the following:
-            // (1) Check the user is sure they want to delete it and, if so...
-            // (2) Delete the associated alert from the database.
             areYouSure = new AlertDialog.Builder(this);
             areYouSure.setTitle(getString(R.string.deleteCount));
             areYouSure.setMessage(getString(R.string.reallyDeleteCount));

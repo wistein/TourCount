@@ -97,11 +97,7 @@
     <!-- CountingActivity -->
     <string name="saveCountsButton">Save &amp; Exit</string>
     <string name="sectSaving">Saving </string>
-    <string name="alertTitle">Buzz!</string>
-
-    <!-- CountingActivity Menu -->
     <string name="editSectTitle">Edit List</string>
-    <string name="willAlert">- %1$s will show alert at  %2$d.</string>
     <string name="deleteButton">Delete</string>
     <string name="action_share">Share</string>
     <string name="send_to">Share notes</string>
@@ -136,12 +132,9 @@
     <string name="prefs_sound">Sound</string>
     <string name="prefs_counting">Counting</string>
     <string name="image_error">Error setting custom image! Please try using the gallery rather than a file manager.</string>
+    <string name="pref_sound">Audible alerts</string>
     <string name="pref_note_font">Note font</string>
     <string name="pref_note_font_summ">Select this option to increase the size of note fonts on the counting screen.</string>
-    <string name="pref_sound">Audible alerts</string>
-    <string name="pref_sound_summary">Sound an audible alert when an alert is triggered.</string>
-    <string name="choose_alert">Notification sound</string>
-    <string name="explain_alert">Choose a notification tone for alerts.</string>
     <string name="pref_duplicate">Prevent duplicate species</string>
     <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
     <string name="pref_button_sound">Count button sounds</string>
@@ -150,13 +143,9 @@
     <string name="explain_button_alert">Choose a sound for buttons.</string>
 
     <!-- CountOptionsActivity -->
-    <string name="editCountValue">You may change the internal count value of %1$s from its current value of %2$d by editing it here.</string>
-    <string name="addSomeAlerts">Each internal species counter may have alerts which will be triggered when the count reaches that level. Use the Add Button to the right to add an alert and the Delete Button on each alert to remove it.</string>
-    <string name="alertName">New Alert</string>
+    <string name="editCountValue">You may change the internal count value of %1$s from its current value of %2$d by editing it here.\nBut this generates inconsistency between the individuals table and count number in the DB.</string>
     <string name="countName">New Species</string>
-    <string name="deleteAlert">Delete Alert</string>
     <string name="notesSpecies">Species Notes</string>
-    <string name="reallyDeleteAlert">Are you sure? The alert will be deleted immediately.</string>
     <string name="yesDeleteIt">Delete</string>
     <string name="noCancel">Cancel</string>
 
