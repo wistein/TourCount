@@ -94,19 +94,19 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        Head head;
-        headDataSource = new HeadDataSource(this);
-        headDataSource.open();
-        head = headDataSource.getHead();
-
+        Section section;
+        sectionDataSource = new SectionDataSource(this);
+        sectionDataSource.open();
+        section = sectionDataSource.getSection();
+        
         //LinearLayout baseLayout = (LinearLayout) findViewById(R.id.baseLayout);
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.getBackground());
 
         // a title isn't necessary on this welcome screen as it appears below
-        getSupportActionBar().setTitle(head.country);
+        getSupportActionBar().setTitle(section.name);
 
-        headDataSource.close();
+        sectionDataSource.close();
 
         // if API level > 23 permission request is necessary
         int REQUEST_CODE_STORAGE = 123; // Identifier for permission request Android 6.0
