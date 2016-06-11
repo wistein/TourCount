@@ -1,14 +1,17 @@
 package com.wmstein.tourcount;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +43,7 @@ import sheetrock.panda.changelog.ViewHelp;
 
 /**
  * WelcomeActivity provides the starting page with menu and buttons for
- * import/export/help/info methods and ListSectionActivity/ListSpeciesActivity.
+ * import/export/help/info methods and EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * <p/>
  * Originally based an BeeCount (GitHub) created by milo on 05/05/2014.
  * Changes and additions by wmstein on 18.04.2016
@@ -53,7 +56,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     SharedPreferences prefs;
     ChangeLog cl;
     ViewHelp vh; // added by wmstein
-
+    
     // flags for GPS, network status
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
@@ -104,6 +107,27 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         getSupportActionBar().setTitle(head.country);
 
         headDataSource.close();
+
+        // if API level > 23 permission request is necessary
+        int REQUEST_CODE_STORAGE = 123; // Identifier for permission request Android 6.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            int hasWriteExtStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteExtStoragePermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+            }
+        }
+
+        int REQUEST_CODE_GPS = 124;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            int hasAccessFineLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasAccessFineLocationPermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS);
+            }
+        }
 
         cl = new ChangeLog(this);
         vh = new ViewHelp(this); // by wmstein
@@ -275,10 +299,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 //        gps.stopUsingGPS();
     }
 
-    /**************************************************************************
+    /*************************************************************************
      * The six activities below are for exporting and importing the database.
      * They've been put here because no database should be open at this point.
-     ***********************************************************************/
+     *************************************************************************/
     // Exports DB to SdCard/tourcount_yyyy-MM-dd_HHmmss.db
     // supplemented with date and time in filename by wmstein
     @SuppressLint("SdCardPath")
@@ -723,6 +747,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database.execSQL(sql);
 
         sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
+            + DbHelper.S_NAME + " = '', "
             + DbHelper.S_PLZ + " = '', "
             + DbHelper.S_CITY + " = '', "
             + DbHelper.S_PLACE + " = '', "

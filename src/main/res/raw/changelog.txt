@@ -30,6 +30,7 @@ $ 2.0.4
   _ 2016-06-10
     * Unused functions (alert) removed
     * DB structure adapted
+    * Permission handling for Android M
 
 $ 2.0.3
   % Version 2.0.3
