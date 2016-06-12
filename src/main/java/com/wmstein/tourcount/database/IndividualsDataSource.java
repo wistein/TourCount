@@ -22,6 +22,7 @@ public class IndividualsDataSource
         DbHelper.I_NAME,
         DbHelper.I_COORD_X,
         DbHelper.I_COORD_Y,
+        DbHelper.I_COORD_Z,
         DbHelper.I_UNCERT,
         DbHelper.I_DATE_STAMP,
         DbHelper.I_TIME_STAMP,
@@ -49,13 +50,14 @@ public class IndividualsDataSource
         dbHandler.close();
     }
 
-    public Individuals createIndividuals(int count_id, String name, String latitude, String longitude, int uncert, String datestamp, String timestamp)
+    public Individuals createIndividuals(int count_id, String name, String latitude, String longitude, String height, String uncert, String datestamp, String timestamp)
     {
         ContentValues values = new ContentValues();
         values.put(DbHelper.I_COUNT_ID, count_id);
         values.put(DbHelper.I_NAME, name);
         values.put(DbHelper.I_COORD_X, latitude);
         values.put(DbHelper.I_COORD_Y, longitude);
+        values.put(DbHelper.I_COORD_Z, height);
         values.put(DbHelper.I_UNCERT, uncert);
         values.put(DbHelper.I_DATE_STAMP, datestamp);
         values.put(DbHelper.I_TIME_STAMP, timestamp);
@@ -87,7 +89,8 @@ public class IndividualsDataSource
         newindividuals.name = cursor.getString(cursor.getColumnIndex(DbHelper.I_NAME));
         newindividuals.coord_x = cursor.getString(cursor.getColumnIndex(DbHelper.I_COORD_X));
         newindividuals.coord_y = cursor.getString(cursor.getColumnIndex(DbHelper.I_COORD_Y));
-        newindividuals.uncert = cursor.getInt(cursor.getColumnIndex(DbHelper.I_UNCERT));
+        newindividuals.coord_z = cursor.getString(cursor.getColumnIndex(DbHelper.I_COORD_Z));
+        newindividuals.uncert = cursor.getString(cursor.getColumnIndex(DbHelper.I_UNCERT));
         newindividuals.date_stamp = cursor.getString(cursor.getColumnIndex(DbHelper.I_DATE_STAMP));
         newindividuals.time_stamp = cursor.getString(cursor.getColumnIndex(DbHelper.I_TIME_STAMP));
         newindividuals.locality = cursor.getString(cursor.getColumnIndex(DbHelper.I_LOCALITY));
@@ -105,6 +108,7 @@ public class IndividualsDataSource
         dataToInsert.put(DbHelper.I_NAME, individuals.name);
         dataToInsert.put(DbHelper.I_COORD_X, individuals.coord_x);
         dataToInsert.put(DbHelper.I_COORD_Y, individuals.coord_y);
+        dataToInsert.put(DbHelper.I_COORD_Z, individuals.coord_z);
         dataToInsert.put(DbHelper.I_UNCERT, individuals.uncert);
         dataToInsert.put(DbHelper.I_DATE_STAMP, individuals.date_stamp);
         dataToInsert.put(DbHelper.I_TIME_STAMP, individuals.time_stamp);

@@ -72,6 +72,7 @@
     <string name="indivdel1">Gelöscht: 1x</string>
     <string name="xcoord">Breitengrad</string>
     <string name="ycoord">Längengrad</string>
+    <string name="zcoord">Höhe (m)</string>
     <string name="uncerti">Unsicherheit (m)</string>
     <string name="time">Zeit</string>
     <string name="locality">Lokalität</string>

@@ -51,7 +51,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private BitmapDrawable bg;
 
     private int i_id;
-    private String specName, latitude, longitude;
+    private String specName, latitude, longitude, height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,6 +69,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             specName = extras.getString("SName");
             latitude = extras.getString("Latitude");
             longitude = extras.getString("Longitude");
+            height = extras.getString("Height");
         }
 
         tourCount = (TourCountApplication) getApplication();
@@ -136,6 +137,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         {
             eiw.setWidgetLocality2(temp.temp_loc);
         }
+
+        eiw.setWidgetZCoord1(getString(R.string.zcoord));
+        eiw.setWidgetZCoord2(height);
 
         eiw.setWidgetSex1(getString(R.string.sex1));
         eiw.setWidgetSex2(individuals.sex);

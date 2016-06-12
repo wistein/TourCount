@@ -46,7 +46,7 @@ import sheetrock.panda.changelog.ViewHelp;
  * import/export/help/info methods and EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * <p/>
  * Originally based an BeeCount (GitHub) created by milo on 05/05/2014.
- * Changes and additions by wmstein on 18.04.2016
+ * Changes and additions by wmstein from 18.04.2016 on
  */
 
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -55,14 +55,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     TourCountApplication tourCount;
     SharedPreferences prefs;
     ChangeLog cl;
-    ViewHelp vh; // added by wmstein
+    ViewHelp vh;
     
     // flags for GPS, network status
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean canGetLocation = false;
-
-    Location location;
 
     // Declaring a Location Manager for GPS or network
     protected LocationManager locationManager;
@@ -76,7 +74,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     String state = Environment.getExternalStorageState();
     AlertDialog alert;
 
-    // following stuff for purging export db added by wmstein
+    // following stuff for purging export db
     private SQLiteDatabase database;
     private DbHelper dbHandler;
 
@@ -99,17 +97,17 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         sectionDataSource.open();
         section = sectionDataSource.getSection();
         
-        //LinearLayout baseLayout = (LinearLayout) findViewById(R.id.baseLayout);
+        // LinearLayout baseLayout = (LinearLayout) findViewById(R.id.baseLayout);
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.getBackground());
 
-        // a title isn't necessary on this welcome screen as it appears below
+        // List name as title
         getSupportActionBar().setTitle(section.name);
 
         sectionDataSource.close();
 
         // if API level > 23 permission request is necessary
-        int REQUEST_CODE_STORAGE = 123; // Identifier for permission request Android 6.0
+        int REQUEST_CODE_STORAGE = 123; // Random unique identifier for specific permission request since Android 6.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             int hasWriteExtStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -130,7 +128,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         cl = new ChangeLog(this);
-        vh = new ViewHelp(this); // by wmstein
+        vh = new ViewHelp(this);
         if (cl.firstRun())
             cl.getLogDialog().show();
 
@@ -155,8 +153,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // getting GPS status
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status
+            // getting network status (doesn't work on LG G2 with Cyanogenmod 5.02)
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            //Toast.makeText(getApplicationContext(), "NetworkEnabled: " + isNetworkEnabled + "\nGPSenabled: " + isGPSEnabled, Toast.LENGTH_LONG).show();
 
             if (isGPSEnabled || isNetworkEnabled)
             {
@@ -172,7 +171,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     // Date for filename of Export-DB
-    // by wmstein
     public String getcurDate()
     {
         Date date = new Date();
@@ -574,6 +572,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         getString(R.string.ycoord),
                         getString(R.string.xcoord),
                         getString(R.string.uncerti),
+                        getString(R.string.zcoord),
                         getString(R.string.date),
                         getString(R.string.time),
                         getString(R.string.sex),
@@ -590,21 +589,22 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 while (curCSVInd.moveToNext())
                 {
                     spcode = curCSVInd.getInt(1);
-                    spstate = curCSVInd.getInt(11);
+                    spstate = curCSVInd.getInt(12);
                     String arrIndividual[] =
                         {
                             curCSVInd.getString(2),  //species name
                             String.valueOf(spcode),  //species code 
-                            curCSVInd.getString(8),  //locality
+                            curCSVInd.getString(9),  //locality
                             curCSVInd.getString(4),  //longitude
                             curCSVInd.getString(3),  //latitude
-                            curCSVInd.getString(5),  //uncertainty
-                            curCSVInd.getString(6),  //date
-                            curCSVInd.getString(7),  //time
-                            curCSVInd.getString(9),  //sex
-                            curCSVInd.getString(10), //stadium
+                            curCSVInd.getString(6),  //uncertainty
+                            curCSVInd.getString(5),  //height
+                            curCSVInd.getString(7),  //date
+                            curCSVInd.getString(8),  //time
+                            curCSVInd.getString(10),  //sex
+                            curCSVInd.getString(11), //stadium
                             String.valueOf(spstate), //state
-                            curCSVInd.getString(12)  //ind.-notes
+                            curCSVInd.getString(13)  //ind.-notes
                         };
                     csvWrite.writeNext(arrIndividual);
                 }

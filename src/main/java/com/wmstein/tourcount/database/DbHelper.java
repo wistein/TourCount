@@ -51,6 +51,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String I_NAME = "name";
     public static final String I_COORD_X = "coord_x";
     public static final String I_COORD_Y = "coord_y";
+    public static final String I_COORD_Z = "coord_z";
     public static final String I_UNCERT = "uncert";
     public static final String I_DATE_STAMP = "date_stamp";
     public static final String I_TIME_STAMP = "time_stamp";
@@ -113,7 +114,8 @@ public class DbHelper extends SQLiteOpenHelper
             + I_NAME + " text, "
             + I_COORD_X + " text, "
             + I_COORD_Y + " text, "
-            + I_UNCERT + " int, "
+            + I_COORD_Z + " text, "
+            + I_UNCERT + " text, "
             + I_DATE_STAMP + " text, "
             + I_TIME_STAMP + " text, "
             + I_LOCALITY + " text, "

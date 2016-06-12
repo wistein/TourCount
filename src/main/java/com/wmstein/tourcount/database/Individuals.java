@@ -10,7 +10,8 @@ public class Individuals
     public String name;
     public String coord_x;
     public String coord_y;
-    public int uncert;
+    public String coord_z;
+    public String uncert;
     public String date_stamp;
     public String time_stamp;
     public String locality;

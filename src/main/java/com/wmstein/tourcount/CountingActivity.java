@@ -63,7 +63,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private boolean fontPref;
     private boolean buttonSoundPref;
     private String buttonAlertSound;
-    private String latitude, longitude;
+    private String latitude, longitude, height;
 
     // the actual data
     Section section;
@@ -113,8 +113,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         for (String name : providers)
         {
             LocationProvider lp = locationManager.getProvider(name);
-            Log.d(TAG, lp.getName() + " --- isProviderEnabled(): "
-                + locationManager.isProviderEnabled(name));
+            Log.d(TAG, lp.getName() + " --- isProviderEnabled(): " + locationManager.isProviderEnabled(name));
             Log.d(TAG, "requiresCell(): " + lp.requiresCell());
             Log.d(TAG, "requiresNetwork(): " + lp.requiresNetwork());
             Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
@@ -125,14 +124,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
         provider = locationManager.getBestProvider(criteria, true);
-        Log.d(TAG, provider);
+        Log.d(TAG, "Provider: " + provider);
 
         // LocationListener-Objekt erzeugen
         locationListener = new LocationListener()
         {
             @Override
-            public void onStatusChanged(String provider, int status,
-                                        Bundle extras)
+            public void onStatusChanged(String provider, int status, Bundle extras)
             {
                 Log.d(TAG, "onStatusChanged()");
             }
@@ -157,6 +155,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 {
                     latitude = "" + location.getLatitude();
                     longitude = "" + location.getLongitude();
+                    height = "" + location.getAltitude();
                 }
             }
         };
@@ -187,6 +186,24 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             Toast.makeText(this, "Exception" + e + getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
         }
 
+/* 
+        // Trial to get some coarse location service to work failed
+        try
+        {
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 3000, 0, locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
+        try
+        {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
+*/
+        
         // clear any existing views
         count_area.removeAllViews();
         notes_area.removeAllViews();
@@ -254,7 +271,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     protected void onPause()
     {
         super.onPause();
-        locationManager.removeUpdates(locationListener);
+        try
+        {
+            locationManager.removeUpdates(locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
 
         // save the data
         saveData();
@@ -291,7 +314,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void saveAndExit(View view)
     {
         saveData();
-        locationManager.removeUpdates(locationListener);
+        try
+        {
+            locationManager.removeUpdates(locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
         super.finish();
     }
 
@@ -311,12 +340,12 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // Toast.makeText(CountingActivity.this, "Latitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_SHORT).show();
 
         // append individual with its Id, coords, date and time
-        int uncert; // uncertainty about position (m)
+        String uncert; // uncertainty about position (m)
 
         if (latitude != null)
-            uncert = 20;
+            uncert = "20";
         else
-            uncert = 10000;
+            uncert = null;
 
         String name, datestamp, timestamp;
         name = widget.count.name;
@@ -324,7 +353,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         timestamp = getcurTime();
 
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
-            (count_id, name, latitude, longitude, uncert, datestamp, timestamp));
+            (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -332,6 +361,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
+        intent.putExtra("Height", height);
         startActivity(intent);
     }
 

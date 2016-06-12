@@ -29,8 +29,9 @@ $ 2.0.4
   % Version 2.0.4
   _ 2016-06-10
     * Ungenutzte Funktion (alert) entfernt
-    * DB Struktur angepasst
     * Erlaubnisprüfung für Android-M
+    * Aufzeichnung der geogr. Höhe
+    * DB Struktur angepasst
     * Fehlerbehebung
 
 $ 2.0.3

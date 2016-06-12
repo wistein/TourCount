@@ -24,6 +24,8 @@ public class EditIndividualWidget extends LinearLayout
 {
     TextView widget_locality1; // locality
     EditText widget_locality2;
+    TextView widget_zcoord1;  //height
+    TextView widget_zcoord2;
     TextView widget_sex1; // sex
     EditText widget_sex2;
     TextView widget_stadium1; // stadium
@@ -46,6 +48,8 @@ public class EditIndividualWidget extends LinearLayout
         inflater.inflate(R.layout.widget_edit_individual, this, true);
         widget_locality1 = (TextView) findViewById(R.id.widgetLocality1); // Locality
         widget_locality2 = (EditText) findViewById(R.id.widgetLocality2);
+        widget_zcoord1 = (TextView) findViewById(R.id.widgetZCoord1); // Height
+        widget_zcoord2 = (TextView) findViewById(R.id.widgetZCoord2);
         widget_sex1 = (TextView) findViewById(R.id.widgetSex1); // Sex
         widget_sex2 = (EditText) findViewById(R.id.widgetSex2);
         widget_stadium1 = (TextView) findViewById(R.id.widgetStadium1); // Stadium
@@ -137,6 +141,18 @@ public class EditIndividualWidget extends LinearLayout
     {
         widget_ycoord2.setText(name);
     }
+
+    // z-coord
+    public void setWidgetZCoord1(String title)
+    {
+        widget_zcoord1.setText(title);
+    }
+
+    public void setWidgetZCoord2(String name)
+    {
+        widget_zcoord2.setText(name);
+    }
+
 
 
     // following the GETS
