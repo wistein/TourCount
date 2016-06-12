@@ -31,6 +31,7 @@ $ 2.0.4
     * Unused functions (alert) removed
     * DB structure adapted
     * Permission handling for Android M
+    * Bug fix
 
 $ 2.0.3
   % Version 2.0.3

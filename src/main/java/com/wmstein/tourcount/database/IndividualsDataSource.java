@@ -124,9 +124,18 @@ public class IndividualsDataSource
         Individuals individuals;
         Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_COUNT_ID + " = ?", new String[]{String.valueOf(c_Id)}, null, null, null);
         cursor.moveToLast();
-        individuals = cursorToIndividuals(cursor);
-        cursor.close();
-        return individuals.id;
+        // check for entries in individuals table, which are not there when bulk counts are entered
+        if (!cursor.isAfterLast())
+        {
+            individuals = cursorToIndividuals(cursor);
+            cursor.close();
+            return individuals.id;
+        }
+        else
+        {
+            cursor.close();
+            return -1;
+        }
     }
 
     public Individuals getIndividual(int indiv_id)

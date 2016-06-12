@@ -31,6 +31,7 @@ $ 2.0.4
     * Ungenutzte Funktion (alert) entfernt
     * DB Struktur angepasst
     * Erlaubnisprüfung für Android-M
+    * Fehlerbehebung
 
 $ 2.0.3
   % Version 2.0.3

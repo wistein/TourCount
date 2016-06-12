@@ -77,6 +77,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     private int i_Id = 0;
     private String spec_name;
+    private int spec_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -342,7 +343,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         int count_id = Integer.valueOf(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        if (widget != null)
+        spec_count = widget.count.count;
+        if (spec_count > 0)
         {
             widget.countDown();
             i_Id = individualsDataSource.readLastIndividual(count_id);
