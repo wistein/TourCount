@@ -731,7 +731,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         });
         alert = builder.create();
         alert.show();
-        Toast.makeText(this, getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
     }
 
     // clear DB values for basic DB
