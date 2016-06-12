@@ -141,15 +141,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             Log.i(TAG, "NullPointerException: No section name!");
         }
 
-/*
-        // display editable section notes; the same class
-        enw = new EditTitleWidget(this, null);
-        enw.setSectionName(section.notes);
-        enw.setWidgetTitle(getString(R.string.notesHere));
-        enw.setHint(getString(R.string.notesHint));
-        enw.requestFocus();
-        notes_area.addView(enw);
-*/
         // load the counts data
         counts = countDataSource.getAllSpecies();
 
