@@ -62,7 +62,6 @@ $ 8
   ! Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Art. 
   ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Mittels Speicher-Button geht es zurück zur Zählseite.
   ! Mit dem (-)-Button kann ggf. korrigiert werden. Beachte, dass der (-)-Button den letzten Eintrag der Art aus der Individuen-Liste löscht. 
-  ! Beim Speichern der Zählung werden ebenfalls Datum und Uhrzeit listen-spezifisch gespeichert. Das Datum und ggf. eine Bemerkung zur Liste erscheinen anschließend in der Übersicht der Zähllisten.     
   _ 
   ! Mit dem Bleistift-Button in der Kopfzeile der Zählerseite lassen sich die Art-Einträge editieren. 
   _
@@ -87,7 +86,13 @@ $ 7
   ! Das Menü auf der Eingangsseite bietet Reset-, Import-, Export-, Hilfe-, Info- und die Einstellungsfunktionen. 
   _ 
   ! Zwecks Vorbereitung einer neuen Tour können mittels "Reset Daten“ die tourspezifischen Metadaten und alle Zähldaten gelöscht werden. Alternativ kann die angelegte Basis-Datenbank "/sdcard/tourcount0.db" importiert werden.
+  _ 
+  ! TourCount arbeitet intern immer mit einer gleichnamigen Datei im App-eigenen, für den Anwender gesperrten Speicherbereich. Dadurch ist die Verwendung mehrerer Anwenderdateien nur per Im- und Export möglich.
+  _ 
   ! Der Export der DB als Basis-DB ist sinnvoll, wenn dauerhaft Änderungen an Zähllisten vorgenommen wurden (z.B. neue Arten hinzugefügt).
+  _ 
+  ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist sinnvoll, wenn mehrere Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File_Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw. (Der Dateiname muss immer mit „tourcount“ beginnen). Die Speicherung (Export) erzeugt immer Dateinamen mit der folgenden Konvention.
+  _ 
   ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach „/sdcard/tourcount_JJJJ-MM-TT_hhmmss.db". 
   ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach „/sdcard/tourcount_JJJJ-MM-TT_hhmmss.csv".
   _ 

@@ -19,6 +19,12 @@
             <!-- insert the new notes as they are created in here -->
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:paddingTop="2dp"
+            android:background="@android:color/white"/>
+
         <LinearLayout
             android:id="@+id/countCountLayout"
             android:orientation="vertical"

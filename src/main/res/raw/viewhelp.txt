@@ -60,8 +60,8 @@ $ 8
   !
   ! Start with "Counting List". 
   ! To count just tap on the (+)-Button of the corresponding species.
-  ! The (-)-Buttons allows for corrections. Mind that the (-)-Button reduces the individuals list for the last entry of an species. 
-  ! While storing the counting results the current date and time of the registration will be stored either for this list. The date and a possible list remark will then be shown in the page of counting lists.   
+  ! The counter will increment and a page to enter individual data opens. Latitude, longitude, height as well as date and time will add automatically. Go back to the counting page by tapping the "Save" button.
+  ! The (-)-Buttons allows for corrections. Mind that the (-)-Button reduces the individuals list for the last entry of a species. 
   _ 
   ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for editing the list of species. 
   _
@@ -86,8 +86,15 @@ $ 7
   ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
   _
   ! For preparing a new tour you may use “Reset Data” to reset the tour-specific meta data and count data. Alternatively you may import the Basic DB from /sdcard/tourcount0.db 
+  _ 
+  ! Internally, TourCount stores the data always in a single, equally named SQlite-DB file in the app's own storage area. As this file cannot be read or changed directly by the user, exporting the data to files in a user reachable storage area is necessary.
+  _ 
   ! By “Export Basic DB” you may export the DB as empty "Basic DB" which is reasonable, when lasting changes of a counting list have been made (e.g. new species added).
+  _ 
+  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc. (Mind: The db file name must start with the string “tourcount”, otherwise it cannot be imported).
+  _ 
   ! Exporting the current database (Export DB) writes a copy of the complete DB to /sdcard/tourcount_YYYY-MM-DD_hhmmss.db.
+  _ 
   ! The function “Export Data -> CSV File” writes the counting results into a MS Excel readable .csv-file to /sdcard/tourcount_YYYY-MM-DD_hhmmss.csv.
   _
   ! Under "App Info" you find the email address of the author, the history of the app and the license note.
@@ -95,7 +102,7 @@ $ 7
   ! The counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
   _ 
   ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" or csv-files to a PC. 
-  ! There you may examine the db-file with the free tool like "SqliteBrowser" (sqlitebrowser.org) or you may import the .csv-file as UTF-8 text file into Excel for further processing.
+  ! There you may examine the db-file with a free tool like "SqliteBrowser" (sqlitebrowser.org) or you may import the .csv-file as UTF-8 text file into Excel for further processing.
   !
   
 $ END_OF_VIEW_HELP

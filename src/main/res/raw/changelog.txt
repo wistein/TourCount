@@ -27,9 +27,10 @@
   _
 $ 2.0.4
   % Version 2.0.4
-  _ 2016-06-10
+  _ 2016-06-20
     * Unused functions (alert) removed
     * Permission handling for Android M
+    * File import dialog for existing DB
     * Records geogr. altitude 
     * DB structure adapted
     * Bug fix

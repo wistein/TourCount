@@ -43,6 +43,11 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/loadFileMenu"
+        android:title="@string/loadFileMenu"
+        app:showAsAction="never">
+    </item>
+    <item
         android:id="@+id/exportMenu"
         android:title="@string/exportMenu"
         app:showAsAction="never">

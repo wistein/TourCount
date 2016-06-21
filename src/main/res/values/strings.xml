@@ -26,7 +26,7 @@
     <string name="noCard">Your sdcard could not be accessed!</string>
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveWin">Your database has been exported to the sdcard.</string>
-    <string name="reset2basic">Your database has been resetted.</string>
+    <string name="loadFileMenu">Import DB</string>
     <string name="exportMenu">Export DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
     <string name="exportCSVMenu">Export Data -> CSV File</string>
@@ -39,7 +39,12 @@
     <string name="individuals">Individuals</string>
     <string name="importCancelButton">Cancel</string>
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
+    <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
+
+    <!-- FileChooser -->
+    <string name="currentDir">Current Dir</string>
+    <string name="fileSize">Size</string>
 
     <!-- EditMetaActivity -->
     <string name="zlist">Count List</string>

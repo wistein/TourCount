@@ -27,9 +27,10 @@
   _
 $ 2.0.4
   % Version 2.0.4
-  _ 2016-06-10
+  _ 2016-06-20
     * Ungenutzte Funktion (alert) entfernt
     * Erlaubnisprüfung für Android-M
+    * Import Dialog für existierende DB
     * Aufzeichnung der geogr. Höhe
     * DB Struktur angepasst
     * Fehlerbehebung
