@@ -91,7 +91,7 @@ $ 7
   _ 
   ! By “Export Basic DB” you may export the DB as empty "Basic DB" which is reasonable, when lasting changes of a counting list have been made (e.g. new species added).
   _ 
-  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc. (Mind: The db file name must start with the string “tourcount”, otherwise it cannot be imported).
+  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc. (Mind: The db file name must start with the string “tourcount”, otherwise the file cannot be imported).
   _ 
   ! Exporting the current database (Export DB) writes a copy of the complete DB to /sdcard/tourcount_YYYY-MM-DD_hhmmss.db.
   _ 

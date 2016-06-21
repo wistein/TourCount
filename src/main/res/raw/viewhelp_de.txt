@@ -91,9 +91,10 @@ $ 7
   _ 
   ! Der Export der DB als Basis-DB ist sinnvoll, wenn dauerhaft Änderungen an Zähllisten vorgenommen wurden (z.B. neue Arten hinzugefügt).
   _ 
-  ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist sinnvoll, wenn mehrere Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File_Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw. (Der Dateiname muss immer mit „tourcount“ beginnen). Die Speicherung (Export) erzeugt immer Dateinamen mit der folgenden Konvention.
+  ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw. (Merke: Der Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden). 
   _ 
   ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach „/sdcard/tourcount_JJJJ-MM-TT_hhmmss.db". 
+  _ 
   ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach „/sdcard/tourcount_JJJJ-MM-TT_hhmmss.csv".
   _ 
   ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweis ist unter "App-Info" abrufbar.
