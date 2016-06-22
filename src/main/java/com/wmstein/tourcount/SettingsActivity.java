@@ -17,8 +17,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 /**
+ * SettingsActivity rules settings for background, notes font, button sound and screen
  * Created by milo on 05/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Modified by wmstein on 18.02.2016
  */
 
 public class SettingsActivity extends PreferenceActivity
@@ -116,7 +117,8 @@ public class SettingsActivity extends PreferenceActivity
          * The try is here because this action fails if the user uses a file manager; the gallery
          * seems to work nicely, though.
          */
-                Cursor cursor = getContentResolver().query(_uri, new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
+                Cursor cursor = getContentResolver().query(_uri, new String[]
+                    {android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
                 try
                 {
                     cursor.moveToFirst(); // blows up here if file manager used

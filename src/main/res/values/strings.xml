@@ -132,6 +132,8 @@
     <string name="pref_bg_summ">Choose default, custom or no background image.</string>
     <string name="pref_awake">Keep screen on</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
+    <string name="pref_bright">Screen bright</string>
+    <string name="pref_bright_summ">Sets the TourCount screens bright whilst counting and editing.</string>
     <string name="chooseImg">Image</string>
     <string name="explainImg">Select the background image to be used when a custom image is selected.</string>
     <string name="prefs_appearance">Appearance</string>
@@ -145,7 +147,7 @@
     <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
     <string name="pref_button_sound">Count button sounds</string>
     <string name="pref_button_sound_summary">Make a sound upon pressing the count up or count down buttons.</string>
-    <string name="choose_button_alert">Button Sound</string>
+    <string name="choose_button_alert">Button sound</string>
     <string name="explain_button_alert">Choose a sound for buttons.</string>
 
     <!-- CountOptionsActivity -->

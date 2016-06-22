@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.wmstein.tourcount.widgets.EditTitleWidget;
 import com.wmstein.tourcount.widgets.OptionsWidget;
 
 /**
+ * CountOptionsActivity 
  * Created by milo on 05/05/2014.
  * Changed by wmstein on 18.02.2016
  */
@@ -39,6 +41,9 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private Bitmap bMap;
     private BitmapDrawable bg;
 
+    // preferences
+    private boolean brightPref;
+
     LinearLayout static_widget_area;
     LinearLayout dynamic_widget_area;
     OptionsWidget curr_val_widget;
@@ -53,7 +58,17 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
+        brightPref = prefs.getBoolean("pref_bright", true);
 
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
+        
         ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);

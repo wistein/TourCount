@@ -132,6 +132,8 @@
     <string name="pref_bg_summ">Wähle Standard-, eigenes oder kein Hintergrundbild.</string>
     <string name="pref_awake">Lass Bildschirm an</string>
     <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
+    <string name="pref_bright">Bildschirm hell</string>
+    <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
     <string name="chooseImg">Hintergrundbild</string>
     <string name="explainImg">Wähle ein Hintergrundbild aus, wenn ein eigenes Bild angezeigt werden soll.</string>
     <string name="prefs_appearance">Aussehen</string>
@@ -143,9 +145,9 @@
     <string name="pref_sound">Tonalarm</string>
     <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
     <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
-    <string name="pref_button_sound">Zähler-Button Sound</string>
+    <string name="pref_button_sound">Zähler-Button-Sound</string>
     <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
-    <string name="choose_button_alert">Button Sound</string>
+    <string name="choose_button_alert">Button-Sound</string>
     <string name="explain_button_alert">Wähle einen Button-Sound aus.</string>
 
     <!-- CountOptionsActivity -->

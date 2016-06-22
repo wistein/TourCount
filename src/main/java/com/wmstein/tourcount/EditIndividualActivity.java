@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
@@ -50,6 +51,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private Bitmap bMap;
     private BitmapDrawable bg;
 
+    // preferences
+    private boolean brightPref;
+
     private int i_id;
     private String specName, latitude, longitude, height;
 
@@ -58,6 +62,20 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_individual);
+
+        tourCount = (TourCountApplication) getApplication();
+        prefs = TourCountApplication.getPrefs();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        brightPref = prefs.getBoolean("pref_bright", true);
+
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
 
         individ_area = (LinearLayout) findViewById(R.id.edit_individual);
 

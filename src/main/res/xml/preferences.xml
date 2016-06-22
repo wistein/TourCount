@@ -43,6 +43,11 @@
             android:summary="@string/pref_awake_summ"
             android:defaultValue="true"/>
         <CheckBoxPreference
+            android:key="pref_bright"
+            android:title="@string/pref_bright"
+            android:summary="@string/pref_bright_summ"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
             android:key="pref_duplicate"
             android:title="@string/pref_duplicate"
             android:summary="@string/pref_duplicate_summary"

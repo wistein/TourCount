@@ -40,8 +40,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by milo on 05/05/2014.
- * Changed by wmstein on 18.04.2016
+ * CountingActivity is the central activity of TourCount. It provides the counter, starts GPS-location polling, 
+ * starts EditIndividualActivity, starts esditSectionActivity and allows sending notes.
+ * Created by milo for beecount on 05/05/2014.
+ * Modified by wmstein on 18.04.2016
  */
 
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -60,6 +62,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     // preferences
     private boolean awakePref;
+    private boolean brightPref;
     private boolean fontPref;
     private boolean buttonSoundPref;
     private String buttonAlertSound;
@@ -93,6 +96,15 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
+
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
 
         ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
         counting_screen.setBackground(tourCount.getBackground());
@@ -168,6 +180,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private void getPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);
+        brightPref = prefs.getBoolean("pref_bright", true);
         fontPref = prefs.getBoolean("pref_note_font", false);
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.wmstein.tourcount"
           android:largeHeap="true"
-          android:versionCode="204"
-          android:versionName="2.0.4">
+          android:versionCode="205"
+          android:versionName="2.0.5">
 
     <uses-sdk android:minSdkVersion="17"/>
 
@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- Permission needed for network location provider -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Permission needed for screen brightness setting -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <!-- android:screenOrientation="portrait" in all activities (Smartphone-Version)
          android:allowBackup="false" prevents backup of app data to google cloud -->

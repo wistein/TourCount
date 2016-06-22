@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- widget_listspecies.xml used by ListSpeciesWidget.java and ListSpeciesActivity.java.
+<!-- widget_list_species.xml used by ListSpeciesWidget.java and ListSpeciesActivity.java.
      Shows purged list of species counts -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

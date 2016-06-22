@@ -31,7 +31,7 @@ public class ListSpeciesWidget extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.widget_listspecies, this, true);
+        inflater.inflate(R.layout.widget_list_species, this, true);
         txtSpecName = (TextView) findViewById(R.id.txtSpecName);
         specCount = (TextView) findViewById(R.id.specCount);
         txtSpecRem = (TextView) findViewById(R.id.txtSpecRem);

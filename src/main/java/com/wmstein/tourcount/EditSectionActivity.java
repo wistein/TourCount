@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -62,6 +63,9 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private Bitmap bMap;
     private BitmapDrawable bg;
 
+    // preferences
+    private boolean brightPref;
+
     //added for dupPref
     private boolean dupPref;
     String new_count_name = "";
@@ -76,6 +80,18 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         countIds = new ArrayList<>();
         savedCounts = new ArrayList<>();
 
+        tourCount = (TourCountApplication) getApplication();
+        prefs = TourCountApplication.getPrefs();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        dupPref = prefs.getBoolean("pref_duplicate", true);
+        brightPref = prefs.getBoolean("pref_bright", true);
+
+        // Set full brightness of screen
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.screenBrightness = 1.0f;
+        getWindow().setAttributes(params);
+
         counts_area = (LinearLayout) findViewById(R.id.editingCountsLayout);
 
         /*
@@ -88,13 +104,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                 savedCounts = (ArrayList<CountEditWidget>) savedInstanceState.getSerializable("savedCounts");
             }
         }
-
-        tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
-
-        //added for dupPref
-        dupPref = prefs.getBoolean("pref_duplicate", true);
 
         ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);

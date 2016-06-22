@@ -25,12 +25,17 @@
   _
   _ email: stein.wm@web.de
   _
+$ 2.0.5
+  % Version 2.0.5
+  _ 2016-06-22
+    * Option "Screen bright" in Preferences
+    * File import dialog for existing DB
+    
 $ 2.0.4
   % Version 2.0.4
   _ 2016-06-20
     * Unused functions (alert) removed
     * Permission handling for Android M
-    * File import dialog for existing DB
     * Records geogr. altitude 
     * DB structure adapted
     * Bug fix

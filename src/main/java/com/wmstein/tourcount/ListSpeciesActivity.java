@@ -55,7 +55,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listspecies);
+        setContentView(R.layout.activity_list_species);
 
         countDataSource = new CountDataSource(this);
         sectionDataSource = new SectionDataSource(this);
