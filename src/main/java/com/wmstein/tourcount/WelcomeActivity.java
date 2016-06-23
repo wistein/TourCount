@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -59,6 +60,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     ChangeLog cl;
     ViewHelp vh;
     private static final int FILE_CHOOSER = 11;
+    private Handler mHandler = new Handler();
 
     // flags for GPS, network status
     boolean isGPSEnabled = false;
@@ -100,7 +102,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         sectionDataSource.open();
         section = sectionDataSource.getSection();
         
-        // LinearLayout baseLayout = (LinearLayout) findViewById(R.id.baseLayout);
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.getBackground());
 
@@ -245,7 +246,16 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.viewCounts)
         {
-            startActivity(new Intent(this, CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
+
+            // pause for 100 msec to show toast
+            mHandler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    startActivity(new Intent(getApplicationContext(), CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                }
+            }, 100);
             return true;
         }
         else if (id == R.id.editMeta)
@@ -257,7 +267,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
 
-            startActivity(new Intent(this, ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            // pause for 100 msec to show toast
+            mHandler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                }
+            }, 100);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -265,7 +282,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     public void viewCounts(View view)
     {
-        startActivity(new Intent(this, CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
+        // pause for 100 msec to show toast
+        mHandler.postDelayed(new Runnable()
+        {
+            public void run()
+            {
+                startActivity(new Intent(getApplicationContext(), CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        }, 100);
     }
 
     public void editMeta(View view)
@@ -276,7 +301,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void viewSpecies(View view)
     {
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        // pause for 100 msec to show toast
+        mHandler.postDelayed(new Runnable()
+        {
+            public void run()
+            {
+                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        }, 100);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
