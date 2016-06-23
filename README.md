@@ -9,6 +9,6 @@ Databases can be individually created and adapted regarding meta data and expect
 
 The app demands for storage access permit which is needed for im-/exporting the counting data and GPS permit for location info per count.
 
-A detailed description for setting up and using the app as well as a sample basic database (tourcount0.db) is provided under 'tourcount/docs'.
+A detailed description for setting up and using the app as well as a sample basic database (tourcount0.db) is provided under 'docs'.
 
-The apk-file 'tourcount-release.apk' is provided under 'tourcount/apk'. It is usable with Android Version 4.2.2 or newer.
+The apk-file 'tourcount-release.apk' is provided under 'apk'. It is usable with Android Version 4.2.2 or newer.
