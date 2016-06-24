@@ -379,7 +379,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // Triggered by count down button
-    // deletes last last count only when directly followed
+    // deletes last count
     public void countDown(View view)
     {
         buttonSound();
@@ -433,6 +433,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         return dform.format(date);
     }
 
+	// Edit count options
     public void edit(View view)
     {
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -442,8 +443,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     /*
-     * This is the lookup to get a counting widget (with references to the
-     * associated count) from the list of widgets.
+     * Get a counting widget (with reference to the associated count) from the list of widgets.
      */
     public CountingWidget getCountFromId(int id)
     {
@@ -482,10 +482,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
 
-    /***************************************
-     * Pop up various exciting messages if the user has not bothered to turn them off in the
-     * settings...
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
