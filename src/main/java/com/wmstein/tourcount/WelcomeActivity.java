@@ -802,6 +802,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
         database.execSQL(sql);
 
+        sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
+            + DbHelper.T_TEMP_LOC + " = '';";
+        database.execSQL(sql);
+
         dbHandler.close();
     }
 
