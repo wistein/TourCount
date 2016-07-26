@@ -99,7 +99,7 @@ $ 7
   _
   ! Under "App Info" you find the email address of the author, the history of the app and the license note.
   _ 
-  ! The counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
+  ! The counting page is switched off when the phone is put into a pocket and provides a "Share" function for sending notes using a standard app, like SMS or email.
   _ 
   ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" or csv-files to a PC. 
   ! There you may examine the db-file with a free tool like "SqliteBrowser" (sqlitebrowser.org) or you may import the .csv-file as UTF-8 text file into Excel for further processing.

@@ -322,19 +322,16 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onPause()
     {
         super.onPause();
-//        gps.stopUsingGPS();
     }
 
     public void onStop()
     {
         super.onStop();
-//        gps.stopUsingGPS();
     }
 
     public void onDestroy()
     {
         super.onDestroy();
-//        gps.stopUsingGPS();
     }
 
     /*************************************************************************

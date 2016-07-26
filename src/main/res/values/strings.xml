@@ -15,7 +15,8 @@
     <string name="customMissing">Your custom background image could not be found; the default will be used instead.</string>
     <string name="customNotDefined">A custom background image is not defined; the default will be used instead.</string>
     <string name="customTooBig">Sorry, trying to set the background image has caused an out of memory error.</string>
-
+    <string name="sensor_present">Proximity sensor is not present!</string>
+    
     <!-- WelcomeActivity -->
     <string name="hello">Butterfly Monitoring App\n\nSupports species-specific counting of butterflies on walks.\n\nYou can find instructions for the App under the menu \"Help\".</string>
     <string name="viewCountButton">Counting List</string>

@@ -15,7 +15,8 @@
     <string name="customMissing">Dein Hintergrundbild wurde nicht gefunden; es wird der Standard-Hintergrund verwendet.</string>
     <string name="customNotDefined">Es wurde kein Hintergrundbild gewählt; es wird der Standard-Hintergrund verwendet.</string>
     <string name="customTooBig">Leider erzeugt der Versuch, das gewählte Hintergrundbild zu setzen, einen Out-of-Memory-Fehler.</string>
-
+    <string name="sensor_present">Proximity-Sensor ist nicht vorhanden!</string>
+    
     <!-- WelcomeActivity -->
     <string name="hello">App zur Registrierung von Tagfaltern\n\nUnterstützt die artspezifische Erfassung von Schmetterlingen unterwegs.\n\nEine Anleitung zur App gibt es unter dem Menüpunkt \"Hilfe\".</string>
     <string name="viewCountButton">Zählliste</string>

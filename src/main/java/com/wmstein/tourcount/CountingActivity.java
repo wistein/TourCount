@@ -1,8 +1,13 @@
 package com.wmstein.tourcount;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.CursorIndexOutOfBoundsException;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,7 +16,11 @@ import android.location.LocationProvider;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -40,8 +49,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * CountingActivity is the central activity of TourCount. It provides the counter, starts GPS-location polling, 
- * starts EditIndividualActivity, starts esditSectionActivity and allows sending notes.
+ * CountingActivity is the central activity of TourCount. It provides the counter, starts GPS-location polling,
+ * starts EditIndividualActivity, starts editSectionActivity, switches screen off when pocketed and allows sending notes.
  * Created by milo for beecount on 05/05/2014.
  * Modified by wmstein on 18.04.2016
  */
@@ -56,9 +65,16 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     LinearLayout count_area;
     LinearLayout notes_area;
 
+    // Location info handling
     private LocationManager locationManager;
     private LocationListener locationListener;
     private String provider;
+
+    // Proximity sensor handling for screen on/off
+    private SensorManager mSensorManager;
+    private Sensor mProximitySensor;
+    private PowerManager mPowerManager;
+    private PowerManager.WakeLock mProximityWakeLock;
 
     // preferences
     private boolean awakePref;
@@ -87,6 +103,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counting);
+
+        Context context = this.getApplicationContext();
 
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
@@ -117,6 +135,21 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        // Get instance of sensor service, and use that to get instance of proximity sensor.
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
+            {
+                mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "WAKE LOCK");
+            }
+            enableProximitySensor();
+        }
+        
         // LocationManager-Instanz ermitteln
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -144,25 +177,25 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras)
             {
-                Log.d(TAG, "onStatusChanged()");
+                // Log.d(TAG, "onStatusChanged()");
             }
 
             @Override
             public void onProviderEnabled(String provider)
             {
-                Log.d(TAG, "onProviderEnabled()");
+                // Log.d(TAG, "onProviderEnabled()");
             }
 
             @Override
             public void onProviderDisabled(String provider)
             {
-                Log.d(TAG, "onProviderDisabled()");
+                // Log.d(TAG, "onProviderDisabled()");
             }
 
             @Override
             public void onLocationChanged(Location location)
             {
-                Log.d(TAG, "onLocationChanged()");
+                // Log.d(TAG, "onLocationChanged()");
                 if (location != null)
                 {
                     latitude = "" + location.getLatitude();
@@ -191,6 +224,12 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         super.onResume();
 
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            enableProximitySensor();
+        }
+        
         try
         {
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
@@ -216,7 +255,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             // do nothing
         }
 */
-        
+
         // clear any existing views
         count_area.removeAllViews();
         notes_area.removeAllViews();
@@ -284,6 +323,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     protected void onPause()
     {
         super.onPause();
+
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            disableProximitySensor(true);
+        }
+        
         try
         {
             locationManager.removeUpdates(locationListener);
@@ -334,6 +380,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             // do nothing
         }
+
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            disableProximitySensor(true);
+        }
+        
         super.finish();
     }
 
@@ -349,6 +402,12 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             widget.countUp();
         }
 
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            disableProximitySensor(true);
+        }
+        
         // Show coords latitude, longitude for current count
         // Toast.makeText(CountingActivity.this, "Latitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_SHORT).show();
 
@@ -433,9 +492,15 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         return dform.format(date);
     }
 
-	// Edit count options
+    // Edit count options
     public void edit(View view)
     {
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            disableProximitySensor(true);
+        }
+        
         int count_id = Integer.valueOf(view.getTag().toString());
         Intent intent = new Intent(CountingActivity.this, CountOptionsActivity.class);
         intent.putExtra("count_id", count_id);
@@ -499,11 +564,23 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
+            // check for API-Level >= 21
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                disableProximitySensor(true);
+            }
+            
             startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
         else if (id == R.id.menuEditSection)
         {
+            // check for API-Level >= 21
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                disableProximitySensor(true);
+            }
+            
             Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
             startActivity(intent);
             return true;
@@ -511,6 +588,21 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         else if (id == R.id.menuSaveExit)
         {
             saveData();
+
+            try
+            {
+                locationManager.removeUpdates(locationListener);
+            } catch (Exception e)
+            {
+                // do nothing
+            }
+
+            // check for API-Level >= 21
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                disableProximitySensor(true);
+            }
+            
             super.finish();
             return true;
         }
@@ -527,6 +619,33 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         return super.onOptionsItemSelected(item);
     }
 
+    private void enableProximitySensor()
+    {
+        if (mProximityWakeLock == null)
+        {
+            return;
+        }
+
+        if (!mProximityWakeLock.isHeld())
+        {
+            mProximityWakeLock.acquire();
+        }
+    }
+
+
+    private void disableProximitySensor(boolean waitForFarState)
+    {
+        if (mProximityWakeLock == null)
+        {
+            return;
+        }
+        if (mProximityWakeLock.isHeld())
+        {
+            int flags = waitForFarState ? PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY : 0;
+            mProximityWakeLock.release(flags);
+        }
+    }
+    
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
@@ -534,5 +653,5 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         counting_screen.setBackground(tourCount.setBackground());
         getPrefs();
     }
-
+    
 }

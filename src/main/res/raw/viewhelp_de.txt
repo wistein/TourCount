@@ -99,7 +99,7 @@ $ 7
   _ 
   ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweis ist unter "App-Info" abrufbar.
   _ 
-  ! In der Zähler-Ansicht kann über das Mitteilungssymbol eine Nachricht über eine Standard-App, wie SMS oder E-Mail versendet werden.
+  ! In der Zähler-Ansicht wird die Anzeige abgeschaltet, wenn das Handy eingesteckt wird und auf der Zählerseite kann über das Mitteilungssymbol eine Nachricht über eine Standard-App, wie SMS oder E-Mail versendet werden.
   _ 
   ! IT-affine Anwender können die mittels Exportfunktionen erzeugten "tourcount_JJJJ-MM-TT_hhmmss.db"- bzw. -.csv-Dateien auf einen PC übertragen.
   ! Dort kann mit Hilfe eines kostenlosen Tools wie "SqliteBrowser" (sqlitebrowser.org) die .db-Datei bearbeitet bzw. die .csv-Datei in Excel als Text-Datei (Unicode UTF-8) importiert und bearbeitet werden.

@@ -25,15 +25,20 @@
   _
   _ email: stein.wm@web.de
   _
+$ 2.0.6
+  % Version 2.0.6
+  _ 24.07.2016
+    * Schalte Anzeige der Zählseite ab, wenn Handy eingesteckt wird
+    
 $ 2.0.5
   % Version 2.0.5
-  _ 2016-06-22
+  _ 22.06.2016
     * Option "Bildschirm hell" in Einstellungen
     * Import Dialog für existierende DB
     
 $ 2.0.4
   % Version 2.0.4
-  _ 2016-06-20
+  _ 20.06.2016
     * Ungenutzte Funktion (alert) entfernt
     * Erlaubnisprüfung für Android-M
     * Aufzeichnung der geogr. Höhe
@@ -42,7 +47,7 @@ $ 2.0.4
 
 $ 2.0.3
   % Version 2.0.3
-  _ 2016-06-06
+  _ 06.06.2016
     * DB-Struktur verbessert
     * Resultatansicht verbessert
     * Eingabemasken verbessert
@@ -50,20 +55,20 @@ $ 2.0.3
 
 $ 2.0.2
   % Version 2.0.2
-  _ 2016-05-27
+  _ 27.05.2016
     * Sortierter csv-Export
     * Nur noch 1 Zählliste
     * Code bereinigt
 
 $ 2.0.1
   % Version 2.0.1
-  _ 2016-05-19
+  _ 19.05.2016
     * Individuen-Datenerfassung komplettiert
     * Ergebnisseite und Export nach CSV komplettiert
 
 $ 1.0.2
   % Version 1.0.2
-  _ 19.05.2016
+  _ 18.05.2016
     * Zähl Button aktiviert Edit-Seite für Individuum-Daten
     * Neue Tabelle "individuals" mit Zeit, Koordinaten, Geschlecht, Stadium, Zustand
 
