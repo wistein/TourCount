@@ -4,10 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.CursorIndexOutOfBoundsException;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,8 +14,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -71,8 +65,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private String provider;
 
     // Proximity sensor handling for screen on/off
-    private SensorManager mSensorManager;
-    private Sensor mProximitySensor;
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mProximityWakeLock;
 
@@ -134,10 +126,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
-        // Get instance of sensor service, and use that to get instance of proximity sensor.
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
