@@ -152,10 +152,10 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
         }
 
-        // Provider mit grober Auflösung und niedrigen Energieverbrauch
+        // Best possible provider
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
         provider = locationManager.getBestProvider(criteria, true);
         Log.d(TAG, "Provider: " + provider);
 
@@ -226,8 +226,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             Toast.makeText(this, "Exception" + e + getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
         }
 
-/* 
-        // Trial to get some coarse location service to work failed
+/*        
+         // get coarse location service
         try
         {
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 3000, 0, locationListener);
@@ -243,7 +243,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             // do nothing
         }
 */
-
+        
         // clear any existing views
         count_area.removeAllViews();
         notes_area.removeAllViews();
