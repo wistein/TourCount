@@ -135,7 +135,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
             enableProximitySensor();
         }
-        
+
         // LocationManager-Instanz ermitteln
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -215,7 +215,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             enableProximitySensor();
         }
-        
+
         try
         {
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
@@ -241,7 +241,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             // do nothing
         }
 */
-        
+
         // clear any existing views
         count_area.removeAllViews();
         notes_area.removeAllViews();
@@ -315,7 +315,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             disableProximitySensor(true);
         }
-        
+
         try
         {
             locationManager.removeUpdates(locationListener);
@@ -372,7 +372,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             disableProximitySensor(true);
         }
-        
+
         super.finish();
     }
 
@@ -393,7 +393,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             disableProximitySensor(true);
         }
-        
+
         // Show coords latitude, longitude for current count
         // Toast.makeText(CountingActivity.this, "Latitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_SHORT).show();
 
@@ -409,7 +409,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             uncert = null;
             // Toast.makeText(CountingActivity.this, "Provider: " + provider + "Uncert: " + uncert, Toast.LENGTH_SHORT).show();
         }
-        
+
         String name, datestamp, timestamp;
         name = widget.count.name;
         datestamp = getcurDate();
@@ -491,7 +491,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             disableProximitySensor(true);
         }
-        
+
         int count_id = Integer.valueOf(view.getTag().toString());
         Intent intent = new Intent(CountingActivity.this, CountOptionsActivity.class);
         intent.putExtra("count_id", count_id);
@@ -560,7 +560,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             {
                 disableProximitySensor(true);
             }
-            
+
             startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
@@ -571,7 +571,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             {
                 disableProximitySensor(true);
             }
-            
+
             Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
             startActivity(intent);
             return true;
@@ -593,7 +593,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             {
                 disableProximitySensor(true);
             }
-            
+
             super.finish();
             return true;
         }
@@ -636,7 +636,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             mProximityWakeLock.release(flags);
         }
     }
-    
+
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
@@ -646,28 +646,28 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     /**
-     * <p>Checks if a CharSequence is whitespace, empty ("") or null.</p>
+     * Checks if a CharSequence is whitespace, empty ("") or null
+     * <p>
+     * isBlank(null)      = true
+     * isBlank("")        = true
+     * isBlank(" ")       = true
+     * isBlank("bob")     = false
+     * isBlank("  bob  ") = false
      *
-     * <pre>
-     * StringUtils.isBlank(null)      = true
-     * StringUtils.isBlank("")        = true
-     * StringUtils.isBlank(" ")       = true
-     * StringUtils.isBlank("bob")     = false
-     * StringUtils.isBlank("  bob  ") = false
-     * </pre>
-     *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is null, empty or whitespace
-     * @since 2.0
-     * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
      */
-    public static boolean isBlank(final CharSequence cs) {
+    public static boolean isBlank(final CharSequence cs)
+    {
         int strLen;
-        if (cs == null || (strLen = cs.length()) == 0) {
+        if (cs == null || (strLen = cs.length()) == 0)
+        {
             return true;
         }
-        for (int i = 0; i < strLen; i++) {
-            if (Character.isWhitespace(cs.charAt(i)) == false) {
+        for (int i = 0; i < strLen; i++)
+        {
+            if (!Character.isWhitespace(cs.charAt(i)))
+            {
                 return false;
             }
         }
@@ -676,18 +676,19 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     /**
      * Checks if a CharSequence is not empty (""), not null and not whitespace only.
-     *
+     * <p>
      * isNotBlank(null)      = false
      * isNotBlank("")        = false
      * isNotBlank(" ")       = false
      * isNotBlank("bob")     = true
      * isNotBlank("  bob  ") = true
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is
-     *  not empty and not null and not whitespace
+     * not empty and not null and not whitespace
      */
-    public static boolean isNotBlank(final CharSequence cs) {
+    public static boolean isNotBlank(final CharSequence cs)
+    {
         return !isBlank(cs);
     }
 

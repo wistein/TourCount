@@ -417,34 +417,36 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     /**
      * Checks if a CharSequence is empty ("") or null.
-     *
+     * <p>
      * isEmpty(null)      = true
      * isEmpty("")        = true
      * isEmpty(" ")       = false
      * isEmpty("bob")     = false
      * isEmpty("  bob  ") = false
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is empty or null
      */
-    public static boolean isEmpty(final CharSequence cs) {
+    public static boolean isEmpty(final CharSequence cs)
+    {
         return cs == null || cs.length() == 0;
     }
 
     /**
      * Checks if a CharSequence is not empty ("") and not null.
-     *
+     * <p>
      * isNotEmpty(null)      = false
      * isNotEmpty("")        = false
      * isNotEmpty(" ")       = true
      * isNotEmpty("bob")     = true
      * isNotEmpty("  bob  ") = true
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is not empty and not null
      */
-    public static boolean isNotEmpty(final CharSequence cs) {
+    public static boolean isNotEmpty(final CharSequence cs)
+    {
         return !isEmpty(cs);
     }
-    
+
 }
