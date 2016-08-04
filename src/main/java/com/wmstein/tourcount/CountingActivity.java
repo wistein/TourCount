@@ -400,15 +400,15 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
 
-/*        if (latitude != null)
+        if (provider.equals("gps") && latitude != null)
+        {
             uncert = "20";
+        }
         else
+        {
             uncert = null;
-*/
-        if (provider == "GPS")
-            uncert = "20";
-        else
-            uncert = null;
+            // Toast.makeText(CountingActivity.this, "Provider: " + provider + "Uncert: " + uncert, Toast.LENGTH_SHORT).show();
+        }
         
         String name, datestamp, timestamp;
         name = widget.count.name;
