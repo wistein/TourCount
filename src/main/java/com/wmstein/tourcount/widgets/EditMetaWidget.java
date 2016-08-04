@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
-import org.apache.commons.lang3.StringUtils;
-
 /*
  * Created by wmstein for com.wmstein.tourcount on 02.04.2016.
  */
@@ -172,7 +170,7 @@ public class EditMetaWidget extends LinearLayout
     public int getWidgetTemp2()
     {
         String text = widget_temp2.getText().toString();
-        if (StringUtils.isEmpty(text))
+        if (isEmpty(text))
             return 0;
         else if (!text.trim().matches(regEx))
             return 100;
@@ -184,7 +182,7 @@ public class EditMetaWidget extends LinearLayout
     public int getWidgetWind2()
     {
         String text = widget_wind2.getText().toString();
-        if (StringUtils.isEmpty(text))
+        if (isEmpty(text))
             return 0;
         else if (!text.trim().matches(regEx))
             return 100;
@@ -196,7 +194,7 @@ public class EditMetaWidget extends LinearLayout
     public int getWidgetClouds2()
     {
         String text = widget_clouds2.getText().toString();
-        if (StringUtils.isEmpty(text))
+        if (isEmpty(text))
             return 0;
         else if (!text.trim().matches(regEx))
             return 200;
@@ -235,6 +233,22 @@ public class EditMetaWidget extends LinearLayout
     public String getWidgetEndTm2()
     {
         return widget_endTm2.getText().toString();
+    }
+
+    /**
+     * Checks if a CharSequence is empty ("") or null.
+     *
+     * isEmpty(null)      = true
+     * isEmpty("")        = true
+     * isEmpty(" ")       = false
+     * isEmpty("bob")     = false
+     * isEmpty("  bob  ") = false
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is empty or null
+     */
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 
 }

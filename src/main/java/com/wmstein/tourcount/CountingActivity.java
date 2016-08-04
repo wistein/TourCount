@@ -33,8 +33,6 @@ import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -292,7 +290,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             count_area.addView(widget);
 
             // add a species note widget if there are any notes
-            if (StringUtils.isNotBlank(count.notes))
+            if (isNotBlank(count.notes))
             {
                 NotesWidget count_notes = new NotesWidget(this, null);
                 count_notes.setNotes(count.notes);
@@ -402,11 +400,16 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
 
-        if (latitude != null)
+/*        if (latitude != null)
             uncert = "20";
         else
             uncert = null;
-
+*/
+        if (provider == "GPS")
+            uncert = "20";
+        else
+            uncert = null;
+        
         String name, datestamp, timestamp;
         name = widget.count.name;
         datestamp = getcurDate();
@@ -517,7 +520,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             try
             {
                 Uri notification;
-                if (StringUtils.isNotBlank(buttonAlertSound) && buttonAlertSound != null)
+                if (isNotBlank(buttonAlertSound) && buttonAlertSound != null)
                 {
                     notification = Uri.parse(buttonAlertSound);
                 }
@@ -641,5 +644,51 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         counting_screen.setBackground(tourCount.setBackground());
         getPrefs();
     }
-    
+
+    /**
+     * <p>Checks if a CharSequence is whitespace, empty ("") or null.</p>
+     *
+     * <pre>
+     * StringUtils.isBlank(null)      = true
+     * StringUtils.isBlank("")        = true
+     * StringUtils.isBlank(" ")       = true
+     * StringUtils.isBlank("bob")     = false
+     * StringUtils.isBlank("  bob  ") = false
+     * </pre>
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is null, empty or whitespace
+     * @since 2.0
+     * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
+     */
+    public static boolean isBlank(final CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (Character.isWhitespace(cs.charAt(i)) == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
+     *
+     * isNotBlank(null)      = false
+     * isNotBlank("")        = false
+     * isNotBlank(" ")       = false
+     * isNotBlank("bob")     = true
+     * isNotBlank("  bob  ") = true
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is
+     *  not empty and not null and not whitespace
+     */
+    public static boolean isNotBlank(final CharSequence cs) {
+        return !isBlank(cs);
+    }
+
 }
