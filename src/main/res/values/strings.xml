@@ -42,6 +42,8 @@
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
+    <string name="sum">Sum:</string>
+    <string name="avCoords">Average coordinates:</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>

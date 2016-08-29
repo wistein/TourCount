@@ -43,8 +43,8 @@ import java.util.Locale;
 /**
  * CountingActivity is the central activity of TourCount. It provides the counter, starts GPS-location polling,
  * starts EditIndividualActivity, starts editSectionActivity, switches screen off when pocketed and allows sending notes.
- * Created by milo for beecount on 05/05/2014.
- * Modified by wmstein on 18.04.2016
+ * Basic counting functions created by milo for beecount on 05/05/2014.
+ * Modified and enhanced by wmstein on 18.04.2016
  */
 
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -72,7 +72,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private boolean fontPref;
     private boolean buttonSoundPref;
     private String buttonAlertSound;
-    private String latitude, longitude, height;
+    private double latitude, longitude, height;
 
     // the actual data
     Section section;
@@ -184,9 +184,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 // Log.d(TAG, "onLocationChanged()");
                 if (location != null)
                 {
-                    latitude = "" + location.getLatitude();
-                    longitude = "" + location.getLongitude();
-                    height = "" + location.getAltitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    height = location.getAltitude();
                 }
             }
         };
@@ -400,7 +400,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
 
-        if (provider.equals("gps") && latitude != null)
+        if (provider.equals("gps") && latitude != 0)
         {
             uncert = "20";
         }

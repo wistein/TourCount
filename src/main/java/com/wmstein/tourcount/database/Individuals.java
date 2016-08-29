@@ -8,9 +8,9 @@ public class Individuals
     public int id;
     public int count_id;
     public String name;
-    public String coord_x;
-    public String coord_y;
-    public String coord_z;
+    public double coord_x;
+    public double coord_y;
+    public double coord_z;
     public String uncert;
     public String date_stamp;
     public String time_stamp;

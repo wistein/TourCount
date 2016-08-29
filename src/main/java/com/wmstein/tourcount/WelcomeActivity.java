@@ -44,6 +44,8 @@ import java.util.Date;
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
 
+import static java.lang.Math.sqrt;
+
 /**
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and EditMetaActivity, CountingActivity and ListSpeciesActivity.
@@ -423,6 +425,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         String plz, city, place;
         String date, start_tm, end_tm;
         int spcode, spstate;
+        double longi, lati, heigh;
+        int frst, sum = 0;
+        double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0;
 
         try
         {
@@ -500,6 +505,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         getString(R.string.zlist) + ":",     //Count List:
                         sectName,                            //section name
                         "",
+                        "",
                         getString(R.string.inspector) + ":", //Inspector:
                         inspecName                           //inspector name
                     };
@@ -521,7 +527,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrLocHead);
 
                 // set location dataline
-
                 String arrLocation[] =
                     {
                         country,
@@ -593,8 +598,19 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             curCSVCnt.getString(3)  // species notes
                         };
                     csvWrite.writeNext(arrStr);
+                    sum = sum + curCSVCnt.getInt(1);
                 }
 
+                // write total sum
+                String arrSum[] =
+                    {
+                        "",
+                        getString(R.string.sum),
+                        Integer.toString(sum)
+                    };
+                sum = 0;
+                csvWrite.writeNext(arrSum);
+                
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
 
@@ -622,29 +638,71 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 // build the sorted individuals array
                 Cursor curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                     + " order by " + DbHelper.I_COUNT_ID, null);
-
+                
+                frst = 1;
                 while (curCSVInd.moveToNext())
                 {
                     spcode = curCSVInd.getInt(1);
                     spstate = curCSVInd.getInt(12);
+                    longi = curCSVInd.getDouble(4);
+                    lati = curCSVInd.getDouble(3);
+                    heigh = curCSVInd.getDouble(5);
                     String arrIndividual[] =
                         {
                             curCSVInd.getString(2),  //species name
                             String.valueOf(spcode),  //species code 
                             curCSVInd.getString(9),  //locality
-                            curCSVInd.getString(4),  //longitude
-                            curCSVInd.getString(3),  //latitude
+                            String.valueOf(longi),   //longitude
+                            String.valueOf(lati),    //latitude
                             curCSVInd.getString(6),  //uncertainty
-                            curCSVInd.getString(5),  //height
+                            String.valueOf(heigh),   //height
                             curCSVInd.getString(7),  //date
                             curCSVInd.getString(8),  //time
-                            curCSVInd.getString(10),  //sex
+                            curCSVInd.getString(10), //sex
                             curCSVInd.getString(11), //stadium
                             String.valueOf(spstate), //state
                             curCSVInd.getString(13)  //ind.-notes
                         };
                     csvWrite.writeNext(arrIndividual);
+
+                    if (longi != 0)
+                    {
+                        //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "longi " + longi);
+                        if (frst == 1)
+                        {
+                            loMin = longi;
+                            loMax = longi;
+                            laMin = lati;
+                            laMax = lati;
+                            frst = 0;
+                        }
+                        else
+                        {
+                            loMin = Math.min(loMin, longi);
+                            loMax = Math.max(loMax, longi);
+                            laMin = Math.min(laMin, lati);
+                            laMax = Math.max(laMax, lati);
+                        }
+                    }
                 }
+                
+                // write Average Coords
+                lo = (loMax + loMin) / 2;   // average longitude
+                la = (laMax + laMin) / 2;   // average latitude
+                // Simple distance calculation between 2 coordinates within the temperate zone in meters
+                uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
+                uc = Math.rint(uc / 2) + 20; // uncertainty radius + default gps uncertainty                 
+                String arrAvCoords[] =
+                    {
+                        "",
+                        getString(R.string.avCoords),
+                        "",
+                        Double.toString(lo),    // average longitude
+                        Double.toString(la),    // average latitude
+                        Double.toString(uc)     // uncertainty radius
+                    };
+                csvWrite.writeNext(arrAvCoords);
 
                 csvWrite.close();
                 curCSVCnt.close();

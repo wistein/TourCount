@@ -50,7 +50,7 @@ public class IndividualsDataSource
         dbHandler.close();
     }
 
-    public Individuals createIndividuals(int count_id, String name, String latitude, String longitude, String height, String uncert, String datestamp, String timestamp)
+    public Individuals createIndividuals(int count_id, String name, double latitude, double longitude, double height, String uncert, String datestamp, String timestamp)
     {
         ContentValues values = new ContentValues();
         values.put(DbHelper.I_COUNT_ID, count_id);
@@ -87,9 +87,9 @@ public class IndividualsDataSource
         newindividuals.id = cursor.getInt(cursor.getColumnIndex(DbHelper.I_ID));
         newindividuals.count_id = cursor.getInt(cursor.getColumnIndex(DbHelper.I_COUNT_ID));
         newindividuals.name = cursor.getString(cursor.getColumnIndex(DbHelper.I_NAME));
-        newindividuals.coord_x = cursor.getString(cursor.getColumnIndex(DbHelper.I_COORD_X));
-        newindividuals.coord_y = cursor.getString(cursor.getColumnIndex(DbHelper.I_COORD_Y));
-        newindividuals.coord_z = cursor.getString(cursor.getColumnIndex(DbHelper.I_COORD_Z));
+        newindividuals.coord_x = cursor.getDouble(cursor.getColumnIndex(DbHelper.I_COORD_X));
+        newindividuals.coord_y = cursor.getDouble(cursor.getColumnIndex(DbHelper.I_COORD_Y));
+        newindividuals.coord_z = cursor.getDouble(cursor.getColumnIndex(DbHelper.I_COORD_Z));
         newindividuals.uncert = cursor.getString(cursor.getColumnIndex(DbHelper.I_UNCERT));
         newindividuals.date_stamp = cursor.getString(cursor.getColumnIndex(DbHelper.I_DATE_STAMP));
         newindividuals.time_stamp = cursor.getString(cursor.getColumnIndex(DbHelper.I_TIME_STAMP));

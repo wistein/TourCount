@@ -55,7 +55,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private boolean brightPref;
 
     private int i_id;
-    private String specName, latitude, longitude, height;
+    private String specName;
+    private double latitude, longitude, height;
+    //private double latitud, longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -85,9 +87,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         {
             i_id = extras.getInt("indiv_id");
             specName = extras.getString("SName");
-            latitude = extras.getString("Latitude");
-            longitude = extras.getString("Longitude");
-            height = extras.getString("Height");
+            latitude = extras.getDouble("Latitude");
+            longitude = extras.getDouble("Longitude");
+            height = extras.getDouble("Height");
         }
 
         tourCount = (TourCountApplication) getApplication();
@@ -157,7 +159,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         eiw.setWidgetZCoord1(getString(R.string.zcoord));
-        eiw.setWidgetZCoord2(height);
+        eiw.setWidgetZCoord2(Double.toString(height));
 
         eiw.setWidgetSex1(getString(R.string.sex1));
         eiw.setWidgetSex2(individuals.sex);
@@ -176,10 +178,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         eiw.setWidgetIndivNote2(individuals.notes);
 
         eiw.setWidgetXCoord1(getString(R.string.xcoord));
-        eiw.setWidgetXCoord2(latitude);
+        eiw.setWidgetXCoord2(Double.toString(latitude));
 
         eiw.setWidgetYCoord1(getString(R.string.ycoord));
-        eiw.setWidgetYCoord2(longitude);
+        eiw.setWidgetYCoord2(Double.toString(longitude));
 
         individ_area.addView(eiw);
     }
