@@ -145,6 +145,8 @@
     <string name="image_error">Hintergrundbild setzen fehlgeschlagen! Versuche es mit Galerie anstelle von File Manager.</string>
     <string name="pref_note_font">Anmerkungs-Font</string>
     <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
+    <string name="pref_left_hand">Linkshänder</string>
+    <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
     <string name="pref_sound">Tonalarm</string>
     <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
     <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>

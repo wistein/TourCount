@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:baselineAligned="false"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="2dp"
+              android:layout_marginTop="5dp"
+              android:layout_marginEnd="2dp"
+              android:background="@drawable/rounded_corner"
+              android:padding="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="10"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="0dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="38dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="18sp"
+                android:textColor="#bfffff"
+                android:id="@+id/countNameLH"
+                android:hint="@string/countNameHint"
+                android:layout_marginStart="1dp"
+                android:layout_weight="9.7"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="38dp">
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:onClick="countUpLH"
+                android:src="@drawable/plus"
+                android:scaleType="fitCenter"
+                android:textStyle="bold"
+                android:id="@+id/buttonUpLH"
+                android:layout_weight="1.6"/>
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:onClick="countDownLH"
+                android:src="@drawable/minus"
+                android:scaleType="fitCenter"
+                android:textStyle="bold"
+                android:id="@+id/buttonDownLH"
+                android:layout_weight="1.2"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
+
+            <com.wmstein.tourcount.AutoFitText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.4"
+                android:id="@+id/countCountLH"
+                android:hint="@string/charZero"
+                android:textAlignment="center"
+                android:singleLine="true"
+                android:paddingBottom="1dp"
+                android:paddingTop="1dp"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/count_background"
+                android:layout_gravity="center|top"
+                android:gravity="center_vertical|center_horizontal"
+                android:inputType="number"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.8"/>
+
+            <!-- perhaps replace with ImageButton http://developer.android.com/guide/topics/ui/controls/button.html -->
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:onClick="edit"
+                android:src="@android:drawable/ic_menu_edit"
+                android:id="@+id/buttonEditLH"
+                android:layout_weight="2.2"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+

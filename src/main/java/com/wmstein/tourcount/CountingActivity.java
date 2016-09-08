@@ -31,6 +31,7 @@ import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
+import com.wmstein.tourcount.widgets.CountingWidgetLH;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
 import java.text.DateFormat;
@@ -56,6 +57,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     SharedPreferences prefs;
     LinearLayout count_area;
     LinearLayout notes_area;
+    LinearLayout count_areaLH;
+    LinearLayout notes_areaLH;
 
     // Location info handling
     private LocationManager locationManager;
@@ -70,6 +73,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private boolean awakePref;
     private boolean brightPref;
     private boolean fontPref;
+    private boolean handPref;
     private boolean buttonSoundPref;
     private String buttonAlertSound;
     private double latitude, longitude, height;
@@ -79,6 +83,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     List<Count> counts;
 
     List<CountingWidget> countingWidgets;
+    List<CountingWidgetLH> countingWidgetsLH;
 
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
@@ -92,7 +97,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_counting);
 
         Context context = this.getApplicationContext();
 
@@ -105,6 +109,15 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
 
+        if (handPref) // if left-handed counting page
+        {
+            setContentView(R.layout.activity_counting_lh);
+        }
+        else
+        {
+            setContentView(R.layout.activity_counting);
+        }
+
         // Set full brightness of screen
         if (brightPref)
         {
@@ -114,11 +127,20 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().setAttributes(params);
         }
 
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
-        counting_screen.setBackground(tourCount.getBackground());
-
-        count_area = (LinearLayout) findViewById(R.id.countCountLayout);
-        notes_area = (LinearLayout) findViewById(R.id.countNotesLayout);
+        if (handPref) // if left-handed counting page
+        {
+            ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreenLH);
+            counting_screen.setBackground(tourCount.getBackground());
+            count_areaLH = (LinearLayout) findViewById(R.id.countCountLayoutLH);
+            notes_areaLH = (LinearLayout) findViewById(R.id.countNotesLayoutLH);
+        }
+        else
+        {
+            ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
+            counting_screen.setBackground(tourCount.getBackground());
+            count_area = (LinearLayout) findViewById(R.id.countCountLayout);
+            notes_area = (LinearLayout) findViewById(R.id.countNotesLayout);
+        }
 
         if (awakePref)
         {
@@ -201,6 +223,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         awakePref = prefs.getBoolean("pref_awake", true);
         brightPref = prefs.getBoolean("pref_bright", true);
         fontPref = prefs.getBoolean("pref_note_font", false);
+        handPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
     }
@@ -243,8 +266,16 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 */
 
         // clear any existing views
-        count_area.removeAllViews();
-        notes_area.removeAllViews();
+        if (handPref) // if left-handed counting page
+        {
+            count_areaLH.removeAllViews();
+            notes_areaLH.removeAllViews();
+        }
+        else
+        {
+            count_area.removeAllViews();
+            notes_area.removeAllViews();
+        }
 
         // setup the data sources
         sectionDataSource.open();
@@ -270,32 +301,72 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             if (!section.notes.isEmpty())
             {
-                NotesWidget section_notes = new NotesWidget(this, null);
-                section_notes.setNotes(section.notes);
-                section_notes.setFont(fontPref);
-                notes_area.addView(section_notes);
+                if (handPref) // if left-handed counting page
+                {
+                    NotesWidget section_notes = new NotesWidget(this, null);
+                    section_notes.setNotes(section.notes);
+                    section_notes.setFont(fontPref);
+                    notes_areaLH.addView(section_notes);
+                }
+                else
+                {
+                    NotesWidget section_notes = new NotesWidget(this, null);
+                    section_notes.setNotes(section.notes);
+                    section_notes.setFont(fontPref);
+                    notes_area.addView(section_notes);
+                }
             }
         }
 
         // display counts with notes and alerts
-        countingWidgets = new ArrayList<>();
+        if (handPref) // if left-handed counting page
+        {
+            countingWidgetsLH = new ArrayList<>();
+        }
+        else
+        {
+            countingWidgets = new ArrayList<>();
+        }
+
         counts = countDataSource.getAllSpecies();
 
         // display all the counts by adding them to countCountLayout
-        for (Count count : counts)
+        if (handPref) // if left-handed counting page
         {
-            CountingWidget widget = new CountingWidget(this, null);
-            widget.setCount(count);
-            countingWidgets.add(widget);
-            count_area.addView(widget);
-
-            // add a species note widget if there are any notes
-            if (isNotBlank(count.notes))
+            for (Count count : counts)
             {
-                NotesWidget count_notes = new NotesWidget(this, null);
-                count_notes.setNotes(count.notes);
-                count_notes.setFont(fontPref);
-                count_area.addView(count_notes);
+                CountingWidgetLH widget = new CountingWidgetLH(this, null);
+                widget.setCount(count);
+                countingWidgetsLH.add(widget);
+                count_areaLH.addView(widget);
+
+                // add a species note widget if there are any notes
+                if (isNotBlank(count.notes))
+                {
+                    NotesWidget count_notes = new NotesWidget(this, null);
+                    count_notes.setNotes(count.notes);
+                    count_notes.setFont(fontPref);
+                    count_areaLH.addView(count_notes);
+                }
+            }
+        }
+        else
+        {
+            for (Count count : counts)
+            {
+                CountingWidget widget = new CountingWidget(this, null);
+                widget.setCount(count);
+                countingWidgets.add(widget);
+                count_area.addView(widget);
+
+                // add a species note widget if there are any notes
+                if (isNotBlank(count.notes))
+                {
+                    NotesWidget count_notes = new NotesWidget(this, null);
+                    count_notes.setNotes(count.notes);
+                    count_notes.setFont(fontPref);
+                    count_area.addView(count_notes);
+                }
             }
         }
 
@@ -387,6 +458,56 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             widget.countUp();
         }
+        
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            disableProximitySensor(true);
+        }
+
+        // Show coords latitude, longitude for current count
+        // Toast.makeText(CountingActivity.this, "Latitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_SHORT).show();
+
+        // append individual with its Id, coords, date and time
+        String uncert; // uncertainty about position (m)
+
+        if (provider.equals("gps") && latitude != 0)
+        {
+            uncert = "20";
+        }
+        else
+        {
+            uncert = null;
+            // Toast.makeText(CountingActivity.this, "Provider: " + provider + "Uncert: " + uncert, Toast.LENGTH_SHORT).show();
+        }
+        
+        String name, datestamp, timestamp;
+        name = widget.count.name;
+        datestamp = getcurDate();
+        timestamp = getcurTime();
+
+        i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
+            (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
+
+        // get edited info for individual and start EditIndividualActivity
+        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
+        intent.putExtra("indiv_id", i_Id);
+        intent.putExtra("SName", widget.count.name);
+        intent.putExtra("Latitude", latitude);
+        intent.putExtra("Longitude", longitude);
+        intent.putExtra("Height", height);
+        startActivity(intent);
+    }
+
+    public void countUpLH(View view)
+    {
+        buttonSound();
+        int count_id = Integer.valueOf(view.getTag().toString());
+        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        if (widget != null)
+        {
+            widget.countUpLH();
+        }
 
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
@@ -449,6 +570,58 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
     }
 
+    // Triggered by count down button from left-hand view
+    // deletes last count
+    public void countDownLH(View view)
+    {
+        buttonSound();
+        int count_id = Integer.valueOf(view.getTag().toString());
+        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
+        spec_count = widget.count.count;
+        if (spec_count > 0)
+        {
+            widget.countDownLH();
+            i_Id = individualsDataSource.readLastIndividual(count_id);
+            if (i_Id > 0)
+            {
+                deleteIndividual(i_Id);
+                i_Id--;
+            }
+        }
+    }
+
+    /*
+     * Get a counting widget (with reference to the associated count) from the list of widgets.
+     */
+    public CountingWidget getCountFromId(int id)
+    {
+        for (CountingWidget widget : countingWidgets)
+        {
+            if (widget.count.id == id)
+            {
+                return widget;
+            }
+        }
+        return null;
+    }
+
+    /*
+     * Get a left-handed counting widget (with references to the
+     * associated count) from the list of widgets.
+     */
+    public CountingWidgetLH getCountFromIdLH(int id)
+    {
+        for (CountingWidgetLH widget : countingWidgetsLH)
+        {
+            if (widget.count.id == id)
+            {
+                return widget;
+            }
+        }
+        return null;
+    }
+
     // delete individual for count_id
     public void deleteIndividual(int id)
     {
@@ -498,21 +671,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         startActivity(intent);
     }
 
-    /*
-     * Get a counting widget (with reference to the associated count) from the list of widgets.
-     */
-    public CountingWidget getCountFromId(int id)
-    {
-        for (CountingWidget widget : countingWidgets)
-        {
-            if (widget.count.id == id)
-            {
-                return widget;
-            }
-        }
-        return null;
-    }
-
     public void buttonSound()
     {
         if (buttonSoundPref)
@@ -553,18 +711,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings)
-        {
-            // check for API-Level >= 21
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            {
-                disableProximitySensor(true);
-            }
-
-            startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            return true;
-        }
-        else if (id == R.id.menuEditSection)
+        if (id == R.id.menuEditSection)
         {
             // check for API-Level >= 21
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
@@ -574,27 +721,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
             Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
             startActivity(intent);
-            return true;
-        }
-        else if (id == R.id.menuSaveExit)
-        {
-            saveData();
-
-            try
-            {
-                locationManager.removeUpdates(locationListener);
-            } catch (Exception e)
-            {
-                // do nothing
-            }
-
-            // check for API-Level >= 21
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            {
-                disableProximitySensor(true);
-            }
-
-            super.finish();
             return true;
         }
         else if (id == R.id.action_share)
@@ -639,9 +765,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
-        counting_screen.setBackground(null);
-        counting_screen.setBackground(tourCount.setBackground());
         getPrefs();
     }
 

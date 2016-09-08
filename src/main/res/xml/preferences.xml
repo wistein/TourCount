@@ -18,6 +18,11 @@
             android:title="@string/pref_note_font"
             android:summary="@string/pref_note_font_summ"
             android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_left_hand"
+            android:title="@string/pref_left_hand"
+            android:summary="@string/pref_left_hand_summ"
+            android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory

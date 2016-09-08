@@ -80,7 +80,7 @@ $ 8
 $ 7
   % 4. Weitere Funktionen
   !
-  ! Die Seite „Einstellungen“ wird von einigen App-Seiten aus erreicht. Hier können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds und Hintergrund. 
+  ! Die Seite „Einstellungen“ wird von einigen App-Seiten aus erreicht. Hier können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds, Alarme oder Rechts-/Linkshänder-Darstellung der Zählerseite. 
   ! Die Auswahl eines eigenen Hintergrundbildes klappt dabei mittels Galerie-App, erreichbar über das linke Seitenmenü der Hintergrundbild-Option (ggf. wischen vom linken Rand).
   _ 
   ! Das Menü auf der Eingangsseite bietet Reset-, Import-, Export-, Hilfe-, Info- und die Einstellungsfunktionen. 

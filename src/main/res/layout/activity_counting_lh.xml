@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+    activity_countinglh.xml is used by CountingActivity.java
+  -->
+
+<!-- activity_counting.xml is used by CountingActivity.java -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/countingScreenLH">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/countNotesLayoutLH"
+            android:orientation="vertical"
+            android:fillViewport="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <!-- insert the new notes as they are created in here -->
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:paddingTop="2dp"
+            android:background="@android:color/white"/>
+
+        <LinearLayout
+            android:id="@+id/countCountLayoutLH"
+            android:orientation="vertical"
+            android:fillViewport="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <!-- insert the new counts as they are created in here -->
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+

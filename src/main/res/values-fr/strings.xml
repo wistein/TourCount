@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml English strings -->
+<!-- strings.xml French strings -->
 <resources>
 
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_meta">Meta Data</string>
+    <string name="action_settings">Réglages</string>
+    <string name="title_activity_meta">Méta Données</string>
     <string name="title_activity_counting">CountingActivity</string>
     <string name="title_activity_list_species">ListSpeciesActivity</string>
     <string name="title_activity_count_options">CountOptionsActivity</string>
@@ -12,27 +12,27 @@
 
     <!-- generic -->
     <string name="app_name">TourCount</string>
-    <string name="customMissing">Your custom background image could not be found; the default will be used instead.</string>
-    <string name="customNotDefined">A custom background image is not defined; the default will be used instead.</string>
-    <string name="customTooBig">Sorry, trying to set the background image has caused an out of memory error.</string>
-    <string name="sensor_present">Proximity sensor is not present!</string>
+    <string name="customMissing">Votre dond d\'écran personnalisé n\' pas été trouvé, celui par défaut sera utilisé à la place.</string>
+    <string name="customNotDefined">Aucun fond d\'écran personnalisé défini, celui par défaut sera utilisé à la place.</string>
+    <string name="customTooBig">Désolé, la tentative de changement de fond d\écran a causé une erreur de mémoire.</string>
+    <string name="sensor_present">Le senseur de proximité n\'existe pas!</string>
     
     <!-- WelcomeActivity -->
-    <string name="hello">Butterfly Monitoring App\n\nSupports species-specific counting of butterflies on walks.\n\nYou can find instructions for the App under the menu \"Help\".</string>
-    <string name="viewCountButton">Counting List</string>
-    <string name="viewSpeciesButton">Show Results</string>
-    <string name="editMetaButton">Prepare Recording</string>
-    <string name="changeLogTitle">App Info</string>
-    <string name="viewHelpTitle">Help</string>
-    <string name="noCard">Your sdcard could not be accessed!</string>
-    <string name="saveFail">Your database could not be exported!</string>
-    <string name="saveWin">Your database has been exported to the sdcard.</string>
-    <string name="loadFileMenu">Import DB</string>
-    <string name="exportMenu">Export DB</string>
+    <string name="hello">Application pour le décompte des papillons\n\nIl permet de compter les papillons par espèces pendant que vous marchez.\n\nVous pouvez trouver des instructions dans le menu \"Aide\".</string>
+    <string name="viewCountButton">Liste du décompte</string>
+    <string name="viewSpeciesButton">Montrer les résultats</string>
+    <string name="editMetaButton">Préparer le décompte</string>
+    <string name="changeLogTitle">Info sur l\'app</string>
+    <string name="viewHelpTitle">Aide</string>
+    <string name="noCard">Votre carte SD ne peut pas être atteinte!</string>
+    <string name="saveFail">Votre base de données ne peut pas être exportée!</string>
+    <string name="saveWin">Votre base de données a étée exportée vers la carte SD.</string>
+    <string name="loadFileMenu">Importer DB</string>
+    <string name="exportMenu">Exporter DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
-    <string name="exportCSVMenu">Export Data -> CSV File</string>
-    <string name="resetDBMenu">Reset Data</string>
-    <string name="importBasisMenu">Import Basic DB</string>
+    <string name="exportCSVMenu">Export Données -> fichier CSV</string>
+    <string name="resetDBMenu">Réinitialiser données</string>
+    <string name="importBasisMenu">Importer Basic DB</string>
     <string name="importFail">Your database could not be imported!</string>
     <string name="importWin">Your database has been imported.</string>
     <string name="noDb">Please put \'tourcount0.db\' on your /sdcard partition.</string>
@@ -47,7 +47,7 @@
 
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>
-    <string name="fileSize">Size</string>
+    <string name="fileSize">Taille</string>
 
     <!-- EditMetaActivity -->
     <string name="zlist">Count List</string>
@@ -69,7 +69,7 @@
     <string name="valClouds">Clouds out of range</string>
     <string name="date">Date</string>
     <string name="plz">Po. Code</string>
-    <string name="city">City</string>
+    <string name="city">Ville</string>
     <string name="place">Place</string>
     <string name="starttm">Time from</string>
     <string name="endtm">until</string>
@@ -120,7 +120,7 @@
     <string name="isdouble"> is double!</string>
 
     <!-- ChangeLog -->
-    <string name="changelog_full_title">App Info</string>
+    <string name="changelog_full_title">info sur l\'app</string>
     <string name="changelog_title">What\'s New?</string>
     <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">more&#8230;</string>

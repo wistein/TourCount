@@ -80,7 +80,7 @@ $ 8
 $ 7
   % 4. Further functions
   !
-  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds and background. 
+  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds, alerts or left-/right-hand counting page. 
   ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
   _ 
   ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
