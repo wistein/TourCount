@@ -11,4 +11,5 @@ public class Temp
 {
     public int id;
     public String temp_loc;
+    public int temp_cnt; // count of bulk entry in EditIndividualActivity
 }

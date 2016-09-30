@@ -95,6 +95,7 @@
     <string name="stadium_4">Ei</string>
     <string name="state">Zust. (0-6)</string>
     <string name="state1">Zust. (1-6)</string>
+    <string name="count1">Anz.</string>
     <string name="valState">Zustand überprüfen!</string>
     <string name="note">Bemerkung zum Individuum</string>
 

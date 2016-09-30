@@ -30,6 +30,8 @@ import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
+import com.wmstein.tourcount.database.Temp;
+import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
 import com.wmstein.tourcount.widgets.CountingWidgetLH;
 import com.wmstein.tourcount.widgets.NotesWidget;
@@ -81,14 +83,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // the actual data
     Section section;
     List<Count> counts;
-
+    Temp temp;
+    
     List<CountingWidget> countingWidgets;
     List<CountingWidgetLH> countingWidgetsLH;
 
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
+    private TempDataSource tempDataSource;
 
+    private int temp_cnt;
     private int i_Id = 0;
     private String spec_name;
     private int spec_count;
@@ -103,6 +108,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
+        tempDataSource = new TempDataSource(this);
 
         tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -221,8 +227,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private void getPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);
-        brightPref = prefs.getBoolean("pref_bright", true);
-        fontPref = prefs.getBoolean("pref_note_font", false);
+        brightPref = prefs.getBoolean("pref_bright", true);   // bright counting page
+        fontPref = prefs.getBoolean("pref_note_font", false); // larger font for remarks
         handPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
@@ -281,6 +287,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource.open();
         countDataSource.open();
         individualsDataSource.open();
+        tempDataSource.open();
 
         // load the data
         // sections
@@ -370,6 +377,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
         }
 
+        temp = tempDataSource.getTemp();
+
         if (awakePref)
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -402,6 +411,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource.close();
         countDataSource.close();
         individualsDataSource.close();
+        tempDataSource.close();
 
         // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
         // has denied wakelock permission to TourCount
@@ -491,6 +501,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
+        intent.putExtra("count_id", count_id);
         intent.putExtra("indiv_id", i_Id);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("Latitude", latitude);
@@ -541,6 +552,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
+        intent.putExtra("count_id", count_id);
         intent.putExtra("indiv_id", i_Id);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("Latitude", latitude);
@@ -562,7 +574,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             widget.countDown();
             i_Id = individualsDataSource.readLastIndividual(count_id);
-            if (i_Id > 0)
+            if (i_Id > 0 && temp.temp_cnt < 2)
             {
                 deleteIndividual(i_Id);
                 i_Id--;
@@ -625,7 +637,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // delete individual for count_id
     public void deleteIndividual(int id)
     {
-        Toast.makeText(CountingActivity.this, getString(R.string.indivdel1) + spec_name, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(CountingActivity.this, getString(R.string.indivdel1) + spec_name, Toast.LENGTH_SHORT).show();
         System.out.println(getString(R.string.indivdel) + " " + id);
         individualsDataSource.deleteIndividualById(id);
     }

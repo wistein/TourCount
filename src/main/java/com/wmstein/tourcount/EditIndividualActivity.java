@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.wmstein.tourcount.database.Count;
+import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Individuals;
 import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Temp;
@@ -39,10 +41,12 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
     Individuals individuals;
     Temp temp;
+    Count counts;
 
     // the actual data
     private IndividualsDataSource individualsDataSource;
     private TempDataSource tempDataSource;
+    private CountDataSource countDataSource;
 
     LinearLayout individ_area;
 
@@ -54,6 +58,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     // preferences
     private boolean brightPref;
 
+    private int count_id;
     private int i_id;
     private String specName;
     private double latitude, longitude, height;
@@ -85,6 +90,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+            count_id = extras.getInt("count_id");
             i_id = extras.getInt("indiv_id");
             specName = extras.getString("SName");
             latitude = extras.getDouble("Latitude");
@@ -123,6 +129,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individualsDataSource.open();
         tempDataSource = new TempDataSource(this);
         tempDataSource.open();
+        countDataSource = new CountDataSource(this);
+        countDataSource.open();
 
         String[] stateArray = {
             getString(R.string.stadium_1),
@@ -145,6 +153,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         individuals = individualsDataSource.getIndividual(i_id);
         temp = tempDataSource.getTemp();
+        counts = countDataSource.getCountById(count_id);
 
         // display the editable data
         eiw = new EditIndividualWidget(this, null);
@@ -174,6 +183,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         eiw.setWidgetState1(getString(R.string.state));
         eiw.setWidgetState2(individuals.state_1_6);
 
+        eiw.setWidgetCount1(getString(R.string.count1));
+        eiw.setWidgetCount2(1);
+
         eiw.setWidgetIndivNote1(getString(R.string.note));
         eiw.setWidgetIndivNote2(individuals.notes);
 
@@ -194,6 +206,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // close the data sources
         individualsDataSource.close();
         tempDataSource.close();
+        countDataSource.close();
     }
 
     public boolean saveData()
@@ -234,6 +247,11 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             return false;
         }
 
+        // number of individuals
+        int newcount = eiw.getWidgetCount2();
+        counts.count = counts.count + newcount - 1; // -1 as CountingActivity already added 1
+        temp.temp_cnt = newcount;
+        
         // Notes
         String newnotes = eiw.getWidgetIndivNote2();
         if (!newnotes.equals(""))
@@ -243,6 +261,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         individualsDataSource.saveIndividual(individuals);
         tempDataSource.saveTemp(temp);
+        countDataSource.saveCount(counts);
 
         return true;
     }
@@ -270,6 +289,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 // close the data sources
                 individualsDataSource.close();
                 tempDataSource.close();
+                countDataSource.close();
             }
         }
         return super.onOptionsItemSelected(item);

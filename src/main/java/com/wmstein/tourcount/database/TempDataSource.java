@@ -19,6 +19,7 @@ public class TempDataSource
     private String[] allColumns = {
         DbHelper.T_ID,
         DbHelper.T_TEMP_LOC,
+        DbHelper.T_TEMP_CNT,
     };
 
     public List<Temp> temp_list;
@@ -43,6 +44,7 @@ public class TempDataSource
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.T_ID, temp.id);
         dataToInsert.put(DbHelper.T_TEMP_LOC, temp.temp_loc);
+        dataToInsert.put(DbHelper.T_TEMP_CNT, temp.temp_cnt);
         database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
     }
 
@@ -51,6 +53,7 @@ public class TempDataSource
         Temp temp = new Temp();
         temp.id = cursor.getInt(cursor.getColumnIndex(DbHelper.T_ID));
         temp.temp_loc = cursor.getString(cursor.getColumnIndex(DbHelper.T_TEMP_LOC));
+        temp.temp_cnt = cursor.getInt(cursor.getColumnIndex(DbHelper.T_TEMP_CNT));
         return temp;
     }
 

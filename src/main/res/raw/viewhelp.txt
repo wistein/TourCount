@@ -60,7 +60,7 @@ $ 8
   !
   ! Start with "Counting List". 
   ! To count just tap on the (+)-Button of the corresponding species.
-  ! The counter will increment and a page to enter individual data opens. Latitude, longitude, height as well as date and time will add automatically. Go back to the counting page by tapping the "Save" button.
+  ! The counter will increment and a page to enter individual data opens. Latitude, longitude, height as well as date and time will be added automatically. Multiple counts may be applied. Go back to the counting page by tapping the "Save" button.
   ! The (-)-Buttons allows for corrections. Mind that the (-)-Button reduces the individuals list for the last entry of a species. 
   _ 
   ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for editing the list of species. 

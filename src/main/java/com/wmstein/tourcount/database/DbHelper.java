@@ -63,6 +63,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     public static final String T_ID = "_id";
     public static final String T_TEMP_LOC = "temp_loc";
+    public static final String T_TEMP_CNT = "temp_cnt";
 
     private Context mContext;
     private SQLiteDatabase db;
@@ -106,7 +107,8 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL(sql);
         sql = "create table " + TEMP_TABLE + " ("
             + T_ID + " integer primary key, "
-            + T_TEMP_LOC + " text)";
+            + T_TEMP_LOC + " text, "
+            + T_TEMP_CNT + " int)";
         db.execSQL(sql);
         sql = "create table " + INDIVIDUALS_TABLE + " ("
             + I_ID + " integer primary key, "
@@ -140,6 +142,7 @@ public class DbHelper extends SQLiteOpenHelper
         values1 = new ContentValues();
         values1.put(T_ID, 1);
         values1.put(T_TEMP_LOC, "");
+        values1.put(T_TEMP_CNT, 0);
         db.insert(TEMP_TABLE, null, values1);
 
         //Log.i(TAG, "Success!");

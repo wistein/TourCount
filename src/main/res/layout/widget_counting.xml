@@ -28,7 +28,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="38dp">
+            android:layout_height="28dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -71,7 +71,6 @@
                 android:id="@+id/countCount"
                 android:hint="@string/charZero"
                 android:textAlignment="center"
-                android:singleLine="true"
                 android:paddingBottom="1dp"
                 android:paddingTop="1dp"
                 android:paddingStart="1dp"

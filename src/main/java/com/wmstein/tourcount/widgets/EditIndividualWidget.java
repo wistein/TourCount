@@ -32,6 +32,8 @@ public class EditIndividualWidget extends LinearLayout
     EditText widget_stadium2;
     TextView widget_state1; // state_1-6
     EditText widget_state2;
+    TextView widget_count1; // number of individuals
+    EditText widget_count2;
     TextView widget_indivnote1; // note
     EditText widget_indivnote2;
     TextView widget_xcoord1; // x-coord
@@ -56,6 +58,8 @@ public class EditIndividualWidget extends LinearLayout
         widget_stadium2 = (EditText) findViewById(R.id.widgetStadium2);
         widget_state1 = (TextView) findViewById(R.id.widgetState1); // State_1-6
         widget_state2 = (EditText) findViewById(R.id.widgetState2);
+        widget_count1 = (TextView) findViewById(R.id.widgetCount1); // number of individuals
+        widget_count2 = (EditText) findViewById(R.id.widgetCount2);
         widget_indivnote1 = (TextView) findViewById(R.id.widgetIndivNote1); // Note
         widget_indivnote2 = (EditText) findViewById(R.id.widgetIndivNote2);
         widget_xcoord1 = (TextView) findViewById(R.id.widgetXCoord1); // X-Coord
@@ -107,6 +111,17 @@ public class EditIndividualWidget extends LinearLayout
     public void setWidgetState2(int name)
     {
         widget_state2.setText(String.valueOf(name));
+    }
+
+    // number of individuals
+    public void setWidgetCount1(String title)
+    {
+        widget_count1.setText(title);
+    }
+
+    public void setWidgetCount2(int name)
+    {
+        widget_count2.setText(String.valueOf(name));
     }
 
     // note
@@ -184,6 +199,13 @@ public class EditIndividualWidget extends LinearLayout
             return 100;
         else
             return Integer.parseInt(text);
+    }
+
+    // get number of individuals
+    public int getWidgetCount2()
+    {
+        String text = widget_count2.getText().toString();
+        return Integer.parseInt(text);
     }
 
     // get PLZ with plausi

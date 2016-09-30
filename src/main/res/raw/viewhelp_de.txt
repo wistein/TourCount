@@ -60,7 +60,7 @@ $ 8
   !
   ! Beginne mit "Zählliste". 
   ! Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Art. 
-  ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Mittels Speicher-Button geht es zurück zur Zählseite.
+  ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Mehrfachzählungen können eingegeben werden. Mittels Speicher-Button geht es zurück zur Zählseite.
   ! Mit dem (-)-Button kann ggf. korrigiert werden. Beachte, dass der (-)-Button den letzten Eintrag der Art aus der Individuen-Liste löscht. 
   _ 
   ! Mit dem Bleistift-Button in der Kopfzeile der Zählerseite lassen sich die Art-Einträge editieren. 
