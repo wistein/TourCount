@@ -8,13 +8,13 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="5dp"
+              android:layout_marginStart="1dp"
               android:layout_marginTop="5dp"
-              android:layout_marginEnd="5dp"
+              android:layout_marginEnd="1dp"
               android:paddingStart="5dp"
               android:paddingEnd="5dp"
               android:paddingBottom="2dp"
-              android:background="@drawable/rounded_corner">
+              android:background="@drawable/corner">
 
     <LinearLayout
         android:orientation="vertical"
@@ -39,10 +39,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:textStyle="bold"
             android:id="@+id/listName"
-            android:background="@drawable/count_background"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:background="@drawable/list_background"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"/>
 

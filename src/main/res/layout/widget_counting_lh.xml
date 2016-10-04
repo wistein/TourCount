@@ -71,7 +71,7 @@
 
             <Space
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"/>
 
             <com.wmstein.tourcount.AutoFitText
@@ -81,7 +81,6 @@
                 android:id="@+id/countCountLH"
                 android:hint="@string/charZero"
                 android:textAlignment="center"
-                android:singleLine="true"
                 android:paddingBottom="1dp"
                 android:paddingTop="1dp"
                 android:paddingStart="1dp"
@@ -91,11 +90,12 @@
                 android:background="@drawable/count_background"
                 android:layout_gravity="center|top"
                 android:gravity="center_vertical|center_horizontal"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:maxLines="1"/>
 
             <Space
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="2.8"/>
 
             <!-- perhaps replace with ImageButton http://developer.android.com/guide/topics/ui/controls/button.html -->

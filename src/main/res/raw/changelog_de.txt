@@ -25,6 +25,11 @@
   _
   _ email: stein.wm@web.de
   _
+$ 2.1.2
+  % Version 2.1.2
+  _ 03.10.2016
+    * Layout der Ergebnisseite verbessert 
+
 $ 2.1.1
   % Version 2.1.1
   _ 30.09.2016

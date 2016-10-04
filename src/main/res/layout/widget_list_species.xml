@@ -8,7 +8,7 @@
               android:baselineAligned="false"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/list_background"
+              android:background="@drawable/corner"
               android:orientation="horizontal"
               android:padding="3dp"
               tools:context=".ListSpeciesActivity">
@@ -19,8 +19,18 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:paddingStart="3dp"
-        android:paddingEnd="3dp"
+        android:paddingEnd="10dp"
         android:paddingTop="0dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:paddingTop="2dp"
+            android:background="@android:color/white"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -34,8 +44,8 @@
                 android:layout_weight="8.6"
                 android:id="@+id/txtSpecName"
                 android:gravity="start"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textColor="#bfffff"
+                android:textSize="17sp"
                 android:padding="4sp"
                 android:textStyle="bold"/>
 
@@ -48,13 +58,13 @@
                 android:hint="@string/charZero"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                android:singleLine="true"
                 android:padding="0dp"
                 android:textColor="#FFFFFF"
                 android:background="@drawable/count_background"
                 android:layout_marginBottom="0dp"
                 android:layout_gravity="center|top"
-                android:gravity="center|center_vertical|center_horizontal"/>
+                android:gravity="center|center_vertical|center_horizontal"
+                android:maxLines="1"/>
 
         </LinearLayout>
 
