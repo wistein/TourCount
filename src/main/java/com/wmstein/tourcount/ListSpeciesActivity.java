@@ -21,11 +21,10 @@ import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
 
-/**
+/****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 15.03.2016
  */
-
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountListSpeciesActivity";
@@ -40,6 +39,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
 
     // preferences
     private boolean awakePref;
+    private String sortPref;
 
     // the actual data
     private CountDataSource countDataSource;
@@ -84,6 +84,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private void getPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);
+        sortPref = prefs.getString("pref_sort_sp", "none"); // sorted species list
     }
 
     @Override
@@ -159,7 +160,18 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         countDataSource.open();
 
         // load the data
-        specs = countDataSource.getAllSpecies();
+        switch (sortPref)
+        {
+        case "names_alpha":
+            specs = countDataSource.getCntSpeciesSrtName();
+            break;
+        case "codes":
+            specs = countDataSource.getCntSpeciesSrtCode();
+            break;
+        default:
+            specs = countDataSource.getCntSpecies();
+            break;
+        }
 
         // display all the counts by adding them to listSpecies layout
         for (Count spec : specs)

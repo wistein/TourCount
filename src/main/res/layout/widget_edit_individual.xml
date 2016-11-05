@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   - widget_edit_individual.xml used by EditIndividualActivity.java  
   ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

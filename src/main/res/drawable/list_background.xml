@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+  list_background.xml
+  used by widget_list*.xml. 
+  Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <stroke

@@ -18,6 +18,7 @@ import java.io.Serializable;
 public class CountEditWidget extends LinearLayout implements Serializable
 {
     private transient EditText countName;
+    private transient EditText countCode;
     private ImageButton deleteButton;
     public int countId;
 
@@ -28,6 +29,7 @@ public class CountEditWidget extends LinearLayout implements Serializable
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_edit_count, this, true);
         countName = (EditText) findViewById(R.id.countName);
+        countCode = (EditText) findViewById(R.id.countCode);
         deleteButton = (ImageButton) findViewById(R.id.deleteCount);
         deleteButton.setTag(Integer.valueOf(0));
     }
@@ -40,6 +42,16 @@ public class CountEditWidget extends LinearLayout implements Serializable
     public void setCountName(String name)
     {
         countName.setText(name);
+    }
+
+    public String getCountCode()
+    {
+        return countCode.getText().toString();
+    }
+
+    public void setCountCode(String name)
+    {
+        countCode.setText(name);
     }
 
     public void setCountId(int id)

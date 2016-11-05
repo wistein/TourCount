@@ -15,7 +15,6 @@
     <string name="customMissing">Your custom background image could not be found; the default will be used instead.</string>
     <string name="customNotDefined">A custom background image is not defined; the default will be used instead.</string>
     <string name="customTooBig">Sorry, trying to set the background image has caused an out of memory error.</string>
-    <string name="sensor_present">Proximity sensor is not present!</string>
     
     <!-- WelcomeActivity -->
     <string name="hello">Butterfly Monitoring App\n\nSupports species-specific counting of butterflies on walks.\n\nYou can find instructions for the App under the menu \"Help\".</string>
@@ -149,6 +148,8 @@
     <string name="pref_note_font_summ">Select this option to increase the size of note fonts on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
+    <string name="pref_sort_order">Sorting</string>
+    <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
     <string name="pref_duplicate">Prevent duplicate species</string>
     <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
     <string name="pref_button_sound">Count button sounds</string>
@@ -159,6 +160,7 @@
     <!-- CountOptionsActivity -->
     <string name="editCountValue">You may change the internal count value of %1$s from its current value of %2$d by editing it here.\nBut this generates inconsistency between the individuals table and count number in the DB.</string>
     <string name="countName">New Species</string>
+    <string name="countCode">Code</string>
     <string name="notesSpecies">Species Notes</string>
     <string name="yesDeleteIt">Delete</string>
     <string name="noCancel">Cancel</string>

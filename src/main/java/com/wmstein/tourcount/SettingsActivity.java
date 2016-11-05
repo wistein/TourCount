@@ -16,12 +16,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-/**
- * SettingsActivity rules settings for background, notes font, button sound and screen
- * Created by milo on 05/05/2014.
- * Modified by wmstein on 18.02.2016
+/**********************************************************
+ * Set the Settings parameters for TourCount
+ * Based on SettingsActivity created by milo on 05/05/2014.
+ * Adapted for TransektCount by wmstein on 18.02.2016
  */
-
 public class SettingsActivity extends PreferenceActivity
 {
     private static String TAG = "tourcountPreferenceActivity";

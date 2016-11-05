@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!-- 
   - widget_counting.xml is used by CountingWidget.java
   - Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:baselineAligned="false"
               android:orientation="horizontal"

@@ -23,9 +23,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-/**
- * A very simple CSV writer released under a commercial-friendly license.
+/******************************************************************
+ * Based on "A very simple CSV writer" by 
  * @author Glen Smith
+ *
+ * The following code is an extraction of the library of Glen Smith 
+ * and provides only the functions needed here.
+ * Modified by wmstein
  */
 public class CSVWriter implements Closeable, Flushable
 {

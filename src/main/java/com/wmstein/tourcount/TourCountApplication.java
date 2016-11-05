@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import java.io.File;
 
-/**
- * Created by milo on 14/05/2014.
+/**********************************************************
+ * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Changed by wmstein on 18.02.2016
  */
 public class TourCountApplication extends Application

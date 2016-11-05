@@ -28,13 +28,13 @@ import com.wmstein.tourcount.widgets.CountEditWidget;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by milo on 05/05/2014.
+/***************************************************************
+ * Edit the species list (change, delete) and insert new species
+ * EditSectionActivity is called from CountingActivity
+ * Uses CountEditWidget.java, activity_edit_section.xml.
+ * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Changed by wmstein on 18.02.2016
  */
-
-/***********************************************************************************************************************/
-// EditSectionActivity is called from CountingActivity 
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     TourCountApplication tourCount;
@@ -54,6 +54,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     AlertDialog.Builder areYouSure;
 
     public ArrayList<String> countNames;
+    public ArrayList<String> countCodes;
     public ArrayList<String> cmpCountNames;
     public ArrayList<Integer> countIds;
     public ArrayList<CountEditWidget> savedCounts;
@@ -75,6 +76,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         setContentView(R.layout.activity_edit_section);
 
         countNames = new ArrayList<>();
+        countCodes = new ArrayList<>();
         countIds = new ArrayList<>();
         savedCounts = new ArrayList<>();
 
@@ -157,6 +159,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             // widget
             CountEditWidget cew = new CountEditWidget(this, null);
             cew.setCountName(count.name);
+            cew.setCountCode(count.code);
             cew.setCountId(count.id);
             counts_area.addView(cew);
         }
@@ -185,17 +188,20 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
      * order, so I can link a count name to its id by knowing the index.
      */
         countNames.clear();
+        countCodes.clear();
         countIds.clear();
         int childcount = counts_area.getChildCount();
         for (int i = 0; i < childcount; i++)
         {
             CountEditWidget cew = (CountEditWidget) counts_area.getChildAt(i);
             String name = cew.getCountName();
+            String code = cew.getCountCode();
             // ignore count widgets where the user has filled nothing in. 
             // Id will be 0 if this is a new count.
             if (isNotEmpty(name))
             {
                 countNames.add(name);
+                countCodes.add(code);
                 countIds.add(cew.countId);
             }
         }
@@ -262,12 +268,12 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                         {
                             //Log.i(TAG, "Creating!");
                             //returns newCount
-                            countDataSource.createCount(cew.getCountName());
+                            countDataSource.createCount(cew.getCountName(), cew.getCountCode());
                         }
                         else
                         {
                             //Log.i(TAG, "Updating!");
-                            countDataSource.updateCountName(cew.countId, cew.getCountName());
+                            countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode());
                         }
                         retValue = true;
                     }

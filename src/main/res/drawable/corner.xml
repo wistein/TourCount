@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
-    corner.xml
-  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  corner.xml
+  used by widget_list_title.xml, widget_list_head.xml, widget_list_meta.xml, widget_list_species.xml. 
+  Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
   -->
-
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Transparent background #00000000 -->

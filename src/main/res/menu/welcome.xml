@@ -1,3 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   welcome.xml is used by WelcomeActivity.java
+   Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
@@ -5,67 +10,85 @@
 
     <item
         android:id="@+id/editMeta"
+        android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/editMetaButton"
-        app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_edit">
+        app:showAsAction="always">
     </item>
     <item
         android:id="@+id/viewCounts"
+        android:icon="@drawable/count_white"
         android:title="@string/viewCountButton"
-        app:showAsAction="always"
-        android:icon="@drawable/count_white">
+        app:showAsAction="always">
     </item>
     <item
         android:id="@+id/viewSpecies"
+        android:icon="@android:drawable/ic_menu_view"
         android:title="@string/viewSpeciesButton"
-        app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_view">
-    </item>
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/resetDBMenu"
-        android:title="@string/resetDBMenu"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/importBasisMenu"
-        android:title="@string/importBasisMenu"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/exportBasisMenu"
-        android:title="@string/exportBasisMenu"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/loadFileMenu"
-        android:title="@string/loadFileMenu"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/exportMenu"
-        android:title="@string/exportMenu"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/exportCSVMenu"
-        android:title="@string/exportCSVMenu"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/changeLog"
-        android:title="@string/changeLogTitle"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/viewHelp"
-        android:title="@string/viewHelpTitle"
-        app:showAsAction="never">
+        app:showAsAction="always">
     </item>
 
+    <item
+        android:id="@+id/menu_list_item"
+        android:icon="@drawable/ic_core_overflow"
+        android:title=""
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/action_settings"
+                android:icon="@drawable/preferences"
+                android:title="@string/action_settings"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/resetDBMenu"
+                android:icon="@drawable/clear"
+                android:title="@string/resetDBMenu"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/importBasisMenu"
+                android:icon="@drawable/importr"
+                android:title="@string/importBasisMenu"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/exportBasisMenu"
+                android:icon="@drawable/exportr"
+                android:title="@string/exportBasisMenu"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/loadFileMenu"
+                android:icon="@drawable/importr"
+                android:title="@string/loadFileMenu"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/exportMenu"
+                android:icon="@drawable/exportr"
+                android:title="@string/exportMenu"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/exportCSVMenu"
+                android:icon="@drawable/exportr"
+                android:title="@string/exportCSVMenu"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/changeLog"
+                android:icon="@drawable/logs"
+                android:title="@string/changeLogTitle"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:id="@+id/viewHelp"
+                android:icon="@drawable/help"
+                android:title="@string/viewHelpTitle"
+                app:showAsAction="never">
+            </item>
+
+        </menu>
+    </item>
 </menu>

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    widget_edit_count.xml
+    used by CountEditWidget.java
+    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
@@ -24,6 +28,22 @@
         android:layout_gravity="bottom|start|end|top"
         android:hint="@string/countName"
         android:layout_weight="10"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:padding="5dp"/>
+
+    <EditText
+        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/countCode"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:background="@drawable/count_background"
+        android:layout_gravity="bottom|start|end|top"
+        android:hint="@string/countCode"
+        android:inputType="phone"
+        android:layout_weight="3"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:padding="5dp"/>

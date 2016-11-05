@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
-  - Menu edit_iindividual is used by EditIndividualActivity
-  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
-  -->
-
+   edit_individual.xml is used by EditIndividualActivity.java
+   Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    widget_edit_title.xml
+    used by EditTitleWidget.java
+    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"

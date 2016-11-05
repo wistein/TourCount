@@ -57,6 +57,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     TourCountApplication tourCount;
     SharedPreferences prefs;
+    
     LinearLayout count_area;
     LinearLayout notes_area;
     LinearLayout count_areaLH;
@@ -74,8 +75,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // preferences
     private boolean awakePref;
     private boolean brightPref;
+    private String sortPref;
     private boolean fontPref;
-    private boolean handPref;
+    private boolean lhandPref; // true for lefthand mode of counting screen
     private boolean buttonSoundPref;
     private String buttonAlertSound;
     private double latitude, longitude, height;
@@ -115,7 +117,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
 
-        if (handPref) // if left-handed counting page
+        if (lhandPref) // if left-handed counting page
         {
             setContentView(R.layout.activity_counting_lh);
         }
@@ -133,7 +135,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().setAttributes(params);
         }
 
-        if (handPref) // if left-handed counting page
+        if (lhandPref) // if left-handed counting page
         {
             ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreenLH);
             counting_screen.setBackground(tourCount.getBackground());
@@ -228,8 +230,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         awakePref = prefs.getBoolean("pref_awake", true);
         brightPref = prefs.getBoolean("pref_bright", true);   // bright counting page
+        sortPref = prefs.getString("pref_sort_sp", "none"); // sorted species list on counting page
         fontPref = prefs.getBoolean("pref_note_font", false); // larger font for remarks
-        handPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
+        lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
     }
@@ -272,7 +275,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 */
 
         // clear any existing views
-        if (handPref) // if left-handed counting page
+        if (lhandPref) // if left-handed counting page
         {
             count_areaLH.removeAllViews();
             notes_areaLH.removeAllViews();
@@ -308,7 +311,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             if (!section.notes.isEmpty())
             {
-                if (handPref) // if left-handed counting page
+                if (lhandPref) // if left-handed counting page
                 {
                     NotesWidget section_notes = new NotesWidget(this, null);
                     section_notes.setNotes(section.notes);
@@ -326,7 +329,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         // display counts with notes and alerts
-        if (handPref) // if left-handed counting page
+        if (lhandPref) // if left-handed counting page
         {
             countingWidgetsLH = new ArrayList<>();
         }
@@ -335,10 +338,21 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             countingWidgets = new ArrayList<>();
         }
 
-        counts = countDataSource.getAllSpecies();
-
+        switch (sortPref)
+        {
+        case "names_alpha":
+            counts = countDataSource.getAllSpeciesSrtName();
+            break;
+        case "codes":
+            counts = countDataSource.getAllSpeciesSrtCode();
+            break;
+        default:
+            counts = countDataSource.getAllSpecies();
+            break;
+        }
+        
         // display all the counts by adding them to countCountLayout
-        if (handPref) // if left-handed counting page
+        if (lhandPref) // if left-handed counting page
         {
             for (Count count : counts)
             {
@@ -745,6 +759,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
             return true;
         }
+        
         return super.onOptionsItemSelected(item);
     }
 

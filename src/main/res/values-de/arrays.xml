@@ -10,4 +10,16 @@
         <item>custom</item>
         <item>default</item>
     </string-array>
+
+    <string-array name="pref_sort_sp_entries">
+        <item>Unsortiert</item>
+        <item>nach Artnamen, alphab.</item>
+        <item>nach Codes</item>
+    </string-array>
+    <string-array name="pref_sort_sp_values">
+        <item>none</item>
+        <item>names_alpha</item>
+        <item>codes</item>
+    </string-array>
+
 </resources>

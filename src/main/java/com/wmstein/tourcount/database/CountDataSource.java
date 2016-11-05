@@ -22,6 +22,7 @@ public class CountDataSource
         DbHelper.C_ID,
         DbHelper.C_COUNT,
         DbHelper.C_NAME,
+        DbHelper.C_CODE,
         DbHelper.C_NOTES
     };
 
@@ -42,11 +43,12 @@ public class CountDataSource
         dbHandler.close();
     }
 
-    public Count createCount(String name)
+    public Count createCount(String name, String code)
     {
         ContentValues values = new ContentValues();
         values.put(DbHelper.C_NAME, name);
         values.put(DbHelper.C_COUNT, 0);
+        values.put(DbHelper.C_CODE, code);
         // notes should be default null and so isn't created here
 
         int insertId = (int) database.insert(DbHelper.COUNT_TABLE, null, values);
@@ -64,6 +66,7 @@ public class CountDataSource
         newcount.id = cursor.getInt(cursor.getColumnIndex(DbHelper.C_ID));
         newcount.name = cursor.getString(cursor.getColumnIndex(DbHelper.C_NAME));
         newcount.count = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT));
+        newcount.code = cursor.getString(cursor.getColumnIndex(DbHelper.C_CODE));
         newcount.notes = cursor.getString(cursor.getColumnIndex(DbHelper.C_NOTES));
         return newcount;
     }
@@ -80,16 +83,18 @@ public class CountDataSource
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.C_COUNT, count.count);
         dataToInsert.put(DbHelper.C_NAME, count.name);
+        dataToInsert.put(DbHelper.C_CODE, count.code);
         dataToInsert.put(DbHelper.C_NOTES, count.notes);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(DbHelper.COUNT_TABLE, dataToInsert, where, whereArgs);
     }
 
-    public void updateCountName(int id, String name)
+    public void updateCountName(int id, String name, String code)
     {
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.C_NAME, name);
+        dataToInsert.put(DbHelper.C_CODE, code);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(id)};
         database.update(DbHelper.COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -111,8 +116,8 @@ public class CountDataSource
     {
         List<Count> speci = new ArrayList<>();
 
-        Cursor cursor = database.query(DbHelper.COUNT_TABLE,
-            allColumns, null, null, null, null, null);
+        Cursor cursor = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+            + " order by " + DbHelper.C_ID, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
@@ -126,4 +131,103 @@ public class CountDataSource
         return speci;
     }
 
+    // Used by ListSpeciesActivity
+    public List<Count> getAllSpeciesSrtName()
+    {
+        List<Count> counts = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+            + " order by " + DbHelper.C_NAME, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            counts.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return counts;
+    }
+
+    // Used by ListSpeciesActivity
+    public List<Count> getAllSpeciesSrtCode()
+    {
+        List<Count> counts = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+            + " order by " + DbHelper.C_CODE, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            counts.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return counts;
+    }
+
+    // Used by ListSpeciesActivity
+    public List<Count> getCntSpecies()
+    {
+        List<Count> speci = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+            + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_ID, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            speci.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return speci;
+    }
+
+    // Used by ListSpeciesActivity
+    public List<Count> getCntSpeciesSrtName()
+    {
+        List<Count> counts = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+            + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_NAME, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            counts.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return counts;
+    }
+
+    // Used by ListSpeciesActivity
+    public List<Count> getCntSpeciesSrtCode()
+    {
+        List<Count> counts = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+            + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_CODE, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            counts.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return counts;
+    }
 }

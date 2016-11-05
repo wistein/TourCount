@@ -10,4 +10,16 @@
         <item>custom</item>
         <item>default</item>
     </string-array>
+    
+    <string-array name="pref_sort_sp_entries">
+        <item>None</item>
+        <item>Species Names, alphab.</item>
+        <item>Species Codes</item>
+    </string-array>
+    <string-array name="pref_sort_sp_values">
+        <item>none</item>
+        <item>names_alpha</item>
+        <item>codes</item>
+    </string-array>
+
 </resources>

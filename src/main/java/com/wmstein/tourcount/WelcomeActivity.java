@@ -24,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.wmstein.filechooser.AdvFileChooser;
+import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
@@ -46,19 +47,20 @@ import sheetrock.panda.changelog.ViewHelp;
 
 import static java.lang.Math.sqrt;
 
-/**
+/**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
- * import/export/help/info methods and EditMetaActivity, CountingActivity and ListSpeciesActivity.
+ * import/export/help/info methods and 
+ * EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * <p/>
- * Originally based an BeeCount (GitHub) created by milo on 05/05/2014.
- * Changes and additions by wmstein from 18.04.2016 on
+ * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
+ * Changes and additions for TourCount by wmstein on 18.04.2016
  */
-
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "TourCountWelcomeActivity";
     TourCountApplication tourCount;
     SharedPreferences prefs;
+    
     ChangeLog cl;
     ViewHelp vh;
     private static final int FILE_CHOOSER = 11;
@@ -81,11 +83,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     String state = Environment.getExternalStorageState();
     AlertDialog alert;
 
+    // preferences
+    private String sortPref;
+
     // following stuff for purging export db
     private SQLiteDatabase database;
     private DbHelper dbHandler;
 
     SectionDataSource sectionDataSource;
+    CountDataSource countDataSource;
     HeadDataSource headDataSource;
     IndividualsDataSource individualsDataSource;
 
@@ -98,6 +104,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
+        sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
 
         Section section;
         sectionDataSource = new SectionDataSource(this);
@@ -319,6 +326,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
+        sortPref = prefs.getString("pref_sort_sp", "none");
     }
 
     public void onPause()
@@ -411,9 +419,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         boolean mExternalStorageAvailable;
         boolean mExternalStorageWriteable;
         String state = Environment.getExternalStorageState();
-        tmpfile = new File("/data/data/com.wmstein.tourcount/files/tourcount_tmp.db");
         outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount_" + getcurDate() + ".csv");
-        String destPath = "/data/data/com.wmstein.tourcount/files";
 
         Section section;
         String sectName;
@@ -424,20 +430,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         int temp, wind, clouds;
         String plz, city, place;
         String date, start_tm, end_tm;
-        int spcode, spstate;
+        int spstate;
         double longi, lati, heigh;
         int frst, sum = 0;
         double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0;
-
-        try
-        {
-            destPath = getFilesDir().getPath();
-        } catch (Exception e)
-        {
-            Log.e(TAG, "destPath error: " + e.toString());
-        }
-        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
-        infile = new File(destPath + "/tourcount.db");
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -464,19 +460,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else
         {
-            // export the count table to csv
+            // export the purged count table to csv
             try
             {
-                // save current db as backup db tmpfile
-                copy(infile, tmpfile);
-
-                // purge tourcount.db count table from empty rows 
-                dbHandler = new DbHelper(this);
-                database = dbHandler.getWritableDatabase();
-
-                String sql = "DELETE FROM " + DbHelper.COUNT_TABLE + " WHERE (" + DbHelper.C_COUNT + " = 0);";
-                database.execSQL(sql);
-
                 // open Head and Section table for head and meta info
                 headDataSource = new HeadDataSource(this);
                 headDataSource.open();
@@ -487,7 +473,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 // export purged db as csv
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(outfile));
-                Cursor curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE, null);
 
                 section = sectionDataSource.getSection();
                 sectName = section.name;
@@ -587,19 +572,36 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrCntHead);
 
                 // write counts data
+                dbHandler = new DbHelper(this);
+                database = dbHandler.getWritableDatabase();
+
+                Cursor curCSVCnt;
+
+                switch (sortPref) // sort mode species list
+                {
+                case "codes":
+                    curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                        + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_CODE, null);
+                    break;
+                default:
+                    curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                        + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_NAME, null);
+                    break;
+                }
+                
                 while (curCSVCnt.moveToNext())
                 {
-                    spcode = curCSVCnt.getInt(0);
                     String arrStr[] =
                         {
                             curCSVCnt.getString(2), // species name
-                            String.valueOf(spcode), // species code 
+                            curCSVCnt.getString(3), // species code 
                             curCSVCnt.getString(1), // count
-                            curCSVCnt.getString(3)  // species notes
+                            curCSVCnt.getString(4)  // species notes
                         };
                     csvWrite.writeNext(arrStr);
                     sum = sum + curCSVCnt.getInt(1);
                 }
+                curCSVCnt.close();
 
                 // write total sum
                 String arrSum[] =
@@ -620,7 +622,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 String arrIndHead[] =
                     {
                         getString(R.string.individuals),
-                        getString(R.string.speccode),
                         getString(R.string.locality),
                         getString(R.string.ycoord),
                         getString(R.string.xcoord),
@@ -642,7 +643,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 frst = 1;
                 while (curCSVInd.moveToNext())
                 {
-                    spcode = curCSVInd.getInt(1);
                     spstate = curCSVInd.getInt(12);
                     longi = curCSVInd.getDouble(4);
                     lati = curCSVInd.getDouble(3);
@@ -650,7 +650,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     String arrIndividual[] =
                         {
                             curCSVInd.getString(2),  //species name
-                            String.valueOf(spcode),  //species code 
                             curCSVInd.getString(9),  //locality
                             String.valueOf(longi),   //longitude
                             String.valueOf(lati),    //latitude
@@ -705,19 +704,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrAvCoords);
 
                 csvWrite.close();
-                curCSVCnt.close();
                 curCSVInd.close();
                 dbHandler.close();
 
-                // restore current db from tmpfile
-                copy(tmpfile, infile);
+                headDataSource.close();
+                sectionDataSource.close();
+                individualsDataSource.close();
 
-                // delete backup db
-                boolean d0 = tmpfile.delete();
-                if (d0)
-                {
-                    Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
             } catch (IOException e)
             {
                 Log.e(TAG, "Failed to export csv file");
@@ -858,7 +852,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database.execSQL(sql);
 
         sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-            + DbHelper.T_TEMP_LOC + " = '';";
+            + DbHelper.T_TEMP_LOC + " = '', "
+            + DbHelper.T_TEMP_CNT + " = 0;";
         database.execSQL(sql);
 
         dbHandler.close();

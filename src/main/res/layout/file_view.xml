@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    file_view.xml
+    used by AdvFileChooser.java
+    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+ -->
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="wrap_content" 
   android:orientation="vertical" 
-  android:layout_width="fill_parent">  	
+  android:layout_width="fill_parent">
+    
   	<LinearLayout 
   		android:layout_height="wrap_content" 
   		android:orientation="horizontal" 
-  		android:layout_width="fill_parent"
-  		>  
+  		android:layout_width="fill_parent">
+        
   		<ImageView
 			android:id="@+id/img1" 
 			android:layout_width="wrap_content" 
@@ -16,7 +22,8 @@
 			android:layout_marginTop="5dip" 
 			android:layout_marginStart="5dip"
 			android:maxLines="1"/>
-  		<LinearLayout 
+  		
+        <LinearLayout 
   			android:layout_height="wrap_content" 
   			android:orientation="vertical" 
   			android:layout_width="fill_parent"
@@ -39,7 +46,7 @@
 				android:layout_marginStart="5dip">
 			</TextView>
 		</LinearLayout>
+        
 	</LinearLayout>
-	
 	
 </LinearLayout>

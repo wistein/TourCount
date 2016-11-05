@@ -4,10 +4,12 @@
  * **************************************************************************
  *  Copyright (c) 2016 Wilhelm Stein
  *  Author: Wilhelm Stein
+ *
  *  Based on BeeCount, author: knirrirr 
  *  Modified AutoFitText.java, original code from author: pheuschk
  *  Modified ChangeLog.java original code from author: Karsten Priegnitz
  *  Modified CSVWriter.java original code copyright 2015 Bytecode Pty Ltd.
+ *  filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

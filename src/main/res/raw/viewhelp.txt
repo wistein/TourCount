@@ -30,73 +30,73 @@ $ 10
   ! The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into the butterfly registration system or transferred to a PC for your own processing.
   _ 
   ! The app is open source (published under https://github.com/wistein/TourCount), has no tracking or advertising functions, demands only for permits which are needed for recording the data.
-  ! It needs access rights to storage media and uses GPS to register positions while counting.
+  ! It needs access rights to storage media and uses GPS to register positions per count.
 
 $ 9
   % 2. Set up
   !
   ! Before initial use you must set up an empty basic database (Basic DB).
-  ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tapping on the saving symbol. The meta data may be modified anytime later. 
+  ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tipping on the saving symbol. The meta data may be modified anytime later. 
   ! Then edit the species list on "Counting List". Use the Pencil-Button for that.
-  ! Get this list an entry for each expected species via (+)-button, e.g.:
+  ! Enter a name and a code (five-digit) for each expected species via (+)-button, e.g.:
   _ 
-  ! --------------------
+  ! ---------------------------------------------
   ! ...
-  ! Pieris napi
-  ! Pieris rapae
-  ! Pieris na./ra.-compl.
+  ! Pieris napi ................ 07000
+  ! Pieris rapae .............. 06998
+  ! Pieris na./ra.-compl.	07000*
   ! ...
   _ 
+  ! The codes will be used as an option to sort the list. The *-symbol marks a species group. With "Save List" you get it stored into the database.
   ! This list can be changed or supplemented anytime afterwards.
-  ! With "Save List" you get it stored into the database.
   _ 
   ! When you have created the meta data and the counting list for all expected species, the database is ready for export as the "Basic Database".
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page.
-  ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models).
+  ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models and Android versions).
   ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. 
   
 $ 8
   % 3. Usage
   !
   ! Start with "Counting List". 
-  ! To count just tap on the (+)-Button of the corresponding species.
-  ! The counter will increment and a page to enter individual data opens. Latitude, longitude, height as well as date and time will be added automatically. Multiple counts may be applied. Go back to the counting page by tapping the "Save" button.
+  ! To count just tip on the (+)-Button of the corresponding species.
+  ! The counter will increment and a page to enter individual data opens. Latitude, longitude, height as well as date and time will be added automatically. Multiple counts may be applied. Go back to the counting page by tipping the "Save" button.
   ! The (-)-Buttons allows for corrections. Mind that the (-)-Button reduces the individuals list for the last entry of a species. 
   _ 
   ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for editing the list of species. 
-  _
+  _ 
   ! The Pencil-Button in each species row of the counting page opens the species editing page that lets you add remarks for each species and set its counters to any value. Mind that this leads to different numbers in sum and individual table.
   ! If you enter a species related remark this will be shown in an extra line beneath the row. 
   _ 
-  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by tapping the Save-Button. 
+  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by tipping the Save-Button. 
   ! You should leave TourCount always from its starting page, as in this state the database is safely closed and GPS no longer used by TourCount.
   _ 
   ! Some app pages have a specific context menu. You can activate it with the 3-point-symbol in the upper right corner.
   _ 
   ! When you have a large list or have collected big amounts of data the start of pages may be delayed, especially when entering the counting page or the result page, as those need heavy calculations.
-  _  
+  _ 
   ! From the Starting page you can open the results page with "Show Results". It shows the meta data of the tour and the list of butterfly counts. It may take a few seconds to show up.
 
 $ 7
   % 4. Further functions
   !
-  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds, alerts or left-/right-hand counting page. 
+  ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
+  _ 
+  ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds, sorting order or left-/right-hand counting. 
   ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
   _ 
-  ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
-  _
   ! For preparing a new tour you may use “Reset Data” to reset the tour-specific meta data and count data. Alternatively you may import the Basic DB from /sdcard/tourcount0.db 
   _ 
   ! Internally, TourCount stores the data always in a single, equally named SQlite-DB file in the app's own storage area. As this file cannot be read or changed directly by the user, exporting the data to files in a user reachable storage area is necessary.
   _ 
-  ! By “Export Basic DB” you may export the DB as empty "Basic DB" which is reasonable, when lasting changes of a counting list have been made (e.g. new species added).
+  ! By “Export Basic DB” you may export the DB as empty "Basic DB" which is reasonable, when lasting changes of the counting list have been made (e.g. new species added).
   _ 
   ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc. (Mind: The db file name must start with the string “tourcount”, otherwise the file cannot be imported).
   _ 
   ! Exporting the current database (Export DB) writes a copy of the complete DB to /sdcard/tourcount_YYYY-MM-DD_hhmmss.db.
   _ 
-  ! The function “Export Data -> CSV File” writes the counting results into a MS Excel readable .csv-file to /sdcard/tourcount_YYYY-MM-DD_hhmmss.csv.
-  _
+  ! The function “Export Data -> CSV File” writes the counting results into a pre-formatted MS Excel readable .csv-file to /sdcard/tourcount_YYYY-MM-DD_hhmmss.csv.
+  _ 
   ! Under "App Info" you find the email address of the author, the history of the app and the license note.
   _ 
   ! The counting page is temporarily switched off when the phone is put into a pocket (under Android 5.0.1 or newer) and provides a "Share" function for sending notes using a standard app, like SMS or email.

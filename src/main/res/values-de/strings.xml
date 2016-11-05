@@ -15,7 +15,6 @@
     <string name="customMissing">Dein Hintergrundbild wurde nicht gefunden; es wird der Standard-Hintergrund verwendet.</string>
     <string name="customNotDefined">Es wurde kein Hintergrundbild gewählt; es wird der Standard-Hintergrund verwendet.</string>
     <string name="customTooBig">Leider erzeugt der Versuch, das gewählte Hintergrundbild zu setzen, einen Out-of-Memory-Fehler.</string>
-    <string name="sensor_present">Proximity-Sensor ist nicht vorhanden!</string>
     
     <!-- WelcomeActivity -->
     <string name="hello">App zur Registrierung von Tagfaltern\n\nUnterstützt die artspezifische Erfassung von Schmetterlingen unterwegs.\n\nEine Anleitung zur App gibt es unter dem Menüpunkt \"Hilfe\".</string>
@@ -148,6 +147,8 @@
     <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
     <string name="pref_left_hand">Linkshänder</string>
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
+    <string name="pref_sort_order">Sortierung</string>
+    <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
     <string name="pref_sound">Tonalarm</string>
     <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
     <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
@@ -160,6 +161,7 @@
     <string name="editCountValue">Du kannst den momentanen Intern-Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>
     <string name="notesSpecies">Bemerkung zur Art</string>
     <string name="countName">Neue Art</string>
+    <string name="countCode">Code</string>
     <string name="yesDeleteIt">Löschen</string>
     <string name="noCancel">Abbrechen</string>
 
