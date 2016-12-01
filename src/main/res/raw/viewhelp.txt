@@ -33,9 +33,9 @@ $ 10
   ! It needs access rights to storage media and uses GPS to register positions per count.
 
 $ 9
-  % 2. Set up
+  % 2. Setting up
   !
-  ! Before initial use you must set up an empty basic database (Basic DB).
+  ! Before initial use you must set up an empty basic database (Basic DB) or import and adapt an example Basic DB (see docs in GitHub).
   ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tipping on the saving symbol. The meta data may be modified anytime later. 
   ! Then edit the species list on "Counting List". Use the Pencil-Button for that.
   ! Enter a name and a code (five-digit) for each expected species via (+)-button, e.g.:
@@ -47,10 +47,12 @@ $ 9
   ! Pieris na./ra.-compl.	07000*
   ! ...
   _ 
-  ! The codes will be used as an option to sort the list. The *-symbol marks a species group. With "Save List" you get it stored into the database.
-  ! This list can be changed or supplemented anytime afterwards.
+  ! The codes will be used as an option to sort the list and as a reference to show butterfly pictures on the counting and results page.
+  ! The codes derive from the numbering according to Karsholt/Razowski, as e.g. in the German instruction to butterfly monitoring (see docs in GitHub).
+  ! An appended *-symbol marks a species group. 
+  ! With "Save List" you store the input into the database. This list can be changed or supplemented anytime afterwards.
   _ 
-  ! When you have created the meta data and the counting list for all expected species, the database is ready for export as the "Basic Database".
+  ! When you have created the meta data and the counting list for all expected species, the database is ready for export as your "Basic Database".
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page.
   ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models and Android versions).
   ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. 

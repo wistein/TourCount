@@ -17,7 +17,7 @@
     <item
         android:id="@+id/viewCounts"
         android:icon="@drawable/count_white"
-        android:title="@string/viewCountButton"
+        android:title="@string/zlist"
         app:showAsAction="always">
     </item>
     <item

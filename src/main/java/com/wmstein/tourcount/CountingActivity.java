@@ -156,7 +156,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
@@ -243,7 +243,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         super.onResume();
 
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             enableProximitySensor();
         }
@@ -405,7 +405,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         super.onPause();
 
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             disableProximitySensor(true);
         }
@@ -463,7 +463,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             disableProximitySensor(true);
         }
@@ -484,7 +484,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
         
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             disableProximitySensor(true);
         }
@@ -535,7 +535,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             disableProximitySensor(true);
         }
@@ -686,7 +686,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void edit(View view)
     {
         // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             disableProximitySensor(true);
         }
@@ -740,7 +740,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         if (id == R.id.menuEditSection)
         {
             // check for API-Level >= 21
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             {
                 disableProximitySensor(true);
             }

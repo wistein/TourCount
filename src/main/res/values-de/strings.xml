@@ -18,8 +18,8 @@
     
     <!-- WelcomeActivity -->
     <string name="hello">App zur Registrierung von Tagfaltern\n\nUnterstützt die artspezifische Erfassung von Schmetterlingen unterwegs.\n\nEine Anleitung zur App gibt es unter dem Menüpunkt \"Hilfe\".</string>
-    <string name="viewCountButton">Zählliste</string>
-    <string name="viewSpeciesButton">Zeige Ergebnis</string>
+    <string name="zlist">Zählliste</string>
+    <string name="viewSpeciesButton">Ergebnis anzeigen</string>
     <string name="editMetaButton">Erfassung vorbereiten</string>
     <string name="changeLogTitle">App-Info</string>
     <string name="viewHelpTitle">Hilfe</string>
@@ -49,7 +49,6 @@
     <string name="fileSize">Größe</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlist">Zählliste</string>
     <string name="zlnotes">Bem. zur Liste</string>
     <string name="spec">Spezies</string>
     <string name="speccode">Spez.-Code</string>

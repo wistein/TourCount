@@ -96,8 +96,26 @@
 
             <Space
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <ImageView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.8"/>
+                android:id="@+id/pSpecieslh"
+                android:gravity="center_vertical|center_horizontal"
+                android:scaleType="fitCenter"
+                android:paddingBottom="1dp"
+                android:paddingEnd="1dp"
+                android:paddingStart="1dp"
+                android:paddingTop="1dp"
+                android:src="@drawable/p00000"
+                android:layout_weight="2.6"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
 
             <!-- perhaps replace with ImageButton http://developer.android.com/guide/topics/ui/controls/button.html -->
             <ImageButton

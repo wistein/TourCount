@@ -18,7 +18,7 @@
     
     <!-- WelcomeActivity -->
     <string name="hello">Butterfly Monitoring App\n\nSupports species-specific counting of butterflies on walks.\n\nYou can find instructions for the App under the menu \"Help\".</string>
-    <string name="viewCountButton">Counting List</string>
+    <string name="zlist">Counting List</string>
     <string name="viewSpeciesButton">Show Results</string>
     <string name="editMetaButton">Prepare Recording</string>
     <string name="changeLogTitle">App Info</string>
@@ -49,7 +49,6 @@
     <string name="fileSize">Size</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlist">Count List</string>
     <string name="zlnotes">Count List Notes</string>
     <string name="spec">Species</string>
     <string name="speccode">Spec. Code</string>

@@ -35,7 +35,7 @@ $ 10
 $ 9
   % 2. Einrichtung
   !
-  ! Vor der erstmaligen Verwendung muss einmalig eine leere Datenbank (Basis-DB) angelegt werden. 
+  ! Vor der erstmaligen Verwendung muss einmalig eine leere Datenbank (Basis-DB) angelegt oder eine Beispiel-Basis-DB (s. docs in GitHub) importiert und angepasst werden. 
   ! Dazu werden zunächst die Meta-Daten zur Erfassung unter „Erfassung vorbereiten“ eingegeben. Mit Tippen aufs Speichersymbol abschließen. Die Meta-Daten können jederzeit weiter bearbeitet werden.
   ! Dann editiert man die Artenliste unter "Zählliste". Aufruf mittels Bleistift-Button.
   ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag (Name und 5-stelliger Code), z.B.:
@@ -47,10 +47,12 @@ $ 9
   ! Pieris na./ra.-Kompl.	07000*
   ! ...
   _ 
-  ! Die Codes dienen als Sortierkriterium für die Liste. Das *-Symbol kennzeichnet eine Gruppe. Mit "Speichern" wird die Liste in die Datenbank übernommen.
-  ! Die Liste kann nachträglich ergänzt oder geändert werden.
+  ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähl- und auf der Ergebnisseite. 
+  ! Als Code wird die Nummerierung nach Karsholt/Razowski verwendet, wie bspw. in der Anleitung zum Schmetterlingsmonitoring (s. docs in GitHub). 
+  ! Ein angehängtes *-Symbol kennzeichnet eine Gruppe. 
+  ! Mit "Speichern" wird die Liste in die Datenbank übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
-  ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als leere Basis-Datenbank exportiert werden.
+  ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als Basis-Datenbank exportiert werden.
   ! Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite.
   ! Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im Home-Verzeichnis /sdcard (oder /sdcard0, bzw. /storage/emulated/0, ist je nach Smartphone-Modell oder Android-Version unterschiedlich) abgelegt.
   ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann auch später, z.B. nach Änderung der Liste, erneut exportiert werden.  

@@ -59,8 +59,26 @@
 
             <Space
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <ImageView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.8"/>
+                android:id="@+id/pSpecies"
+                android:gravity="center_vertical|center_horizontal"
+                android:scaleType="fitCenter"
+                android:paddingBottom="1dp"
+                android:paddingEnd="1dp"
+                android:paddingStart="1dp"
+                android:paddingTop="1dp"
+                android:src="@drawable/p00000"
+                android:layout_weight="2.6"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
 
             <com.wmstein.tourcount.AutoFitText
                 android:layout_width="0dp"
@@ -78,6 +96,7 @@
                 android:background="@drawable/count_background"
                 android:layout_gravity="center|top"
                 android:gravity="center_vertical|center_horizontal"
+                android:maxLines="1"
                 android:inputType="number"/>
 
             <Space
