@@ -38,7 +38,7 @@ $ 9
   ! Before initial use you must set up an empty basic database (Basic DB) or import and adapt an example Basic DB (see docs in GitHub).
   ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tipping on the saving symbol. The meta data may be modified anytime later. 
   ! Then edit the species list on "Counting List". Use the Pencil-Button for that.
-  ! Enter a name and a code (five-digit) for each expected species via (+)-button, e.g.:
+  ! Add an entry by the (+)-Button and enter a name and a code (five-digit with leading zeros). Repeat this for each expected species, e.g.:
   _ 
   ! ---------------------------------------------
   ! ...
@@ -47,7 +47,7 @@ $ 9
   ! Pieris na./ra.-compl.	07000*
   ! ...
   _ 
-  ! The codes will be used as an option to sort the list and as a reference to show butterfly pictures on the counting and results page.
+  ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
   ! The codes derive from the numbering according to Karsholt/Razowski, as e.g. in the German instruction to butterfly monitoring (see docs in GitHub).
   ! An appended *-symbol marks a species group. 
   ! With "Save List" you store the input into the database. This list can be changed or supplemented anytime afterwards.
