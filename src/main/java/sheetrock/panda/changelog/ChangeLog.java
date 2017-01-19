@@ -15,6 +15,8 @@
  * Changed by wmstein on 18.02.2016
  * <p/>
  * Changed by wmstein on 18.02.2016
+ * <p>
+ * Changed by wmstein on 18.02.2016
  */
 
 /**
@@ -23,6 +25,7 @@
 
 package sheetrock.panda.changelog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,18 +49,20 @@ import java.util.Locale;
 public class ChangeLog
 {
 
-    private final Context context;
-    private String lastVersion, thisVersion;
-
     // this is the key for storing the version name in SharedPreferences
     private static final String VERSION_KEY = "PREFS_VERSION_KEY";
-
     private static final String NO_VERSION = "";
+    private static final String EOCL = "END_OF_CHANGE_LOG";
+    private static final String TAG = "ChangeLog";
+    private final Context context;
+    private final String lastVersion;
+    private String thisVersion;
+    private Listmode listMode = Listmode.NONE;
+    private StringBuffer sb = null;
 
     /**
      * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
-     * @param context
      */
     public ChangeLog(Context context)
     {
@@ -67,7 +72,6 @@ public class ChangeLog
     /**
      * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
-     * @param context
      * @param sp      the shared preferences to store the last version name into
      */
     private ChangeLog(Context context, SharedPreferences sp)
@@ -128,7 +132,6 @@ public class ChangeLog
         return this.getDialog(true);
     }
 
-
     private AlertDialog getDialog(boolean full)
     {
         WebView wv = new WebView(this.context);
@@ -175,6 +178,7 @@ public class ChangeLog
         return builder.create();
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void updateVersionInPreferences()
     {
         // save new version number to preferences
@@ -201,18 +205,6 @@ public class ChangeLog
     {
         return this.getLog(false);
     }
-
-    /**
-     * modes for HTML-Lists (bullet, numbered)
-     */
-    private enum Listmode
-    {
-        NONE, ORDERED, UNORDERED,
-    }
-
-    private Listmode listMode = Listmode.NONE;
-    private StringBuffer sb = null;
-    private static final String EOCL = "END_OF_CHANGE_LOG";
 
     private String getLog(boolean full)
     {
@@ -262,35 +254,32 @@ public class ChangeLog
                     case '%':
                         // line contains version title
                         this.closeList();
-                        sb.append("<div class='title'>"
-                            + line.substring(1).trim() + "</div>\n");
+                        sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
                         break;
                     case '_':
                         // line contains version title
                         this.closeList();
-                        sb.append("<div class='subtitle'>"
-                            + line.substring(1).trim() + "</div>\n");
+                        sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
                         break;
                     case '!':
                         // line contains free text
                         this.closeList();
-                        sb.append("<div class='freetext'>"
-                            + line.substring(1).trim() + "</div>\n");
+                        sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
                         break;
                     case '#':
                         // line contains numbered list item
                         this.openList(Listmode.ORDERED);
-                        sb.append("<li>" + line.substring(1).trim() + "</li>\n");
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
                         break;
                     case '*':
                         // line contains bullet list item
                         this.openList(Listmode.UNORDERED);
-                        sb.append("<li>" + line.substring(1).trim() + "</li>\n");
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
                         break;
                     default:
                         // no special character: just use line as is
                         this.closeList();
-                        sb.append(line + "\n");
+                        sb.append(line).append("\n");
                     }
                 }
             }
@@ -334,6 +323,12 @@ public class ChangeLog
         this.listMode = Listmode.NONE;
     }
 
-    private static final String TAG = "ChangeLog";
+    /**
+     * modes for HTML-Lists (bullet, numbered)
+     */
+    private enum Listmode
+    {
+        NONE, ORDERED, UNORDERED,
+    }
 
 }

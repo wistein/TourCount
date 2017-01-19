@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -36,26 +37,19 @@ import java.util.Locale;
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountEditMetaActivity";
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
+    private TourCountApplication tourCount;
 
-    Head head;
-    Section section;
-
+    private Head head;
+    private Section section;
+    private LinearLayout head_area;
+    private EditTitleWidget ett;
+    private EditTitleWidget enw;
+    private EditHeadWidget ehw;
+    private EditMetaWidget etw;
     private Bitmap bMap;
     private BitmapDrawable bg;
-
     private HeadDataSource headDataSource;
     private SectionDataSource sectionDataSource;
-
-    // preferences
-    private boolean brightPref;
-
-    LinearLayout head_area;
-
-    EditTitleWidget ett, enw;
-    EditHeadWidget ehw;
-    EditMetaWidget etw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,9 +58,9 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         setContentView(R.layout.activity_edit_head);
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
+        SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        brightPref = prefs.getBoolean("pref_bright", true);
+        boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
         if (brightPref)
@@ -83,9 +77,11 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
         ScrollView editHead_screen = (ScrollView) findViewById(R.id.editHeadScreen);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        assert editHead_screen != null;
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(getString(R.string.editHeadTitle));
     }
 
@@ -176,6 +172,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
             .hideSoftInputFromWindow(view.getWindowToken(), 0);
         TextView sDate = (TextView) this.findViewById(R.id.widgetDate2);
+        assert sDate != null;
         sDate.setText(getcurDate());
     }
 
@@ -185,6 +182,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
             .hideSoftInputFromWindow(view.getWindowToken(), 0);
         TextView sTime = (TextView) this.findViewById(R.id.widgetStartTm2);
+        assert sTime != null;
         sTime.setText(getcurTime());
     }
 
@@ -194,12 +192,14 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
             .hideSoftInputFromWindow(view.getWindowToken(), 0);
         TextView eTime = (TextView) this.findViewById(R.id.widgetEndTm2);
+        assert eTime != null;
         eTime.setText(getcurTime());
     }
 
     // Date for date
     // by wmstein
-    public String getcurDate()
+    @SuppressLint("SimpleDateFormat")
+    private String getcurDate()
     {
         Date date = new Date();
         DateFormat dform;
@@ -218,9 +218,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
     // Date for start_tm and end_tm
     // by wmstein
-    public String getcurTime()
+    private String getcurTime()
     {
         Date date = new Date();
+        @SuppressLint("SimpleDateFormat") 
         DateFormat dform = new SimpleDateFormat("HH:mm");
         return dform.format(date);
     }
@@ -242,7 +243,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             super.finish();
     }
 
-    public boolean saveData()
+    private boolean saveData()
     {
         // Save head data
         head.observer = ehw.setWidgetName2();
@@ -309,6 +310,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView editHead_screen = (ScrollView) findViewById(R.id.editHeadScreen);
+        assert editHead_screen != null;
         editHead_screen.setBackground(null);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);

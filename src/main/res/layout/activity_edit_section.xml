@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- activity_edit_section is used by EditSectionActivity.java -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:id="@+id/editingScreen"
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:id="@+id/editingScreen"
             android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/editingNotesLayout"
-            android:orientation="vertical"
-            android:fillViewport="true"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical">
         </LinearLayout>
         <!-- insert section title and notes -->
 
         <LinearLayout
             android:id="@+id/editingCountsLayout"
-            android:orientation="vertical"
-            android:fillViewport="true"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical">
         </LinearLayout>
         <!-- insert counts as they are created in here -->
 
@@ -41,20 +41,20 @@
                 android:id="@+id/addNewCountButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="newCount"
                 android:layout_weight="1"
-                android:text="@string/labelNewCountButton"
-                android:maxLines="1">
+                android:maxLines="1"
+                android:onClick="newCount"
+                android:text="@string/labelNewCountButton">
             </Button>
 
             <Button
                 android:id="@+id/newsectSaveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="saveAndExit"
                 android:layout_weight="1"
-                android:text="@string/labelNewsectSaveButton"
-                android:maxLines="1">
+                android:maxLines="1"
+                android:onClick="saveAndExit"
+                android:text="@string/labelNewsectSaveButton">
             </Button>
         </LinearLayout>
 

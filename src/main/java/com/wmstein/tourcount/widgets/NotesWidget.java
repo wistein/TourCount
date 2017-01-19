@@ -15,9 +15,8 @@ import com.wmstein.tourcount.R;
  */
 public class NotesWidget extends LinearLayout
 {
-    public static String TAG = "TourCount Notes Widget";
-    public String section_notes;
-    private TextView textView;
+    private static final String TAG = "TourCount Notes Widget";
+    private final TextView textView;
 
     public NotesWidget(Context context, AttributeSet attrs)
     {
@@ -30,7 +29,7 @@ public class NotesWidget extends LinearLayout
 
     public void setNotes(String notes)
     {
-        section_notes = notes;
+        String section_notes = notes;
         textView.setText(section_notes);
     }
 

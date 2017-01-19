@@ -13,10 +13,11 @@ import java.util.List;
  */
 public class IndividualsDataSource
 {
+    public List<Individuals> individuals_list;
     // Database fields
     private SQLiteDatabase database;
-    private DbHelper dbHandler;
-    private String[] allColumns = {
+    private final DbHelper dbHandler;
+    private final String[] allColumns = {
         DbHelper.I_ID,
         DbHelper.I_COUNT_ID,
         DbHelper.I_NAME,
@@ -32,8 +33,6 @@ public class IndividualsDataSource
         DbHelper.I_STATE_1_6,
         DbHelper.I_NOTES
     };
-
-    public List<Individuals> individuals_list;
 
     public IndividualsDataSource(Context context)
     {

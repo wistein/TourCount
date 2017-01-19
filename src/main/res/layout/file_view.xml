@@ -5,48 +5,52 @@
     Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
  -->
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="wrap_content" 
-  android:orientation="vertical" 
-  android:layout_width="fill_parent">
-    
-  	<LinearLayout 
-  		android:layout_height="wrap_content" 
-  		android:orientation="horizontal" 
-  		android:layout_width="fill_parent">
-        
-  		<ImageView
-			android:id="@+id/img1" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_marginTop="5dip" 
-			android:layout_marginStart="5dip"
-			android:maxLines="1"/>
-  		
-        <LinearLayout 
-  			android:layout_height="wrap_content" 
-  			android:orientation="vertical" 
-  			android:layout_width="fill_parent"
-  			>	
-			<TextView
-				android:text="@+id/TextView01"
-				android:id="@+id/TextView01"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textStyle="bold"
-				android:layout_marginTop="5dip"
-				android:layout_marginStart="5dip"
-				android:maxLines="1">
-			</TextView>
-			<TextView 
-				android:text="@+id/TextView02" 
-				android:id="@+id/TextView02" 
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:layout_marginStart="5dip">
-			</TextView>
-		</LinearLayout>
-        
-	</LinearLayout>
-	
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dip"
+            android:layout_marginTop="5dip"
+            android:maxLines="1"
+            tools:ignore="ContentDescription"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dip"
+                android:layout_marginTop="5dip"
+                android:maxLines="1"
+                android:text="@+id/TextView01"
+                android:textStyle="bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dip"
+                android:text="@+id/TextView02">
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

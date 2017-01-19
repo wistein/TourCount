@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:tools="http://schemas.android.com/tools"
           package="com.wmstein.tourcount"
+          xmlns:android="http://schemas.android.com/apk/res/android"
           android:largeHeap="true"
-          android:versionCode="214"
           android:versionName="2.1.4">
-
-    <uses-sdk android:minSdkVersion="17"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- Permission needed for GPS location provider -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- Permission needed for network location provider -->
+    <!-- Permission needed for network location provider (not necessary)
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    -->
+
     <!-- Permission needed for screen brightness setting -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    
+
     <!-- android:screenOrientation="portrait" in all activities (Smartphone-Version)
          android:allowBackup="false" prevents backup of app data to google cloud -->
 
@@ -26,13 +26,15 @@
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="TourCount"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name="com.wmstein.tourcount.WelcomeActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -53,9 +55,9 @@
 
         <activity
             android:name="com.wmstein.tourcount.SettingsActivity"
-            android:screenOrientation="portrait"
             android:label="@string/action_settings"
-            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
@@ -63,11 +65,11 @@
 
         <activity
             android:name="com.wmstein.tourcount.EditMetaActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_meta"
             android:launchMode="singleTop"
-            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
@@ -75,11 +77,11 @@
 
         <activity
             android:name="com.wmstein.tourcount.ListSpeciesActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_list_species"
-            android:theme="@style/Theme.AppCompat"
             android:launchMode="singleTop"
-            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
@@ -87,11 +89,11 @@
 
         <activity
             android:name="com.wmstein.tourcount.CountingActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_counting"
-            android:theme="@style/Theme.AppCompat"
             android:launchMode="singleTop"
-            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
@@ -99,10 +101,10 @@
 
         <activity
             android:name="com.wmstein.tourcount.CountOptionsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
             android:label="@string/title_activity_count_options"
-            android:parentActivityName="com.wmstein.tourcount.CountingActivity">
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="CountingActivity"/>
@@ -110,10 +112,10 @@
 
         <activity
             android:name="com.wmstein.tourcount.EditIndividualActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
             android:label="@string/title_activity_edit_individual"
-            android:parentActivityName="com.wmstein.tourcount.CountingActivity">
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="CountingActivity"/>
@@ -121,18 +123,18 @@
 
         <activity
             android:name="com.wmstein.tourcount.EditSectionActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
             android:label="@string/title_activity_edit_section"
-            android:parentActivityName="com.wmstein.tourcount.CountingActivity">
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="CountingActivity"/>
         </activity>
 
         <uses-library
-            android:required="false"
-            android:name="com.sec.android.app.multiwindow"/>
+            android:name="com.sec.android.app.multiwindow"
+            android:required="false"/>
 
         <meta-data
             android:name="com.sec.android.support.multiwindow"

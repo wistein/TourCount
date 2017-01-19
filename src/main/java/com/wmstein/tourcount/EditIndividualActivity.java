@@ -4,6 +4,7 @@
 
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,28 +36,19 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
 // EditIndividualActivity is called from CountingActivity 
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
-    public static String TAG = "TourCountEditIndividualActivity";
-
-    Individuals individuals;
-    Temp temp;
-    Count counts;
-
+    private static final String TAG = "TourCountEditIndividualActivity";
+    private TourCountApplication tourCount;
+    private Individuals individuals;
+    private Temp temp;
+    private Count counts;
+    private LinearLayout individ_area;
+    private EditIndividualWidget eiw;
     // the actual data
     private IndividualsDataSource individualsDataSource;
     private TempDataSource tempDataSource;
     private CountDataSource countDataSource;
-
-    LinearLayout individ_area;
-
-    EditIndividualWidget eiw;
-
     private Bitmap bMap;
     private BitmapDrawable bg;
-
-    // preferences
-    private boolean brightPref;
 
     private int count_id;
     private int i_id;
@@ -71,9 +63,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         setContentView(R.layout.activity_edit_individual);
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
+        SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        brightPref = prefs.getBoolean("pref_bright", true);
+        boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
         if (brightPref)
@@ -105,9 +97,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        assert individ_screen != null;
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
-
     }
 
     @Override
@@ -116,6 +108,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         super.onSaveInstanceState(outState);
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     protected void onResume()
     {
@@ -139,12 +132,13 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             getString(R.string.stadium_4)
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
             (this, android.R.layout.simple_dropdown_item_1line, stateArray);
 
         // set title
         try
         {
+            //noinspection ConstantConditions
             getSupportActionBar().setTitle(specName);
         } catch (NullPointerException e)
         {
@@ -209,7 +203,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         countDataSource.close();
     }
 
-    public boolean saveData()
+    private boolean saveData()
     {
         // save individual data
         // Locality
@@ -251,7 +245,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         int newcount = eiw.getWidgetCount2();
         counts.count = counts.count + newcount - 1; // -1 as CountingActivity already added 1
         temp.temp_cnt = newcount;
-        
+
         // Notes
         String newnotes = eiw.getWidgetIndivNote2();
         if (!newnotes.equals(""))
@@ -298,6 +292,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
+        assert individ_screen != null;
         individ_screen.setBackground(null);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);

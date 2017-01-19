@@ -9,7 +9,7 @@
       tools:context="com.wmstein.tourcount.CountOptionsActivity">
     <item
         android:id="@+id/menuSaveExit"
-        android:title="@string/saveCountsButton"
         android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/saveCountsButton"
         app:showAsAction="ifRoom"/>
 </menu>

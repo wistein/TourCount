@@ -13,16 +13,15 @@ import java.util.List;
  */
 public class TempDataSource
 {
+    public List<Temp> temp_list;
     // Database fields
     private SQLiteDatabase database;
-    private DbHelper dbHandler;
-    private String[] allColumns = {
+    private final DbHelper dbHandler;
+    private final String[] allColumns = {
         DbHelper.T_ID,
         DbHelper.T_TEMP_LOC,
         DbHelper.T_TEMP_CNT,
     };
-
-    public List<Temp> temp_list;
 
     public TempDataSource(Context context)
     {

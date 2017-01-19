@@ -22,13 +22,46 @@ import java.io.File;
  */
 public class TourCountApplication extends Application
 {
-    private static String TAG = "tourcount";
-    public BitmapDrawable ob;
-    private Bitmap bMap;
+    private static final String TAG = "tourcount";
     private static SharedPreferences prefs;
+    private BitmapDrawable ob;
     int width;
     int height;
+    private Bitmap bMap;
 
+    public static SharedPreferences getPrefs()
+    {
+        return prefs;
+    }
+
+  /*
+   * The idea here is to keep ob around as a pre-prepared bitmap, only setting it up
+   * when the user's settings change or when the application starts up.
+   */
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
+    {
+        // Raw height and width of image
+        final int height1 = options.outHeight;
+        final int width1 = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height1 > reqHeight || width1 > reqWidth)
+        {
+
+            final int halfHeight = height1 / 2;
+            final int halfWidth = width1 / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            //   height1 and width1 larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                && (halfWidth / inSampleSize) > reqWidth)
+            {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
 
     @Override
     public void onCreate()
@@ -44,11 +77,6 @@ public class TourCountApplication extends Application
             Log.e(TAG, e.toString());
         }
     }
-
-  /*
-   * The idea here is to keep ob around as a pre-prepared bitmap, only setting it up
-   * when the user's settings change or when the application starts up.
-   */
 
     public BitmapDrawable getBackground()
     {
@@ -76,15 +104,15 @@ public class TourCountApplication extends Application
         width = size.x;
         height = size.y;
 
-        if (backgroundPref.equals("none"))
+        switch (backgroundPref)
         {
+        case "none":
             // boring black screen
             bMap = null;
             bMap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bMap.eraseColor(Color.BLACK);
-        }
-        else if (backgroundPref.equals("custom"))
-        {
+            break;
+        case "custom":
             if (!(pictPref.equals("")))
             {
                 if (new File(pictPref).isFile())
@@ -117,45 +145,16 @@ public class TourCountApplication extends Application
                 Toast.makeText(this, getString(R.string.customNotDefined), Toast.LENGTH_LONG).show();
                 bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
             }
-        }
-        else if (backgroundPref.equals("default"))
-        {
+            break;
+        case "default":
             //bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tourcount_picture);
             bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+            break;
         }
 
         ob = new BitmapDrawable(this.getResources(), bMap);
         bMap = null;
         return ob;
-    }
-
-    public static SharedPreferences getPrefs()
-    {
-        return prefs;
-    }
-
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
-    {
-        // Raw height and width of image
-        final int height1 = options.outHeight;
-        final int width1 = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height1 > reqHeight || width1 > reqWidth)
-        {
-
-            final int halfHeight = height1 / 2;
-            final int halfWidth = width1 / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            //   height1 and width1 larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                && (halfWidth / inSampleSize) > reqWidth)
-            {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
     }
 
     public Bitmap decodeBitmap(int resId, int reqWidth, int reqHeight)

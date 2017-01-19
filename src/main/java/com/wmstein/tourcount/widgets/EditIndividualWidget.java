@@ -22,26 +22,24 @@ import com.wmstein.tourcount.R;
  */
 public class EditIndividualWidget extends LinearLayout
 {
-    TextView widget_locality1; // locality
-    EditText widget_locality2;
-    TextView widget_zcoord1;  //height
-    TextView widget_zcoord2;
-    TextView widget_sex1; // sex
-    EditText widget_sex2;
-    TextView widget_stadium1; // stadium
-    EditText widget_stadium2;
-    TextView widget_state1; // state_1-6
-    EditText widget_state2;
-    TextView widget_count1; // number of individuals
-    EditText widget_count2;
-    TextView widget_indivnote1; // note
-    EditText widget_indivnote2;
-    TextView widget_xcoord1; // x-coord
-    TextView widget_xcoord2;
-    TextView widget_ycoord1; // y-coord
-    TextView widget_ycoord2;
-
-    String regEx = "^[0-9]*$"; // plausi for numeric input
+    private final TextView widget_locality1; // locality
+    private final EditText widget_locality2;
+    private final TextView widget_zcoord1;  //height
+    private final TextView widget_zcoord2;
+    private final TextView widget_sex1; // sex
+    private final EditText widget_sex2;
+    private final TextView widget_stadium1; // stadium
+    private final EditText widget_stadium2;
+    private final TextView widget_state1; // state_1-6
+    private final EditText widget_state2;
+    private final TextView widget_count1; // number of individuals
+    private final EditText widget_count2;
+    private final TextView widget_indivnote1; // note
+    private final EditText widget_indivnote2;
+    private final TextView widget_xcoord1; // x-coord
+    private final TextView widget_xcoord2;
+    private final TextView widget_ycoord1; // y-coord
+    private final TextView widget_ycoord2;
 
     public EditIndividualWidget(Context context, AttributeSet attrs)
     {
@@ -75,20 +73,10 @@ public class EditIndividualWidget extends LinearLayout
         widget_locality1.setText(title);
     }
 
-    public void setWidgetLocality2(String name)
-    {
-        widget_locality2.setText(String.valueOf(name));
-    }
-
     // sex
     public void setWidgetSex1(String title)
     {
         widget_sex1.setText(title);
-    }
-
-    public void setWidgetSex2(String name)
-    {
-        widget_sex2.setText(name);
     }
 
     // stadium
@@ -97,20 +85,10 @@ public class EditIndividualWidget extends LinearLayout
         widget_stadium1.setText(title);
     }
 
-    public void setWidgetStadium2(String name)
-    {
-        widget_stadium2.setText(name);
-    }
-
     // state
     public void setWidgetState1(String title)
     {
         widget_state1.setText(title);
-    }
-
-    public void setWidgetState2(int name)
-    {
-        widget_state2.setText(String.valueOf(name));
     }
 
     // number of individuals
@@ -119,20 +97,10 @@ public class EditIndividualWidget extends LinearLayout
         widget_count1.setText(title);
     }
 
-    public void setWidgetCount2(int name)
-    {
-        widget_count2.setText(String.valueOf(name));
-    }
-
     // note
     public void setWidgetIndivNote1(String title)
     {
         widget_indivnote1.setText(title);
-    }
-
-    public void setWidgetIndivNote2(String name)
-    {
-        widget_indivnote2.setText(name);
     }
 
     // x-coord
@@ -168,13 +136,16 @@ public class EditIndividualWidget extends LinearLayout
         widget_zcoord2.setText(name);
     }
 
-
-
     // following the GETS
     // get locality
     public String getWidgetLocality2()
     {
         return widget_locality2.getText().toString();
+    }
+
+    public void setWidgetLocality2(String name)
+    {
+        widget_locality2.setText(String.valueOf(name));
     }
 
     // get sex with plausi
@@ -183,22 +154,38 @@ public class EditIndividualWidget extends LinearLayout
         return widget_sex2.getText().toString();
     }
 
+    public void setWidgetSex2(String name)
+    {
+        widget_sex2.setText(name);
+    }
+
     // get stadium with plausi
     public String getWidgetStadium2()
     {
         return widget_stadium2.getText().toString();
     }
 
+    public void setWidgetStadium2(String name)
+    {
+        widget_stadium2.setText(name);
+    }
+
     // get state with plausi
     public int getWidgetState2()
     {
         String text = widget_state2.getText().toString();
+        String regEx = "^[0-9]*$";
         if (text.equals(""))
             return 0;
         else if (!text.trim().matches(regEx))
             return 100;
         else
             return Integer.parseInt(text);
+    }
+
+    public void setWidgetState2(int name)
+    {
+        widget_state2.setText(String.valueOf(name));
     }
 
     // get number of individuals
@@ -208,10 +195,20 @@ public class EditIndividualWidget extends LinearLayout
         return Integer.parseInt(text);
     }
 
+    public void setWidgetCount2(int name)
+    {
+        widget_count2.setText(String.valueOf(name));
+    }
+
     // get PLZ with plausi
     public String getWidgetIndivNote2()
     {
         return widget_indivnote2.getText().toString();
+    }
+
+    public void setWidgetIndivNote2(String name)
+    {
+        widget_indivnote2.setText(name);
     }
 
 }

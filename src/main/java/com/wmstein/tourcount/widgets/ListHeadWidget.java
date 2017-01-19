@@ -17,10 +17,10 @@ public class ListHeadWidget extends LinearLayout
 {
     public static String TAG = "tourcountListHeadWidget";
 
-    TextView widget_lco; // used for country title
-    TextView widget_lco1; // used for country
-    TextView widget_lname; // used for observer title
-    TextView widget_lname1; // used for observer
+    private final TextView widget_lco; // used for country title
+    private final TextView widget_lco1; // used for country
+    private final TextView widget_lname; // used for observer title
+    private final TextView widget_lname1; // used for observer
 
     public ListHeadWidget(Context context, AttributeSet attrs)
     {

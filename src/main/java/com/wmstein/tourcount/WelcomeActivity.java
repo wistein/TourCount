@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,7 +48,7 @@ import static java.lang.Math.sqrt;
 
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
- * import/export/help/info methods and 
+ * import/export/help/info methods and
  * EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * <p/>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
@@ -57,43 +56,26 @@ import static java.lang.Math.sqrt;
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "TourCountWelcomeActivity";
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
-    
-    ChangeLog cl;
-    ViewHelp vh;
     private static final int FILE_CHOOSER = 11;
-    private Handler mHandler = new Handler();
-
-    // flags for GPS, network status
-    boolean isGPSEnabled = false;
-    boolean isNetworkEnabled = false;
-    boolean canGetLocation = false;
-
-    // Declaring a Location Manager for GPS or network
-    protected LocationManager locationManager;
-
+    private static final String TAG = "TourCountWelcomeActivity";
+    private TourCountApplication tourCount;
+    private ChangeLog cl;
+    private ViewHelp vh;
+    private boolean canGetLocation = false;
     // import/export stuff
-    File infile;
-    File outfile;
-    File tmpfile;
-    boolean mExternalStorageAvailable = false;
-    boolean mExternalStorageWriteable = false;
-    String state = Environment.getExternalStorageState();
-    AlertDialog alert;
-
+    private File infile;
+    private File outfile;
+    private boolean mExternalStorageAvailable = false;
+    private boolean mExternalStorageWriteable = false;
+    private final String state = Environment.getExternalStorageState();
+    private AlertDialog alert;
+    private SectionDataSource sectionDataSource;
+    private final Handler mHandler = new Handler();
     // preferences
     private String sortPref;
-
     // following stuff for purging export db
     private SQLiteDatabase database;
     private DbHelper dbHandler;
-
-    SectionDataSource sectionDataSource;
-    CountDataSource countDataSource;
-    HeadDataSource headDataSource;
-    IndividualsDataSource individualsDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -102,7 +84,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         setContentView(R.layout.activity_welcome);
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
+        SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
 
@@ -110,11 +92,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
         section = sectionDataSource.getSection();
-        
+
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
+        assert baseLayout != null;
         baseLayout.setBackground(tourCount.getBackground());
 
         // List name as title
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(section.name);
 
         sectionDataSource.close();
@@ -130,6 +114,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             }
         }
 
+        // Request GPS location permission
         int REQUEST_CODE_GPS = 124;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -140,12 +125,25 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             }
         }
 
+/*
+        // Request Network location permission (does not work!)
+        int REQUEST_CODE_NETWORK = 125;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            int hasAccessCoarseLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasAccessCoarseLocationPermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_NETWORK);
+            }
+        }
+*/
+        
         cl = new ChangeLog(this);
         vh = new ViewHelp(this);
         if (cl.firstRun())
             cl.getLogDialog().show();
 
-        // test for GPS
+        // test for GPS or Network location
         getLocation();
 
         if (!canGetLocation)
@@ -157,17 +155,17 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     // Try to find locationservice
-    public Boolean getLocation()
+    private Boolean getLocation()
     {
         try
         {
-            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
             // getting GPS status
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             // getting network status (doesn't work on LG G2 with Cyanogenmod 5.02)
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             //Toast.makeText(getApplicationContext(), "NetworkEnabled: " + isNetworkEnabled + "\nGPSenabled: " + isGPSEnabled, Toast.LENGTH_LONG).show();
 
             if (isGPSEnabled || isNetworkEnabled)
@@ -184,9 +182,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     // Date for filename of Export-DB
-    public String getcurDate()
+    private String getcurDate()
     {
         Date date = new Date();
+        @SuppressLint("SimpleDateFormat") 
         DateFormat dform = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
         return dform.format(date);
     }
@@ -324,6 +323,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         //LinearLayout baseLayout = (LinearLayout) findViewById(R.id.baseLayout);
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
+        assert baseLayout != null;
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");
@@ -350,8 +350,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
      *************************************************************************/
     // Exports DB to SdCard/tourcount_yyyy-MM-dd_HHmmss.db
     // supplemented with date and time in filename by wmstein
-    @SuppressLint("SdCardPath")
-    public void exportDb()
+    @SuppressLint({"SdCardPath", "LongLogTag"})
+    private void exportDb()
     {
         boolean mExternalStorageAvailable;
         boolean mExternalStorageWriteable;
@@ -413,8 +413,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // purged data set into appropriate table
     // Excel can import this csv file with Unicode UTF-8 filter
     // 15.05.2016, wm.stein
-    @SuppressLint("SdCardPath")
-    public void exportDb2CSV()
+    @SuppressLint({"SdCardPath", "LongLogTag"})
+    private void exportDb2CSV()
     {
         boolean mExternalStorageAvailable;
         boolean mExternalStorageWriteable;
@@ -464,11 +464,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             try
             {
                 // open Head and Section table for head and meta info
-                headDataSource = new HeadDataSource(this);
+                HeadDataSource headDataSource = new HeadDataSource(this);
                 headDataSource.open();
                 sectionDataSource = new SectionDataSource(this);
                 sectionDataSource.open();
-                individualsDataSource = new IndividualsDataSource(this);
+                IndividualsDataSource individualsDataSource = new IndividualsDataSource(this);
                 individualsDataSource.open();
 
                 // export purged db as csv
@@ -588,7 +588,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_NAME, null);
                     break;
                 }
-                
+
                 while (curCSVCnt.moveToNext())
                 {
                     String arrStr[] =
@@ -612,7 +612,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     };
                 sum = 0;
                 csvWrite.writeNext(arrSum);
-                
+
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
 
@@ -639,7 +639,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 // build the sorted individuals array
                 Cursor curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                     + " order by " + DbHelper.I_COUNT_ID, null);
-                
+
                 frst = 1;
                 while (curCSVInd.moveToNext())
                 {
@@ -685,7 +685,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         }
                     }
                 }
-                
+
                 // write Average Coords
                 lo = (loMax + loMin) / 2;   // average longitude
                 la = (laMax + laMin) / 2;   // average latitude
@@ -721,14 +721,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     /**************************************************************************************************/
-    @SuppressLint("SdCardPath")
+    @SuppressLint({"SdCardPath", "LongLogTag"})
     // modified by wmstein
-    public void exportBasisDb()
+    private void exportBasisDb()
     {
         boolean mExternalStorageAvailable;
         boolean mExternalStorageWriteable;
         String state = Environment.getExternalStorageState();
-        tmpfile = new File("/data/data/com.wmstein.tourcount/files/tourcount_tmp.db");
+        File tmpfile = new File("/data/data/com.wmstein.tourcount/files/tourcount_tmp.db");
         outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
         String destPath = "/data/data/com.wmstein.tourcount/files";
 
@@ -799,7 +799,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     /**************************************************************************************************/
     // Clear all relevant DB values, reset to basic DB 
     // created by wmstein
-    public void resetToBasisDb()
+    private void resetToBasisDb()
     {
         // a confirm dialogue before anything else takes place
         // http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog
@@ -823,7 +823,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     // clear DB values for basic DB
-    public void clearDBValues()
+    private void clearDBValues()
     {
         // clear values in DB
         dbHandler = new DbHelper(this);
@@ -864,7 +864,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Choose a file to load and set it to tourcount.db
     // based on android-file-chooser from Google Code Archive
     // Created by wmstein
-    public void loadFile()
+    private void loadFile()
     {
         Intent intent = new Intent(this, AdvFileChooser.class);
         ArrayList<String> extensions = new ArrayList<>();
@@ -875,6 +875,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         startActivityForResult(intent, FILE_CHOOSER);
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     // Function is part of loadFile() and processes the result of AdvFileChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -965,9 +966,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     /**************************************************************************************************/
-    @SuppressLint("SdCardPath")
+    @SuppressLint({"SdCardPath", "LongLogTag"})
     // modified by wmstein
-    public void importBasisDb()
+    private void importBasisDb()
     {
         //infile = new File("/data/data/com.wmstein.tourcount/databases/tourcount0.db");
         infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
@@ -1049,7 +1050,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     /**********************************************************************************************/
     // http://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
-    public void copy(File src, File dst) throws IOException
+    private void copy(File src, File dst) throws IOException
     {
         FileInputStream in = new FileInputStream(src);
         FileOutputStream out = new FileOutputStream(dst);

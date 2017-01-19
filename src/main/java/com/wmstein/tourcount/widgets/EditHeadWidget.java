@@ -16,10 +16,10 @@ import com.wmstein.tourcount.R;
 
 public class EditHeadWidget extends LinearLayout
 {
-    TextView widget_co1; // used for country title
-    EditText widget_co2; // used for country
-    TextView widget_name1; // used for observer title
-    EditText widget_name2; // used for observer
+    private final TextView widget_co1; // used for country title
+    private final EditText widget_co2; // used for country
+    private final TextView widget_name1; // used for observer title
+    private final EditText widget_name2; // used for observer
 
     public EditHeadWidget(Context context, AttributeSet attrs)
     {

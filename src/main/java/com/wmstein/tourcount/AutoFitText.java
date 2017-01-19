@@ -34,23 +34,18 @@ import android.widget.TextView;
 @SuppressWarnings("unused")
 public class AutoFitText extends TextView
 {
-    private static String TAG = "tourcountAutoFitText";
+    private static final String TAG = AutoFitText.class.getSimpleName();
+    //    private static String TAG = "tourcountAutoFitText";
     /**
      * Global min and max for text size. Remember: values are in pixels!
      */
     final int MIN_TEXT_SIZE = 8;   // was 10
     final int MAX_TEXT_SIZE = 100; // was 400, best: 80?
-
     /**
-     * A dummy {@link TextView} to test the text size without actually showing anything to the user
+     * Defines how close we want to be to the factual size of the Text-field. Lower values mean
+     * higher precision but also exponentially higher computing cost (more loop runs)
      */
-    private TextView mTestView;
-
-    /**
-     * A dummy {@link Paint} to test the text size without actually showing anything to the user
-     */
-    Paint mTestPaint;
-
+    final float mThreshold = 0.5f; // original was 0.5f
     /**
      * Scaling factor for fonts. It's a method of calculating independently (!) from the actual
      * density of the screen that is used so users have the same experience on different devices. We
@@ -58,12 +53,14 @@ public class AutoFitText extends TextView
      * SP from pixel values
      */
     private final float mScaledDensityFactor;
-
     /**
-     * Defines how close we want to be to the factual size of the Text-field. Lower values mean
-     * higher precision but also exponentially higher computing cost (more loop runs)
+     * A dummy {@link Paint} to test the text size without actually showing anything to the user
      */
-    final float mThreshold = 0.5f; // original was 0.5f
+    Paint mTestPaint;
+    /**
+     * A dummy {@link TextView} to test the text size without actually showing anything to the user
+     */
+    private TextView mTestView;
 
     /**
      * Constructor for call without attributes --> invoke constructor with AttributeSet null
@@ -202,6 +199,7 @@ public class AutoFitText extends TextView
         int targetFieldWidth = this.getWidth();
         int targetFieldHeight = this.getHeight();
 
+        //noinspection StatementWithEmptyBody
         if (targetFieldWidth <= 0 || targetFieldHeight <= 0 || text.equals(""))
         {
             // Log.v("tag", "Some values are empty, AutoFitText was not able to construct properly");

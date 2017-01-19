@@ -1,6 +1,7 @@
 package com.wmstein.filechooser;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,12 @@ import java.util.List;
  * Modifications by wmstein on 18.06.2016
  */
 
-public class FileArrayAdapter extends ArrayAdapter<Option>
+class FileArrayAdapter extends ArrayAdapter<Option>
 {
 
-    private Context c;
-    private int id;
-    private List<Option> items;
+    private final Context c;
+    private final int id;
+    private final List<Option> items;
 
     public FileArrayAdapter(Context context, int textViewResourceId,
                             List<Option> objects)
@@ -40,8 +41,9 @@ public class FileArrayAdapter extends ArrayAdapter<Option>
         return items.get(i);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int position, View convertView, @NonNull ViewGroup parent)
     {
         View v = convertView;
         if (v == null)

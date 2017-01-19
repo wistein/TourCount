@@ -1,5 +1,6 @@
 package com.wmstein.filechooser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ public class AdvFileChooser extends Activity
     private File currentDir;
     private FileArrayAdapter adapter;
     private FileFilter fileFilter;
-    private File fileSelected;
     private ArrayList<String> extensions;
     private String filterFileName;
 
@@ -84,16 +84,16 @@ public class AdvFileChooser extends Activity
     // List only files in /sdcard
     private void fill(File f)
     {
-        File[] dirs = null;
-        String fileDate;
-        
+        File[] dirs;
+
         if (fileFilter != null)
             dirs = f.listFiles(fileFilter);
         else
             dirs = f.listFiles();
 
         this.setTitle(getString(R.string.currentDir) + ": " + f.getName());
-        List<Option> fls = new ArrayList<Option>();
+        List<Option> fls = new ArrayList<>();
+        @SuppressLint("SimpleDateFormat") 
         DateFormat dform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try
         {
@@ -102,7 +102,7 @@ public class AdvFileChooser extends Activity
                 if (!ff.isHidden())
                 {
                     fls.add(new Option(ff.getName(), getString(R.string.fileSize) + ": "
-                        + ff.length() + " B,  " + getString(R.string.date) + ": " 
+                        + ff.length() + " B,  " + getString(R.string.date) + ": "
                         + dform.format(ff.lastModified()), ff.getAbsolutePath(), false, false, false));
                 }
             }
@@ -124,6 +124,7 @@ public class AdvFileChooser extends Activity
             {
                 // TODO Auto-generated method stub
                 Option o = adapter.getItem(position);
+                assert o != null;
                 if (!o.isBack())
                     doSelect(o);
                 else
@@ -139,7 +140,7 @@ public class AdvFileChooser extends Activity
     private void doSelect(final Option o)
     {
         //onFileClick(o);
-        fileSelected = new File(o.getPath());
+        File fileSelected = new File(o.getPath());
         Intent intent = new Intent();
         intent.putExtra("fileSelected", fileSelected.getAbsolutePath());
         setResult(Activity.RESULT_OK, intent);

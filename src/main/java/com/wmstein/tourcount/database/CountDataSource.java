@@ -15,18 +15,17 @@ import java.util.List;
  */
 public class CountDataSource
 {
+    public List<Count> count_list;
     // Database fields
     private SQLiteDatabase database;
-    private DbHelper dbHandler;
-    private String[] allColumns = {
+    private final DbHelper dbHandler;
+    private final String[] allColumns = {
         DbHelper.C_ID,
         DbHelper.C_COUNT,
         DbHelper.C_NAME,
         DbHelper.C_CODE,
         DbHelper.C_NOTES
     };
-
-    public List<Count> count_list;
 
     public CountDataSource(Context context)
     {

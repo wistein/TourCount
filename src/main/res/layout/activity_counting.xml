@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- activity_counting.xml is used by CountingActivity.java -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:id="@+id/countingScreen"
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/countingScreen">
+            android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/countNotesLayout"
-            android:orientation="vertical"
-            android:fillViewport="true"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical">
             <!-- insert the new notes as they are created in here -->
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:paddingTop="2dp"
-            android:background="@android:color/white"/>
+            android:background="@android:color/white"
+            android:paddingTop="2dp"/>
 
         <LinearLayout
             android:id="@+id/countCountLayout"
-            android:orientation="vertical"
-            android:fillViewport="true"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical">
             <!-- insert the new counts as they are created in here -->
         </LinearLayout>
 

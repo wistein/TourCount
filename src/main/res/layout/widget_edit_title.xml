@@ -5,47 +5,49 @@
     Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginEnd="5dp"
               android:layout_marginStart="5dp"
               android:layout_marginTop="5dp"
-              android:layout_marginEnd="5dp"
-              android:paddingStart="5dp"
-              android:paddingEnd="5dp"
+              android:background="@drawable/rounded_corner"
+              android:orientation="horizontal"
               android:paddingBottom="5dp"
-              android:background="@drawable/rounded_corner">
+              android:paddingEnd="5dp"
+              android:paddingStart="5dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/widgetTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="17sp"
-            android:textStyle="bold"
+            android:gravity="start|top"
             android:hint="@string/hintTitle"
-            android:id="@+id/widgetTitle"
+            android:paddingBottom="5dp"
+            android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
-            android:gravity="start|top"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
 
         <EditText
+            android:id="@+id/sectionName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:id="@+id/sectionName"
             android:background="@drawable/count_background"
             android:inputType="textCapSentences"
-            android:paddingStart="10dp"
+            android:paddingBottom="5dp"
             android:paddingEnd="10dp"
+            android:paddingStart="10dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor"/>
 
     </LinearLayout>
 

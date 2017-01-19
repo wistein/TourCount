@@ -21,12 +21,10 @@ import java.lang.reflect.Field;
 public class CountingWidget extends RelativeLayout
 {
     public static String TAG = "tourcountCountingWidget";
-
-    private TextView countName;
-    private ImageView pSpecies;
-    private AutoFitText countCount;
-
     public Count count;
+    private final TextView countName;
+    private final ImageView pSpecies;
+    private final AutoFitText countCount;
 
     public CountingWidget(Context context, AttributeSet attrs)
     {
@@ -49,7 +47,7 @@ public class CountingWidget extends RelativeLayout
         {
             pSpecies.setImageResource(resId);
         }
-        
+
         countName.setText(count.name);
         countCount.setText(String.valueOf(count.count));
         ImageButton countUpButton = (ImageButton) findViewById(R.id.buttonUp);
@@ -73,7 +71,7 @@ public class CountingWidget extends RelativeLayout
     }
 
     // Get resource ID from resource name
-    public int getResId(String rName)
+    private int getResId(String rName)
     {
         try
         {

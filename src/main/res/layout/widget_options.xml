@@ -6,53 +6,53 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:baselineAligned="false"
-              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginEnd="5dp"
               android:layout_marginStart="5dp"
               android:layout_marginTop="5dp"
-              android:layout_marginEnd="5dp"
               android:background="@drawable/rounded_corner"
+              android:baselineAligned="false"
+              android:orientation="horizontal"
               android:padding="5dp">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="120dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/help_text"
-            android:gravity="center_vertical|start"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:layout_gravity="bottom|start|end|top"
-            android:hint="@string/hintInstructions"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start|end|top"
             android:layout_weight="18"
-            android:padding="5dp"/>
+            android:gravity="center_vertical|start"
+            android:hint="@string/hintInstructions"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"/>
 
         <EditText
+            android:id="@+id/count_parameter_edit"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:maxWidth="60dp"
-            android:minWidth="60dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/count_parameter_edit"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/count_background"
+            android:gravity="center"
             android:hint="@string/charZero"
             android:inputType="phone"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/count_background"
-            android:textSize="20sp"
-            android:layout_gravity="end|center"
-            android:layout_weight="1"
+            android:maxWidth="60dp"
+            android:minWidth="60dp"
             android:padding="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="5dp"/>
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 

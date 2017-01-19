@@ -40,19 +40,17 @@ import java.util.Locale;
 
 public class ViewHelp
 {
-    private final Context context;
-    private String lastVersion, thisVersion;
-
     // this is the key for storing the version name in SharedPreferences
     private static final String VERSION_KEY = "PREFS_VERSION_KEY";
-
     private static final String NO_VERSION = "";
+    private static final String TAG = "ViewHelp";
+    private final Context context;
+    private Listmode listMode = Listmode.NONE;
+    private StringBuffer sb = null;
 
     /**
      * Constructor  <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
-     *
-     * @param context
      */
     public ViewHelp(Context context)
     {
@@ -62,8 +60,6 @@ public class ViewHelp
     /**
      * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
-     *
-     * @param context
      * @param sp      the shared preferences to store the last version name into
      */
     private ViewHelp(Context context, SharedPreferences sp)
@@ -71,19 +67,20 @@ public class ViewHelp
         this.context = context;
 
         // get version numbers
-        this.lastVersion = sp.getString(VERSION_KEY, NO_VERSION);
+        String lastVersion = sp.getString(VERSION_KEY, NO_VERSION);
         Log.d(TAG, "lastVersion: " + lastVersion);
+        String thisVersion;
         try
         {
-            this.thisVersion = context.getPackageManager().getPackageInfo(
+            thisVersion = context.getPackageManager().getPackageInfo(
                 context.getPackageName(), 0).versionName;
         } catch (NameNotFoundException e)
         {
-            this.thisVersion = NO_VERSION;
+            thisVersion = NO_VERSION;
             Log.e(TAG, "could not get version name from manifest!");
             e.printStackTrace();
         }
-        Log.d(TAG, "appVersion: " + this.thisVersion);
+        Log.d(TAG, "appVersion: " + thisVersion);
     }
 
     /*********************************************************
@@ -139,17 +136,6 @@ public class ViewHelp
         return builder.create();
     }
 
-    /**
-     * modes for HTML-Lists (bullet, numbered)
-     */
-    private enum Listmode
-    {
-        NONE, ORDERED, UNORDERED,
-    }
-
-    private Listmode listMode = Listmode.NONE;
-    private StringBuffer sb = null;
-
     private String getLog(boolean full)
     {
         // read viewhelp.txt file
@@ -176,42 +162,38 @@ public class ViewHelp
                 {
                     // begin of a version section
                     this.closeList();
-                    String version = line.substring(1).trim();
                 }
                 switch (marker)
                 {
                 case '%':
                     // line contains version title
                     this.closeList();
-                    sb.append("<div class='title'>"
-                        + line.substring(1).trim() + "</div>\n");
+                    sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
                     break;
                 case '_':
                     // line contains version title
                     this.closeList();
-                    sb.append("<div class='subtitle'>"
-                        + line.substring(1).trim() + "</div>\n");
+                    sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
                     break;
                 case '!':
                     // line contains free text
                     this.closeList();
-                    sb.append("<div class='freetext'>"
-                        + line.substring(1).trim() + "</div>\n");
+                    sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
                     break;
                 case '#':
                     // line contains numbered list item
                     this.openList(Listmode.ORDERED);
-                    sb.append("<li>" + line.substring(1).trim() + "</li>\n");
+                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
                     break;
                 case '*':
                     // line contains bullet list item
                     this.openList(Listmode.UNORDERED);
-                    sb.append("<li>" + line.substring(1).trim() + "</li>\n");
+                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
                     break;
                 default:
                     // no special character: just use line as is
                     this.closeList();
-                    sb.append(line + " \n");
+                    sb.append(line).append(" \n");
                 }
             }
             this.closeList();
@@ -254,6 +236,12 @@ public class ViewHelp
         this.listMode = Listmode.NONE;
     }
 
-    private static final String TAG = "ViewHelp";
+    /**
+     * modes for HTML-Lists (bullet, numbered)
+     */
+    private enum Listmode
+    {
+        NONE, ORDERED, UNORDERED,
+    }
 
 }

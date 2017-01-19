@@ -20,15 +20,11 @@ import java.lang.reflect.Field;
 public class ListSpeciesWidget extends RelativeLayout
 {
     public static String TAG = "tourcountListSpeciesWidget";
-
-    private TextView txtSpecName;
-    private ImageView picSpecies;
-    private TextView specCount;
-    private TextView txtSpecRem;
-
-    public int spec_count;
-    public Count spec;
     public Section section;
+    private final TextView txtSpecName;
+    private final ImageView picSpecies;
+    private final TextView specCount;
+    private final TextView txtSpecRem;
 
     public ListSpeciesWidget(Context context, AttributeSet attrs)
     {
@@ -60,13 +56,13 @@ public class ListSpeciesWidget extends RelativeLayout
     //Parameter spec_count for use in ListSpeciesActivity
     public int getSpec_count(Count newcount)
     {
-        spec = newcount;
-        spec_count = spec.count;
+        Count spec = newcount;
+        int spec_count = spec.count;
         return spec_count;
     }
 
     // Get resource ID from resource name
-    public int getResId(String rName)
+    private int getResId(String rName)
     {
         try
         {

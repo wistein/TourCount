@@ -16,7 +16,7 @@
         android:layout_gravity="bottom|start"
         android:orientation="horizontal">
     </LinearLayout>
-	
+
     <ListView
         android:id="@+id/lvFiles"
         android:layout_width="fill_parent"

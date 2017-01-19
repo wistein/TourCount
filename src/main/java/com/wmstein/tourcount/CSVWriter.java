@@ -24,34 +24,35 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 /******************************************************************
- * Based on "A very simple CSV writer" by 
- * @author Glen Smith
+ * Based on "A very simple CSV writer" by
  *
- * The following code is an extraction of the library of Glen Smith 
- * and provides only the functions needed here.
- * Modified by wmstein
+ * @author Glen Smith
+ *         <p>
+ *         The following code is an extraction of the library of Glen Smith
+ *         and provides only the functions needed here.
+ *         Modified by wmstein
  */
-public class CSVWriter implements Closeable, Flushable
+class CSVWriter implements Closeable, Flushable
 {
     //The character used for escaping quotes.
-    public static final char DEFAULT_ESCAPE_CHARACTER = '"';
+    private static final char DEFAULT_ESCAPE_CHARACTER = '"';
     //The default separator to use if none is supplied to the constructor.
-    public static final char DEFAULT_SEPARATOR = ',';
+    private static final char DEFAULT_SEPARATOR = ',';
     //The default quote character to use if none is supplied to the constructor.
-    public static final char DEFAULT_QUOTE_CHARACTER = '"';
+    private static final char DEFAULT_QUOTE_CHARACTER = '"';
     //The quote constant to use when you wish to suppress all quoting.
-    public static final char NO_QUOTE_CHARACTER = '\u0000';
+    private static final char NO_QUOTE_CHARACTER = '\u0000';
     //The escape constant to use when you wish to suppress all escaping.
-    public static final char NO_ESCAPE_CHARACTER = '\u0000';
+    private static final char NO_ESCAPE_CHARACTER = '\u0000';
     //Default line terminator.
-    public static final String DEFAULT_LINE_END = "\n";
+    private static final String DEFAULT_LINE_END = "\n";
 
-    private Writer rawWriter;
-    private PrintWriter pw;
-    private char separator;
-    private char quotechar;
-    private char escapechar;
-    private String lineEnd;
+    private final Writer rawWriter;
+    private final PrintWriter pw;
+    private final char separator;
+    private final char quotechar;
+    private final char escapechar;
+    private final String lineEnd;
 
     /**
      * Constructs CSVWriter using a comma for the separator.
@@ -69,7 +70,7 @@ public class CSVWriter implements Closeable, Flushable
      * @param writer    the writer to an underlying CSV source.
      * @param separator the delimiter to use for separating entries.
      */
-    public CSVWriter(Writer writer, char separator)
+    private CSVWriter(Writer writer, char separator)
     {
         this(writer, separator, DEFAULT_QUOTE_CHARACTER);
     }
@@ -81,7 +82,7 @@ public class CSVWriter implements Closeable, Flushable
      * @param separator the delimiter to use for separating entries
      * @param quotechar the character to use for quoted elements
      */
-    public CSVWriter(Writer writer, char separator, char quotechar)
+    private CSVWriter(Writer writer, char separator, char quotechar)
     {
         this(writer, separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
     }
@@ -94,7 +95,7 @@ public class CSVWriter implements Closeable, Flushable
      * @param quotechar  the character to use for quoted elements
      * @param escapechar the character to use for escaping quotechars or escapechars
      */
-    public CSVWriter(Writer writer, char separator, char quotechar, char escapechar)
+    private CSVWriter(Writer writer, char separator, char quotechar, char escapechar)
     {
         this(writer, separator, quotechar, escapechar, DEFAULT_LINE_END);
     }
@@ -108,7 +109,7 @@ public class CSVWriter implements Closeable, Flushable
      * @param escapechar the character to use for escaping quotechars or escapechars
      * @param lineEnd    the line feed terminator to use
      */
-    public CSVWriter(Writer writer, char separator, char quotechar, char escapechar, String lineEnd)
+    private CSVWriter(Writer writer, char separator, char quotechar, char escapechar, String lineEnd)
     {
         this.rawWriter = writer;
         this.pw = new PrintWriter(writer);
@@ -126,7 +127,7 @@ public class CSVWriter implements Closeable, Flushable
      * @param applyQuotesToAll true if all values are to be quoted.  false applies quotes only
      *                         to values which contain the separator, escape, quote or new line characters.
      */
-    public void writeNext(String[] nextLine, boolean applyQuotesToAll)
+    private void writeNext(String[] nextLine, boolean applyQuotesToAll)
     {
 
         if (nextLine == null)
@@ -176,6 +177,7 @@ public class CSVWriter implements Closeable, Flushable
 
     /**
      * Writes the next line to the file.
+     *
      * @param nextLine a string array with each comma-separated element as a separate
      *                 entry.
      */
@@ -186,20 +188,22 @@ public class CSVWriter implements Closeable, Flushable
 
     /**
      * checks to see if the line contains special characters.
+     *
      * @param line - element of data to check for special characters.
      * @return true if the line contains the quote, escape, separator, newline or return.
      */
-    protected boolean stringContainsSpecialCharacters(String line)
+    private boolean stringContainsSpecialCharacters(String line)
     {
         return line.indexOf(quotechar) != -1 || line.indexOf(escapechar) != -1 || line.indexOf(separator) != -1 || line.contains(DEFAULT_LINE_END) || line.contains("\r");
     }
 
     /**
      * Processes all the characters in a line.
+     *
      * @param nextElement - element to process.
      * @return a StringBuilder with the elements data.
      */
-    protected StringBuilder processLine(String nextElement)
+    private StringBuilder processLine(String nextElement)
     {
         StringBuilder sb = new StringBuilder(nextElement.length() * 2); // this is for the worse case where all elements have to be escaped.
         for (int j = 0; j < nextElement.length(); j++)
@@ -212,7 +216,8 @@ public class CSVWriter implements Closeable, Flushable
 
     /**
      * Appends the character to the StringBuilder adding the escape character if needed.
-     * @param sb - StringBuffer holding the processed character.
+     *
+     * @param sb       - StringBuffer holding the processed character.
      * @param nextChar - character to process
      */
     private void processCharacter(StringBuilder sb, char nextChar)
@@ -236,6 +241,7 @@ public class CSVWriter implements Closeable, Flushable
 
     /**
      * Flush underlying stream to writer.
+     *
      * @throws IOException if bad things happen
      */
     public void flush() throws IOException

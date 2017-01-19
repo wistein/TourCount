@@ -13,10 +13,11 @@ import java.util.List;
  */
 public class SectionDataSource
 {
+    public List<Section> section_list;
     // Database fields
     private SQLiteDatabase database;
-    private DbHelper dbHandler;
-    private String[] allColumns = {
+    private final DbHelper dbHandler;
+    private final String[] allColumns = {
         DbHelper.S_ID,
         DbHelper.S_NAME,
         DbHelper.S_COUNTRY,
@@ -31,8 +32,6 @@ public class SectionDataSource
         DbHelper.S_END_TM,
         DbHelper.S_NOTES
     };
-
-    public List<Section> section_list;
 
     public SectionDataSource(Context context)
     {

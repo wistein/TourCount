@@ -28,28 +28,16 @@ import java.util.List;
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountListSpeciesActivity";
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
-    LinearLayout spec_area;
-
-    Head head;
-    Section section;
-
-    public int spec_count;
-
+    private TourCountApplication tourCount;
+    private SharedPreferences prefs;
+    private LinearLayout spec_area;
     // preferences
     private boolean awakePref;
     private String sortPref;
-
     // the actual data
     private CountDataSource countDataSource;
     private SectionDataSource sectionDataSource;
     private HeadDataSource headDataSource;
-
-    ListTitleWidget elw;
-    ListTitleWidget erw;
-    ListHeadWidget ehw;
-    ListMetaWidget etw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,7 +55,9 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         getPrefs();
 
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
+        assert listSpec_screen != null;
         listSpec_screen.setBackground(tourCount.getBackground());
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(getString(R.string.viewSpecTitle));
 
         spec_area = (LinearLayout) findViewById(R.id.listSpecLayout);
@@ -102,29 +92,29 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     }
 
     // fill ListSpeciesWidget with relevant counts and sections data
-    public void loadData()
+    private void loadData()
     {
         headDataSource.open();
         sectionDataSource.open();
 
         //load head and meta data
-        head = headDataSource.getHead();
-        section = sectionDataSource.getSection();
+        Head head = headDataSource.getHead();
+        Section section = sectionDataSource.getSection();
 
         // display the list name
-        elw = new ListTitleWidget(this, null);
+        ListTitleWidget elw = new ListTitleWidget(this, null);
         elw.setListTitle(getString(R.string.titleEdit));
         elw.setListName(section.name);
         spec_area.addView(elw);
 
         // display the list remark
-        erw = new ListTitleWidget(this, null);
+        ListTitleWidget erw = new ListTitleWidget(this, null);
         erw.setListTitle(getString(R.string.notesHere));
         erw.setListName(section.notes);
         spec_area.addView(erw);
 
         // display the head data
-        ehw = new ListHeadWidget(this, null);
+        ListHeadWidget ehw = new ListHeadWidget(this, null);
         ehw.setWidgetLCo(getString(R.string.country));
         ehw.setWidgetLCo1(section.country);
         ehw.setWidgetLName(getString(R.string.inspector));
@@ -132,7 +122,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         spec_area.addView(ehw);
 
         // display the meta data
-        etw = new ListMetaWidget(this, null);
+        ListMetaWidget etw = new ListMetaWidget(this, null);
         etw.setWidgetLMeta1(getString(R.string.temperature));
         etw.setWidgetLItem1(section.temp);
         etw.setWidgetLMeta2(getString(R.string.wind));
@@ -181,7 +171,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
 
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec, section);
-            spec_count = widget.getSpec_count(spec);
+            int spec_count = widget.getSpec_count(spec);
 
             // fill widget only for counted species
             if (spec_count > 0)
@@ -217,6 +207,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
+        assert listSpec_screen != null;
         listSpec_screen.setBackground(null);
         listSpec_screen.setBackground(tourCount.setBackground());
         getPrefs();

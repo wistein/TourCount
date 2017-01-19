@@ -15,24 +15,24 @@ import com.wmstein.tourcount.R;
 
 public class ListMetaWidget extends LinearLayout
 {
-    TextView widget_lmeta1; // temperature
-    TextView widget_litem1;
-    TextView widget_lmeta2; // wind
-    TextView widget_litem2;
-    TextView widget_lmeta3; // clouds
-    TextView widget_litem3;
-    TextView widget_lplz1; // plz
-    TextView widget_lplz2;
-    TextView widget_lcity; // city
-    TextView widget_litem4;
-    TextView widget_lplace; // place
-    TextView widget_litem5;
-    TextView widget_ldate1; // date
-    TextView widget_ldate2;
-    TextView widget_lstartTm1; // start_tm
-    TextView widget_lstartTm2;
-    TextView widget_lendTm1; // end_tm
-    TextView widget_lendTm2;
+    private final TextView widget_lmeta1; // temperature
+    private final TextView widget_litem1;
+    private final TextView widget_lmeta2; // wind
+    private final TextView widget_litem2;
+    private final TextView widget_lmeta3; // clouds
+    private final TextView widget_litem3;
+    private final TextView widget_lplz1; // plz
+    private final TextView widget_lplz2;
+    private final TextView widget_lcity; // city
+    private final TextView widget_litem4;
+    private final TextView widget_lplace; // place
+    private final TextView widget_litem5;
+    private final TextView widget_ldate1; // date
+    private final TextView widget_ldate2;
+    private final TextView widget_lstartTm1; // start_tm
+    private final TextView widget_lstartTm2;
+    private final TextView widget_lendTm1; // end_tm
+    private final TextView widget_lendTm2;
 
     public ListMetaWidget(Context context, AttributeSet attrs)
     {

@@ -1,5 +1,7 @@
 package com.wmstein.filechooser;
 
+import android.support.annotation.NonNull;
+
 /**
  * Option is part of filechooser.
  * It will be called within AdvFileChooser.
@@ -9,12 +11,12 @@ package com.wmstein.filechooser;
 
 public class Option implements Comparable<Option>
 {
-    private String name;
-    private String data;
-    private String path;
-    private boolean folder;
-    private boolean parent;
-    private boolean back;
+    private final String name;
+    private final String data;
+    private final String path;
+    private final boolean folder;
+    private final boolean parent;
+    private final boolean back;
 
     public Option(String n, String d, String p, boolean folder, boolean parent, boolean back)
     {
@@ -42,7 +44,7 @@ public class Option implements Comparable<Option>
     }
 
     @Override
-    public int compareTo(Option o)
+    public int compareTo(@NonNull Option o)
     {
         if (this.name != null)
             return this.name.toLowerCase().compareTo(o.getName().toLowerCase());

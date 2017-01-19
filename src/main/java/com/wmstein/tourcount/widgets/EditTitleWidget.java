@@ -15,8 +15,8 @@ import com.wmstein.tourcount.R;
  */
 public class EditTitleWidget extends LinearLayout
 {
-    TextView widget_title;
-    EditText section_name;
+    private final TextView widget_title;
+    private final EditText section_name;
 
     public EditTitleWidget(Context context, AttributeSet attrs)
     {
@@ -32,14 +32,14 @@ public class EditTitleWidget extends LinearLayout
         widget_title.setText(title);
     }
 
-    public void setSectionName(String name)
-    {
-        section_name.setText(name);
-    }
-
     public String getSectionName()
     {
         return section_name.getText().toString();
+    }
+
+    public void setSectionName(String name)
+    {
+        section_name.setText(name);
     }
 
     public void setHint(String hint)

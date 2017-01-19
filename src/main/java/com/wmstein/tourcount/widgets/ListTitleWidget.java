@@ -17,8 +17,8 @@ import com.wmstein.tourcount.R;
  */
 public class ListTitleWidget extends LinearLayout
 {
-    TextView list_title;
-    TextView list_name;
+    private final TextView list_title;
+    private final TextView list_name;
 
     public ListTitleWidget(Context context, AttributeSet attrs)
     {

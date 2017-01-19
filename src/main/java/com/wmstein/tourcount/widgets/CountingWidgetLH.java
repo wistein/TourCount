@@ -25,12 +25,10 @@ import java.lang.reflect.Field;
 public class CountingWidgetLH extends RelativeLayout
 {
     public static String TAG = "tourcountCountingWidgetLH";
-
-    private TextView countName;
-    private ImageView pSpecieslh;
-    private AutoFitText countCount;
-
     public Count count;
+    private final TextView countName;
+    private final ImageView pSpecieslh;
+    private final AutoFitText countCount;
 
     public CountingWidgetLH(Context context, AttributeSet attrs)
     {
@@ -77,7 +75,7 @@ public class CountingWidgetLH extends RelativeLayout
     }
 
     // Get resource ID from resource name
-    public int getResId(String rName)
+    private int getResId(String rName)
     {
         try
         {

@@ -21,33 +21,26 @@ import com.wmstein.tourcount.widgets.EditTitleWidget;
 import com.wmstein.tourcount.widgets.OptionsWidget;
 
 /**
- * CountOptionsActivity 
+ * CountOptionsActivity
  * Created by milo on 05/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted by wmstein on 18.02.2016
  */
 
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountCountOptionsActivity";
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
-
+    private TourCountApplication tourCount;
+    private LinearLayout static_widget_area;
+    private LinearLayout dynamic_widget_area;
+    private OptionsWidget curr_val_widget;
+    private EditTitleWidget enw;
     private Count count;
     private int count_id;
     private CountDataSource countDataSource;
     private View markedForDelete;
     private int deleteAnAlert;
-
     private Bitmap bMap;
     private BitmapDrawable bg;
-
-    // preferences
-    private boolean brightPref;
-
-    LinearLayout static_widget_area;
-    LinearLayout dynamic_widget_area;
-    OptionsWidget curr_val_widget;
-    EditTitleWidget enw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -56,9 +49,9 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         setContentView(R.layout.activity_count_options);
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
+        SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        brightPref = prefs.getBoolean("pref_bright", true);
+        boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
         if (brightPref)
@@ -68,9 +61,10 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
-        
+
         ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        assert counting_screen != null;
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
 
@@ -99,6 +93,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         countDataSource.open();
 
         count = countDataSource.getCountById(count_id);
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(count.name);
 
         // setup the static widgets in the following order
@@ -145,7 +140,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         super.finish();
     }
 
-    public void saveData()
+    private void saveData()
     {
         // don't crash if the user hasn't filled things in...
         Toast.makeText(CountOptionsActivity.this, getString(R.string.sectSaving) + " " + count.name + "!", Toast.LENGTH_SHORT).show();
@@ -210,6 +205,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
+        assert counting_screen != null;
         counting_screen.setBackground(null);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);

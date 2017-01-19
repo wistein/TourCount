@@ -21,4 +21,3 @@ public class Individuals
     public String notes;
 
 }
-

@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- activity_welcome.xml is used by WelcomeActivity.java -->
 <ScrollView
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/baseLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/baseLayout"
     android:fillViewport="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/logo"
-                android:gravity="center"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher"/>
+                android:gravity="center"
+                android:src="@drawable/ic_launcher"
+                tools:ignore="ContentDescription"/>
 
             <TextView
+                android:id="@+id/welcomeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="30sp"
                 android:layout_margin="20sp"
-                android:id="@+id/welcomeTitle"
+                android:gravity="center"
+                android:text="@string/app_name"
                 android:textColor="@android:color/white"
-                android:text="@string/app_name"/>
+                android:textSize="30sp"/>
         </LinearLayout>
 
         <Space
             android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="0.5"/>
 
         <TextView
+            android:id="@+id/welcomeWaffle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:gravity="center"
-            android:id="@+id/welcomeWaffle"
-            android:textColor="@android:color/white"
-            android:text="@string/hello"
-            android:textSize="16sp"
             android:padding="10dp"
-            android:layout_margin="20dp"/>
+            android:text="@string/hello"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
 
         <Space
             android:layout_width="0dp"
@@ -61,8 +63,8 @@
             android:id="@+id/editMetaButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
+            android:gravity="center"
             android:onClick="editMeta"
             android:text="@string/editMetaButton"/>
 
@@ -75,9 +77,9 @@
             android:id="@+id/welcomeButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/viewCountButton"
@@ -105,8 +107,8 @@
 
         <Space
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 </ScrollView>

@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,37 +38,55 @@ import java.util.List;
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
-    public static String TAG = "TourCountEditSectionActivity";
-
+    private static final String TAG = "TourCountEditSectionActivity";
+    private ArrayList<CountEditWidget> savedCounts;
+    private TourCountApplication tourCount;
     // the actual data
-    Section section;
-    List<Count> counts;
-
+    private Section section;
+    private LinearLayout counts_area;
+    private String new_count_name = "";
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
-
-    LinearLayout counts_area;
     private View markedForDelete;
     private int idToDelete;
-    AlertDialog.Builder areYouSure;
-
-    public ArrayList<String> countNames;
-    public ArrayList<String> countCodes;
-    public ArrayList<String> cmpCountNames;
-    public ArrayList<Integer> countIds;
-    public ArrayList<CountEditWidget> savedCounts;
-
     private Bitmap bMap;
     private BitmapDrawable bg;
-
-    // preferences
-    private boolean brightPref;
-
     //added for dupPref
     private boolean dupPref;
-    String new_count_name = "";
+
+    /**
+     * Checks if a CharSequence is empty ("") or null.
+     * <p>
+     * isEmpty(null)      = true
+     * isEmpty("")        = true
+     * isEmpty(" ")       = false
+     * isEmpty("bob")     = false
+     * isEmpty("  bob  ") = false
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is empty or null
+     */
+    private static boolean isEmpty(final CharSequence cs)
+    {
+        return cs == null || cs.length() == 0;
+    }
+
+    /**
+     * Checks if a CharSequence is not empty ("") and not null.
+     * <p>
+     * isNotEmpty(null)      = false
+     * isNotEmpty("")        = false
+     * isNotEmpty(" ")       = true
+     * isNotEmpty("bob")     = true
+     * isNotEmpty("  bob  ") = true
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is not empty and not null
+     */
+    private static boolean isNotEmpty(final CharSequence cs)
+    {
+        return !isEmpty(cs);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,16 +94,16 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_section);
 
-        countNames = new ArrayList<>();
-        countCodes = new ArrayList<>();
-        countIds = new ArrayList<>();
+        //countNames = new ArrayList<>();
+        //countCodes = new ArrayList<>();
+        //countIds = new ArrayList<>();
         savedCounts = new ArrayList<>();
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
+        SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         dupPref = prefs.getBoolean("pref_duplicate", true);
-        brightPref = prefs.getBoolean("pref_bright", true);
+        boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -101,12 +120,14 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         {
             if (savedInstanceState.getSerializable("savedCounts") != null)
             {
+                //noinspection unchecked
                 savedCounts = (ArrayList<CountEditWidget>) savedInstanceState.getSerializable("savedCounts");
             }
         }
 
         ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        assert counting_screen != null;
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
     }
@@ -126,6 +147,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         outState.putSerializable("savedCounts", savedCounts);
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     protected void onResume()
     {
@@ -144,6 +166,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         section = sectionDataSource.getSection();
         try
         {
+            //noinspection ConstantConditions
             getSupportActionBar().setTitle(section.name);
         } catch (NullPointerException e)
         {
@@ -151,7 +174,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
 
         // load the counts data
-        counts = countDataSource.getAllSpecies();
+        List<Count> counts = countDataSource.getAllSpecies();
 
         // display all the counts by adding them to countCountLayout
         for (Count count : counts)
@@ -167,7 +190,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         {
             counts_area.addView(cew);
         }
-        getCountNames();
     }
 
     @Override
@@ -181,38 +203,12 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     }
 
-    public void getCountNames()
-    {
-    /*
-     * My plan here is that both the names and ids arrays contain the entries in the same
-     * order, so I can link a count name to its id by knowing the index.
-     */
-        countNames.clear();
-        countCodes.clear();
-        countIds.clear();
-        int childcount = counts_area.getChildCount();
-        for (int i = 0; i < childcount; i++)
-        {
-            CountEditWidget cew = (CountEditWidget) counts_area.getChildAt(i);
-            String name = cew.getCountName();
-            String code = cew.getCountCode();
-            // ignore count widgets where the user has filled nothing in. 
-            // Id will be 0 if this is a new count.
-            if (isNotEmpty(name))
-            {
-                countNames.add(name);
-                countCodes.add(code);
-                countIds.add(cew.countId);
-            }
-        }
-    }
-
     // Compare count names for duplicates and returns name of 1. duplicate found
-    public String compCountNames()
+    private String compCountNames()
     {
         String name = "";
         String isDbl = "";
-        cmpCountNames = new ArrayList<String>();
+        ArrayList<String> cmpCountNames = new ArrayList<>();
 
         int childcount = counts_area.getChildCount();
         // for all CountEditWidgets
@@ -241,7 +237,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
     }
 
-    public boolean saveData()
+    private boolean saveData()
     {
         // save counts (species list)
         boolean retValue = true;
@@ -302,7 +298,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
      * Scroll to end of view
      * by wmstein
      */
-    public void ScrollToEndOfView(View scrlV)
+    private void ScrollToEndOfView(View scrlV)
     {
         int scroll_amount = scrlV.getBottom();
         int scrollY = scroll_amount;
@@ -344,7 +340,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
         else
         {
-            areYouSure = new AlertDialog.Builder(this);
+            AlertDialog.Builder areYouSure = new AlertDialog.Builder(this);
             areYouSure.setTitle(getString(R.string.deleteCount));
             areYouSure.setMessage(getString(R.string.reallyDeleteCount));
             areYouSure.setPositiveButton(R.string.yesDeleteIt, new DialogInterface.OnClickListener()
@@ -366,7 +362,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             });
             areYouSure.show();
         }
-        getCountNames();
     }
 
     @Override
@@ -408,6 +403,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
+        assert counting_screen != null;
         counting_screen.setBackground(null);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
@@ -415,40 +411,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
         //added for dupPref
         dupPref = prefs.getBoolean("duplicate_counts", true);
-    }
-
-    /**
-     * Checks if a CharSequence is empty ("") or null.
-     * <p>
-     * isEmpty(null)      = true
-     * isEmpty("")        = true
-     * isEmpty(" ")       = false
-     * isEmpty("bob")     = false
-     * isEmpty("  bob  ") = false
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is empty or null
-     */
-    public static boolean isEmpty(final CharSequence cs)
-    {
-        return cs == null || cs.length() == 0;
-    }
-
-    /**
-     * Checks if a CharSequence is not empty ("") and not null.
-     * <p>
-     * isNotEmpty(null)      = false
-     * isNotEmpty("")        = false
-     * isNotEmpty(" ")       = true
-     * isNotEmpty("bob")     = true
-     * isNotEmpty("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is not empty and not null
-     */
-    public static boolean isNotEmpty(final CharSequence cs)
-    {
-        return !isEmpty(cs);
     }
 
 }

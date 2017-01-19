@@ -10,7 +10,7 @@
         <item>custom</item>
         <item>default</item>
     </string-array>
-    
+
     <string-array name="pref_sort_sp_entries">
         <item>None</item>
         <item>Species Names, alphab.</item>

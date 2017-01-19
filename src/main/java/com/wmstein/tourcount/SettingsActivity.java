@@ -23,12 +23,10 @@ import android.widget.Toast;
  */
 public class SettingsActivity extends PreferenceActivity
 {
-    private static String TAG = "tourcountPreferenceActivity";
     private static final int SELECT_PICTURE = 1;
-    String imageFilePath;
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
-    Uri alert_button_uri;
+    private static final String TAG = "tourcountPreferenceActivity";
+    private SharedPreferences.Editor editor;
+    private Uri alert_button_uri;
 
     @Override
     @SuppressLint("CommitPrefEdits")
@@ -49,7 +47,7 @@ public class SettingsActivity extends PreferenceActivity
             }
         });
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Sound for keypresses
         String strButtonSoundPreference = prefs.getString("alert_button_sound", "DEFAULT_SOUND");
@@ -83,7 +81,7 @@ public class SettingsActivity extends PreferenceActivity
         editor.commit();
     }
 
-    public void getImage()
+    private void getImage()
     {
         Intent pickIntent = new Intent();
         pickIntent.setType("image/*");
@@ -91,7 +89,7 @@ public class SettingsActivity extends PreferenceActivity
         startActivityForResult(pickIntent, SELECT_PICTURE);
     }
 
-    public void getSound(Uri tmp_alert_uri, int requestCode)
+    private void getSound(Uri tmp_alert_uri, int requestCode)
     {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
@@ -102,7 +100,7 @@ public class SettingsActivity extends PreferenceActivity
 
 
     @Override
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint({"CommitPrefEdits", "LongLogTag"})
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode == SELECT_PICTURE && data != null && data.getData() != null)
@@ -129,7 +127,7 @@ public class SettingsActivity extends PreferenceActivity
                 }
 
                 //Link to the image
-                imageFilePath = cursor.getString(0);
+                String imageFilePath = cursor.getString(0);
                 cursor.close();
 
                 // save the image path
@@ -147,6 +145,7 @@ public class SettingsActivity extends PreferenceActivity
         }
         else if (resultCode == Activity.RESULT_OK)
         {
+            @SuppressWarnings("ConstantConditions") 
             Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             String ringtone = null;
             if (uri != null)

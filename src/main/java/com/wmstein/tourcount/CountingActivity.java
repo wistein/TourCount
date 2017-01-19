@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +48,7 @@ import java.util.Locale;
  * CountingActivity is the central activity of TourCount. It provides the counter, starts GPS-location polling,
  * starts EditIndividualActivity, starts editSectionActivity, switches screen off when pocketed and allows sending notes.
  * Basic counting functions created by milo for beecount on 05/05/2014.
- * Modified and enhanced by wmstein on 18.04.2016
+ * Adopted, modified and enhanced by wmstein since 18.04.2016
  */
 
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -55,23 +56,23 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private static final String TAG = CountingActivity.class.getSimpleName();
     // private static String TAG = "tourcountCountingActivity";
 
-    TourCountApplication tourCount;
-    SharedPreferences prefs;
-    
-    LinearLayout count_area;
-    LinearLayout notes_area;
-    LinearLayout count_areaLH;
-    LinearLayout notes_areaLH;
+    private SharedPreferences prefs;
 
+    private LinearLayout count_area;
+    private LinearLayout notes_area;
+    private LinearLayout count_areaLH;
+    private LinearLayout notes_areaLH;
+    // the actual data
+    private Section section;
+    private List<Count> counts;
+    private Temp temp;
+    private List<CountingWidget> countingWidgets;
+    private List<CountingWidgetLH> countingWidgetsLH;
     // Location info handling
     private LocationManager locationManager;
     private LocationListener locationListener;
     private String provider;
-
-    // Proximity sensor handling for screen on/off
-    private PowerManager mPowerManager;
     private PowerManager.WakeLock mProximityWakeLock;
-
     // preferences
     private boolean awakePref;
     private boolean brightPref;
@@ -80,16 +81,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private boolean lhandPref; // true for lefthand mode of counting screen
     private boolean buttonSoundPref;
     private String buttonAlertSound;
-    private double latitude, longitude, height;
-
-    // the actual data
-    Section section;
-    List<Count> counts;
-    Temp temp;
-    
-    List<CountingWidget> countingWidgets;
-    List<CountingWidgetLH> countingWidgetsLH;
-
+    private double latitude, longitude, height, uncertainty;
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
@@ -99,6 +91,53 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private int i_Id = 0;
     private String spec_name;
     private int spec_count;
+
+    /**
+     * Checks if a CharSequence is whitespace, empty ("") or null
+     * <p>
+     * isBlank(null)      = true
+     * isBlank("")        = true
+     * isBlank(" ")       = true
+     * isBlank("bob")     = false
+     * isBlank("  bob  ") = false
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is null, empty or whitespace
+     */
+    private static boolean isBlank(final CharSequence cs)
+    {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0)
+        {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++)
+        {
+            if (!Character.isWhitespace(cs.charAt(i)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
+     * <p>
+     * isNotBlank(null)      = false
+     * isNotBlank("")        = false
+     * isNotBlank(" ")       = false
+     * isNotBlank("bob")     = true
+     * isNotBlank("  bob  ") = true
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is
+     * not empty and not null and not whitespace
+     */
+    private static boolean isNotBlank(final CharSequence cs)
+    {
+        return !isBlank(cs);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -112,7 +151,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         individualsDataSource = new IndividualsDataSource(this);
         tempDataSource = new TempDataSource(this);
 
-        tourCount = (TourCountApplication) getApplication();
+        TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
@@ -138,14 +177,20 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         if (lhandPref) // if left-handed counting page
         {
             ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreenLH);
-            counting_screen.setBackground(tourCount.getBackground());
+            if (counting_screen != null)
+            {
+                counting_screen.setBackground(tourCount.getBackground());
+            }
             count_areaLH = (LinearLayout) findViewById(R.id.countCountLayoutLH);
             notes_areaLH = (LinearLayout) findViewById(R.id.countNotesLayoutLH);
         }
         else
         {
             ScrollView counting_screen = (ScrollView) findViewById(R.id.countingScreen);
-            counting_screen.setBackground(tourCount.getBackground());
+            if (counting_screen != null)
+            {
+                counting_screen.setBackground(tourCount.getBackground());
+            }
             count_area = (LinearLayout) findViewById(R.id.countCountLayout);
             notes_area = (LinearLayout) findViewById(R.id.countNotesLayout);
         }
@@ -158,7 +203,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
             {
                 mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "WAKE LOCK");
@@ -217,6 +262,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
                     height = location.getAltitude();
+                    uncertainty = location.getAccuracy();
                 }
             }
         };
@@ -248,29 +294,33 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             enableProximitySensor();
         }
 
+        // get fine location service
         try
         {
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
         } catch (Exception e)
         {
-            Toast.makeText(this, "Exception" + e + getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
         }
 
 /*        
-         // get coarse location service
+        // get coarse location service
         try
         {
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 3000, 0, locationListener);
         } catch (Exception e)
         {
             // do nothing
+            Toast.makeText(this, getString(R.string.no_Passive), Toast.LENGTH_LONG).show();
         }
+        
         try
         {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, locationListener);
         } catch (Exception e)
         {
             // do nothing
+            Toast.makeText(this, getString(R.string.no_NET), Toast.LENGTH_LONG).show();
         }
 */
 
@@ -304,6 +354,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             finish();
         }
 
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(section.name);
 
         // display list notes
@@ -350,7 +401,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             counts = countDataSource.getAllSpecies();
             break;
         }
-        
+
         // display all the counts by adding them to countCountLayout
         if (lhandPref) // if left-handed counting page
         {
@@ -449,7 +500,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
     }
 
-
     /***************/
     public void saveAndExit(View view)
     {
@@ -482,7 +532,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             widget.countUp();
         }
-        
+
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
@@ -497,15 +547,16 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         if (provider.equals("gps") && latitude != 0)
         {
-            uncert = "20";
+            uncert = String.valueOf(uncertainty);
         }
         else
         {
             uncert = null;
             // Toast.makeText(CountingActivity.this, "Provider: " + provider + "Uncert: " + uncert, Toast.LENGTH_SHORT).show();
         }
-        
+
         String name, datestamp, timestamp;
+        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -548,7 +599,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         if (provider.equals("gps") && latitude != 0)
         {
-            uncert = "20";
+            uncert = String.valueOf(uncertainty);
         }
         else
         {
@@ -557,6 +608,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
+        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -582,6 +634,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.valueOf(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
+        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count;
         if (spec_count > 0)
@@ -603,6 +656,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.valueOf(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
+        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count;
         if (spec_count > 0)
@@ -620,7 +674,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     /*
      * Get a counting widget (with reference to the associated count) from the list of widgets.
      */
-    public CountingWidget getCountFromId(int id)
+    private CountingWidget getCountFromId(int id)
     {
         for (CountingWidget widget : countingWidgets)
         {
@@ -636,7 +690,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
      * Get a left-handed counting widget (with references to the
      * associated count) from the list of widgets.
      */
-    public CountingWidgetLH getCountFromIdLH(int id)
+    private CountingWidgetLH getCountFromIdLH(int id)
     {
         for (CountingWidgetLH widget : countingWidgetsLH)
         {
@@ -649,7 +703,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // delete individual for count_id
-    public void deleteIndividual(int id)
+    private void deleteIndividual(int id)
     {
         // Toast.makeText(CountingActivity.this, getString(R.string.indivdel1) + spec_name, Toast.LENGTH_SHORT).show();
         System.out.println(getString(R.string.indivdel) + " " + id);
@@ -657,7 +711,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // Date for date_stamp
-    public String getcurDate()
+    @SuppressLint("SimpleDateFormat")
+    private String getcurDate()
     {
         Date date = new Date();
         DateFormat dform;
@@ -675,9 +730,10 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // Date for time_stamp
-    public String getcurTime()
+    private String getcurTime()
     {
         Date date = new Date();
+        @SuppressLint("SimpleDateFormat") 
         DateFormat dform = new SimpleDateFormat("HH:mm");
         return dform.format(date);
     }
@@ -697,7 +753,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         startActivity(intent);
     }
 
-    public void buttonSound()
+    private void buttonSound()
     {
         if (buttonSoundPref)
         {
@@ -720,7 +776,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -759,7 +814,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
             return true;
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -776,7 +831,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
     }
 
-
+    @SuppressLint("NewApi")
     private void disableProximitySensor(boolean waitForFarState)
     {
         if (mProximityWakeLock == null)
@@ -793,53 +848,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         getPrefs();
-    }
-
-    /**
-     * Checks if a CharSequence is whitespace, empty ("") or null
-     * <p>
-     * isBlank(null)      = true
-     * isBlank("")        = true
-     * isBlank(" ")       = true
-     * isBlank("bob")     = false
-     * isBlank("  bob  ") = false
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is null, empty or whitespace
-     */
-    public static boolean isBlank(final CharSequence cs)
-    {
-        int strLen;
-        if (cs == null || (strLen = cs.length()) == 0)
-        {
-            return true;
-        }
-        for (int i = 0; i < strLen; i++)
-        {
-            if (!Character.isWhitespace(cs.charAt(i)))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
-     * <p>
-     * isNotBlank(null)      = false
-     * isNotBlank("")        = false
-     * isNotBlank(" ")       = false
-     * isNotBlank("bob")     = true
-     * isNotBlank("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is
-     * not empty and not null and not whitespace
-     */
-    public static boolean isNotBlank(final CharSequence cs)
-    {
-        return !isBlank(cs);
     }
 
 }

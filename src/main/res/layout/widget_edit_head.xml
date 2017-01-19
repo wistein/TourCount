@@ -4,6 +4,7 @@
   ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginEnd="5dp"
@@ -12,16 +13,16 @@
               android:background="@drawable/rounded_corner"
               android:orientation="horizontal"
               android:paddingBottom="5dp"
-              android:paddingStart="5dp"
-              android:paddingEnd="5dp">
+              android:paddingEnd="5dp"
+              android:paddingStart="5dp">
 
     <LinearLayout
-        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal"
-        android:paddingStart="5dp"
         android:paddingEnd="5dp"
+        android:paddingStart="5dp"
         android:paddingTop="0dp">
 
         <LinearLayout
@@ -36,8 +37,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:paddingBottom="5dp"
-                android:paddingStart="5dp"
                 android:paddingEnd="5dp"
+                android:paddingStart="5dp"
                 android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="17sp"
@@ -50,10 +51,11 @@
                 android:background="@drawable/count_background"
                 android:inputType="textCapSentences"
                 android:paddingBottom="5dp"
-                android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:paddingStart="10dp"
                 android:paddingTop="5dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                tools:ignore="LabelFor"/>
 
         </LinearLayout>
 
@@ -70,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:paddingBottom="5dp"
-                android:paddingStart="5dp"
                 android:paddingEnd="5dp"
+                android:paddingStart="5dp"
                 android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="17sp"
@@ -84,10 +86,11 @@
                 android:background="@drawable/count_background"
                 android:inputType="textCapWords"
                 android:paddingBottom="5dp"
-                android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:paddingStart="10dp"
                 android:paddingTop="5dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                tools:ignore="LabelFor"/>
 
         </LinearLayout>
 

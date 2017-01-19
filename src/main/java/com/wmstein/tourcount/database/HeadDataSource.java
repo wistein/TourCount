@@ -13,15 +13,14 @@ import java.util.List;
  */
 public class HeadDataSource
 {
+    public List<Head> head_list;
     // Database fields
     private SQLiteDatabase database;
-    private DbHelper dbHandler;
-    private String[] allColumns = {
+    private final DbHelper dbHandler;
+    private final String[] allColumns = {
         DbHelper.H_ID,
         DbHelper.H_OBSERVER,
     };
-
-    public List<Head> head_list;
 
     public HeadDataSource(Context context)
     {
