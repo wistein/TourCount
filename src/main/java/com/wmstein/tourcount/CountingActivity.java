@@ -211,7 +211,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             enableProximitySensor();
         }
 
-        // LocationManager-Instanz ermitteln
+        // Get LocationManager instance
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // Liste mit Namen aller Provider erfragen

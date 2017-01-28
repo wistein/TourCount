@@ -696,7 +696,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     {
                         "",
                         getString(R.string.avCoords),
-                        "",
                         Double.toString(lo),    // average longitude
                         Double.toString(la),    // average latitude
                         Double.toString(uc)     // uncertainty radius

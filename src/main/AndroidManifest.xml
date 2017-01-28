@@ -18,8 +18,7 @@
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-    <!-- android:screenOrientation="portrait" in all activities (Smartphone-Version)
-         android:allowBackup="false" prevents backup of app data to google cloud -->
+    <!-- android:screenOrientation="portrait" in all activities (Smartphone-Version) -->
 
     <application
         android:name=".TourCountApplication"
@@ -37,7 +36,6 @@
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
             </intent-filter>
