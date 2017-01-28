@@ -83,8 +83,8 @@
     <string name="time">Zeit</string>
     <string name="locality">Lokalität</string>
     <string name="sex">Geschlecht</string>
-    <string name="sex1">Sex (f/m)</string>
-    <string name="valSex">Sex überprüfen!</string>
+    <string name="sex1">Sex. (f/m)</string>
+    <string name="valSex">Sexus überprüfen!</string>
     <string name="stadium">Stadium</string>
     <string name="stadium1">Stad. (F/P/L/E)</string>
     <string name="stadium_1">Falter</string>
