@@ -53,8 +53,8 @@ import java.util.Locale;
 
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final String TAG = CountingActivity.class.getSimpleName();
-    // private static String TAG = "tourcountCountingActivity";
+    //private static final String TAG = CountingActivity.class.getSimpleName();
+    private static String TAG = "TourCountCountingActivity";
 
     private SharedPreferences prefs;
 
@@ -91,53 +91,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private int i_Id = 0;
     private String spec_name;
     private int spec_count;
-
-    /**
-     * Checks if a CharSequence is whitespace, empty ("") or null
-     * <p>
-     * isBlank(null)      = true
-     * isBlank("")        = true
-     * isBlank(" ")       = true
-     * isBlank("bob")     = false
-     * isBlank("  bob  ") = false
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is null, empty or whitespace
-     */
-    private static boolean isBlank(final CharSequence cs)
-    {
-        int strLen;
-        if (cs == null || (strLen = cs.length()) == 0)
-        {
-            return true;
-        }
-        for (int i = 0; i < strLen; i++)
-        {
-            if (!Character.isWhitespace(cs.charAt(i)))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
-     * <p>
-     * isNotBlank(null)      = false
-     * isNotBlank("")        = false
-     * isNotBlank(" ")       = false
-     * isNotBlank("bob")     = true
-     * isNotBlank("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is
-     * not empty and not null and not whitespace
-     */
-    private static boolean isNotBlank(final CharSequence cs)
-    {
-        return !isBlank(cs);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -214,7 +167,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // Get LocationManager instance
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        // Liste mit Namen aller Provider erfragen
+        // Request list with names of all providers
         List<String> providers = locationManager.getAllProviders();
         for (String name : providers)
         {
@@ -228,11 +181,11 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // Best possible provider
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
         provider = locationManager.getBestProvider(criteria, true);
-        Log.d(TAG, "Provider: " + provider);
+        //Log.d(TAG, "Provider: " + provider);
 
-        // LocationListener-Objekt erzeugen
+        // Create LocationListener object
         locationListener = new LocationListener()
         {
             @Override
@@ -267,17 +220,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
         };
 
-    }
+    } // End of onCreate
 
     /*
      * So preferences can be loaded at the start, and also when a change is detected.
      */
     private void getPrefs()
     {
-        awakePref = prefs.getBoolean("pref_awake", true);
-        brightPref = prefs.getBoolean("pref_bright", true);   // bright counting page
-        sortPref = prefs.getString("pref_sort_sp", "none"); // sorted species list on counting page
-        fontPref = prefs.getBoolean("pref_note_font", false); // larger font for remarks
+        awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
+        brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
+        sortPref = prefs.getString("pref_sort_sp", "none");    // sorted species list on counting page
+        fontPref = prefs.getBoolean("pref_note_font", false);  // larger font for remarks
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
@@ -294,7 +247,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             enableProximitySensor();
         }
 
-        // get fine location service
+        // get location service
         try
         {
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
@@ -302,27 +255,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
         }
-
-/*        
-        // get coarse location service
-        try
-        {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 3000, 0, locationListener);
-        } catch (Exception e)
-        {
-            // do nothing
-            Toast.makeText(this, getString(R.string.no_Passive), Toast.LENGTH_LONG).show();
-        }
-        
-        try
-        {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, locationListener);
-        } catch (Exception e)
-        {
-            // do nothing
-            Toast.makeText(this, getString(R.string.no_NET), Toast.LENGTH_LONG).show();
-        }
-*/
 
         // clear any existing views
         if (lhandPref) // if left-handed counting page
@@ -500,7 +432,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
     }
 
-    /***************/
+/*
     public void saveAndExit(View view)
     {
         saveData();
@@ -520,7 +452,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         super.finish();
     }
-
+*/
+    
     // Triggered by count up button
     // starts EditIndividualActivity
     public void countUp(View view)
@@ -545,14 +478,14 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
 
-        if (provider.equals("gps") && latitude != 0)
+        // if (provider.equals("gps") && latitude != 0) 
+        if (latitude != 0)
         {
             uncert = String.valueOf(uncertainty);
         }
         else
         {
-            uncert = null;
-            // Toast.makeText(CountingActivity.this, "Provider: " + provider + "Uncert: " + uncert, Toast.LENGTH_SHORT).show();
+            uncert = "0";
         }
 
         String name, datestamp, timestamp;
@@ -597,14 +530,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
 
-        if (provider.equals("gps") && latitude != 0)
+        if (latitude != 0)
         {
             uncert = String.valueOf(uncertainty);
         }
         else
         {
-            uncert = null;
-            // Toast.makeText(CountingActivity.this, "Provider: " + provider + "Uncert: " + uncert, Toast.LENGTH_SHORT).show();
+            uncert = "0";
         }
 
         String name, datestamp, timestamp;
@@ -848,6 +780,53 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         getPrefs();
+    }
+
+    /**
+     * Checks if a CharSequence is whitespace, empty ("") or null
+     * <p>
+     * isBlank(null)      = true
+     * isBlank("")        = true
+     * isBlank(" ")       = true
+     * isBlank("bob")     = false
+     * isBlank("  bob  ") = false
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is null, empty or whitespace
+     */
+    private static boolean isBlank(final CharSequence cs)
+    {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0)
+        {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++)
+        {
+            if (!Character.isWhitespace(cs.charAt(i)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
+     * <p>
+     * isNotBlank(null)      = false
+     * isNotBlank("")        = false
+     * isNotBlank(" ")       = false
+     * isNotBlank("bob")     = true
+     * isNotBlank("  bob  ") = true
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is
+     * not empty and not null and not whitespace
+     */
+    private static boolean isNotBlank(final CharSequence cs)
+    {
+        return !isBlank(cs);
     }
 
 }

@@ -23,7 +23,6 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.wmstein.filechooser.AdvFileChooser;
-import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
@@ -125,8 +124,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             }
         }
 
-/*
-        // Request Network location permission (does not work!)
+        // Request Network location permission
         int REQUEST_CODE_NETWORK = 125;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -136,26 +134,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_NETWORK);
             }
         }
-*/
-        
+
         cl = new ChangeLog(this);
         vh = new ViewHelp(this);
         if (cl.firstRun())
             cl.getLogDialog().show();
 
         // test for GPS or Network location
-        getLocation();
+        canLocation();
 
         if (!canGetLocation)
         {
             // can't get location, GPS or Network is not enabled
             Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
         }
-
     }
 
     // Try to find locationservice
-    private Boolean getLocation()
+    private Boolean canLocation()
     {
         try
         {
@@ -164,7 +160,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // getting GPS status
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status (doesn't work on LG G2 with Cyanogenmod 5.02)
+            // getting network status (needs UnifiedNlp + location backend on Cyanogenmod, no height info)
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             //Toast.makeText(getApplicationContext(), "NetworkEnabled: " + isNetworkEnabled + "\nGPSenabled: " + isGPSEnabled, Toast.LENGTH_LONG).show();
 
@@ -185,7 +181,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private String getcurDate()
     {
         Date date = new Date();
-        @SuppressLint("SimpleDateFormat") 
+        @SuppressLint("SimpleDateFormat")
         DateFormat dform = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
         return dform.format(date);
     }
@@ -431,9 +427,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         String plz, city, place;
         String date, start_tm, end_tm;
         int spstate;
-        double longi, lati, heigh;
+        double longi, lati, heigh, uncer;
         int frst, sum = 0;
-        double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0;
+        double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -640,20 +636,21 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 Cursor curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                     + " order by " + DbHelper.I_COUNT_ID, null);
 
-                frst = 1;
+                frst = 0;
                 while (curCSVInd.moveToNext())
                 {
-                    spstate = curCSVInd.getInt(12);
                     longi = curCSVInd.getDouble(4);
                     lati = curCSVInd.getDouble(3);
-                    heigh = curCSVInd.getDouble(5);
+                    uncer = Math.rint(curCSVInd.getDouble(6));
+                    heigh = Math.rint(curCSVInd.getDouble(5));
+                    spstate = curCSVInd.getInt(12);
                     String arrIndividual[] =
                         {
                             curCSVInd.getString(2),  //species name
                             curCSVInd.getString(9),  //locality
                             String.valueOf(longi),   //longitude
                             String.valueOf(lati),    //latitude
-                            curCSVInd.getString(6),  //uncertainty
+                            String.valueOf(uncer),   //uncertainty
                             String.valueOf(heigh),   //height
                             curCSVInd.getString(7),  //date
                             curCSVInd.getString(8),  //time
@@ -664,17 +661,18 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         };
                     csvWrite.writeNext(arrIndividual);
 
-                    if (longi != 0)
+                    if (longi != 0) // has coordinates
                     {
                         //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "longi " + longi);
-                        if (frst == 1)
+                        if (frst == 0)
                         {
                             loMin = longi;
                             loMax = longi;
                             laMin = lati;
                             laMax = lati;
-                            frst = 0;
+                            uncer1 = uncer;
+                            frst = 1; // just 1 with coordinates
                         }
                         else
                         {
@@ -682,6 +680,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             loMax = Math.max(loMax, longi);
                             laMin = Math.min(laMin, lati);
                             laMax = Math.max(laMax, lati);
+                            uncer1 = Math.max(uncer1, uncer);
                         }
                     }
                 }
@@ -689,16 +688,21 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 // write Average Coords
                 lo = (loMax + loMin) / 2;   // average longitude
                 la = (laMax + laMin) / 2;   // average latitude
-                // Simple distance calculation between 2 coordinates within the temperate zone in meters
+                
+                // Simple distance calculation between 2 coordinates within the temperate zone in meters (Pythagoras):
+                //   uc = (((loMax-loMin)*71500)² + ((laMax-laMin)*111300)²)½ 
                 uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
-                uc = Math.rint(uc / 2) + 20; // uncertainty radius + default gps uncertainty                 
+                    uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
+                    if (uc <= uncer1)
+                        uc = uncer1;
+                
                 String arrAvCoords[] =
                     {
                         "",
                         getString(R.string.avCoords),
                         Double.toString(lo),    // average longitude
                         Double.toString(la),    // average latitude
-                        Double.toString(uc)     // uncertainty radius
+                        Double.toString(uc)     // average uncertainty radius
                     };
                 csvWrite.writeNext(arrAvCoords);
 

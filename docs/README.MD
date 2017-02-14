@@ -3,7 +3,7 @@ Readme.md
 
 TourCount is an Android app that supports species-specific counting of butterflies in nature.
 
-The integrated database is organized according to a tour in nature with its exspected butterfly species. That means, a new (importable and prepared) basic database instance will be used per tour.
+The integrated database is organized according to a tour in nature with its expected butterfly species. That means, a new (importable and prepared) basic database instance will be used per tour.
 
 Databases can be individually created and adapted regarding meta data and expected butterfly species. The recorded data (meta data, counts, species data and remarks) may either be read on the smartphone or exported in SQLite- or CSV-format and transferred to a PC for your own processing, e.g. by importing a csv-file into MS Excel.
 

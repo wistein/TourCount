@@ -3,15 +3,14 @@
           package="com.wmstein.tourcount"
           xmlns:android="http://schemas.android.com/apk/res/android"
           android:largeHeap="true"
-          android:versionName="2.1.4">
+          android:versionName="2.1.5">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- Permission needed for GPS location provider -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- Permission needed for network location provider (not necessary)
+    <!-- Permission needed for network location provider -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    -->
 
     <!-- Permission needed for screen brightness setting -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
