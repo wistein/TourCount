@@ -86,10 +86,10 @@
     <string name="sex1">Sex (f/m)</string>
     <string name="valSex">Check sex!</string>
     <string name="stadium">Phase</string>
-    <string name="stadium1">Phase (B/P/L/E)</string>
+    <string name="stadium1">Phase (B/P/C/E)</string>
     <string name="stadium_1">Butterfly</string>
     <string name="stadium_2">Pupa</string>
-    <string name="stadium_3">Larva</string>
+    <string name="stadium_3">Caterpillar</string>
     <string name="stadium_4">Egg</string>
     <string name="state">State (0-6)</string>
     <string name="state1">State (1-6)</string>
