@@ -1,0 +1,29 @@
+Installing the App
+
+Download either from F-Droid store,
+only app (with future updates from F-Droid store): 
+
+https://f-droid.org/repository/browse/?fdid=com.wmstein.tourcount
+After installing from F-Droid you should download the docs and a Basic DB from GitHub. 
+Docs and Basic DB are downloadable only per link to GitHub:
+
+Or get the app directly from GitHub (most up to date editing status). 
+On GitHub the author publishes the complete project with app, source code, docs and prepared Basic DBs:
+
+Project page:   https://github.com/wistein/TourCount
+App, apk-file:  https://github.com/wistein/TourCount/tree/master/apk
+Docs and DBs:   https://github.com/wistein/TourCount/tree/master/docs
+
+In any case, before installation you must activate the option "Unknown sources" on your phone under "Settings -> Security".
+
+After download you can install the app by a file or download manager from the download directory.
+Copy the Basic DB from download directory to basic directory (/storage/emulated/0).
+
+Important: Thereafter, deactivate the option "Unknown sources"!
+
+Remarks on F-Droid App Store:
+Usage of the F-Droid store is similar safe as Google's Play Store.
+Privacy is a concern and all apps are checked and compiled by F-Droid. 
+Antifeatures like Ads, tracking or hidden costs will be listet in the app's description.
+
+The apk file (installable app) published under GitHub is functional identic with the one of F-Droid. But there is a difference in the compilation key. Therefore an installed apk file from GitHub cannot be updated by an apk file from F-Droid and vice versa.
