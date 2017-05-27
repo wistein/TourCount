@@ -17,6 +17,7 @@ import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.ListHeadWidget;
 import com.wmstein.tourcount.widgets.ListMetaWidget;
 import com.wmstein.tourcount.widgets.ListSpeciesWidget;
+import com.wmstein.tourcount.widgets.ListSumWidget;
 import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
@@ -30,14 +31,19 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private static String TAG = "tourcountListSpeciesActivity";
     private TourCountApplication tourCount;
     private SharedPreferences prefs;
+
     private LinearLayout spec_area;
+
     // preferences
     private boolean awakePref;
     private String sortPref;
+
     // the actual data
     private CountDataSource countDataSource;
     private SectionDataSource sectionDataSource;
     private HeadDataSource headDataSource;
+    
+    ListSumWidget lsw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -94,6 +100,8 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     // fill ListSpeciesWidget with relevant counts and sections data
     private void loadData()
     {
+        int sumsp = 0, sumind = 0;
+        
         headDataSource.open();
         sectionDataSource.open();
 
@@ -166,19 +174,29 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         // display all the counts by adding them to listSpecies layout
         for (Count spec : specs)
         {
-            // set section ID from count table and prepare to get section name from section table
             section = sectionDataSource.getSection();
 
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec, section);
             int spec_count = widget.getSpec_count(spec);
 
+            sumind = sumind + spec_count;
+            sumsp = sumsp + 1;
+            
             // fill widget only for counted species
             if (spec_count > 0)
             {
                 spec_area.addView(widget);
             }
         }
+
+        // display the totals
+        lsw = new ListSumWidget(this, null);
+        lsw.setSum(sumsp, sumind);
+
+        spec_area.addView(lsw);
+
+
     }
 
     @Override

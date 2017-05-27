@@ -33,8 +33,11 @@
 
 $ 2.1.5
   % Version 2.1.5
-  _ 2017-02-09
+  _ 2017-05-27
     * Additional support for coarse location from Wifi and Network
+    * GPS height correction
+    * Results page with totals
+    * Additional butterfly pictures
 
 $ 2.1.4
   % Version 2.1.4

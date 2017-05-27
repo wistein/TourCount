@@ -33,8 +33,11 @@
   
 $ 2.1.5
   % Version 2.1.5
-  _ 09.02.2017
-    * Unterstüzung auch für grobe Koordinatenbestimmung per Wifi und Funknetz  
+  _ 27.05.2017
+    * Unterstüzung auch für grobe Koordinatenbestimmung per Wifi und Funknetz
+    * GPS-Höhenkorrektur
+    * Ergebnisseite mit Summen
+    * Weitere Falter-Abbildungen
 
 $ 2.1.4
   % Version 2.1.4

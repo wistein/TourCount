@@ -167,6 +167,8 @@
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Counting Results</string>
     <string name="wait">View gets calculated&#8230;</string>
+    <string name="txtSpecies">Sum of counted species: </string>
+    <string name="txtIndividuals">Sum of counted individuals: </string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>

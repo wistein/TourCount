@@ -167,6 +167,8 @@
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Zählergebnis</string>
     <string name="wait">Liste wird berechnet&#8230;</string>
+    <string name="txtSpecies">Summe der gezählten Arten: </string>
+    <string name="txtIndividuals">Summe der gezählten Individuen: </string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>
