@@ -8,6 +8,9 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -38,6 +41,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 {
     private static final String TAG = "TourCountEditIndividualActivity";
     private TourCountApplication tourCount;
+    private SharedPreferences prefs;
     private Individuals individuals;
     private Temp temp;
     private Count counts;
@@ -49,7 +53,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private CountDataSource countDataSource;
     private Bitmap bMap;
     private BitmapDrawable bg;
-
+    private boolean buttonSoundPref;
+    private String buttonAlertSound;
+    private boolean brightPref;
+    
     private int count_id;
     private int i_id;
     private String specName;
@@ -62,10 +69,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_individual);
 
-        tourCount = (TourCountApplication) getApplication();
-        SharedPreferences prefs = TourCountApplication.getPrefs();
+        TourCountApplication tourCount = (TourCountApplication) getApplication();
+        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        boolean brightPref = prefs.getBoolean("pref_bright", true);
+        getPrefs();
 
         // Set full brightness of screen
         if (brightPref)
@@ -92,8 +99,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         tourCount = (TourCountApplication) getApplication();
 
-        prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
+//        prefs = TourCountApplication.getPrefs();
+//        prefs.registerOnSharedPreferenceChangeListener(this);
 
         ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
@@ -106,6 +113,16 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
+    }
+
+    /*
+     * So preferences can be loaded at the start, and also when a change is detected.
+     */
+    private void getPrefs()
+    {
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
+        buttonAlertSound = prefs.getString("alert_button_sound", null);
+        brightPref = prefs.getBoolean("pref_bright", true);
     }
 
     @SuppressLint("LongLogTag")
@@ -177,7 +194,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         eiw.setWidgetState1(getString(R.string.state));
         eiw.setWidgetState2(individuals.state_1_6);
 
-        eiw.setWidgetCount1(getString(R.string.count1));
+        eiw.setWidgetCount1(getString(R.string.count1)); // icount
         eiw.setWidgetCount2(1);
 
         eiw.setWidgetIndivNote1(getString(R.string.note));
@@ -205,6 +222,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
     private boolean saveData()
     {
+        buttonSound();
         // save individual data
         // Locality
         String newlocality = eiw.getWidgetLocality2();
@@ -216,7 +234,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         // Sex
         String newsex = eiw.getWidgetSex2();
-        if (newsex.equals("") || newsex.matches(" |m|M|f|F"))
+        if (newsex.equals("") || newsex.matches(" |m|f"))
         {
             individuals.sex = newsex;
         }
@@ -244,6 +262,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // number of individuals
         int newcount = eiw.getWidgetCount2();
         counts.count = counts.count + newcount - 1; // -1 as CountingActivity already added 1
+        individuals.icount = newcount;
         temp.temp_cnt = newcount;
 
         // Notes
@@ -258,6 +277,30 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         countDataSource.saveCount(counts);
 
         return true;
+    }
+
+    private void buttonSound()
+    {
+        if (buttonSoundPref)
+        {
+            try
+            {
+                Uri notification;
+                if (isNotBlank(buttonAlertSound) && buttonAlertSound != null)
+                {
+                    notification = Uri.parse(buttonAlertSound);
+                }
+                else
+                {
+                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                }
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -297,6 +340,54 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
+        getPrefs();
+    }
+
+    /**
+     * Checks if a CharSequence is whitespace, empty ("") or null
+     * <p>
+     * isBlank(null)      = true
+     * isBlank("")        = true
+     * isBlank(" ")       = true
+     * isBlank("bob")     = false
+     * isBlank("  bob  ") = false
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is null, empty or whitespace
+     */
+    private static boolean isBlank(final CharSequence cs)
+    {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0)
+        {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++)
+        {
+            if (!Character.isWhitespace(cs.charAt(i)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
+     * <p>
+     * isNotBlank(null)      = false
+     * isNotBlank("")        = false
+     * isNotBlank(" ")       = false
+     * isNotBlank("bob")     = true
+     * isNotBlank("  bob  ") = true
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is
+     * not empty and not null and not whitespace
+     */
+    private static boolean isNotBlank(final CharSequence cs)
+    {
+        return !isBlank(cs);
     }
 
 }

@@ -31,6 +31,14 @@
     * Geeignet für Android 4.2 (JellyBean) - 6.0 (Marshmallow)
     * Android 7 (Nougat) nicht getestet
   
+$ 2.1.6
+  % Version 2.1.6
+  _ 10.07.2017
+    * CSV-Export weist nun die Anzahl der Spezies nach Geschlecht und Stadium aus
+    * CSV-export unterdrückt Nullen für bessere Übersicht
+    * Beenden der Individuuen-Dateneingabe mit Button-Sound
+    * Datenbankstruktur angepasst an Erfordernisse des erweiterten Datenexports
+
 $ 2.1.5
   % Version 2.1.5
   _ 27.05.2017

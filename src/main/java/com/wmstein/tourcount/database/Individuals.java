@@ -19,5 +19,5 @@ public class Individuals
     public String stadium;
     public int state_1_6;
     public String notes;
-
+    public int icount;
 }

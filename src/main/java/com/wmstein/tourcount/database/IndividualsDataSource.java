@@ -31,7 +31,8 @@ public class IndividualsDataSource
         DbHelper.I_SEX,
         DbHelper.I_STADIUM,
         DbHelper.I_STATE_1_6,
-        DbHelper.I_NOTES
+        DbHelper.I_NOTES,
+        DbHelper.I_ICOUNT
     };
 
     public IndividualsDataSource(Context context)
@@ -65,6 +66,7 @@ public class IndividualsDataSource
         values.put(DbHelper.I_STADIUM, "");
         values.put(DbHelper.I_STATE_1_6, 0);
         // notes should be default null and so isn't created here
+        values.put(DbHelper.I_ICOUNT, 0);
 
         int insertId = (int) database.insert(DbHelper.INDIVIDUALS_TABLE, null, values);
         Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE,
@@ -97,6 +99,7 @@ public class IndividualsDataSource
         newindividuals.stadium = cursor.getString(cursor.getColumnIndex(DbHelper.I_STADIUM));
         newindividuals.state_1_6 = cursor.getInt(cursor.getColumnIndex(DbHelper.I_STATE_1_6));
         newindividuals.notes = cursor.getString(cursor.getColumnIndex(DbHelper.I_NOTES));
+        newindividuals.icount = cursor.getInt(cursor.getColumnIndex(DbHelper.I_ICOUNT));
         return newindividuals;
     }
 
@@ -116,6 +119,7 @@ public class IndividualsDataSource
         dataToInsert.put(DbHelper.I_STADIUM, individuals.stadium);
         dataToInsert.put(DbHelper.I_STATE_1_6, individuals.state_1_6);
         dataToInsert.put(DbHelper.I_NOTES, individuals.notes);
+        dataToInsert.put(DbHelper.I_ICOUNT, individuals.icount);
         String where = DbHelper.I_ID + " = ?";
         String[] whereArgs = {String.valueOf(individuals.id)};
         database.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);

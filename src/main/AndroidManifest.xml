@@ -3,7 +3,7 @@
           package="com.wmstein.tourcount"
           xmlns:android="http://schemas.android.com/apk/res/android"
           android:largeHeap="true"
-          android:versionName="2.1.5">
+          android:versionName="2.1.6">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

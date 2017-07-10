@@ -31,6 +31,14 @@
     * Suitable for Android 4.2 (JellyBean) - 6.0 (Marshmallow)
     * Android 7 (Nougat) not tested
 
+$ 2.1.6
+  % Version 2.1.6
+  _ 2017-07-10
+    * CSV export now shows No. of species according to recorded sex and stadium
+    * CSV export now suppresses zeros for empty counts
+    * Finishing individual input now has button sound
+    * Database structure adapted to enhanced individuals data export 
+
 $ 2.1.5
   % Version 2.1.5
   _ 2017-05-27

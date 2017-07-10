@@ -41,6 +41,12 @@
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
+    <string name="cntsmf">Counts ♂ ♀</string>
+    <string name="cntsm">Counts ♂</string>
+    <string name="cntsf">Counts ♀</string>
+    <string name="cntsp">Counts Pu.</string>
+    <string name="cntsl">Counts Ca.</string>
+    <string name="cntse">Counts Eg.</string>
     <string name="sum">Sum:</string>
     <string name="avCoords">Average coordinates:</string>
 

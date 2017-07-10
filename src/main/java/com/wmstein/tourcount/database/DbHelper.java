@@ -54,6 +54,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String I_STADIUM = "stadium";
     public static final String I_STATE_1_6 = "state_1_6";
     public static final String I_NOTES = "notes";
+    public static final String I_ICOUNT = "icount";
     public static final String T_ID = "_id";
     public static final String T_TEMP_LOC = "temp_loc";
     public static final String T_TEMP_CNT = "temp_cnt";
@@ -117,7 +118,8 @@ public class DbHelper extends SQLiteOpenHelper
             + I_SEX + " text, "
             + I_STADIUM + " text, "
             + I_STATE_1_6 + " int, "
-            + I_NOTES + " text)";
+            + I_NOTES + " text, "
+            + I_ICOUNT + " int)";
         db.execSQL(sql);
 
         //create empty row for SECTION_TABLE, HEAD_TABLE and TEMP_TABLE

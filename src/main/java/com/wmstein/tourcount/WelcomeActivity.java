@@ -429,6 +429,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         int spstate;
         double longi, lati, heigh, uncer;
         int frst, sum = 0;
+        int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
         double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;
 
         if (Environment.MEDIA_MOUNTED.equals(state))
@@ -557,12 +558,17 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrEmpt);
 
                 // write counts headline
-                //    Species, Spec.-Code, Counts, Spec.-Notes
+                //    Species Name, Spec.-Code, Counts ♂♀, Counts ♂, Counts ♀, Counts Pupa, Counts Caterp., Counts Egg, Spec.-Notes
                 String arrCntHead[] =
                     {
                         getString(R.string.spec),
                         getString(R.string.speccode),
-                        getString(R.string.cnts),
+                        getString(R.string.cntsmf),
+                        getString(R.string.cntsm),
+                        getString(R.string.cntsf),
+                        getString(R.string.cntsp),
+                        getString(R.string.cntsl),
+                        getString(R.string.cntse),
                         getString(R.string.bema)
                     };
                 csvWrite.writeNext(arrCntHead);
@@ -585,17 +591,139 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     break;
                 }
 
+                // get the number of individuals with sexus
+                int cnt;  // counts count
+                int cnts; // individuals icount
+                String strcnts;
+                int cntsmf = 0; // Imago male, female
+                String strcntsmf;
+                int cntsm = 0; // Imago male
+                String strcntsm;
+                int cntsf = 0; // Imago female
+                String strcntsf;
+                int cntsp = 0; // Pupa
+                String strcntsp;
+                int cntsl = 0; // Caterpillar
+                String strcntsl;
+                int cntse = 0; // Egg
+                String strcntse;
+                String male = "m";
+                String fmale = "f";
+                String stadium1 = getString(R.string.stadium_1);
+                String stadium2 = getString(R.string.stadium_2);
+                String stadium3 = getString(R.string.stadium_3);
+                String stadium4 = getString(R.string.stadium_4);
+                
+                Cursor curCSVInd;
+
                 while (curCSVCnt.moveToNext())
                 {
+                    String spname = curCSVCnt.getString(2); // species name
+                    String slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE 
+                        + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_SEX + " = ? AND " + DbHelper.I_STADIUM + " = ?";
+                    
+                    curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1}); // select male
+
+                    while (curCSVInd.moveToNext())
+                    {
+                        cnts = curCSVInd.getInt(14); // individuals icount
+                        cntsm = cntsm + cnts;
+                    }
+                    curCSVInd.close();
+
+                    curCSVInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1}); // select female
+
+                    while (curCSVInd.moveToNext())
+                    {
+                        cnts = curCSVInd.getInt(14); // individuals icount
+                        cntsf = cntsf + cnts;
+                    }
+                    curCSVInd.close();
+
+                    String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE 
+                        + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
+                    
+                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2}); // select pupa
+
+                    while (curCSVInd.moveToNext())
+                    {
+                        cnts = curCSVInd.getInt(14); // individuals icount
+                        cntsp = cntsp + cnts;
+                    }
+                    curCSVInd.close();
+
+                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
+
+                    while (curCSVInd.moveToNext())
+                    {
+                        cnts = curCSVInd.getInt(14); // individuals icount
+                        cntsl = cntsl + cnts;
+                    }
+                    curCSVInd.close();
+
+                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
+
+                    while (curCSVInd.moveToNext())
+                    {
+                        cnts = curCSVInd.getInt(14); // individuals icount
+                        cntse = cntse + cnts;
+                    }
+                    curCSVInd.close();
+
+                    cnt = curCSVCnt.getInt(1); // count total
+                    cntsmf = cnt - cntsm - cntsf - cntsp - cntsl - cntse;
+                    
+                    if (cntsmf > 0) // suppress '0' in output
+                        strcntsmf = Integer.toString(cntsmf);
+                    else
+                        strcntsmf = "";
+                    if (cntsm > 0)
+                        strcntsm = Integer.toString(cntsm);
+                    else
+                        strcntsm = "";
+                    if (cntsf > 0)
+                        strcntsf = Integer.toString(cntsf);
+                    else
+                        strcntsf = "";
+                    if (cntsp > 0)
+                        strcntsp = Integer.toString(cntsp);
+                    else
+                        strcntsp = "";
+                    if (cntsl > 0)
+                        strcntsl = Integer.toString(cntsl);
+                    else
+                        strcntsl = "";
+                    if (cntse > 0)
+                        strcntse = Integer.toString(cntse);
+                    else
+                        strcntse = "";
+
                     String arrStr[] =
                         {
-                            curCSVCnt.getString(2), // species name
+                            spname,                 // species name
                             curCSVCnt.getString(3), // species code 
-                            curCSVCnt.getString(1), // count
+                            strcntsmf,              // count ♂ o. ♀
+                            strcntsm,               // count ♂
+                            strcntsf,               // count ♀
+                            strcntsp,               // count pupa
+                            strcntsl,               // count caterpillar
+                            strcntse,               // count egg
                             curCSVCnt.getString(4)  // species notes
                         };
                     csvWrite.writeNext(arrStr);
                     sum = sum + curCSVCnt.getInt(1);
+                    summf = summf + cntsmf;
+                    summ = summ + cntsm;
+                    sumf = sumf + cntsf;
+                    sump = sump + cntsp;
+                    suml = suml + cntsl;
+                    sume = sume + cntse;
+                    
+                    cntsm = 0;
+                    cntsf = 0;
+                    cntsp = 0;
+                    cntsl = 0;
+                    cntse = 0;
                 }
                 curCSVCnt.close();
 
@@ -604,20 +732,33 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     {
                         "",
                         getString(R.string.sum),
+                        Integer.toString(summf),
+                        Integer.toString(summ),
+                        Integer.toString(sumf),
+                        Integer.toString(sump),
+                        Integer.toString(suml),
+                        Integer.toString(sume),
                         Integer.toString(sum)
                     };
                 sum = 0;
+                summf = 0;
+                summ = 0;
+                sumf = 0;
+                sump = 0;
+                suml = 0;
+                sume = 0;
                 csvWrite.writeNext(arrSum);
 
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
 
                 // write individual headline
-                //    Species, Spec.-Code, Locality, Latitude, Longitude, Uncertainty, 
-                //    Date, Time, Sex, Stadium, State, Indiv.-Notes 
+                //    Species, Counts, Locality, Longitude, Latitude, Uncertainty, 
+                //    Date, Time, Sexus, Stadium, Stadium, State, Indiv.-Notes 
                 String arrIndHead[] =
                     {
                         getString(R.string.individuals),
+                        getString(R.string.cnts),
                         getString(R.string.locality),
                         getString(R.string.ycoord),
                         getString(R.string.xcoord),
@@ -633,7 +774,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrIndHead);
 
                 // build the sorted individuals array
-                Cursor curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
+                curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                     + " order by " + DbHelper.I_COUNT_ID, null);
 
                 frst = 0;
@@ -644,9 +785,16 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     uncer = Math.rint(curCSVInd.getDouble(6));
                     heigh = Math.rint(curCSVInd.getDouble(5));
                     spstate = curCSVInd.getInt(12);
+                    cnts = curCSVInd.getInt(14);
+                    if (cnts > 0)
+                        strcnts = String.valueOf(cnts);
+                    else
+                        strcnts = "";
+                    
                     String arrIndividual[] =
                         {
                             curCSVInd.getString(2),  //species name
+                            strcnts,                 //indiv. counts
                             curCSVInd.getString(9),  //locality
                             String.valueOf(longi),   //longitude
                             String.valueOf(lati),    //latitude
@@ -657,7 +805,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             curCSVInd.getString(10), //sex
                             curCSVInd.getString(11), //stadium
                             String.valueOf(spstate), //state
-                            curCSVInd.getString(13)  //ind.-notes
+                            curCSVInd.getString(13)  //indiv. notes
                         };
                     csvWrite.writeNext(arrIndividual);
 
@@ -685,7 +833,21 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                 }
 
+                // Empty row
+                csvWrite.writeNext(arrEmpt);
+
                 // write Average Coords
+                String arrACoordHead[] =
+                    {
+                        "",
+                        "",
+                        "",
+                        getString(R.string.ycoord),
+                        getString(R.string.xcoord),
+                        getString(R.string.uncerti)
+                    };
+                csvWrite.writeNext(arrACoordHead);
+
                 lo = (loMax + loMin) / 2;   // average longitude
                 la = (laMax + laMin) / 2;   // average latitude
                 
@@ -698,6 +860,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 
                 String arrAvCoords[] =
                     {
+                        "",
                         "",
                         getString(R.string.avCoords),
                         Double.toString(lo),    // average longitude
