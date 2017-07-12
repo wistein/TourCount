@@ -61,6 +61,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private ChangeLog cl;
     private ViewHelp vh;
     private boolean canGetLocation = false;
+    public boolean doubleBackToExitPressedOnce;
+
     // import/export stuff
     private File infile;
     private File outfile;
@@ -328,6 +330,29 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onPause()
     {
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (doubleBackToExitPressedOnce)
+        {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.back_twice, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     public void onStop()

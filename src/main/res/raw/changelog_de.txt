@@ -33,11 +33,12 @@
   
 $ 2.1.6
   % Version 2.1.6
-  _ 10.07.2017
+  _ 12.07.2017
     * CSV-Export weist nun die Anzahl der Spezies nach Geschlecht und Stadium aus
     * CSV-export unterdrückt Nullen für bessere Übersicht
     * Beenden der Individuuen-Dateneingabe mit Button-Sound
     * Datenbankstruktur angepasst an Erfordernisse des erweiterten Datenexports
+  	* Zum Beenden Back-Button zweimal drücken
 
 $ 2.1.5
   % Version 2.1.5

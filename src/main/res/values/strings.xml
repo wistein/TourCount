@@ -49,6 +49,7 @@
     <string name="cntse">Counts Eg.</string>
     <string name="sum">Sum:</string>
     <string name="avCoords">Average coordinates:</string>
+    <string name="back_twice">Press again to exit</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>

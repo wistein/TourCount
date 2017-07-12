@@ -49,6 +49,7 @@
     <string name="cntse">Anzahl Ei</string>
     <string name="sum">Summe:</string>
     <string name="avCoords">Mittlere Koordinaten:</string>
+    <string name="back_twice">Zum Beenden erneut drücken</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Aktuelles Verz.</string>
