@@ -41,7 +41,7 @@
     <string name="confirmBasisImport">Willst Du wirklich die leere Basis-Datenbank \"tourcount0.db\" importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
-    <string name="cntsmf">Anzahl ♂ o. ♀</string>
+    <string name="cntsmf">Anzahl ♂ ♀</string>
     <string name="cntsm">Anzahl ♂</string>
     <string name="cntsf">Anzahl ♀</string>
     <string name="cntsp">Anzahl Pu.</string>
