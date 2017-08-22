@@ -29,7 +29,12 @@
     * https://github.com/wistein/TourCount.git
   _
     * Suitable for Android 4.2 (JellyBean) - 6.0 (Marshmallow)
-    * Android 7 (Nougat) not tested
+    * Android 7 (Nougat) not completely tested
+
+$ 2.1.7
+  % Version 2.1.7
+  _ 2017-08-22
+    * Correct height with geoid offset from EarthGravitationalModel EGM96
 
 $ 2.1.6
   % Version 2.1.6

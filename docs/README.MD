@@ -10,7 +10,7 @@ The app demands for storage access permit which is needed for im-/exporting the 
 
 A detailed description for setting up and using the app as well as a sample basic database (tourcount0.db) is provided under 'docs'.
 
-The apk-file 'tourcount-release.apk' is provided under 'apk'. It is usable with Android Version 4.2.2 or newer (not tested under Android 7.x).
+The apk-file 'tourcount-release.apk' is provided under 'apk'. It is usable with Android Version 4.2.2 or newer.
 
 Before using the app, please, read the documentation (provided in German and English).
 

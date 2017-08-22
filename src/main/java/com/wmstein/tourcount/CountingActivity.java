@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
@@ -37,6 +38,7 @@ import com.wmstein.tourcount.widgets.CountingWidget;
 import com.wmstein.tourcount.widgets.CountingWidgetLH;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -421,130 +423,32 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     }
 
-    // Approximately correct height with mean geoid offset for selected countries
+    // Correct height with geoid offset from EarthGravitationalModel
     private double correctHeight(double lat, double lon, double gpsHeight)
     {
         double corrHeight = 0;
-        if (lat < 49.98 && lat >= 47.05 && lon < 14.25 && lon >= 5.56)
-        {
-            corrHeight = gpsHeight - 45; // Germany S
-        }
-        else if (lat < 52.05 && lat >= 49.98 && lon < 15.32 && lon >= 5.56)
-        {
-            corrHeight = gpsHeight - 47; // Germany C
-        }
-        else if (lat < 55.14 && lat >= 52.05 && lon < 15.32 && lon >= 5.56)
-        {
-            corrHeight = gpsHeight - 40; // Germany N
-        }
-        else if (lat < 49.22 && lat >= 46.17 && lon < 17.4 && lon >= 9.32)
-        {
-            corrHeight = gpsHeight - 47; // Austria
-        }
-        else if (lat < 48 && lat >= 45.6 && lon < 10.8 && lon >= 5.63)
-        {
-            corrHeight = gpsHeight - 49; // Swiss
-        }
-        else if (lat < 51.15 && lat >= 42.74 && lon < 21.17 && lon >= 13.95)
-        {
-            corrHeight = gpsHeight - 46; // Czech, Hungary, Croatia
-        }
-        else if (lat < 53.6 && lat >= 51.22 && lon < 7.2 && lon >= 3.32)
-        {
-            corrHeight = gpsHeight - 43; // Netherlands
-        }
-        else if (lat < 51.25 && lat >= 49.56 && lon < 6.35 && lon >= 2.61)
-        {
-            corrHeight = gpsHeight - 46; // Belgium
-        }
-        else if (lat < 50.17 && lat >= 49.48 && lon < 6.48 && lon >= 5.74)
-        {
-            corrHeight = gpsHeight - 48; // Luxembourg
-        }
-        else if (lat < 47.26 && lat >= 45.77 && lon < 13.13 && lon >= 7.79)
-        {
-            corrHeight = gpsHeight - 50; // Alps
-        }
-        else if (lat < 29.41 && lat >= 27.61 && lon < -13.38 && lon >= -18.17)
-        {
-            corrHeight = gpsHeight - 49; // Canaries
-        }
-        else if (lat < 55.41 && lat >= 51.36 && lon < -5.59 && lon >= -10.47)
-        {
-            corrHeight = gpsHeight - 57; // Ireland
-        }
-        else if (lat < 59.27 && lat >= 50 && lon < 1.22 && lon >= -6.13)
-        {
-            corrHeight = gpsHeight - 50; // UK
-        }
-        else if (lat < 51.14 && lat >= 47.79 && lon < 8.4 && lon >= -4.9)
-        {
-            corrHeight = gpsHeight - 44; // France N
-        }
-        else if (lat < 47.79 && lat >= 45.73 && lon < 7.79 && lon >= -4.77)
-        {
-            corrHeight = gpsHeight - 48; // France C
-        }
-        else if (lat < 45.73 && lat >= 42.5 && lon < 7.41 && lon >= -2.47)
-        {
-            corrHeight = gpsHeight - 51; // France S
-        }
-        else if (lat < 43.07 && lat >= 41.36 && lon < 9.85 && lon >= 8.53)
-        {
-            corrHeight = gpsHeight - 51; // Corse
-        }
-        else if (lat < 42.16 && lat >= 39.68 && lon < -6.14 && lon >= -9.10)
-        {
-            corrHeight = gpsHeight - 45; // Portugal N
-        }
-        else if (lat < 39.68 && lat >= 36.96 && lon < -6.84 && lon >= -9.44)
-        {
-            corrHeight = gpsHeight - 42; // Portugal S
-        }
-        else if (lat < 47.26 && lat >= 41.52 && lon < 14.46 && lon >= 6.28)
-        {
-            corrHeight = gpsHeight - 41; // Italy N
-        }
-        else if (lat < 42.52 && lat >= 36.58 && lon < 18.66 && lon >= 7.89)
-        {
-            corrHeight = gpsHeight - 48; // Italy S + Sardinia
-        }
-        else if (lat < 41.78 && lat >= 35.88 && lon < 28.32 && lon >= 19.61)
-        {
-            corrHeight = gpsHeight - 37; // Greece
-        }
-        else if (lat < 69.20 && lat >= 55.32 && lon < 22.9 && lon >= 11.06)
-        {
-            corrHeight = gpsHeight - 29; // Sweden
-        }
-        else if (lat < 42.18 && lat >= 34.91 && lon < 44.89 && lon >= 25.55)
-        {
-            corrHeight = gpsHeight - 34; // Turkey
-        }
-        else if (lat < 35.70 && lat >= 34.55 && lon < 34.6 && lon >= 32.26)
-        {
-            corrHeight = gpsHeight - 28; // Cyprus 
-        }
-        else if (lat < 32.88 && lat >= 32.62 && lon < -16.65 && lon >= -17.28)
-        {
-            corrHeight = gpsHeight - 27; // Madeira
-        }
-        else if (lat < 33.4 && lat >= 29.35 && lon < 35.95 && lon >= 34)
-        {
-            corrHeight = gpsHeight - 19; // Israel
-        }
-        else if (lat < 35.96 && lat >= 29.12 && lon < -0.96 && lon >= -10.41)
-        {
-            corrHeight = gpsHeight - 52; // Morocco
-        }
-        else if (lat < 9.9 && lat >= 5.83 && lon < 81.9 && lon >= 79.4)
-        {
-            corrHeight = gpsHeight + 96; // Sri Lanka
-        }
-        else
-            corrHeight = gpsHeight;
+        double nnHeight = 0;
 
-        return corrHeight;
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(lat, lon, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
     }
 
     /**************************************************
@@ -581,7 +485,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         super.finish();
     }
 */
-    
+
     // Triggered by count up button
     // starts EditIndividualActivity
     public void countUp(View view)
@@ -793,7 +697,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private String getcurTime()
     {
         Date date = new Date();
-        @SuppressLint("SimpleDateFormat") 
+        @SuppressLint("SimpleDateFormat")
         DateFormat dform = new SimpleDateFormat("HH:mm");
         return dform.format(date);
     }

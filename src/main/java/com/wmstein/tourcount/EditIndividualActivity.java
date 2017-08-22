@@ -179,7 +179,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         eiw.setWidgetZCoord1(getString(R.string.zcoord));
-        eiw.setWidgetZCoord2(Double.toString(height));
+        eiw.setWidgetZCoord2(String.format("%.1f", height));
 
         eiw.setWidgetSex1(getString(R.string.sex1));
         eiw.setWidgetSex2(individuals.sex);
