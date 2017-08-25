@@ -2,6 +2,7 @@ package com.wmstein.tourcount;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -41,17 +42,33 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private int deleteAnAlert;
     private Bitmap bMap;
     private BitmapDrawable bg;
+    private boolean brightPref;
+    private boolean screenOrientL; // option for screen orientation
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_count_options);
 
         tourCount = (TourCountApplication) getApplication();
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        boolean brightPref = prefs.getBoolean("pref_bright", true);
+        brightPref = prefs.getBoolean("pref_bright", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        setContentView(R.layout.activity_count_options);
+
+        ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        }
 
         // Set full brightness of screen
         if (brightPref)
@@ -62,8 +79,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
             getWindow().setAttributes(params);
         }
 
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         assert counting_screen != null;
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
@@ -76,7 +91,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         {
             count_id = extras.getInt("count_id");
         }
-
     }
 
     @Override
@@ -207,7 +221,17 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
         assert counting_screen != null;
         counting_screen.setBackground(null);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        brightPref = prefs.getBoolean("pref_bright", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        }
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
     }

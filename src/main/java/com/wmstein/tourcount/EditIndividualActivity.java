@@ -6,6 +6,7 @@ package com.wmstein.tourcount;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Ringtone;
@@ -56,6 +57,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private boolean buttonSoundPref;
     private String buttonAlertSound;
     private boolean brightPref;
+    private boolean screenOrientL; // option for screen orientation
     
     private int count_id;
     private int i_id;
@@ -67,12 +69,25 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_individual);
 
-        TourCountApplication tourCount = (TourCountApplication) getApplication();
+        tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
+
+        setContentView(R.layout.activity_edit_individual);
+
+        ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        }
 
         // Set full brightness of screen
         if (brightPref)
@@ -82,6 +97,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
+
+        assert individ_screen != null;
+        bg = new BitmapDrawable(individ_screen.getResources(), bMap);
+        individ_screen.setBackground(bg);
 
         individ_area = (LinearLayout) findViewById(R.id.edit_individual);
 
@@ -96,17 +115,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
         }
-
-        tourCount = (TourCountApplication) getApplication();
-
-//        prefs = TourCountApplication.getPrefs();
-//        prefs.registerOnSharedPreferenceChangeListener(this);
-
-        ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert individ_screen != null;
-        bg = new BitmapDrawable(individ_screen.getResources(), bMap);
-        individ_screen.setBackground(bg);
     }
 
     @Override
@@ -123,6 +131,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
         brightPref = prefs.getBoolean("pref_bright", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
     @SuppressLint("LongLogTag")
@@ -337,10 +346,19 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
         assert individ_screen != null;
         individ_screen.setBackground(null);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        getPrefs();
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        }
+
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
-        getPrefs();
     }
 
     /**

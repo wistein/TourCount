@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -53,6 +54,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private BitmapDrawable bg;
     //added for dupPref
     private boolean dupPref;
+    private boolean brightPref;
+    private boolean screenOrientL; // option for screen orientation
 
     /**
      * Checks if a CharSequence is empty ("") or null.
@@ -92,30 +95,45 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_section);
-
-        //countNames = new ArrayList<>();
-        //countCodes = new ArrayList<>();
-        //countIds = new ArrayList<>();
-        savedCounts = new ArrayList<>();
 
         tourCount = (TourCountApplication) getApplication();
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         dupPref = prefs.getBoolean("pref_duplicate", true);
-        boolean brightPref = prefs.getBoolean("pref_bright", true);
+        brightPref = prefs.getBoolean("pref_bright", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        setContentView(R.layout.activity_edit_section);
+
+        ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        }
 
         // Set full brightness of screen
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.screenBrightness = 1.0f;
-        getWindow().setAttributes(params);
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
 
+        assert counting_screen != null;
+        bg = new BitmapDrawable(counting_screen.getResources(), bMap);
+        counting_screen.setBackground(bg);
+
+        savedCounts = new ArrayList<>();
         counts_area = (LinearLayout) findViewById(R.id.editingCountsLayout);
 
-        /*
-         * Restore any edit widgets the user has added previously
-         */
+        // Restore any edit widgets the user has added previously
         if (savedInstanceState != null)
         {
             if (savedInstanceState.getSerializable("savedCounts") != null)
@@ -124,12 +142,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                 savedCounts = (ArrayList<CountEditWidget>) savedInstanceState.getSerializable("savedCounts");
             }
         }
-
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert counting_screen != null;
-        bg = new BitmapDrawable(counting_screen.getResources(), bMap);
-        counting_screen.setBackground(bg);
     }
 
     @Override
@@ -408,9 +420,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
-
-        //added for dupPref
         dupPref = prefs.getBoolean("duplicate_counts", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
 }

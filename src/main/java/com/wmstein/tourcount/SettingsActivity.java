@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -21,11 +22,12 @@ import android.widget.Toast;
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TransektCount by wmstein on 18.02.2016
  */
-public class SettingsActivity extends PreferenceActivity
+public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final int SELECT_PICTURE = 1;
     private static final String TAG = "tourcountPreferenceActivity";
     private SharedPreferences.Editor editor;
+    private boolean screenOrientL; // option for screen orientation
     private Uri alert_button_uri;
 
     @Override
@@ -34,6 +36,19 @@ public class SettingsActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        
         addPreferencesFromResource(R.xml.preferences);
 
         Preference button = findPreference("button");
@@ -46,8 +61,6 @@ public class SettingsActivity extends PreferenceActivity
                 return true;
             }
         });
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Sound for keypresses
         String strButtonSoundPreference = prefs.getString("alert_button_sound", "DEFAULT_SOUND");
@@ -176,4 +189,11 @@ public class SettingsActivity extends PreferenceActivity
         }
         return true;
     }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
+    {
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+    }
+
 }

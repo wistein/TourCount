@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -72,8 +74,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private AlertDialog alert;
     private SectionDataSource sectionDataSource;
     private final Handler mHandler = new Handler();
+    
     // preferences
     private String sortPref;
+    private boolean screenOrientL; // option for screen orientation
+    
     // following stuff for purging export db
     private SQLiteDatabase database;
     private DbHelper dbHandler;
@@ -82,19 +87,30 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
 
         tourCount = (TourCountApplication) getApplication();
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        setContentView(R.layout.activity_welcome);
+
+        ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         Section section;
         sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
         section = sectionDataSource.getSection();
 
-        ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
         assert baseLayout != null;
         baseLayout.setBackground(tourCount.getBackground());
 
@@ -317,14 +333,33 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }, 100);
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+    
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        //LinearLayout baseLayout = (LinearLayout) findViewById(R.id.baseLayout);
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
         assert baseLayout != null;
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
     public void onPause()

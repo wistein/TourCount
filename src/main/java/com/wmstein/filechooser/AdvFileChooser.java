@@ -3,8 +3,11 @@ package com.wmstein.filechooser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,18 +30,32 @@ import java.util.List;
  * Modifications by wmstein on 18.06.2016
  */
 
-public class AdvFileChooser extends Activity
+public class AdvFileChooser extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private File currentDir;
     private FileArrayAdapter adapter;
     private FileFilter fileFilter;
     private ArrayList<String> extensions;
     private String filterFileName;
+    private boolean screenOrientL; // option for screen orientation
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         setContentView(R.layout.list_view);
 
         Bundle extras = getIntent().getExtras();
@@ -164,4 +181,11 @@ public class AdvFileChooser extends Activity
     {
         super.onDestroy();
     }
+    
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
+    {
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+    }
+
 }

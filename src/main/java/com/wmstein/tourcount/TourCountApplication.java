@@ -97,6 +97,8 @@ public class TourCountApplication extends Application
         String backgroundPref = prefs.getString("pref_back", "default");
         String pictPref = prefs.getString("imagePath", "");
 
+        boolean screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -131,24 +133,47 @@ public class TourCountApplication extends Application
                     {
                         Toast.makeText(this, getString(R.string.customTooBig), Toast.LENGTH_LONG).show();
                         bMap = null;
-                        bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+                        if (screenOrientL)
+                        {
+                            bMap = decodeBitmap(R.drawable.tourcount_picturel, width, height);
+                        } else
+                        {
+                            bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+                        }
                     }
                 }
                 else
                 {
                     Toast.makeText(this, getString(R.string.customMissing), Toast.LENGTH_LONG).show();
-                    bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+                    if (screenOrientL)
+                    {
+                        bMap = decodeBitmap(R.drawable.tourcount_picturel, width, height);
+                    } else
+                    {
+                        bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+                    }
                 }
             }
             else
             {
                 Toast.makeText(this, getString(R.string.customNotDefined), Toast.LENGTH_LONG).show();
-                bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+                if (screenOrientL)
+                {
+                    bMap = decodeBitmap(R.drawable.tourcount_picturel, width, height);
+                } else
+                {
+                    bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+                }
             }
             break;
         case "default":
-            //bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tourcount_picture);
-            bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+            if (screenOrientL)
+            {
+                bMap = decodeBitmap(R.drawable.tourcount_picturel, width, height);
+            } else
+            {
+                bMap = decodeBitmap(R.drawable.tourcount_picture, width, height);
+            }
             break;
         }
 

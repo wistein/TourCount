@@ -31,6 +31,11 @@
     * Suitable for Android 4.2 (JellyBean) - 6.0 (Marshmallow)
     * Android 7 (Nougat) not completely tested
 
+$ 2.1.8
+  % Version 2.1.8
+  _ 2017-08-26
+    * Added Option to switch between portrait and landscape mode
+
 $ 2.1.7
   % Version 2.1.7
   _ 2017-08-22

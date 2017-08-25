@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.CursorIndexOutOfBoundsException;
 import android.location.Criteria;
 import android.location.Location;
@@ -64,17 +65,21 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private LinearLayout notes_area;
     private LinearLayout count_areaLH;
     private LinearLayout notes_areaLH;
+
     // the actual data
     private Section section;
     private List<Count> counts;
     private Temp temp;
     private List<CountingWidget> countingWidgets;
     private List<CountingWidgetLH> countingWidgetsLH;
+
     // Location info handling
     private LocationManager locationManager;
     private LocationListener locationListener;
     private String provider;
     private PowerManager.WakeLock mProximityWakeLock;
+    private double latitude, longitude, height, uncertainty;
+
     // preferences
     private boolean awakePref;
     private boolean brightPref;
@@ -83,7 +88,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private boolean lhandPref; // true for lefthand mode of counting screen
     private boolean buttonSoundPref;
     private String buttonAlertSound;
-    private double latitude, longitude, height, uncertainty;
+    private boolean screenOrientL; // option for screen orientation
+
+    // data sources
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
@@ -110,6 +117,14 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         if (lhandPref) // if left-handed counting page
         {
@@ -238,6 +253,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
     @Override
@@ -463,28 +479,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             countDataSource.saveCount(count);
         }
     }
-
-/*
-    public void saveAndExit(View view)
-    {
-        saveData();
-        try
-        {
-            locationManager.removeUpdates(locationListener);
-        } catch (Exception e)
-        {
-            // do nothing
-        }
-
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor(true);
-        }
-
-        super.finish();
-    }
-*/
 
     // Triggered by count up button
     // starts EditIndividualActivity

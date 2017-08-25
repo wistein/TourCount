@@ -164,6 +164,8 @@
     <string name="pref_button_sound_summary">Make a sound upon pressing the count up or count down buttons.</string>
     <string name="choose_button_alert">Button sound</string>
     <string name="explain_button_alert">Choose a sound for buttons.</string>
+    <string name="screen_orientation">Show screen in Landscape Mode instead of Portrait Mode.</string>
+    <string name="titel_screen_orientation">Landscape instead of Portrait</string>
 
     <!-- CountOptionsActivity -->
     <string name="editCountValue">You may change the internal count value of %1$s from its current value of %2$d by editing it here.\nBut this generates inconsistency between the individuals table and count number in the DB.</string>

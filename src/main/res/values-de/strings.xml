@@ -164,6 +164,8 @@
     <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
     <string name="choose_button_alert">Button-Sound</string>
     <string name="explain_button_alert">Wähle einen Button-Sound aus.</string>
+    <string name="screen_orientation">Ausrichtung in Landscape-Modus anstelle von Portrait-Modus.</string>
+    <string name="titel_screen_orientation">Landscape statt Portrait</string>
 
     <!-- CountOptionsActivity -->
     <string name="editCountValue">Du kannst den momentanen Intern-Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>

@@ -1,6 +1,7 @@
 package com.wmstein.tourcount;
 
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -37,6 +38,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     // preferences
     private boolean awakePref;
     private String sortPref;
+    private boolean screenOrientL; // option for screen orientation
 
     // the actual data
     private CountDataSource countDataSource;
@@ -49,16 +51,25 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_species);
-
-        countDataSource = new CountDataSource(this);
-        sectionDataSource = new SectionDataSource(this);
-        headDataSource = new HeadDataSource(this);
 
         tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        setContentView(R.layout.activity_list_species);
+
+        countDataSource = new CountDataSource(this);
+        sectionDataSource = new SectionDataSource(this);
+        headDataSource = new HeadDataSource(this);
 
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
         assert listSpec_screen != null;
@@ -81,6 +92,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     {
         awakePref = prefs.getBoolean("pref_awake", true);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sorted species list
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
     @Override
