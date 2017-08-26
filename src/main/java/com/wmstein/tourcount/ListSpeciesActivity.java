@@ -74,6 +74,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
         assert listSpec_screen != null;
         listSpec_screen.setBackground(tourCount.getBackground());
+
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(getString(R.string.viewSpecTitle));
 

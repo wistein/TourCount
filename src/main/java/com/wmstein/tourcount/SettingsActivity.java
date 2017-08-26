@@ -26,6 +26,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 {
     private static final int SELECT_PICTURE = 1;
     private static final String TAG = "tourcountPreferenceActivity";
+    SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private boolean screenOrientL; // option for screen orientation
     private Uri alert_button_uri;
@@ -37,8 +38,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        prefs.registerOnSharedPreferenceChangeListener(this);
+        addPreferencesFromResource(R.xml.preferences);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         if (screenOrientL)
@@ -49,8 +51,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         
-        addPreferencesFromResource(R.xml.preferences);
-
         Preference button = findPreference("button");
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
@@ -145,6 +145,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
                 // save the image path
                 editor.putString("imagePath", imageFilePath);
+
                 //editor.commit();
                 try
                 {

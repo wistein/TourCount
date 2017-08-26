@@ -52,9 +52,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private int idToDelete;
     private Bitmap bMap;
     private BitmapDrawable bg;
-    //added for dupPref
+
     private boolean dupPref;
-    private boolean brightPref;
     private boolean screenOrientL; // option for screen orientation
 
     /**
@@ -96,6 +95,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     {
         super.onCreate(savedInstanceState);
 
+        boolean brightPref;
         tourCount = (TourCountApplication) getApplication();
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -415,13 +415,21 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
+        dupPref = prefs.getBoolean("pref_duplicate", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
+        } else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        }
         assert counting_screen != null;
         counting_screen.setBackground(null);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
-        dupPref = prefs.getBoolean("duplicate_counts", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
 }

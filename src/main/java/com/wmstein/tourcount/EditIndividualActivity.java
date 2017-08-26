@@ -48,6 +48,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private Count counts;
     private LinearLayout individ_area;
     private EditIndividualWidget eiw;
+
     // the actual data
     private IndividualsDataSource individualsDataSource;
     private TempDataSource tempDataSource;
@@ -63,7 +64,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private int i_id;
     private String specName;
     private double latitude, longitude, height;
-    //private double latitud, longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

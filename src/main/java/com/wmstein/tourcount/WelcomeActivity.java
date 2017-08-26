@@ -106,18 +106,22 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        assert baseLayout != null;
+        baseLayout.setBackground(tourCount.getBackground());
+
         Section section;
         sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
         section = sectionDataSource.getSection();
 
-        assert baseLayout != null;
-        baseLayout.setBackground(tourCount.getBackground());
-
         // List name as title
-        //noinspection ConstantConditions
-        getSupportActionBar().setTitle(section.name);
-
+        try
+        {
+            getSupportActionBar().setTitle(section.name);
+        } catch (NullPointerException e)
+        {
+            // nothing
+        }
         sectionDataSource.close();
 
         // if API level > 23 permission request is necessary
@@ -350,6 +354,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        
+        Section section;
+        sectionDataSource = new SectionDataSource(this);
+        sectionDataSource.open();
+        section = sectionDataSource.getSection();
+
+        // List name as title
+        getSupportActionBar().setTitle(section.name);
+        sectionDataSource.close();
     }
     
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
