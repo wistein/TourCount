@@ -360,7 +360,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         sectionDataSource.open();
         section = sectionDataSource.getSection();
 
-        // List name as title
+        // List tour name as title
         try
         {
             getSupportActionBar().setTitle(section.name);
@@ -1193,6 +1193,21 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         {
                             copy(infile, outfile);
                             Toast.makeText(getApplicationContext(), getString(R.string.importWin), Toast.LENGTH_SHORT).show();
+
+                            Section section;
+                            sectionDataSource = new SectionDataSource(getApplicationContext());
+                            sectionDataSource.open();
+                            section = sectionDataSource.getSection();
+
+                            // List tour name as title
+                            try
+                            {
+                                getSupportActionBar().setTitle(section.name);
+                            } catch (NullPointerException e)
+                            {
+                                // nothing
+                            }
+                            sectionDataSource.close();
                         } catch (IOException e)
                         {
                             Log.e(TAG, "Failed to import database");
@@ -1277,6 +1292,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     {
                         copy(infile, outfile);
                         Toast.makeText(getApplicationContext(), getString(R.string.importWin), Toast.LENGTH_SHORT).show();
+                        //noinspection ConstantConditions
+                        getSupportActionBar().setTitle("");
                     } catch (IOException e)
                     {
                         Log.e(TAG, "Failed to import database");
@@ -1313,4 +1330,5 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         in.close();
         out.close();
     }
+    
 }
