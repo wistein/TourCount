@@ -96,8 +96,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         setContentView(R.layout.activity_welcome);
 
-        ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
-
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -105,6 +103,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
 
         assert baseLayout != null;
         baseLayout.setBackground(tourCount.getBackground());
@@ -354,14 +354,20 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        
+
         Section section;
         sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
         section = sectionDataSource.getSection();
 
         // List name as title
-        getSupportActionBar().setTitle(section.name);
+        try
+        {
+            getSupportActionBar().setTitle(section.name);
+        } catch (NullPointerException e)
+        {
+            // nothing
+        }
         sectionDataSource.close();
     }
     
@@ -1049,6 +1055,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             public void onClick(DialogInterface dialog, int id)
             {
                 clearDBValues();
+                //noinspection ConstantConditions
+                getSupportActionBar().setTitle("");
             }
         }).setNegativeButton(R.string.importCancelButton, new DialogInterface.OnClickListener()
         {
@@ -1096,6 +1104,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database.execSQL(sql);
 
         dbHandler.close();
+        Toast.makeText(this, getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
     }
 
     /**************************************************************************************************/

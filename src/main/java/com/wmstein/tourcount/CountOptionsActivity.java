@@ -63,11 +63,9 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
         } else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         }
 
         // Set full brightness of screen
@@ -79,6 +77,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
             getWindow().setAttributes(params);
         }
 
+        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         assert counting_screen != null;
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
@@ -226,12 +225,11 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
         } else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         }
+        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
     }

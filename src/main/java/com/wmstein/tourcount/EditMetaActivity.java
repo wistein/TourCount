@@ -32,15 +32,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/*
- * EditMetaActivity collects meta info 
+/**********************************************************
+ * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 19.04.2016.
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountEditMetaActivity";
     private TourCountApplication tourCount;
-
+    SharedPreferences prefs;
     private Head head;
     private Section section;
     private LinearLayout head_area;
@@ -60,7 +60,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         super.onCreate(savedInstanceState);
 
         tourCount = (TourCountApplication) getApplication();
-        SharedPreferences prefs = TourCountApplication.getPrefs();
+        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         boolean brightPref = prefs.getBoolean("pref_bright", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
@@ -72,11 +72,9 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
         } else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         }
 
         // Set full brightness of screen
@@ -88,6 +86,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             getWindow().setAttributes(params);
         }
 
+        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         assert editHead_screen != null;
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);
@@ -109,7 +108,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     {
         super.onResume();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         prefs.registerOnSharedPreferenceChangeListener(this);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
@@ -339,12 +338,11 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
         } else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         }
+        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         assert editHead_screen != null;
         editHead_screen.setBackground(null);
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);

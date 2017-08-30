@@ -28,6 +28,7 @@
     <string name="noCard">Die Sdcard kann nicht verwendet werden!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveWin">Die Datenbank wurde auf die Sdcard exportiert.</string>
+    <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
     <string name="exportCSVMenu">Export Daten -> CSV-Datei</string>
@@ -139,36 +140,35 @@
     <string name="viewhelp_ok_button">OK</string>
 
     <!-- Preferences -->
+    <string name="prefs_appearance">Aussehen</string>
     <string name="pref_bg">Hintergrund</string>
     <string name="pref_bg_summ">Wähle Standard-, eigenes oder kein Hintergrundbild.</string>
-    <string name="pref_awake">Lass Bildschirm an</string>
-    <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
-    <string name="pref_bright">Bildschirm hell</string>
-    <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
-    <string name="chooseImg">Hintergrundbild</string>
-    <string name="explainImg">Wähle ein Hintergrundbild aus, wenn ein eigenes Bild angezeigt werden soll.</string>
-    <string name="prefs_appearance">Aussehen</string>
-    <string name="prefs_sound">Sound</string>
-    <string name="prefs_counting">Zählen</string>
+    <string name="chooseImg">Eigenes Hintergrundbild</string>
+    <string name="explainImg">Wähle ein Hintergrundbild aus, wenn ein eigenes Bild angezeigt werden soll.\nBitte beachten: Das Bild wird auf die darstellbare Fläche des Geräts skaliert.</string>
     <string name="image_error">Hintergrundbild setzen fehlgeschlagen! Versuche es mit Galerie anstelle von File Manager.</string>
+    <string name="pref_sort_order">Sortierung</string>
+    <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
     <string name="pref_note_font">Anmerkungs-Font</string>
     <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
     <string name="pref_left_hand">Linkshänder</string>
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
-    <string name="pref_sort_order">Sortierung</string>
-    <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
-    <string name="pref_sound">Tonalarm</string>
-    <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
-    <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
-    <string name="pref_button_sound">Zähler-Button-Sound</string>
-    <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
-    <string name="choose_button_alert">Button-Sound</string>
-    <string name="explain_button_alert">Wähle einen Button-Sound aus.</string>
     <string name="screen_orientation">Ausrichtung in Landscape-Modus anstelle von Portrait-Modus.</string>
     <string name="titel_screen_orientation">Landscape statt Portrait</string>
+    <string name="prefs_sound">Sound</string>
+    <string name="pref_button_sound">Button-Sound</string>
+    <string name="pref_button_sound_summary">Erzeuge einen Sound wenn z.B. ein Zähl-Button getippt wird.</string>
+    <string name="choose_button_alert">Auswahl des Button-Sounds</string>
+    <string name="explain_button_alert">Wähle einen Sound für Button-Clicks aus.</string>
+    <string name="prefs_counting">Zählen</string>
+    <string name="pref_awake">Lass Bildschirm an</string>
+    <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
+    <string name="pref_bright">Bildschirm hell</string>
+    <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
+    <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
+    <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
 
     <!-- CountOptionsActivity -->
-    <string name="editCountValue">Du kannst den momentanen Intern-Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>
+    <string name="editCountValue">Du kannst den momentanen Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>
     <string name="notesSpecies">Bemerkung zur Art</string>
     <string name="countName">Neue Art</string>
     <string name="countCode">Code</string>

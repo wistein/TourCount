@@ -106,7 +106,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.pref_sound));
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.pref_button_sound));
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, tmp_alert_uri);
         this.startActivityForResult(intent, requestCode);
     }

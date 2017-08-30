@@ -35,6 +35,7 @@ $ 2.1.8
   % Version 2.1.8
   _ 2017-08-26
     * Added Option to switch between portrait and landscape mode
+    * Bug fixes and minor code improvements
 
 $ 2.1.7
   % Version 2.1.7

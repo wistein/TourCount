@@ -1,4 +1,4 @@
-/**
+/************************************************************************
  * Copyright (C) 2011-2013, Karsten Priegnitz
  * <p/>
  * Permission to use, copy, modify, and distribute this piece of software
@@ -12,14 +12,6 @@
  * @author: Karsten Priegnitz
  * @see: http://code.google.com/p/android-change-log/
  * <p/>
- * Changed by wmstein on 18.02.2016
- * <p/>
- * Changed by wmstein on 18.02.2016
- * <p>
- * Changed by wmstein on 18.02.2016
- */
-
-/**
  * Changed by wmstein on 18.02.2016
  */
 
@@ -48,7 +40,6 @@ import java.util.Locale;
 
 public class ChangeLog
 {
-
     // this is the key for storing the version name in SharedPreferences
     private static final String VERSION_KEY = "PREFS_VERSION_KEY";
     private static final String NO_VERSION = "";

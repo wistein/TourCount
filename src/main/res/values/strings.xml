@@ -28,6 +28,7 @@
     <string name="noCard">Your sdcard could not be accessed!</string>
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveWin">Your database has been exported to the sdcard.</string>
+    <string name="reset2basic">Your database has been resetted.</string>
     <string name="loadFileMenu">Import DB</string>
     <string name="exportMenu">Export DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
@@ -139,36 +140,35 @@
     <string name="viewhelp_ok_button">OK</string>
 
     <!-- Preferences -->
+    <string name="prefs_appearance">Appearance</string>
     <string name="pref_bg">Background</string>
     <string name="pref_bg_summ">Choose default, custom or no background image.</string>
-    <string name="pref_awake">Keep screen on</string>
-    <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
-    <string name="pref_bright">Screen bright</string>
-    <string name="pref_bright_summ">Sets the TourCount screens bright whilst counting and editing.</string>
-    <string name="chooseImg">Image</string>
-    <string name="explainImg">Select the background image to be used when a custom image is selected.</string>
-    <string name="prefs_appearance">Appearance</string>
-    <string name="prefs_sound">Sound</string>
-    <string name="prefs_counting">Counting</string>
+    <string name="chooseImg">Custom Image</string>
+    <string name="explainImg">Select the background image to be used when a custom image is selected.\nPlease mind: The image will be scaled to the screen area of the device.</string>
     <string name="image_error">Error setting custom image! Please try using the gallery rather than a file manager.</string>
-    <string name="pref_sound">Audible alerts</string>
+    <string name="pref_sort_order">Sorting</string>
+    <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
     <string name="pref_note_font">Note font</string>
     <string name="pref_note_font_summ">Select this option to increase the size of note fonts on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
-    <string name="pref_sort_order">Sorting</string>
-    <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
-    <string name="pref_duplicate">Prevent duplicate species</string>
-    <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
-    <string name="pref_button_sound">Count button sounds</string>
+    <string name="screen_orientation">Show screen in Landscape Mode instead of Portrait Mode.</string>
+    <string name="titel_screen_orientation">Landscape instead of Portrait</string>
+    <string name="prefs_sound">Sound</string>
+    <string name="pref_button_sound">Button sounds</string>
     <string name="pref_button_sound_summary">Make a sound upon pressing the count up or count down buttons.</string>
     <string name="choose_button_alert">Button sound</string>
     <string name="explain_button_alert">Choose a sound for buttons.</string>
-    <string name="screen_orientation">Show screen in Landscape Mode instead of Portrait Mode.</string>
-    <string name="titel_screen_orientation">Landscape instead of Portrait</string>
+    <string name="prefs_counting">Counting</string>
+    <string name="pref_awake">Keep screen on</string>
+    <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
+    <string name="pref_bright">Screen bright</string>
+    <string name="pref_bright_summ">Sets the TourCount screens bright whilst counting and editing.</string>
+    <string name="pref_duplicate">Prevent duplicate species</string>
+    <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
 
     <!-- CountOptionsActivity -->
-    <string name="editCountValue">You may change the internal count value of %1$s from its current value of %2$d by editing it here.\nBut this generates inconsistency between the individuals table and count number in the DB.</string>
+    <string name="editCountValue">You may change the count value of %1$s from its current value of %2$d by editing it here.\nBut this generates inconsistency between the individuals table and count number in the DB.</string>
     <string name="countName">New Species</string>
     <string name="countCode">Code</string>
     <string name="notesSpecies">Species Notes</string>

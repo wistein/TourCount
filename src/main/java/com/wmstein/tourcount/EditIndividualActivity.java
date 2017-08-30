@@ -82,11 +82,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
         } else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         }
 
         // Set full brightness of screen
@@ -98,6 +96,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             getWindow().setAttributes(params);
         }
 
+        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         assert individ_screen != null;
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
@@ -350,13 +349,12 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackgroundl, tourCount.width, tourCount.height);
         } else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         }
 
+        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
     }
