@@ -4,7 +4,7 @@
   
 #### Version 2.1.8 (2017-08-30)
 - Added Option to switch between portrait and landscape mode
-- Show correct headline after loading/resetting DB
+- Show correct headline immediately after loading/resetting DB
 - Bug fixes and minor code improvements
 
 #### Version 2.1.7 (2017-08-22)
