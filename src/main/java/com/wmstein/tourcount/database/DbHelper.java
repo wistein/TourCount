@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 /**
@@ -12,13 +13,17 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DbHelper extends SQLiteOpenHelper
 {
+    static final String TAG = "TourCount DB";
     private static final String DATABASE_NAME = "tourcount.db";
+    private static final int DATABASE_VERSION = 2;
+
     // tables
     public static final String SECTION_TABLE = "sections";
     public static final String COUNT_TABLE = "counts";
     public static final String HEAD_TABLE = "head";
     public static final String INDIVIDUALS_TABLE = "individuals";
     public static final String TEMP_TABLE = "temp";
+
     // fields
     public static final String S_ID = "_id";
     public static final String S_NAME = "name";
@@ -58,9 +63,6 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String T_ID = "_id";
     public static final String T_TEMP_LOC = "temp_loc";
     public static final String T_TEMP_CNT = "temp_cnt";
-    static final String TAG = "TourCount DB";
-    private static final int DATABASE_VERSION = 1;
-    private SQLiteDatabase db;
 
     // constructor
     public DbHelper(Context context)
@@ -145,15 +147,32 @@ public class DbHelper extends SQLiteOpenHelper
 
     // ******************************************************************************************
     // called if newVersion != oldVersion
-    // placeholder as class demands for it, see beeCount or 
     // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        //nothing to upgrade
-        // getString() in Toast doesn't work here
-        //Toast.makeText(mContext.getApplicationContext(), getString(R.string.wait), Toast.LENGTH_LONG).show();
-        //Toast.makeText(this, getString(R.string.wait), Toast.LENGTH_LONG).show();
+        if (oldVersion == 1)
+        {
+            version_2(db, oldVersion, newVersion);
+        }
+    }
+
+    public void version_2(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        String sql;
+
+        // add new extra column icount to table individuals
+        try
+        {
+            sql = "alter table " + INDIVIDUALS_TABLE + " add column " + I_ICOUNT + " int";
+            db.execSQL(sql);
+            Log.i(TAG, "Missing icount column added to indivuduals!");
+        } catch (Exception e)
+        {
+            Log.i(TAG, "Column already present: " + e.toString());
+        }
+        
+        Log.i(TAG, "Upgraded database to version 2!");
     }
 
 }
