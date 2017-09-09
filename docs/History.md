@@ -2,6 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2017, Wilhelm Stein
   
+#### Version 2.1.9 (2017-09-09)
+- Improved layout of results page
+- Added database version control to be compatible with old database structure prior version 2.1.4
+- Fix crash when counting using a database of old structure prior version 2.1.4
+
 #### Version 2.1.8 (2017-08-30)
 - Added Option to switch between portrait and landscape mode
 - Show correct headline immediately after loading/resetting DB
