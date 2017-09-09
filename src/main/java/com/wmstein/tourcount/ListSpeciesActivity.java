@@ -184,32 +184,35 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
             break;
         }
 
-        // display all the counts by adding them to listSpecies layout
+        // calculate the totals
         for (Count spec : specs)
         {
-            section = sectionDataSource.getSection();
-
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec, section);
             int spec_count = widget.getSpec_count(spec);
 
             sumind = sumind + spec_count; // sum of counted individuals
             sumsp = sumsp + 1;			  // sum of counted species
-            
+        }
+
+        // display the totals
+        lsw = new ListSumWidget(this, null);
+        lsw.setSum(sumsp, sumind);
+        spec_area.addView(lsw);
+
+        // display all the counts by adding them to listSpecies layout
+        for (Count spec : specs)
+        {
+            ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
+            widget.setCount(spec, section);
+            int spec_count = widget.getSpec_count(spec);
+
             // fill widget only for counted species
             if (spec_count > 0)
             {
                 spec_area.addView(widget);
             }
         }
-
-        // display the totals
-        lsw = new ListSumWidget(this, null);
-        lsw.setSum(sumsp, sumind);
-
-        spec_area.addView(lsw);
-
-
     }
 
     @Override

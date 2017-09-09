@@ -144,7 +144,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         // finally, close the database
         countDataSource.close();
-
     }
 
     public void saveAndExit(View view)
@@ -184,7 +183,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
