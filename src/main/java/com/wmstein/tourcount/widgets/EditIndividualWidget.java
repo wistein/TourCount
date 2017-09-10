@@ -180,7 +180,15 @@ public class EditIndividualWidget extends LinearLayout
         else if (!text.trim().matches(regEx))
             return 100;
         else
-            return Integer.parseInt(text);
+        {
+            try
+            {
+                return Integer.parseInt(text.replaceAll("[\\D]",""));
+            } catch (NumberFormatException nfe)
+            {
+                return 0;
+            }
+        }
     }
 
     public void setWidgetState2(int name)
@@ -192,7 +200,10 @@ public class EditIndividualWidget extends LinearLayout
     public int getWidgetCount2()
     {
         String text = widget_count2.getText().toString();
-        return Integer.parseInt(text);
+        {
+            int i = Integer.parseInt(text.replaceAll("[\\D]",""));
+                return i;
+        }
     }
 
     public void setWidgetCount2(int name)

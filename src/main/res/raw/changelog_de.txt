@@ -27,12 +27,12 @@
   _
   _ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
   _ 
-  _ http://www.apache.org/licenses/LICENSE-2.0
+  _ <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
   _ 
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _
     ! Quellcode und Dokumentation veröffentlicht unter:
-    ! https://github.com/wistein/TourCount
+    ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
@@ -42,6 +42,7 @@ $ 2.1.9
   	* Layout-Verbesserung der Ergebnisseite
     * Versionskontrolle für Datenbank hinzugefügt, um mit alter Datenbankstruktur (vor Version 2.1.4) kompatibel zu sein
     * Fix gegen Absturz beim Zählen mit einer Datenbank in alter Struktur (vor 2.1.4)
+    * Fehlerbehebung
 
 $ 2.1.8
   % Version 2.1.8

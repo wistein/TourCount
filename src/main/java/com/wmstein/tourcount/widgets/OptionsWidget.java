@@ -63,7 +63,13 @@ public class OptionsWidget extends LinearLayout
         }
         else
         {
-            return Integer.parseInt(text);
+            try
+            {
+                return Integer.parseInt(text.replaceAll("[\\D]",""));
+            } catch (NumberFormatException nfe)
+            {
+                return 0;
+            }
         }
     }
 

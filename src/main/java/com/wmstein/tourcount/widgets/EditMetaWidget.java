@@ -146,7 +146,15 @@ public class EditMetaWidget extends LinearLayout
         else if (!text.trim().matches(regEx))
             return 100;
         else
-            return Integer.parseInt(text);
+        {
+            try
+            {
+                return Integer.parseInt(text.replaceAll("[\\D]",""));
+            } catch (NumberFormatException nfe)
+            {
+                return 100;
+            }
+        }
     }
 
     public void setWidgetTemp2(int name)
@@ -163,7 +171,15 @@ public class EditMetaWidget extends LinearLayout
         else if (!text.trim().matches(regEx))
             return 100;
         else
-            return Integer.parseInt(text);
+        {
+            try
+            {
+                return Integer.parseInt(text.replaceAll("[\\D]",""));
+            } catch (NumberFormatException nfe)
+            {
+                return 100;
+            }
+        }
     }
 
     public void setWidgetWind2(int name)
@@ -180,7 +196,15 @@ public class EditMetaWidget extends LinearLayout
         else if (!text.trim().matches(regEx))
             return 200;
         else
-            return Integer.parseInt(text);
+        {
+            try
+            {
+                return Integer.parseInt(text.replaceAll("[\\D]",""));
+            } catch (NumberFormatException nfe)
+            {
+                return 100;
+            }
+        }
     }
 
     public void setWidgetClouds2(int name)

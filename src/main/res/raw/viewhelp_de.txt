@@ -29,7 +29,7 @@ $ 10
   ! Die integrierte Datenbank kann individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
   ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder vom Smartphone abgelesen oder für weitere Bearbeitung auf den PC übertragen werden.
   _ 
-  ! Die App ist Open Source (https://github.com/wistein/TourCount), enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind.
+  ! Die App ist Open Source (<a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind.
   ! Sie benötigt Zugriffrechte auf Speichermedien für die Speicherung der Daten und nutzt GPS zur Registrierung der Position bei der Zählung.   
 
 $ 9
@@ -48,7 +48,7 @@ $ 9
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähl- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung nach Karsholt/Razowski verwendet, wie bspw. in der Anleitung zum Schmetterlingsmonitoring (s. docs in GitHub). 
+  ! Als Code wird die Nummerierung nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (s. auch docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>). 
   ! Ein angehängtes *-Symbol kennzeichnet eine Gruppe. 
   ! Mit "Speichern" wird die Liste in die Datenbank übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
@@ -104,7 +104,7 @@ $ 7
   ! In der Zähler-Ansicht wird die Anzeige temporär abgeschaltet, wenn das Handy eingesteckt wird (unter Android 5.0.1 oder neuer) und auf der Zählerseite kann über das Mitteilungssymbol eine Nachricht über eine Standard-App, wie SMS oder E-Mail versendet werden.
   _ 
   ! IT-affine Anwender können die mittels Exportfunktionen erzeugten "tourcount_JJJJ-MM-TT_hhmmss.db"- bzw. -.csv-Dateien auf einen PC übertragen.
-  ! Dort kann mit Hilfe eines kostenlosen Tools wie "SqliteBrowser" (sqlitebrowser.org) die .db-Datei bearbeitet bzw. die .csv-Datei in Excel als Text-Datei (Unicode UTF-8) importiert und bearbeitet werden.
+  ! Dort kann mit Hilfe eines kostenlosen Tools wie "SqliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) die .db-Datei bearbeitet bzw. die .csv-Datei in Excel als Text-Datei (Unicode UTF-8) importiert und bearbeitet werden.
   !
   
 $ END_OF_VIEW_HELP

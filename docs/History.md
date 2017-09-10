@@ -6,6 +6,7 @@
 - Improved layout of results page
 - Added database version control to be compatible with old database structure prior version 2.1.4
 - Fix crash when counting using a database of old structure prior version 2.1.4
+- Bugfixes
 
 #### Version 2.1.8 (2017-08-30)
 - Added Option to switch between portrait and landscape mode
