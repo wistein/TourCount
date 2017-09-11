@@ -2,6 +2,9 @@
 
 #### TourCount Copyright (C) 2016-2017, Wilhelm Stein
   
+#### Version 2.2.0 (2017-09-11)
+- Write log only when MyDebug=true
+
 #### Version 2.1.9 (2017-09-09)
 - Improved layout of results page
 - Added database version control to be compatible with old database structure prior version 2.1.4

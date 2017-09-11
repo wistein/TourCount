@@ -36,6 +36,11 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 2.2.0
+  % Version 2.2.0
+  _ 2017-09-11
+		* Write system log only in debug version
+
 $ 2.1.9
   % Version 2.1.9
   _ 2017-09-10

@@ -181,7 +181,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             getSupportActionBar().setTitle(section.name);
         } catch (NullPointerException e)
         {
-            Log.i(TAG, "NullPointerException: No section name!");
+            if (MyDebug.LOG)
+                Log.e(TAG, "NullPointerException: No section name!");
         }
 
         // load the counts data
@@ -231,7 +232,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             if (cmpCountNames.contains(name))
             {
                 isDbl = name;
-                //Log.i(TAG, "Double name = " + isDbl);
+                if (MyDebug.LOG)
+                    Log.d(TAG, "Double name = " + isDbl);
                 break;
             }
             cmpCountNames.add(name);
@@ -255,7 +257,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         String isDbl = "";
         int childcount; //No. of species in list
         childcount = counts_area.getChildCount();
-        //Log.i(TAG, "childcount: " + String.valueOf(childcount));
+        if (MyDebug.LOG)
+            Log.d(TAG, "childcount: " + String.valueOf(childcount));
 
         // check for unique species names
         if (dupPref)
@@ -269,17 +272,20 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                     CountEditWidget cew = (CountEditWidget) counts_area.getChildAt(i);
                     if (isNotEmpty(cew.getCountName()))
                     {
-                        //Log.i(TAG, "cew: " + String.valueOf(cew.countId) + ", " + cew.getCountName());
+                        if (MyDebug.LOG)
+                            Log.d(TAG, "cew: " + String.valueOf(cew.countId) + ", " + cew.getCountName());
                         // create or save
                         if (cew.countId == 0)
                         {
-                            //Log.i(TAG, "Creating!");
+                            if (MyDebug.LOG)
+                                Log.d(TAG, "Creating!");
                             //returns newCount
                             countDataSource.createCount(cew.getCountName(), cew.getCountCode());
                         }
                         else
                         {
-                            //Log.i(TAG, "Updating!");
+                            if (MyDebug.LOG)
+                                Log.d(TAG, "Updating!");
                             countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode());
                         }
                         retValue = true;

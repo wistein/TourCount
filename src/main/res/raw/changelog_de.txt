@@ -36,9 +36,14 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 2.2.0
+  % Version 2.2.0
+  _ 11.09.2017
+  	* Systemlog-Meldungen nur noch im Debug-Modus
+
 $ 2.1.9
   % Version 2.1.9
-  _ 09.09.2017
+  _ 10.09.2017
   	* Layout-Verbesserung der Ergebnisseite
     * Versionskontrolle für Datenbank hinzugefügt, um mit alter Datenbankstruktur (vor Version 2.1.4) kompatibel zu sein
     * Fix gegen Absturz beim Zählen mit einer Datenbank in alter Struktur (vor 2.1.4)

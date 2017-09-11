@@ -74,7 +74,8 @@ public class TourCountApplication extends Application
             prefs = PreferenceManager.getDefaultSharedPreferences(this);
         } catch (Exception e)
         {
-            Log.e(TAG, e.toString());
+            if (MyDebug.LOG)
+                Log.e(TAG, e.toString());
         }
     }
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 
 /**
@@ -37,12 +38,14 @@ public class NotesWidget extends LinearLayout
     {
         if (large)
         {
-            Log.i(TAG, "Setzt große Schrift.");
+            if (MyDebug.LOG)
+                Log.d(TAG, "Setzt große Schrift.");
             textView.setTextSize(22);
         }
         else
         {
-            Log.i(TAG, "Setzt kleine Schrift.");
+            if (MyDebug.LOG)
+                Log.d(TAG, "Setzt kleine Schrift.");
             textView.setTextSize(14);
         }
     }

@@ -167,7 +167,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             getSupportActionBar().setTitle(specName);
         } catch (NullPointerException e)
         {
-            Log.i(TAG, "NullPointerException: No species name!");
+            if (MyDebug.LOG)
+                Log.e(TAG, "NullPointerException: No species name!");
         }
 
         individuals = individualsDataSource.getIndividual(i_id);
@@ -306,7 +307,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 r.play();
             } catch (Exception e)
             {
-                e.printStackTrace();
+                if (MyDebug.LOG)
+                    Log.e(TAG, "could not play button sound.", e);
             }
         }
     }

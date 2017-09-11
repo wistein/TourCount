@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.wmstein.tourcount.MyDebug;
+
 
 /**
  * Created by milo on 05/05/2014.
@@ -74,7 +76,8 @@ public class DbHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        //Log.i(TAG, "Creating database: " + DATABASE_NAME);
+        if (MyDebug.LOG)
+            Log.i(TAG, "Creating database: " + DATABASE_NAME);
         String sql = "create table " + SECTION_TABLE + " ("
             + S_ID + " integer primary key, "
             + S_NAME + " text, "
@@ -142,7 +145,8 @@ public class DbHelper extends SQLiteOpenHelper
         values1.put(T_TEMP_CNT, 0);
         db.insert(TEMP_TABLE, null, values1);
 
-        //Log.i(TAG, "Success!");
+        if (MyDebug.LOG)
+            Log.d(TAG, "Success!");
     }
 
     // ******************************************************************************************
@@ -166,13 +170,16 @@ public class DbHelper extends SQLiteOpenHelper
         {
             sql = "alter table " + INDIVIDUALS_TABLE + " add column " + I_ICOUNT + " int";
             db.execSQL(sql);
-            Log.i(TAG, "Missing icount column added to indivuduals!");
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing icount column added to indivuduals");
         } catch (Exception e)
         {
-            Log.i(TAG, "Column already present: " + e.toString());
+            if (MyDebug.LOG)
+                Log.e(TAG, "Column already present: " + e.toString());
         }
-        
-        Log.i(TAG, "Upgraded database to version 2!");
+
+        if (MyDebug.LOG)
+            Log.d(TAG, "Upgraded database to version 2");
     }
 
 }

@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.webkit.WebView;
 
+import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 
 import java.io.BufferedReader;
@@ -75,8 +76,8 @@ public class ViewHelp
         } catch (NameNotFoundException e)
         {
             thisVersion = NO_VERSION;
-            Log.e(TAG, "could not get version name from manifest!");
-            e.printStackTrace();
+            if (MyDebug.LOG)
+                Log.e(TAG, "could not get version name from manifest!", e);
         }
     }
 
@@ -181,7 +182,8 @@ public class ViewHelp
             br.close();
         } catch (IOException e)
         {
-            e.printStackTrace();
+            if (MyDebug.LOG)
+                Log.e(TAG, "could not read help text.", e);
         }
 
         return sb.toString();

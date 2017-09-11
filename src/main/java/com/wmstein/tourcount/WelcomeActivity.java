@@ -193,7 +193,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         } catch (Exception e)
         {
-            e.printStackTrace();
+            if (MyDebug.LOG)
+                Log.e(TAG, "Cannot get location.", e);
         }
 
         return canGetLocation;
@@ -439,7 +440,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             destPath = getFilesDir().getPath();
         } catch (Exception e)
         {
-            Log.e(TAG, "destPath error: " + e.toString());
+            if (MyDebug.LOG)
+                Log.e(TAG, "destPath error: " + e.toString());
         }
         destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
         infile = new File(destPath + "/tourcount.db");
@@ -464,7 +466,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            Log.e(TAG, "No sdcard access");
+            if (MyDebug.LOG)
+                Log.e(TAG, "No sdcard access");
             Toast.makeText(this, getString(R.string.noCard), Toast.LENGTH_LONG).show();
         }
         else
@@ -477,7 +480,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
             } catch (IOException e)
             {
-                Log.e(TAG, "Failed to copy database");
+                if (MyDebug.LOG)
+                    Log.e(TAG, "Failed to copy database");
                 Toast.makeText(this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
             }
         }
@@ -531,7 +535,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            Log.e(TAG, "No sdcard access");
+            if (MyDebug.LOG)
+                Log.d(TAG, "No sdcard access");
             Toast.makeText(this, getString(R.string.noCard), Toast.LENGTH_LONG).show();
         }
         else
@@ -891,7 +896,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     if (longi != 0) // has coordinates
                     {
                         //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "longi " + longi);
+                        if (MyDebug.LOG)
+                            Log.d(TAG, "longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -959,7 +965,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
             } catch (IOException e)
             {
-                Log.e(TAG, "Failed to export csv file");
+                if (MyDebug.LOG)
+                    Log.e(TAG, "Failed to export csv file");
                 Toast.makeText(this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
             }
         }
@@ -982,7 +989,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             destPath = getFilesDir().getPath();
         } catch (Exception e)
         {
-            Log.e(TAG, "destPath error: " + e.toString());
+            if (MyDebug.LOG)
+                Log.e(TAG, "destPath error: " + e.toString());
         }
         destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
         infile = new File(destPath + "/tourcount.db");
@@ -1007,7 +1015,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            Log.e(TAG, "No sdcard access");
+            if (MyDebug.LOG)
+                Log.d(TAG, "No sdcard access");
             Toast.makeText(this, getString(R.string.noCard), Toast.LENGTH_LONG).show();
         }
         else
@@ -1035,7 +1044,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
             } catch (IOException e)
             {
-                Log.e(TAG, "Failed to export Basic DB");
+                if (MyDebug.LOG)
+                    Log.e(TAG, "Failed to export Basic DB");
                 Toast.makeText(this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
             }
         }
@@ -1146,7 +1156,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 destPath = getFilesDir().getPath();
             } catch (Exception e)
             {
-                Log.e(TAG, "destPath error: " + e.toString());
+                if (MyDebug.LOG)
+                    Log.e(TAG, "destPath error: " + e.toString());
             }
             destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
             //outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
@@ -1184,7 +1195,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                     if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
                     {
-                        Log.e(TAG, "No sdcard access");
+                        if (MyDebug.LOG)
+                            Log.d(TAG, "No sdcard access");
                         Toast.makeText(getApplicationContext(), getString(R.string.noCard), Toast.LENGTH_LONG).show();
                     }
                     else
@@ -1210,7 +1222,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             sectionDataSource.close();
                         } catch (IOException e)
                         {
-                            Log.e(TAG, "Failed to import database");
+                            if (MyDebug.LOG)
+                                Log.e(TAG, "Failed to import database");
                             Toast.makeText(getApplicationContext(), getString(R.string.importFail), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -1241,7 +1254,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             destPath = getFilesDir().getPath();
         } catch (Exception e)
         {
-            Log.e(TAG, "destPath error: " + e.toString());
+            if (MyDebug.LOG)
+                Log.e(TAG, "destPath error: " + e.toString());
         }
         destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
         //outfile = new File("/data/data/com.wmstein.tourcount/databases/tourcount.db");
@@ -1283,7 +1297,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
                 {
-                    Log.e(TAG, "No sdcard access");
+                    if (MyDebug.LOG)
+                        Log.d(TAG, "No sdcard access");
                     Toast.makeText(getApplicationContext(), getString(R.string.noCard), Toast.LENGTH_LONG).show();
                 }
                 else
@@ -1296,7 +1311,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         getSupportActionBar().setTitle("");
                     } catch (IOException e)
                     {
-                        Log.e(TAG, "Failed to import database");
+                        if (MyDebug.LOG)
+                            Log.e(TAG, "Failed to import database");
                         Toast.makeText(getApplicationContext(), getString(R.string.importFail), Toast.LENGTH_LONG).show();
                     }
                 }

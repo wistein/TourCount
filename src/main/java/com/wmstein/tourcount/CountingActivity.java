@@ -189,10 +189,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         for (String name : providers)
         {
             LocationProvider lp = locationManager.getProvider(name);
-            Log.d(TAG, lp.getName() + " --- isProviderEnabled(): " + locationManager.isProviderEnabled(name));
-            Log.d(TAG, "requiresCell(): " + lp.requiresCell());
-            Log.d(TAG, "requiresNetwork(): " + lp.requiresNetwork());
-            Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
+            if (MyDebug.LOG)
+            {
+                Log.d(TAG, lp.getName() + " --- isProviderEnabled(): " + locationManager.isProviderEnabled(name));
+                Log.d(TAG, "requiresCell(): " + lp.requiresCell());
+                Log.d(TAG, "requiresNetwork(): " + lp.requiresNetwork());
+                Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
+            }
         }
 
         // Best possible provider
@@ -200,7 +203,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         // criteria.setPowerRequirement(Criteria.POWER_HIGH);
         provider = locationManager.getBestProvider(criteria, true);
-        //Log.d(TAG, "Provider: " + provider);
+        if (MyDebug.LOG)
+            Log.d(TAG, "Provider: " + provider);
 
         // Create LocationListener object
         locationListener = new LocationListener()
@@ -208,25 +212,29 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras)
             {
-                // Log.d(TAG, "onStatusChanged()");
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onStatusChanged()");
             }
 
             @Override
             public void onProviderEnabled(String provider)
             {
-                // Log.d(TAG, "onProviderEnabled()");
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onProviderEnabled()");
             }
 
             @Override
             public void onProviderDisabled(String provider)
             {
-                // Log.d(TAG, "onProviderDisabled()");
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onProviderDisabled()");
             }
 
             @Override
             public void onLocationChanged(Location location)
             {
-                // Log.d(TAG, "onLocationChanged()");
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onLocationChanged()");
                 if (location != null)
                 {
                     latitude = location.getLatitude();
@@ -301,7 +309,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             section = sectionDataSource.getSection();
         } catch (CursorIndexOutOfBoundsException e)
         {
-            Log.e(TAG, "Problem loading section: " + e.toString());
+            if (MyDebug.LOG)
+                Log.e(TAG, "Problem loading section: " + e.toString());
             Toast.makeText(CountingActivity.this, getString(R.string.getHelp), Toast.LENGTH_LONG).show();
             finish();
         }
@@ -730,7 +739,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 r.play();
             } catch (Exception e)
             {
-                e.printStackTrace();
+                if (MyDebug.LOG)
+                    Log.e(TAG, "could not play botton sound.", e);
             }
         }
     }

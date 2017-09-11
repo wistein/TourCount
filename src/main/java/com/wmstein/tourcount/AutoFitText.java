@@ -1,7 +1,7 @@
 package com.wmstein.tourcount;
 
 /*
-  This code from:
+  This code derived from:
   http://pastebin.com/raw.php?i=e6WyrwSN
   As mentioned in this thread:
   https://stackoverflow.com/questions/16017165/auto-fit-textview-for-android
@@ -11,11 +11,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.TextView;
-//import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * This class builds a new android Widget named AutoFitText which can be used instead of a TextView
@@ -28,14 +28,13 @@ import android.widget.TextView;
  * @author pheuschk
  *         createDate: 18.04.2013
  *         <p/>
- *         Modified by wmstein on 18.03.2016
- *         Bug fixed (height of single character) and context comments changed
+ *         Modified by wmstein since 18.03.2016
+ *         Bug fixed (height of single character), cleaned of unused code and context comments changed
  */
 @SuppressWarnings("unused")
-public class AutoFitText extends TextView
+public class AutoFitText extends android.support.v7.widget.AppCompatTextView
 {
-    private static final String TAG = AutoFitText.class.getSimpleName();
-    //    private static String TAG = "tourcountAutoFitText";
+    private static String TAG = "tourcountAutoFitText";
     /**
      * Global min and max for text size. Remember: values are in pixels!
      */
@@ -151,10 +150,6 @@ public class AutoFitText extends TextView
             }
         }
 
-        /*************
-         * skipped a lot of unused code here
-         */
-
         this.setTextSize(TypedValue.COMPLEX_UNIT_SP, lowerTextSize / mScaledDensityFactor);
         //next unnecessary line of void method skipped by wmstein
         //return;
@@ -202,7 +197,8 @@ public class AutoFitText extends TextView
         //noinspection StatementWithEmptyBody
         if (targetFieldWidth <= 0 || targetFieldHeight <= 0 || text.equals(""))
         {
-            // Log.v("tag", "Some values are empty, AutoFitText was not able to construct properly");
+            if (MyDebug.LOG)
+                Log.d("tag", "Some values are empty, AutoFitText was not able to construct properly");
         }
         else
         {

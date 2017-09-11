@@ -134,7 +134,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                     cursor.moveToFirst(); // blows up here if file manager used
                 } catch (Exception e)
                 {
-                    Log.e(TAG, "Failed to select image: " + e.toString());
+                    if (MyDebug.LOG)
+                        Log.e(TAG, "Failed to select image: " + e.toString());
                     Toast.makeText(this, getString(R.string.image_error), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -149,10 +150,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 //editor.commit();
                 try
                 {
-                    Log.i(TAG, "IMAGE (in Settings): " + imageFilePath);
+                    if (MyDebug.LOG)
+                        Log.e(TAG, "IMAGE (in Settings): " + imageFilePath);
                 } catch (Exception e)
                 {
-                    Log.e(TAG, "Failed to upload image: " + e.toString());
+                    if (MyDebug.LOG)
+                        Log.e(TAG, "Failed to upload image: " + e.toString());
                     Toast.makeText(this, getString(R.string.image_error), Toast.LENGTH_LONG).show();
                 }
             }
