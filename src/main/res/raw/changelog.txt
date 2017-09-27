@@ -36,6 +36,12 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 2.3.0
+  % Version 2.3.0
+  _ 2017-09-27
+		* Code adapted and compiled for Android 7.1
+		* Minor code improvements
+
 $ 2.2.0
   % Version 2.2.0
   _ 2017-09-11

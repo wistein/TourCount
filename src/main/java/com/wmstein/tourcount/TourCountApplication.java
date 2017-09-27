@@ -128,7 +128,8 @@ public class TourCountApplication extends Application
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = false;
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
-                        options.inDither = true;
+                        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N)
+                            options.inDither = true;
                         bMap = BitmapFactory.decodeFile(pictPref, options);
                     } catch (OutOfMemoryError e)
                     {

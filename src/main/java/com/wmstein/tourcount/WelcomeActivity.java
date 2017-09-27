@@ -513,7 +513,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         double longi, lati, heigh, uncer;
         int frst, sum = 0;
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
-        double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;
+        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -679,7 +679,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 int cnt;  // counts count
                 int cnts; // individuals icount
                 String strcnts;
-                int cntsmf = 0; // Imago male, female
+                int cntsmf; // Imago male, female
                 String strcntsmf;
                 int cntsm = 0; // Imago male
                 String strcntsm;
@@ -824,13 +824,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         Integer.toString(sume),
                         Integer.toString(sum)
                     };
-                sum = 0;
-                summf = 0;
-                summ = 0;
-                sumf = 0;
-                sump = 0;
-                suml = 0;
-                sume = 0;
                 csvWrite.writeNext(arrSum);
 
                 // Empty row

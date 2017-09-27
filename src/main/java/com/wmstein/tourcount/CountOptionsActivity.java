@@ -38,8 +38,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private Count count;
     private int count_id;
     private CountDataSource countDataSource;
-    private View markedForDelete;
-    private int deleteAnAlert;
     private Bitmap bMap;
     private BitmapDrawable bg;
     private boolean brightPref;
@@ -161,27 +159,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         countDataSource.saveCount(count);
 
-    }
-
-    /*
-     * Scroll to end of view
-     * by wmstein
-     */
-    public void ScrollToEndOfView(View scrlV)
-    {
-        int scroll_amount = scrlV.getBottom();
-        int scrollY = scroll_amount;
-        boolean pageend = false;
-        while (!pageend)
-        {
-            scrlV.scrollTo(0, scroll_amount);              //scrollen
-            scroll_amount = scroll_amount + scroll_amount; //scroll_amount erhöhen
-            scrollY = scrollY + scrlV.getScrollY();        //scroll-Position der 1. Zeile
-            if (scroll_amount > scrollY)
-            {
-                pageend = true;
-            }
-        }
     }
 
     @Override

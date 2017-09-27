@@ -45,7 +45,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     // the actual data
     private Section section;
     private LinearLayout counts_area;
-    private String new_count_name = "";
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private View markedForDelete;
@@ -218,7 +217,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     // Compare count names for duplicates and returns name of 1. duplicate found
     private String compCountNames()
     {
-        String name = "";
+        String name;
         String isDbl = "";
         ArrayList<String> cmpCountNames = new ArrayList<>();
 
@@ -254,7 +253,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     {
         // save counts (species list)
         boolean retValue = true;
-        String isDbl = "";
+        String isDbl;
         int childcount; //No. of species in list
         childcount = counts_area.getChildCount();
         if (MyDebug.LOG)
@@ -367,7 +366,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                     // go ahead for the delete
                     countDataSource.deleteCountById(idToDelete);
                     counts_area.removeView((CountEditWidget) markedForDelete.getParent().getParent());
-                    new_count_name = "";
                 }
             });
             areYouSure.setNegativeButton(R.string.noCancel, new DialogInterface.OnClickListener()

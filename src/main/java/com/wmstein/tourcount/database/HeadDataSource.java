@@ -6,14 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
-
 /*
  * Created by wmstein on 31.03.2016.
  */
 public class HeadDataSource
 {
-    public List<Head> head_list;
     // Database fields
     private SQLiteDatabase database;
     private final DbHelper dbHandler;

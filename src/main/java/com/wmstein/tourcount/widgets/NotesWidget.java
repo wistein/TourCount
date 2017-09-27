@@ -30,8 +30,7 @@ public class NotesWidget extends LinearLayout
 
     public void setNotes(String notes)
     {
-        String section_notes = notes;
-        textView.setText(section_notes);
+        textView.setText(notes);
     }
 
     public void setFont(Boolean large)

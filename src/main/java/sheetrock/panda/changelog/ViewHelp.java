@@ -42,7 +42,6 @@ import java.util.Locale;
 public class ViewHelp
 {
     // this is the key for storing the version name in SharedPreferences
-    private static final String VERSION_KEY = "PREFS_VERSION_KEY";
     private static final String NO_VERSION = "";
     private static final String TAG = "ViewHelp";
     private final Context context;

@@ -164,7 +164,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         {
             @SuppressWarnings("ConstantConditions") 
             Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            String ringtone = null;
+            String ringtone;
             if (uri != null)
             {
                 ringtone = uri.toString();

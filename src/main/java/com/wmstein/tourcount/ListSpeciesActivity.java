@@ -188,7 +188,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
-            widget.setCount(spec, section);
+            widget.setCount(spec);
             int spec_count = widget.getSpec_count(spec);
 
             sumind = sumind + spec_count; // sum of counted individuals
@@ -204,7 +204,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
-            widget.setCount(spec, section);
+            widget.setCount(spec);
             int spec_count = widget.getSpec_count(spec);
 
             // fill widget only for counted species

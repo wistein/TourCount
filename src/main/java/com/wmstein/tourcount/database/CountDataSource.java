@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class CountDataSource
 {
-    public List<Count> count_list;
     // Database fields
     private SQLiteDatabase database;
     private final DbHelper dbHandler;

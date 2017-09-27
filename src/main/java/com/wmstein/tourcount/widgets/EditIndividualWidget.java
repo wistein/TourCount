@@ -201,8 +201,7 @@ public class EditIndividualWidget extends LinearLayout
     {
         String text = widget_count2.getText().toString();
         {
-            int i = Integer.parseInt(text.replaceAll("[\\D]",""));
-                return i;
+                return Integer.parseInt(text.replaceAll("[\\D]",""));
         }
     }
 

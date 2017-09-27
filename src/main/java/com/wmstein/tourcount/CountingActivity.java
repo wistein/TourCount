@@ -96,9 +96,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private IndividualsDataSource individualsDataSource;
     private TempDataSource tempDataSource;
 
-    private int temp_cnt;
     private int i_Id = 0;
-    private String spec_name;
+    private String spec_name; // could be used in toast in deleteIndividual()
     private int spec_count;
 
     @Override
@@ -451,8 +450,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // Correct height with geoid offset from EarthGravitationalModel
     private double correctHeight(double lat, double lon, double gpsHeight)
     {
-        double corrHeight = 0;
-        double nnHeight = 0;
+        double corrHeight;
+        double nnHeight;
 
         EarthGravitationalModel gh = new EarthGravitationalModel();
         try

@@ -21,16 +21,18 @@ import android.widget.TextView;
  * This class builds a new android Widget named AutoFitText which can be used instead of a TextView
  * to have the text font size in it automatically fit to match the screen width. Credits go largely
  * to Dunni, gjpc, gregm and speedplane from Stackoverflow, method has been (style-) optimized and
- * rewritten to match android coding standards and our MBC. This version upgrades the original
- * "AutoFitTextView" to now also be adaptable to height and to accept the different TextView types
- * (Button, TextClock etc.)
+ * rewritten to match android coding standards and our MBC. 
+ * 
+ * This version upgrades the original "AutoFitTextView" to now also be adaptable to height and to 
+ * accept the different TextView types (Button, TextClock etc.)
  *
  * @author pheuschk
  *         createDate: 18.04.2013
- *         <p/>
- *         Modified by wmstein since 18.03.2016
+ * 
+ *         Modified for TourCount by wmstein since 18.03.2016
  *         Bug fixed (height of single character), cleaned of unused code and context comments changed
  */
+
 @SuppressWarnings("unused")
 public class AutoFitText extends android.support.v7.widget.AppCompatTextView
 {
@@ -127,11 +129,9 @@ public class AutoFitText extends android.support.v7.widget.AppCompatTextView
         // added by wmstein to control height
         mTestView.setMaxHeight(targetFieldHeight);
 
-        /*************************** Converging algorithm 1 ***********************************/
-        // only a single line
+        // Converging only a single line
         for (float testSize; (upperTextSize - lowerTextSize) > mThreshold; )
         {
-
             // Go to the mean value...
             testSize = (upperTextSize + lowerTextSize) / 2;
 
@@ -160,7 +160,7 @@ public class AutoFitText extends android.support.v7.widget.AppCompatTextView
      * is also called - among others - upon text size change which means that we MUST NEVER CALL
      * {@link "#refitText"(String)} from this method! Doing so would result in an endless loop that
      * would ultimately result in a stack overflow and termination of the application
-     * <p/>
+     * 
      * So for the time being this method does absolutely nothing. If you want to notify the view of
      * a changed text call {@link #setText(CharSequence)}
      */

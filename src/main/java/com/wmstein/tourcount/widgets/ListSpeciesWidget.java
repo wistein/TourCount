@@ -38,7 +38,7 @@ public class ListSpeciesWidget extends RelativeLayout
         picSpecies = (ImageView) findViewById(R.id.picSpecies);
     }
 
-    public void setCount(Count spec, Section section)
+    public void setCount(Count spec)
     {
         String rname = "p" + spec.code; // species picture resource name
 
@@ -56,9 +56,7 @@ public class ListSpeciesWidget extends RelativeLayout
     //Parameter spec_count for use in ListSpeciesActivity
     public int getSpec_count(Count newcount)
     {
-        Count spec = newcount;
-        int spec_count = spec.count;
-        return spec_count;
+        return newcount.count;
     }
 
     // Get resource ID from resource name

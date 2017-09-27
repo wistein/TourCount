@@ -157,11 +157,11 @@ public class DbHelper extends SQLiteOpenHelper
     {
         if (oldVersion == 1)
         {
-            version_2(db, oldVersion, newVersion);
+            version_2(db);
         }
     }
 
-    public void version_2(SQLiteDatabase db, int oldVersion, int newVersion)
+    private void version_2(SQLiteDatabase db)
     {
         String sql;
 

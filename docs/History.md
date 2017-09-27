@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2017, Wilhelm Stein
   
+#### Version 2.3.0 (2017-09-27)
+- Code adapted and compiled for Android 7.1
+- Minor code improvements
+
 #### Version 2.2.0 (2017-09-11)
 - Write log only when MyDebug=true
 

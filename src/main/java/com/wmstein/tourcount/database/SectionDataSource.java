@@ -6,14 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
-
 /**
  * Created by wmstein on 18.04.2016
  */
 public class SectionDataSource
 {
-    public List<Section> section_list;
     // Database fields
     private SQLiteDatabase database;
     private final DbHelper dbHandler;
@@ -46,30 +43,6 @@ public class SectionDataSource
     public void close()
     {
         dbHandler.close();
-    }
-
-    public Section createSection()
-    {
-        ContentValues values = new ContentValues();
-        values.put(DbHelper.S_NAME, "");
-        values.put(DbHelper.S_COUNTRY, "");
-        values.put(DbHelper.S_PLZ, "");
-        values.put(DbHelper.S_CITY, "");
-        values.put(DbHelper.S_PLACE, "");
-        values.put(DbHelper.S_TEMP, 0);
-        values.put(DbHelper.S_WIND, 0);
-        values.put(DbHelper.S_CLOUDS, 0);
-        values.put(DbHelper.S_DATE, "");
-        values.put(DbHelper.S_START_TM, "");
-        values.put(DbHelper.S_END_TM, "");
-        int insertId = (int) database.insert(DbHelper.SECTION_TABLE, null, values);
-        Cursor cursor = database.query(DbHelper.SECTION_TABLE,
-            allColumns, DbHelper.S_ID + " = " + insertId, null,
-            null, null, null);
-        cursor.moveToFirst();
-        Section newSection = cursorToSection(cursor);
-        cursor.close();
-        return newSection;
     }
 
     private Section cursorToSection(Cursor cursor)

@@ -6,14 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
-
 /**
  * Created by wmstein for TourCount on 20.04.2016.
  */
 public class IndividualsDataSource
 {
-    public List<Individuals> individuals_list;
     // Database fields
     private SQLiteDatabase database;
     private final DbHelper dbHandler;
