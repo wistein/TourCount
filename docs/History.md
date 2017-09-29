@@ -5,6 +5,7 @@
 #### Version 2.3.0 (2017-09-27)
 - Code adapted and compiled for Android 7.1
 - Minor code improvements
+- Bug fixes
 
 #### Version 2.2.0 (2017-09-11)
 - Write log only when MyDebug=true
@@ -13,7 +14,7 @@
 - Improved layout of results page
 - Added database version control to be compatible with old database structure prior version 2.1.4
 - Fix crash when counting using a database of old structure prior version 2.1.4
-- Bugfixes
+- Bug fixes
 
 #### Version 2.1.8 (2017-08-30)
 - Added Option to switch between portrait and landscape mode

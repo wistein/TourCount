@@ -97,7 +97,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private TempDataSource tempDataSource;
 
     private int i_Id = 0;
-    private String spec_name; // could be used in toast in deleteIndividual()
+    private String spec_name; // could be used in prepared toast in deleteIndividual()
     private int spec_count;
 
     @Override
@@ -267,6 +267,19 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     protected void onResume()
     {
         super.onResume();
+
+        prefs = TourCountApplication.getPrefs();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        getPrefs();
+
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
 
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

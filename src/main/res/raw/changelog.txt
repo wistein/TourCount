@@ -41,6 +41,7 @@ $ 2.3.0
   _ 2017-09-27
 		* Code adapted and compiled for Android 7.1
 		* Minor code improvements
+		* Bug fixes
 
 $ 2.2.0
   % Version 2.2.0
@@ -54,7 +55,7 @@ $ 2.1.9
   	* Improved layout of results page
   	* Added database version control to be compatible with old database structure prior version 2.1.4
   	* Fix crash when counting using a database of old structure prior version 2.1.4
-  	* Bugfixes
+  	* Bug fixes
 
 $ 2.1.8
   % Version 2.1.8

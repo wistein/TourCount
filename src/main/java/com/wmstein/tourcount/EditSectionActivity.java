@@ -42,6 +42,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private static final String TAG = "TourCountEditSectionActivity";
     private ArrayList<CountEditWidget> savedCounts;
     private TourCountApplication tourCount;
+    
     // the actual data
     private Section section;
     private LinearLayout counts_area;
@@ -54,6 +55,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     private boolean dupPref;
     private boolean screenOrientL; // option for screen orientation
+    private boolean brightPref;
 
     /**
      * Checks if a CharSequence is empty ("") or null.
@@ -94,7 +96,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     {
         super.onCreate(savedInstanceState);
 
-        boolean brightPref;
         tourCount = (TourCountApplication) getApplication();
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -162,6 +163,21 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     protected void onResume()
     {
         super.onResume();
+
+        SharedPreferences prefs = TourCountApplication.getPrefs();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        dupPref = prefs.getBoolean("pref_duplicate", true);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        brightPref = prefs.getBoolean("pref_bright", true);
+
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
 
         // clear any existing views
         counts_area.removeAllViews();
