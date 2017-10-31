@@ -36,6 +36,12 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 2.3.1
+  % Version 2.3.1
+  _ 2017-10-31
+		* Dev. environment adapted for Android Studio 3.0
+		* Bug fix
+
 $ 2.3.0
   % Version 2.3.0
   _ 2017-09-27

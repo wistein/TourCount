@@ -201,7 +201,13 @@ public class EditIndividualWidget extends LinearLayout
     {
         String text = widget_count2.getText().toString();
         {
+            try
+            {
                 return Integer.parseInt(text.replaceAll("[\\D]",""));
+            } catch (NumberFormatException nfe)
+            {
+                return 1;
+            }
         }
     }
 
