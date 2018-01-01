@@ -36,6 +36,13 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 2.3.2
+  % Version 2.3.2
+  _ 2018-01-01
+		* Added pictures of species for Canaries and Madeira
+		* Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
+		* Bug fix
+
 $ 2.3.1
   % Version 2.3.1
   _ 2017-10-31

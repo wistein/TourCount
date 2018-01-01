@@ -48,7 +48,7 @@ $ 9
   ! ...
   _ 
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
-  ! The codes derive from the numbering according to Karsholt/Razowski, as e.g. in the German Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (also see docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
+  ! The codes derive from the numbering of european butterflies according to Karsholt/Razowski, as e.g. in the German Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (also see docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
   ! An appended *-symbol marks a species group. 
   ! With "Save List" you store the input into the database. This list can be changed or supplemented anytime afterwards.
   _ 
@@ -57,7 +57,7 @@ $ 9
   ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models and Android versions).
   ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. 
   _ 
-  ! Alternatively, you may download an example Basic DB from <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>, copy it to your home directory and import and edit it suitably.
+  ! Alternatively, you may download one of the prepared example DBs from <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>, copy it to your home directory and import and edit it suitably.
   _  
 
 $ 8

@@ -48,7 +48,7 @@ $ 9
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähl- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (s. auch docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>). 
+  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (s. auch docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>). 
   ! Ein angehängtes *-Symbol kennzeichnet eine Gruppe. 
   ! Mit "Speichern" wird die Liste in die Datenbank übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
@@ -57,6 +57,10 @@ $ 9
   ! Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im Home-Verzeichnis /sdcard (oder /sdcard0, bzw. /storage/emulated/0, ist je nach Smartphone-Modell oder Android-Version unterschiedlich) abgelegt.
   ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann auch später, z.B. nach Änderung der Liste, erneut exportiert werden.  
   
+  _ 
+  ! Alternativ kann eine der vorbereiteten Beispieldatenbanken von <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a> ins Home-Verzeichnis kopiert und von dort importiert und ggf. passend edit werden.
+  _  
+
 $ 8
   % 3. Benutzung
   !
