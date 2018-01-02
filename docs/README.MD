@@ -34,6 +34,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-App icon and app background picture: wistein
+App icon and app background picture: 
+- by wistein
 
-All butterfly pictures: wistein
+Butterfly pictures: 
+- p07083.png derived from "Bright babul blue 2.jpg" by Savandurga Karnataka CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+- p07292.png derived from "Hypolimnas misippus (ento-csiro-au).jpg" by Svdmolen (Public Domain)
+- all others by wistein 
