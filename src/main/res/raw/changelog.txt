@@ -42,6 +42,7 @@ $ 2.3.2
 		* Added pictures of species for Canaries and Madeira
 		* Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
 		* Dev. environment adapted for Android Studio 3.0
+  	* Docs: German Introductary presentation added
 		* Bug fix
 
 $ 2.3.0
