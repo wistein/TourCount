@@ -3,7 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:largeHeap="true"
-          android:versionName="2.3.2">
+          android:versionName="2.4.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -11,11 +11,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- Permission needed for network location provider -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <!-- Permission needed for screen brightness setting -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- Permission needed for reverse geocoding -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".TourCountApplication"

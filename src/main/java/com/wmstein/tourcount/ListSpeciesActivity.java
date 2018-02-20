@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "tourcountListSpeciesActivity";
+    private static String TAG = "tourcountListSpeciesAct";
     private TourCountApplication tourCount;
     private SharedPreferences prefs;
 

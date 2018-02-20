@@ -95,5 +95,42 @@ public class SectionDataSource
         cursor.close();
         return section;
     }
+    
+    // called from CountingActivity
+    public void updateEmptyCountry(int id, String name)
+    {
+        ContentValues dataToInsert = new ContentValues();
+        dataToInsert.put(DbHelper.S_COUNTRY, name);
+        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_COUNTRY + " is null or length(" + DbHelper.S_COUNTRY + " = 0)";
+        String[] whereArgs = {String.valueOf(id)};
+        database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
+    }
+
+    public void updateEmptyPlz(int id, String name)
+    {
+        ContentValues dataToInsert = new ContentValues();
+        dataToInsert.put(DbHelper.S_PLZ, name);
+        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_PLZ + " is null or length(" + DbHelper.S_PLZ + " = 0)";
+        String[] whereArgs = {String.valueOf(id)};
+        database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
+    }
+
+    public void updateEmptyCity(int id, String name)
+    {
+        ContentValues dataToInsert = new ContentValues();
+        dataToInsert.put(DbHelper.S_CITY, name);
+        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_CITY + " is null or length(" + DbHelper.S_CITY + " = 0)";
+        String[] whereArgs = {String.valueOf(id)};
+        database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
+    }
+
+    public void updateEmptyPlace(int id, String name)
+    {
+        ContentValues dataToInsert = new ContentValues();
+        dataToInsert.put(DbHelper.S_PLACE, name);
+        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_PLACE + " is null or length(" + DbHelper.S_PLACE + " = 0)";
+        String[] whereArgs = {String.valueOf(id)};
+        database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
+    }
 
 }

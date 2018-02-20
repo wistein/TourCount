@@ -29,7 +29,7 @@ import com.wmstein.tourcount.widgets.OptionsWidget;
 
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "tourcountCountOptionsActivity";
+    private static String TAG = "tourcountCountOptionAct";
     private TourCountApplication tourCount;
     private LinearLayout static_widget_area;
     private LinearLayout dynamic_widget_area;

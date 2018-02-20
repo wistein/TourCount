@@ -22,13 +22,13 @@ import java.io.File;
  */
 public class TourCountApplication extends Application
 {
-    private static final String TAG = "tourcount";
+    private static final String TAG = "tourcountAppl";
     private static SharedPreferences prefs;
     private BitmapDrawable ob;
     int width;
     int height;
     private Bitmap bMap;
-
+    
     public static SharedPreferences getPrefs()
     {
         return prefs;

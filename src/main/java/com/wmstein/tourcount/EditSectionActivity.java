@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final String TAG = "TourCountEditSectionActivity";
+    private static final String TAG = "TourCountEditSecAct";
     private ArrayList<CountEditWidget> savedCounts;
     private TourCountApplication tourCount;
     

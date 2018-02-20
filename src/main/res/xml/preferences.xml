@@ -80,6 +80,24 @@
             android:key="pref_duplicate"
             android:summary="@string/pref_duplicate_summary"
             android:title="@string/pref_duplicate"/>
-
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefs_metadata">
+        android:key="key_prefs_metadata">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_room_black_48dp"
+            android:key="pref_metadata"
+            android:summary="@string/pref_metadata_summ"
+            android:title="@string/pref_metadata"/>
+    </PreferenceCategory>
+
+    <EditTextPreference
+        android:key="email_String"
+        android:icon="@drawable/ic_email_black_48dp"
+        android:summary="@string/pref_email_string_summ"
+        android:hint="@string/email_hint"
+        android:title="@string/pref_email_string"/>
+
 </PreferenceScreen>

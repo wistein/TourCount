@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+ * Copyright (c) 2016-2018. Wilhelm Stein, Bonn, Germany.
  */
 
 package com.wmstein.tourcount;
@@ -40,7 +40,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
 // EditIndividualActivity is called from CountingActivity 
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final String TAG = "TourCountEditIndividualActivity";
+    private static final String TAG = "TourCountEditIndivAct";
     private TourCountApplication tourCount;
     private SharedPreferences prefs;
     private Individuals individuals;
@@ -64,6 +64,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private int i_id;
     private String specName;
     private double latitude, longitude, height;
+    private String sLocality;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -113,6 +114,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             latitude = extras.getDouble("Latitude");
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
+            sLocality = extras.getString("Locality");
         }
     }
 
@@ -178,14 +180,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // display the editable data
         eiw = new EditIndividualWidget(this, null);
         eiw.setWidgetLocality1(getString(R.string.locality));
-        if (temp.temp_loc.equals(""))
-        {
-            eiw.setWidgetLocality2(individuals.locality);
-        }
-        else
-        {
-            eiw.setWidgetLocality2(temp.temp_loc);
-        }
+        eiw.setWidgetLocality2(sLocality);
 
         eiw.setWidgetZCoord1(getString(R.string.zcoord));
         eiw.setWidgetZCoord2(String.format("%.1f", height));
@@ -232,16 +227,13 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private boolean saveData()
     {
         buttonSound();
+        
         // save individual data
-        // Locality
-        String newlocality = eiw.getWidgetLocality2();
-        if (!newlocality.equals(""))
-        {
-            individuals.locality = newlocality;
-            temp.temp_loc = newlocality;
-        }
+        // Locality (from reverse geocoding in CountingActivity) 
+        individuals.locality = sLocality;
+//        individualsDataSource.updateLocality(individuals.id, individuals.locality);
 
-        // Sex
+        // Sexus
         String newsex = eiw.getWidgetSex2();
         if (newsex.equals("") || newsex.matches(" |m|f"))
         {

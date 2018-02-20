@@ -21,7 +21,7 @@
   <body>
 
   % TourCount
-  _ Copyright (C) 2016-2017, Wilhelm Stein
+  _ Copyright (C) 2016-2018, Wilhelm Stein
   _
   _ email: stein.wm@web.de
   _
@@ -35,6 +35,12 @@
     ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
+
+$ 2.4.0
+  % Version 2.4.0
+  _ 2018-02-19
+		* Reverse Geocoding from GPS coordinates for meta data and individual location
+		* Documents updated
 
 $ 2.3.2
   % Version 2.3.2

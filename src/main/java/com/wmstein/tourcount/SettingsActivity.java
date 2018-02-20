@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final int SELECT_PICTURE = 1;
-    private static final String TAG = "tourcountPreferenceActivity";
+    private static final String TAG = "tourcountPrefAct";
     SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private boolean screenOrientL; // option for screen orientation
@@ -192,6 +192,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
     }
 
     @Override

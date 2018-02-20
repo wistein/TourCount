@@ -85,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
                 android:inputType="textCapWords"
+                android:hint="@string/hintName"
                 android:paddingBottom="5dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"

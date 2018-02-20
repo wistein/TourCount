@@ -10,7 +10,11 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +28,7 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
@@ -41,6 +46,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
@@ -58,12 +64,18 @@ import static java.lang.Math.sqrt;
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final int FILE_CHOOSER = 11;
-    private static final String TAG = "TourCountWelcomeActivity";
+    private static final String TAG = "TourCountWelcomeAct";
     private TourCountApplication tourCount;
     private ChangeLog cl;
     private ViewHelp vh;
     private boolean canGetLocation = false;
     public boolean doubleBackToExitPressedOnce;
+
+    // Location info handling
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String provider;
+    private double latitude, longitude, height, uncertainty;
 
     // import/export stuff
     private File infile;
@@ -170,6 +182,58 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // can't get location, GPS or Network is not enabled
             Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
         }
+
+        // Get LocationManager instance
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Request list with names of all providers
+        List<String> providers = locationManager.getAllProviders();
+        for (String name : providers)
+        {
+            LocationProvider lp = locationManager.getProvider(name);
+        }
+
+        // Best possible provider
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        provider = locationManager.getBestProvider(criteria, true);
+
+        // Create LocationListener object
+        locationListener = new LocationListener()
+        {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderEnabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderDisabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onLocationChanged(Location location)
+            {
+                if (location != null)
+                {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    height = location.getAltitude();
+                    if (height != 0)
+                        height = correctHeight(latitude, longitude, height);
+                    uncertainty = location.getAccuracy();
+                }
+            }
+        };
     }
 
     // Try to find locationservice
@@ -198,6 +262,34 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         return canGetLocation;
+    }
+
+    // Correct height with geoid offset from EarthGravitationalModel
+    private double correctHeight(double latitude, double longitude, double gpsHeight)
+    {
+        double corrHeight;
+        double nnHeight;
+
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
     }
 
     // Date for filename of Export-DB
@@ -356,6 +448,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        // get location service
+        try
+        {
+            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
+        } catch (Exception e)
+        {
+            Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+        }
+
         Section section;
         sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
@@ -385,6 +486,16 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onPause()
     {
         super.onPause();
+
+        // Stop location service
+        try
+        {
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
+        } catch (Exception e)
+        {
+            // do nothing
+        }
     }
 
     @Override
@@ -413,6 +524,20 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onStop()
     {
         super.onStop();
+
+        // Stop location service
+        try
+        {
+            if (locationManager != null)
+            {
+                //Potentially missing permission is catched by exception
+                locationManager.removeUpdates(locationListener);
+                locationManager = null;
+            }
+        } catch (Exception e)
+        {
+            // do nothing
+        }
     }
 
     public void onDestroy()

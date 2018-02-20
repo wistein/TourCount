@@ -119,6 +119,12 @@
     <string name="deleteButton">Löschen</string>
     <string name="action_share">Mitteilen</string>
     <string name="send_to">Versenden</string>
+    <string name="emptyAddr">Leere Adresse</string>
+    <string name="unknownAddr">Unbekannte Adresse</string>
+    <string name="noAddr">Keine Adressdaten!</string>
+    <string name="noPos">Keine Position gefunden!</string>
+    <string name="errAddr">Web-Lesefehler!</string>
+    <string name="addrInfo">Adressinfo</string>
 
     <!-- EditSectionActivity -->
     <string name="titleEdit">Listenname</string>
@@ -166,6 +172,12 @@
     <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
     <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
     <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
+    <string name="prefs_metadata">Meta-Daten</string>
+    <string name="pref_metadata">GPS Reverse-Geocoding</string>
+    <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Reverse-Geocoding ermittelt und überschrieben werden sollen</string>
+    <string name="pref_email_string">Mail-Adresse für OSM-Geocoder</string>
+    <string name="pref_email_string_summ">Erforderlich für die zuverlässige Abfrage der Adressdaten per OSM-Nominatim-Reverse-Geocoder.\nDie Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
 
     <!-- CountOptionsActivity -->
     <string name="editCountValue">Du kannst den momentanen Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>
@@ -185,6 +197,7 @@
     <string name="charZero">0</string>
     <string name="countNameHint">Art-Name</string>
     <string name="hintTitle">Titel</string>
+    <string name="hintName">Name</string>
     <string name="hintSectionNotes">Bemerkung zur Liste</string>
     <string name="hintInstructions">Anleitung.</string>
     <string name="getHelp">Leider gibt es ein Problem mit der Datenbank. Bitte sende eine E-Mail mit Deiner exportierten \"tourcount.db\", falls Du Hilfe brauchst.</string>
