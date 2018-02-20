@@ -2,6 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2017, Wilhelm Stein
   
+#### Version 2.4.0 (2018-02-19)
+- Reverse Geocoding from GPS coordinates for meta data and individual location
+- Documents updated
+
+#### Version 2.3.2 (2018-01-01)
+- Added pictures of species for Canaries and Madeira
+- Bug fix
+
 #### Version 2.3.0 (2017-09-27)
 - Code adapted and compiled for Android 7.1
 - Minor code improvements

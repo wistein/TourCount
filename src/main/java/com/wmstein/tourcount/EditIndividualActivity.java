@@ -9,6 +9,11 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -24,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Individuals;
@@ -31,6 +37,9 @@ import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Temp;
 import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by wmstein on 15.05.2016
@@ -59,11 +68,16 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private String buttonAlertSound;
     private boolean brightPref;
     private boolean screenOrientL; // option for screen orientation
-    
+
+    // Location info handling
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String provider;
+    private double latitude, longitude, height, uncertainty;
+
     private int count_id;
     private int i_id;
     private String specName;
-    private double latitude, longitude, height;
     private String sLocality;
 
     @Override
@@ -144,6 +158,67 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // clear any existing views
         individ_area.removeAllViews();
 
+        // Get LocationManager instance
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Request list with names of all providers
+        List<String> providers = locationManager.getAllProviders();
+        for (String name : providers)
+        {
+            LocationProvider lp = locationManager.getProvider(name);
+        }
+
+        // Best possible provider
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        provider = locationManager.getBestProvider(criteria, true);
+
+        // Create LocationListener object
+        locationListener = new LocationListener()
+        {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderEnabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderDisabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onLocationChanged(Location location)
+            {
+                if (location != null)
+                {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    height = location.getAltitude();
+                    if (height != 0)
+                        height = correctHeight(latitude, longitude, height);
+                    uncertainty = location.getAccuracy();
+                }
+            }
+        };
+
+        // get location service
+        try
+        {
+            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
+        } catch (Exception e)
+        {
+            Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+        }
+
         // setup the data sources
         individualsDataSource = new IndividualsDataSource(this);
         individualsDataSource.open();
@@ -213,11 +288,47 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individ_area.addView(eiw);
     }
 
+    // Correct height with geoid offset from EarthGravitationalModel
+    private double correctHeight(double latitude, double longitude, double gpsHeight)
+    {
+        double corrHeight;
+        double nnHeight;
+
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
+    }
+
     @Override
     protected void onPause()
     {
         super.onPause();
 
+        // Stop location service
+        try
+        {
+            locationManager.removeUpdates(locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
         // close the data sources
         individualsDataSource.close();
         tempDataSource.close();

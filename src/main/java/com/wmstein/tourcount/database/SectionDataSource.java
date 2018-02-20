@@ -97,11 +97,12 @@ public class SectionDataSource
     }
     
     // called from CountingActivity
+    // store only when field is empty
     public void updateEmptyCountry(int id, String name)
     {
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.S_COUNTRY, name);
-        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_COUNTRY + " is null or length(" + DbHelper.S_COUNTRY + " = 0)";
+        String where = DbHelper.S_ID + " = ? AND (" + DbHelper.S_COUNTRY + " IS NULL OR " + DbHelper.S_COUNTRY + " == '')";
         String[] whereArgs = {String.valueOf(id)};
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
     }
@@ -110,7 +111,7 @@ public class SectionDataSource
     {
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.S_PLZ, name);
-        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_PLZ + " is null or length(" + DbHelper.S_PLZ + " = 0)";
+        String where = DbHelper.S_ID + " = ? AND (" + DbHelper.S_PLZ + " IS NULL OR " + DbHelper.S_PLZ + " == '')";
         String[] whereArgs = {String.valueOf(id)};
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
     }
@@ -119,7 +120,7 @@ public class SectionDataSource
     {
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.S_CITY, name);
-        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_CITY + " is null or length(" + DbHelper.S_CITY + " = 0)";
+        String where = DbHelper.S_ID + " = ? AND (" + DbHelper.S_CITY + " IS NULL OR " + DbHelper.S_CITY + " == '')";
         String[] whereArgs = {String.valueOf(id)};
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
     }
@@ -128,7 +129,7 @@ public class SectionDataSource
     {
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.S_PLACE, name);
-        String where = DbHelper.S_ID + " = ? AND " + DbHelper.S_PLACE + " is null or length(" + DbHelper.S_PLACE + " = 0)";
+        String where = DbHelper.S_ID + " = ? AND (" + DbHelper.S_PLACE + " IS NULL OR " + DbHelper.S_PLACE + " == '')";
         String[] whereArgs = {String.valueOf(id)};
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
     }

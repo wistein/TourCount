@@ -15,10 +15,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,11 +39,16 @@ import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +83,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private LocationListener locationListener;
     private String provider;
     private double latitude, longitude, height, uncertainty;
+    private String sLocality = "", sPlz = "", sCity = "", sPlace = "", sCountry = "";
 
     // import/export stuff
     private File infile;
@@ -90,6 +98,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // preferences
     private String sortPref;
     private boolean screenOrientL; // option for screen orientation
+    private boolean metaPref;      // option for reverse geocoding
+    private String emailString = ""; // mail address for OSM query
     
     // following stuff for purging export db
     private SQLiteDatabase database;
@@ -183,57 +193,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
         }
 
-        // Get LocationManager instance
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Request list with names of all providers
-        List<String> providers = locationManager.getAllProviders();
-        for (String name : providers)
-        {
-            LocationProvider lp = locationManager.getProvider(name);
-        }
-
-        // Best possible provider
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        provider = locationManager.getBestProvider(criteria, true);
-
-        // Create LocationListener object
-        locationListener = new LocationListener()
-        {
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderEnabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderDisabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onLocationChanged(Location location)
-            {
-                if (location != null)
-                {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    height = location.getAltitude();
-                    if (height != 0)
-                        height = correctHeight(latitude, longitude, height);
-                    uncertainty = location.getAccuracy();
-                }
-            }
-        };
     }
 
     // Try to find locationservice
@@ -262,34 +221,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         return canGetLocation;
-    }
-
-    // Correct height with geoid offset from EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight)
-    {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try
-        {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e)
-        {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try
-        {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
     }
 
     // Date for filename of Export-DB
@@ -372,7 +303,18 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             {
                 public void run()
                 {
-                    startActivity(new Intent(getApplicationContext(), CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    // get edited info for CountingActivity
+                    Intent intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+                    intent.putExtra("Latitude", latitude);
+                    intent.putExtra("Longitude", longitude);
+                    intent.putExtra("Height", height);
+                    intent.putExtra("Height", height);
+                    intent.putExtra("Locality", sLocality);
+                    intent.putExtra("Place", sPlace);
+                    intent.putExtra("Plz", sPlz);
+                    intent.putExtra("City", sCity);
+                    intent.putExtra("Country", sCountry);
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
             }, 100);
             return true;
@@ -438,6 +380,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         prefs.registerOnSharedPreferenceChangeListener(this);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
         if (screenOrientL)
         {
@@ -448,6 +392,58 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        // Get LocationManager instance
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Request list with names of all providers
+        List<String> providers = locationManager.getAllProviders();
+        for (String name : providers)
+        {
+            LocationProvider lp = locationManager.getProvider(name);
+        }
+
+        // Best possible provider
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        provider = locationManager.getBestProvider(criteria, true);
+
+        // Create LocationListener object
+        locationListener = new LocationListener()
+        {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderEnabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderDisabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onLocationChanged(Location location)
+            {
+                if (location != null)
+                {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    height = location.getAltitude();
+                    if (height != 0)
+                        height = correctHeight(latitude, longitude, height);
+                    uncertainty = location.getAccuracy();
+                }
+            }
+        };
+        
         // get location service
         try
         {
@@ -455,6 +451,23 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         } catch (Exception e)
         {
             Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+        }
+
+        // get reverse geocoding (todo: 1st count missing geo info)
+        if (metaPref &&  (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    RetrieveAddr getXML = new RetrieveAddr();
+                    getXML.execute(new LatLong(latitude, longitude));
+                }
+            });
         }
 
         Section section;
@@ -472,7 +485,35 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         sectionDataSource.close();
     }
-    
+
+    // Correct height with geoid offset from EarthGravitationalModel
+    private double correctHeight(double latitude, double longitude, double gpsHeight)
+    {
+        double corrHeight;
+        double nnHeight;
+
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
+    }
+
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
@@ -481,6 +522,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
     }
 
     public void onPause()
@@ -543,6 +586,213 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onDestroy()
     {
         super.onDestroy();
+    }
+
+    /*********************************************************
+     * Get address info from Reverse Geocoder of OpenStreetMap
+     */
+    private class RetrieveAddr extends AsyncTask<LatLong, Void, String>
+    {
+        URL url;
+        String xmlString;
+        String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+            + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
+
+        @Override
+        protected String doInBackground(LatLong... params)
+        {
+            try
+            {
+                url = new URL(urlString);
+                if (MyDebug.LOG)
+                    Log.d(TAG, "urlString: " + urlString); // Log url
+
+                //HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); // https-version?
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.connect();
+
+                int status = urlConnection.getResponseCode();
+                if (status >= 400) // Error
+                {
+                    return "";
+                }
+
+                // get the XML from input stream
+                InputStream iStream = urlConnection.getInputStream();
+
+                xmlString = convertStreamToString(iStream);
+                if (MyDebug.LOG)
+                    Log.d(TAG, "xmlString: " + xmlString); // Log content of url
+
+
+            } catch (IOException e)
+            {
+                if (MyDebug.LOG)
+                    Log.e(TAG, "Problem with address handling: " + e.toString());
+                xmlString = "";
+                return xmlString;
+            }
+            return xmlString;
+        }
+
+        // Write DB fields or textview fields
+        protected void onPostExecute(String xmlString)
+        {
+            super.onPostExecute(xmlString);
+
+            // parse the XML content 
+            if (xmlString.contains("<addressparts>"))
+            {
+                int sstart = xmlString.indexOf("<addressparts>") + 14;
+                int send = xmlString.indexOf("</addressparts>");
+                xmlString = xmlString.substring(sstart, send);
+                if (MyDebug.LOG)
+                    Log.d(TAG, "<addressparts>: " + xmlString);
+
+                StringBuilder msg = new StringBuilder();
+                StringBuilder locality = new StringBuilder();
+                StringBuilder plz = new StringBuilder();
+                StringBuilder city = new StringBuilder();
+                StringBuilder place = new StringBuilder();
+                StringBuilder country = new StringBuilder();
+
+                // 1. locality with road, street and suburb
+                if (xmlString.contains("<road>"))
+                {
+                    sstart = xmlString.indexOf("<road>") + 6;
+                    send = xmlString.indexOf("</road>");
+                    String road = xmlString.substring(sstart, send);
+                    locality.append(road);
+                }
+
+                if (xmlString.contains("<street>"))
+                {
+                    sstart = xmlString.indexOf("<street>") + 8;
+                    send = xmlString.indexOf("</street>");
+                    String street = xmlString.substring(sstart, send);
+                    locality.append(street);
+                }
+                if (!locality.toString().equals("") && xmlString.contains("<suburb>"))
+                    locality.append(", ");
+
+                if (xmlString.contains("<suburb>"))
+                {
+                    sstart = xmlString.indexOf("<suburb>") + 8;
+                    send = xmlString.indexOf("</suburb>");
+                    String suburb = xmlString.substring(sstart, send);
+                    locality.append(suburb);
+                }
+                sLocality = locality.toString();
+
+                // 2. place with city_district and village
+                if (xmlString.contains("<city_district>"))
+                {
+                    sstart = xmlString.indexOf("<city_district>") + 15;
+                    send = xmlString.indexOf("</city_district>");
+                    String city_district = xmlString.substring(sstart, send);
+                    place.append(city_district);
+                }
+
+                if (!place.toString().equals("") && xmlString.contains("<village>"))
+                    locality.append(", ");
+
+                if (xmlString.contains("<village>"))
+                {
+                    sstart = xmlString.indexOf("<village>") + 9;
+                    send = xmlString.indexOf("</village>");
+                    String village = xmlString.substring(sstart, send);
+                    place.append(village);
+                }
+                sPlace = place.toString();
+
+                // 3. plz
+                if (xmlString.contains("<postcode>"))
+                {
+                    sstart = xmlString.indexOf("<postcode>") + 10;
+                    send = xmlString.indexOf("</postcode>");
+                    String postcode = xmlString.substring(sstart, send);
+                    plz.append(postcode);
+                }
+                sPlz = plz.toString();
+
+                // 4. city with city and town
+                if (xmlString.contains("<city>"))
+                {
+                    sstart = xmlString.indexOf("<city>") + 6;
+                    send = xmlString.indexOf("</city>");
+                    String tcity = xmlString.substring(sstart, send);
+                    city.append(tcity);
+                }
+
+                if (!city.toString().equals("") && xmlString.contains("<town>"))
+                    locality.append(", ");
+
+                if (xmlString.contains("<town>"))
+                {
+                    sstart = xmlString.indexOf("<town>") + 6;
+                    send = xmlString.indexOf("</town>");
+                    String town = xmlString.substring(sstart, send);
+                    city.append(town);
+                }
+                sCity = city.toString();
+
+                // 5. country 
+                if (xmlString.contains("<country>"))
+                {
+                    sstart = xmlString.indexOf("<country>") + 9;
+                    send = xmlString.indexOf("</country>");
+                    String tcountry = xmlString.substring(sstart, send);
+                    country.append(tcountry);
+                }
+                sCountry = country.toString();
+            }
+        }
+
+        private String convertStreamToString(InputStream is)
+        {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            try
+            {
+                while ((line = reader.readLine()) != null)
+                {
+                    sb.append(line).append('\n');
+                }
+            } catch (IOException e)
+            {
+                if (MyDebug.LOG)
+                    Log.e(TAG, "Problem converting Stream to String: " + e.toString());
+            } finally
+            {
+                try
+                {
+                    is.close();
+                } catch (IOException e)
+                {
+                    if (MyDebug.LOG)
+                        Log.e(TAG, "Problem closing InputStream: " + e.toString());
+                }
+            }
+            return sb.toString();
+        }
+    } // end of class RetrieveAddr
+
+    // Interface for latitude, longitude
+    class LatLong
+    {
+        double latitude, longitude;
+
+        LatLong(double latitude, double longitude)
+        {
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
     }
 
     /*************************************************************************

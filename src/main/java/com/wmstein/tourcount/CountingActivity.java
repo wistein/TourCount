@@ -192,6 +192,63 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             enableProximitySensor();
         }
 
+        // get parameters from CountingActivity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            latitude = extras.getDouble("Latitude");
+            longitude = extras.getDouble("Longitude");
+            height = extras.getDouble("Height");
+            sLocality = extras.getString("Locality");
+            sPlace = extras.getString("PLace");
+            sPlz = extras.getString("Plz");
+            sCity = extras.getString("City");
+            sCountry = extras.getString("Country");
+        }
+        
+    } // End of onCreate
+
+    /*
+     * So preferences can be loaded at the start, and also when a change is detected.
+     */
+    private void getPrefs()
+    {
+        awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
+        brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
+        sortPref = prefs.getString("pref_sort_sp", "none");    // sorted species list on counting page
+        fontPref = prefs.getBoolean("pref_note_font", false);  // larger font for remarks
+        lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
+        buttonAlertSound = prefs.getString("alert_button_sound", null);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        prefs = TourCountApplication.getPrefs();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        getPrefs();
+
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
+
+        // check for API-Level >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            enableProximitySensor();
+        }
+
         // Get LocationManager instance
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -255,66 +312,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                         height = correctHeight(latitude, longitude, height);
                     uncertainty = location.getAccuracy();
                 }
-
-                if (metaPref &&  (latitude != 0 || longitude != 0))
-                {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-
-                    runOnUiThread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            RetrieveAddr getXML = new RetrieveAddr();
-                            getXML.execute(new LatLong(latitude, longitude));
-                        }
-                    });
-                }
             }
         };
-    } // End of onCreate
-
-    /*
-     * So preferences can be loaded at the start, and also when a change is detected.
-     */
-    private void getPrefs()
-    {
-        awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
-        brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
-        sortPref = prefs.getString("pref_sort_sp", "none");    // sorted species list on counting page
-        fontPref = prefs.getBoolean("pref_note_font", false);  // larger font for remarks
-        lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
-        buttonAlertSound = prefs.getString("alert_button_sound", null);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-
-        prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        getPrefs();
-
-        // Set full brightness of screen
-        if (brightPref)
-        {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.screenBrightness = 1.0f;
-            getWindow().setAttributes(params);
-        }
-
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            enableProximitySensor();
-        }
 
         // get location service
         try
@@ -323,6 +322,23 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         } catch (Exception e)
         {
             // nothing
+        }
+
+        // get reverse geocoding (todo: 1st count missing geo info)
+        if (metaPref &&  (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    RetrieveAddr getXML = new RetrieveAddr();
+                    getXML.execute(new LatLong(latitude, longitude));
+                }
+            });
         }
 
         // clear any existing views
@@ -451,7 +467,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        // Save sCountry, sPlz, sCity, sPlace to DB Section
+        // Save sCountry, sPlz, sCity, sPlace to DB Section (todo)
         // (sLocality is saved in EditIndividualActivity)
         if(sCountry.length() > 0)
         {
