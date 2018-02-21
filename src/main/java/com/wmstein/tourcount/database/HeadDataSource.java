@@ -16,7 +16,7 @@ public class HeadDataSource
     private final DbHelper dbHandler;
     private final String[] allColumns = {
         DbHelper.H_ID,
-        DbHelper.H_OBSERVER,
+        DbHelper.H_OBSERVER
     };
 
     public HeadDataSource(Context context)

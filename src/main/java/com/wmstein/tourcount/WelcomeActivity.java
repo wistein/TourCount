@@ -38,6 +38,8 @@ import com.wmstein.tourcount.database.HeadDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
+import com.wmstein.tourcount.database.Temp;
+import com.wmstein.tourcount.database.TempDataSource;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -93,6 +95,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private final String state = Environment.getExternalStorageState();
     private AlertDialog alert;
     private SectionDataSource sectionDataSource;
+    private TempDataSource tempDataSource;
     private final Handler mHandler = new Handler();
     
     // preferences
@@ -144,6 +147,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             // nothing
         }
+        
         sectionDataSource.close();
 
         // if API level > 23 permission request is necessary
@@ -309,11 +313,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     intent.putExtra("Longitude", longitude);
                     intent.putExtra("Height", height);
                     intent.putExtra("Height", height);
-                    intent.putExtra("Locality", sLocality);
-                    intent.putExtra("Place", sPlace);
-                    intent.putExtra("Plz", sPlz);
-                    intent.putExtra("City", sCity);
-                    intent.putExtra("Country", sCountry);
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
             }, 100);
@@ -484,6 +483,19 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // nothing
         }
         sectionDataSource.close();
+
+        // Save sLocality to DB Temp
+        Temp temp;
+        tempDataSource = new TempDataSource(this);
+        tempDataSource.open();
+        temp = tempDataSource.getTemp();
+        
+        if(sLocality.length() > 0)
+        {
+            temp.temp_loc = sLocality;
+            tempDataSource.saveTempLoc(temp);
+        }
+        tempDataSource.close();
     }
 
     // Correct height with geoid offset from EarthGravitationalModel
@@ -530,6 +542,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onPause();
 
+        sectionDataSource.close();
+        tempDataSource.close();
+
         // Stop location service
         try
         {
@@ -568,6 +583,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onStop();
 
+        sectionDataSource.close();
+        tempDataSource.close();
+
         // Stop location service
         try
         {
@@ -586,6 +604,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onDestroy()
     {
         super.onDestroy();
+
+        sectionDataSource.close();
+        tempDataSource.close();
     }
 
     /*********************************************************

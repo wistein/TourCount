@@ -199,11 +199,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             latitude = extras.getDouble("Latitude");
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
-            sLocality = extras.getString("Locality");
-            sPlace = extras.getString("PLace");
-            sPlz = extras.getString("Plz");
-            sCity = extras.getString("City");
-            sCountry = extras.getString("Country");
         }
         
     } // End of onCreate
@@ -489,6 +484,14 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             section.place = sPlace;
             sectionDataSource.updateEmptyPlace(section.id, section.place);
         }
+        
+        // Save sLocality to DB Temp
+        if(sLocality.length() > 0)
+        {
+            temp.temp_loc = sLocality;
+            tempDataSource.saveTempLoc(temp);
+        }
+        
     }
 
     @Override

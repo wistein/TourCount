@@ -35,11 +35,18 @@ public class TempDataSource
         dbHandler.close();
     }
 
-    public void saveTemp(Temp temp)
+    public void saveTempLoc(Temp temp)
     {
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.T_ID, temp.id);
         dataToInsert.put(DbHelper.T_TEMP_LOC, temp.temp_loc);
+        database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
+    }
+
+    public void saveTempCnt(Temp temp)
+    {
+        ContentValues dataToInsert = new ContentValues();
+        dataToInsert.put(DbHelper.T_ID, temp.id);
         dataToInsert.put(DbHelper.T_TEMP_CNT, temp.temp_cnt);
         database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
     }
@@ -59,7 +66,6 @@ public class TempDataSource
         Cursor cursor = database.query(DbHelper.TEMP_TABLE, allColumns, String.valueOf(1), null, null, null, null);
         cursor.moveToFirst();
         temp = cursorToTemp(cursor);
-        // Make sure to close the cursor
         cursor.close();
         return temp;
     }

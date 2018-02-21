@@ -73,7 +73,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private LocationManager locationManager;
     private LocationListener locationListener;
     private String provider;
-    private double latitude, longitude, height, uncertainty;
+    private double latitude, longitude, height;
 
     private int count_id;
     private int i_id;
@@ -205,7 +205,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                     height = location.getAltitude();
                     if (height != 0)
                         height = correctHeight(latitude, longitude, height);
-                    uncertainty = location.getAccuracy();
                 }
             }
         };
@@ -222,8 +221,17 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // setup the data sources
         individualsDataSource = new IndividualsDataSource(this);
         individualsDataSource.open();
+
+        // get last found locality from temp if sLocality from CountingActivity is empty 
         tempDataSource = new TempDataSource(this);
         tempDataSource.open();
+        temp = tempDataSource.getTemp();
+
+        if(sLocality.length() < 1)
+        {
+            sLocality = temp.temp_loc;
+        }
+
         countDataSource = new CountDataSource(this);
         countDataSource.open();
 
@@ -249,7 +257,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         individuals = individualsDataSource.getIndividual(i_id);
-        temp = tempDataSource.getTemp();
         counts = countDataSource.getCountById(count_id);
 
         // display the editable data
@@ -385,7 +392,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         individualsDataSource.saveIndividual(individuals);
-        tempDataSource.saveTemp(temp);
+        tempDataSource.saveTempCnt(temp);
         countDataSource.saveCount(counts);
 
         return true;

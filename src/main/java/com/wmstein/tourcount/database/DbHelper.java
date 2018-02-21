@@ -8,16 +8,16 @@ import android.util.Log;
 
 import com.wmstein.tourcount.MyDebug;
 
-
 /**
  * Created by milo on 05/05/2014.
- * Changed by wmstein on 19.04.2016
+ * Adopted for TourCount by wmstein on 2016-04-19
+ * updated to version 2 on 2017-09-09
  */
 public class DbHelper extends SQLiteOpenHelper
 {
     static final String TAG = "TourCount DB";
     private static final String DATABASE_NAME = "tourcount.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // tables
     public static final String SECTION_TABLE = "sections";
@@ -181,5 +181,5 @@ public class DbHelper extends SQLiteOpenHelper
         if (MyDebug.LOG)
             Log.d(TAG, "Upgraded database to version 2");
     }
-
+    
 }
