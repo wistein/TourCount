@@ -6,7 +6,7 @@ The integrated database is organized according to a tour in nature with its expe
 
 Databases can be individually created and adapted within the app regarding meta data and expected butterfly species. The recorded data (meta data, counts, species data and remarks) may either be read on the smartphone or exported in SQLite- or CSV-format and transferred to a PC for your own processing, e.g. by importing a csv-file into MS Excel.
 
-The app demands for storage access permit which is needed for im-/exporting the counting data, GPS permit for location info per count and the permit to prevent the phone from sleeping (to control the counting screen when used under Android 5.0.1 or newer).
+The app demands for storage access permit which is needed for im-/exporting the counting data, GPS permit for location info per count, internet access for OpenStreetMap reverse geocoding and the permit to prevent the phone from sleeping (to control the counting screen when used under Android 5.0.1 or newer).
 
 Before using the app, please, read the documentation (provided in German and English).
 There are a detailed description for setting up and using the app as well as sample basic databases (tourcount0.db and respective English version) provided under https://github.com/wistein/TourCount/tree/master/docs.

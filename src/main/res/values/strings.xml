@@ -176,7 +176,7 @@
     <string name="pref_metadata">GPS Reverse Geocoding</string>
     <string name="pref_metadata_summ">When selected, tries to substitute the location meta data you entered by Reverse Geocoding</string>
     <string name="pref_email_string">Mail Address for OSM Geocoder</string>
-    <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and only used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and will only be used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
     <string name="email_hint">Please, type in a valid email address here</string>
 
     <!-- CountOptionsActivity -->
