@@ -2,8 +2,11 @@ package com.wmstein.tourcount;
 
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -11,17 +14,25 @@ import android.widget.ScrollView;
 
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
+import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
+import com.wmstein.tourcount.database.Individuals;
+import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.ListHeadWidget;
+import com.wmstein.tourcount.widgets.ListIndividualWidget;
+import com.wmstein.tourcount.widgets.ListLineWidget;
 import com.wmstein.tourcount.widgets.ListMetaWidget;
+import com.wmstein.tourcount.widgets.ListSpRemWidget;
 import com.wmstein.tourcount.widgets.ListSpeciesWidget;
 import com.wmstein.tourcount.widgets.ListSumWidget;
 import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
+
+import static java.lang.Math.sqrt;
 
 /****************************************************
  * ListSpeciesActivity shows list of counting results
@@ -44,7 +55,10 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private CountDataSource countDataSource;
     private SectionDataSource sectionDataSource;
     private HeadDataSource headDataSource;
-    
+    private IndividualsDataSource individualsDataSource;
+
+    private SQLiteDatabase database;
+    private DbHelper dbHandler;
     ListSumWidget lsw;
 
     @Override
@@ -60,7 +74,8 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
+        }
+        else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -70,6 +85,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         countDataSource = new CountDataSource(this);
         sectionDataSource = new SectionDataSource(this);
         headDataSource = new HeadDataSource(this);
+        individualsDataSource = new IndividualsDataSource(this);
 
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
         assert listSpec_screen != null;
@@ -113,8 +129,12 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     // fill ListSpeciesWidget with relevant counts and sections data
     private void loadData()
     {
-        int sumsp = 0, sumind = 0;
-        
+        int sumsp = 0, sumind = 0, iid = 0;
+        double mUncert = 0;
+        double longi = 0, lati = 0, heigh = 0, uncer = 0;
+        int frst = 0;
+        double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;
+
         headDataSource.open();
         sectionDataSource.open();
 
@@ -142,35 +162,69 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         ehw.setWidgetLName1(head.observer);
         spec_area.addView(ehw);
 
-        // display the meta data
-        ListMetaWidget etw = new ListMetaWidget(this, null);
-        etw.setWidgetLMeta1(getString(R.string.temperature));
-        etw.setWidgetLItem1(section.temp);
-        etw.setWidgetLMeta2(getString(R.string.wind));
-        etw.setWidgetLItem2(section.wind);
-        etw.setWidgetLMeta3(getString(R.string.clouds));
-        etw.setWidgetLItem3(section.clouds);
-        etw.setWidgetLPlz1(getString(R.string.plz));
-        etw.setWidgetLPlz2(section.plz);
-        etw.setWidgetLCity(getString(R.string.city));
-        etw.setWidgetLItem4(section.city);
-        etw.setWidgetLPlace(getString(R.string.place));
-        etw.setWidgetLItem5(section.place);
-        etw.setWidgetLDate1(getString(R.string.date));
-        etw.setWidgetLDate2(section.date);
-        etw.setWidgetLStartTm1(getString(R.string.starttm));
-        etw.setWidgetLStartTm2(section.start_tm);
-        etw.setWidgetLEndTm1(getString(R.string.endtm));
-        etw.setWidgetLEndTm2(section.end_tm);
-        spec_area.addView(etw);
-
-        //List of species
-        List<Count> specs;
-
         // setup the data sources
         countDataSource.open();
+        individualsDataSource.open();
+        Individuals individuals;
 
-        // load the data
+        // Calculate mean average values for coords and uncertainty
+        dbHandler = new DbHelper(this);
+        database = dbHandler.getWritableDatabase();
+        Cursor curAInd;
+        curAInd = database.rawQuery("select * from " + dbHandler.INDIVIDUALS_TABLE, null);
+        frst = 0;
+        while (curAInd.moveToNext())
+        {
+            longi = curAInd.getDouble(4);
+            lati = curAInd.getDouble(3);
+            uncer = Math.rint(curAInd.getDouble(6));
+
+            if (longi != 0) // has coordinates
+            {
+                //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
+                if (MyDebug.LOG)
+                    Log.d(TAG, "longi " + longi);
+                if (frst == 0)
+                {
+                    loMin = longi;
+                    loMax = longi;
+                    laMin = lati;
+                    laMax = lati;
+                    uncer1 = uncer;
+                    frst = 1; // just 1 with coordinates
+                }
+                else
+                {
+                    loMin = Math.min(loMin, longi);
+                    loMax = Math.max(loMax, longi);
+                    laMin = Math.min(laMin, lati);
+                    laMax = Math.max(laMax, lati);
+                    uncer1 = Math.max(uncer1, uncer);
+                }
+            }
+        }
+        curAInd.close();
+
+        lo = (loMax + loMin) / 2;   // average longitude
+        la = (laMax + laMin) / 2;   // average latitude
+
+        // Simple distance calculation between 2 coordinates within the temperate zone in meters (Pythagoras):
+        //   uc = (((loMax-loMin)*71500)² + ((laMax-laMin)*111300)²)½ 
+        uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
+        uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
+        if (uc <= uncer1)
+            uc = uncer1;
+
+        // display the meta data
+        ListMetaWidget etw = new ListMetaWidget(this, null);
+        etw.setMetaWidget(section);
+        etw.setWidget_dla2(la);
+        etw.setWidget_dlo2(lo);
+        etw.setWidget_muncert2(uc);
+        spec_area.addView(etw);
+
+        // load the species data
+        List<Count> specs; //List of species
         switch (sortPref)
         {
         case "names_alpha":
@@ -192,7 +246,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
             int spec_count = widget.getSpec_count(spec);
 
             sumind = sumind + spec_count; // sum of counted individuals
-            sumsp = sumsp + 1;			  // sum of counted species
+            sumsp = sumsp + 1;              // sum of counted species
         }
 
         // display the totals
@@ -200,19 +254,40 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         lsw.setSum(sumsp, sumind);
         spec_area.addView(lsw);
 
+        List<Individuals> indivs; // List of individuals
+
         // display all the counts by adding them to listSpecies layout
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec);
             int spec_count = widget.getSpec_count(spec);
+            ListSpRemWidget rwidget = new ListSpRemWidget(this, null);
+            rwidget.setCount(spec);
+            String tRem = rwidget.getRem(spec);
 
             // fill widget only for counted species
             if (spec_count > 0)
             {
                 spec_area.addView(widget);
+                if (!tRem.equals(""))
+                {
+                    spec_area.addView(rwidget);
+                }
+
+                String iName = widget.getSpec_name(spec);
+                indivs = individualsDataSource.getIndividualsByName(iName);
+                for (Individuals indiv : indivs)
+                {
+                    ListIndividualWidget iwidget = new ListIndividualWidget(this, null);
+                    //load the individuals data
+                    iwidget.setIndividual(indiv);
+                    spec_area.addView(iwidget);
+                }
             }
         }
+        ListLineWidget lwidget = new ListLineWidget(this, null);
+        spec_area.addView(lwidget);
     }
 
     @Override

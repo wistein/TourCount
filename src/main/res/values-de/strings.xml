@@ -190,8 +190,18 @@
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Zählergebnis</string>
     <string name="wait">Liste wird berechnet&#8230;</string>
+    <string name="dLa">Ø-Breitengrad</string>
+    <string name="dLo">Ø-Längengrad</string>
+    <string name="mUncert">Max. Abweichung</string>
     <string name="txtSpecies">Summe der gezählten Arten: </string>
     <string name="txtIndividuals">Summe der gezählten Individuen: </string>
+    <string name="txtSx">Sex.:</string>
+    <string name="txtSt">Stad.:</string>
+    <string name="txtSte">Zust.:</string>
+    <string name="txtLat">La.:</string>
+    <string name="txtLon">Lo.:</string>
+    <string name="txtHgt">h:</string>
+    <string name="rem">Bem.:</string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>

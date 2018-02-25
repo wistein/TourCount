@@ -3,8 +3,12 @@ package com.wmstein.tourcount.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wmstein for TourCount on 20.04.2016.
@@ -16,20 +20,20 @@ public class IndividualsDataSource
     private final DbHelper dbHandler;
     private final String[] allColumns = {
         DbHelper.I_ID,
-        DbHelper.I_COUNT_ID,
-        DbHelper.I_NAME,
-        DbHelper.I_COORD_X,
-        DbHelper.I_COORD_Y,
-        DbHelper.I_COORD_Z,
-        DbHelper.I_UNCERT,
-        DbHelper.I_DATE_STAMP,
-        DbHelper.I_TIME_STAMP,
-        DbHelper.I_LOCALITY,
-        DbHelper.I_SEX,
-        DbHelper.I_STADIUM,
-        DbHelper.I_STATE_1_6,
-        DbHelper.I_NOTES,
-        DbHelper.I_ICOUNT
+        DbHelper.I_COUNT_ID,   // ID of table count
+        DbHelper.I_NAME,       // species name
+        DbHelper.I_COORD_X,    // latitude
+        DbHelper.I_COORD_Y,    // longitude
+        DbHelper.I_COORD_Z,    // height
+        DbHelper.I_UNCERT,     // uncertainty
+        DbHelper.I_DATE_STAMP, // date
+        DbHelper.I_TIME_STAMP, // time
+        DbHelper.I_LOCALITY,   // locality
+        DbHelper.I_SEX,        // sexus
+        DbHelper.I_STADIUM,    // stadium
+        DbHelper.I_STATE_1_6,  // state
+        DbHelper.I_NOTES,      // notes
+        DbHelper.I_ICOUNT      // individual count
     };
 
     public IndividualsDataSource(Context context)
@@ -62,7 +66,7 @@ public class IndividualsDataSource
         values.put(DbHelper.I_SEX, "");
         values.put(DbHelper.I_STADIUM, "");
         values.put(DbHelper.I_STATE_1_6, 0);
-        // notes should be default null and so isn't created here
+        values.put(DbHelper.I_NOTES, "");
         values.put(DbHelper.I_ICOUNT, 0);
 
         int insertId = (int) database.insert(DbHelper.INDIVIDUALS_TABLE, null, values);
@@ -145,12 +149,56 @@ public class IndividualsDataSource
     public Individuals getIndividual(int indiv_id)
     {
         Individuals individuals;
-        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID + " = ?", new String[]{String.valueOf(indiv_id)}, null, null, null);
+        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID 
+            + " = ?", new String[]{String.valueOf(indiv_id)}, null, null, null);
         cursor.moveToFirst();
         individuals = cursorToIndividuals(cursor);
         cursor.close();
         return individuals;
     }
 
+    // Used by ListSpeciesActivity
+    public List<Individuals> getIndividualsByName(String iname)
+    {
+        List<Individuals> indivs = new ArrayList<>();
+
+        String slct = "select * from " + DbHelper.INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_NAME + " = ?";
+        Cursor cursor = database.rawQuery(slct, new String[] {iname});
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Individuals individuals = cursorToIndividuals(cursor);
+            indivs.add(individuals);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return indivs;
+    }
+
+    public List<Individuals> getIndividuals()
+    {
+        List<Individuals> individs = new ArrayList<>();
+
+        String slct = "select * from " + DbHelper.INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_COORD_X + " != 0";
+        Cursor cursor = database.rawQuery(slct, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Individuals individuals = cursorToIndividuals(cursor);
+            individs.add(individuals);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return individs;
+    }
+
+    public int getIndivLength()
+    {
+        int numRows;
+        numRows = (int) DatabaseUtils.queryNumEntries(database, DbHelper.INDIVIDUALS_TABLE);
+        return numRows;
+    }
 }
 

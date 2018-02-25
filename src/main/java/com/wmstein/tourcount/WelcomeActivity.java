@@ -940,13 +940,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // export the purged count table to csv
             try
             {
-                // open Head and Section table for head and meta info
+                // open Head and Section tables for head and meta info
                 HeadDataSource headDataSource = new HeadDataSource(this);
                 headDataSource.open();
                 sectionDataSource = new SectionDataSource(this);
                 sectionDataSource.open();
-                IndividualsDataSource individualsDataSource = new IndividualsDataSource(this);
-                individualsDataSource.open();
 
                 // export purged db as csv
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(outfile));
@@ -1071,7 +1069,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     break;
                 }
 
-                // get the number of individuals with sexus
+                // open Individuals table 
+                IndividualsDataSource individualsDataSource = new IndividualsDataSource(this);
+                individualsDataSource.open();
+
+                // get the number of individuals with attributes
                 int cnt;  // counts count
                 int cnts; // individuals icount
                 String strcnts;
@@ -1095,7 +1097,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 String stadium4 = getString(R.string.stadium_4);
                 
                 Cursor curCSVInd;
-
                 while (curCSVCnt.moveToNext())
                 {
                     String spname = curCSVCnt.getString(2); // species name
@@ -1255,7 +1256,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 {
                     longi = curCSVInd.getDouble(4);
                     lati = curCSVInd.getDouble(3);
-                    uncer = Math.rint(curCSVInd.getDouble(6));
+                    uncer = Math.rint(curCSVInd.getDouble(6)); //todo
                     heigh = Math.rint(curCSVInd.getDouble(5));
                     spstate = curCSVInd.getInt(12);
                     cnts = curCSVInd.getInt(14);

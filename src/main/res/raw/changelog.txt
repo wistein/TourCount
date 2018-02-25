@@ -38,8 +38,10 @@
 
 $ 2.4.0
   % Version 2.4.0
-  _ 2018-02-19
+  _ 2018-02-24
 		* Reverse Geocoding from GPS coordinates for meta data and individual location
+		* Results page improved (average coordinates, listing of individual counts with data)
+		* Diverse improvements of details
 		* Documents updated
 
 $ 2.3.2

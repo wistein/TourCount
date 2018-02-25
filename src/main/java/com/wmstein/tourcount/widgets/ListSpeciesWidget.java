@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Count;
-import com.wmstein.tourcount.database.Section;
 
 import java.lang.reflect.Field;
 
@@ -19,12 +18,9 @@ import java.lang.reflect.Field;
  */
 public class ListSpeciesWidget extends RelativeLayout
 {
-    public static String TAG = "tourcountListSpeciesWidget";
-    public Section section;
     private final TextView txtSpecName;
     private final ImageView picSpecies;
     private final TextView specCount;
-    private final TextView txtSpecRem;
 
     public ListSpeciesWidget(Context context, AttributeSet attrs)
     {
@@ -34,7 +30,6 @@ public class ListSpeciesWidget extends RelativeLayout
         inflater.inflate(R.layout.widget_list_species, this, true);
         txtSpecName = (TextView) findViewById(R.id.txtSpecName);
         specCount = (TextView) findViewById(R.id.specCount);
-        txtSpecRem = (TextView) findViewById(R.id.txtSpecRem);
         picSpecies = (ImageView) findViewById(R.id.picSpecies);
     }
 
@@ -50,13 +45,18 @@ public class ListSpeciesWidget extends RelativeLayout
 
         txtSpecName.setText(spec.name);
         specCount.setText(String.valueOf(spec.count));
-        txtSpecRem.setText(spec.notes);
     }
 
     //Parameter spec_count for use in ListSpeciesActivity
     public int getSpec_count(Count newcount)
     {
         return newcount.count;
+    }
+
+    //Parameter spec_name for use in ListSpeciesActivity
+    public String getSpec_name(Count newcount)
+    {
+        return newcount.name;
     }
 
     // Get resource ID from resource name

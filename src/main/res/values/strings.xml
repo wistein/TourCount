@@ -190,8 +190,18 @@
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Counting Results</string>
     <string name="wait">View gets calculated&#8230;</string>
+    <string name="dLa">Ø-Latitude</string>
+    <string name="dLo">Ø-Longitude</string>
+    <string name="mUncert">Max. Deviation</string>
     <string name="txtSpecies">Sum of counted species: </string>
     <string name="txtIndividuals">Sum of counted individuals: </string>
+    <string name="txtSx">Sex.:</string>
+    <string name="txtSt">Stad.:</string>
+    <string name="txtSte">State:</string>
+    <string name="txtLat">La.:</string>
+    <string name="txtLon">Lo.:</string>
+    <string name="txtHgt">h:</string>
+    <string name="rem">Rem.:</string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>

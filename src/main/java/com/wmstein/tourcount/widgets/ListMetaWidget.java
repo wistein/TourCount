@@ -1,7 +1,7 @@
 package com.wmstein.tourcount.widgets;
 
 /*
- * ListMetaWidget.java used by ListSpeciesActivity.java
+ * ListMetaWidget.java used by ListSpeciesActivity.java and controls 
  * Created by wmstein for com.wmstein.tourcount on 19.04.2016
  */
 
@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
+import com.wmstein.tourcount.database.Section;
 
 public class ListMetaWidget extends LinearLayout
 {
@@ -33,6 +34,12 @@ public class ListMetaWidget extends LinearLayout
     private final TextView widget_lstartTm2;
     private final TextView widget_lendTm1; // end_tm
     private final TextView widget_lendTm2;
+    private final TextView widget_dla1; // average latitude
+    private final TextView widget_dla2;
+    private final TextView widget_dlo1; // average longitude
+    private final TextView widget_dlo2;
+    private final TextView widget_muncert1; // mean uncertainty
+    private final TextView widget_muncert2;
 
     public ListMetaWidget(Context context, AttributeSet attrs)
     {
@@ -57,106 +64,67 @@ public class ListMetaWidget extends LinearLayout
         widget_lstartTm2 = (TextView) findViewById(R.id.widgetLStartTm2);
         widget_lendTm1 = (TextView) findViewById(R.id.widgetLEndTm1);
         widget_lendTm2 = (TextView) findViewById(R.id.widgetLEndTm2);
+        widget_dla1 = (TextView) findViewById(R.id.widgetdla1);
+        widget_dla2 = (TextView) findViewById(R.id.widgetdla2);
+        widget_dlo1 = (TextView) findViewById(R.id.widgetdlo1);
+        widget_dlo2 = (TextView) findViewById(R.id.widgetdlo2);
+        widget_muncert1 = (TextView) findViewById(R.id.widgetmuncert1);
+        widget_muncert2 = (TextView) findViewById(R.id.widgetmuncert2);
     }
 
     // Following the SETS
-    // temperature
-    public void setWidgetLMeta1(String title)
+    public void setMetaWidget(Section section)
     {
-        widget_lmeta1.setText(title);
+        widget_lmeta1.setText(R.string.temperature);
+        widget_litem1.setText(String.valueOf(section.temp));
+        widget_lmeta2.setText(R.string.wind);
+        widget_litem2.setText(String.valueOf(section.wind));
+        widget_lmeta3.setText(R.string.clouds);
+        widget_litem3.setText(String.valueOf(section.clouds));
+        widget_lplz1.setText(R.string.plz);
+        widget_lplz2.setText(section.plz);
+        widget_lcity.setText(R.string.city);
+        widget_litem4.setText(section.city);
+        widget_lplace.setText(R.string.place);
+        widget_litem5.setText(section.place);
+        widget_ldate1.setText(R.string.date);
+        widget_ldate2.setText(section.date);
+        widget_lstartTm1.setText(R.string.starttm);
+        widget_lstartTm2.setText(section.start_tm);
+        widget_lendTm1.setText(R.string.endtm);
+        widget_lendTm2.setText(section.end_tm);
+        widget_dla1.setText(R.string.dLa);
+        widget_dlo1.setText(R.string.dLo);
+        widget_muncert1.setText(R.string.mUncert);
     }
-
-    public void setWidgetLItem1(int name)
+    
+    public void setWidget_dla2(double name)
     {
-        widget_litem1.setText(String.valueOf(name));
+        int slen = String.valueOf(name).length();
+        if(slen > 8)
+        {
+            widget_dla2.setText(String.valueOf(name).substring(0, 8));
+        }
+        else 
+        {
+            widget_dla2.setText(String.valueOf(name));
+        }
     }
-
-    // wind
-    public void setWidgetLMeta2(String title)
+    public void setWidget_dlo2(double name)
     {
-        widget_lmeta2.setText(title);
+        int slen = String.valueOf(name).length();
+        if(slen > 8)
+        {
+            widget_dlo2.setText(String.valueOf(name).substring(0, 8));
+        }
+        else
+        {
+            widget_dlo2.setText(String.valueOf(name));
+        }
     }
-
-    public void setWidgetLItem2(int name)
+    public void setWidget_muncert2(double name)
     {
-        widget_litem2.setText(String.valueOf(name));
+        widget_muncert2.setText(String.format("%s m", String.valueOf(Math.round(name))));
     }
-
-    // clouds
-    public void setWidgetLMeta3(String title)
-    {
-        widget_lmeta3.setText(title);
-    }
-
-    public void setWidgetLItem3(int name)
-    {
-        widget_litem3.setText(String.valueOf(name));
-    }
-
-    // PLZ
-    public void setWidgetLPlz1(String title)
-    {
-        widget_lplz1.setText(title);
-    }
-
-    public void setWidgetLPlz2(String name)
-    {
-        widget_lplz2.setText(name);
-    }
-
-    // city
-    public void setWidgetLCity(String title)
-    {
-        widget_lcity.setText(title);
-    }
-
-    public void setWidgetLItem4(String name)
-    {
-        widget_litem4.setText(name);
-    }
-
-    // place
-    public void setWidgetLPlace(String title)
-    {
-        widget_lplace.setText(title);
-    }
-
-    public void setWidgetLItem5(String name)
-    {
-        widget_litem5.setText(name);
-    }
-
-    // date
-    public void setWidgetLDate1(String title)
-    {
-        widget_ldate1.setText(title);
-    }
-
-    public void setWidgetLDate2(String name)
-    {
-        widget_ldate2.setText(name);
-    }
-
-    // start_tm
-    public void setWidgetLStartTm1(String title)
-    {
-        widget_lstartTm1.setText(title);
-    }
-
-    public void setWidgetLStartTm2(String name)
-    {
-        widget_lstartTm2.setText(name);
-    }
-
-    // end_tm
-    public void setWidgetLEndTm1(String title)
-    {
-        widget_lendTm1.setText(title);
-    }
-
-    public void setWidgetLEndTm2(String name)
-    {
-        widget_lendTm2.setText(name);
-    }
-
+    
 }

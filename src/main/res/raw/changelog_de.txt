@@ -38,8 +38,10 @@
 
 $ 2.4.0
   % Version 2.4.0
-  _ 19.02.2018
+  _ 24.02.2018
 		* Reverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
+		* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
+		* Verschiedene Detail-Verbesserungen
 		* Aktualisierung der Doku
 
 $ 2.3.2

@@ -101,7 +101,8 @@ public class CountDataSource
     public Count getCountById(int count_id)
     {
         Cursor cursor = database.query(DbHelper.COUNT_TABLE, allColumns,
-            DbHelper.C_ID + " = " + count_id, null, null, null, null);
+            DbHelper.C_ID + " = " + count_id,
+            null, null, null, null);
 
         cursor.moveToFirst();
         Count count = cursorToCount(cursor);
