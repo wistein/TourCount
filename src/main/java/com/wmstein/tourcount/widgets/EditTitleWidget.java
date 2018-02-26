@@ -11,7 +11,7 @@ import com.wmstein.tourcount.R;
 
 /**
  * Created by milo on 03/06/2014.
- * Changed by wmstein on 18.02.2016
+ * Changes by wmstein since 18.02.2016
  */
 public class EditTitleWidget extends LinearLayout
 {
@@ -32,11 +32,6 @@ public class EditTitleWidget extends LinearLayout
         widget_title.setText(title);
     }
 
-    public String getSectionName()
-    {
-        return section_name.getText().toString();
-    }
-
     public void setSectionName(String name)
     {
         section_name.setText(name);
@@ -45,6 +40,11 @@ public class EditTitleWidget extends LinearLayout
     public void setHint(String hint)
     {
         section_name.setHint(hint);
+    }
+
+    public String getSectionName()
+    {
+        return section_name.getText().toString();
     }
 
 }

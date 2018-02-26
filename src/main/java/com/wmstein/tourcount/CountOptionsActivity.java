@@ -12,14 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
-import com.wmstein.tourcount.widgets.EditTitleWidget;
-import com.wmstein.tourcount.widgets.OptionsWidget;
+import com.wmstein.tourcount.widgets.EditNotesWidget;
 
 /**
  * CountOptionsActivity
@@ -32,9 +31,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private static String TAG = "tourcountCountOptionAct";
     private TourCountApplication tourCount;
     private LinearLayout static_widget_area;
-    private LinearLayout dynamic_widget_area;
-    private OptionsWidget curr_val_widget;
-    private EditTitleWidget enw;
+    private EditNotesWidget enw;
     private Count count;
     private int count_id;
     private CountDataSource countDataSource;
@@ -56,7 +53,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         setContentView(R.layout.activity_count_options);
 
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
+        LinearLayout counting_screen = (LinearLayout) findViewById(R.id.count_options);
 
         if (screenOrientL)
         {
@@ -81,7 +78,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         counting_screen.setBackground(bg);
 
         static_widget_area = (LinearLayout) findViewById(R.id.static_widget_area);
-        dynamic_widget_area = (LinearLayout) findViewById(R.id.dynamic_widget_area);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
@@ -97,7 +93,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         // clear any existing views
         static_widget_area.removeAllViews();
-        dynamic_widget_area.removeAllViews();
 
         // get the data sources
         countDataSource = new CountDataSource(this);
@@ -107,19 +102,10 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(count.name);
 
-        // setup the static widgets in the following order
-        // 1. Current count value (internal counter)
-        // 2. Alert add/remove
-        curr_val_widget = new OptionsWidget(this, null);
-        curr_val_widget.setInstructions(String.format(getString(R.string.editCountValue), count.name, count.count));
-        curr_val_widget.setParameterValue(count.count);
-        static_widget_area.addView(curr_val_widget);
-
-        enw = new EditTitleWidget(this, null);
-        enw.setSectionName(count.notes);
+        enw = new EditNotesWidget(this, null);
+        enw.setNotesName(count.notes);
         enw.setWidgetTitle(getString(R.string.notesSpecies));
         enw.setHint(getString(R.string.notesHint));
-        enw.requestFocus();
 
         static_widget_area.addView(enw);
 
@@ -142,6 +128,8 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         // finally, close the database
         countDataSource.close();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
     }
 
     public void saveAndExit(View view)
@@ -154,9 +142,10 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     {
         // don't crash if the user hasn't filled things in...
         Toast.makeText(CountOptionsActivity.this, getString(R.string.sectSaving) + " " + count.name + "!", Toast.LENGTH_SHORT).show();
-        count.count = curr_val_widget.getParameterValue();
-        count.notes = enw.getSectionName();
-
+        count.notes = enw.getNotesName();
+        // hide keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
         countDataSource.saveCount(count);
 
     }
@@ -192,7 +181,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.count_options);
+        LinearLayout counting_screen = (LinearLayout) findViewById(R.id.count_options);
         assert counting_screen != null;
         counting_screen.setBackground(null);
         brightPref = prefs.getBoolean("pref_bright", true);

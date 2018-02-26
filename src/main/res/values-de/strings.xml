@@ -180,7 +180,6 @@
     <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
 
     <!-- CountOptionsActivity -->
-    <string name="editCountValue">Du kannst den momentanen Zählerstand %2$d von \"%1$s\" hier ändern. \nDas hat aber zur Folge, dass die Zahl der Individueneinträge in der Individuen-Tabelle der DB und die Summe der Individuen divergieren.</string>
     <string name="notesSpecies">Bemerkung zur Art</string>
     <string name="countName">Neue Art</string>
     <string name="countCode">Code</string>

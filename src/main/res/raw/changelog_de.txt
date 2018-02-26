@@ -42,6 +42,7 @@ $ 2.4.0
 		* Reverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
 		* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
 		* Verschiedene Detail-Verbesserungen
+		* Funktionsrelikte entfernt
 		* Aktualisierung der Doku
 
 $ 2.3.2

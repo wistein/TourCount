@@ -23,20 +23,20 @@
 $ 10
   % 1. Introduction
   !
-  ! This counting app should support you when recording butterflies. 
+  ! This counting app should support you when recording butterflies. It allows a species-specific and individually localized counting when walking in nature. 
   ! It facilitates this comfortably without field book and pencil on every stay in nature.
   _ 
   ! The integrated database can be individually created and adapted regarding expected butterfly species.
   ! The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into the butterfly registration system or transferred to a PC for your own processing.
   _ 
   ! The app is open source (published under <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), has no tracking or advertising functions, demands only for permits which are needed for recording the data.
-  ! It needs access rights to storage media and uses GPS to register positions per count.
+  ! (Access rights for storage, internet for reverse geocoding and GPS.)
 
 $ 9
   % 2. Setting up
   !
-  ! Before initial use you must set up an empty basic database (Basic DB) or import and adapt an example Basic DB (see docs in GitHub).
-  ! Therefore, you first enter the meta data under “Prepare Recording” and finish this by tipping on the saving symbol. The meta data may be modified anytime later. 
+  ! Before initial use you should adapt the settings to your liking. Then you should set up an empty basic database (Basic DB) or import and adapt an example Basic DB (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
+  ! Therefore, you first enter the master data under “Prepare Recording” and finish this by tipping on the saving symbol. Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”. The meta data may be modified anytime later. 
   ! Then edit the species list on "Counting List". Use the Pencil-Button for that.
   ! Add an entry by the (+)-Button and enter a name and a code (five-digit with leading zeros). Repeat this for each expected species, e.g.:
   _ 
@@ -48,7 +48,7 @@ $ 9
   ! ...
   _ 
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
-  ! The codes derive from the numbering of european butterflies according to Karsholt/Razowski, as e.g. in the German Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (also see docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
+  ! The codes derive from the numbering of european butterflies according to Karsholt/Razowski, as e.g. in the German Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (also see docs in GitHub).
   ! An appended *-symbol marks a species group. 
   ! With "Save List" you store the input into the database. This list can be changed or supplemented anytime afterwards.
   _ 
@@ -56,21 +56,18 @@ $ 9
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page.
   ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) within the home directory /sdcard (or /sdcard0, or /storage/emulated/0, it differs between smartphone models and Android versions).
   ! The "Basic Database" may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. 
-  _ 
-  ! Alternatively, you may download one of the prepared example DBs from <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>, copy it to your home directory and import and edit it suitably.
-  _  
-
+	
 $ 8
   % 3. Usage
   !
   ! Start with "Counting List". 
   ! To count just tip on the (+)-Button of the corresponding species.
-  ! The counter will increment and a page to enter individual data opens. Latitude, longitude, height as well as date and time will be added automatically. Multiple counts may be applied. Go back to the counting page by tipping the "Save" button.
+  ! The counter will increment and a page to enter individual data opens. Location info, latitude, longitude, height as well as date and time will be added automatically. Multiple counts may be applied. Go back to the counting page by tipping the "Save" button.
   ! The (-)-Buttons allows for corrections. Mind that the (-)-Button reduces the individuals list for the last entry of a species. 
   _ 
   ! The Pencil-Button in the app bar of the counting page opens the counting list editing page for editing the list of species. 
   _ 
-  ! The Pencil-Button in each species row of the counting page opens the species editing page that lets you add remarks for each species and set its counters to any value. Mind that this leads to different numbers in sum and individual table.
+  ! The Pencil-Button in each species row of the counting page opens the species editing page that lets you add remarks for each species. 
   ! If you enter a species related remark this will be shown in an extra line beneath the row. 
   _ 
   ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by tipping the Save-Button. 
@@ -89,7 +86,11 @@ $ 7
   _ 
   ! The "Settings" page can be reached from some pages of the app. Here you may adapt the look an feel in some aspects to your wishes, e.g. sounds, sorting order or left-/right-hand counting. 
   ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
-  _ 
+  _  
+  ! Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location into the individual data.
+  ! For Reverse Geocoding (produce address info from GPS coordinates) the service of Nomination from OpenStreetMap is used. A valid email address is necessary for reliable queries of address data and to exclude abuse. The mail address will be treated confidentially and will only be used to contact you in case of service problems. 
+  ! For more info see <a href="https://wiki.openstreetmap.org/wiki/Nominatim" target="_blank">https://wiki.openstreetmap.org/wiki/Nominatim</a>.
+  _   
   ! For preparing a new tour you may use “Reset Data” to reset the tour-specific meta data and count data. Alternatively you may import the Basic DB from /sdcard/tourcount0.db 
   _ 
   ! Internally, TourCount stores the data always in a single, equally named SQlite-DB file in the app's own storage area. As this file cannot be read or changed directly by the user, exporting the data to files in a user reachable storage area is necessary.

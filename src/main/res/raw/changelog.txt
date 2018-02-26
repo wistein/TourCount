@@ -42,6 +42,7 @@ $ 2.4.0
 		* Reverse Geocoding from GPS coordinates for meta data and individual location
 		* Results page improved (average coordinates, listing of individual counts with data)
 		* Diverse improvements of details
+		* Obsolete functions eliminated
 		* Documents updated
 
 $ 2.3.2

@@ -180,7 +180,6 @@
     <string name="email_hint">Please, type in a valid email address here</string>
 
     <!-- CountOptionsActivity -->
-    <string name="editCountValue">You may change the count value of %1$s from its current value of %2$d by editing it here.\nBut this generates inconsistency between the individuals table and count number in the DB.</string>
     <string name="countName">New Species</string>
     <string name="countCode">Code</string>
     <string name="notesSpecies">Species Notes</string>

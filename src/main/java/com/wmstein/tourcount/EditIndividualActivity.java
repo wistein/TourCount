@@ -347,10 +347,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         buttonSound();
         
         // save individual data
-        // Locality (from reverse geocoding in CountingActivity) 
-        individuals.locality = sLocality;
-//        individualsDataSource.updateLocality(individuals.id, individuals.locality);
-
+        // Locality (from reverse geocoding in CountingActivity or manual input) 
+        individuals.locality = eiw.getWidgetLocality2();
+        
         // Sexus
         String newsex = eiw.getWidgetSex2();
         if (newsex.equals("") || newsex.matches(" |m|f"))

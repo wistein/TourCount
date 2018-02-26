@@ -14,6 +14,7 @@ import java.io.Serializable;
 /**
  * Created by milo on 04/06/2014.
  * Changed by wmstein on 18.02.2016
+ * used by EditSectionActivity
  */
 public class CountEditWidget extends LinearLayout implements Serializable
 {

@@ -23,20 +23,20 @@
 $ 10
   % 1. Einführung
   !
-  ! Diese Zähler-App soll bei der Erfassung von Schmetterlingen unterstützen.
+  ! Diese Zähler-App soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch und individuell lokalisiert erfasst werden. 
   ! Sie ermöglicht dies ohne Feldbuch und Bleistift bei jeglichen Aufenthalten in der Natur.
   _ 
   ! Die integrierte Datenbank kann individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
   ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder vom Smartphone abgelesen oder für weitere Bearbeitung auf den PC übertragen werden.
   _ 
-  ! Die App ist Open Source (<a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind.
-  ! Sie benötigt Zugriffrechte auf Speichermedien für die Speicherung der Daten und nutzt GPS zur Registrierung der Position bei der Zählung.   
+  ! Die App ist Open Source, (veröffentlicht unter <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), 
+  ! enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind (Speicher- und GPS-Zugriffsrechte sowie Internetzugang für reversive Geokodierung).
 
 $ 9
   % 2. Einrichtung
   !
-  ! Vor der erstmaligen Verwendung muss einmalig eine leere Datenbank (Basis-DB) angelegt oder eine Beispiel-Basis-DB (s. docs in GitHub) importiert und angepasst werden. 
-  ! Dazu werden zunächst die Meta-Daten zur Erfassung unter „Erfassung vorbereiten“ eingegeben. Mit Tippen aufs Speichersymbol abschließen. Die Meta-Daten können jederzeit weiter bearbeitet werden.
+  ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden. Dann muss einmalig eine leere Datenbank (Basis-DB) angelegt oder eine Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>) importiert und angepasst werden. 
+  ! Dazu werden zunächst die Meta-Daten zur Erfassung unter „Erfassung vorbereiten“ eingegeben. Mit Tippen aufs Speichersymbol abschließen. Die ortsbezogenen Meta-Daten werden bei Nutzung der reversiven Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt, können aber jederzeit bearbeitet werden.
   ! Dann editiert man die Artenliste unter "Zählliste". Aufruf mittels Bleistift-Button.
   ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag (Name und 5-stelliger Code), z.B.:
   _ 
@@ -48,7 +48,7 @@ $ 9
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähl- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (s. auch docs in GitHub <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>). 
+  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.det</a> (dazu s. auch docs in GitHub). 
   ! Ein angehängtes *-Symbol kennzeichnet eine Gruppe. 
   ! Mit "Speichern" wird die Liste in die Datenbank übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
@@ -56,22 +56,18 @@ $ 9
   ! Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite.
   ! Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im Home-Verzeichnis /sdcard (oder /sdcard0, bzw. /storage/emulated/0, ist je nach Smartphone-Modell oder Android-Version unterschiedlich) abgelegt.
   ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann auch später, z.B. nach Änderung der Liste, erneut exportiert werden.  
-  
-  _ 
-  ! Alternativ kann eine der vorbereiteten Beispieldatenbanken von <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a> ins Home-Verzeichnis kopiert und von dort importiert und ggf. passend edit werden.
-  _  
 
 $ 8
   % 3. Benutzung
   !
   ! Beginne mit "Zählliste". 
   ! Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Art. 
-  ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Mehrfachzählungen können eingegeben werden. Mittels Speicher-Button geht es zurück zur Zählseite.
-  ! Mit dem (-)-Button kann ggf. korrigiert werden. Beachte, dass der (-)-Button den letzten Eintrag der Art aus der Individuen-Liste löscht. 
+  ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Ortsangabe, Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Mehrfachzählungen können eingegeben werden. Mittels Speicher-Button geht es zurück zur Zählseite.
+  ! Mit dem (-)-Button kann ggf. korrigiert werden. Beachte, dass der (-)-Button jeweils den letzten Eintrag der Art aus der Individuen-Liste reduziert bzw. löscht. 
   _ 
   ! Mit dem Bleistift-Button in der Kopfzeile der Zählerseite lassen sich die Art-Einträge editieren. 
   _ 
-  ! Der Bleistift-Button in der Art-Zeile auf der Zählerseite ruft die Art-Editieren-Seite auf. Hier können Art-spezifische Bemerkungen hinzugefügt und die Zähler auf beliebige Werte gesetzt werden. Letzteres hat zur Folge, dass die Zahl der Individueneinträge und ihre Summe divergieren.
+  ! Der Bleistift-Button in der Art-Zeile auf der Zählerseite ruft die Art-Editieren-Seite auf. Hier können Art-spezifische Bemerkungen hinzugefügt werden. 
   ! Ein Art-spezifischer Kommentar wird anschließend in der Liste direkt unter der Art eingeblendet.
   _ 
   ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil in der oberen linken Ecke. Um sicher geänderten Inhalt zu übernehmen, sollte der Speichern-Button benutzt werden. 
@@ -90,6 +86,10 @@ $ 7
   _ 
   ! Die Seite „Einstellungen“ wird von einigen App-Seiten aus erreicht. Hier können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds, Sortierfolge oder Rechts-/Linkshänder-Darstellung der Zählerseite. 
   ! Die Auswahl eines eigenen Hintergrundbildes klappt dabei mittels Galerie-App, erreichbar über das linke Seitenmenü der Hintergrundbild-Option (ggf. wischen vom linken Rand).
+  _ 
+  ! Mittels reversiver Geokodierung lassen sich Ortsangaben (PLZ, Stadt, Ort) in die Metadaten und Lokalität in die Individuen-Daten automatisch einfügen.
+  ! Zur reversiven Geokodierung (Erzeugung von Adressdaten aus GPS-Koordinaten) wird der Nominatim-Dienst von OpenStreetMap verwendet. Für eine auf Dauer zuverlässige Abfrage der Adressdaten und zwecks Ausschluss von Missbrauch ist eine eigene, gültige E-Mail-Adresse erforderlich. Die Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. 
+  ! Siehe <a href="https://wiki.openstreetmap.org/wiki/Nominatim" target="_blank">https://wiki.openstreetmap.org/wiki/Nominatim</a>.
   _ 
   ! Zwecks Vorbereitung einer neuen Tour können mittels "Reset Daten“ die tourspezifischen Metadaten und alle Zähldaten gelöscht werden. Alternativ kann die angelegte Basis-Datenbank "/sdcard/tourcount0.db" importiert werden.
   _ 
