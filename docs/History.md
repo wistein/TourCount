@@ -3,7 +3,8 @@
 #### TourCount Copyright (C) 2016-2017, Wilhelm Stein
   
 #### Version 2.4.0 (2018-02-19)
-- Reverse Geocoding from GPS coordinates for meta data and individual location
+- OSM Reverse Geocoding from GPS coordinates for meta data and individual location
+- Improved Results page with individual counts data
 - Documents updated
 
 #### Version 2.3.2 (2018-01-01)
@@ -16,7 +17,7 @@
 - Bug fixes
 
 #### Version 2.2.0 (2017-09-11)
-- Write log only when MyDebug=true
+- Write log only in debug mode
 
 #### Version 2.1.9 (2017-09-09)
 - Improved layout of results page

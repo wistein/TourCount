@@ -1,6 +1,6 @@
 # TourCount
 
-TourCount is an Android app that supports species-specific counting of butterflies in nature.
+TourCount is an Android app that supports species-specific and individually localized counting of butterflies in nature.
 
 The integrated database is organized according to a tour in nature with its expected butterfly species. That means, a new (importable and prepared) basic database instance will be used per tour.
 
