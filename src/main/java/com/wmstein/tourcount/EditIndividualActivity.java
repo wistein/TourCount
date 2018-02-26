@@ -382,7 +382,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         int newcount = eiw.getWidgetCount2();
         counts.count = counts.count + newcount - 1; // -1 as CountingActivity already added 1
         individuals.icount = newcount;
-        temp.temp_cnt = newcount;
 
         // Notes
         String newnotes = eiw.getWidgetIndivNote2();
@@ -392,7 +391,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         individualsDataSource.saveIndividual(individuals);
-        tempDataSource.saveTempCnt(temp);
         countDataSource.saveCount(counts);
 
         return true;

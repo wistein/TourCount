@@ -3,7 +3,6 @@ package com.wmstein.tourcount.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -83,6 +82,15 @@ public class IndividualsDataSource
         database.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null);
     }
 
+    public void decreaseIndividual(int id, int newicount)
+    {
+        ContentValues dataToInsert = new ContentValues();
+        dataToInsert.put(DbHelper.I_ICOUNT, newicount);
+        String where = DbHelper.I_ID + " = ?";
+        String[] whereArgs = {String.valueOf(id)};
+        database.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
+    }
+    
     private Individuals cursorToIndividuals(Cursor cursor)
     {
         Individuals newindividuals = new Individuals();
@@ -157,6 +165,17 @@ public class IndividualsDataSource
         return individuals;
     }
 
+    public int getIndividualCount(int indiv_id)
+    {
+        Individuals individuals;
+        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID
+            + " = ?", new String[]{String.valueOf(indiv_id)}, null, null, null);
+        cursor.moveToFirst();
+        individuals = cursorToIndividuals(cursor);
+        cursor.close();
+        return individuals.icount;
+    }
+
     // Used by ListSpeciesActivity
     public List<Individuals> getIndividualsByName(String iname)
     {
@@ -194,11 +213,5 @@ public class IndividualsDataSource
         return individs;
     }
 
-    public int getIndivLength()
-    {
-        int numRows;
-        numRows = (int) DatabaseUtils.queryNumEntries(database, DbHelper.INDIVIDUALS_TABLE);
-        return numRows;
-    }
 }
 

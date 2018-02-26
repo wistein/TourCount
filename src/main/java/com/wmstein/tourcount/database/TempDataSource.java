@@ -51,15 +51,6 @@ public class TempDataSource
         database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
     }
 
-    private Temp cursorToTemp(Cursor cursor)
-    {
-        Temp temp = new Temp();
-        temp.id = cursor.getInt(cursor.getColumnIndex(DbHelper.T_ID));
-        temp.temp_loc = cursor.getString(cursor.getColumnIndex(DbHelper.T_TEMP_LOC));
-        temp.temp_cnt = cursor.getInt(cursor.getColumnIndex(DbHelper.T_TEMP_CNT));
-        return temp;
-    }
-
     public Temp getTemp()
     {
         Temp temp;
@@ -67,6 +58,15 @@ public class TempDataSource
         cursor.moveToFirst();
         temp = cursorToTemp(cursor);
         cursor.close();
+        return temp;
+    }
+
+    private Temp cursorToTemp(Cursor cursor)
+    {
+        Temp temp = new Temp();
+        temp.id = cursor.getInt(cursor.getColumnIndex(DbHelper.T_ID));
+        temp.temp_loc = cursor.getString(cursor.getColumnIndex(DbHelper.T_TEMP_LOC));
+        temp.temp_cnt = cursor.getInt(cursor.getColumnIndex(DbHelper.T_TEMP_CNT));
         return temp;
     }
 

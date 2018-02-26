@@ -462,7 +462,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        // Save sCountry, sPlz, sCity, sPlace to DB Section (todo)
+        // Save sCountry, sPlz, sCity, sPlace to DB Section
         // (sLocality is saved in EditIndividualActivity)
         if(sCountry.length() > 0)
         {
@@ -693,10 +693,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             widget.countDown();
             i_Id = individualsDataSource.readLastIndividual(count_id);
-            if (i_Id > 0 && temp.temp_cnt < 2)
+            int icount = individualsDataSource.getIndividualCount(i_Id);
+            if (i_Id > 0 && icount < 2)
             {
                 deleteIndividual(i_Id);
                 i_Id--;
+                return;
+            }
+            if (i_Id > 0 && icount > 1)
+            {
+                int icount1 = icount -1;
+                individualsDataSource.decreaseIndividual(i_Id, icount1);
             }
         }
     }
@@ -715,10 +722,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             widget.countDownLH();
             i_Id = individualsDataSource.readLastIndividual(count_id);
-            if (i_Id > 0)
+            int icount = individualsDataSource.getIndividualCount(i_Id);
+            if (i_Id > 0 && icount < 2)
             {
                 deleteIndividual(i_Id);
                 i_Id--;
+                return;
+            }
+            if (i_Id > 0 && icount > 1)
+            {
+                int icount1 = icount -1;
+                individualsDataSource.decreaseIndividual(i_Id, icount1);
             }
         }
     }
