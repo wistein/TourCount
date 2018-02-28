@@ -255,26 +255,33 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         spec_area.addView(lsw);
 
         List<Individuals> indivs; // List of individuals
-
         // display all the counts by adding them to listSpecies layout
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec);
             int spec_count = widget.getSpec_count(spec);
+            String tRem;
+            if(widget.getSpec_notes(spec) == null) // if-test on "" or on length() >0 produces crash
+            {
+                tRem = "";
+            }
+            else
+            {
+                tRem = widget.getSpec_notes(spec);
+            }
             ListSpRemWidget rwidget = new ListSpRemWidget(this, null);
-            rwidget.setCount(spec);
-            String tRem = rwidget.getRem(spec);
+            rwidget.setRem(spec);
 
             // fill widget only for counted species
             if (spec_count > 0)
             {
                 spec_area.addView(widget);
-                if (!tRem.equals(""))
+
+                if (tRem.length() > 0)
                 {
                     spec_area.addView(rwidget);
                 }
-
                 String iName = widget.getSpec_name(spec);
                 indivs = individualsDataSource.getIndividualsByName(iName);
                 for (Individuals indiv : indivs)

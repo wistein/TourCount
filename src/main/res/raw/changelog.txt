@@ -36,13 +36,13 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
-$ 2.4.1
-  % Version 2.4.1
-  _ 2018-02-27
+$ 2.4.2
+  % Version 2.4.2
+  _ 2018-02-28
 		* Reverse Geocoding from GPS coordinates for meta data and individual location
 		* Results page improved (average coordinates, listing of individual counts with data)
 		* Diverse improvements of details
-		* Obsolete functions eliminated and bug fix
+		* Obsolete functions eliminated and bug fixes
 		* Documents updated
 
 $ 2.3.2

@@ -27,13 +27,7 @@ public class ListSpRemWidget extends RelativeLayout
         txtSpecRem = (TextView) findViewById(R.id.txtSpecRem);
     }
 
-	public String getRem(Count spec)
-	{
-		txtRem = spec.notes;
-		return txtRem;
-	}
-	
-    public void setCount(Count spec)
+    public void setRem(Count spec)
     {
         txtSpecRem.setText(spec.notes);
     }

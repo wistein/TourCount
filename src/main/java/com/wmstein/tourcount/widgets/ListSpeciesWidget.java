@@ -59,6 +59,12 @@ public class ListSpeciesWidget extends RelativeLayout
         return newcount.name;
     }
 
+    //Parameter spec_notes for use in ListSpeciesActivity
+    public String getSpec_notes(Count newcount)
+    {
+        return newcount.notes;
+    }
+
     // Get resource ID from resource name
     private int getResId(String rName)
     {

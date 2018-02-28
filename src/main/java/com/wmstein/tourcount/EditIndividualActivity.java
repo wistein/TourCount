@@ -79,6 +79,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private int i_id;
     private String specName;
     private String sLocality;
+    private Boolean sdata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -130,6 +131,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             height = extras.getDouble("Height");
             sLocality = extras.getString("Locality");
         }
+        
+        sdata = false;
     }
 
     @Override
@@ -337,7 +340,11 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             // do nothing
         }
         
-        saveData();
+        if(!sdata)
+        {
+            saveData();
+        }
+        
         // close the data sources
         individualsDataSource.close();
         tempDataSource.close();
@@ -351,6 +358,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // save individual data
         // Locality (from reverse geocoding in CountingActivity or manual input) 
         individuals.locality = eiw.getWidgetLocality2();
+        temp.temp_loc = eiw.getWidgetLocality2();
         
         // Sexus
         String newsex = eiw.getWidgetSex2();
@@ -393,6 +401,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         individualsDataSource.saveIndividual(individuals);
         countDataSource.saveCount(counts);
+        tempDataSource.saveTempLoc(temp);
+        sdata = true;
 
         return true;
     }
