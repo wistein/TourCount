@@ -68,7 +68,7 @@ import static java.lang.Math.sqrt;
  * EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * <p/>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
- * Changes and additions for TourCount by wmstein on 18.04.2016
+ * Changes and additions for TourCount by wmstein since 18.04.2016
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {

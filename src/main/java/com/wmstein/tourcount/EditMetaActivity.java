@@ -175,19 +175,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         etw.setWidgetEndTm1(getString(R.string.endtm));
         etw.setWidgetEndTm2(section.end_tm);
         head_area.addView(etw);
-
-/*
-        // check for focus
-        String newCountry = section.country;
-        if (StringUtils.isNotEmpty(newCountry))
-        {
-            etw.requestFocus();
-        }
-        else
-        {
-            ehw.requestFocus();
-        }
-*/
     }
 
     // getSDate()

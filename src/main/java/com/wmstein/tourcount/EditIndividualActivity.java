@@ -336,6 +336,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         {
             // do nothing
         }
+        
+        saveData();
         // close the data sources
         individualsDataSource.close();
         tempDataSource.close();
