@@ -482,7 +482,29 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             // nothing
         }
-        sectionDataSource.close();
+
+        // Save sCountry, sPlz, sCity, sPlace to DB Section
+        // (sLocality is saved in EditIndividualActivity)
+        if(sCountry.length() > 0)
+        {
+            section.country = sCountry;
+            sectionDataSource.updateEmptyCountry(section.id, section.country);
+        }
+        if(sPlz.length() > 0)
+        {
+            section.plz = sPlz;
+            sectionDataSource.updateEmptyPlz(section.id, section.plz);
+        }
+        if(sCity.length() > 0)
+        {
+            section.city = sCity;
+            sectionDataSource.updateEmptyCity(section.id, section.city);
+        }
+        if(sPlace.length() > 0)
+        {
+            section.place = sPlace;
+            sectionDataSource.updateEmptyPlace(section.id, section.place);
+        }
 
         // Save sLocality to DB Temp
         Temp temp;
@@ -495,7 +517,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             temp.temp_loc = sLocality;
             tempDataSource.saveTempLoc(temp);
         }
-        tempDataSource.close();
     }
 
     // Correct height with geoid offset from EarthGravitationalModel
