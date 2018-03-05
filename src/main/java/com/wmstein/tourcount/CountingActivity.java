@@ -1027,7 +1027,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 }
 
                 if (!place.toString().equals("") && xmlString.contains("<village>"))
-                    locality.append(", ");
+                    place.append(", ");
 
                 if (xmlString.contains("<village>"))
                 {
@@ -1058,7 +1058,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 }
                 
                 if (!city.toString().equals("") && xmlString.contains("<town>"))
-                    locality.append(", ");
+                    city.append(", ");
 
                 if (xmlString.contains("<town>"))
                 {

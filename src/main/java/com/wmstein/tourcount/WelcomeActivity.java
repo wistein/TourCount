@@ -674,7 +674,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 if (MyDebug.LOG)
                     Log.d(TAG, "<addressparts>: " + xmlString);
 
-                StringBuilder msg = new StringBuilder();
                 StringBuilder locality = new StringBuilder();
                 StringBuilder plz = new StringBuilder();
                 StringBuilder city = new StringBuilder();
@@ -719,7 +718,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
 
                 if (!place.toString().equals("") && xmlString.contains("<village>"))
-                    locality.append(", ");
+                    place.append(", ");
 
                 if (xmlString.contains("<village>"))
                 {
@@ -750,7 +749,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
 
                 if (!city.toString().equals("") && xmlString.contains("<town>"))
-                    locality.append(", ");
+                    city.append(", ");
 
                 if (xmlString.contains("<town>"))
                 {
