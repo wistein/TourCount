@@ -54,7 +54,7 @@ public class ListIndividualWidget extends RelativeLayout
             slen = String.valueOf(individual.coord_x).length();
             if(slen > 8)
             {
-                txtIndLa.setText(String.valueOf(individual.coord_x).substring(0, 7));
+                txtIndLa.setText(String.valueOf(individual.coord_x).substring(0, 8));
             }
             else
             {
@@ -70,7 +70,7 @@ public class ListIndividualWidget extends RelativeLayout
             slen = String.valueOf(individual.coord_y).length();
             if (slen > 8)
             {
-                txtIndLo.setText(String.valueOf(individual.coord_y).substring(0, 7));
+                txtIndLo.setText(String.valueOf(individual.coord_y).substring(0, 8));
             }
             else
             {

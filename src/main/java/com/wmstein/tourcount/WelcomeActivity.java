@@ -1256,7 +1256,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 {
                     longi = curCSVInd.getDouble(4);
                     lati = curCSVInd.getDouble(3);
-                    uncer = Math.rint(curCSVInd.getDouble(6)); //todo
+                    uncer = Math.rint(curCSVInd.getDouble(6));
                     heigh = Math.rint(curCSVInd.getDouble(5));
                     spstate = curCSVInd.getInt(12);
                     cnts = curCSVInd.getInt(14);
@@ -1270,10 +1270,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             curCSVInd.getString(2),  //species name
                             strcnts,                 //indiv. counts
                             curCSVInd.getString(9),  //locality
-                            String.valueOf(longi),   //longitude
-                            String.valueOf(lati),    //latitude
-                            String.valueOf(uncer),   //uncertainty
-                            String.valueOf(heigh),   //height
+                            String.valueOf(longi).substring(0, 8),   //longitude
+                            String.valueOf(lati).substring(0, 8),    //latitude
+                            String.valueOf(Math.round(uncer)),   //uncertainty
+                            String.valueOf(Math.round(heigh)),   //height
                             curCSVInd.getString(7),  //date
                             curCSVInd.getString(8),  //time
                             curCSVInd.getString(10), //sex
@@ -1338,9 +1338,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         "",
                         "",
                         getString(R.string.avCoords),
-                        Double.toString(lo),    // average longitude
-                        Double.toString(la),    // average latitude
-                        Double.toString(uc)     // average uncertainty radius
+                        String.valueOf(lo).substring(0, 8), // average longitude
+                        String.valueOf(la).substring(0, 8), // average latitude
+                        String.valueOf(Math.round(uc)) // average uncertainty radius
                     };
                 csvWrite.writeNext(arrAvCoords);
 
