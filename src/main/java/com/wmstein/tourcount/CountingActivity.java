@@ -14,7 +14,6 @@ import android.location.LocationProvider;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -35,17 +34,11 @@ import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
-import com.wmstein.tourcount.database.Temp;
-import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
 import com.wmstein.tourcount.widgets.CountingWidgetLH;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,11 +47,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * CountingActivity is the central activity of TourCount. It provides the counter, starts GPS-location polling,
- * starts EditIndividualActivity, starts editSectionActivity, switches screen off when pocketed and allows sending notes.
- * Basic counting functions created by milo for beecount on 05/05/2014.
- * Adopted, modified and enhanced for TourCount by wmstein since 18.04.2016
+/****************************************************************************************
+ * CountingActivity is the central activity of TourCount. It provides the counter, starts 
+ * GPS-location polling, starts EditIndividualActivity, starts editSectionActivity, 
+ * switches screen off when pocketed and allows sending notes.
+ * Basic counting functions created by milo for BeeCount on 05/05/2014.
+ * Adopted, modified and enhanced for TourCount by wmstein since 18.04.2016,
+ * last modification an 11.03.2018
  */
 
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -76,7 +71,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // the actual data
     private Section section;
     private List<Count> counts;
-    private Temp temp;
     private List<CountingWidget> countingWidgets;
     private List<CountingWidgetLH> countingWidgetsLH;
 
@@ -104,12 +98,10 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
-    private TempDataSource tempDataSource;
 
     private int i_Id = 0;
     private String spec_name; // could be used in prepared toast in deleteIndividual()
     private int spec_count;
-    private String sLocality = "", sPlz = "", sCity = "", sPlace = "", sCountry = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -121,7 +113,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
-        tempDataSource = new TempDataSource(this);
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -330,8 +321,19 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 @Override
                 public void run()
                 {
-                    RetrieveAddr getXML = new RetrieveAddr();
-                    getXML.execute(new LatLong(latitude, longitude));
+                    URL url;
+                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
+                    try
+                    {
+                        url = new URL(urlString);
+                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                        getXML.execute(url);
+                    } catch (IOException e)
+                    {
+                        // do nothing
+                    }
+
                 }
             });
         }
@@ -352,7 +354,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource.open();
         countDataSource.open();
         individualsDataSource.open();
-        tempDataSource.open();
 
         // load the data
         // sections
@@ -455,43 +456,10 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
         }
 
-        temp = tempDataSource.getTemp();
-
         if (awakePref)
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
-        // Save sCountry, sPlz, sCity, sPlace to DB Section
-        // (sLocality is saved in EditIndividualActivity)
-        if(sCountry.length() > 0)
-        {
-            section.country = sCountry;
-            sectionDataSource.updateEmptyCountry(section.id, section.country);
-        }
-        if(sPlz.length() > 0)
-        {
-            section.plz = sPlz;
-            sectionDataSource.updateEmptyPlz(section.id, section.plz);
-        }
-        if(sCity.length() > 0)
-        {
-            section.city = sCity;
-            sectionDataSource.updateEmptyCity(section.id, section.city);
-        }
-        if(sPlace.length() > 0)
-        {
-            section.place = sPlace;
-            sectionDataSource.updateEmptyPlace(section.id, section.place);
-        }
-        
-        // Save sLocality to DB Temp
-        if(sLocality.length() > 0)
-        {
-            temp.temp_loc = sLocality;
-            tempDataSource.saveTempLoc(temp);
-        }
-        
     }
 
     @Override
@@ -520,7 +488,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource.close();
         countDataSource.close();
         individualsDataSource.close();
-        tempDataSource.close();
 
         // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
         // has denied wakelock permission to TourCount
@@ -623,7 +590,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
-        intent.putExtra("Locality", sLocality);
         startActivity(intent);
     }
 
@@ -675,7 +641,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
-        intent.putExtra("Locality", sLocality);
         startActivity(intent);
     }
 
@@ -915,213 +880,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         getPrefs();
-    }
-
-    /*********************************************************
-     * Get address info from Reverse Geocoder of OpenStreetMap
-     */
-    private class RetrieveAddr extends AsyncTask<LatLong, Void, String>
-    {
-        URL url;
-        String xmlString;
-        String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-            + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
-
-        @Override
-        protected String doInBackground(LatLong... params)
-        {
-                try
-                {
-                    url = new URL(urlString);
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "urlString: " + urlString); // Log url
-
-                    //HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); // https-version?
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setReadTimeout(10000);
-                    urlConnection.setConnectTimeout(15000);
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setDoInput(true);
-                    urlConnection.connect();
-
-                    int status = urlConnection.getResponseCode();
-                    if (status >= 400) // Error
-                    {
-                        return "";
-                    }
-
-                    // get the XML from input stream
-                    InputStream iStream = urlConnection.getInputStream();
-
-                    xmlString = convertStreamToString(iStream);
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "xmlString: " + xmlString); // Log content of url
-
-
-                } catch (IOException e)
-                {
-                    if (MyDebug.LOG)
-                        Log.e(TAG, "Problem with address handling: " + e.toString());
-                    xmlString = "";
-                    return xmlString;
-                }
-            return xmlString;
-        }
-
-        // Write DB fields or textview fields
-        protected void onPostExecute(String xmlString)
-        {
-            super.onPostExecute(xmlString);
-
-            // parse the XML content 
-            if (xmlString.contains("<addressparts>"))
-            {
-                int sstart = xmlString.indexOf("<addressparts>") + 14;
-                int send = xmlString.indexOf("</addressparts>");
-                xmlString = xmlString.substring(sstart, send);
-                if (MyDebug.LOG)
-                    Log.d(TAG, "<addressparts>: " + xmlString);
-                
-                StringBuilder msg = new StringBuilder();
-                StringBuilder locality = new StringBuilder();
-                StringBuilder plz = new StringBuilder();
-                StringBuilder city = new StringBuilder();
-                StringBuilder place = new StringBuilder();
-                StringBuilder country = new StringBuilder();
-                
-                // 1. locality with road, street and suburb
-                if (xmlString.contains("<road>"))
-                {
-                    sstart = xmlString.indexOf("<road>") + 6;
-                    send = xmlString.indexOf("</road>");
-                    String road = xmlString.substring(sstart, send);
-                    locality.append(road);
-                }
-
-                if (xmlString.contains("<street>"))
-                {
-                    sstart = xmlString.indexOf("<street>") + 8;
-                    send = xmlString.indexOf("</street>");
-                    String street = xmlString.substring(sstart, send);
-                    locality.append(street);
-                }
-                if (!locality.toString().equals("") && xmlString.contains("<suburb>"))
-                    locality.append(", ");
-
-                if (xmlString.contains("<suburb>"))
-                {
-                    sstart = xmlString.indexOf("<suburb>") + 8;
-                    send = xmlString.indexOf("</suburb>");
-                    String suburb = xmlString.substring(sstart, send);
-                    locality.append(suburb);
-                }
-                sLocality = locality.toString();
-
-                // 2. place with city_district and village
-                if (xmlString.contains("<city_district>"))
-                {
-                    sstart = xmlString.indexOf("<city_district>") + 15;
-                    send = xmlString.indexOf("</city_district>");
-                    String city_district = xmlString.substring(sstart, send);
-                    place.append(city_district);
-                }
-
-                if (!place.toString().equals("") && xmlString.contains("<village>"))
-                    place.append(", ");
-
-                if (xmlString.contains("<village>"))
-                {
-                    sstart = xmlString.indexOf("<village>") + 9;
-                    send = xmlString.indexOf("</village>");
-                    String village = xmlString.substring(sstart, send);
-                    place.append(village);
-                }
-                sPlace = place.toString();
-
-                // 3. plz
-                if (xmlString.contains("<postcode>"))
-                {
-                    sstart = xmlString.indexOf("<postcode>") + 10;
-                    send = xmlString.indexOf("</postcode>");
-                    String postcode = xmlString.substring(sstart, send);
-                    plz.append(postcode);
-                }
-                sPlz = plz.toString();
-                
-                // 4. city with city and town
-                if (xmlString.contains("<city>"))
-                {
-                    sstart = xmlString.indexOf("<city>") + 6;
-                    send = xmlString.indexOf("</city>");
-                    String tcity = xmlString.substring(sstart, send);
-                    city.append(tcity);
-                }
-                
-                if (!city.toString().equals("") && xmlString.contains("<town>"))
-                    city.append(", ");
-
-                if (xmlString.contains("<town>"))
-                {
-                    sstart = xmlString.indexOf("<town>") + 6;
-                    send = xmlString.indexOf("</town>");
-                    String town = xmlString.substring(sstart, send);
-                    city.append(town);
-                }
-                sCity = city.toString();
-                
-                // 5. country 
-                if (xmlString.contains("<country>"))
-                {
-                    sstart = xmlString.indexOf("<country>") + 9;
-                    send = xmlString.indexOf("</country>");
-                    String tcountry = xmlString.substring(sstart, send);
-                    country.append(tcountry);
-                }
-                sCountry = country.toString();
-            }
-        }
-        
-        private String convertStreamToString(InputStream is)
-        {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-
-            String line;
-            try
-            {
-                while ((line = reader.readLine()) != null)
-                {
-                    sb.append(line).append('\n');
-                }
-            } catch (IOException e)
-            {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "Problem converting Stream to String: " + e.toString());
-            } finally
-            {
-                try
-                {
-                    is.close();
-                } catch (IOException e)
-                {
-                    if (MyDebug.LOG)
-                        Log.e(TAG, "Problem closing InputStream: " + e.toString());
-                }
-            }
-            return sb.toString();
-        }
-    } // end of class RetrieveAddr
-
-    // Interface for latitude, longitude
-    class LatLong
-    {
-        double latitude, longitude;
-  
-        LatLong(double latitude, double longitude)
-        {
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
     }
 
     /**

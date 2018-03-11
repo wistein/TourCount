@@ -36,6 +36,11 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 2.4.3
+  % Version 2.4.3
+  _ 10.03.2018
+		* Code Optimierung bezüglich Reverse Geocoding
+
 $ 2.4.2
   % Version 2.4.2
   _ 28.02.2018

@@ -41,12 +41,11 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by wmstein on 15.05.2016
+/*******************************************************************************************
+ * EditIndividualActivity is called from CountingActivity and collects additional info to an 
+ * individual's data record
+ * Copyright 2016-2018 wmstein, created on 15.05.2016, last modification an 11.03.2018
  */
-
-/***********************************************************************************************************************/
-// EditIndividualActivity is called from CountingActivity 
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "TourCountEditIndivAct";
@@ -78,7 +77,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private int count_id;
     private int i_id;
     private String specName;
-    private String sLocality;
+    private String sLocality = "";
     private Boolean sdata;
 
     @Override
@@ -129,7 +128,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             latitude = extras.getDouble("Latitude");
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
-            sLocality = extras.getString("Locality");
         }
         
         sdata = false;
@@ -225,15 +223,12 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individualsDataSource = new IndividualsDataSource(this);
         individualsDataSource.open();
 
-        // get last found locality from temp if sLocality from CountingActivity is empty 
+        // get last found locality from temp 
         tempDataSource = new TempDataSource(this);
         tempDataSource.open();
         temp = tempDataSource.getTemp();
 
-        if(sLocality.length() < 1)
-        {
-            sLocality = temp.temp_loc;
-        }
+        sLocality = temp.temp_loc;
 
         countDataSource = new CountDataSource(this);
         countDataSource.open();
