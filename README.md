@@ -12,11 +12,13 @@ That means, a database instance will be used per tour by importing a prepared ba
 - Editor for the meta data to prepare a tour
 - Editor for individual species data of a counted individual ( e.g. sexus, stadium, state or remark)
 - Automatic insertion of date, time, coordinates and height
-- Automatic insertion of location data by reverse OSM-geocoding when internet is accessible
+- Automatic insertion of location data by reverse OSM-geocoding when GPS and internet are accessible
 - Results are prepared for easy readout to transfer them to science4you entry masks
 - Results are shown with meta data, totals, species results and individual data.
 - Results may also be exported in SQLite- or CSV-format and transferred to a PC for your own processing, e.g. by importing a csv-file into a spreadsheet like MS Excel.
-- There are a userguide and further documents in /docs.  
+- There are a userguide and further documents in /docs.
+
+Please read the userguide or consult its contents in the app's help before using the app.  
 
 #### Prerequisites
 The app demands for 
