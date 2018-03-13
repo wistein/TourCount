@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.CursorIndexOutOfBoundsException;
 import android.location.Criteria;
 import android.location.Location;
@@ -18,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -79,7 +82,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private LocationListener locationListener;
     private String provider;
     private double latitude, longitude, height, uncertainty;
-    
+
     private PowerManager.WakeLock mProximityWakeLock;
 
     // preferences
@@ -191,7 +194,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
         }
-        
+
     } // End of onCreate
 
     /*
@@ -311,7 +314,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         // get reverse geocoding (todo: 1st count missing geo info)
-        if (metaPref &&  (latitude != 0 || longitude != 0))
+        if (metaPref && (latitude != 0 || longitude != 0))
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -667,7 +670,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
             if (i_Id > 0 && icount > 1)
             {
-                int icount1 = icount -1;
+                int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
             }
         }
@@ -696,7 +699,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
             if (i_Id > 0 && icount > 1)
             {
-                int icount1 = icount -1;
+                int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
             }
         }
@@ -817,6 +820,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         return true;
     }
 
+    // Handle menu selections
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -824,6 +828,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         if (id == R.id.menuEditSection)
         {
             // check for API-Level >= 21
@@ -834,6 +839,32 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
             Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
             startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.menuTakePhoto)
+        {
+            Intent camIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+
+            PackageManager packageManager = getPackageManager();
+            List<ResolveInfo> activities = packageManager.queryIntentActivities(camIntent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+            boolean isIntentSafe = activities.size() > 0;
+
+            if (isIntentSafe)
+            {
+                String title = getResources().getString(R.string.chooserTitle);
+                Intent chooser = Intent.createChooser(camIntent, title);
+                if (camIntent.resolveActivity(getPackageManager()) != null)
+                {
+                    try
+                    {
+                        startActivityForResult(chooser, 111);
+                    } catch (Exception e)
+                    {
+                        Toast.makeText(CountingActivity.this, getString(R.string.noPhotoPermit), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
             return true;
         }
         else if (id == R.id.action_share)
@@ -848,6 +879,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == 111)
+        {
+            if (resultCode != RESULT_OK)
+            {
+                Toast.makeText(this, getString(R.string.notTakenPhoto), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void enableProximitySensor()

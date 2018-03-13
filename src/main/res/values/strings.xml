@@ -125,6 +125,10 @@
     <string name="noAddr">No address data!</string>
     <string name="noPos">No position found!</string>
     <string name="addrInfo">Address Info</string>
+    <string name="noPhotoPermit">The right to take photos is missing.</string>
+    <string name="chooserTitle">Select photo app</string>
+    <string name="notTakenPhoto">Picture was not taken.</string>
+	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSectionActivity -->
     <string name="titleEdit">List Name</string>

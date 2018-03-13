@@ -38,8 +38,9 @@
 
 $ 2.4.3
   % Version 2.4.3
-  _ 10.03.2018
+  _ 13.03.2018
 		* Code Optimierung bezüglich Reverse Geocoding
+  	* Kamera-Button in Menüleiste der Zählseite hinzugefügt
 
 $ 2.4.2
   % Version 2.4.2

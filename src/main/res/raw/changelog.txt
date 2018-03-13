@@ -38,8 +38,9 @@
 
 $ 2.4.3
   % Version 2.4.3
-  _ 2018-03-10
+  _ 2018-03-13
 		* Code optimization for Reverse Geocoding
+  	* Added a camera button in counting menu
 
 $ 2.4.2
   % Version 2.4.2

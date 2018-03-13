@@ -125,6 +125,10 @@
     <string name="noPos">Keine Position gefunden!</string>
     <string name="errAddr">Web-Lesefehler!</string>
     <string name="addrInfo">Adressinfo</string>
+    <string name="noPhotoPermit">Kamera-Berechtigung ist erforderlich.</string>
+    <string name="chooserTitle">Wähle eine Foto-App</string>
+    <string name="notTakenPhoto">Foto wurde nicht aufgenommen.</string>
+	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSectionActivity -->
     <string name="titleEdit">Listenname</string>

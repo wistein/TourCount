@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
    counting.xml is used by CountingActivity.java
-   Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +11,14 @@
         android:id="@+id/menuEditSection"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/editSectTitle"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/menuTakePhoto"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="@string/takePhoto"
+        app:showAsAction="always">
     </item>
 
     <item
@@ -22,7 +28,6 @@
         app:showAsAction="always">
 
         <menu>
-
             <item
                 android:id="@+id/action_share"
                 android:icon="@android:drawable/ic_menu_share"
@@ -30,7 +35,6 @@
                 android:title="@string/action_share"
                 app:showAsAction="never">
             </item>
-
         </menu>
 
     </item>
