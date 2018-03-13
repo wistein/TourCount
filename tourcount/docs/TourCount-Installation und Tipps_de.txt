@@ -1,0 +1,44 @@
+Installation der App
+
+Download entweder von F-Droid,
+nur Apps (mit Updates über F-Droid-App):
+
+https://f-droid.org/repository/browse/?fdid=com.wmstein.tourcount
+Nach Installation der App von F-Droid sollten noch Doku und Basis-DB aus GitHub geladen werden. 
+Doku und Basis-DB können nur per Link zu GitHub geladen werden.
+
+Oder hole die App direkt von GitHub (immer der aktuellste Bearbeitungsstand). 
+Auf GitHub publiziert der Autor das komplette Projekt mit App, Quellcode, Doku und Basis-DB:
+
+Projektseite:   https://github.com/wistein/TourCount
+App, apk-Datei: https://github.com/wistein/TourCount/tree/master/apk
+Doku und DBs:   https://github.com/wistein/TourCount/tree/master/docs
+
+In jedem Fall muss vor der Installation die Option "Unbekannte Herkunft" unter "Einstellungen -> Sicherheit" aktiviert werden.
+
+Nach dem Download kann die App mittels eines Download- oder Dateimanagers aus dem Download-Verzeichnis installiert werden.
+Die Basis-DB muss aus dem Download-Verzeichnis ins Basis-Verzeichnis (/storage/emulated/0) kopiert werden.
+
+Wichtig: Danach die Option "Unbekannte Herkunft" wieder deaktivieren!
+
+Anmerkungen zum F-Droid-App-Store:
+Der Bezug von Apps aus F-Droid ist vergleichbar sicher wie der Bezug durch den Google Play Store.
+Es wird bei den Apps besonders auf die Einhaltung des Schutzes der Privatsphäre geachtet. 
+Alle Apps werden geprüft und durch F-Droid selbst kompiliert. 
+Nachteilige Features wie Werbung, Tracking oder versteckte Kosten werden bei F-Droid in der Beschreibung einer App angeführt. 
+
+Die unter GitHub veröffentlichte apk-Datei (installierbare App) ist funktional identisch mit der von F-Droid. 
+Wegen unterschiedlicher Signaturen bei der Kompilation kann aber die App von GitHub nicht mit der apk-Datei von F-Droid upgedatet werden und umgekehrt. 
+Es ist jeweils eine Neuinstallation erforderlich.
+
+
+Tipps
+
+Um Datenbankdateien von TourCount zu bearbeiten, ist das kostenlose Tool "DB Browser for SQLite" nützlich (erhältlich für Windows und Android u.a.).
+Beispielsweise lassen sich neue Einträge erzeugen oder Einträge per SQL-Script sortieren oder korrigieren.
+  
+Vorbereitete Scripts (*.sql) existieren für:
+ - Datenbank tourcount0.db, Tabelle "counts" sortieren mit "SQL TourCount sort table counts by code.sql"
+ - Datenbank tourcount0.db, Rechtschreibfehler in einem Namen in Tabelle "counts" korrigieren mit "SQL Update field name in table counts.sql"
+ - Datenbank tourcount0.db, falscher Code in Tabelle "counts" ersetzen mit "SQL Update field code in table counts.sql"
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   counting.xml is used by CountingActivity.java
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.wmstein.tourcount.CountingActivity">
+
+    <item
+        android:id="@+id/menuEditSection"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/editSectTitle"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/menuTakePhoto"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="@string/takePhoto"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/menu_list1_item"
+        android:icon="@drawable/ic_core_overflow"
+        android:title=""
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/action_share"
+                android:icon="@android:drawable/ic_menu_share"
+                android:orderInCategory="200"
+                android:title="@string/action_share"
+                app:showAsAction="never">
+            </item>
+        </menu>
+
+    </item>
+
+</menu>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    widget_notes.xml
+    used by NotesWidget.java
+    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="5dp"
+              android:layout_marginStart="5dp"
+              android:layout_marginTop="2dp"
+              android:background="@drawable/rounded_corner"
+              android:orientation="horizontal"
+              android:padding="2dp">
+
+    <TextView
+        android:id="@+id/notes_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|start|end|top"
+        android:gravity="center_vertical|start"
+        android:hint="@string/hintSectionNotes"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"/>
+</LinearLayout>
+

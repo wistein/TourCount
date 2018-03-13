@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- widget_list_individual.xml
+ used by ListIndividualWidget.java and ListSpeciesActivity.java.
+ Shows individuals line of species -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/corner"
+              android:baselineAligned="false"
+              android:orientation="horizontal"
+              android:padding="3dp"
+              tools:context=".ListSpeciesActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingEnd="6dp"
+        android:paddingStart="3dp"
+        android:paddingTop="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:orientation="horizontal">
+
+            <!-- Locality of individual -->
+            <TextView
+                android:id="@+id/txtIndLoc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="start"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:padding="4sp"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- Sexus of individual -->
+            <TextView
+                android:id="@+id/txtIndSx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="start"
+                android:hint="@string/txtSx"
+                android:maxLines="1"
+                android:padding="4sp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtIndSex"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:padding="4sp"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- Stadium of individual -->
+            <TextView
+                android:id="@+id/txtIndStd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="start"
+                android:hint="@string/txtSt"
+                android:maxLines="1"
+                android:padding="4sp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtIndStad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:padding="4sp"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- State of individual -->
+            <TextView
+                android:id="@+id/txtIndSte"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="start"
+                android:hint="@string/txtSte"
+                android:maxLines="1"
+                android:padding="4sp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtIndStat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:padding="4sp"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- State of individual -->
+            <TextView
+                android:id="@+id/txtIndLat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:hint="@string/txtLat"
+                android:maxLines="1"
+                android:padding="4sp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <!-- Latitude of individual -->
+            <TextView
+                android:id="@+id/txtIndLa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start|top"
+                android:padding="4sp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- Longitude of individual -->
+            <TextView
+                android:id="@+id/txtIndLon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:hint="@string/txtLon"
+                android:maxLines="1"
+                android:padding="4sp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtIndLo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start|top"
+                android:padding="4sp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- Height of individual -->
+            <TextView
+                android:id="@+id/txtIndHgt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:gravity="start"
+                android:hint="@string/txtHgt"
+                android:maxLines="1"
+                android:padding="4sp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtIndHt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="start|top"
+                android:padding="4sp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- count of individual-->
+            <TextView
+                android:id="@+id/txtIndCnt"
+                android:layout_width="0dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

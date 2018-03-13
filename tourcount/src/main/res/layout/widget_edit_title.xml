@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    widget_edit_title.xml
+    used by EditTitleWidget.java
+    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="5dp"
+              android:layout_marginStart="5dp"
+              android:layout_marginTop="5dp"
+              android:background="@drawable/rounded_corner"
+              android:orientation="horizontal"
+              android:paddingBottom="5dp"
+              android:paddingEnd="5dp"
+              android:paddingStart="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/widgetTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|top"
+            android:hint="@string/hintTitle"
+            android:paddingBottom="5dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/sectionName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/count_background"
+            android:inputType="textCapSentences"
+            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:textSize="16sp"
+            tools:ignore="LabelFor"/>
+
+    </LinearLayout>
+
+</LinearLayout>
