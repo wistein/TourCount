@@ -18,16 +18,16 @@ import java.io.File;
 
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted by wmstein on 18.02.2016, last change on 16.03.2018
  */
 public class TourCountApplication extends Application
 {
-    private static final String TAG = "tourcountAppl";
+    private static final String TAG = "TourCountAppl";
     private static SharedPreferences prefs;
-    private BitmapDrawable ob;
+    private BitmapDrawable bMapDraw;
+    private Bitmap bMap;
     int width;
     int height;
-    private Bitmap bMap;
     
     public static SharedPreferences getPrefs()
     {
@@ -35,7 +35,7 @@ public class TourCountApplication extends Application
     }
 
   /*
-   * The idea here is to keep ob around as a pre-prepared bitmap, only setting it up
+   * The idea here is to keep bMapDraw around as a pre-prepared bitmap, only setting it up
    * when the user's settings change or when the application starts up.
    */
 
@@ -67,7 +67,7 @@ public class TourCountApplication extends Application
     public void onCreate()
     {
         super.onCreate();
-        ob = null;
+        bMapDraw = null;
         bMap = null;
         try
         {
@@ -81,23 +81,22 @@ public class TourCountApplication extends Application
 
     public BitmapDrawable getBackground()
     {
-        if (ob == null)
+        if (bMapDraw == null)
         {
             return setBackground();
         }
         else
         {
-            return ob;
+            return bMapDraw;
         }
     }
 
     public BitmapDrawable setBackground()
     {
-        ob = null;
+        bMapDraw = null;
 
         String backgroundPref = prefs.getString("pref_back", "default");
         String pictPref = prefs.getString("imagePath", "");
-
         boolean screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
@@ -179,9 +178,9 @@ public class TourCountApplication extends Application
             break;
         }
 
-        ob = new BitmapDrawable(this.getResources(), bMap);
+        bMapDraw = new BitmapDrawable(this.getResources(), bMap);
         bMap = null;
-        return ob;
+        return bMapDraw;
     }
 
     public Bitmap decodeBitmap(int resId, int reqWidth, int reqHeight)

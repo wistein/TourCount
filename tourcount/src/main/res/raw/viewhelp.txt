@@ -29,7 +29,7 @@ $ 10
   ! The integrated database can be individually created and adapted regarding expected butterfly species.
   ! The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into the butterfly registration system or transferred to a PC for your own processing.
   _ 
-  ! The app is open source (published under <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), has no tracking or advertising functions, demands only for permits which are needed for recording the data.
+  ! The app is open source (published under <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), has no tracking or advertising functions, demands only for permissions which are needed for recording the data.
   ! (Access rights for storage, internet for reverse geocoding and GPS.)
 
 $ 9
