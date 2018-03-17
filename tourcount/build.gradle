@@ -39,5 +39,7 @@ dependencies {
 }
 
 repositories {
+    mavenCentral()
+    jcenter()
     google()
 }
