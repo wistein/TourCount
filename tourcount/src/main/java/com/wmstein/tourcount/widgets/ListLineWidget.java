@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.wmstein.tourcount.R;
 
-/**
+/**********************************
  * Created by wmstein on 24.02.2018
  */
 public class ListLineWidget extends RelativeLayout

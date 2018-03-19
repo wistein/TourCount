@@ -1,12 +1,4 @@
-/*
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
- */
-
 package com.wmstein.tourcount.widgets;
-
-/*
- * EditIndividualWidget.java used by EditIndividualActivity.java
- */
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -17,7 +9,8 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
-/*
+/***************************************************************
+ * EditIndividualWidget.java used by EditIndividualActivity.java
  * Created by wmstein for com.wmstein.tourcount on 15.05.2016.
  */
 public class EditIndividualWidget extends LinearLayout

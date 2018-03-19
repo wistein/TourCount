@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
-/**
+/**********************************
+ * Used by CountOptionsActivity
  * Created by wmstein on 18.02.2016
- * used by CountOptionsActivity
+ * 
  */
 public class EditNotesWidget extends LinearLayout
 {

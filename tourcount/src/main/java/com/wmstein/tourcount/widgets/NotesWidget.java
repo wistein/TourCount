@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 
-/**
+/**********************************
  * Created by milo on 26/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted for TourCount by wmstein on 18.02.2016
  */
 public class NotesWidget extends LinearLayout
 {

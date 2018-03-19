@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
-/**
+/*************************************
  * Created by milo on 03/06/2014.
  * Changes by wmstein since 18.02.2016
  */

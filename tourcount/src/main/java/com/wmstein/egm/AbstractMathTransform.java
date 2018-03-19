@@ -21,7 +21,7 @@
 
 package com.wmstein.egm;
 
-/**
+/******************************************************************************************
  * Provides a default implementation for most methods required by the {MathTransform}
  * interface. {@code AbstractMathTransform} provides a convenient base class from which other
  * transform classes can be easily derived. In addition, {@code AbstractMathTransform} implements
@@ -32,7 +32,8 @@ package com.wmstein.egm;
  * @author Martin Desruisseaux (IRD)
  * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters
  * @since 2.0
- * Code adaptation for use by MyPositionActivity by wm.stein
+ * 
+ * Code adaptation for use by TourCount by wm.stein on 2017-08-22
  */
 public abstract class AbstractMathTransform 
 {

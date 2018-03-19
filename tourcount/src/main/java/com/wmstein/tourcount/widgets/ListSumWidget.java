@@ -9,9 +9,10 @@ import android.widget.TextView;
 import com.wmstein.tourcount.R;
 
 /****************************************************
- * ListSumWidget shows count totals area
- * ListSpeciesActivity shows the result page
- * Created for TourCount by wmstein on 27.05.2017
+ * ListSumWidget shows count totals area for
+ * ListSpeciesActivity that shows the result page
+ * Created for TourCount by wmstein on 2017-05-27,
+ * last edited on 2018-03-19
  */
 public class ListSumWidget extends LinearLayout
 {

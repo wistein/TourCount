@@ -9,8 +9,7 @@ import android.widget.TextView;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Count;
 
-
-/**
+/**********************************
  * Created by wmstein on 24.02.2018
  */
 public class ListSpRemWidget extends RelativeLayout

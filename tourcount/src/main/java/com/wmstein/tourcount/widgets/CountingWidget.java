@@ -14,9 +14,11 @@ import com.wmstein.tourcount.database.Count;
 
 import java.lang.reflect.Field;
 
-/**
+/************************************************************
+ * Used by CountingActivity.java and widget_counting.xml
  * Created by milo on 25/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted for TourCount by wmstein on 2016-02-18,
+ * last edited by wmstein on 2018-03-19
  */
 public class CountingWidget extends RelativeLayout
 {
@@ -60,14 +62,12 @@ public class CountingWidget extends RelativeLayout
 
     public void countUp()
     {
-        count.increase();
-        countCount.setText(String.valueOf(count.count));
+        countCount.setText(String.valueOf(count.increase()));
     }
 
     public void countDown()
     {
-        count.safe_decrease();
-        countCount.setText(String.valueOf(count.count));
+        countCount.setText(String.valueOf(count.safe_decrease()));
     }
 
     // Get resource ID from resource name

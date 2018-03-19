@@ -1,9 +1,5 @@
 package com.wmstein.tourcount.widgets;
 
-/*
- * EditMetaWidget.java used by EditMetaActivity.java
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,7 +9,8 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
-/*
+/*************************************************************
+ * EditMetaWidget.java used by EditMetaActivity.java
  * Created by wmstein for com.wmstein.tourcount on 02.04.2016.
  */
 public class EditMetaWidget extends LinearLayout

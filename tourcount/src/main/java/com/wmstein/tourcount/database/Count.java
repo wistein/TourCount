@@ -2,7 +2,7 @@ package com.wmstein.tourcount.database;
 
 /**
  * Created by milo on 05/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted by wmstein on 2016-02-18, last change on 2018-03-19
  */
 
 public class Count

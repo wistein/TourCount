@@ -112,7 +112,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert individ_screen != null;
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
 
@@ -459,7 +458,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
-        assert individ_screen != null;
         individ_screen.setBackground(null);
         getPrefs();
         if (screenOrientL)

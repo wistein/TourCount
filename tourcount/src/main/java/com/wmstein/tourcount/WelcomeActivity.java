@@ -60,8 +60,8 @@ import static java.lang.Math.sqrt;
  * EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * <p/>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
- * Changes and additions for TourCount by wmstein since 18.04.2016,
- * last modification an 11.03.2018
+ * Changes and additions for TourCount by wmstein since 2016-04-18,
+ * last modification on 2018-03-19
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -123,7 +123,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
 
-        assert baseLayout != null;
         baseLayout.setBackground(tourCount.getBackground());
 
         Section section;
@@ -181,14 +180,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             cl.getLogDialog().show();
 
         // test for GPS or Network location
-        canLocation();
-
-        if (!canGetLocation)
+        if (!canLocation())
         {
             // can't get location, GPS or Network is not enabled
             Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
         }
-
     }
 
     // Try to find locationservice
@@ -518,7 +514,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
-        assert baseLayout != null;
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");

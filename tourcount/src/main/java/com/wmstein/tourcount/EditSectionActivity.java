@@ -35,7 +35,8 @@ import java.util.List;
  * EditSectionActivity is called from CountingActivity
  * Uses CountEditWidget.java, activity_edit_section.xml.
  * Based on EditProjectActivity.java by milo on 05/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted by wmstein on 2016-02-18,
+ * last edited on 2018-03-19
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -125,7 +126,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert counting_screen != null;
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
 
@@ -227,7 +227,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         // close the data sources
         sectionDataSource.close();
         countDataSource.close();
-
     }
 
     // Compare count names for duplicates and returns name of 1. duplicate found
@@ -445,7 +444,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert counting_screen != null;
         counting_screen.setBackground(null);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);

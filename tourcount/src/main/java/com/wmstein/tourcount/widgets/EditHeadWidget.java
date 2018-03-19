@@ -1,10 +1,5 @@
 package com.wmstein.tourcount.widgets;
 
-/*
- * EditHeadWidget.java used by EditMetaActivity.java
- * Created by wmstein for com.wmstein.tourcount on 31.03.2016.
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,6 +9,10 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+/***************************************************
+ * EditHeadWidget.java used by EditMetaActivity.java
+ * Created by wmstein for com.wmstein.tourcount on 31.03.2016.
+ */
 public class EditHeadWidget extends LinearLayout
 {
     private final TextView widget_co1; // used for country title

@@ -1,10 +1,5 @@
 package com.wmstein.tourcount.widgets;
 
-/*
- * EditHeadWidget.java used by EditMetaActivity.java
- * Created by wmstein for com.wmstein.tourcount on 03.04.2016
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,6 +8,10 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+/***************************************************
+ * EditHeadWidget.java used by EditMetaActivity.java
+ * Created by wmstein for com.wmstein.tourcount on 03.04.2016
+ */
 public class ListHeadWidget extends LinearLayout
 {
     public static String TAG = "tourcountListHeadWidget";

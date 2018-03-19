@@ -36,7 +36,8 @@ import static java.lang.Math.sqrt;
 
 /****************************************************
  * ListSpeciesActivity shows list of counting results
- * Created by wmstein on 15.03.2016
+ * Created by wmstein on 2016-03-15,
+ * last edited on 2018-03-19
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -88,7 +89,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         individualsDataSource = new IndividualsDataSource(this);
 
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
-        assert listSpec_screen != null;
         listSpec_screen.setBackground(tourCount.getBackground());
 
         //noinspection ConstantConditions
@@ -129,9 +129,8 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     // fill ListSpeciesWidget with relevant counts and sections data
     private void loadData()
     {
-        int sumsp = 0, sumind = 0, iid = 0;
-        double mUncert = 0;
-        double longi = 0, lati = 0, heigh = 0, uncer = 0;
+        int sumsp = 0, sumind = 0;
+        double longi = 0, lati = 0, uncer = 0;
         int frst = 0;
         double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;
 
@@ -165,13 +164,12 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         // setup the data sources
         countDataSource.open();
         individualsDataSource.open();
-        Individuals individuals;
 
         // Calculate mean average values for coords and uncertainty
         dbHandler = new DbHelper(this);
         database = dbHandler.getWritableDatabase();
         Cursor curAInd;
-        curAInd = database.rawQuery("select * from " + dbHandler.INDIVIDUALS_TABLE, null);
+        curAInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE, null);
         frst = 0;
         while (curAInd.moveToNext())
         {
@@ -312,9 +310,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
-
-
-    /***************/
+    
     public void saveAndExit(View view)
     {
         super.finish();
@@ -323,7 +319,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView listSpec_screen = (ScrollView) findViewById(R.id.listSpecScreen);
-        assert listSpec_screen != null;
         listSpec_screen.setBackground(null);
         listSpec_screen.setBackground(tourCount.setBackground());
         getPrefs();

@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-/*
- * Created by wmstein on 15.05.2016.
+/***********************************
+ * Created by wmstein on 2016-05-15,
+ * last edited on 2018-03-19
  */
 public class TempDataSource
 {
@@ -40,14 +41,6 @@ public class TempDataSource
         ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.T_ID, temp.id);
         dataToInsert.put(DbHelper.T_TEMP_LOC, temp.temp_loc);
-        database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
-    }
-
-    public void saveTempCnt(Temp temp)
-    {
-        ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.T_ID, temp.id);
-        dataToInsert.put(DbHelper.T_TEMP_CNT, temp.temp_cnt);
         database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
     }
 

@@ -1,12 +1,5 @@
 package com.wmstein.tourcount;
 
-/*
-  This code derived from:
-  http://pastebin.com/raw.php?i=e6WyrwSN
-  As mentioned in this thread:
-  https://stackoverflow.com/questions/16017165/auto-fit-textview-for-android
- */
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
@@ -17,7 +10,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.TextView;
 
-/**
+/**************************************************************************************************
  * This class builds a new android Widget named AutoFitText which can be used instead of a TextView
  * to have the text font size in it automatically fit to match the screen width. Credits go largely
  * to Dunni, gjpc, gregm and speedplane from Stackoverflow, method has been (style-) optimized and
@@ -26,13 +19,18 @@ import android.widget.TextView;
  * This version upgrades the original "AutoFitTextView" to now also be adaptable to height and to 
  * accept the different TextView types (Button, TextClock etc.)
  *
+ * This code derived from:
+ * http://pastebin.com/raw.php?i=e6WyrwSN
+ * As mentioned in this thread:
+ * https://stackoverflow.com/questions/16017165/auto-fit-textview-for-android
+ *
  * @author pheuschk
  *         createDate: 18.04.2013
  * 
- *         Modified for TourCount by wmstein since 18.03.2016
- *         Bug fixed (height of single character), cleaned of unused code and context comments changed
+ * Modified for TourCount by wmstein since 2016-03-18
+ * Bug fixed (height of single character), cleaned of unused code and context comments changed,
+ * last edited by wmstein on 2018-03-19
  */
-
 @SuppressWarnings("unused")
 public class AutoFitText extends android.support.v7.widget.AppCompatTextView
 {

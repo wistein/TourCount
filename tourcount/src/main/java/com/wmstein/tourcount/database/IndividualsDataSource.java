@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*************************************************
  * Created by wmstein for TourCount on 20.04.2016.
  */
 public class IndividualsDataSource

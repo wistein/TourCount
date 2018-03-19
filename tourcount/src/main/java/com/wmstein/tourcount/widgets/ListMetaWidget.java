@@ -1,10 +1,5 @@
 package com.wmstein.tourcount.widgets;
 
-/*
- * ListMetaWidget.java used by ListSpeciesActivity.java and controls 
- * Created by wmstein for com.wmstein.tourcount on 19.04.2016
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,6 +9,10 @@ import android.widget.TextView;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Section;
 
+/*******************************************************************
+ * ListMetaWidget.java used by ListSpeciesActivity.java and controls 
+ * Created by wmstein for com.wmstein.tourcount on 19.04.2016
+ */
 public class ListMetaWidget extends LinearLayout
 {
     private final TextView widget_lmeta1; // temperature

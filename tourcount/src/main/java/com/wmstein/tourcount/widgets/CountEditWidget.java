@@ -11,10 +11,12 @@ import com.wmstein.tourcount.R;
 
 import java.io.Serializable;
 
-/**
+/************************************************
+ * Used by EditSectionActivity
+ * 
  * Created by milo on 04/06/2014.
- * Changed by wmstein on 18.02.2016
- * used by EditSectionActivity
+ * Adopted for TourCount by wmstein on 2016-02-18
+ * last edited by wmstein on 2018-03-19 
  */
 public class CountEditWidget extends LinearLayout implements Serializable
 {

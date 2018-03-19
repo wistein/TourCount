@@ -27,7 +27,7 @@ import java.util.List;
  * AdvFileChooser lets you select files from sdcard directory.
  * It will be called within WelcomeActivity and uses FileArrayAdapter and Option.
  * Based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- * Modifications by wmstein on 18.06.2016
+ * Adopted by wmstein on 2016-06-18, last change on 2018-03-18
  */
 
 public class AdvFileChooser extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -141,7 +141,6 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
             {
                 // TODO Auto-generated method stub
                 Option o = adapter.getItem(position);
-                assert o != null;
                 if (!o.isBack())
                     doSelect(o);
                 else

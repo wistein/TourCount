@@ -87,7 +87,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert editHead_screen != null;
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);
 
@@ -330,7 +329,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert editHead_screen != null;
         editHead_screen.setBackground(null);
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);

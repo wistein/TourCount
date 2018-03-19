@@ -1,8 +1,8 @@
 package com.wmstein.tourcount;
 
-/**
- * Global constant to control logging, should always be set to false in
- * released versions.
+/*****************************************************
+ * Global constant to control logging, 
+ * should always be set to false in released versions.
  */
 public class MyDebug
 {

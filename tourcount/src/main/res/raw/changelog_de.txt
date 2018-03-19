@@ -36,9 +36,9 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
-$ 2.4.5
-  % Version 2.4.5
-  _ 15.03.2018
+$ 2.4.6
+  % Version 2.4.6
+  _ 19.03.2018
 		* Code Optimierung bezüglich Reverse Geocoding
   	* Kamera-Button in Menüleiste der Zählseite hinzugefügt
   	* Quellcode-Projekt restrukturiert

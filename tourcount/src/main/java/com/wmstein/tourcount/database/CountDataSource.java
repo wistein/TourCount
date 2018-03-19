@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*************************************************************
  * Created by milo on 05/05/2014.
- * Changed by wmstein on 18.02.2016
+ * Adopted by wmstein on 2016-02-18, last change on 2018-03-19
  */
 public class CountDataSource
 {
@@ -41,7 +41,7 @@ public class CountDataSource
         dbHandler.close();
     }
 
-    public Count createCount(String name, String code)
+    public void createCount(String name, String code)
     {
         ContentValues values = new ContentValues();
         values.put(DbHelper.C_NAME, name);
@@ -52,10 +52,7 @@ public class CountDataSource
         int insertId = (int) database.insert(DbHelper.COUNT_TABLE, null, values);
         Cursor cursor = database.query(DbHelper.COUNT_TABLE,
             allColumns, DbHelper.C_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Count newCount = cursorToCount(cursor);
         cursor.close();
-        return newCount;
     }
 
     private Count cursorToCount(Cursor cursor)

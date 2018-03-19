@@ -58,7 +58,6 @@ import java.util.Locale;
  * Adopted, modified and enhanced for TourCount by wmstein since 18.04.2016,
  * last modification an 11.03.2018
  */
-
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     //private static final String TAG = CountingActivity.class.getSimpleName();

@@ -22,7 +22,8 @@ import static android.content.ContentValues.TAG;
 /**************************************************************************
  * Get, parse and store address info from Reverse Geocoder of OpenStreetMap
  * <p>
- * Copyright 2017-2018 wmstein, created on 10.03.2018, last modification an 11.03.2018
+ * Copyright 2018 wmstein, created on 2018-03-10,
+ * last modification on 2018-03-19
  */
 public class RetrieveAddr extends AsyncTask<URL, Void, String>
 {
@@ -74,7 +75,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
         return xmlString;
     }
 
-    // Write DB fields or textview fields
+    // Parse Geocoder string to write DB fields
     protected void onPostExecute(String xmlString)
     {
         super.onPostExecute(xmlString);
@@ -194,7 +195,6 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             section = sectionDataSource.getSection();
 
             // Save sCountry, sPlz, sCity, sPlace to DB Section
-            // (sLocality is saved in EditIndividualActivity)
             if(sCountry.length() > 0)
             {
                 section.country = sCountry;
@@ -262,4 +262,5 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
         }
         return sb.toString();
     }
+    
 }

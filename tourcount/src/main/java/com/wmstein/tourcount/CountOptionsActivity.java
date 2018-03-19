@@ -20,12 +20,12 @@ import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
 
-/**
+/**********************************
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
- * Adopted by wmstein on 18.02.2016
+ * Adopted by wmstein on 18.02.2016,
+ * last edited on 2018-03-19
  */
-
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountCountOptionAct";
@@ -73,7 +73,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        assert counting_screen != null;
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
 
@@ -128,8 +127,11 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         // finally, close the database
         countDataSource.close();
-        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null)
+        {
+            imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
+        }
     }
 
     public void saveAndExit(View view)
@@ -144,10 +146,12 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         Toast.makeText(CountOptionsActivity.this, getString(R.string.sectSaving) + " " + count.name + "!", Toast.LENGTH_SHORT).show();
         count.notes = enw.getNotesName();
         // hide keyboard
-        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null)
+        {
+            imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
+        }
         countDataSource.saveCount(count);
-
     }
 
     @Override
@@ -182,7 +186,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         LinearLayout counting_screen = (LinearLayout) findViewById(R.id.count_options);
-        assert counting_screen != null;
         counting_screen.setBackground(null);
         brightPref = prefs.getBoolean("pref_bright", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);

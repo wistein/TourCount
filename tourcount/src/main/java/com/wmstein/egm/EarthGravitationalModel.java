@@ -48,7 +48,8 @@ import java.util.StringTokenizer;
  * @author Martin Desruisseaux
  * @version $Id$
  * @since 2.3
- * Code adaptation for use by MyPositionActivity by wm.stein
+ * 
+ * Code adaptation for use by TourCount by wm.stein on 2017-08-22
  */
 public final class EarthGravitationalModel extends VerticalTransform 
 {
@@ -196,8 +197,6 @@ public final class EarthGravitationalModel extends VerticalTransform
      */
     public void load(Context context) throws IOException 
 	{
-//        final InputStream stream = context.getResources().openRawResource(R.raw.egm180);
-//        final InputStream stream = TourCountApplication.getResources().openRawResource(R.raw.egm180);
         final InputStream stream = context.getResources().openRawResource(R.raw.egm180);
 
         if (stream == null) 

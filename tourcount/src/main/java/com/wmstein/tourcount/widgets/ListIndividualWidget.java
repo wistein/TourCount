@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Individuals;
 
-/**
+/**********************************
  * Created by wmstein on 22.02.2018
  */
 public class ListIndividualWidget extends RelativeLayout

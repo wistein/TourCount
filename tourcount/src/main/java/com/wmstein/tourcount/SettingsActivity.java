@@ -1,6 +1,5 @@
 package com.wmstein.tourcount;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -20,11 +19,13 @@ import android.widget.Toast;
 /**********************************************************
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
- * Adapted for TransektCount by wmstein on 18.02.2016
+ * Adapted for TourCount by wmstein on 2016-05-15,
+ * last edited on 2018-03-19
  */
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final int SELECT_PICTURE = 1;
+    private static final int SELECT_PICTURE = 1; // requestCode 1
+    private static final int GET_SOUND = 10; // requestCode 10
     private static final String TAG = "tourcountPrefAct";
     SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -72,7 +73,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             @Override
             public boolean onPreferenceClick(Preference arg0)
             {
-                getSound(alert_button_uri, 10);
+                getSound(alert_button_uri, GET_SOUND);
                 return true;
             }
         });
@@ -168,13 +169,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             if (uri != null)
             {
                 ringtone = uri.toString();
-                if (requestCode == 10)
+                if (requestCode == GET_SOUND)
                 {
                     editor.putString("alert_button_sound", ringtone);
                 }
             }
         }
-
 
         super.onActivityResult(requestCode, resultCode, data);
     }

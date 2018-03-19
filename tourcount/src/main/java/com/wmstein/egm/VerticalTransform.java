@@ -17,7 +17,7 @@
  */
 package com.wmstein.egm;
 
-/**
+/*****************************************************************************
  * Base class for transformations from a height above the ellipsoid to a
  * height above the geoid. This transform expects three-dimensional geographic
  * coordinates in (longitude, latitude, height) order. The
@@ -26,7 +26,8 @@ package com.wmstein.egm;
  * @author Martin Desruisseaux
  * @version $Id$
  * @since 2.3
- * Code adaptation for use by MyPositionActivity by wm.stein
+ * 
+ * Code adaptation for use by TourCount by wm.stein on 2017-08-22
  */
 public abstract class VerticalTransform extends AbstractMathTransform 
 {

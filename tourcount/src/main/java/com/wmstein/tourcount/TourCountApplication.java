@@ -18,7 +18,8 @@ import java.io.File;
 
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
- * Adopted by wmstein on 18.02.2016, last change on 16.03.2018
+ * Adopted for TourCount by wmstein on 2016-02-18, 
+ * last change on 2018-03-19
  */
 public class TourCountApplication extends Application
 {
@@ -35,10 +36,9 @@ public class TourCountApplication extends Application
     }
 
   /*
-   * The idea here is to keep bMapDraw around as a pre-prepared bitmap, only setting it up
+   * Keep bMapDraw around as a pre-prepared bitmap, only setting it up
    * when the user's settings change or when the application starts up.
    */
-
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
     {
         // Raw height and width of image
@@ -204,4 +204,5 @@ public class TourCountApplication extends Application
             return null;
         }
     }
+    
 }

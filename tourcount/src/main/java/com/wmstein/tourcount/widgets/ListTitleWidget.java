@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
- */
-
 package com.wmstein.tourcount.widgets;
 
 import android.content.Context;
@@ -12,7 +8,7 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
-/**
+/**********************************
  * Created by wmstein on 06.06.2016
  */
 public class ListTitleWidget extends LinearLayout
