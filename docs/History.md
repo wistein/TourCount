@@ -2,11 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
   
-#### Version 2.4.5 (2018-03-15)
+#### Version 2.4.6 (2018-03-19)
 - Code optimization for Reverse Geocoding
 - Added a camera button in counting menu
 - Source Project restructured
-- Bud fixes
+- Bug fixes
 
 #### Version 2.4.2 (2018-02-28)
 - Reverse Geocoding from GPS coordinates for meta data and individual location
