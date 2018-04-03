@@ -11,7 +11,8 @@ import com.wmstein.tourcount.database.Section;
 
 /*******************************************************************
  * ListMetaWidget.java used by ListSpeciesActivity.java and controls 
- * Created by wmstein for com.wmstein.tourcount on 19.04.2016
+ * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
+ * last edited on 2018-03-31
  */
 public class ListMetaWidget extends LinearLayout
 {
@@ -45,30 +46,30 @@ public class ListMetaWidget extends LinearLayout
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_list_meta, this, true);
-        widget_lmeta1 = (TextView) findViewById(R.id.widgetLMeta1);
-        widget_litem1 = (TextView) findViewById(R.id.widgetLItem1);
-        widget_lmeta2 = (TextView) findViewById(R.id.widgetLMeta2);
-        widget_litem2 = (TextView) findViewById(R.id.widgetLItem2);
-        widget_lmeta3 = (TextView) findViewById(R.id.widgetLMeta3);
-        widget_litem3 = (TextView) findViewById(R.id.widgetLItem3);
-        widget_lplz1 = (TextView) findViewById(R.id.widgetLPlz1);
-        widget_lplz2 = (TextView) findViewById(R.id.widgetLPlz2);
-        widget_lcity = (TextView) findViewById(R.id.widgetLCity);
-        widget_litem4 = (TextView) findViewById(R.id.widgetLItem4);
-        widget_lplace = (TextView) findViewById(R.id.widgetLPlace);
-        widget_litem5 = (TextView) findViewById(R.id.widgetLItem5);
-        widget_ldate1 = (TextView) findViewById(R.id.widgetLDate1);
-        widget_ldate2 = (TextView) findViewById(R.id.widgetLDate2);
-        widget_lstartTm1 = (TextView) findViewById(R.id.widgetLStartTm1);
-        widget_lstartTm2 = (TextView) findViewById(R.id.widgetLStartTm2);
-        widget_lendTm1 = (TextView) findViewById(R.id.widgetLEndTm1);
-        widget_lendTm2 = (TextView) findViewById(R.id.widgetLEndTm2);
-        widget_dla1 = (TextView) findViewById(R.id.widgetdla1);
-        widget_dla2 = (TextView) findViewById(R.id.widgetdla2);
-        widget_dlo1 = (TextView) findViewById(R.id.widgetdlo1);
-        widget_dlo2 = (TextView) findViewById(R.id.widgetdlo2);
-        widget_muncert1 = (TextView) findViewById(R.id.widgetmuncert1);
-        widget_muncert2 = (TextView) findViewById(R.id.widgetmuncert2);
+        widget_lmeta1 = findViewById(R.id.widgetLMeta1);
+        widget_litem1 = findViewById(R.id.widgetLItem1);
+        widget_lmeta2 = findViewById(R.id.widgetLMeta2);
+        widget_litem2 = findViewById(R.id.widgetLItem2);
+        widget_lmeta3 = findViewById(R.id.widgetLMeta3);
+        widget_litem3 = findViewById(R.id.widgetLItem3);
+        widget_lplz1 = findViewById(R.id.widgetLPlz1);
+        widget_lplz2 = findViewById(R.id.widgetLPlz2);
+        widget_lcity = findViewById(R.id.widgetLCity);
+        widget_litem4 = findViewById(R.id.widgetLItem4);
+        widget_lplace = findViewById(R.id.widgetLPlace);
+        widget_litem5 = findViewById(R.id.widgetLItem5);
+        widget_ldate1 = findViewById(R.id.widgetLDate1);
+        widget_ldate2 = findViewById(R.id.widgetLDate2);
+        widget_lstartTm1 = findViewById(R.id.widgetLStartTm1);
+        widget_lstartTm2 = findViewById(R.id.widgetLStartTm2);
+        widget_lendTm1 = findViewById(R.id.widgetLEndTm1);
+        widget_lendTm2 = findViewById(R.id.widgetLEndTm2);
+        widget_dla1 = findViewById(R.id.widgetdla1);
+        widget_dla2 = findViewById(R.id.widgetdla2);
+        widget_dlo1 = findViewById(R.id.widgetdlo1);
+        widget_dlo2 = findViewById(R.id.widgetdlo2);
+        widget_muncert1 = findViewById(R.id.widgetmuncert1);
+        widget_muncert2 = findViewById(R.id.widgetmuncert2);
     }
 
     // Following the SETS

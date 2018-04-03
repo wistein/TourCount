@@ -12,8 +12,8 @@ import com.wmstein.tourcount.R;
 
 /**********************************
  * Used by CountOptionsActivity
- * Created by wmstein on 18.02.2016
- * 
+ * Created by wmstein on 2016-02-18,
+ * last edited on 2018-03-31
  */
 public class EditNotesWidget extends LinearLayout
 {
@@ -26,8 +26,8 @@ public class EditNotesWidget extends LinearLayout
         
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_edit_title, this, true);
-        widget_title = (TextView) findViewById(R.id.widgetTitle);
-        notes_name = (EditText) findViewById(R.id.sectionName);
+        widget_title = findViewById(R.id.widgetTitle);
+        notes_name = findViewById(R.id.sectionName);
         notes_name.requestFocus();
         
         //Force to show keyboard, needs hideSoftInputFromWindow in CountOptionsActivity

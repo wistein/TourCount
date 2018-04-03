@@ -23,6 +23,7 @@
         android:paddingStart="3dp"
         android:paddingTop="3dp">
 
+        <!-- Line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="4px"
@@ -36,7 +37,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
+            android:layout_height="45dp"
             android:orientation="horizontal">
 
             <!-- Name of species -->
@@ -45,7 +46,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6.6"
-                android:gravity="start"
+                android:layout_gravity="center"
+                android:layout_marginBottom="0dp"
                 android:padding="4sp"
                 android:textColor="#bfffff"
                 android:textSize="17sp"
@@ -60,7 +62,7 @@
                 android:id="@+id/picSpecies"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.0"
+                android:layout_weight="2.2"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingEnd="1dp"
                 android:paddingStart="1dp"
@@ -78,9 +80,9 @@
                 android:id="@+id/specCount"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="center"
                 android:layout_marginBottom="0dp"
-                android:layout_weight="1.4"
+                android:layout_weight="1.5"
                 android:background="@drawable/count_background"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:hint="@string/charZero"
@@ -92,6 +94,300 @@
                 android:textSize="18sp"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Remark of species -->
+            <TextView
+                android:id="@+id/txtSpecRemT"
+                android:visibility="gone"                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:gravity="start|top"
+                android:hint="@string/rem"
+                android:padding="4sp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/txtSpecRem"
+                android:visibility="gone"                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start|top"
+                android:padding="4sp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="7dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <!-- Headline ♂, ♀,... -->
+            <TextView
+                android:id="@+id/txt_mf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:gravity="center"
+                android:padding="4sp"
+                android:text="@string/txt_mf"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:id="@+id/txt_m"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:gravity="center"
+                android:padding="4sp"
+                android:text="@string/txt_m"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:id="@+id/txt_f"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:gravity="center"
+                android:padding="4sp"
+                android:text="@string/txt_f"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:id="@+id/txt_p"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:gravity="center"
+                android:padding="4sp"
+                android:text="@string/txt_p"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:id="@+id/txt_l"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:gravity="center"
+                android:padding="4sp"
+                android:text="@string/txt_l"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:id="@+id/txt_e"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:gravity="center"
+                android:padding="4sp"
+                android:text="@string/txt_e"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+
+            <!-- countf1i -->
+            <TextView
+                android:id="@+id/specCountf1i"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"/>
+
+            <!-- countf2i -->
+            <TextView
+                android:id="@+id/specCountf2i"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"/>
+
+            <!-- countf3i -->
+            <TextView
+                android:id="@+id/specCountf3i"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"/>
+
+            <!-- countpi -->
+            <TextView
+                android:id="@+id/specCountpi"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"/>
+
+            <!-- countli -->
+            <TextView
+                android:id="@+id/specCountli"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"/>
+
+            <!-- countei -->
+            <TextView
+                android:id="@+id/specCountei"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|top"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="1.6"
+                android:background="@drawable/count_background"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:hint="@string/charZero"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="7dp"/>
+
 
     </LinearLayout>
 </LinearLayout>

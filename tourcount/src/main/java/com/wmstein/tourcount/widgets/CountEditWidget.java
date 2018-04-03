@@ -16,7 +16,7 @@ import java.io.Serializable;
  * 
  * Created by milo on 04/06/2014.
  * Adopted for TourCount by wmstein on 2016-02-18
- * last edited by wmstein on 2018-03-19 
+ * last edited by wmstein on 2018-03-31
  */
 public class CountEditWidget extends LinearLayout implements Serializable
 {
@@ -31,9 +31,9 @@ public class CountEditWidget extends LinearLayout implements Serializable
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_edit_count, this, true);
-        countName = (EditText) findViewById(R.id.countName);
-        countCode = (EditText) findViewById(R.id.countCode);
-        deleteButton = (ImageButton) findViewById(R.id.deleteCount);
+        countName = findViewById(R.id.countName);
+        countCode = findViewById(R.id.countCode);
+        deleteButton = findViewById(R.id.deleteCount);
         deleteButton.setTag(0);
     }
 

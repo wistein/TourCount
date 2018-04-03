@@ -10,7 +10,8 @@ import com.wmstein.tourcount.R;
 
 /***************************************************
  * EditHeadWidget.java used by EditMetaActivity.java
- * Created by wmstein for com.wmstein.tourcount on 03.04.2016
+ * Created by wmstein for com.wmstein.tourcount on 2016-04-03,
+ * last edited on 2018-03-31
  */
 public class ListHeadWidget extends LinearLayout
 {
@@ -27,10 +28,10 @@ public class ListHeadWidget extends LinearLayout
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_list_head, this, true);
-        widget_lco = (TextView) findViewById(R.id.widgetLCo);
-        widget_lco1 = (TextView) findViewById(R.id.widgetLCo1);
-        widget_lname = (TextView) findViewById(R.id.widgetLName);
-        widget_lname1 = (TextView) findViewById(R.id.widgetLName1);
+        widget_lco = findViewById(R.id.widgetLCo);
+        widget_lco1 = findViewById(R.id.widgetLCo1);
+        widget_lname = findViewById(R.id.widgetLName);
+        widget_lname1 = findViewById(R.id.widgetLName1);
     }
 
     public void setWidgetLCo(String title)

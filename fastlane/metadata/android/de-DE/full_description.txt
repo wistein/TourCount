@@ -1,0 +1,34 @@
+TourCount unterstützt Spezies-spezifisches und individuell lokalisiertes Registrieren von Schmetterlingen. 
+
+Eigenschaften
+- Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
+- Die App enthält eine vorbereitete Datenbank mit den häufigsten zu erwartenden europäischen Arten als Ausgangspunkt.
+- Datenbanken können innerhalb der App individuell erstellt und angepasst werden bezüglich Meta-Daten und zu erwartenden Arten.
+- Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
+- Die App enthält einen Editor für die Einrichtung und Pflege der Artenliste,
+- einen Editor für Meta-Daten zur Vorbereitung einer Tour,
+- einen Editor für individuelle Spezies-Daten pro Sichtung (z.B. Zustand, Bemerkung oder größere Anzahl).
+- Die Artauswahl erfolgt per Scroll-Menü auf der Zählerseite, die 
+- getrennte Zähler für ♂ oder ♀, ♂, ♀, Puppe, Raupe oder Ei hat.
+- Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie
+- Ortsdaten durch inverse OSM-Geocodierung, wenn GPS und Internet funktionieren.
+- Die Ergebnisse sind aufbereitet für die Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung.
+- Die Ergebnisseite zeigt Meta-Daten, Summen, Bemerkungen und Zählergebnisse pro Art und Individuum.
+- Die Ergebnisse können als SQLite-Datei oder im CSV-Format ausgegeben werden (zwecks transfer und Weiterverwendung auf einem PC.)
+- Die Hilfe enthält eine detaillierte Benutzeranleitung.
+- TourCount verwendet die europäische Kodierung der Schmetterlinge nach Karsholt/Razowski.
+
+Voraussetzungen
+Die App benötigt
+- Speicherzugriffsrecht zwecks Im- und Export der Zähldaten, 
+- GPS für Koordinaten der gezählten Individuen, 
+- Internet-Zugang für OpenStreetMaps inverse Geocodierung, 
+- Einstellungsänderungsrechte zwecks Helligkeitssteuerung des Bildschirms, 
+- Recht zur Steuerung des Ruhezustands um Bildschirm abzuschalten, solange das Smartphone eingesteckt wird.
+Die Auflösung des Smartphone-Bildschirm sollte mindestens 1920 x 1024 Pixel sein. 
+Die App kann ab Android-Version 4.2.2 oder neuer verwendet werden.
+
+Dokumentation ist unter
+https://github.com/wistein/TourCount/tree/master/docs.
+
+TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge. TourCount unterstützt das Species-spezifische und individuell lokalisierte Zählen von Schmetterlingen bei Aufenthalten in der Natur. 

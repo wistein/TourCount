@@ -3,7 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:largeHeap="true"
-          android:versionName="2.4.6">
+          android:versionName="3.0.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -12,7 +12,8 @@
     <!-- Permission needed for network location provider -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!-- Permission needed for screen brightness setting -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+                     tools:ignore="ProtectedPermissions"/>
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <!-- Permission needed for reverse geocoding -->
@@ -85,6 +86,19 @@
             android:label="@string/title_activity_counting"
             android:launchMode="singleTop"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="WelcomeActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.CountingLActivity"
+            android:label="@string/title_activity_counting"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

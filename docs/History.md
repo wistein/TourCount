@@ -2,6 +2,20 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
   
+#### Version 3.0.0 (2018-03-31)
+- Redesign of counting page layout with scroll-down selection od species
+- Separate counters for ♂ or ♀, ♂, ♀, pupa, larva, egg
+- Database version change 2 to 3 (takes care of additional counters)
+- First use now creates a direct usable internal DB with common european species
+- Automatic conversion of existing databases to new version
+- Correct handling of subtraction for categories of species and individuals
+- Adapted results page layout 
+- Layout of starting page updated
+- More butterfly pictures added
+- Documentation adapted
+- Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
+- Bug fixes
+
 #### Version 2.4.6 (2018-03-19)
 - Code optimization for Reverse Geocoding
 - Added a camera button in counting menu
@@ -9,7 +23,7 @@
 - Bug fixes
 
 #### Version 2.4.2 (2018-02-28)
-- Reverse Geocoding from GPS coordinates for meta data and individual location
+- Reverse Geocoding by Nominatim Service of OpenStreetMap for meta data and individual location
 - Results page improved (average coordinates, listing of individual counts with data)
 - Diverse improvements of details
 - Obsolete functions eliminated and bug fixes
@@ -132,7 +146,7 @@
 TourCount derived from TransektCount which originally derives partly from BeeCount by knirirr
 (https://github.com/knirirr/BeeCount.git)
 
-Main features comprise
+Main features of 1. release comprise
 - "Reset Data" function
 - App runs always in portrait mode
 - Exports results in csv-format 

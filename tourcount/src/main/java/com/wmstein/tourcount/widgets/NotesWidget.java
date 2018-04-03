@@ -12,7 +12,8 @@ import com.wmstein.tourcount.R;
 
 /**********************************
  * Created by milo on 26/05/2014.
- * Adopted for TourCount by wmstein on 18.02.2016
+ * Adopted for TourCount by wmstein on 2016-02-18,
+ * last edited on 2018-03-31
  */
 public class NotesWidget extends LinearLayout
 {
@@ -25,7 +26,7 @@ public class NotesWidget extends LinearLayout
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_notes, this, true);
-        textView = (TextView) findViewById(R.id.notes_text);
+        textView = findViewById(R.id.notes_text);
     }
 
     public void setNotes(String notes)
@@ -39,7 +40,7 @@ public class NotesWidget extends LinearLayout
         {
             if (MyDebug.LOG)
                 Log.d(TAG, "Setzt große Schrift.");
-            textView.setTextSize(22);
+            textView.setTextSize(16);
         }
         else
         {

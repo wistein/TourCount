@@ -36,6 +36,21 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 3.0.0
+  % Version 3.0.0
+  _ 03.04.2018
+		* Neues Zählseiten-Layout mit Scroll-Menü zur Art-Auswahl 
+		* Separate Zähler für ♂♀, ♂, ♀, Puppe, Raupe, Ei
+		* Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
+  	* Erstmaliger Start erzeugt nun direkt nutzbare interne DB mit verbreiteten europäischen Arten 
+		* Korrekte Subtraktion bei Kategorien der Arten und der Individual-Einträge
+		* Layout der Ergebnisseite angepasst 
+		* Layout der Startseite geändert 
+		* Weitere Schmetterlingsabbildungen integriert 
+		* Dokumentation überarbeitet für Ver. 3.0
+		* Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
+  	* Fehler behoben
+
 $ 2.4.6
   % Version 2.4.6
   _ 19.03.2018
@@ -47,7 +62,7 @@ $ 2.4.6
 $ 2.4.2
   % Version 2.4.2
   _ 28.02.2018
-		* Reverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
+		* Inverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
 		* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
 		* Verschiedene Detail-Verbesserungen
 		* Funktionsrelikte entfernt und Fehler behoben

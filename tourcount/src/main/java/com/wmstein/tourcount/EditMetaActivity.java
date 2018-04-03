@@ -6,9 +6,15 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
 import com.wmstein.tourcount.database.Section;
@@ -27,14 +34,17 @@ import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
- * Created by wmstein on 19.04.2016.
+ * Created by wmstein on 2016-04-19,
+ * last edit on 2018-03-22
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -53,6 +63,11 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private HeadDataSource headDataSource;
     private SectionDataSource sectionDataSource;
     private boolean screenOrientL; // option for screen orientation
+
+    // Location info handling
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -119,6 +134,72 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        // Get LocationManager instance
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Request list with names of all providers
+        List<String> providers = locationManager.getAllProviders();
+        for (String name : providers)
+        {
+            LocationProvider lp = locationManager.getProvider(name);
+            if (MyDebug.LOG)
+            {
+                Log.d(TAG, lp.getName() + " --- isProviderEnabled(): " + locationManager.isProviderEnabled(name));
+                Log.d(TAG, "requiresCell(): " + lp.requiresCell());
+                Log.d(TAG, "requiresNetwork(): " + lp.requiresNetwork());
+                Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
+            }
+        }
+
+        // Best possible provider
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        provider = locationManager.getBestProvider(criteria, true);
+        if (MyDebug.LOG)
+            Log.d(TAG, "Provider: " + provider);
+
+        // Create LocationListener object
+        locationListener = new LocationListener()
+        {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onStatusChanged()");
+            }
+
+            @Override
+            public void onProviderEnabled(String provider)
+            {
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onProviderEnabled()");
+            }
+
+            @Override
+            public void onProviderDisabled(String provider)
+            {
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onProviderDisabled()");
+            }
+
+            @Override
+            public void onLocationChanged(Location location)
+            {
+                if (MyDebug.LOG)
+                    Log.d(TAG, "onLocationChanged()");
+            }
+        };
+
+        // get location service
+        try
+        {
+            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
+        } catch (Exception e)
+        {
+            // nothing
+        }
+
         //clear existing view
         head_area.removeAllViews();
 
@@ -174,6 +255,34 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         etw.setWidgetEndTm1(getString(R.string.endtm));
         etw.setWidgetEndTm2(section.end_tm);
         head_area.addView(etw);
+    }
+
+    // Correct height with geoid offset from EarthGravitationalModel
+    private double correctHeight(double latitude, double longitude, double gpsHeight)
+    {
+        double corrHeight;
+        double nnHeight;
+
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
     }
 
     // getSDate()
@@ -240,6 +349,15 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     protected void onPause()
     {
         super.onPause();
+
+        // Stop location service
+        try
+        {
+            locationManager.removeUpdates(locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
 
         // close the data sources
         headDataSource.close();

@@ -266,7 +266,7 @@
                 <TextView
                     android:id="@+id/widgetdla1"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
                     android:paddingEnd="5dp"
@@ -279,7 +279,7 @@
                 <TextView
                     android:id="@+id/widgetdla2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/list_background"
                     android:singleLine="true"
                     android:paddingBottom="5dp"
@@ -302,7 +302,7 @@
                 <TextView
                     android:id="@+id/widgetdlo1"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
                     android:paddingEnd="5dp"
@@ -338,7 +338,7 @@
                 <TextView
                     android:id="@+id/widgetmuncert1"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="start|top"
                     android:singleLine="true"
                     android:paddingBottom="5dp"

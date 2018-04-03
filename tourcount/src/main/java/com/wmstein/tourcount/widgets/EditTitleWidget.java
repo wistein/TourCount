@@ -11,7 +11,8 @@ import com.wmstein.tourcount.R;
 
 /*************************************
  * Created by milo on 03/06/2014.
- * Changes by wmstein since 18.02.2016
+ * Changes by wmstein since 2016-02-18,
+ * last edited on 2018-03-31
  */
 public class EditTitleWidget extends LinearLayout
 {
@@ -23,8 +24,8 @@ public class EditTitleWidget extends LinearLayout
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_edit_title, this, true);
-        widget_title = (TextView) findViewById(R.id.widgetTitle);
-        section_name = (EditText) findViewById(R.id.sectionName);
+        widget_title = findViewById(R.id.widgetTitle);
+        section_name = findViewById(R.id.sectionName);
     }
 
     public void setWidgetTitle(String title)

@@ -11,7 +11,8 @@ import com.wmstein.tourcount.R;
 
 /*************************************************************
  * EditMetaWidget.java used by EditMetaActivity.java
- * Created by wmstein for com.wmstein.tourcount on 02.04.2016.
+ * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
+ * last edited on 2018-03-31
  */
 public class EditMetaWidget extends LinearLayout
 {
@@ -41,24 +42,24 @@ public class EditMetaWidget extends LinearLayout
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_edit_meta, this, true);
-        widget_temp1 = (TextView) findViewById(R.id.widgetTemp1); // temperature
-        widget_temp2 = (EditText) findViewById(R.id.widgetTemp2);
-        widget_wind1 = (TextView) findViewById(R.id.widgetWind1); // wind
-        widget_wind2 = (EditText) findViewById(R.id.widgetWind2);
-        widget_clouds1 = (TextView) findViewById(R.id.widgetClouds1); // clouds
-        widget_clouds2 = (EditText) findViewById(R.id.widgetClouds2);
-        widget_plz1 = (TextView) findViewById(R.id.widgetPlz1); // plz
-        widget_plz2 = (TextView) findViewById(R.id.widgetPlz2);
-        widget_city1 = (TextView) findViewById(R.id.widgetCity); // city
-        widget_city2 = (TextView) findViewById(R.id.widgetItem4);
-        widget_place1 = (TextView) findViewById(R.id.widgetPlace); // place
-        widget_place2 = (TextView) findViewById(R.id.widgetItem5);
-        widget_date1 = (TextView) findViewById(R.id.widgetDate1);
-        widget_date2 = (TextView) findViewById(R.id.widgetDate2);
-        widget_startTm1 = (TextView) findViewById(R.id.widgetStartTm1);
-        widget_startTm2 = (TextView) findViewById(R.id.widgetStartTm2);
-        widget_endTm1 = (TextView) findViewById(R.id.widgetEndTm1);
-        widget_endTm2 = (TextView) findViewById(R.id.widgetEndTm2);
+        widget_temp1 = findViewById(R.id.widgetTemp1); // temperature
+        widget_temp2 = findViewById(R.id.widgetTemp2);
+        widget_wind1 = findViewById(R.id.widgetWind1); // wind
+        widget_wind2 = findViewById(R.id.widgetWind2);
+        widget_clouds1 = findViewById(R.id.widgetClouds1); // clouds
+        widget_clouds2 = findViewById(R.id.widgetClouds2);
+        widget_plz1 = findViewById(R.id.widgetPlz1); // plz
+        widget_plz2 = findViewById(R.id.widgetPlz2);
+        widget_city1 = findViewById(R.id.widgetCity); // city
+        widget_city2 = findViewById(R.id.widgetItem4);
+        widget_place1 = findViewById(R.id.widgetPlace); // place
+        widget_place2 = findViewById(R.id.widgetItem5);
+        widget_date1 = findViewById(R.id.widgetDate1);
+        widget_date2 = findViewById(R.id.widgetDate2);
+        widget_startTm1 = findViewById(R.id.widgetStartTm1);
+        widget_startTm2 = findViewById(R.id.widgetStartTm2);
+        widget_endTm1 = findViewById(R.id.widgetEndTm1);
+        widget_endTm2 = findViewById(R.id.widgetEndTm2);
     }
 
     /**

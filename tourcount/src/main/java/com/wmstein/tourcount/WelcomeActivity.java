@@ -10,11 +10,11 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,7 +61,7 @@ import static java.lang.Math.sqrt;
  * <p/>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-03-19
+ * last modification on 2018-04-03
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -78,7 +78,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private LocationListener locationListener;
     private String provider;
     private double latitude, longitude, height, uncertainty;
-    private String sLocality = "", sPlz = "", sCity = "", sPlace = "", sCountry = "";
 
     // import/export stuff
     private File infile;
@@ -89,13 +88,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private AlertDialog alert;
     private SectionDataSource sectionDataSource;
     private final Handler mHandler = new Handler();
-    
+
     // preferences
     private String sortPref;
     private boolean screenOrientL; // option for screen orientation
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
-    
+
     // following stuff for purging export db
     private SQLiteDatabase database;
     private DbHelper dbHandler;
@@ -116,30 +115,38 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
+        }
+        else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
-
+        ScrollView baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.getBackground());
 
+        // List tour name as title
         Section section;
-        sectionDataSource = new SectionDataSource(this);
-        sectionDataSource.open();
-        section = sectionDataSource.getSection();
-
-        // List name as title
+        String sname = "";
         try
         {
-            getSupportActionBar().setTitle(section.name);
+            sectionDataSource = new SectionDataSource(this);
+            sectionDataSource.open();
+            section = sectionDataSource.getSection();
+            sname = section.name;
+            sectionDataSource.close();
+        } catch (SQLiteException e)
+        {
+            sname = getString(R.string.errorDb);
+            Toast.makeText(this, R.string.corruptDb, Toast.LENGTH_LONG).show();
+        }
+
+        try
+        {
+            getSupportActionBar().setTitle(sname);
         } catch (NullPointerException e)
         {
             // nothing
         }
-        
-        sectionDataSource.close();
 
         // if API level > 23 permission request is necessary
         int REQUEST_CODE_STORAGE = 123; // Random unique identifier for specific permission request since Android 6.0
@@ -176,6 +183,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         cl = new ChangeLog(this);
         vh = new ViewHelp(this);
+        // Show changelog for new version
         if (cl.firstRun())
             cl.getLogDialog().show();
 
@@ -197,7 +205,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // getting GPS status
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status (needs UnifiedNlp + location backend on Cyanogenmod, no height info)
+            // getting network status (needs UnifiedNlp + location backend on LineageOS, no height info)
             boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             //Toast.makeText(getApplicationContext(), "NetworkEnabled: " + isNetworkEnabled + "\nGPSenabled: " + isGPSEnabled, Toast.LENGTH_LONG).show();
 
@@ -288,23 +296,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.viewCounts)
         {
-            Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
-
-            // pause for 100 msec to show toast
-            mHandler.postDelayed(new Runnable()
+            if (screenOrientL)
             {
-                public void run()
-                {
-                    // get edited info for CountingActivity
-                    Intent intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-                    intent.putExtra("Latitude", latitude);
-                    intent.putExtra("Longitude", longitude);
-                    intent.putExtra("Height", height);
-                    intent.putExtra("Height", height);
-                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                }
-            }, 100);
-            return true;
+                Intent intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
+                intent.putExtra("Latitude", latitude);
+                intent.putExtra("Longitude", longitude);
+                intent.putExtra("Height", height);
+                intent.putExtra("Uncert", uncertainty);
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+            else
+            {
+                Intent intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+                intent.putExtra("Latitude", latitude);
+                intent.putExtra("Longitude", longitude);
+                intent.putExtra("Height", height);
+                intent.putExtra("Uncert", uncertainty);
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
         }
         else if (id == R.id.editMeta)
         {
@@ -330,15 +339,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     public void viewCounts(View view)
     {
-        Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
-        // pause for 100 msec to show toast
-        mHandler.postDelayed(new Runnable()
-        {
-            public void run()
-            {
-                startActivity(new Intent(getApplicationContext(), CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
-        }, 100);
+        startActivity(new Intent(getApplicationContext(), CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     public void editMeta(View view)
@@ -430,7 +431,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
             }
         };
-        
+
         // get location service
         try
         {
@@ -441,7 +442,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         // get reverse geocoding (todo: 1st count missing geo info)
-        if (metaPref &&  (latitude != 0 || longitude != 0))
+        if (metaPref && (latitude != 0 || longitude != 0))
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -468,15 +469,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             });
         }
 
-        Section section;
-        sectionDataSource = new SectionDataSource(this);
-        sectionDataSource.open();
-        section = sectionDataSource.getSection();
-
         // List tour name as title
+        Section section;
+        String sname = "";
         try
         {
-            getSupportActionBar().setTitle(section.name);
+            sectionDataSource = new SectionDataSource(this);
+            sectionDataSource.open();
+            section = sectionDataSource.getSection();
+            sname = section.name;
+        } catch (SQLiteException e)
+        {
+            sname = getString(R.string.errorDb);
+            sectionDataSource.close();
+        }
+
+        try
+        {
+            getSupportActionBar().setTitle(sname);
         } catch (NullPointerException e)
         {
             // nothing
@@ -513,7 +523,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView baseLayout = (ScrollView) findViewById(R.id.baseLayout);
+        ScrollView baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");
@@ -527,16 +537,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onPause();
 
         sectionDataSource.close();
-
-        // Stop location service
-        try
-        {
-            locationManager.removeUpdates(locationListener);
-            locationManager = null;
-        } catch (Exception e)
-        {
-            // do nothing
-        }
     }
 
     @Override
@@ -557,6 +557,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             public void run()
             {
                 doubleBackToExitPressedOnce = false;
+                // Clear last locality in temp
+                clear_loc();
             }
         }, 1000);
     }
@@ -566,7 +568,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onStop();
 
         sectionDataSource.close();
-
         // Stop location service
         try
         {
@@ -587,6 +588,19 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onDestroy();
 
         sectionDataSource.close();
+        // Stop location service
+        try
+        {
+            if (locationManager != null)
+            {
+                //Potentially missing permission is catched by exception
+                locationManager.removeUpdates(locationListener);
+                locationManager = null;
+            }
+        } catch (Exception e)
+        {
+            // do nothing
+        }
     }
 
     /*************************************************************************
@@ -602,7 +616,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         boolean mExternalStorageWriteable;
         String state = Environment.getExternalStorageState();
         outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount_" + getcurDate() + ".db");
-        String destPath = "/data/data/com.wmstein.tourcount/files";
+        String destPath = "/data/data/com.wmstein.tourcount/databases";
 
         try
         {
@@ -735,12 +749,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 String arrHead[] =
                     {
-                        getString(R.string.zlist) + ":",     //Count List:
-                        sectName,                            //section name
+                        getString(R.string.zlist) + ":", //Count List:
+                        sectName,                        //section name
                         "",
                         "",
-                        getString(R.string.inspector) + ":", //Inspector:
-                        inspecName                           //inspector name
+                        getString(R.string.inspector) + ":",           //Inspector:
+                        inspecName                       //inspector name
                     };
                 csvWrite.writeNext(arrHead);
 
@@ -834,11 +848,19 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 {
                 case "codes":
                     curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_CODE, null);
+                        + " WHERE " + " ("
+                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                        + " order by " + DbHelper.C_CODE, null, null);
                     break;
                 default:
                     curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE " + DbHelper.C_COUNT + " > 0 order by " + DbHelper.C_NAME, null);
+                        + " WHERE " + " ("
+                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                        + " order by " + DbHelper.C_NAME, null, null);
                     break;
                 }
 
@@ -868,14 +890,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 String stadium2 = getString(R.string.stadium_2);
                 String stadium3 = getString(R.string.stadium_3);
                 String stadium4 = getString(R.string.stadium_4);
-                
+
                 Cursor curCSVInd;
                 while (curCSVCnt.moveToNext())
                 {
-                    String spname = curCSVCnt.getString(2); // species name
-                    String slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE 
+                    String spname = curCSVCnt.getString(7); // species name
+
+                    String slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
                         + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_SEX + " = ? AND " + DbHelper.I_STADIUM + " = ?";
-                    
+
                     curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1}); // select male
 
                     while (curCSVInd.moveToNext())
@@ -894,9 +917,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     curCSVInd.close();
 
-                    String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE 
+                    String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
                         + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
-                    
+
                     curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2}); // select pupa
 
                     while (curCSVInd.moveToNext())
@@ -924,9 +947,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     curCSVInd.close();
 
-                    cnt = curCSVCnt.getInt(1); // count total
-                    cntsmf = cnt - cntsm - cntsf - cntsp - cntsl - cntse;
-                    
+                    cntsmf = curCSVCnt.getInt(1);
+                    cntsm = curCSVCnt.getInt(2);
+                    cntsf = curCSVCnt.getInt(3);
+                    cntsp = curCSVCnt.getInt(4);
+                    cntsl = curCSVCnt.getInt(5);
+                    cntse = curCSVCnt.getInt(6);
+
                     if (cntsmf > 0) // suppress '0' in output
                         strcntsmf = Integer.toString(cntsmf);
                     else
@@ -955,7 +982,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     String arrStr[] =
                         {
                             spname,                 // species name
-                            curCSVCnt.getString(3), // species code 
+                            curCSVCnt.getString(8), // species code 
                             strcntsmf,              // count ♂ o. ♀
                             strcntsm,               // count ♂
                             strcntsf,               // count ♀
@@ -965,14 +992,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             curCSVCnt.getString(4)  // species notes
                         };
                     csvWrite.writeNext(arrStr);
-                    sum = sum + curCSVCnt.getInt(1);
+
+                    sum = sum + cntsmf + cntsm + cntsf + cntsp + cntsl + cntse;
                     summf = summf + cntsmf;
                     summ = summ + cntsm;
                     sumf = sumf + cntsf;
                     sump = sump + cntsp;
                     suml = suml + cntsl;
                     sume = sume + cntse;
-                    
+
                     cntsm = 0;
                     cntsf = 0;
                     cntsp = 0;
@@ -1024,6 +1052,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                     + " order by " + DbHelper.I_COUNT_ID, null);
 
+                String lngi, latit;
                 frst = 0;
                 while (curCSVInd.moveToNext())
                 {
@@ -1037,21 +1066,37 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         strcnts = String.valueOf(cnts);
                     else
                         strcnts = "";
-                    
+
+                    try
+                    {
+                        lngi = String.valueOf(longi).substring(0, 8); //longitude
+                    } catch (StringIndexOutOfBoundsException e)
+                    {
+                        lngi = String.valueOf(longi);
+                    }
+
+                    try
+                    {
+                        latit = String.valueOf(lati).substring(0, 8); //latitude
+                    } catch (StringIndexOutOfBoundsException e)
+                    {
+                        latit = String.valueOf(lati);
+                    }
+
                     String arrIndividual[] =
                         {
                             curCSVInd.getString(2),  //species name
-                            strcnts,                 //indiv. counts
+                            strcnts,                             //indiv. counts
                             curCSVInd.getString(9),  //locality
-                            String.valueOf(longi).substring(0, 8),   //longitude
-                            String.valueOf(lati).substring(0, 8),    //latitude
-                            String.valueOf(Math.round(uncer)),   //uncertainty
+                            lngi,                                //longitude
+                            latit,                               //latitude
+                            String.valueOf(Math.round(uncer + 20)), //uncertainty + 20 m extra
                             String.valueOf(Math.round(heigh)),   //height
                             curCSVInd.getString(7),  //date
                             curCSVInd.getString(8),  //time
-                            curCSVInd.getString(10), //sex
+                            curCSVInd.getString(10), //sexus
                             curCSVInd.getString(11), //stadium
-                            String.valueOf(spstate), //state
+                            String.valueOf(spstate),             //state
                             curCSVInd.getString(13)  //indiv. notes
                         };
                     csvWrite.writeNext(arrIndividual);
@@ -1098,21 +1143,38 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 lo = (loMax + loMin) / 2;   // average longitude
                 la = (laMax + laMin) / 2;   // average latitude
-                
+
                 // Simple distance calculation between 2 coordinates within the temperate zone in meters (Pythagoras):
                 //   uc = (((loMax-loMin)*71500)² + ((laMax-laMin)*111300)²)½ 
                 uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
-                    uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
-                    if (uc <= uncer1)
-                        uc = uncer1;
-                
+                uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
+                if (uc <= uncer1)
+                    uc = uncer1;
+
+                try
+                {
+                    lngi = String.valueOf(lo).substring(0, 8); //longitude
+                } catch (StringIndexOutOfBoundsException e)
+                {
+                    lngi = String.valueOf(lo);
+                }
+
+                try
+                {
+                    latit = String.valueOf(la).substring(0, 8); //latitude
+                } catch (StringIndexOutOfBoundsException e)
+                {
+                    latit = String.valueOf(la);
+                }
+
+
                 String arrAvCoords[] =
                     {
                         "",
                         "",
                         getString(R.string.avCoords),
-                        String.valueOf(lo).substring(0, 8), // average longitude
-                        String.valueOf(la).substring(0, 8), // average latitude
+                        lngi, // average longitude
+                        latit, // average latitude
                         String.valueOf(Math.round(uc)) // average uncertainty radius
                     };
                 csvWrite.writeNext(arrAvCoords);
@@ -1192,6 +1254,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 // clear DB values for basic DB
                 clearDBValues();
+                Toast.makeText(this, getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
 
                 // write Basis DB
                 copy(infile, outfile);
@@ -1223,15 +1286,19 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setMessage(R.string.confirmResetDB).setCancelable(false).setPositiveButton(R.string.deleteButton, new DialogInterface.OnClickListener()
+        builder.setMessage(R.string.confirmResetDB);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.deleteButton, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
                 clearDBValues();
+                Toast.makeText(getApplicationContext(), getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
                 //noinspection ConstantConditions
                 getSupportActionBar().setTitle("");
             }
-        }).setNegativeButton(R.string.importCancelButton, new DialogInterface.OnClickListener()
+        });
+        builder.setNegativeButton(R.string.importCancelButton, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
@@ -1242,6 +1309,18 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         alert.show();
     }
 
+    // Clear temp_loc in temp
+    private void clear_loc()
+    {
+        dbHandler = new DbHelper(this);
+        database = dbHandler.getWritableDatabase();
+
+        String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
+            + DbHelper.T_TEMP_LOC + " = '';";
+        database.execSQL(sql);
+        dbHandler.close();
+    }
+
     // clear DB values for basic DB
     private void clearDBValues()
     {
@@ -1250,7 +1329,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database = dbHandler.getWritableDatabase();
 
         String sql = "UPDATE " + DbHelper.COUNT_TABLE + " SET "
-            + DbHelper.C_COUNT + " = 0, "
+            + DbHelper.C_COUNT_F1I + " = 0, "
+            + DbHelper.C_COUNT_F2I + " = 0, "
+            + DbHelper.C_COUNT_F3I + " = 0, "
+            + DbHelper.C_COUNT_PI + " = 0, "
+            + DbHelper.C_COUNT_LI + " = 0, "
+            + DbHelper.C_COUNT_EI + " = 0, "
             + DbHelper.C_NOTES + " = '';";
         database.execSQL(sql);
 
@@ -1277,7 +1361,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database.execSQL(sql);
 
         dbHandler.close();
-        Toast.makeText(this, getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
     }
 
     /**************************************************************************************************/
@@ -1409,9 +1492,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // modified by wmstein
     private void importBasisDb()
     {
-        //infile = new File("/data/data/com.wmstein.tourcount/databases/tourcount0.db");
-        infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
-        String destPath = "/data/data/com.wmstein.tourcount/files";
+            //infile = new File("/data/data/com.wmstein.tourcount/databases/tourcount0.db");
+            infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
+        String destPath = "/data/data/com.wmstein.tourcount/databases";
         try
         {
             destPath = getFilesDir().getPath();

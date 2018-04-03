@@ -11,7 +11,8 @@ import com.wmstein.tourcount.R;
 
 /***************************************************
  * EditHeadWidget.java used by EditMetaActivity.java
- * Created by wmstein for com.wmstein.tourcount on 31.03.2016.
+ * Created by wmstein for com.wmstein.tourcount on 2016-03-31,
+ * last edited on 2018-03-31
  */
 public class EditHeadWidget extends LinearLayout
 {
@@ -25,10 +26,10 @@ public class EditHeadWidget extends LinearLayout
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_edit_head, this, true);
-        widget_co1 = (TextView) findViewById(R.id.widgetCo1);
-        widget_co2 = (EditText) findViewById(R.id.widgetCo2);
-        widget_name1 = (TextView) findViewById(R.id.widgetName1);
-        widget_name2 = (EditText) findViewById(R.id.widgetName2);
+        widget_co1 = findViewById(R.id.widgetCo1);
+        widget_co2 = findViewById(R.id.widgetCo2);
+        widget_name1 = findViewById(R.id.widgetName1);
+        widget_name2 = findViewById(R.id.widgetName2);
     }
 
     // Following the SETS

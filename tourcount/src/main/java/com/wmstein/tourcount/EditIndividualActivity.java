@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2016-2018. Wilhelm Stein, Bonn, Germany.
- */
-
 package com.wmstein.tourcount;
 
 import android.annotation.SuppressLint;
@@ -23,8 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -44,7 +38,8 @@ import java.util.List;
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
- * Copyright 2016-2018 wmstein, created on 15.05.2016, last modification an 11.03.2018
+ * Copyright 2016-2018 wmstein, created on 2016-05-15, 
+ * last modification an 2018-03-31
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -72,10 +67,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private LocationManager locationManager;
     private LocationListener locationListener;
     private String provider;
-    private double latitude, longitude, height;
+    private double latitude, longitude, height, uncertainty;
 
     private int count_id;
-    private int i_id;
+    private int i_id, iAtt;
     private String specName;
     private String sLocality = "";
     private Boolean sdata;
@@ -97,7 +92,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
+        }
+        else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -127,8 +123,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             latitude = extras.getDouble("Latitude");
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
+            uncertainty = extras.getDouble("Uncert");
+            iAtt = extras.getInt("indivAtt");
         }
-        
+
         sdata = false;
     }
 
@@ -203,6 +201,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
                     height = location.getAltitude();
+                    uncertainty = location.getAccuracy();
                     if (height != 0)
                         height = correctHeight(latitude, longitude, height);
                 }
@@ -215,7 +214,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
         } catch (Exception e)
         {
-            Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+            //
         }
 
         // setup the data sources
@@ -231,16 +230,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         countDataSource = new CountDataSource(this);
         countDataSource.open();
-
-        String[] stateArray = {
-            getString(R.string.stadium_1),
-            getString(R.string.stadium_2),
-            getString(R.string.stadium_3),
-            getString(R.string.stadium_4)
-        };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>
-            (this, android.R.layout.simple_dropdown_item_1line, stateArray);
 
         // set title
         try
@@ -264,15 +253,28 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         eiw.setWidgetZCoord1(getString(R.string.zcoord));
         eiw.setWidgetZCoord2(String.format("%.1f", height));
 
-        eiw.setWidgetSex1(getString(R.string.sex1));
-        eiw.setWidgetSex2(individuals.sex);
-
-        eiw.setWidgetStadium1(getString(R.string.stadium1));
-        AutoCompleteTextView acTextView = (AutoCompleteTextView) eiw.findViewById(R.id.widgetStadium2);
-        acTextView.setThreshold(1);
-        acTextView.setAdapter(adapter);
-
-        eiw.setWidgetStadium2(getString(R.string.stadium_1));
+        eiw.setWidgetStadium1(getString(R.string.stadium));
+        switch (iAtt)
+        {
+        case 1: // ♂♀
+            eiw.setWidgetStadium2(getString(R.string.stadium_1));
+            break;
+        case 2: // ♂
+            eiw.setWidgetStadium2(getString(R.string.stadium_1));
+            break;
+        case 3: // ♀
+            eiw.setWidgetStadium2(getString(R.string.stadium_1));
+            break;
+        case 4: // Pupa
+            eiw.setWidgetStadium2(getString(R.string.stadium_2));
+            break;
+        case 5: // Larva
+            eiw.setWidgetStadium2(getString(R.string.stadium_3));
+            break;
+        case 6: // Egg
+            eiw.setWidgetStadium2(getString(R.string.stadium_4));
+            break;
+        }
 
         eiw.setWidgetState1(getString(R.string.state));
         eiw.setWidgetState2(individuals.state_1_6);
@@ -333,12 +335,12 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         {
             // do nothing
         }
-        
-        if(!sdata)
+
+        if (!sdata)
         {
             saveData();
         }
-        
+
         // close the data sources
         individualsDataSource.close();
         tempDataSource.close();
@@ -348,23 +350,22 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private boolean saveData()
     {
         buttonSound();
-        
+
         // save individual data
         // Locality (from reverse geocoding in CountingActivity or manual input) 
         individuals.locality = eiw.getWidgetLocality2();
-        temp.temp_loc = eiw.getWidgetLocality2();
-        
-        // Sexus
-        String newsex = eiw.getWidgetSex2();
-        if (newsex.equals("") || newsex.matches(" |m|f"))
+
+        // Uncertainty
+        if (latitude != 0)
         {
-            individuals.sex = newsex;
+            individuals.uncert = String.valueOf(uncertainty);
         }
         else
         {
-            Toast.makeText(this, getString(R.string.valSex), Toast.LENGTH_SHORT).show();
-            return false;
+            individuals.uncert = "0";
         }
+
+        temp.temp_loc = eiw.getWidgetLocality2();
 
         // Stadium
         individuals.stadium = eiw.getWidgetStadium2();
@@ -383,18 +384,72 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         // number of individuals
         int newcount = eiw.getWidgetCount2();
-        counts.count = counts.count + newcount - 1; // -1 as CountingActivity already added 1
-        individuals.icount = newcount;
-
-        // Notes
-        String newnotes = eiw.getWidgetIndivNote2();
-        if (!newnotes.equals(""))
+        if (newcount > 0) // valid newcount
         {
-            individuals.notes = newnotes;
-        }
+            switch (iAtt)
+            {
+            case 1:
+                //  counts.count = counts.count + newcount - 1; // -1 when CountingActivity already added 1
+                counts.count_f1i = counts.count_f1i + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 1;
+                countDataSource.saveCountf1i(counts);
+                break;
 
-        individualsDataSource.saveIndividual(individuals);
-        countDataSource.saveCount(counts);
+            case 2:
+                counts.count_f2i = counts.count_f2i + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "m";
+                individuals.icategory = 2;
+                countDataSource.saveCountf2i(counts);
+                break;
+            case 3:
+                counts.count_f3i = counts.count_f3i + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "f";
+                individuals.icategory = 3;
+                countDataSource.saveCountf3i(counts);
+                break;
+            case 4:
+                counts.count_pi = counts.count_pi + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 4;
+                countDataSource.saveCountpi(counts);
+                break;
+            case 5:
+                counts.count_li = counts.count_li + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 5;
+                countDataSource.saveCountli(counts);
+                break;
+            case 6:
+                counts.count_ei = counts.count_ei + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 6;
+                countDataSource.saveCountei(counts);
+                break;
+            }
+
+            // Notes
+            String newnotes = eiw.getWidgetIndivNote2();
+            if (!newnotes.equals(""))
+            {
+                individuals.notes = newnotes;
+            }
+
+            individualsDataSource.saveIndividual(individuals);
+        }
+        else // newcount is <= 1
+        {
+            
+            Toast.makeText(this, getString(R.string.warnCount), Toast.LENGTH_SHORT).show();
+            return false; // forces input newcount > 0
+        }
+        
         tempDataSource.saveTempLoc(temp);
         sdata = true;
 
@@ -463,7 +518,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
+        }
+        else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }

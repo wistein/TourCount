@@ -23,7 +23,7 @@ import static android.content.ContentValues.TAG;
  * Get, parse and store address info from Reverse Geocoder of OpenStreetMap
  * <p>
  * Copyright 2018 wmstein, created on 2018-03-10,
- * last modification on 2018-03-19
+ * last modification on 2018-03-27
  */
 public class RetrieveAddr extends AsyncTask<URL, Void, String>
 {
@@ -158,7 +158,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             }
             sPlz = plz.toString();
 
-            // 4. city with city and town
+            // 4. city with city and town or county
             if (xmlString.contains("<city>"))
             {
                 sstart = xmlString.indexOf("<city>") + 6;
@@ -177,8 +177,22 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
                 String town = xmlString.substring(sstart, send);
                 city.append(town);
             }
-            sCity = city.toString();
 
+            if (xmlString.contains("<county>"))
+            {
+                sstart = xmlString.indexOf("<county>") + 8;
+                send = xmlString.indexOf("</county>");
+                String county = xmlString.substring(sstart, send);
+                if (city.toString().equals(""))
+                    city.append(county);
+                else
+                {
+                    city.append(", ");
+                    city.append(county);
+                }
+            }
+            sCity = city.toString();
+            
             // 5. country 
             if (xmlString.contains("<country>"))
             {

@@ -63,7 +63,7 @@
                 android:id="@+id/txtIndSex"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4"
+                android:layout_weight="0.5"
                 android:gravity="start"
                 android:padding="4sp"
                 android:textSize="14sp"
@@ -240,5 +240,6 @@
                 android:textSize="16sp"/>
 
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

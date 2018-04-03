@@ -10,7 +10,8 @@ import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Individuals;
 
 /**********************************
- * Created by wmstein on 22.02.2018
+ * Created by wmstein on 2018-02-22
+ * Last edited on 2018-03-31
  */
 public class ListIndividualWidget extends RelativeLayout
 {
@@ -29,30 +30,34 @@ public class ListIndividualWidget extends RelativeLayout
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_list_individual, this, true);
-        txtIndLoc = (TextView) findViewById(R.id.txtIndLoc);
-        txtIndSex = (TextView) findViewById(R.id.txtIndSex);
-        txtIndStad = (TextView) findViewById(R.id.txtIndStad);
-        txtIndLa = (TextView) findViewById(R.id.txtIndLa);
-        txtIndLo = (TextView) findViewById(R.id.txtIndLo);
-        txtIndHt = (TextView) findViewById(R.id.txtIndHt);
-        txtIndStat = (TextView) findViewById(R.id.txtIndStat);
-        txtIndCnt = (TextView) findViewById(R.id.txtIndCnt);
+        txtIndLoc = findViewById(R.id.txtIndLoc);
+        txtIndSex = findViewById(R.id.txtIndSex);
+        txtIndStad = findViewById(R.id.txtIndStad);
+        txtIndLa = findViewById(R.id.txtIndLa);
+        txtIndLo = findViewById(R.id.txtIndLo);
+        txtIndHt = findViewById(R.id.txtIndHt);
+        txtIndStat = findViewById(R.id.txtIndStat);
+        txtIndCnt = findViewById(R.id.txtIndCnt);
     }
 
     public void setIndividual(Individuals individual)
     {
         txtIndLoc.setText(individual.locality);
         txtIndSex.setText(individual.sex);
-        txtIndStad.setText(individual.stadium.substring(0,1));
+        if (individual.stadium.length() > 0)
+            txtIndStad.setText(individual.stadium.substring(0, 1));
+        else
+            txtIndStad.setText("");
+
         int slen;
-        if(individual.coord_x == 0)
+        if (individual.coord_x == 0)
         {
             txtIndLa.setText("");
         }
         else
         {
             slen = String.valueOf(individual.coord_x).length();
-            if(slen > 8)
+            if (slen > 8)
             {
                 txtIndLa.setText(String.valueOf(individual.coord_x).substring(0, 8));
             }
@@ -61,7 +66,7 @@ public class ListIndividualWidget extends RelativeLayout
                 txtIndLa.setText(String.valueOf(individual.coord_x));
             }
         }
-        if(individual.coord_y == 0)
+        if (individual.coord_y == 0)
         {
             txtIndLo.setText("");
         }
@@ -77,7 +82,7 @@ public class ListIndividualWidget extends RelativeLayout
                 txtIndLo.setText(String.valueOf(individual.coord_y));
             }
         }
-        if(individual.coord_z == 0)
+        if (individual.coord_z == 0)
         {
             txtIndHt.setText("");
         }
@@ -89,4 +94,8 @@ public class ListIndividualWidget extends RelativeLayout
         txtIndCnt.setText(String.valueOf(individual.icount));
     }
 
+    public String getIndNotes(Individuals individual)
+    {
+        return individual.notes;
+    }
 }

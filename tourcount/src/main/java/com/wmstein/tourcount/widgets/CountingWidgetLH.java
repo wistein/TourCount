@@ -1,10 +1,13 @@
+/*
+ * Copyright (c) 2018. Wilhelm Stein, Bonn, Germany.
+ */
+
 package com.wmstein.tourcount.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,76 +15,152 @@ import com.wmstein.tourcount.AutoFitText;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Count;
 
-import java.lang.reflect.Field;
-
-/************************************************************
- * Used by CountingActivity.java and widget_counting_lh.xml
- * Created by milo on 25/05/2014.
- * Adopted for TourCount by wmstein on 2016-02-18,
- * last edited by wmstein on 2018-03-19
+/**********************************
+ * Interface for widget_counting_lhi.xml
+ * Created by wmstein 2016-12-18
+ * modified for TourCount on 2018-03-31
  */
 public class CountingWidgetLH extends RelativeLayout
 {
-    public static String TAG = "tourcountCountingWidgetLH";
+    public static String TAG = "tourcountCountWidgetLH";
+
+    private TextView namef1i;
+    private TextView namef2i;
+    private TextView namef3i;
+    private TextView namepi;
+    private TextView nameli;
+    private TextView nameei;
+    private AutoFitText countCountf1i; // section internal counters
+    private AutoFitText countCountf2i;
+    private AutoFitText countCountf3i;
+    private AutoFitText countCountpi;
+    private AutoFitText countCountli;
+    private AutoFitText countCountei;
+
     public Count count;
-    private final TextView countName;
-    private final ImageView pSpecieslh;
-    private final AutoFitText countCount;
 
     public CountingWidgetLH(Context context, AttributeSet attrs)
     {
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.widget_counting_lh, this, true);
-        countCount = (AutoFitText) findViewById(R.id.countCountLH);
-        countName = (TextView) findViewById(R.id.countNameLH);
-        pSpecieslh = (ImageView) findViewById(R.id.pSpecieslh);
+        inflater.inflate(R.layout.widget_counting_lhi, this, true);
+        namef1i = findViewById(R.id.f1iNameLH);
+        namef2i = findViewById(R.id.f2iNameLH);
+        namef3i = findViewById(R.id.f3iNameLH);
+        namepi = findViewById(R.id.piNameLH);
+        nameli = findViewById(R.id.liNameLH);
+        nameei = findViewById(R.id.eiNameLH);
+        countCountf1i = findViewById(R.id.countCountLHf1i);
+        countCountf2i = findViewById(R.id.countCountLHf2i);
+        countCountf3i = findViewById(R.id.countCountLHf3i);
+        countCountpi = findViewById(R.id.countCountLHpi);
+        countCountli = findViewById(R.id.countCountLHli);
+        countCountei = findViewById(R.id.countCountLHei);
     }
 
     public void setCount(Count newcount)
     {
         count = newcount;
-        String rname = "p" + count.code; // species picture resource name
 
-        int resId = getResId(rname);
-        if (resId != 0)
-        {
-            pSpecieslh.setImageResource(resId);
-        }
-
-        countName.setText(count.name);
-        countCount.setText(String.valueOf(count.count));
-        ImageButton countUpButton = (ImageButton) findViewById(R.id.buttonUpLH);
-        countUpButton.setTag(count.id);
-        ImageButton countDownButton = (ImageButton) findViewById(R.id.buttonDownLH);
-        countDownButton.setTag(count.id);
-        ImageButton editButton = (ImageButton) findViewById(R.id.buttonEditLH);
-        editButton.setTag(count.id);
+        namef1i.setText(getContext().getString(R.string.countImagomfHint));
+        namef2i.setText(getContext().getString(R.string.countImagomHint));
+        namef3i.setText(getContext().getString(R.string.countImagofHint));
+        namepi.setText(getContext().getString(R.string.countPupaHint));
+        nameli.setText(getContext().getString(R.string.countLarvaHint));
+        nameei.setText(getContext().getString(R.string.countOvoHint));
+        countCountf1i.setText(String.valueOf(count.count_f1i));
+        countCountf2i.setText(String.valueOf(count.count_f2i));
+        countCountf3i.setText(String.valueOf(count.count_f3i));
+        countCountpi.setText(String.valueOf(count.count_pi));
+        countCountli.setText(String.valueOf(count.count_li));
+        countCountei.setText(String.valueOf(count.count_ei));
+        ImageButton countUpf1iButton = findViewById(R.id.buttonUpLHf1i);
+        countUpf1iButton.setTag(count.id);
+        ImageButton countUpf2iButton = findViewById(R.id.buttonUpLHf2i);
+        countUpf2iButton.setTag(count.id);
+        ImageButton countUpf3iButton = findViewById(R.id.buttonUpLHf3i);
+        countUpf3iButton.setTag(count.id);
+        ImageButton countUppiButton = findViewById(R.id.buttonUpLHpi);
+        countUppiButton.setTag(count.id);
+        ImageButton countUpliButton = findViewById(R.id.buttonUpLHli);
+        countUpliButton.setTag(count.id);
+        ImageButton countUpeiButton = findViewById(R.id.buttonUpLHei);
+        countUpeiButton.setTag(count.id);
+        ImageButton countDownf1iButton = findViewById(R.id.buttonDownLHf1i);
+        ImageButton countDownf2iButton = findViewById(R.id.buttonDownLHf2i);
+        ImageButton countDownf3iButton = findViewById(R.id.buttonDownLHf3i);
+        ImageButton countDownpiButton = findViewById(R.id.buttonDownLHpi);
+        ImageButton countDownliButton = findViewById(R.id.buttonDownLHli);
+        ImageButton countDowneiButton = findViewById(R.id.buttonDownLHei);
+        countDownf1iButton.setTag(count.id);
+        countDownf2iButton.setTag(count.id);
+        countDownf3iButton.setTag(count.id);
+        countDownpiButton.setTag(count.id);
+        countDownliButton.setTag(count.id);
+        countDowneiButton.setTag(count.id);
     }
 
-    public void countUpLH()
+    // Count up/down and set value on lefthanded screen
+    public void countUpLHf1i()
     {
-        countCount.setText(String.valueOf(count.increase()));
+        // increase count_f1i
+        countCountf1i.setText(String.valueOf(count.increase_f1i()));
     }
 
-    public void countDownLH()
+    public void countDownLHf1i()
     {
-        countCount.setText(String.valueOf(count.safe_decrease()));
+        countCountf1i.setText(String.valueOf(count.safe_decrease_f1i()));
     }
 
-    // Get resource ID from resource name
-    private int getResId(String rName)
+    public void countUpLHf2i()
     {
-        try
-        {
-            Class res = R.drawable.class;
-            Field idField = res.getField(rName);
-            return idField.getInt(null);
-        } catch (Exception e)
-        {
-            return 0;
-        }
+        countCountf2i.setText(String.valueOf(count.increase_f2i()));
+    }
+
+    public void countDownLHf2i()
+    {
+        countCountf2i.setText(String.valueOf(count.safe_decrease_f2i()));
+    }
+
+    public void countUpLHf3i()
+    {
+        countCountf3i.setText(String.valueOf(count.increase_f3i()));
+    }
+
+    public void countDownLHf3i()
+    {
+        countCountf3i.setText(String.valueOf(count.safe_decrease_f3i()));
+    }
+
+    public void countUpLHpi()
+    {
+        countCountpi.setText(String.valueOf(count.increase_pi()));
+    }
+
+    public void countDownLHpi()
+    {
+        countCountpi.setText(String.valueOf(count.safe_decrease_pi()));
+    }
+
+    public void countUpLHli()
+    {
+        countCountli.setText(String.valueOf(count.increase_li()));
+    }
+
+    public void countDownLHli()
+    {
+        countCountli.setText(String.valueOf(count.safe_decrease_li()));
+    }
+
+    public void countUpLHei()
+    {
+        countCountei.setText(String.valueOf(count.increase_ei()));
+    }
+
+    public void countDownLHei()
+    {
+        countCountei.setText(String.valueOf(count.safe_decrease_ei()));
     }
 
 }

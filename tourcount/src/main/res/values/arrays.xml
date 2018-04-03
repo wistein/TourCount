@@ -22,4 +22,80 @@
         <item>codes</item>
     </string-array>
 
+    <string-array name="initSpecs">
+        <item>Zygaena filipendulae</item>
+        <item>Macrogl. stellatarum</item>
+        <item>Thymelicus lineola</item>
+        <item>Thymelicus sylvestris</item>
+        <item>Ochlodes sylvanus</item>
+        <item>Papilio machaon</item>
+        <item>Leptidea sinapis</item>
+        <item>Pieris brassicae</item>
+        <item>Pieris rapae</item>
+        <item>Pieris napi</item>
+        <item>Colias crocea</item>
+        <item>Colias hyale</item>
+        <item>Gonepteryx rhamni</item>
+        <item>Lycaena phlaeas</item>
+        <item>Celastrina argiolus</item>
+        <item>Polyommatus icarus</item>
+        <item>Vanessa atalanta</item>
+        <item>Vanessa cardui</item>
+        <item>Inachis io</item>
+        <item>Aglais urticae</item>
+        <item>Polygonia c-album</item>
+        <item>Araschnia levana</item>
+        <item>Pararge aegeria</item>
+        <item>Lasiommata megera</item>
+        <item>Coenon. pamphilus</item>
+        <item>Maniola tithonus</item>
+        <item>Aphant. hyperantus</item>
+        <item>Maniola jurtina</item>
+        <item>Melanargia galathea</item>
+        <item>Pseudop. macularia</item>
+        <item>Ematurga atomaria</item>
+        <item>Siona lineata</item>
+        <item>Camptogr. bilineata</item>
+        <item>Euclidia glyphica</item>
+        <item>Autographa gamma</item>
+        <item>Euplagia quadripunctaria</item>
+    </string-array>
+    <string-array name="initCodes">
+        <item>03998</item>
+        <item>06843</item>
+        <item>06923</item>
+        <item>06924</item>
+        <item>06930</item>
+        <item>06960</item>
+        <item>06966</item>
+        <item>06995</item>
+        <item>06998</item>
+        <item>07000</item>
+        <item>07015</item>
+        <item>07021</item>
+        <item>07024</item>
+        <item>07034</item>
+        <item>07097</item>
+        <item>07163</item>
+        <item>07243</item>
+        <item>07245</item>
+        <item>07248</item>
+        <item>07250</item>
+        <item>07252</item>
+        <item>07255</item>
+        <item>07307</item>
+        <item>07309</item>
+        <item>07334</item>
+        <item>07340</item>
+        <item>07344</item>
+        <item>07350</item>
+        <item>07415</item>
+        <item>07620</item>
+        <item>07804</item>
+        <item>07916</item>
+        <item>08289</item>
+        <item>08969</item>
+        <item>09056</item>
+        <item>10605</item>
+    </string-array>
 </resources>

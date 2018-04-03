@@ -7,15 +7,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.wmstein.tourcount.MyDebug;
+import com.wmstein.tourcount.R;
 
 /**
  * Created by milo on 05/05/2014.
- * Adopted for TourCount by wmstein on 2016-04-19
- * updated to version 2 on 2017-09-09
+ * Adopted for TourCount by wmstein on 2016-04-19,
+ * updated to version 2 on 2017-09-09,
+ * updated to version 3 on 2018-03-31
  */
 public class DbHelper extends SQLiteOpenHelper
 {
-    static final String TAG = "TourCount DB";
+    private SQLiteDatabase database;
+    static final String TAG = "TourCount DBHelper";
     private static final String DATABASE_NAME = "tourcount.db";
     private static final int DATABASE_VERSION = 3;
 
@@ -40,13 +43,23 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String S_START_TM = "start_tm";
     public static final String S_END_TM = "end_tm";
     public static final String S_NOTES = "notes";
+    
     public static final String C_ID = "_id";
-    public static final String C_COUNT = "count";
+    public static final String C_COUNT_F1I = "count_f1i";
+    public static final String C_COUNT_F2I = "count_f2i";
+    public static final String C_COUNT_F3I = "count_f3i";
+    public static final String C_COUNT_PI = "count_pi";
+    public static final String C_COUNT_LI = "count_li";
+    public static final String C_COUNT_EI = "count_ei";
     public static final String C_NAME = "name";
     public static final String C_CODE = "code";
     public static final String C_NOTES = "notes";
+
+    public static final String C_COUNT = "count"; //deprecated
+
     public static final String H_ID = "_id";
     public static final String H_OBSERVER = "observer";
+
     public static final String I_ID = "_id";
     public static final String I_COUNT_ID = "count_id";
     public static final String I_NAME = "name";
@@ -62,14 +75,19 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String I_STATE_1_6 = "state_1_6";
     public static final String I_NOTES = "notes";
     public static final String I_ICOUNT = "icount";
+    public static final String I_CATEGORY = "icategory";
+
     public static final String T_ID = "_id";
     public static final String T_TEMP_LOC = "temp_loc";
     public static final String T_TEMP_CNT = "temp_cnt";
+
+    private Context mContext;
 
     // constructor
     public DbHelper(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.mContext = context;
     }
 
     // called once on database creation
@@ -95,7 +113,12 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL(sql);
         sql = "create table " + COUNT_TABLE + " ("
             + C_ID + " integer primary key, "
-            + C_COUNT + " int, "
+            + C_COUNT_F1I + " int, "
+            + C_COUNT_F2I + " int, "
+            + C_COUNT_F3I + " int, "
+            + C_COUNT_PI + " int, "
+            + C_COUNT_LI + " int, "
+            + C_COUNT_EI + " int, "
             + C_NAME + " text, "
             + C_CODE + " text, "
             + C_NOTES + " text default NULL)";
@@ -124,29 +147,58 @@ public class DbHelper extends SQLiteOpenHelper
             + I_STADIUM + " text, "
             + I_STATE_1_6 + " int, "
             + I_NOTES + " text, "
-            + I_ICOUNT + " int)";
+            + I_ICOUNT + " int, "
+            + I_CATEGORY + " int)";
         db.execSQL(sql);
 
-        //create empty row for SECTION_TABLE, HEAD_TABLE and TEMP_TABLE
-
+        //create empty row for SECTION_TABLE
         ContentValues values1 = new ContentValues();
         values1.put(S_ID, 1);
         values1.put(S_NAME, "");
         db.insert(SECTION_TABLE, null, values1);
 
+        //create empty row for HEAD_TABLE
         values1 = new ContentValues();
         values1.put(H_ID, 1);
         values1.put(H_OBSERVER, "");
         db.insert(HEAD_TABLE, null, values1);
 
+        //create empty row for TEMP_TABLE
         values1 = new ContentValues();
         values1.put(T_ID, 1);
         values1.put(T_TEMP_LOC, "");
         values1.put(T_TEMP_CNT, 0);
         db.insert(TEMP_TABLE, null, values1);
 
+        //create initial data for COUNT_TABLE
+        initialCounts(db);
+
         if (MyDebug.LOG)
             Log.d(TAG, "Success!");
+    }
+
+    // initial data for COUNT_TABLE
+    private void initialCounts(SQLiteDatabase db)
+    {
+        String[] specs, codes;
+        specs = mContext.getResources().getStringArray(R.array.initSpecs);
+        codes = mContext.getResources().getStringArray(R.array.initCodes);
+
+        for (int i = 1; i < specs.length; i++)
+        {
+            ContentValues values4 = new ContentValues();
+            values4.put(C_ID, i);
+            values4.put(C_NAME, specs[i]);
+            values4.put(C_CODE, codes[i]);
+            values4.put(C_COUNT_F1I, 0);
+            values4.put(C_COUNT_F2I, 0);
+            values4.put(C_COUNT_F3I, 0);
+            values4.put(C_COUNT_PI, 0);
+            values4.put(C_COUNT_LI, 0);
+            values4.put(C_COUNT_EI, 0);
+            values4.put(C_NOTES, "");
+            db.insert(COUNT_TABLE, null, values4);
+        }
     }
 
     // ******************************************************************************************
@@ -155,9 +207,14 @@ public class DbHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        if (oldVersion == 2)
+        {
+            version_3(db);
+        }
         if (oldVersion == 1)
         {
             version_2(db);
+            version_3(db);
         }
     }
 
@@ -171,7 +228,7 @@ public class DbHelper extends SQLiteOpenHelper
             sql = "alter table " + INDIVIDUALS_TABLE + " add column " + I_ICOUNT + " int";
             db.execSQL(sql);
             if (MyDebug.LOG)
-                Log.d(TAG, "Missing icount column added to indivuduals");
+                Log.d(TAG, "Missing icount column added to individuals");
         } catch (Exception e)
         {
             if (MyDebug.LOG)
@@ -181,5 +238,145 @@ public class DbHelper extends SQLiteOpenHelper
         if (MyDebug.LOG)
             Log.d(TAG, "Upgraded database to version 2");
     }
-    
+
+    private void version_3(SQLiteDatabase db)
+    {
+        String sql;
+        boolean colExist = false;
+        boolean colCatExist = false;
+
+        // add new extra columns to table counts
+        try
+        {
+            sql = "alter table " + COUNT_TABLE + " add column " + C_COUNT_F2I + " int";
+            db.execSQL(sql);
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing count_f2i column added to counts!");
+        } catch (Exception e)
+        {
+            if (MyDebug.LOG)
+                Log.e(TAG, "Column already present: " + e.toString());
+            colExist = true;
+        }
+
+        if (MyDebug.LOG)
+            Log.d(TAG, "Upgraded database to version 3");
+
+        try
+        {
+            sql = "alter table " + COUNT_TABLE + " add column " + C_COUNT_F3I + " int";
+            db.execSQL(sql);
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing count_f3i column added to counts!");
+        } catch (Exception e)
+        {
+            //
+        }
+
+        try
+        {
+            sql = "alter table " + COUNT_TABLE + " add column " + C_COUNT_PI + " int";
+            db.execSQL(sql);
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing count_pi column added to counts!");
+        } catch (Exception e)
+        {
+            //
+        }
+
+        try
+        {
+            sql = "alter table " + COUNT_TABLE + " add column " + C_COUNT_LI + " int";
+            db.execSQL(sql);
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing count_li column added to counts!");
+        } catch (Exception e)
+        {
+            //
+        }
+
+        try
+        {
+            sql = "alter table " + COUNT_TABLE + " add column " + C_COUNT_EI + " int";
+            db.execSQL(sql);
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing count_ei column added to counts!");
+        } catch (Exception e)
+        {
+            //
+        }
+
+        // add I_CATEGORY to INDIVIDUALS table
+        try
+        {
+            sql = "alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY 
+                + " int default 1";
+            db.execSQL(sql);
+            if (MyDebug.LOG)
+                Log.d(TAG, "Missing icategory column added to individuals!");
+        }  catch (Exception e)
+        {
+            if (MyDebug.LOG)
+                Log.e(TAG, "Column I_CATEGORY already present: " + e.toString());
+            colCatExist = true;
+        }
+
+        // fill sex and icategory with default values to avoid crash when negative counting
+        if (!colCatExist)
+        {
+            try
+            {
+                sql = "UPDATE " + INDIVIDUALS_TABLE + " SET " + I_SEX + " = '-'";
+                db.execSQL(sql);
+                if (MyDebug.LOG)
+                    Log.d(TAG, "I_SEX filled with '-'");
+            } catch (Exception e)
+            {
+                //
+            }
+        }
+        
+        // copy old data into new structure
+        if (!colExist)
+        {
+            // rename table counts to counts_backup
+            sql = "alter table " + COUNT_TABLE + " rename to counts_backup";
+            db.execSQL(sql);
+
+            // create new counts table
+            sql = "create table " + COUNT_TABLE + " ("
+                + C_ID + " integer primary key, "
+                + C_COUNT_F1I + " int, "
+                + C_COUNT_F2I + " int, "
+                + C_COUNT_F3I + " int, "
+                + C_COUNT_PI + " int, "
+                + C_COUNT_LI + " int, "
+                + C_COUNT_EI + " int, "
+                + C_NAME + " text, "
+                + C_CODE + " text, "
+                + C_NOTES + " text default NULL)";
+            db.execSQL(sql);
+
+            // insert the old data into counts
+            sql = "INSERT INTO " + COUNT_TABLE + " SELECT "
+                + C_ID + ","
+                + C_COUNT + ","
+                + C_COUNT_F2I + ","
+                + C_COUNT_F3I + ","
+                + C_COUNT_PI + ","
+                + C_COUNT_LI + ","
+                + C_COUNT_EI + ","
+                + C_NAME + ","
+                + C_CODE + ","
+                + C_NOTES + " FROM counts_backup";
+            db.execSQL(sql);
+
+            sql = "DROP TABLE counts_backup";
+            db.execSQL(sql);
+
+            if (MyDebug.LOG)
+                Log.d(TAG, "Upgraded database to version 3");
+        }
+    }
+
 }

@@ -1,40 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_counting.xml is used by CountingActivity.java -->
-<ScrollView android:id="@+id/countingScreen"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<!-- 
+  ~ Copyright (c) 2018. Wilhelm Stein, Bonn, Germany.
+    activity_counting.xml is used by CountingActivity.java 
+-->
+<LinearLayout android:id="@+id/countingScreen"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- insert the section notes in here -->
         <LinearLayout
-            android:id="@+id/countNotesLayout"
+            android:id="@+id/sectionNotesLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:orientation="vertical">
-            <!-- insert the new notes as they are created in here -->
-        </LinearLayout>
+            android:orientation="vertical"
+            />
 
+        <!-- separating white line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@android:color/white"
-            android:paddingTop="2dp"/>
+            android:paddingTop="2dp"
+            />
 
+        <!-- insert spinner widget_counting_head1 here -->
+        <Spinner
+            android:id="@+id/countHead1Spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!-- separating white line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@android:color/white"
+            android:paddingTop="2dp"
+            />
+
+        <!-- insert head2 in here: species remark and edit -->
         <LinearLayout
-            android:id="@+id/countCountLayout"
+            android:id="@+id/countHead2Layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:orientation="vertical">
-            <!-- insert the new counts as they are created in here -->
-        </LinearLayout>
+            android:orientation="vertical"
+            />
 
+        <!-- separating white line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@android:color/white"
+            android:paddingTop="2dp"
+            />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- insert the internal counts in here -->
+                <LinearLayout
+                    android:id="@+id/countCountiLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:orientation="vertical"
+                    />
+
+                <!-- separating white line -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white"
+                    android:paddingTop="2dp"
+                    />
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-
-</ScrollView>
-
+</LinearLayout>

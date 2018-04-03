@@ -4,6 +4,11 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,10 +27,10 @@ import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.ListHeadWidget;
+import com.wmstein.tourcount.widgets.ListIndivRemWidget;
 import com.wmstein.tourcount.widgets.ListIndividualWidget;
 import com.wmstein.tourcount.widgets.ListLineWidget;
 import com.wmstein.tourcount.widgets.ListMetaWidget;
-import com.wmstein.tourcount.widgets.ListSpRemWidget;
 import com.wmstein.tourcount.widgets.ListSpeciesWidget;
 import com.wmstein.tourcount.widgets.ListSumWidget;
 import com.wmstein.tourcount.widgets.ListTitleWidget;
@@ -37,7 +42,7 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2018-03-19
+ * last edited on 2018-03-23
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -57,6 +62,11 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private SectionDataSource sectionDataSource;
     private HeadDataSource headDataSource;
     private IndividualsDataSource individualsDataSource;
+
+    // Location info handling
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String provider;
 
     private SQLiteDatabase database;
     private DbHelper dbHandler;
@@ -121,14 +131,70 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
+        
+        // clear existing views
         spec_area.removeAllViews();
+
+        // Get LocationManager instance
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Request list with names of all providers
+        List<String> providers = locationManager.getAllProviders();
+        for (String name : providers)
+        {
+            LocationProvider lp = locationManager.getProvider(name);
+        }
+
+        // Best possible provider
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        provider = locationManager.getBestProvider(criteria, true);
+
+        // Create LocationListener object
+        locationListener = new LocationListener()
+        {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderEnabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onProviderDisabled(String provider)
+            {
+                // nothing
+            }
+
+            @Override
+            public void onLocationChanged(Location location)
+            {
+                // nothing
+            }
+        };
+
+        // get location service
+        try
+        {
+            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
+        } catch (Exception e)
+        {
+            //
+        }
+
         loadData();
     }
 
     // fill ListSpeciesWidget with relevant counts and sections data
     private void loadData()
     {
+        int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sumo = 0;
         int sumsp = 0, sumind = 0;
         double longi = 0, lati = 0, uncer = 0;
         int frst = 0;
@@ -237,49 +303,66 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         }
 
         // calculate the totals
+        int spec_countf1i;
+        int spec_countf2i;
+        int spec_countf3i;
+        int spec_countpi;
+        int spec_countli;
+        int spec_countei;
+        
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec);
-            int spec_count = widget.getSpec_count(spec);
+            spec_countf1i = widget.getSpec_countf1i(spec);
+            spec_countf2i = widget.getSpec_countf2i(spec);
+            spec_countf3i = widget.getSpec_countf3i(spec);
+            spec_countpi = widget.getSpec_countpi(spec);
+            spec_countli = widget.getSpec_countli(spec);
+            spec_countei = widget.getSpec_countei(spec);
 
-            sumind = sumind + spec_count; // sum of counted individuals
-            sumsp = sumsp + 1;              // sum of counted species
+            summf = summf + spec_countf1i;
+            summ = summ + spec_countf2i;
+            sumf = sumf + spec_countf3i;
+            sump = sump + spec_countpi;
+            suml = suml + spec_countli;
+            sumo = sumo + spec_countei;
+
+            sumind = sumind + spec_countf1i + spec_countf2i + spec_countf3i + spec_countpi
+                + spec_countli + spec_countei; // sum of counted individuals
+            sumsp = sumsp + 1;                 // sum of counted species
         }
 
         // display the totals
         lsw = new ListSumWidget(this, null);
         lsw.setSum(sumsp, sumind);
         spec_area.addView(lsw);
-
+        
+        int spec_count = 0;
         List<Individuals> indivs; // List of individuals
         // display all the counts by adding them to listSpecies layout
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec);
-            int spec_count = widget.getSpec_count(spec);
+            
+            spec_countf1i = widget.getSpec_countf1i(spec);
+            spec_countf2i = widget.getSpec_countf2i(spec);
+            spec_countf3i = widget.getSpec_countf3i(spec);
+            spec_countpi = widget.getSpec_countpi(spec);
+            spec_countli = widget.getSpec_countli(spec);
+            spec_countei = widget.getSpec_countei(spec);
+            
+            spec_count = spec_countf1i + spec_countf2i + spec_countf3i 
+                + spec_countpi + spec_countli + spec_countei;
+            
             String tRem;
-            if(widget.getSpec_notes(spec) == null) // if-test on "" or on length() >0 produces crash
-            {
-                tRem = "";
-            }
-            else
-            {
-                tRem = widget.getSpec_notes(spec);
-            }
-            ListSpRemWidget rwidget = new ListSpRemWidget(this, null);
-            rwidget.setRem(spec);
-
+            
             // fill widget only for counted species
             if (spec_count > 0)
             {
                 spec_area.addView(widget);
 
-                if (tRem.length() > 0)
-                {
-                    spec_area.addView(rwidget);
-                }
                 String iName = widget.getSpec_name(spec);
                 indivs = individualsDataSource.getIndividualsByName(iName);
                 for (Individuals indiv : indivs)
@@ -288,6 +371,20 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
                     //load the individuals data
                     iwidget.setIndividual(indiv);
                     spec_area.addView(iwidget);
+
+                    // show individual notes only when provided
+                    ListIndivRemWidget rwidget = new ListIndivRemWidget(this, null);
+                    if (iwidget.getIndNotes(indiv) == null)
+                        tRem = "";
+                    else
+                        tRem = iwidget.getIndNotes(indiv);
+
+                    if (tRem.length() > 0)
+                    {
+                        rwidget.setRem(indiv);
+                        spec_area.addView(rwidget);
+                    }
+                    
                 }
             }
         }
@@ -299,6 +396,15 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     protected void onPause()
     {
         super.onPause();
+
+        // Stop location service
+        try
+        {
+            locationManager.removeUpdates(locationListener);
+        } catch (Exception e)
+        {
+            // do nothing
+        }
 
         // close the data sources
         headDataSource.close();

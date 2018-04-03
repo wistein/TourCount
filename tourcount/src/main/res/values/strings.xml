@@ -10,7 +10,6 @@
     <string name="title_activity_edit_individual">EditIndividualActivity</string>
     <string name="title_activity_edit_section">EditSectionActivity</string>
     <string name="title_activity_file_chooser">AdvFileChooser</string>
-    <string name="title_activity_welcome">WelcomeActivity</string>
 
     <!-- generic -->
     <string name="app_name">TourCount</string>
@@ -19,15 +18,16 @@
     <string name="customTooBig">Sorry, trying to set the background image has caused an out of memory error.</string>
 
     <!-- WelcomeActivity -->
-    <string name="hello">Butterfly Monitoring App\n\nSupports species-specific counting of butterflies on walks.\n\nYou can find instructions for the App under the menu \"Help\".</string>
+    <string name="hello">Species-specific counting\n\nof butterflies on walks</string>
     <string name="zlist">Counting List</string>
+    <string name="counting">Counting</string>
     <string name="viewSpeciesButton">Show Results</string>
     <string name="editMetaButton">Prepare Recording</string>
     <string name="changeLogTitle">App Info</string>
     <string name="viewHelpTitle">Help</string>
-    <string name="noCard">Your sdcard could not be accessed!</string>
+    <string name="noCard">Your Basic Directory could not be accessed!</string>
     <string name="saveFail">Your database could not be exported!</string>
-    <string name="saveWin">Your database has been exported to the sdcard.</string>
+    <string name="saveWin">Your database has been exported to your Basic Directory.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="loadFileMenu">Import DB</string>
     <string name="exportMenu">Export DB</string>
@@ -37,7 +37,9 @@
     <string name="importBasisMenu">Import Basic DB</string>
     <string name="importFail">Your database could not be imported!</string>
     <string name="importWin">Your database has been imported.</string>
-    <string name="noDb">Please put \'tourcount0.db\' on your /sdcard partition.</string>
+    <string name="errorDb">DB Error!</string>
+    <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
+    <string name="noDb">Please put \'tourcount0.db\' in the Basic Directory of your memory.</string>
     <string name="importButton">Import</string>
     <string name="individuals">Individuals</string>
     <string name="importCancelButton">Cancel</string>
@@ -85,18 +87,14 @@
     <!-- EditIndividualActivity -->
     <string name="saveIndividualButton">Save</string>
     <string name="indivdel">Deleted: Individual with ID:</string>
-    <string name="indivdel1">Deleted: 1x</string>
     <string name="xcoord">Latitude</string>
     <string name="ycoord">Longitude</string>
     <string name="zcoord">Height (m)</string>
     <string name="uncerti">Uncertainty (m)</string>
     <string name="time">Time</string>
     <string name="locality">Locality</string>
-    <string name="sex">Sex</string>
-    <string name="sex1">Sex (f/m)</string>
-    <string name="valSex">Check sex!</string>
+    <string name="sex">Sexus</string>
     <string name="stadium">Phase</string>
-    <string name="stadium1">Phase (B/P/C/E)</string>
     <string name="stadium_1">Butterfly</string>
     <string name="stadium_2">Pupa</string>
     <string name="stadium_3">Caterpillar</string>
@@ -119,15 +117,8 @@
     <string name="deleteButton">Delete</string>
     <string name="action_share">Share</string>
     <string name="send_to">Share notes</string>
-    <string name="emptyAddr">Empty address</string>
-    <string name="unknownAddr">Unknown address</string>
-    <string name="errAddr">Web read error!</string>
-    <string name="noAddr">No address data!</string>
-    <string name="noPos">No position found!</string>
-    <string name="addrInfo">Address Info</string>
     <string name="noPhotoPermit">The right to take photos is missing.</string>
     <string name="chooserTitle">Select photo app</string>
-    <string name="notTakenPhoto">Picture was not taken.</string>
 	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSectionActivity -->
@@ -146,7 +137,6 @@
 
     <!-- ViewHelp -->
     <string name="viewhelp_full_title">Help (TourCount Ver.</string>
-    <string name="viewhelp_title">What can the app do?</string>
     <string name="viewhelp_ok_button">OK</string>
 
     <!-- Preferences -->
@@ -205,6 +195,12 @@
     <string name="txtLon">Lo.:</string>
     <string name="txtHgt">h:</string>
     <string name="rem">Rem.:</string>
+    <string name="txt_mf">♂, ♀</string>
+    <string name="txt_m">♂</string>
+    <string name="txt_f">♀</string>
+    <string name="txt_p">Pupa</string>
+    <string name="txt_l">Larva</string>
+    <string name="txt_e">Egg</string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>
@@ -212,11 +208,18 @@
     <string name="hintTitle">Title</string>
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">List notes.</string>
-    <string name="hintInstructions">Instructions.</string>
     <string name="getHelp">Sorry, there was a problem with your database. Please email if you need assistance, attaching your exported \'tourcount.db\'.</string>
     <string name="activate_GPS">Please, activate GPS in Location Mode.</string>
     <string name="no_GPS">Sorry, no position, GPS is not activated.</string>
     <string name="no_NET">Sorry, no position, Network location is not activated.</string>
     <string name="no_Passive">Sorry, no position, Passive location is not activated.</string>
+    <string name="countCodeHint">Code</string>
+    <string name="countImagomfHint">Butterfly ♂, ♀</string>
+    <string name="countImagomHint">Butterfly ♂</string>
+    <string name="countImagofHint">Butterfly ♀</string>
+    <string name="countPupaHint">Pupa</string>
+    <string name="countLarvaHint">Larva</string>
+    <string name="countOvoHint">Egg</string>
+    <string name="warnCount">Only values bigger than zero possible!</string>
 
 </resources>

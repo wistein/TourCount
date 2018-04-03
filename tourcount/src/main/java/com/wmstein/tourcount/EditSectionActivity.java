@@ -36,14 +36,14 @@ import java.util.List;
  * Uses CountEditWidget.java, activity_edit_section.xml.
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted by wmstein on 2016-02-18,
- * last edited on 2018-03-19
+ * last edited on 2018-03-27
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "TourCountEditSecAct";
     private ArrayList<CountEditWidget> savedCounts;
     private TourCountApplication tourCount;
-    
+
     // the actual data
     private Section section;
     private LinearLayout counts_area;
@@ -106,12 +106,13 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
         setContentView(R.layout.activity_edit_section);
 
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
+        ScrollView counting_screen = findViewById(R.id.editingScreen);
 
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
+        }
+        else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -130,7 +131,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         counting_screen.setBackground(bg);
 
         savedCounts = new ArrayList<>();
-        counts_area = (LinearLayout) findViewById(R.id.editingCountsLayout);
+        counts_area = findViewById(R.id.editingCountsLayout);
 
         // Restore any edit widgets the user has added previously
         if (savedInstanceState != null)
@@ -146,10 +147,10 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
-    /*
-     * Before these widgets can be serialised they must be removed from their parent, or else
-     * trying to add them to a new parent causes a crash because they've already got one.
-     */
+        /*
+         * Before these widgets can be serialised they must be removed from their parent, or else
+         * trying to add them to a new parent causes a crash because they've already got one.
+         */
         super.onSaveInstanceState(outState);
         for (CountEditWidget cew : savedCounts)
         {
@@ -203,7 +204,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         // load the counts data
         List<Count> counts = countDataSource.getAllSpecies();
 
-        // display all the counts by adding them to countCountLayout
+        // display all the counts by adding them to CountEditWidget
         for (Count count : counts)
         {
             // widget
@@ -412,8 +413,15 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         if (id == R.id.home)
         {
             Intent intent = NavUtils.getParentActivityIntent(this);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            NavUtils.navigateUpTo(this, intent);
+            if (intent != null)
+            {
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                NavUtils.navigateUpTo(this, intent);
+            }
+            else
+            {
+                super.finish();
+            }
         }
         else if (id == R.id.menuSaveExit)
         {
@@ -432,13 +440,14 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView counting_screen = (ScrollView) findViewById(R.id.editingScreen);
+        ScrollView counting_screen = findViewById(R.id.editingScreen);
         dupPref = prefs.getBoolean("pref_duplicate", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
+        }
+        else
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }

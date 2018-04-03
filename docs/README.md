@@ -1,33 +1,35 @@
 # TourCount
 
-TourCount is an Android app that supports species-specific and individually localized counting of butterflies in nature.
+TourCount is an Android app that supports species-specific and individually localized registering of butterflies.
 
 ### Features
 
-- Recording is organized according to a tour in nature with its expected butterfly species. 
-That means, you will use a new database instance per tour by importing a prepared basic Database.
-- Databases can be individually created and adapted within the app regarding meta data and 
-expected butterfly species.
-- There are prepared database files provided for most of the european species in /docs.
-- Editor to set up or adapt the list of species
-- Editor for the meta data to prepare a tour
-- Editor for individual species data of a counted individual (e.g. sexus, stadium, state or remark)
-- Automatic insertion of date, time, coordinates and height
-- Automatic insertion of location data by reverse OSM-geocoding when GPS and internet are accessible
-- Results are prepared for easy readout to transfer them to science4you entry masks
-- Results are shown with meta data, totals, species results and individual data.
-- Results may also be exported in SQLite- or CSV-format and transferred to a PC for your own 
-processing, e.g. by importing a csv-file into a spreadsheet like MS Excel.
-- The integrated help contains a detailed userguide.
+- Data recording is organized for a tour in nature with its expected butterfly species.
+- The app comes with a prepared basic database with the most common species in Europe as a starting point.
+- Databases can be individually created and adapted within the app regarding meta data and expected butterfly species.
+- You may use an individual species list per region.
+- The app contains an editor to setup or adapt the current species list,
+- an editor to prepare the meta data for a tour,
+- an editor for individual species data of a count (e.g. state, remark or bulk count entry).
+- Counting page with scroll-down-menu to select a species and
+- separate counters for ♂ or ♀, ♂, ♀, pupa, larva or egg.
+- The app automaticaly inserts date, time, coordinates and height as well as
+- location data by reverse OSM-geocoding when GPS and internet are accessible.
+- Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
+- Results are shown with meta data, totals, remarks, species results and individual data.
+- Results may be exported in SQLite- or CSV-format (for transfer to a PC for your own processing, e.g. in a spreadsheet.)
+- Help contains a detailed userguide.
+- TourCount uses the European coding scheme for butterflies from Karsholt/Razowski.
 
 ### Prerequisites
 The app demands for 
 - storage access permit which is needed for im-/exporting the counting data, 
 - GPS permit for coordinates and location info per count, 
-- internet access for OpenStreetMap reverse geocoding and 
-- the permit to prevent the phone from sleeping (to control the counting screen when used under 
-Android 5.0.1 or newer).
+- internet access for OpenStreetMap reverse geocoding, 
+- the permit to write settings for setting the screen brightness and
+- the permit to keep the device awake.
 
+The smartphone screen should have a minimum resolution of 1920 x 1024 pixels.  
 The app is usable with Android Version 4.2.2 or newer.
 
 ### General

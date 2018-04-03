@@ -5,12 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wmstein.tourcount.database.DbHelper.INDIVIDUALS_TABLE;
+
 /*************************************************
- * Created by wmstein for TourCount on 20.04.2016.
+ * Created by wmstein for TourCount on 2016-04-20,
+ * last edited on 2018-03-30
  */
 public class IndividualsDataSource
 {
@@ -32,7 +36,8 @@ public class IndividualsDataSource
         DbHelper.I_STADIUM,    // stadium
         DbHelper.I_STATE_1_6,  // state
         DbHelper.I_NOTES,      // notes
-        DbHelper.I_ICOUNT      // individual count
+        DbHelper.I_ICOUNT,     // individual count
+        DbHelper.I_CATEGORY    // category (1-6)
     };
 
     public IndividualsDataSource(Context context)
@@ -67,9 +72,10 @@ public class IndividualsDataSource
         values.put(DbHelper.I_STATE_1_6, 0);
         values.put(DbHelper.I_NOTES, "");
         values.put(DbHelper.I_ICOUNT, 0);
+        values.put(DbHelper.I_CATEGORY, 0);
 
-        int insertId = (int) database.insert(DbHelper.INDIVIDUALS_TABLE, null, values);
-        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE,
+        int insertId = (int) database.insert(INDIVIDUALS_TABLE, null, values);
+        Cursor cursor = database.query(INDIVIDUALS_TABLE,
             allColumns, DbHelper.I_ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
         Individuals newIndividuals = cursorToIndividuals(cursor);
@@ -79,7 +85,7 @@ public class IndividualsDataSource
 
     public void deleteIndividualById(int id)
     {
-        database.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null);
+        database.delete(INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null);
     }
 
     public void decreaseIndividual(int id, int newicount)
@@ -88,7 +94,7 @@ public class IndividualsDataSource
         dataToInsert.put(DbHelper.I_ICOUNT, newicount);
         String where = DbHelper.I_ID + " = ?";
         String[] whereArgs = {String.valueOf(id)};
-        database.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
+        database.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
     }
     
     private Individuals cursorToIndividuals(Cursor cursor)
@@ -109,6 +115,7 @@ public class IndividualsDataSource
         newindividuals.state_1_6 = cursor.getInt(cursor.getColumnIndex(DbHelper.I_STATE_1_6));
         newindividuals.notes = cursor.getString(cursor.getColumnIndex(DbHelper.I_NOTES));
         newindividuals.icount = cursor.getInt(cursor.getColumnIndex(DbHelper.I_ICOUNT));
+        newindividuals.icategory = cursor.getInt(cursor.getColumnIndex(DbHelper.I_CATEGORY));
         return newindividuals;
     }
 
@@ -129,21 +136,29 @@ public class IndividualsDataSource
         dataToInsert.put(DbHelper.I_STATE_1_6, individuals.state_1_6);
         dataToInsert.put(DbHelper.I_NOTES, individuals.notes);
         dataToInsert.put(DbHelper.I_ICOUNT, individuals.icount);
+        dataToInsert.put(DbHelper.I_CATEGORY, individuals.icategory);
         String where = DbHelper.I_ID + " = ?";
         String[] whereArgs = {String.valueOf(individuals.id)};
-        database.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
+        database.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
         return individuals.id;
     }
 
-    public int readLastIndividual(int c_Id)
+    // get last individual of category of species
+    public int getLastIndiv(int c_Id, int categ)
     {
         Individuals individuals;
-        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_COUNT_ID + " = ?", new String[]{String.valueOf(c_Id)}, null, null, null);
+        String c_IdStr = String.valueOf(c_Id);
+        String categStr = String.valueOf(categ);
+        Cursor cursor = database.rawQuery("select * from " + INDIVIDUALS_TABLE 
+            + " WHERE (" + DbHelper.I_COUNT_ID + " = " + c_IdStr + " AND " 
+            + DbHelper.I_CATEGORY + " = " + categStr + ")", null, null);
         cursor.moveToLast();
+
         // check for entries in individuals table, which are not there when bulk counts are entered
         if (!cursor.isAfterLast())
         {
             individuals = cursorToIndividuals(cursor);
+            Log.e("IndividDataSource: ", "i_Id = " + String.valueOf(individuals.id));
             cursor.close();
             return individuals.id;
         }
@@ -157,8 +172,8 @@ public class IndividualsDataSource
     public Individuals getIndividual(int indiv_id)
     {
         Individuals individuals;
-        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID 
-            + " = ?", new String[]{String.valueOf(indiv_id)}, null, null, null);
+        Cursor cursor = database.query(INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID + " = ?", 
+            new String[]{String.valueOf(indiv_id)}, null, null, null);
         cursor.moveToFirst();
         individuals = cursorToIndividuals(cursor);
         cursor.close();
@@ -168,7 +183,7 @@ public class IndividualsDataSource
     public int getIndividualCount(int indiv_id)
     {
         Individuals individuals;
-        Cursor cursor = database.query(DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID
+        Cursor cursor = database.query(INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID
             + " = ?", new String[]{String.valueOf(indiv_id)}, null, null, null);
         cursor.moveToFirst();
         individuals = cursorToIndividuals(cursor);
@@ -181,7 +196,7 @@ public class IndividualsDataSource
     {
         List<Individuals> indivs = new ArrayList<>();
 
-        String slct = "select * from " + DbHelper.INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_NAME + " = ?";
+        String slct = "select * from " + INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_NAME + " = ?";
         Cursor cursor = database.rawQuery(slct, new String[] {iname});
 
         cursor.moveToFirst();
@@ -199,7 +214,7 @@ public class IndividualsDataSource
     {
         List<Individuals> individs = new ArrayList<>();
 
-        String slct = "select * from " + DbHelper.INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_COORD_X + " != 0";
+        String slct = "select * from " + INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_COORD_X + " != 0";
         Cursor cursor = database.rawQuery(slct, null);
 
         cursor.moveToFirst();
