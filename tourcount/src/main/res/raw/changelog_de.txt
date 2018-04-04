@@ -36,6 +36,12 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 3.0.1
+  % Version 3.0.1
+  _ 04.04.2018
+		* Unnötige Berechtigung WRITE_SETTINGS entfernt 
+  	* Multi-Window-Modus (Android 7+) gesperrt wegen inkompatiblem Pull-Down-Menü (Spinner)
+
 $ 3.0.0
   % Version 3.0.0
   _ 03.04.2018

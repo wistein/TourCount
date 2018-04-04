@@ -1,6 +1,9 @@
 # History
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
+
+#### Version 3.0.1 (2018-04-03)
+- Unnecessary permission WRITE_SETTINGS removed
   
 #### Version 3.0.0 (2018-03-31)
 - Redesign of counting page layout with scroll-down selection od species

@@ -3,7 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:largeHeap="true"
-          android:versionName="3.0.0">
+          android:versionName="3.0.1">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -11,15 +11,16 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- Permission needed for network location provider -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- Permission needed for screen brightness setting -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
-                     tools:ignore="ProtectedPermissions"/>
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <!-- Permission needed for reverse geocoding -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- multiwindow crashes when rotating the screen, 
+         reason: spinner in CountingActivity, 
+         solution: android:resizeableActivity="false" 
+         prohibits multi-window-mode -->
     <application
         android:name=".TourCountApplication"
         android:allowBackup="false"
@@ -27,6 +28,7 @@
         android:label="TourCount"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:resizeableActivity="false"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
@@ -35,7 +37,6 @@
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
             </intent-filter>
@@ -134,7 +135,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="CountingActivity"/>
         </activity>
-
+<!-- multiwindow crashes when rotating the screen, reason: spinner in CountingActivity
         <uses-library
             android:name="com.sec.android.app.multiwindow"
             android:required="false"/>
@@ -154,7 +155,7 @@
         <meta-data
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:resource="@dimen/app_minimumsize_h"/>
-
+-->
     </application>
 
 </manifest>

@@ -25,8 +25,7 @@ TourCount is an Android app that supports species-specific and individually loca
 The app demands for 
 - storage access permit which is needed for im-/exporting the counting data, 
 - GPS permit for coordinates and location info per count, 
-- internet access for OpenStreetMap reverse geocoding, 
-- the permit to write settings for setting the screen brightness and
+- internet access for OpenStreetMap reverse geocoding and 
 - the permit to keep the device awake.
 
 The smartphone screen should have a minimum resolution of 1920 x 1024 pixels.  

@@ -75,7 +75,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private int section_id;
     private int iid = 1;
     private LinearLayout count_area;
-    private LinearLayout count_areaLH;
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;

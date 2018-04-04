@@ -78,7 +78,6 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     private int section_id;
     private int iid = 1;
     private LinearLayout count_area;
-    private LinearLayout count_areaLH;
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;
@@ -439,11 +438,11 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         // 2. Head1, species selection spinner
         if (lhandPref) // if left-handed counting page
         {
-            spinnerL = (Spinner) findViewById(R.id.countHead1SpinnerLH);
+            spinnerL = findViewById(R.id.countHead1SpinnerLH);
         }
         else
         {
-            spinnerL = (Spinner) findViewById(R.id.countHead1Spinner);
+            spinnerL = findViewById(R.id.countHead1Spinner);
         }
 
         CountingWidget_head1 adapterL = new CountingWidget_head1(this,
