@@ -34,10 +34,10 @@ public class ListMetaWidget extends LinearLayout
     private final TextView widget_lstartTm2;
     private final TextView widget_lendTm1; // end_tm
     private final TextView widget_lendTm2;
-    private final TextView widget_dla1; // average latitude
-    private final TextView widget_dla2;
     private final TextView widget_dlo1; // average longitude
     private final TextView widget_dlo2;
+    private final TextView widget_dla1; // average latitude
+    private final TextView widget_dla2;
     private final TextView widget_muncert1; // mean uncertainty
     private final TextView widget_muncert2;
 
@@ -64,10 +64,10 @@ public class ListMetaWidget extends LinearLayout
         widget_lstartTm2 = findViewById(R.id.widgetLStartTm2);
         widget_lendTm1 = findViewById(R.id.widgetLEndTm1);
         widget_lendTm2 = findViewById(R.id.widgetLEndTm2);
-        widget_dla1 = findViewById(R.id.widgetdla1);
-        widget_dla2 = findViewById(R.id.widgetdla2);
         widget_dlo1 = findViewById(R.id.widgetdlo1);
         widget_dlo2 = findViewById(R.id.widgetdlo2);
+        widget_dla1 = findViewById(R.id.widgetdla1);
+        widget_dla2 = findViewById(R.id.widgetdla2);
         widget_muncert1 = findViewById(R.id.widgetmuncert1);
         widget_muncert2 = findViewById(R.id.widgetmuncert2);
     }
@@ -93,8 +93,8 @@ public class ListMetaWidget extends LinearLayout
         widget_lstartTm2.setText(section.start_tm);
         widget_lendTm1.setText(R.string.endtm);
         widget_lendTm2.setText(section.end_tm);
-        widget_dla1.setText(R.string.dLa);
         widget_dlo1.setText(R.string.dLo);
+        widget_dla1.setText(R.string.dLa);
         widget_muncert1.setText(R.string.mUncert);
     }
     

@@ -139,12 +139,12 @@
 
             <!-- State of individual -->
             <TextView
-                android:id="@+id/txtIndLat"
+                android:id="@+id/txtIndLon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="start"
-                android:hint="@string/txtLat"
+                android:hint="@string/txtLon"
                 android:maxLines="1"
                 android:padding="4sp"
                 android:textSize="12sp"
@@ -152,7 +152,7 @@
 
             <!-- Latitude of individual -->
             <TextView
-                android:id="@+id/txtIndLa"
+                android:id="@+id/txtIndLo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -168,19 +168,19 @@
 
             <!-- Longitude of individual -->
             <TextView
-                android:id="@+id/txtIndLon"
+                android:id="@+id/txtIndLat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="start"
-                android:hint="@string/txtLon"
+                android:hint="@string/txtLat"
                 android:maxLines="1"
                 android:padding="4sp"
                 android:textSize="12sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/txtIndLo"
+                android:id="@+id/txtIndLa"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
