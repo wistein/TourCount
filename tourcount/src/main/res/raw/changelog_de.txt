@@ -36,6 +36,12 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 3.0.2
+  % Version 3.0.2
+  _ 17.04.2018
+  	* Code-Verbesserungen
+		* Fehler behoben
+
 $ 3.0.1
   % Version 3.0.1
   _ 04.04.2018

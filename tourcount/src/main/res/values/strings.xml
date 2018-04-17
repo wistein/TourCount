@@ -42,7 +42,7 @@
     <string name="noDb">Please put \'tourcount0.db\' in the Basic Directory of your memory.</string>
     <string name="importButton">Import</string>
     <string name="individuals">Individuals</string>
-    <string name="importCancelButton">Cancel</string>
+    <string name="cancelButton">Cancel</string>
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
@@ -55,6 +55,7 @@
     <string name="sum">Sum:</string>
     <string name="avCoords">Average coordinates:</string>
     <string name="back_twice">Press again to exit</string>
+    <string name="resetFail">Your database could not be resetted!</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>
@@ -221,5 +222,6 @@
     <string name="countLarvaHint">Larva</string>
     <string name="countOvoHint">Egg</string>
     <string name="warnCount">Only values bigger than zero possible!</string>
+    <string name="permission_rationale_title">Permission required</string>
 
 </resources>

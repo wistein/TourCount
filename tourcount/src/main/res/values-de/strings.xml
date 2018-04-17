@@ -41,7 +41,7 @@
     <string name="corruptDb">Datenbankfehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
     <string name="noDb">Bitte kopiere die Datenbankdatei \"tourcount0.db\" ins Basis-Verzeichnis des Speichers.</string>
     <string name="importButton">Import</string>
-    <string name="importCancelButton">Abbrechen</string>
+    <string name="cancelButton">Abbrechen</string>
     <string name="individuals">Individuen</string>
     <string name="confirmBasisImport">Willst Du wirklich die leere Basis-Datenbank \"tourcount0.db\" importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
@@ -55,6 +55,7 @@
     <string name="sum">Summe:</string>
     <string name="avCoords">Mittlere Koordinaten:</string>
     <string name="back_twice">Zum Beenden erneut drücken</string>
+    <string name="resetFail">Die Datenbank konnte nicht zurückgesetzt werden!</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Aktuelles Verz.</string>
@@ -221,5 +222,6 @@
     <string name="countLarvaHint">Raupe</string>
     <string name="countOvoHint">Ei</string>
     <string name="warnCount">Nur Werte größer Null möglich!</string>
+    <string name="permission_rationale_title">Berechtigung wird benötigt</string>
 
 </resources>

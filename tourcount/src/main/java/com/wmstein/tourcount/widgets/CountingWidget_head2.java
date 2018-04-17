@@ -23,7 +23,7 @@ import com.wmstein.tourcount.database.Count;
  */
 public class CountingWidget_head2 extends RelativeLayout
 {
-    public static String TAG = "transektcountCountingWidget_head1";
+    public static String TAG = "tourcountCountingWidget_head1";
 
     private TextView countHead2;
 

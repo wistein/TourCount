@@ -44,11 +44,11 @@ import java.util.Locale;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2018-03-22
+ * last edit on 2018-04-17
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "tourcountEditMetaActivity";
+    private static String TAG = "tourcountEditMetaAct";
     private TourCountApplication tourCount;
     SharedPreferences prefs;
     private Head head;
@@ -82,7 +82,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
         setContentView(R.layout.activity_edit_head);
 
-        ScrollView editHead_screen = (ScrollView) findViewById(R.id.editHeadScreen);
+        ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
 
         if (screenOrientL)
         {
@@ -105,7 +105,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);
 
-        head_area = (LinearLayout) findViewById(R.id.edit_head);
+        head_area = findViewById(R.id.edit_head);
 
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(getString(R.string.editHeadTitle));
@@ -257,40 +257,12 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         head_area.addView(etw);
     }
 
-    // Correct height with geoid offset from EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight)
-    {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try
-        {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e)
-        {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try
-        {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
-    }
-
     // getSDate()
     public void getSDate(View view)
     {
         ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
             .hideSoftInputFromWindow(view.getWindowToken(), 0);
-        TextView sDate = (TextView) this.findViewById(R.id.widgetDate2);
+        TextView sDate = this.findViewById(R.id.widgetDate2);
         assert sDate != null;
         sDate.setText(getcurDate());
     }
@@ -300,7 +272,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     {
         ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
             .hideSoftInputFromWindow(view.getWindowToken(), 0);
-        TextView sTime = (TextView) this.findViewById(R.id.widgetStartTm2);
+        TextView sTime = this.findViewById(R.id.widgetStartTm2);
         assert sTime != null;
         sTime.setText(getcurTime());
     }
@@ -310,7 +282,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     {
         ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
             .hideSoftInputFromWindow(view.getWindowToken(), 0);
-        TextView eTime = (TextView) this.findViewById(R.id.widgetEndTm2);
+        TextView eTime = this.findViewById(R.id.widgetEndTm2);
         assert eTime != null;
         eTime.setText(getcurTime());
     }
@@ -437,7 +409,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView editHead_screen = (ScrollView) findViewById(R.id.editHeadScreen);
+        ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
         if (screenOrientL)
         {

@@ -9,7 +9,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -33,13 +32,12 @@ import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
 import java.io.IOException;
-import java.util.List;
 
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2018-03-31
+ * last modification an 2018-04-17
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -87,7 +85,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         setContentView(R.layout.activity_edit_individual);
 
-        ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
+        ScrollView individ_screen = findViewById(R.id.editIndividualScreen);
 
         if (screenOrientL)
         {
@@ -111,7 +109,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);
         individ_screen.setBackground(bg);
 
-        individ_area = (LinearLayout) findViewById(R.id.edit_individual);
+        individ_area = findViewById(R.id.edit_individual);
 
         // get parameters from CountingActivity
         Bundle extras = getIntent().getExtras();
@@ -158,13 +156,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         // Get LocationManager instance
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Request list with names of all providers
-        List<String> providers = locationManager.getAllProviders();
-        for (String name : providers)
-        {
-            LocationProvider lp = locationManager.getProvider(name);
-        }
 
         // Best possible provider
         Criteria criteria = new Criteria();
@@ -512,7 +503,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView individ_screen = (ScrollView) findViewById(R.id.editIndividualScreen);
+        ScrollView individ_screen = findViewById(R.id.editIndividualScreen);
         individ_screen.setBackground(null);
         getPrefs();
         if (screenOrientL)

@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
+#### Version 3.0.2 (2018-04-17)
+- Code improvements
+- Bug fixes
+
 #### Version 3.0.1 (2018-04-03)
 - Unnecessary permission WRITE_SETTINGS removed
   

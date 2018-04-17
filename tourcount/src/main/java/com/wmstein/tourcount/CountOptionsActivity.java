@@ -24,7 +24,7 @@ import com.wmstein.tourcount.widgets.EditNotesWidget;
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2018-03-19
+ * last edited on 2018-04-17
  */
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -53,7 +53,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         setContentView(R.layout.activity_count_options);
 
-        LinearLayout counting_screen = (LinearLayout) findViewById(R.id.count_options);
+        LinearLayout counting_screen = findViewById(R.id.count_options);
 
         if (screenOrientL)
         {
@@ -76,7 +76,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
 
-        static_widget_area = (LinearLayout) findViewById(R.id.static_widget_area);
+        static_widget_area = findViewById(R.id.static_widget_area);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)

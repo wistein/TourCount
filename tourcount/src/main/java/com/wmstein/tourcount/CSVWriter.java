@@ -25,7 +25,7 @@ import java.io.Writer;
  * @author Glen Smith
  *
  * Reduced to needed functions with modifications for TourCount by wmstein
- * Last edited on 2018-03-19
+ * Last edited on 2018-04-17
  */
 class CSVWriter implements Closeable, Flushable
 {
@@ -236,10 +236,8 @@ class CSVWriter implements Closeable, Flushable
 
     /**
      * Flush underlying stream to writer.
-     *
-     * @throws IOException if bad things happen
      */
-    public void flush() throws IOException
+    public void flush()
     {
         pw.flush();
     }

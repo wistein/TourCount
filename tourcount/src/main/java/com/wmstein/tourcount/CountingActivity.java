@@ -63,7 +63,7 @@ import java.util.Locale;
  * 
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-03-28
+ * last modification on 2018-04-17
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -141,23 +141,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         if (lhandPref) // if left-handed counting page
         {
             setContentView(R.layout.activity_counting_lh);
-        }
-        else
-        {
-            setContentView(R.layout.activity_counting);
-        }
-
-        // Set full brightness of screen
-        if (brightPref)
-        {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.screenBrightness = 1.0f;
-            getWindow().setAttributes(params);
-        }
-
-        if (lhandPref) // if left-handed counting page
-        {
             LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
             if (counting_screen != null)
             {
@@ -169,6 +152,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
         else
         {
+            setContentView(R.layout.activity_counting);
             LinearLayout counting_screen = findViewById(R.id.countingScreen);
             if (counting_screen != null)
             {
@@ -177,6 +161,15 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             count_area = findViewById(R.id.countCountiLayout);
             notes_area1 = findViewById(R.id.sectionNotesLayout);
             head_area2 = findViewById(R.id.countHead2Layout);
+        }
+
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
         }
 
         if (savedInstanceState != null)
@@ -580,7 +573,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countUpf1i(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
         
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -760,7 +753,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countUpf2i(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -937,7 +930,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countUpf3i(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -1114,7 +1107,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countUppi(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -1291,7 +1284,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countUpli(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -1468,7 +1461,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countUpei(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());

@@ -66,7 +66,7 @@ import java.util.Locale;
  * 
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-03-26
+ * last modification on 2018-04-17
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -144,10 +144,26 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         if (lhandPref) // if left-handed counting page
         {
             setContentView(R.layout.activity_counting_lh);
+            LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
+            if (counting_screen != null)
+            {
+                counting_screen.setBackground(tourCount.getBackground());
+            }
+            count_area = findViewById(R.id.countCountiLayoutLH);
+            notes_area1 = findViewById(R.id.sectionNotesLayoutLH);
+            head_area2 = findViewById(R.id.countHead2LayoutLH);
         }
         else
         {
             setContentView(R.layout.activity_counting);
+            LinearLayout counting_screen = findViewById(R.id.countingScreen);
+            if (counting_screen != null)
+            {
+                counting_screen.setBackground(tourCount.getBackground());
+            }
+            count_area = findViewById(R.id.countCountiLayout);
+            notes_area1 = findViewById(R.id.sectionNotesLayout);
+            head_area2 = findViewById(R.id.countHead2Layout);
         }
 
         // Set full brightness of screen
@@ -157,29 +173,6 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             WindowManager.LayoutParams params = getWindow().getAttributes();
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
-        }
-
-        if (lhandPref) // if left-handed counting page
-        {
-            LinearLayout counting_screen = (LinearLayout) findViewById(R.id.countingScreenLH);
-            if (counting_screen != null)
-            {
-                counting_screen.setBackground(tourCount.getBackground());
-            }
-            count_area = (LinearLayout) findViewById(R.id.countCountiLayoutLH);
-            notes_area1 = (LinearLayout) findViewById(R.id.sectionNotesLayoutLH);
-            head_area2 = (LinearLayout) findViewById(R.id.countHead2LayoutLH);
-        }
-        else
-        {
-            LinearLayout counting_screen = (LinearLayout) findViewById(R.id.countingScreen);
-            if (counting_screen != null)
-            {
-                counting_screen.setBackground(tourCount.getBackground());
-            }
-            count_area = (LinearLayout) findViewById(R.id.countCountiLayout);
-            notes_area1 = (LinearLayout) findViewById(R.id.sectionNotesLayout);
-            head_area2 = (LinearLayout) findViewById(R.id.countHead2Layout);
         }
 
         if (savedInstanceState != null)
@@ -583,7 +576,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpf1i(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -760,7 +753,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpf2i(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -935,7 +928,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpf3i(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -1110,7 +1103,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUppi(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -1285,7 +1278,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpli(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());
@@ -1460,7 +1453,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpei(View view)
     {
         buttonSound();
-        // iAtt used by EditindividualActivity to decide where to store bulk count value
+        // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
         int count_id = Integer.valueOf(view.getTag().toString());

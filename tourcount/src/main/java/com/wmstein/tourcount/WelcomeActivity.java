@@ -52,20 +52,25 @@ import java.util.Date;
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
 
+import static com.wmstein.tourcount.TourCountApplication.getPrefs;
 import static java.lang.Math.sqrt;
 
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and
- * EditMetaActivity, CountingActivity and ListSpeciesActivity.
+ * EditMetaActivity, Counting(L)Activity and ListSpeciesActivity.
  * <p/>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-04-03
+ * last modification on 2018-04-17
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final int FILE_CHOOSER = 11;
+    private int REQUEST_CODE_STORAGE = 122; // Random unique identifier for specific permission request since Android 6.0
+    private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    private int REQUEST_CODE_GPS = 124;
+    private int REQUEST_CODE_NETWORK = 125;
     private static final String TAG = "TourCountWelcomeAct";
     private TourCountApplication tourCount;
     private ChangeLog cl;
@@ -90,6 +95,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private final Handler mHandler = new Handler();
 
     // preferences
+    private SharedPreferences prefs;
     private String sortPref;
     private boolean screenOrientL; // option for screen orientation
     private boolean metaPref;      // option for reverse geocoding
@@ -105,7 +111,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onCreate(savedInstanceState);
 
         tourCount = (TourCountApplication) getApplication();
-        SharedPreferences prefs = TourCountApplication.getPrefs();
+        prefs = getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
@@ -149,7 +155,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         // if API level > 23 permission request is necessary
-        int REQUEST_CODE_STORAGE = 123; // Random unique identifier for specific permission request since Android 6.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             int hasWriteExtStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -160,7 +165,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         // Request GPS location permission
-        int REQUEST_CODE_GPS = 124;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             int hasAccessFineLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -171,7 +175,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         // Request Network location permission
-        int REQUEST_CODE_NETWORK = 125;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             int hasAccessCoarseLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -247,7 +250,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
@@ -337,16 +339,36 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         return super.onOptionsItemSelected(item);
     }
 
+    // Handle button click "Counting" here 
     public void viewCounts(View view)
     {
-        startActivity(new Intent(getApplicationContext(), CountingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        if (screenOrientL)
+        {
+            Intent intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncertainty);
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
+        else
+        {
+            Intent intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncertainty);
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
     }
 
+    // Handle button click "Prepare Inspection" here 
     public void editMeta(View view)
     {
         startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
+    // Handle button click "Show Results" here 
     public void viewSpecies(View view)
     {
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
@@ -869,7 +891,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 individualsDataSource.open();
 
                 // get the number of individuals with attributes
-                int cnt;  // counts count
                 int cnts; // individuals icount
                 String strcnts;
                 int cntsmf; // Imago male, female
@@ -989,7 +1010,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             strcntsp,               // count pupa
                             strcntsl,               // count caterpillar
                             strcntse,               // count egg
-                            curCSVCnt.getString(4)  // species notes
+                            curCSVCnt.getString(9)  // species notes
                         };
                     csvWrite.writeNext(arrStr);
 
@@ -1202,23 +1223,33 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // modified by wmstein
     private void exportBasisDb()
     {
+        // if API level > 23
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            int hasWriteStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+            }
+        }
+
         boolean mExternalStorageAvailable;
         boolean mExternalStorageWriteable;
         String state = Environment.getExternalStorageState();
         File tmpfile = new File("/data/data/com.wmstein.tourcount/files/tourcount_tmp.db");
         outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
-        String destPath = "/data/data/com.wmstein.tourcount/files";
+        String srcPath = "/data/data/com.wmstein.tourcount/files";
 
         try
         {
-            destPath = getFilesDir().getPath();
+            srcPath = getFilesDir().getPath();
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "destPath error: " + e.toString());
+                Log.e(TAG, "srcPath error: " + e.toString());
         }
-        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
-        infile = new File(destPath + "/tourcount.db");
+        srcPath = srcPath.substring(0, srcPath.lastIndexOf("/")) + "/databases";
+        infile = new File(srcPath + "/tourcount.db");
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -1254,7 +1285,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 // clear DB values for basic DB
                 clearDBValues();
-                Toast.makeText(this, getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
 
                 // write Basis DB
                 copy(infile, outfile);
@@ -1292,13 +1322,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             public void onClick(DialogInterface dialog, int id)
             {
-                clearDBValues();
-                Toast.makeText(getApplicationContext(), getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
+                boolean r_ok = clearDBValues();
+                if (r_ok)
+                    Toast.makeText(getApplicationContext(), getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
                 //noinspection ConstantConditions
                 getSupportActionBar().setTitle("");
             }
         });
-        builder.setNegativeButton(R.string.importCancelButton, new DialogInterface.OnClickListener()
+        builder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
@@ -1322,45 +1353,56 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     // clear DB values for basic DB
-    private void clearDBValues()
+    private boolean clearDBValues()
     {
         // clear values in DB
         dbHandler = new DbHelper(this);
         database = dbHandler.getWritableDatabase();
+        boolean r_ok = true;
 
-        String sql = "UPDATE " + DbHelper.COUNT_TABLE + " SET "
-            + DbHelper.C_COUNT_F1I + " = 0, "
-            + DbHelper.C_COUNT_F2I + " = 0, "
-            + DbHelper.C_COUNT_F3I + " = 0, "
-            + DbHelper.C_COUNT_PI + " = 0, "
-            + DbHelper.C_COUNT_LI + " = 0, "
-            + DbHelper.C_COUNT_EI + " = 0, "
-            + DbHelper.C_NOTES + " = '';";
-        database.execSQL(sql);
+        try
+        {
+            String sql = "UPDATE " + DbHelper.COUNT_TABLE + " SET "
+                + DbHelper.C_COUNT_F1I + " = 0, "
+                + DbHelper.C_COUNT_F2I + " = 0, "
+                + DbHelper.C_COUNT_F3I + " = 0, "
+                + DbHelper.C_COUNT_PI + " = 0, "
+                + DbHelper.C_COUNT_LI + " = 0, "
+                + DbHelper.C_COUNT_EI + " = 0, "
+                + DbHelper.C_NOTES + " = '';";
+            database.execSQL(sql);
 
-        sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
-            + DbHelper.S_NAME + " = '', "
-            + DbHelper.S_PLZ + " = '', "
-            + DbHelper.S_CITY + " = '', "
-            + DbHelper.S_PLACE + " = '', "
-            + DbHelper.S_TEMP + " = 0, "
-            + DbHelper.S_WIND + " = 0, "
-            + DbHelper.S_CLOUDS + " = 0, "
-            + DbHelper.S_DATE + " = '', "
-            + DbHelper.S_START_TM + " = '', "
-            + DbHelper.S_END_TM + " = '', "
-            + DbHelper.S_NOTES + " = '';";
-        database.execSQL(sql);
+            sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
+                + DbHelper.S_NAME + " = '', "
+                + DbHelper.S_PLZ + " = '', "
+                + DbHelper.S_CITY + " = '', "
+                + DbHelper.S_PLACE + " = '', "
+                + DbHelper.S_TEMP + " = 0, "
+                + DbHelper.S_WIND + " = 0, "
+                + DbHelper.S_CLOUDS + " = 0, "
+                + DbHelper.S_DATE + " = '', "
+                + DbHelper.S_START_TM + " = '', "
+                + DbHelper.S_END_TM + " = '', "
+                + DbHelper.S_NOTES + " = '';";
+            database.execSQL(sql);
 
-        sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
-        database.execSQL(sql);
+            sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
+            database.execSQL(sql);
 
-        sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-            + DbHelper.T_TEMP_LOC + " = '', "
-            + DbHelper.T_TEMP_CNT + " = 0;";
-        database.execSQL(sql);
+            sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
+                + DbHelper.T_TEMP_LOC + " = '', "
+                + DbHelper.T_TEMP_CNT + " = 0;";
+            database.execSQL(sql);
 
-        dbHandler.close();
+            dbHandler.close();
+        } catch (Exception e)
+        {
+            if (MyDebug.LOG)
+                Log.e(TAG, "Failed to reset DB");
+            Toast.makeText(this, getString(R.string.resetFail), Toast.LENGTH_LONG).show();
+            r_ok = false;
+        }
+        return r_ok;
     }
 
     /**************************************************************************************************/
@@ -1475,7 +1517,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     // END
                 }
-            }).setNegativeButton(R.string.importCancelButton, new DialogInterface.OnClickListener()
+            }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener()
             {
                 public void onClick(DialogInterface dialog, int id)
                 {
@@ -1492,8 +1534,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // modified by wmstein
     private void importBasisDb()
     {
-            //infile = new File("/data/data/com.wmstein.tourcount/databases/tourcount0.db");
-            infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
+        //infile = new File("/data/data/com.wmstein.tourcount/databases/tourcount0.db");
+        infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
         String destPath = "/data/data/com.wmstein.tourcount/databases";
         try
         {
@@ -1564,7 +1606,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
                 // END
             }
-        }).setNegativeButton(R.string.importCancelButton, new DialogInterface.OnClickListener()
+        }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {

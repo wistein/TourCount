@@ -121,7 +121,7 @@ public class DbHelper extends SQLiteOpenHelper
             + C_COUNT_EI + " int, "
             + C_NAME + " text, "
             + C_CODE + " text, "
-            + C_NOTES + " text default NULL)";
+            + C_NOTES + " text)";
         db.execSQL(sql);
         sql = "create table " + HEAD_TABLE + " ("
             + H_ID + " integer primary key, "
@@ -354,7 +354,7 @@ public class DbHelper extends SQLiteOpenHelper
                 + C_COUNT_EI + " int, "
                 + C_NAME + " text, "
                 + C_CODE + " text, "
-                + C_NOTES + " text default NULL)";
+                + C_NOTES + " text)";
             db.execSQL(sql);
 
             // insert the old data into counts
