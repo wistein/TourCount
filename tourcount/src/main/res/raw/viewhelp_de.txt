@@ -64,7 +64,9 @@ $ 9
 $ 8
   % 3. Benutzung
   !
-  ! Beginne mit "ZÄHLEN". Wähle die Art durch antippen der Art-Zeile in der Scroll-Liste.
+  ! Beginne mit ERFASSUNG VORBEREITEN. Gib die relevanten Metadaten der Tour ein. Das aktuelle Datum und die momentane Uhrzeit kann durch Antippen des jeweiligen Felds eingegeben werden. Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe-Dialog genutzt werden.  
+  _ 
+  ! Dann wähle ZÄHLEN. Wähle die Art durch antippen der Art-Zeile in der Scroll-Liste.
   ! Zum Zählen tippe jeweils auf den entsprechenden "+"-Button der gesichteten Kategorie (♂ od. ♀, ♂, ♀, Puppe, Raupe, Ei) der Art. 
   ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Lokalität, Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt. Lokalität kann auch editiert und Zustandsangabe sowie Mehrfachzählungen können hier eingegeben werden. Mittels Speicher-Button geht es zurück zur Zählerseite.
   ! Mit den (-)-Buttons kann ggf. korrigiert werden. Beachte, dass die (-)-Buttons jeweils die Einträge gemäß der last-in-first-out-Methode der jeweiligen Art-Kategorie aus der Individuen-Liste reduzieren bzw. löschen. 
@@ -80,7 +82,7 @@ $ 8
   _ 
   ! Bei großen Datenmengen kann sich die Reaktion der App, insbesondere beim Aufruf der Ergebnisseite etwas verlangsamen, da hier im Hintergrund umfangreiche Berechnungen laufen.
   _ 
-  ! Mit "ERGEBNIS ANZEIGEN" auf der Startseite wird die Ergebnisseite aufgerufen. Diese zeigt die Meta-Daten der Tour und die Liste der gezählten Falter. 
+  ! Mit ERGEBNIS ANZEIGEN auf der Startseite wird die Ergebnisseite aufgerufen. Diese zeigt die Meta-Daten der Tour und die Liste der gezählten Falter. 
 
 $ 7
   % 4. Weitere Funktionen

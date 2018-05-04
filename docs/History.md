@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
+#### Version 3.0.3 (2018-05-01)
+- Additional manual input for date, start-time and stop-time with long press
+- Project changes for Android Studio 3.1.2 and Gradle 3.1.2
+
 #### Version 3.0.2 (2018-04-17)
 - Code improvements
 - Bug fixes

@@ -2,6 +2,8 @@ package com.wmstein.tourcount;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -20,9 +22,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.wmstein.egm.EarthGravitationalModel;
@@ -37,6 +41,7 @@ import com.wmstein.tourcount.widgets.EditTitleWidget;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -44,25 +49,33 @@ import java.util.Locale;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2018-04-17
+ * last edit on 2018-05-04
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static String TAG = "tourcountEditMetaAct";
     private TourCountApplication tourCount;
+
     SharedPreferences prefs;
+    private boolean screenOrientL; // option for screen orientation
+    
     private Head head;
     private Section section;
+    private HeadDataSource headDataSource;
+    private SectionDataSource sectionDataSource;
+
+    private Calendar pdate, ptime;
+
     private LinearLayout head_area;
+    private TextView sDate, sTime, eTime;
+
     private EditTitleWidget ett;
     private EditTitleWidget enw;
     private EditHeadWidget ehw;
     private EditMetaWidget etw;
+    
     private Bitmap bMap;
     private BitmapDrawable bg;
-    private HeadDataSource headDataSource;
-    private SectionDataSource sectionDataSource;
-    private boolean screenOrientL; // option for screen orientation
 
     // Location info handling
     private LocationManager locationManager;
@@ -255,68 +268,151 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         etw.setWidgetEndTm1(getString(R.string.endtm));
         etw.setWidgetEndTm2(section.end_tm);
         head_area.addView(etw);
+
+        pdate = Calendar.getInstance();
+        ptime = Calendar.getInstance();
+
+        sDate = this.findViewById(R.id.widgetDate2);
+        sTime = this.findViewById(R.id.widgetStartTm2);
+        eTime = this.findViewById(R.id.widgetEndTm2);
+
+        // get current date by click
+        sDate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Date date = new Date();
+                sDate.setText(getformDate(date));
+            }
+        });
+
+        // get date picker result
+        final DatePickerDialog.OnDateSetListener dpd = new DatePickerDialog.OnDateSetListener()
+        {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+            {
+                pdate.set(Calendar.YEAR, year);
+                pdate.set(Calendar.MONTH, monthOfYear);
+                pdate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                Date date = pdate.getTime();
+                sDate.setText(getformDate(date));
+            }
+        };
+
+        // select date by long click
+        sDate.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                new DatePickerDialog(EditMetaActivity.this, dpd,
+                    pdate.get(Calendar.YEAR),
+                    pdate.get(Calendar.MONTH),
+                    pdate.get(Calendar.DAY_OF_MONTH)).show();
+                return true;
+            }
+        });
+
+        // get current start time
+        sTime.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Date date = new Date();
+                sTime.setText(getformTime(date));
+            }
+        });
+
+        // get start time picker result
+        final TimePickerDialog.OnTimeSetListener stpd = new TimePickerDialog.OnTimeSetListener()
+        {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+            {
+                ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                ptime.set(Calendar.MINUTE, minute);
+                Date date = ptime.getTime();
+                sTime.setText(getformTime(date));
+            }
+        };
+
+        // select start time
+        sTime.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                new TimePickerDialog(EditMetaActivity.this, stpd,
+                    ptime.get(Calendar.HOUR_OF_DAY),
+                    ptime.get(Calendar.MINUTE),
+                    true).show();
+                return true;
+            }
+        });
+
+        // get current end time
+        eTime.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Date date = new Date();
+                eTime.setText(getformTime(date));
+            }
+        });
+
+        // get start time picker result
+        final TimePickerDialog.OnTimeSetListener etpd = new TimePickerDialog.OnTimeSetListener()
+        {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+            {
+                ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                ptime.set(Calendar.MINUTE, minute);
+                Date date = ptime.getTime();
+                eTime.setText(getformTime(date));
+            }
+        };
+
+        // select end time
+        eTime.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                new TimePickerDialog(EditMetaActivity.this, etpd,
+                    ptime.get(Calendar.HOUR_OF_DAY),
+                    ptime.get(Calendar.MINUTE),
+                    true).show();
+                return true;
+            }
+        });
     }
 
-    // getSDate()
-    public void getSDate(View view)
+    // formatted date
+    public String getformDate(Date date)
     {
-        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-            .hideSoftInputFromWindow(view.getWindowToken(), 0);
-        TextView sDate = this.findViewById(R.id.widgetDate2);
-        assert sDate != null;
-        sDate.setText(getcurDate());
-    }
-
-    // getSTime()
-    public void getSTime(View view)
-    {
-        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-            .hideSoftInputFromWindow(view.getWindowToken(), 0);
-        TextView sTime = this.findViewById(R.id.widgetStartTm2);
-        assert sTime != null;
-        sTime.setText(getcurTime());
-    }
-
-    // getETime()
-    public void getETime(View view)
-    {
-        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-            .hideSoftInputFromWindow(view.getWindowToken(), 0);
-        TextView eTime = this.findViewById(R.id.widgetEndTm2);
-        assert eTime != null;
-        eTime.setText(getcurTime());
-    }
-
-    // Date for date
-    // by wmstein
-    @SuppressLint("SimpleDateFormat")
-    private String getcurDate()
-    {
-        Date date = new Date();
         DateFormat dform;
         String lng = Locale.getDefault().toString().substring(0, 2);
 
         if (lng.equals("de"))
         {
-            dform = new SimpleDateFormat("dd.MM.yyyy");
+            dform = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
         }
         else
         {
-            dform = new SimpleDateFormat("yyyy-MM-dd");
+            dform = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         }
         return dform.format(date);
     }
 
-    // Date for start_tm and end_tm
-    // by wmstein
-    private String getcurTime()
+    // date for start_tm and end_tm
+    public String getformTime(Date date)
     {
-        Date date = new Date();
-        @SuppressLint("SimpleDateFormat") 
-        DateFormat dform = new SimpleDateFormat("HH:mm");
+        DateFormat dform = new SimpleDateFormat("HH:mm", Locale.US);
         return dform.format(date);
     }
-
+    
     @Override
     protected void onPause()
     {

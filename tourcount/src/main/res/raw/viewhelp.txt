@@ -65,7 +65,9 @@ $ 9
 $ 8
   % 3. Usage
   !
-  ! Start with "COUNTING". Select the species by clicking the species line to scroll down the species list.
+  ! Start with PREPARE RECORDIMG. Fill in the relevant meta data for the specific tour. You may enter the current date and time by clicking the related field or enter any date and time by long pressing the related field. Finish with the SAVE-button. 
+  _ 
+  ! Then select COUNTING. Select the species by clicking the species line to scroll down the species list.
   ! To count just tip on the corresponding (+)-Button of the seen category (♂ od. ♀, ♂, ♀, pupa, larva, egg) of the species.
   ! The counter will increment and a page opens to enter individual data. Location info, latitude, longitude, height as well as date and time will be added automatically. Location may be edited and state info as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
   ! The (-)-Buttons allows for corrections. Mind that the (-)-Buttons reduce the individuals list in a last-in-first-out-mode for the corresponding species category. 
@@ -81,7 +83,7 @@ $ 8
   _ 
   ! When you have a large list or have collected big amounts of data the start of pages may be delayed, especially when entering the the results page, as those need heavy calculations.
   _ 
-  ! On the Starting page you can open the results page with "SHOW RESULTS". It shows all the registered data orderly arranged. Beneath the meta data it shows the totals followed by a list of all counted species with their individual records.
+  ! On the Starting page you can open the results page with SHOW RESULTS. It shows all the registered data orderly arranged. Beneath the meta data it shows the totals followed by a list of all counted species with their individual records.
 
 $ 7
   % 4. Further functions

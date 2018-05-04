@@ -74,7 +74,7 @@
     <string name="temperature">Temp. (°C)</string>
     <string name="wind">Wind (0-4)</string>
     <string name="clouds">Clouds (%)</string>
-    <string name="hinttap">Tap here</string>
+    <string name="hinttap">Click here</string>
     <string name="valTemp">Unrealistic temperature</string>
     <string name="valWind">Wind out of range</string>
     <string name="valClouds">Clouds out of range</string>
