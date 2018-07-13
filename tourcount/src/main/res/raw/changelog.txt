@@ -36,6 +36,12 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 3.0.4
+  % Version 3.0.4
+  _ 2018-07-13
+  	* Additional butterfly pictures
+  	* Fix for crash in "Edit Species" functionality
+
 $ 3.0.3
   % Version 3.0.3
   _ 2018-05-04

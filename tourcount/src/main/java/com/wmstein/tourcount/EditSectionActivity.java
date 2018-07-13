@@ -36,7 +36,7 @@ import java.util.List;
  * Uses CountEditWidget.java, activity_edit_section.xml.
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted by wmstein on 2016-02-18,
- * last edited on 2018-03-27
+ * last edited on 2018-07-13
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -57,40 +57,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     private boolean dupPref;
     private boolean screenOrientL; // option for screen orientation
     private boolean brightPref;
-
-    /**
-     * Checks if a CharSequence is empty ("") or null.
-     * <p>
-     * isEmpty(null)      = true
-     * isEmpty("")        = true
-     * isEmpty(" ")       = false
-     * isEmpty("bob")     = false
-     * isEmpty("  bob  ") = false
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is empty or null
-     */
-    private static boolean isEmpty(final CharSequence cs)
-    {
-        return cs == null || cs.length() == 0;
-    }
-
-    /**
-     * Checks if a CharSequence is not empty ("") and not null.
-     * <p>
-     * isNotEmpty(null)      = false
-     * isNotEmpty("")        = false
-     * isNotEmpty(" ")       = true
-     * isNotEmpty("bob")     = true
-     * isNotEmpty("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is not empty and not null
-     */
-    private static boolean isNotEmpty(final CharSequence cs)
-    {
-        return !isEmpty(cs);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -289,18 +255,19 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                     {
                         if (MyDebug.LOG)
                             Log.d(TAG, "cew: " + String.valueOf(cew.countId) + ", " + cew.getCountName());
-                        // create or save
+                        // create or update
                         if (cew.countId == 0)
                         {
                             if (MyDebug.LOG)
                                 Log.d(TAG, "Creating!");
-                            //returns newCount
+                            //creates new species entry
                             countDataSource.createCount(cew.getCountName(), cew.getCountCode());
                         }
                         else
                         {
                             if (MyDebug.LOG)
                                 Log.d(TAG, "Updating!");
+                            //updates species name and code
                             countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode());
                         }
                         retValue = true;
@@ -456,6 +423,40 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         counting_screen.setBackground(null);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
+    }
+
+    /**
+     * Checks if a CharSequence is empty ("") or null.
+     * <p>
+     * isEmpty(null)      = true
+     * isEmpty("")        = true
+     * isEmpty(" ")       = false
+     * isEmpty("bob")     = false
+     * isEmpty("  bob  ") = false
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is empty or null
+     */
+    private static boolean isEmpty(final CharSequence cs)
+    {
+        return cs == null || cs.length() == 0;
+    }
+
+    /**
+     * Checks if a CharSequence is not empty ("") and not null.
+     * <p>
+     * isNotEmpty(null)      = false
+     * isNotEmpty("")        = false
+     * isNotEmpty(" ")       = true
+     * isNotEmpty("bob")     = true
+     * isNotEmpty("  bob  ") = true
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is not empty and not null
+     */
+    private static boolean isNotEmpty(final CharSequence cs)
+    {
+        return !isEmpty(cs);
     }
 
 }

@@ -59,7 +59,7 @@ import static java.lang.Math.sqrt;
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and
  * EditMetaActivity, Counting(L)Activity and ListSpeciesActivity.
- * <p/>
+ * 
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
  * last modification on 2018-04-17
@@ -154,7 +154,35 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // nothing
         }
 
+        cl = new ChangeLog(this);
+        vh = new ViewHelp(this);
+        // Show changelog for new version
+        if (cl.firstRun())
+            cl.getLogDialog().show();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
+
+        if (screenOrientL)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         // if API level > 23 permission request is necessary
+        // Request external storage permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             int hasWriteExtStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -184,17 +212,137 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             }
         }
 
-        cl = new ChangeLog(this);
-        vh = new ViewHelp(this);
-        // Show changelog for new version
-        if (cl.firstRun())
-            cl.getLogDialog().show();
-
         // test for GPS or Network location
         if (!canLocation())
         {
             // can't get location, GPS or Network is not enabled
             Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            // Get LocationManager instance
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            
+/*            
+            // Request list with names of all providers
+            List<String> providers = locationManager.getAllProviders();
+            for (String name : providers)
+            {
+                LocationProvider lp = locationManager.getProvider(name);
+                if (MyDebug.LOG)
+                {
+                    Log.d(TAG, lp.getName() + " --- isProviderEnabled(): " + locationManager.isProviderEnabled(name));
+                    Log.d(TAG, "requiresCell(): " + lp.requiresCell());
+                    Log.d(TAG, "requiresNetwork(): " + lp.requiresNetwork());
+                    Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
+                }
+            }
+*/
+
+            // Best possible provider
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+            provider = locationManager.getBestProvider(criteria, true);
+
+            // Create LocationListener object
+            locationListener = new LocationListener()
+            {
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras)
+                {
+                    // nothing
+                }
+
+                @Override
+                public void onProviderEnabled(String provider)
+                {
+                    // nothing
+                }
+
+                @Override
+                public void onProviderDisabled(String provider)
+                {
+                    // nothing
+                }
+
+                @Override
+                public void onLocationChanged(Location location)
+                {
+                    if (location != null)
+                    {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        height = location.getAltitude();
+                        if (height != 0)
+                            height = correctHeight(latitude, longitude, height);
+                        uncertainty = location.getAccuracy();
+                    }
+                }
+            };
+        }
+        
+        // get location service
+        if (canGetLocation)
+        {
+            try
+            {
+                locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
+            } catch (Exception e)
+            {
+                // Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
+            }
+        }
+        
+        // get reverse geocoding
+        if (canGetLocation && metaPref && (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    URL url;
+                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
+                    try
+                    {
+                        url = new URL(urlString);
+                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                        getXML.execute(url);
+                    } catch (IOException e)
+                    {
+                        // do nothing
+                    }
+
+                }
+            });
+        }
+
+        // List tour name as title
+        Section section;
+        String sname = "";
+        try
+        {
+            sectionDataSource = new SectionDataSource(this);
+            sectionDataSource.open();
+            section = sectionDataSource.getSection();
+            sname = section.name;
+        } catch (SQLiteException e)
+        {
+            sname = getString(R.string.errorDb);
+            sectionDataSource.close();
+        }
+
+        try
+        {
+            getSupportActionBar().setTitle(sname);
+        } catch (NullPointerException e)
+        {
+            // nothing
         }
     }
 
@@ -305,6 +453,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 intent.putExtra("Longitude", longitude);
                 intent.putExtra("Height", height);
                 intent.putExtra("Uncert", uncertainty);
+                intent.putExtra("can_Location", canGetLocation);
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
             else
@@ -314,6 +463,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 intent.putExtra("Longitude", longitude);
                 intent.putExtra("Height", height);
                 intent.putExtra("Uncert", uncertainty);
+                intent.putExtra("can_Location", canGetLocation);
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         }
@@ -380,139 +530,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         }, 100);
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
-        // Get LocationManager instance
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-/*
-        // Request list with names of all providers
-        List<String> providers = locationManager.getAllProviders();
-        for (String name : providers)
-        {
-            LocationProvider lp = locationManager.getProvider(name);
-        }
-*/
-        // Best possible provider
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        provider = locationManager.getBestProvider(criteria, true);
-
-        // Create LocationListener object
-        locationListener = new LocationListener()
-        {
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderEnabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderDisabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onLocationChanged(Location location)
-            {
-                if (location != null)
-                {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    height = location.getAltitude();
-                    if (height != 0)
-                        height = correctHeight(latitude, longitude, height);
-                    uncertainty = location.getAccuracy();
-                }
-            }
-        };
-
-        // get location service
-        try
-        {
-            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
-        } catch (Exception e)
-        {
-            Toast.makeText(this, getString(R.string.no_GPS), Toast.LENGTH_LONG).show();
-        }
-
-        // get reverse geocoding (todo: 1st count missing geo info)
-        if (metaPref && (latitude != 0 || longitude != 0))
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    URL url;
-                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
-                    try
-                    {
-                        url = new URL(urlString);
-                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                        getXML.execute(url);
-                    } catch (IOException e)
-                    {
-                        // do nothing
-                    }
-
-                }
-            });
-        }
-
-        // List tour name as title
-        Section section;
-        String sname = "";
-        try
-        {
-            sectionDataSource = new SectionDataSource(this);
-            sectionDataSource.open();
-            section = sectionDataSource.getSection();
-            sname = section.name;
-        } catch (SQLiteException e)
-        {
-            sname = getString(R.string.errorDb);
-            sectionDataSource.close();
-        }
-
-        try
-        {
-            getSupportActionBar().setTitle(sname);
-        } catch (NullPointerException e)
-        {
-            // nothing
-        }
     }
 
     // Correct height with geoid offset from EarthGravitationalModel

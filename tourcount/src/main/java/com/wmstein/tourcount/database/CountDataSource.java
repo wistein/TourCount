@@ -17,7 +17,7 @@ import static com.wmstein.tourcount.database.DbHelper.COUNT_TABLE;
 /*************************************************************
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 2016-02-18,
- * last change on 2018-03-26
+ * last change on 2018-07-13
  */
 public class CountDataSource
 {
@@ -44,7 +44,7 @@ public class CountDataSource
 
     public void open() throws SQLException
     {
-            database = dbHandler.getWritableDatabase();
+        database = dbHandler.getWritableDatabase();
     }
 
     public void close()
@@ -54,21 +54,24 @@ public class CountDataSource
 
     public void createCount(String name, String code)
     {
-        ContentValues values = new ContentValues();
-        values.put(DbHelper.C_NAME, name);
-        values.put(DbHelper.C_COUNT_F1I, 0);
-        values.put(DbHelper.C_COUNT_F2I, 0);
-        values.put(DbHelper.C_COUNT_F3I, 0);
-        values.put(DbHelper.C_COUNT_PI, 0);
-        values.put(DbHelper.C_COUNT_LI, 0);
-        values.put(DbHelper.C_COUNT_EI, 0);
-        values.put(DbHelper.C_CODE, code);
-        // notes should be default null and so isn't created here
+        if (database.isOpen())
+        {
+            ContentValues values = new ContentValues();
+            values.put(DbHelper.C_NAME, name);
+            values.put(DbHelper.C_COUNT_F1I, 0);
+            values.put(DbHelper.C_COUNT_F2I, 0);
+            values.put(DbHelper.C_COUNT_F3I, 0);
+            values.put(DbHelper.C_COUNT_PI, 0);
+            values.put(DbHelper.C_COUNT_LI, 0);
+            values.put(DbHelper.C_COUNT_EI, 0);
+            values.put(DbHelper.C_CODE, code);
+            // notes should be default null and so isn't created here
 
-        int insertId = (int) database.insert(COUNT_TABLE, null, values);
-        Cursor cursor = database.query(COUNT_TABLE,
-            allColumns, DbHelper.C_ID + " = " + insertId, null, null, null, null);
-        cursor.close();
+            int insertId = (int) database.insert(COUNT_TABLE, null, values);
+            Cursor cursor = database.query(COUNT_TABLE,
+                allColumns, DbHelper.C_ID + " = " + insertId, null, null, null, null);
+            cursor.close();
+        }
     }
 
     private Count cursorToCount(Cursor cursor)
@@ -173,12 +176,15 @@ public class CountDataSource
 
     public void updateCountName(int id, String name, String code)
     {
-        ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_NAME, name);
-        dataToInsert.put(DbHelper.C_CODE, code);
-        String where = DbHelper.C_ID + " = ?";
-        String[] whereArgs = {String.valueOf(id)};
-        database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
+        if (database.isOpen())
+        {
+            ContentValues dataToInsert = new ContentValues();
+            dataToInsert.put(DbHelper.C_NAME, name);
+            dataToInsert.put(DbHelper.C_CODE, code);
+            String where = DbHelper.C_ID + " = ?";
+            String[] whereArgs = {String.valueOf(id)};
+            database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
+        }
     }
 
     public Count getCountById(int count_id)
@@ -217,7 +223,7 @@ public class CountDataSource
     // Used by CountingActivity
     public String[] getAllIdsSrtName()
     {
-        Cursor cursor = database.query(COUNT_TABLE, allColumns, 
+        Cursor cursor = database.query(COUNT_TABLE, allColumns,
             null, null, null, null, DbHelper.C_NAME);
 
         String[] idArray = new String[cursor.getCount()];

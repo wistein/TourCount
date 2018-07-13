@@ -90,7 +90,6 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     private List<CountingWidgetLH> countingWidgetsLH;
     private Spinner spinnerL;
     private int itemPosition = 0;
-    private int oldCount;
 
     // Location info handling
     private LocationManager locationManager;
