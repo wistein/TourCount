@@ -63,7 +63,7 @@ import java.util.Locale;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-04-17
+ * last modification on 2018-06-19
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -381,7 +381,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             }
         }
 
-        // get reverse geocoding (todo: 1st count missing geo info)
+        // get reverse geocoding
         if (canGetLocation && metaPref && (latitude != 0 || longitude != 0))
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

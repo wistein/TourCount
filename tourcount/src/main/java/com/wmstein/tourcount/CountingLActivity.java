@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +12,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -54,10 +54,10 @@ import java.util.List;
 import java.util.Locale;
 
 /****************************************************************************************
- * CountingLActivity is necessary for overcoming the limitations of spinner.
+ * CountingLActivity is necessary for overcoming some limitations of spinner.
  * It is the central activity of TourCount for landscape mode. 
- * It provides the same functionality as CountingActivity that are the counters, 
- * it starts GPS-location polling, starts EditIndividualActivity, 
+ * It provides the same functionality as CountingActivity: counters, 
+ * starts GPS-location polling, starts EditIndividualActivity, 
  * starts editSectionActivity, switches screen off when pocketed and 
  * allows taking pictures and sending notes.
  * 
@@ -66,7 +66,7 @@ import java.util.Locale;
  * 
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-04-17
+ * last modification on 2018-07-13
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -75,9 +75,14 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
     private SharedPreferences prefs;
 
+    private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    private int REQUEST_CODE_GPS = 124;
+    private int REQUEST_CODE_NETWORK = 125;
+
     private int section_id;
     private int iid = 1;
     private LinearLayout count_area;
+    private Boolean canGetLocation;
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;
@@ -225,6 +230,34 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
     }
 
+    // Try to find locationservice
+    private Boolean canLocation()
+    {
+        try
+        {
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+            // getting GPS status
+            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status (needs UnifiedNlp + location backend on LineageOS, no height info)
+            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            //Toast.makeText(getApplicationContext(), "NetworkEnabled: " + isNetworkEnabled + "\nGPSenabled: " + isGPSEnabled, Toast.LENGTH_LONG).show();
+
+            if (isGPSEnabled || isNetworkEnabled)
+            {
+                this.canGetLocation = true;
+            }
+
+        } catch (Exception e)
+        {
+            if (MyDebug.LOG)
+                Log.e(TAG, "Cannot get location.", e);
+        }
+
+        return canGetLocation;
+    }
+
     @Override
     protected void onResume()
     {
@@ -260,83 +293,98 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             enableProximitySensor();
         }
 
-        // Get LocationManager instance
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Request list with names of all providers
-        List<String> providers = locationManager.getAllProviders();
-        for (String name : providers)
+        // Request GPS location permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            LocationProvider lp = locationManager.getProvider(name);
+            int hasAccessFineLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasAccessFineLocationPermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS);
+            }
+        }
+
+        // Request Network location permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            int hasAccessCoarseLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasAccessCoarseLocationPermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_NETWORK);
+            }
+        }
+
+        // test for GPS or Network location
+        if (!canLocation())
+        {
+            // can't get location, GPS or Network is not enabled
+            Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            // Get LocationManager instance
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+            // Best possible provider
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            // criteria.setPowerRequirement(Criteria.POWER_HIGH);
+            provider = locationManager.getBestProvider(criteria, true);
             if (MyDebug.LOG)
-            {
-                Log.d(TAG, lp.getName() + " --- isProviderEnabled(): " + locationManager.isProviderEnabled(name));
-                Log.d(TAG, "requiresCell(): " + lp.requiresCell());
-                Log.d(TAG, "requiresNetwork(): " + lp.requiresNetwork());
-                Log.d(TAG, "requiresSatellite(): " + lp.requiresSatellite());
-            }
-        }
+                Log.d(TAG, "Provider: " + provider);
 
-        // Best possible provider
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        provider = locationManager.getBestProvider(criteria, true);
-        if (MyDebug.LOG)
-            Log.d(TAG, "Provider: " + provider);
-
-        // Create LocationListener object
-        locationListener = new LocationListener()
-        {
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras)
+            // Create LocationListener object
+            locationListener = new LocationListener()
             {
-                if (MyDebug.LOG)
-                    Log.d(TAG, "onStatusChanged()");
-            }
-
-            @Override
-            public void onProviderEnabled(String provider)
-            {
-                if (MyDebug.LOG)
-                    Log.d(TAG, "onProviderEnabled()");
-            }
-
-            @Override
-            public void onProviderDisabled(String provider)
-            {
-                if (MyDebug.LOG)
-                    Log.d(TAG, "onProviderDisabled()");
-            }
-
-            @Override
-            public void onLocationChanged(Location location)
-            {
-                if (MyDebug.LOG)
-                    Log.d(TAG, "onLocationChanged()");
-                if (location != null)
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras)
                 {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    height = location.getAltitude();
-                    if (height != 0)
-                        height = correctHeight(latitude, longitude, height);
-                    uncertainty = location.getAccuracy();
+                    if (MyDebug.LOG)
+                        Log.d(TAG, "onStatusChanged()");
                 }
-            }
-        };
 
-        // get location service
-        try
-        {
-            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
-        } catch (Exception e)
-        {
-            // nothing
+                @Override
+                public void onProviderEnabled(String provider)
+                {
+                    if (MyDebug.LOG)
+                        Log.d(TAG, "onProviderEnabled()");
+                }
+
+                @Override
+                public void onProviderDisabled(String provider)
+                {
+                    if (MyDebug.LOG)
+                        Log.d(TAG, "onProviderDisabled()");
+                }
+
+                @Override
+                public void onLocationChanged(Location location)
+                {
+                    if (MyDebug.LOG)
+                        Log.d(TAG, "onLocationChanged()");
+                    if (location != null)
+                    {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        height = location.getAltitude();
+                        if (height != 0)
+                            height = correctHeight(latitude, longitude, height);
+                        uncertainty = location.getAccuracy();
+                    }
+                }
+            };
+
+            // get location service
+            try
+            {
+                locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
+            } catch (Exception e)
+            {
+                // nothing
+            }
         }
 
-        // get reverse geocoding (todo: 1st count missing geo info)
-        if (metaPref && (latitude != 0 || longitude != 0))
+        // get reverse geocoding
+        if (canGetLocation && metaPref && (latitude != 0 || longitude != 0))
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -621,6 +669,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -671,6 +720,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -798,6 +848,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -848,6 +899,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -973,6 +1025,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1023,6 +1076,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1148,6 +1202,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1198,6 +1253,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1323,6 +1379,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1373,6 +1430,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1498,6 +1556,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
@@ -1548,6 +1607,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncert);
         intent.putExtra("indivAtt", iAtt);
         startActivity(intent);
     }
