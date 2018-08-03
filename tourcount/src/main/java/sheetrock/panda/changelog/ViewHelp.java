@@ -105,7 +105,7 @@ public class ViewHelp
             // OK button
             .setPositiveButton(
                 context.getResources().getString(
-                    R.string.viewhelp_ok_button),
+                    R.string.ok_button),
                 new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog,

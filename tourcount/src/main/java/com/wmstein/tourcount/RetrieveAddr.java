@@ -21,9 +21,9 @@ import static android.content.ContentValues.TAG;
 
 /**************************************************************************
  * Get, parse and store address info from Reverse Geocoder of OpenStreetMap
- * <p>
+ * 
  * Copyright 2018 wmstein, created on 2018-03-10,
- * last modification on 2018-03-27
+ * last modification on 2018-07-23
  */
 public class RetrieveAddr extends AsyncTask<URL, Void, String>
 {

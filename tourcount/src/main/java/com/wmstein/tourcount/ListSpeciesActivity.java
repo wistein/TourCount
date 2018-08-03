@@ -4,14 +4,10 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -41,7 +37,7 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2018-04-17
+ * last edited on 2018-08-03
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -61,11 +57,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private SectionDataSource sectionDataSource;
     private HeadDataSource headDataSource;
     private IndividualsDataSource individualsDataSource;
-
-    // Location info handling
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private String provider;
 
     private SQLiteDatabase database;
     private DbHelper dbHandler;
@@ -111,9 +102,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         }
     }
 
-    /*
-     * So preferences can be loaded at the start, and also when a change is detected.
-     */
+    // Load preferences
     private void getPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);
@@ -133,52 +122,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         
         // clear existing views
         spec_area.removeAllViews();
-
-        // Get LocationManager instance
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Best possible provider
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        provider = locationManager.getBestProvider(criteria, true);
-
-        // Create LocationListener object
-        locationListener = new LocationListener()
-        {
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderEnabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderDisabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onLocationChanged(Location location)
-            {
-                // nothing
-            }
-        };
-
-        // get location service
-        try
-        {
-            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
-        } catch (Exception e)
-        {
-            //
-        }
 
         loadData();
     }
@@ -389,15 +332,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     {
         super.onPause();
 
-        // Stop location service
-        try
-        {
-            locationManager.removeUpdates(locationListener);
-        } catch (Exception e)
-        {
-            // do nothing
-        }
-
         // close the data sources
         headDataSource.close();
         countDataSource.close();
@@ -409,11 +343,14 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         }
     }
     
-    public void saveAndExit(View view)
+    // puts up function to back button
+    @Override
+    public void onBackPressed()
     {
-        super.finish();
+        NavUtils.navigateUpFromSameTask(this);
+        super.onBackPressed();
     }
-
+    
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView listSpec_screen = findViewById(R.id.listSpecScreen);

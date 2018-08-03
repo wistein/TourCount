@@ -9,8 +9,10 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wmstein.tourcount.database.Count;
@@ -36,7 +39,7 @@ import java.util.List;
  * Uses CountEditWidget.java, activity_edit_section.xml.
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted by wmstein on 2016-02-18,
- * last edited on 2018-07-13
+ * last edited on 2018-08-03
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -276,21 +279,32 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             }
             else
             {
-                Toast.makeText(this, isDbl + " " + getString(R.string.isdouble), Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.isdouble));
                 retValue = false;
             }
         }
 
         if (retValue)
         {
+            // Snackbar doesn't appear, so Toast is used
             Toast.makeText(EditSectionActivity.this, getString(R.string.sectSaving) + " " + section.name + "!", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(this, getString(R.string.duplicate), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getString(R.string.duplicate), Toast.LENGTH_SHORT).show();
+            showSnackbarRed(getString(R.string.duplicate));
         }
 
         return retValue;
+    }
+
+    private void showSnackbarRed(String str) // bold red text
+    {
+        View view = findViewById(R.id.editingScreen);
+        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" +  str + "</font></b>"), Snackbar.LENGTH_LONG);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        sB.show();
     }
 
     /*

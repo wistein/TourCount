@@ -2,9 +2,13 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
-#### Version 3.0.4 (2018-07-13)
+#### Version 3.0.4 (2018-08-03)
+- Location retrieval function more reliable, changed to service
 - Additional butterfly pictures
-- Fix for crash in "Edit Species" functionality
+- Where applicable toasts replaced with snackbars
+- Some code cleaning
+- Fix for crash in permission handling of Android >= Marshmallow
+- Fix for crash in "Edit Species list" functionality
 
 #### Version 3.0.3 (2018-05-01)
 - Additional manual input for date, start-time and stop-time with long press

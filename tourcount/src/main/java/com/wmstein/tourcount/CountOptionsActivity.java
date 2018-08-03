@@ -24,7 +24,7 @@ import com.wmstein.tourcount.widgets.EditNotesWidget;
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2018-04-17
+ * last edited on 2018-08-01
  */
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -143,6 +143,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private void saveData()
     {
         // don't crash if the user hasn't filled things in...
+        // Snackbar doesn't appear so Toast 
         Toast.makeText(CountOptionsActivity.this, getString(R.string.sectSaving) + " " + count.name + "!", Toast.LENGTH_SHORT).show();
         count.notes = enw.getNotesName();
         // hide keyboard

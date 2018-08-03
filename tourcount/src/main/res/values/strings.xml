@@ -75,9 +75,9 @@
     <string name="wind">Wind (0-4)</string>
     <string name="clouds">Clouds (%)</string>
     <string name="hinttap">Click here</string>
-    <string name="valTemp">Unrealistic temperature</string>
-    <string name="valWind">Wind out of range</string>
-    <string name="valClouds">Clouds out of range</string>
+    <string name="valTemp">Unrealistic temperature!</string>
+    <string name="valWind">Wind out of range!</string>
+    <string name="valClouds">Clouds out of range!</string>
     <string name="date">Date</string>
     <string name="plz">Po. Code</string>
     <string name="city">City</string>
@@ -133,12 +133,10 @@
     <!-- ChangeLog -->
     <string name="changelog_full_title">App Info</string>
     <string name="changelog_title">What\'s New?</string>
-    <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">more&#8230;</string>
 
     <!-- ViewHelp -->
     <string name="viewhelp_full_title">Help (TourCount Ver.</string>
-    <string name="viewhelp_ok_button">OK</string>
 
     <!-- Preferences -->
     <string name="prefs_appearance">Appearance</string>
@@ -209,11 +207,9 @@
     <string name="hintTitle">Title</string>
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">List notes.</string>
-    <string name="getHelp">Sorry, there was a problem with your database. Please email if you need assistance, attaching your exported \'tourcount.db\'.</string>
+    <string name="getHelp">Database problem! Please mail your exported \'tourcount.db\' if you need assistance.</string>
     <string name="activate_GPS">Please, activate GPS in Location Mode.</string>
     <string name="no_GPS">Sorry, no position, GPS is not activated.</string>
-    <string name="no_NET">Sorry, no position, Network location is not activated.</string>
-    <string name="no_Passive">Sorry, no position, Passive location is not activated.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂, ♀</string>
     <string name="countImagomHint">Butterfly ♂</string>
@@ -222,6 +218,18 @@
     <string name="countLarvaHint">Larva</string>
     <string name="countOvoHint">Egg</string>
     <string name="warnCount">Only values bigger than zero possible!</string>
-    <string name="permission_rationale_title">Permission required</string>
-
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_provider">No Service Provider available!</string>
+    <string name="ok_button">OK</string>
+    
+    <!-- Permissions -->
+    <string name="perm_required">Permissions Required</string>
+    <string name="app_settings">App Settings</string>
+    <string name="perm_hint">In order to register butterflies with location data and to import and export database files, access to location and storage is necessary.</string>
+    <string name="perm_hint1">Please enable missing permissions for the app in the phone settings.</string>
+    <string name="cancel">Cancel</string>
+    <string name="perm_declined">Permissions declined</string>
+    <string name="retry">Retry</string>
+    
 </resources>

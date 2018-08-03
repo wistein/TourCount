@@ -8,10 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.CursorIndexOutOfBoundsException;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -20,7 +16,11 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +32,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
@@ -56,33 +55,26 @@ import java.util.Locale;
 /****************************************************************************************
  * CountingLActivity is necessary for overcoming some limitations of spinner.
  * It is the central activity of TourCount for landscape mode. 
- * It provides the same functionality as CountingActivity: counters, 
+ * It provides the same functionality as CountingActivity: the counters, 
  * starts GPS-location polling, starts EditIndividualActivity, 
  * starts editSectionActivity, switches screen off when pocketed and 
  * allows taking pictures and sending notes.
- * 
- * CountingLActivity uses CountingWidgetLH.java, NotesWidget.java, 
- * activity_counting_lh.xml and widget_counting_lhi.xml
- * 
+ *
+ * CountingLActivity uses CountingWidget.java, CountingWidgetLH.java, NotesWidget.java, 
+ * activity_counting.xml and activity_counting_lh.xml
+ *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-07-13
+ * last modification on 2018-08-03
  */
-public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
-    //private static final String TAG = CountingActivity.class.getSimpleName();
     private static String TAG = "TourCountCountLAct";
 
     private SharedPreferences prefs;
 
-    private int REQUEST_CODE_ASK_PERMISSIONS = 123;
-    private int REQUEST_CODE_GPS = 124;
-    private int REQUEST_CODE_NETWORK = 125;
-
-    private int section_id;
     private int iid = 1;
     private LinearLayout count_area;
-    private Boolean canGetLocation;
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;
@@ -90,17 +82,15 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // the actual data
     private Count count;
     private Section section;
-    private List<Count> counts;
     private List<CountingWidget> countingWidgets;
     private List<CountingWidgetLH> countingWidgetsLH;
     private Spinner spinnerL;
     private int itemPosition = 0;
 
     // Location info handling
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private String provider;
     private double latitude, longitude, height, uncertainty;
+    LocationService locationService;
+    int modePerm;
 
     private PowerManager.WakeLock mProximityWakeLock;
 
@@ -125,8 +115,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
 
-    private int i_Id = 0;
-    private String spec_name; // could be used in prepared toast in deleteIndividual()
+    private int i_Id = 0; // Individuals id
+    private String spec_name;
     private int spec_count;
 
     @Override
@@ -179,12 +169,6 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             getWindow().setAttributes(params);
         }
 
-        if (savedInstanceState != null)
-        {
-            spinnerL.setSelection(savedInstanceState.getInt("itemPosition", 0));
-            iid = savedInstanceState.getInt("count_id");
-        }
-
         if (awakePref)
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -201,22 +185,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             enableProximitySensor();
         }
 
-        // get parameters from CountingActivity
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-            latitude = extras.getDouble("Latitude");
-            longitude = extras.getDouble("Longitude");
-            height = extras.getDouble("Height");
-            uncertainty = extras.getDouble("Uncert");
-            section_id = extras.getInt("section_id");
-        }
-
     } // End of onCreate
 
-    /*
-     * So preferences can be loaded at the start, and also when a change is detected.
-     */
+    // Load preferences
     private void getPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
@@ -228,34 +199,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         buttonAlertSound = prefs.getString("alert_button_sound", null);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-    }
-
-    // Try to find locationservice
-    private Boolean canLocation()
-    {
-        try
-        {
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-            // getting GPS status
-            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status (needs UnifiedNlp + location backend on LineageOS, no height info)
-            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            //Toast.makeText(getApplicationContext(), "NetworkEnabled: " + isNetworkEnabled + "\nGPSenabled: " + isGPSEnabled, Toast.LENGTH_LONG).show();
-
-            if (isGPSEnabled || isNetworkEnabled)
-            {
-                this.canGetLocation = true;
-            }
-
-        } catch (Exception e)
-        {
-            if (MyDebug.LOG)
-                Log.e(TAG, "Cannot get location.", e);
-        }
-
-        return canGetLocation;
+        itemPosition = prefs.getInt("item_Position", 0);       // spinner pos.
+        iid = prefs.getInt("count_id", 1);                     // species id
     }
 
     @Override
@@ -267,6 +212,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
 
+        // get parameters from WelcomeActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
@@ -274,8 +220,6 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
             uncertainty = extras.getDouble("Uncert");
-            section_id = extras.getInt("section_id");
-            iid = extras.getInt("count_id");
         }
 
         // Set full brightness of screen
@@ -293,123 +237,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             enableProximitySensor();
         }
 
-        // Request GPS location permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            int hasAccessFineLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            if (hasAccessFineLocationPermission != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS);
-            }
-        }
-
-        // Request Network location permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            int hasAccessCoarseLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (hasAccessCoarseLocationPermission != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_NETWORK);
-            }
-        }
-
-        // test for GPS or Network location
-        if (!canLocation())
-        {
-            // can't get location, GPS or Network is not enabled
-            Toast.makeText(getApplicationContext(), R.string.activate_GPS, Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            // Get LocationManager instance
-            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-            // Best possible provider
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            // criteria.setPowerRequirement(Criteria.POWER_HIGH);
-            provider = locationManager.getBestProvider(criteria, true);
-            if (MyDebug.LOG)
-                Log.d(TAG, "Provider: " + provider);
-
-            // Create LocationListener object
-            locationListener = new LocationListener()
-            {
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras)
-                {
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "onStatusChanged()");
-                }
-
-                @Override
-                public void onProviderEnabled(String provider)
-                {
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "onProviderEnabled()");
-                }
-
-                @Override
-                public void onProviderDisabled(String provider)
-                {
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "onProviderDisabled()");
-                }
-
-                @Override
-                public void onLocationChanged(Location location)
-                {
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "onLocationChanged()");
-                    if (location != null)
-                    {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        height = location.getAltitude();
-                        if (height != 0)
-                            height = correctHeight(latitude, longitude, height);
-                        uncertainty = location.getAccuracy();
-                    }
-                }
-            };
-
-            // get location service
-            try
-            {
-                locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
-            } catch (Exception e)
-            {
-                // nothing
-            }
-        }
-
-        // get reverse geocoding
-        if (canGetLocation && metaPref && (latitude != 0 || longitude != 0))
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    URL url;
-                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
-                    try
-                    {
-                        url = new URL(urlString);
-                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                        getXML.execute(url);
-                    } catch (IOException e)
-                    {
-                        // do nothing
-                    }
-
-                }
-            });
-        }
+        // Get location with permissions check
+        modePerm = 1;
+        permissionCaptureFragment();
 
         // build the counting screen
         // clear any existing views
@@ -431,7 +261,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         {
             if (MyDebug.LOG)
                 Log.e(TAG, "Problem loading section: " + e.toString());
-            Toast.makeText(CountingLActivity.this, getString(R.string.getHelp), Toast.LENGTH_LONG).show();
+//            Toast.makeText(CountingLActivity.this, getString(R.string.getHelp), Toast.LENGTH_LONG).show();
+            showSnackbarRed(getString(R.string.getHelp));
             finish();
         }
 
@@ -495,6 +326,101 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+    } // end of onResume
+
+    private void showSnackbarRed(String str)
+    {
+        View view;
+        if (lhandPref) // if left-handed counting page
+        {
+            view = findViewById(R.id.countingScreenLH);
+        }
+        else
+        {
+            view = findViewById(R.id.countingScreen);
+        }
+        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" +  str + "</font></b>"), Snackbar.LENGTH_LONG);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        sB.show();
+    }
+
+    // Part of permission handling
+    @Override
+    public void permissionCaptureFragment()
+    {
+        if (isPermissionGranted())
+        {
+            switch (modePerm)
+            {
+            case 1: // get location
+                getLoc();
+                break;
+            case 2: // stop location service
+                locationService.stopListener();
+                break;
+            }
+        }
+        else
+        {
+            // don't use location service
+        }
+    }
+
+    // if API level > 23 test for permissions granted
+    private boolean isPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED 
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED; 
+        }
+        else
+        {
+            // handle permissions for Build.VERSION_CODES < M here
+            return true;
+        }
+    }
+
+    // get the location data
+    public void getLoc()
+    {
+        locationService = new LocationService(this);
+
+        if (locationService.canGetLocation())
+        {
+            longitude = locationService.getLongitude();
+            latitude = locationService.getLatitude();
+            height = locationService.getAltitude();
+            uncertainty = locationService.getAccuracy();
+        }
+
+        // get reverse geocoding
+        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    URL url;
+                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
+                    try
+                    {
+                        url = new URL(urlString);
+                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                        getXML.execute(url);
+                    } catch (IOException e)
+                    {
+                        // do nothing
+                    }
+                }
+            });
+        }
     }
 
     // Spinner listener
@@ -508,13 +434,19 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
                 head_area2.removeAllViews();
                 count_area.removeAllViews();
 
-                String sid = ((TextView) view.findViewById(R.id.countId)).getText().toString();
-                iid = Integer.parseInt(sid);
-                itemPosition = position;
+                try
+                {
+                    String sid = ((TextView) view.findViewById(R.id.countId)).getText().toString();
+                    iid = Integer.parseInt(sid);
+                    itemPosition = position;
 
-                count = countDataSource.getCountById(iid);
-                countingScreen(count);
-                //Toast.makeText(CountingActivity.this, "1. " + count.name, Toast.LENGTH_SHORT).show();
+                    count = countDataSource.getCountById(iid);
+                    countingScreen(count);
+                    //Toast.makeText(CountingActivity.this, "1. " + count.name, Toast.LENGTH_SHORT).show();
+                } catch (Exception e)
+                {
+                     // Exception may occur when permissions are changed while activity is paused
+                }
             }
 
             @Override
@@ -562,18 +494,10 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             disableProximitySensor(true);
         }
 
-        try
-        {
-            locationManager.removeUpdates(locationListener);
-        } catch (Exception e)
-        {
-            // do nothing
-        }
-
-        // save section id in case it is lost on pause
+        // save current count id in case it is lost on pause
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("section_id", section_id);
         editor.putInt("count_id", iid);
+        editor.putInt("item_Position", itemPosition);
         editor.apply();
 
         // close the data sources
@@ -581,44 +505,19 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         countDataSource.close();
         individualsDataSource.close();
 
+        // Stop location service with permissions check
+        modePerm = 2;
+        permissionCaptureFragment();
+
         // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
         // has denied wakelock permission to TourCount
         if (awakePref)
         {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
     }
 
-    // Correct height with geoid offset from EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight)
-    {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try
-        {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e)
-        {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try
-        {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
-    }
-
-    // Triggered by count up button
+    // Triggered by count-up-button
     // starts EditIndividualActivity
     public void countUpf1i(View view)
     {
@@ -740,10 +639,12 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countDownf1i();
             countDataSource.saveCountf1i(count);
 
+            // get last individual of category 1 (♂♀)
             i_Id = individualsDataSource.getLastIndiv(count_id, 1);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -779,7 +680,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             i_Id = individualsDataSource.getLastIndiv(count_id, 1);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -797,7 +699,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         }
     }
 
-    // Triggered by count up button
+    // Triggered by count up button for ♂
     // starts EditIndividualActivity
     public void countUpf2i(View view)
     {
@@ -922,7 +824,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             i_Id = individualsDataSource.getLastIndiv(count_id, 2);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1099,7 +1002,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             i_Id = individualsDataSource.getLastIndiv(count_id, 3);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1276,7 +1180,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             i_Id = individualsDataSource.getLastIndiv(count_id, 4);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1453,7 +1358,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             i_Id = individualsDataSource.getLastIndiv(count_id, 5);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1630,7 +1536,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             i_Id = individualsDataSource.getLastIndiv(count_id, 6);
             if (i_Id == -1)
             {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                showSnackbarRed(getString(R.string.getHelp) + spec_name);
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1762,8 +1669,6 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
         Intent intent = new Intent(CountingLActivity.this, CountOptionsActivity.class);
         intent.putExtra("count_id", iid);
-        intent.putExtra("section_id", section_id);
-        intent.putExtra("itemposition", spinnerL.getSelectedItemPosition());
         startActivity(intent);
     }
 
@@ -1841,7 +1746,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
                         startActivity(chooser);
                     } catch (Exception e)
                     {
-                        Toast.makeText(CountingLActivity.this, getString(R.string.noPhotoPermit), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(CountingActivity.this, getString(R.string.noPhotoPermit), Toast.LENGTH_SHORT).show();
+                        showSnackbarRed(getString(R.string.noPhotoPermit));
                     }
                 }
             }
@@ -1888,14 +1794,12 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         }
     }
 
-    // Save activity state for getting back to CountingActivity
+    // puts up function to back button
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
+    public void onBackPressed()
     {
-        super.onSaveInstanceState(savedInstanceState);
-
-        savedInstanceState.putInt("count_id", iid);
-        savedInstanceState.putInt("itemPosition", spinnerL.getSelectedItemPosition());
+        NavUtils.navigateUpFromSameTask(this);
+        super.onBackPressed();
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)

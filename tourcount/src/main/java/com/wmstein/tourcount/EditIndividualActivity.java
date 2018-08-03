@@ -5,24 +5,22 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Individuals;
@@ -31,13 +29,11 @@ import com.wmstein.tourcount.database.Temp;
 import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
-import java.io.IOException;
-
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2018-04-17
+ * last modification an 2018-07-27
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -62,16 +58,13 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private boolean screenOrientL; // option for screen orientation
 
     // Location info handling
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private String provider;
     private double latitude, longitude, height, uncertainty;
 
     private int count_id;
     private int i_id, iAtt;
     private String specName;
     private String sLocality = "";
-    private Boolean sdata;
+    private Boolean sdata; // true: data saved already
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -134,9 +127,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         super.onSaveInstanceState(outState);
     }
 
-    /*
-     * So preferences can be loaded at the start, and also when a change is detected.
-     */
+    // Load preferences
     private void getPrefs()
     {
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
@@ -153,60 +144,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
 
         // clear any existing views
         individ_area.removeAllViews();
-
-        // Get LocationManager instance
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Best possible provider
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        // criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        provider = locationManager.getBestProvider(criteria, true);
-
-        // Create LocationListener object
-        locationListener = new LocationListener()
-        {
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderEnabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onProviderDisabled(String provider)
-            {
-                // nothing
-            }
-
-            @Override
-            public void onLocationChanged(Location location)
-            {
-                if (location != null)
-                {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    height = location.getAltitude();
-                    uncertainty = location.getAccuracy();
-                    if (height != 0)
-                        height = correctHeight(latitude, longitude, height);
-                }
-            }
-        };
-
-        // get location service
-        try
-        {
-            locationManager.requestLocationUpdates(provider, 3000, 0, locationListener);
-        } catch (Exception e)
-        {
-            //
-        }
 
         // setup the data sources
         individualsDataSource = new IndividualsDataSource(this);
@@ -285,47 +222,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individ_area.addView(eiw);
     }
 
-    // Correct height with geoid offset from EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight)
-    {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try
-        {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e)
-        {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try
-        {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
-    }
-
     @Override
     protected void onPause()
     {
         super.onPause();
-
-        // Stop location service
-        try
-        {
-            locationManager.removeUpdates(locationListener);
-        } catch (Exception e)
-        {
-            // do nothing
-        }
 
         if (!sdata)
         {
@@ -369,7 +269,9 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
         else
         {
-            Toast.makeText(this, getString(R.string.valState), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getString(R.string.valState), Toast.LENGTH_SHORT).show();
+            showSnackbarRed(getString(R.string.valState));
+
             return false;
         }
 
@@ -437,7 +339,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         else // newcount is <= 1
         {
             
-            Toast.makeText(this, getString(R.string.warnCount), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, getString(R.string.warnCount), Toast.LENGTH_SHORT).show();
+            showSnackbarRed(getString(R.string.warnCount));
             return false; // forces input newcount > 0
         }
         
@@ -447,6 +350,14 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         return true;
     }
 
+    private void showSnackbarRed(String str)
+    {
+        View view = findViewById(R.id.editIndividualScreen);
+        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" +  str + "</font></b>"), Snackbar.LENGTH_LONG);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        sB.show();
+    }
     private void buttonSound()
     {
         if (buttonSoundPref)

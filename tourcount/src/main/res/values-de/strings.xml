@@ -75,7 +75,7 @@
     <string name="wind">Wind (0-4)</string>
     <string name="clouds">Wolken (%)</string>
     <string name="hinttap">Tippe hier</string>
-    <string name="valTemp">Unrealistische Temperatur</string>
+    <string name="valTemp">Unrealistische Temperatur!</string>
     <string name="valWind">Wind überprüfen!</string>
     <string name="valClouds">Wolken überprüfen!</string>
     <string name="date">Datum</string>
@@ -133,12 +133,10 @@
     <!-- ChangeLog -->
     <string name="changelog_full_title">App-Info</string>
     <string name="changelog_title">Was ist neu?</string>
-    <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">mehr&#8230;</string>
 
     <!-- ViewHelp -->
     <string name="viewhelp_full_title">Hilfe (TourCount Ver.</string>
-    <string name="viewhelp_ok_button">OK</string>
 
     <!-- Preferences -->
     <string name="prefs_appearance">Aussehen</string>
@@ -209,11 +207,9 @@
     <string name="hintTitle">Titel</string>
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">Bemerkung zur Liste</string>
-    <string name="getHelp">Leider gibt es ein Problem mit der Datenbank. Bitte sende eine E-Mail mit Deiner exportierten \"tourcount.db\", falls Du Hilfe brauchst.</string>
+    <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount.db\" per E-Mail, falls Du Hilfe brauchst.</string>
     <string name="activate_GPS">Bitte GPS im Standort-Modus aktivieren.</string>
     <string name="no_GPS">Keine Positionsbestimmung, GPS ist nicht aktiviert.</string>
-    <string name="no_NET">Keine Positionsbestimmung, Netzortung ist nicht aktiviert.</string>
-    <string name="no_Passive">Keine Positionsbestimmung, Passive Ortung ist nicht aktiviert.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂, ♀</string>
     <string name="countImagomHint">Falter ♂</string>
@@ -222,6 +218,18 @@
     <string name="countLarvaHint">Raupe</string>
     <string name="countOvoHint">Ei</string>
     <string name="warnCount">Nur Werte größer Null möglich!</string>
-    <string name="permission_rationale_title">Berechtigung wird benötigt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="no_provider">Kein Service-Provider verfügbar!</string>
+    <string name="ok_button">OK</string>
 
+    <!-- Permissions -->
+    <string name="perm_required">Berechtigungen benötigt</string>
+    <string name="perm_hint">Um Schmetterlinge mit Ortsangaben zu registrieren und Datendateien zu im- und exportieren, sind in TourCount Standort- und Speicherzugriffsberechtigungen erforderlich. </string>
+    <string name="perm_hint1">Bitte erteile die fehlenden Berechtigungen für die App in den Smartphone-Einstellungen.</string>
+    <string name="app_settings">App-Einstellungen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="perm_declined">Berechtigungen abgelehnt</string>
+    <string name="retry">Wiederholen</string>
+    
 </resources>

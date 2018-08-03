@@ -145,7 +145,7 @@ public class ChangeLog
             // OK button
             .setPositiveButton(
                 context.getResources().getString(
-                    R.string.changelog_ok_button),
+                    R.string.ok_button),
                 new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog,

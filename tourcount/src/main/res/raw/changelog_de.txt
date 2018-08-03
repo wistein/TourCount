@@ -38,8 +38,12 @@
 
 $ 3.0.4
   % Version 3.0.4
-  _ 13.07.2018
+  _ 03.08.2018
+  	* Positionsabfragefunktion zuverlässiger, nun als Service 
   	* Zusätzliche Schmetterlingsabbildungen
+  	* Wo sinnvoll, Toasts gegen Snackbars getauscht
+  	* Kleinere Code-Bereinigungen
+  	* Absturz-Fehler im Permission-Handling von Android >= Marshmallow behoben
   	* Absturz-Fehler im Modul "Edit Speziesliste" behoben
 
 $ 3.0.3
