@@ -279,7 +279,8 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             }
             else
             {
-                showSnackbarRed(getString(R.string.isdouble));
+//                Toast.makeText(this, isDbl + " " + getString(R.string.isdouble), Toast.LENGTH_SHORT).show();
+                showSnackbarRed(isDbl + " " + getString(R.string.isdouble));
                 retValue = false;
             }
         }

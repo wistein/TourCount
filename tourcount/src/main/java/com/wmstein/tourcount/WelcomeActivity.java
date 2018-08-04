@@ -1337,24 +1337,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         alert.show();
     }
 
-    private void showSnackbar(String str) // green text
-    {
-        View view = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#00ff00\">" + str + "</font>"), Snackbar.LENGTH_SHORT);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        sB.show();
-    }
-
-    private void showSnackbarRed(String str) // bold red text
-    {
-        View view = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        sB.show();
-    }
-
     // Clear temp_loc in temp
     private void clear_loc()
     {
@@ -1681,6 +1663,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         in.close();
         out.close();
+    }
+
+    private void showSnackbar(String str) // green text
+    {
+        View view = findViewById(R.id.baseLayout);
+        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#00ff00\">" + str + "</font>"), Snackbar.LENGTH_SHORT);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        sB.show();
+    }
+
+    private void showSnackbarRed(String str) // bold red text
+    {
+        View view = findViewById(R.id.baseLayout);
+        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        sB.show();
     }
 
 }

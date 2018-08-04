@@ -54,7 +54,7 @@ import java.util.Locale;
 
 /****************************************************************************************
  * CountingActivity is the central activity of TourCount in portrait mode. 
- * It provides the counter, starts 
+ * It provides the counters, starts 
  * GPS-location polling, starts EditIndividualActivity, starts editSectionActivity, 
  * switches screen off when pocketed and allows taking pictures and sending notes.
  *

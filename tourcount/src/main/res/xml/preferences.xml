@@ -3,6 +3,11 @@
     <PreferenceCategory
         android:title="@string/prefs_appearance">
         android:key="key_prefs_appearance">
+        <Preference
+            android:icon="@drawable/ic_image_black_48dp"
+            android:key="button"
+            android:summary="@string/explainImg"
+            android:title="@string/chooseImg"/>
         <ListPreference
             android:entries="@array/pref_bg_entries"
             android:entryValues="@array/pref_bg_values"
@@ -10,11 +15,6 @@
             android:key="pref_back"
             android:summary="@string/pref_bg_summ"
             android:title="@string/pref_bg"/>
-        <Preference
-            android:icon="@drawable/ic_image_black_48dp"
-            android:key="button"
-            android:summary="@string/explainImg"
-            android:title="@string/chooseImg"/>
         <ListPreference
             android:entries="@array/pref_sort_sp_entries"
             android:entryValues="@array/pref_sort_sp_values"
@@ -94,10 +94,10 @@
     </PreferenceCategory>
 
     <EditTextPreference
-        android:key="email_String"
-        android:icon="@drawable/ic_email_black_48dp"
-        android:summary="@string/pref_email_string_summ"
         android:hint="@string/email_hint"
+        android:icon="@drawable/ic_email_black_48dp"
+        android:key="email_String"
+        android:summary="@string/pref_email_string_summ"
         android:title="@string/pref_email_string"/>
 
 </PreferenceScreen>

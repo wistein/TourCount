@@ -21,8 +21,7 @@
     
     <!-- multiwindow crashes when rotating the screen, 
          reason: spinner in CountingActivity, 
-         solution: android:resizeableActivity="false" 
-         prohibits multi-window-mode -->
+         solution: android:resizeableActivity="false" prohibits multi-window-mode -->
     <application
         android:name=".TourCountApplication"
         android:allowBackup="false"

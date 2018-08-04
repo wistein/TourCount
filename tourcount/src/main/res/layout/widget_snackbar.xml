@@ -10,9 +10,13 @@
 
     <android.support.design.widget.Snackbar.SnackbarLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/snackbar_text">
-        
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/snackbar_text"/>
+
     </android.support.design.widget.Snackbar.SnackbarLayout>
     
 </android.support.design.widget.CoordinatorLayout>

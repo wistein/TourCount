@@ -143,7 +143,7 @@
     <string name="pref_bg">Background</string>
     <string name="pref_bg_summ">Choose default, custom or no background image.</string>
     <string name="chooseImg">Custom Image</string>
-    <string name="explainImg">Select the background image to be used when a custom image is selected.\nPlease mind: The image will be scaled to the screen area of the device.</string>
+    <string name="explainImg">Select an own background image per Android Gallery app to replace the default background.\nPlease mind: The image will be scaled to the screen area of the device.</string>
     <string name="image_error">Error setting custom image! Please try using the gallery rather than a file manager.</string>
     <string name="pref_sort_order">Sorting</string>
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
@@ -162,7 +162,7 @@
     <string name="pref_awake">Keep screen on</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
     <string name="pref_bright">Screen bright</string>
-    <string name="pref_bright_summ">Sets the TourCount screens bright whilst counting and editing.</string>
+    <string name="pref_bright_summ">Sets the TourCount screens for counting and editing bright.</string>
     <string name="pref_duplicate">Prevent duplicate species</string>
     <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
     <string name="prefs_metadata">Meta data</string>
@@ -207,7 +207,7 @@
     <string name="hintTitle">Title</string>
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">List notes.</string>
-    <string name="getHelp">Database problem! Please mail your exported \'tourcount.db\' if you need assistance.</string>
+    <string name="getHelp">Database problem! Please mail your exported \'tourcount_yyyy-mm-dd_hhmmss.db\' if you need assistance.</string>
     <string name="activate_GPS">Please, activate GPS in Location Mode.</string>
     <string name="no_GPS">Sorry, no position, GPS is not activated.</string>
     <string name="countCodeHint">Code</string>
@@ -231,5 +231,6 @@
     <string name="cancel">Cancel</string>
     <string name="perm_declined">Permissions declined</string>
     <string name="retry">Retry</string>
+    <string name="permission_please">TourCount needs storage permission in order to use a custom background.</string>
     
 </resources>
