@@ -560,19 +560,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     public void countUpLHf1i(View view)
     {
         buttonSound();
@@ -611,19 +614,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     // Triggered by count down button
     // deletes last count
     public void countDownf1i(View view)
@@ -742,19 +748,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     public void countUpLHf2i(View view)
     {
         buttonSound();
@@ -793,19 +802,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     // Triggered by count down button
     // deletes last count
     public void countDownf2i(View view)
@@ -920,19 +932,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     public void countUpLHf3i(View view)
     {
         buttonSound();
@@ -971,19 +986,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     // Triggered by count down button
     // deletes last count
     public void countDownf3i(View view)
@@ -1098,19 +1116,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     public void countUpLHpi(View view)
     {
         buttonSound();
@@ -1149,19 +1170,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     // Triggered by count down button
     // deletes last count
     public void countDownpi(View view)
@@ -1276,19 +1300,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     public void countUpLHli(View view)
     {
         buttonSound();
@@ -1327,19 +1354,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     // Triggered by count down button
     // deletes last count
     public void countDownli(View view)
@@ -1454,19 +1484,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     public void countUpLHei(View view)
     {
         buttonSound();
@@ -1505,19 +1538,22 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         i_Id = individualsDataSource.saveIndividual(individualsDataSource.createIndividuals
             (count_id, name, latitude, longitude, height, uncert, datestamp, timestamp));
 
-        // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
-        intent.putExtra("indiv_id", i_Id);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncert);
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        if (i_Id != 0)
+        {
+            // get edited info for individual and start EditIndividualActivity
+            Intent intent = new Intent(CountingLActivity.this, EditIndividualActivity.class);
+            intent.putExtra("count_id", count_id);
+            intent.putExtra("indiv_id", i_Id);
+            intent.putExtra("SName", widget.count.name);
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncert);
+            intent.putExtra("indivAtt", iAtt);
+            startActivity(intent);
+        }
     }
-
+    
     // Triggered by count down button
     // deletes last count
     public void countDownei(View view)

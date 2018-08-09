@@ -57,30 +57,37 @@ public class IndividualsDataSource
 
     public Individuals createIndividuals(int count_id, String name, double latitude, double longitude, double height, String uncert, String datestamp, String timestamp)
     {
-        ContentValues values = new ContentValues();
-        values.put(DbHelper.I_COUNT_ID, count_id);
-        values.put(DbHelper.I_NAME, name);
-        values.put(DbHelper.I_COORD_X, latitude);
-        values.put(DbHelper.I_COORD_Y, longitude);
-        values.put(DbHelper.I_COORD_Z, height);
-        values.put(DbHelper.I_UNCERT, uncert);
-        values.put(DbHelper.I_DATE_STAMP, datestamp);
-        values.put(DbHelper.I_TIME_STAMP, timestamp);
-        values.put(DbHelper.I_LOCALITY, "");
-        values.put(DbHelper.I_SEX, "");
-        values.put(DbHelper.I_STADIUM, "");
-        values.put(DbHelper.I_STATE_1_6, 0);
-        values.put(DbHelper.I_NOTES, "");
-        values.put(DbHelper.I_ICOUNT, 0);
-        values.put(DbHelper.I_CATEGORY, 0);
+        if (database.isOpen()) // prohibits crash when doubleclicking count button
+        {
+            ContentValues values = new ContentValues();
+            values.put(DbHelper.I_COUNT_ID, count_id);
+            values.put(DbHelper.I_NAME, name);
+            values.put(DbHelper.I_COORD_X, latitude);
+            values.put(DbHelper.I_COORD_Y, longitude);
+            values.put(DbHelper.I_COORD_Z, height);
+            values.put(DbHelper.I_UNCERT, uncert);
+            values.put(DbHelper.I_DATE_STAMP, datestamp);
+            values.put(DbHelper.I_TIME_STAMP, timestamp);
+            values.put(DbHelper.I_LOCALITY, "");
+            values.put(DbHelper.I_SEX, "");
+            values.put(DbHelper.I_STADIUM, "");
+            values.put(DbHelper.I_STATE_1_6, 0);
+            values.put(DbHelper.I_NOTES, "");
+            values.put(DbHelper.I_ICOUNT, 0);
+            values.put(DbHelper.I_CATEGORY, 0);
 
-        int insertId = (int) database.insert(INDIVIDUALS_TABLE, null, values);
-        Cursor cursor = database.query(INDIVIDUALS_TABLE,
-            allColumns, DbHelper.I_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Individuals newIndividuals = cursorToIndividuals(cursor);
-        cursor.close();
-        return newIndividuals;
+            int insertId = (int) database.insert(INDIVIDUALS_TABLE, null, values);
+            Cursor cursor = database.query(INDIVIDUALS_TABLE,
+                allColumns, DbHelper.I_ID + " = " + insertId, null, null, null, null);
+            cursor.moveToFirst();
+            Individuals newIndividuals = cursorToIndividuals(cursor);
+            cursor.close();
+            return newIndividuals;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void deleteIndividualById(int id)
@@ -121,7 +128,9 @@ public class IndividualsDataSource
 
     public int saveIndividual(Individuals individuals)
     {
-        ContentValues dataToInsert = new ContentValues();
+        if (individuals != null)
+        {
+            ContentValues dataToInsert = new ContentValues();
         dataToInsert.put(DbHelper.I_COUNT_ID, individuals.count_id);
         dataToInsert.put(DbHelper.I_NAME, individuals.name);
         dataToInsert.put(DbHelper.I_COORD_X, individuals.coord_x);
@@ -141,6 +150,11 @@ public class IndividualsDataSource
         String[] whereArgs = {String.valueOf(individuals.id)};
         database.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
         return individuals.id;
+    }
+    else
+        {
+            return 0; // in case of doubleclick on count button
+        }
     }
 
     // get last individual of category of species
