@@ -36,6 +36,11 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 3.0.5
+  % Version 3.0.5
+  _ 20.09.2018
+  	* Fehler bei Höhenkorrektur behoben 
+
 $ 3.0.4
   % Version 3.0.4
   _ 03.08.2018

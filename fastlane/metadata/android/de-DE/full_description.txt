@@ -8,8 +8,8 @@ Eigenschaften
 - Die App enthält einen Editor für die Einrichtung und Pflege der Artenliste,
 - einen Editor für Meta-Daten zur Vorbereitung einer Tour,
 - einen Editor für individuelle Spezies-Daten pro Sichtung (z.B. Zustand, Bemerkung oder größere Anzahl).
-- Die Artauswahl erfolgt per Scroll-Menü auf der Zählerseite, die 
-- getrennte Zähler für ♂ oder ♀, ♂, ♀, Puppe, Raupe oder Ei hat.
+- Die Artauswahl erfolgt per Rollbalken-Menü mit Schmetterlingsabbildungen auf der Zählerseite.
+- Die Zählerseite hat 6 unabhängige Zähler für ♂ oder ♀, ♂, ♀, Puppe, Raupe oder Ei.
 - Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie
 - Ortsdaten durch inverse OSM-Geocodierung, wenn GPS und Internet funktionieren.
 - Die Ergebnisse sind aufbereitet für die Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung.

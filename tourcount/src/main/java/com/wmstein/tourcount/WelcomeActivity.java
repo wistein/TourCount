@@ -29,6 +29,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
@@ -42,6 +43,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,7 +64,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-08-03
+ * last modification on 2018-09-20
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -184,8 +186,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         vh = new ViewHelp(this);
         // Show changelog for new version
         if (cl.firstRun())
-            cl.getLogDialog().show();
-
+            cl.getLogDialog().show(); 
     } // end of onCreate
 
     // check initial location permission
@@ -340,6 +341,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             longitude = locationService.getLongitude();
             latitude = locationService.getLatitude();
             height = locationService.getAltitude();
+            if (height != 0)
+                height = correctHeight(latitude, longitude, height);
             uncertainty = locationService.getAccuracy();
         }
 
@@ -371,6 +374,34 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
     }
 
+        // Correct height with geoid offset from EarthGravitationalModel
+        private double correctHeight(double latitude, double longitude, double gpsHeight)
+        {
+            double corrHeight;
+            double nnHeight;
+
+            EarthGravitationalModel gh = new EarthGravitationalModel();
+            try
+            {
+                gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+            } catch (IOException e)
+            {
+                return 0;
+            }
+
+            // Calculate the offset between the ellipsoid and geoid
+            try
+            {
+                corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+            } catch (Exception e)
+            {
+                return 0;
+            }
+
+            nnHeight = gpsHeight + corrHeight;
+            return nnHeight;
+        }
+    
     // Date for filename of Export-DB
     private String getcurDate()
     {

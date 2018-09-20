@@ -14,10 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.wmstein.egm.EarthGravitationalModel;
-
-import java.io.IOException;
-
 /******************************************************************
  * LocationService provides the location data: latitude, longitude, height, uncertainty.
  * It is started and ended by WelcomeActivity.
@@ -28,7 +24,7 @@ import java.io.IOException;
  * licensed under the MIT License.
  * 
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2018-08-03
+ * last modification on 2018-09-20
  */
 
 public class LocationService extends Service implements LocationListener
@@ -120,8 +116,6 @@ public class LocationService extends Service implements LocationListener
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
                                 height = location.getAltitude();
-                                if (height != 0)
-                                    height = correctHeight(latitude, longitude, height);
                                 uncertainty = location.getAccuracy();
                             }
                         }
@@ -161,34 +155,6 @@ public class LocationService extends Service implements LocationListener
             // do nothing
             Log.e(TAG, "StopListener: " + e.toString());
         }
-    }
-
-    // Correct height with geoid offset from EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight)
-    {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try
-        {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e)
-        {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try
-        {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
     }
 
     public double getLongitude()

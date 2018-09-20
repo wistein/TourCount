@@ -1,1 +1,1 @@
-A counting app for species-specific registering of butterflies.
+A butterfly monitoring app for species-specific registering of butterflies in Europe.

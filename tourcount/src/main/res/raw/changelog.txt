@@ -36,6 +36,11 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 3.0.5
+  % Version 3.0.5
+  _ 2018-09-20
+  	* Fixed not working GPS height correction
+
 $ 3.0.4
   % Version 3.0.4
   _ 2018-08-03

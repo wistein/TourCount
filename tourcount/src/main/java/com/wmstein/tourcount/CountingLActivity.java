@@ -32,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
@@ -65,7 +66,7 @@ import java.util.Locale;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-08-03
+ * last modification on 2018-09-20
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -392,6 +393,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             longitude = locationService.getLongitude();
             latitude = locationService.getLatitude();
             height = locationService.getAltitude();
+            if (height != 0)
+                height = correctHeight(latitude, longitude, height);
             uncertainty = locationService.getAccuracy();
         }
 
@@ -421,6 +424,34 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
                 }
             });
         }
+    }
+
+    // Correct height with geoid offset from EarthGravitationalModel
+    private double correctHeight(double latitude, double longitude, double gpsHeight)
+    {
+        double corrHeight;
+        double nnHeight;
+
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
     }
 
     // Spinner listener

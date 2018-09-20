@@ -2,6 +2,9 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
+#### Version 3.0.5 (2018-09-20)
+- Fixed not working GPS height correction
+
 #### Version 3.0.4 (2018-08-03)
 - Location retrieval function more reliable, changed to service
 - Additional butterfly pictures

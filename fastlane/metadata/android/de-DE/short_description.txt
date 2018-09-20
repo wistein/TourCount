@@ -1,1 +1,1 @@
-Eine Schmetterlings-Monitoring-App für Touren in der Natur.
+Eine Schmetterlings-Monitoring-App zur Spezies-spezifischen Registrierung von Schmetterlingen in Europa.

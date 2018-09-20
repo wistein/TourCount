@@ -35,8 +35,8 @@ import java.util.StringTokenizer;
  * Transforms vertical coordinates using coefficients from the
  * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
  * Earth Gravitational Model.
- * <p>
- * Aknowledgement<br>
+ * 
+ * Aknowledgement
  * This class is an adaption of Fortran code
  * http://earth-info.nga.mil/GandG/wgs84/gravitymod/wgs84_180/clenqt.for 
  * from the National Geospatial-Intelligence Agency and available in public domain. 
@@ -50,6 +50,7 @@ import java.util.StringTokenizer;
  * @since 2.3
  * 
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
+ * Last edit on 2018-09-19
  */
 public final class EarthGravitationalModel extends VerticalTransform 
 {
@@ -63,7 +64,7 @@ public final class EarthGravitationalModel extends VerticalTransform
             SQRT_21 = 4.5825756949558400065880471937280;
 
     /**
-     * The default value for {@link #nmax}.
+     * The default value for #nmax.
      */
     static final int DEFAULT_ORDER = 180;
 
@@ -171,7 +172,7 @@ public final class EarthGravitationalModel extends VerticalTransform
     /**
      * Computes the index as it would be returned by the locating array iv
      * (from the Fortran code).
-     * <p>
+     * 
      * Tip (used in some place in this class):
      * locatingArray(n+1) == locatingArray(n) + n + 1.
      */
@@ -183,7 +184,7 @@ public final class EarthGravitationalModel extends VerticalTransform
     /**
      * Loads the coefficients from the specified ASCII file and initialize the internal
      * clenshaw arrays.
-     * <p>
+     * 
      * Note: ASCII may looks like an unefficient format for binary distribution.
      * A binary file with coefficient values read by java.io.DataInput readDouble would
      * be more compact than an uncompressed ASCII file. However, binary files are hard to
@@ -197,14 +198,13 @@ public final class EarthGravitationalModel extends VerticalTransform
      */
     public void load(Context context) throws IOException 
 	{
-        final InputStream stream = context.getResources().openRawResource(R.raw.egm180);
-
-        if (stream == null) 
+        final InputStream EGM = context.getResources().openRawResource(R.raw.egm180);
+        if (EGM == null)
 		{
             throw new FileNotFoundException("egm180");
         }
         final LineNumberReader in;
-        in = new LineNumberReader(new InputStreamReader(stream, "ISO-8859-1"));
+        in = new LineNumberReader(new InputStreamReader(EGM, "ISO-8859-1"));
         String line;
         while ((line = in.readLine()) != null) 
 		{
