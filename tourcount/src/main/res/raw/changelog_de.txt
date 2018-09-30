@@ -36,6 +36,12 @@
   _
     ! Geeignet für Android 4.2 (JellyBean) oder neuer
 
+$ 3.0.6
+  % Version 3.0.6
+  _ 30.09.2018
+  	* Zusätzliche Schmetterlingsabbildungen
+  	* Nun zeigen viele Abbildungen Ober- und Unterseite der Flügel
+
 $ 3.0.5
   % Version 3.0.5
   _ 20.09.2018

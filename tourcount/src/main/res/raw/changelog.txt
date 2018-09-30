@@ -36,6 +36,12 @@
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
 
+$ 3.0.6
+  % Version 3.0.6
+  _ 2018-09-30
+  	* Additional butterfly pictures
+    * Now many pictures showing both sides of wings
+
 $ 3.0.5
   % Version 3.0.5
   _ 2018-09-20

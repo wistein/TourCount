@@ -11,10 +11,10 @@ is signed with the F-Droid's signing key.
 
 
 German version:
-Diese tourcount_release_nnn.apk.apk ist vom gleichen Quellcode kompiliert wie
+Diese tourcount_release_nnn.apk ist vom gleichen Quellcode kompiliert wie
 die TourCount-App vom F-Droid App-Store.
-Diese tourcount_release_nnn.apk.apk ist signiert mit dem Signaturschlüssel des Autors.
+Diese tourcount_release_nnn.apk ist signiert mit dem SignaturschlÃ¼ssel des Autors.
 
 Sie ist aber nicht als Update der App des F-Droid-Stores installierbar 
-(und umgekehrt), da F-Droid's TourCount-App mit dem Signaturschlüssel von F-Droid 
+(und umgekehrt), da F-Droid's TourCount-App mit dem SignaturschlÃ¼ssel von F-Droid 
 signiert ist.
