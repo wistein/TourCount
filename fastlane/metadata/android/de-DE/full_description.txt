@@ -31,4 +31,7 @@ Die App kann ab Android-Version 4.2.2 oder neuer verwendet werden.
 Dokumentation ist unter
 https://github.com/wistein/TourCount/tree/master/docs.
 
-TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge. TourCount unterstützt das Species-spezifische und individuell lokalisierte Zählen von Schmetterlingen bei Aufenthalten in der Natur. 
+TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge. 
+Die 2. App, TransektCount, dient Transektzählern in Naturschutzprojekten gemäß der European Butterfly Monitoring Scheme-Methode. Es unterstützt das Spezies-spezifische Zählen pro Transektabschnitt.
+
+Beide Apps verwenden die Europäische Kodierung der Schmetterlinge nach Karsholt/Razowski und beinhalten somit nur europäische Schmetterlingsabbildungen.
