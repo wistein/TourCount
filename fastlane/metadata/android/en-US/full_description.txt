@@ -31,4 +31,8 @@ The app is usable with Android version 4.2.2 or newer.
 Documentation is provided under  
 https://github.com/wistein/TourCount/tree/master/docs.
 
-TourCount is one of two apps for European butterfly monitoring. TourCount supports species-specific and individually localized counting of butterflies on any tour in nature. 
+TourCount is one of two apps for European butterfly monitoring. 
+The 2. app, TransektCount supports transect counters in nature preserving projects according to the European Butterfly Monitoring Scheme methodology. 
+It allows a species-specific counting per transect section.
+
+Both apps use the coding scheme of Karsholt/Razowski for European butterflies and thus contain only European butterfly pictures.
