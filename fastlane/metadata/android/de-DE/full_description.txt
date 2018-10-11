@@ -1,4 +1,4 @@
-TourCount unterstützt Spezies-spezifisches und individuell lokalisiertes Registrieren von Schmetterlingen. 
+TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
 Eigenschaften
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
@@ -32,6 +32,6 @@ Dokumentation ist unter
 https://github.com/wistein/TourCount/tree/master/docs.
 
 TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge. 
-Die 2. App, TransektCount, dient Transektzählern in Naturschutzprojekten gemäß der European Butterfly Monitoring Scheme-Methode. Es unterstützt das Spezies-spezifische Zählen pro Transektabschnitt.
+Die 2. App, TransektCount, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
 
 Beide Apps verwenden die Kodierung der Europäischen Schmetterlinge nach Karsholt/Razowski und beinhalten somit nur europäische Schmetterlingsabbildungen.

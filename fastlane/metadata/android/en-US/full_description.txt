@@ -1,4 +1,4 @@
-TourCount supports species-specific and individually localized registering of butterflies. 
+TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
 Features
 - Data recording is organized for a regional tour with its expected butterfly species.
@@ -32,7 +32,6 @@ Documentation is provided under
 https://github.com/wistein/TourCount/tree/master/docs.
 
 TourCount is one of two apps for European butterfly monitoring. 
-The 2. app, TransektCount supports transect counters in nature preserving projects according to the European Butterfly Monitoring Scheme methodology. 
-It allows a species-specific counting per transect section.
+The 2nd app, TransektCount serves transect counters on their inspection walks. It supports species-specific counting of butterflies per transect section according to the European Butterfly Monitoring Scheme method.
 
 Both apps use the coding scheme of Karsholt/Razowski for European butterflies and thus contain only European butterfly pictures.

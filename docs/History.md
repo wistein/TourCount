@@ -2,6 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
+#### Version 3.0.6 (2018-10-11)
+- Additional butterfly pictures
+- Some pictures edited to show both sides of wings
+- Some docs updated
+
 #### Version 3.0.5 (2018-09-20)
 - Fixed not working GPS height correction
 

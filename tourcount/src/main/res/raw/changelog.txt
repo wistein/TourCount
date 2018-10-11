@@ -30,7 +30,12 @@
   _ <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
   _ 
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-  _
+  _ 
+  	! TourCount supports species-specific and individually GPS-localized registering of butterflies. 
+  _ 
+  	! TourCount is one of two apps for European butterfly monitoring.
+  	! The 2nd app, <B>TransektCount</B> serves transect counters on their inspection walks. It supports species-specific counting of butterflies per transect section according to the European Butterfly Monitoring Scheme method.
+  _ 
     ! Source code and documentation published under:
     ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
@@ -38,9 +43,10 @@
 
 $ 3.0.6
   % Version 3.0.6
-  _ 2018-09-30
+  _ 2018-10-11
   	* Additional butterfly pictures
-    * Now many pictures showing both sides of wings
+    * Some pictures edited to show both sides of wings
+    * Some docs updated
 
 $ 3.0.5
   % Version 3.0.5

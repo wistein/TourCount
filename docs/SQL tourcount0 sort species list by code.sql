@@ -1,4 +1,4 @@
-/* SQL-script to sort the species list of the Basic DB by code */
+/* SQL-script to sort the species list of the TourCount Basic DB by code */
 
 ALTER TABLE counts RENAME TO counts_old;
 
@@ -12,7 +12,7 @@ CREATE TABLE counts
   count_ei int DEFAULT 0,
   name text,
   code text,
-  notes text DEFAULT NULL,
+  notes text DEFAULT "",
   PRIMARY KEY(_id)
 );
 

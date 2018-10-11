@@ -31,6 +31,11 @@
   _ 
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _
+  	! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
+  _ 
+  	! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
+  	! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
+  _ 
     ! Quellcode und Dokumentation veröffentlicht unter:
     ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
@@ -38,9 +43,10 @@
 
 $ 3.0.6
   % Version 3.0.6
-  _ 30.09.2018
+  _ 11.10.2018
   	* Zusätzliche Schmetterlingsabbildungen
-  	* Nun zeigen viele Abbildungen Ober- und Unterseite der Flügel
+  	* Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
+  	* Doku. teilweise überarbeitet
 
 $ 3.0.5
   % Version 3.0.5
