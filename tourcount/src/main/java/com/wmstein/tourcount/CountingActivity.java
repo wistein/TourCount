@@ -177,11 +177,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
+            try
             {
-                mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "WAKE LOCK");
+                if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
+                {
+                    mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "TourCount:WAKELOCK");
+                }
+                enableProximitySensor();
+            } catch (NullPointerException e)
+            {
+                // do nothing
             }
-            enableProximitySensor();
         }
 
     } // End of onCreate
@@ -463,11 +469,11 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long aid)
             {
-                head_area2.removeAllViews();
-                count_area.removeAllViews();
-
                 try
                 {
+                    head_area2.removeAllViews();
+                    count_area.removeAllViews();
+
                     String sid = ((TextView) view.findViewById(R.id.countId)).getText().toString();
                     iid = Integer.parseInt(sid);
                     itemPosition = position;
@@ -478,6 +484,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
+                    //  or when spinner is rapidly repeatedly pressed
                     if (MyDebug.LOG)
                         Log.e(TAG, "SpinnerListener: " + e.toString());
                 }
@@ -525,7 +532,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // save current count id in case it is lost on pause
@@ -569,7 +576,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -624,7 +631,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -757,7 +764,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -812,7 +819,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -941,7 +948,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -996,7 +1003,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1125,7 +1132,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1180,7 +1187,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1309,7 +1316,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1349,7 +1356,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             startActivity(intent);
         }
     }
-    
+
     public void countUpLHli(View view)
     {
         buttonSound();
@@ -1364,7 +1371,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1403,7 +1410,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             startActivity(intent);
         }
     }
-    
+
     // Triggered by count down button
     // deletes last count
     public void countDownli(View view)
@@ -1493,7 +1500,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1533,7 +1540,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             startActivity(intent);
         }
     }
-    
+
     public void countUpLHei(View view)
     {
         buttonSound();
@@ -1548,7 +1555,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         // append individual with its Id, coords, date and time
@@ -1587,7 +1594,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             startActivity(intent);
         }
     }
-    
+
     // Triggered by count down button
     // deletes last count
     public void countDownei(View view)
@@ -1734,7 +1741,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // check for API-Level >= 21
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            disableProximitySensor(true);
+            disableProximitySensor();
         }
 
         Intent intent = new Intent(CountingActivity.this, CountOptionsActivity.class);
@@ -1789,7 +1796,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             // check for API-Level >= 21
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             {
-                disableProximitySensor(true);
+                disableProximitySensor();
             }
 
             Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
@@ -1851,7 +1858,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     @SuppressLint("NewApi")
-    private void disableProximitySensor(boolean waitForFarState)
+    private void disableProximitySensor()
     {
         if (mProximityWakeLock == null)
         {
@@ -1859,7 +1866,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
         if (mProximityWakeLock.isHeld())
         {
-            int flags = waitForFarState ? PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY : 0;
+            int flags = PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY;
             mProximityWakeLock.release(flags);
         }
     }

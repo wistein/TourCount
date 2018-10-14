@@ -25,12 +25,6 @@
   _
   _ email: stein.wm@web.de
   _
-  _ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-  _ 
-  _ <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
-  _ 
-  _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-  _ 
   	! TourCount supports species-specific and individually GPS-localized registering of butterflies. 
   _ 
   	! TourCount is one of two apps for European butterfly monitoring.
@@ -40,13 +34,21 @@
     ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
     ! Suitable for Android 4.2 (JellyBean) or newer
+  _ 
+  _ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+  _ 
+  _ <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
+  _ 
+  _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+  _ 
 
 $ 3.0.6
   % Version 3.0.6
-  _ 2018-10-11
+  _ 2018-10-14
   	* Additional butterfly pictures
     * Some pictures edited to show both sides of wings
     * Some docs updated
+    * Fix for crash when species selector is rapidly repeatedly pressed
 
 $ 3.0.5
   % Version 3.0.5
