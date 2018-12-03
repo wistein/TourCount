@@ -1,0 +1,2 @@
+Version 3.0.5 (2018-09-20)
+- Fixed GPS height correction not working

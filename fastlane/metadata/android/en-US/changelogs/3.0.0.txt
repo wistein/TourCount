@@ -1,0 +1,13 @@
+Version 3.0.0 (2018-03-31)
+- Redesign of counting page layout with scroll-down selection od species
+- Separate counters for ? or ?, ?, ?, pupa, larva, egg
+- Database version change 2 to 3 (takes care of additional counters)
+- First use now creates a direct usable internal DB with common european species
+- Automatic conversion of existing databases to new version
+- Correct handling of subtraction for categories of species and individuals
+- Adapted results page layout 
+- Layout of starting page updated
+- More butterfly pictures added
+- Documentation adapted
+- Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
+- Bug fixes
