@@ -44,11 +44,12 @@
 
 $ 3.0.6
   % Version 3.0.6
-  _ 14.10.2018
+  _ 02.12.2018
   	* Zusätzliche Schmetterlingsabbildungen
   	* Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
-  	* Doku. teilweise überarbeitet
+  	* Kleinere Designänderungen in einigen App-Seiten
   	* Absturzfehler bei schnell wiederholtem Klicken der Art-Auswahl behoben
+  	* Doku. teilweise überarbeitet
 
 $ 3.0.5
   % Version 3.0.5

@@ -59,54 +59,137 @@
             android:layout_height="0dp"
             android:layout_weight="3.5"/>
 
-        <Button
-            android:id="@+id/editMetaButton"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#333333"
-            android:gravity="center"
-            android:onClick="editMeta"
-            android:text="@string/editMetaButton"
-            android:textSize="17sp"
-            android:textColor="#ffffff"/>
+            android:orientation="horizontal"
+            >
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="2"/>
+
+            <ImageButton
+                android:id="@+id/editMetaButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:onClick="editMeta"
+                android:src="@android:drawable/ic_menu_edit"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/editMetaButtonText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:backgroundTint="#333333"
+                android:onClick="editMeta"
+                android:text="@string/editMetaButton"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+        </LinearLayout>
 
         <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.1"/>
 
-        <Button
-            android:id="@+id/viewCountButton"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#333333"
-            android:gravity="center"
-            android:onClick="viewCounts"
-            android:text="@string/counting"
-            android:textSize="17sp"
-            android:textColor="#ffffff"/>
+            android:orientation="horizontal"
+            >
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="2"/>
+
+            <ImageButton
+                android:id="@+id/viewCountButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:onClick="viewSections"
+                android:src="@drawable/ic_count_white"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/viewCountButtonText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:textStyle="bold"
+                android:backgroundTint="#333333"
+                android:onClick="viewCounts"
+                android:text="@string/counting"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
 
         <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.1"/>
 
-        <Button
-            android:id="@+id/viewSpeciesButton"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#333333"
-            android:gravity="center"
-            android:onClick="viewSpecies"
-            android:text="@string/viewSpeciesButton"
-            android:textSize="17sp"
-            android:textColor="#ffffff"/>
+            android:orientation="horizontal"
+            >
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="2"/>
+
+            <ImageButton
+                android:id="@+id/viewSpeciesButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:onClick="viewSpecies"
+                android:src="@android:drawable/ic_menu_view"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/viewSpeciesButtonText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:textStyle="bold"
+                android:backgroundTint="#333333"
+                android:onClick="viewSpecies"
+                android:text="@string/viewSpeciesButton"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
 
         <Space
             android:layout_width="0dp"
