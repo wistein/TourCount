@@ -2,14 +2,15 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
-#### Version 3.0.6 (2018-10-14)
+#### Version 3.0.6 (2018-12-02)
 - Additional butterfly pictures
 - Some pictures edited to show both sides of wings
-- Some docs updated
+- Cosmetic changes to several app pages
 - Fix for crash when species selector is rapidly repeatedly pressed
+- Docs updated
 
 #### Version 3.0.5 (2018-09-20)
-- Fixed not working GPS height correction
+- Fixed GPS height correction not working
 
 #### Version 3.0.4 (2018-08-03)
 - Location retrieval function more reliable, changed to service
