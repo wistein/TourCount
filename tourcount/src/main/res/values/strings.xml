@@ -127,7 +127,7 @@
     <string name="notesHere">List Notes</string>
     <string name="notesHint">Type notes here&#8230;</string>
     <string name="deleteCount">Delete Item</string>
-    <string name="reallyDeleteCount">Are you sure? This count will be deleted immediately.</string>
+    <string name="reallyDeleteCount">Are you sure? This item will be deleted immediately.</string>
     <string name="isdouble"> is double!</string>
 
     <!-- ChangeLog -->
