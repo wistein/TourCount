@@ -2,7 +2,7 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
-#### Version 3.0.6 (2018-12-02)
+#### Version 3.0.7 (2018-12-16)
 - Additional butterfly pictures
 - Some pictures edited to show both sides of wings
 - Cosmetic changes to several app pages
