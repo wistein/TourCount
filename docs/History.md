@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
+#### Version 3.0.8 (2019-02-02)
+- Some code cleaning
+- Project adaption for Android Studio 3.3 and Gradle 4.10.1
+
 #### Version 3.0.7 (2018-12-16)
 - Additional butterfly pictures
 - Some pictures edited to show both sides of wings
