@@ -23,7 +23,7 @@ import android.widget.Toast;
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2016-05-15,
- * last edited on 2018-08-04
+ * last edited on 2019-01-27
  */
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -78,7 +78,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             @Override
             public boolean onPreferenceClick(Preference arg0)
             {
-                getSound(alert_button_uri, GET_SOUND);
+                getSound(alert_button_uri);
                 return true;
             }
         });
@@ -117,13 +117,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         startActivityForResult(pickIntent, SELECT_PICTURE);
     }
 
-    private void getSound(Uri tmp_alert_uri, int requestCode)
+    private void getSound(Uri tmp_alert_uri)
     {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.pref_button_sound));
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, tmp_alert_uri);
-        this.startActivityForResult(intent, requestCode);
+        this.startActivityForResult(intent, SettingsActivity.GET_SOUND);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 try
                 {
                     cursor.moveToFirst(); // blows up here if file manager used
-                } catch (Exception e)
+                } catch (NullPointerException e)
                 {
                     if (MyDebug.LOG)
                         Log.e(TAG, "Failed to select image: " + e.toString());

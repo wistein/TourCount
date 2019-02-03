@@ -3,7 +3,6 @@ package com.wmstein.tourcount;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,7 +42,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,7 +62,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-09-20
+ * last modification on 2019-02-02
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -102,9 +100,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private File outfile;
     private boolean mExternalStorageAvailable = false;
     private boolean mExternalStorageWriteable = false;
-    private final String state = Environment.getExternalStorageState();
+    private String state = Environment.getExternalStorageState();
     private AlertDialog alert;
-    private SectionDataSource sectionDataSource;
     private final Handler mHandler = new Handler();
 
     // preferences
@@ -114,9 +111,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
-    // following stuff for purging export db
+    // db handling
     private SQLiteDatabase database;
     private DbHelper dbHandler;
+    private SectionDataSource sectionDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -159,7 +157,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         // List tour name as title
         Section section;
-        String sname = "";
+        String sname;
         try
         {
             sectionDataSource = new SectionDataSource(this);
@@ -225,7 +223,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         // List tour name as title
         Section section;
-        String sname = "";
+        String sname;
         try
         {
             sectionDataSource = new SectionDataSource(this);
@@ -643,23 +641,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     private void doExportDB()
     {
-        boolean mExternalStorageAvailable;
-        boolean mExternalStorageWriteable;
-        String state = Environment.getExternalStorageState();
+        // outfile -> /storage/emulated/0/tourcount_yyyy-MM-dd_HHmmss.db
         outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount_" + getcurDate() + ".db");
-//        String destPath = "/data/data/com.wmstein.tourcount/databases";
-        String destPath = getApplicationContext().getFilesDir().getPath();
-
-        try
-        {
-            destPath = getFilesDir().getPath();
-        } catch (Exception e)
-        {
-            if (MyDebug.LOG)
-                Log.e(TAG, "destPath error: " + e.toString());
-        }
-        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
-        infile = new File(destPath + "/tourcount.db");
+        
+        // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
+        String inPath = getApplicationContext().getFilesDir().getPath();
+        inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db";
+        infile = new File(inPath);
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -715,14 +703,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         // Export DB -> CSV with permission check
         modePerm = 4;
-        permissionCaptureFragment();
+        permissionCaptureFragment(); // calls doExportDb2CSV()
     }
 
     private void doExportDb2CSV()
     {
-        boolean mExternalStorageAvailable;
-        boolean mExternalStorageWriteable;
-        String state = Environment.getExternalStorageState();
+        // outfile -> /storage/emulated/0/tourcount_yyyy-MM-dd_HHmmss.csv
         outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount_" + getcurDate() + ".csv");
 
         Section section;
@@ -1248,28 +1234,23 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         // Export Basic DB with permission check
         modePerm = 5;
-        permissionCaptureFragment();
+        permissionCaptureFragment(); // calls doExportBasisDb()
     }
 
     private void doExportBasisDb()
     {
-        boolean mExternalStorageAvailable;
-        boolean mExternalStorageWriteable;
-        String state = Environment.getExternalStorageState();
-        File tmpfile = new File("/data/data/com.wmstein.tourcount/files/tourcount_tmp.db");
-        outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
-        String srcPath = "/data/data/com.wmstein.tourcount/files";
+        // tmpfile -> /data/data/com.wmstein.tourcount/files/tourcount_tmp.db
+        String tmpPath = getApplicationContext().getFilesDir().getPath();
+        tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db";
+        File tmpfile = new File(tmpPath);
 
-        try
-        {
-            srcPath = getFilesDir().getPath();
-        } catch (Exception e)
-        {
-            if (MyDebug.LOG)
-                Log.e(TAG, "srcPath error: " + e.toString());
-        }
-        srcPath = srcPath.substring(0, srcPath.lastIndexOf("/")) + "/databases";
-        infile = new File(srcPath + "/tourcount.db");
+        // outfile -> /storage/emulated/0/tourcount0.db
+        outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
+        
+        // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
+        String inPath = getApplicationContext().getFilesDir().getPath();
+        inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db";
+        infile = new File(inPath);
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -1335,8 +1316,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // created by wmstein
     private void resetToBasisDb()
     {
-        // a confirm dialogue before anything else takes place
-        // http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog
+        // confirm dialogue before anything else takes place
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setMessage(R.string.confirmResetDB);
@@ -1473,23 +1453,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         if (!fileSelected.equals(""))
         {
             infile = new File(fileSelected);
-            // destPath = "/data/data/com.wmstein.tourcount/files"
+            
+            // outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
             String destPath = this.getFilesDir().getPath();
-            try
-            {
-                destPath = getFilesDir().getPath();
-            } catch (Exception e)
-            {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "destPath error: " + e.toString());
-            }
-            destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
-            //outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
-            outfile = new File(destPath + "/tourcount.db");
+            destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
+            outfile = new File(destPath);
 
-            // a confirm dialogue before anything else takes place
-            // http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog
-            // could make the dialog central in the popup - to do later
+            // confirm dialogue before anything else takes place
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setMessage(R.string.confirmDBImport)
@@ -1585,19 +1555,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     
     private void doImportBasisDB()
     {
+        // infile <- /storage/emulated/0/tourcount0.db
         infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
-        String destPath = "/data/data/com.wmstein.tourcount/databases";
-        try
-        {
-            destPath = getFilesDir().getPath();
-        } catch (Exception e)
-        {
-            if (MyDebug.LOG)
-                Log.e(TAG, "destPath error: " + e.toString());
-        }
-        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases";
-        //outfile = new File("/data/data/com.wmstein.tourcount/databases/tourcount.db");
-        outfile = new File(destPath + "/tourcount.db");
+        
+        // outfile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
+        String destPath = getApplicationContext().getFilesDir().getPath();
+        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
+        outfile = new File(destPath);
         if (!(infile.exists()))
         {
 //            Toast.makeText(this, getString(R.string.noDb), Toast.LENGTH_LONG).show();
@@ -1605,9 +1569,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             return;
         }
 
-        // a confirm dialogue before anything else takes place
-        // http://developer.android.com/guide/topics/ui/dialogs.html#AlertDialog
-        // could make the dialog central in the popup - to do later
+        // confirm dialogue before anything else takes place
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setMessage(R.string.confirmBasisImport).setCancelable(false).setPositiveButton(R.string.importButton, new DialogInterface.OnClickListener()

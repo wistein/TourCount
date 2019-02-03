@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 /***********************************
  * Created by wmstein on 2016-05-15,
- * last edited on 2018-03-23
+ * last edited on 2019-01-27
  */
 public class TempDataSource
 {
@@ -44,7 +44,8 @@ public class TempDataSource
         database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
     }
 
-    // for future use
+    /* 
+    //for future use
     public void saveTempCnt(int tmpcnt)
     {
         ContentValues dataToInsert = new ContentValues();
@@ -63,6 +64,7 @@ public class TempDataSource
         cursor.close();
         return temp.temp_cnt;
     }
+    */
 
     public Temp getTemp()
     {

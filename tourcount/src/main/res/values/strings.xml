@@ -72,7 +72,7 @@
     <string name="country">Country</string>
     <string name="inspector">Observer Name</string>
     <string name="temperature">Temp. (°C)</string>
-    <string name="wind">Wind (0-4)</string>
+    <string name="wind">Wind (0–4)</string>
     <string name="clouds">Clouds (%)</string>
     <string name="hinttap">Click here</string>
     <string name="valTemp">Unrealistic temperature!</string>
@@ -100,8 +100,8 @@
     <string name="stadium_2">Pupa</string>
     <string name="stadium_3">Caterpillar</string>
     <string name="stadium_4">Egg</string>
-    <string name="state">State (0-6)</string>
-    <string name="state1">State (1-6)</string>
+    <string name="state">State (0–6)</string>
+    <string name="state1">State (1–6)</string>
     <string name="count1">No.</string>
     <string name="valState">State out of range!</string>
     <string name="note">Individual Notes</string>
@@ -208,8 +208,6 @@
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">List notes.</string>
     <string name="getHelp">Database problem! Please mail your exported \'tourcount_yyyy-mm-dd_hhmmss.db\' if you need assistance.</string>
-    <string name="activate_GPS">Please, activate GPS in Location Mode.</string>
-    <string name="no_GPS">Sorry, no position, GPS is not activated.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂, ♀</string>
     <string name="countImagomHint">Butterfly ♂</string>
@@ -218,8 +216,6 @@
     <string name="countLarvaHint">Larva</string>
     <string name="countOvoHint">Egg</string>
     <string name="warnCount">Only values bigger than zero possible!</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
     <string name="no_provider">No Service Provider available!</string>
     <string name="ok_button">OK</string>
     

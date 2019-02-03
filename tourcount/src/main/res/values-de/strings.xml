@@ -72,7 +72,7 @@
     <string name="country">Land</string>
     <string name="inspector">Melder(in)</string>
     <string name="temperature">Temp. (°C)</string>
-    <string name="wind">Wind (0-4)</string>
+    <string name="wind">Wind (0–4)</string>
     <string name="clouds">Wolken (%)</string>
     <string name="hinttap">Tippe hier</string>
     <string name="valTemp">Unrealistische Temperatur!</string>
@@ -100,8 +100,8 @@
     <string name="stadium_2">Puppe</string>
     <string name="stadium_3">Raupe</string>
     <string name="stadium_4">Ei</string>
-    <string name="state">Zust. (0-6)</string>
-    <string name="state1">Zust. (1-6)</string>
+    <string name="state">Zust. (0–6)</string>
+    <string name="state1">Zust. (1–6)</string>
     <string name="count1">Anz.</string>
     <string name="valState">Zustand überprüfen!</string>
     <string name="note">Bemerkung zum Individuum</string>
@@ -208,8 +208,6 @@
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">Bemerkung zur Liste</string>
     <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount_yyyy-mm-dd_hhmmss.db\" per E-Mail, falls Du Hilfe brauchst.</string>
-    <string name="activate_GPS">Bitte GPS im Standort-Modus aktivieren.</string>
-    <string name="no_GPS">Keine Positionsbestimmung, GPS ist nicht aktiviert.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂, ♀</string>
     <string name="countImagomHint">Falter ♂</string>
@@ -218,8 +216,6 @@
     <string name="countLarvaHint">Raupe</string>
     <string name="countOvoHint">Ei</string>
     <string name="warnCount">Nur Werte größer Null möglich!</string>
-    <string name="yes">Ja</string>
-    <string name="no">Nein</string>
     <string name="no_provider">Kein Service-Provider verfügbar!</string>
     <string name="ok_button">OK</string>
 

@@ -33,7 +33,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2018-07-27
+ * last modification an 2019-01-27
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -63,7 +63,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private int count_id;
     private int i_id, iAtt;
     private String specName;
-    private String sLocality = "";
     private Boolean sdata; // true: data saved already
 
     @Override
@@ -154,7 +153,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         tempDataSource.open();
         temp = tempDataSource.getTemp();
 
-        sLocality = temp.temp_loc;
+        String sLocality = temp.temp_loc;
 
         countDataSource = new CountDataSource(this);
         countDataSource.open();

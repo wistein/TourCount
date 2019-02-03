@@ -13,7 +13,7 @@ import com.wmstein.tourcount.R;
 /**********************************
  * Created by milo on 26/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
- * last edited on 2018-03-31
+ * last edited on 2019-01-27
  */
 public class NotesWidget extends LinearLayout
 {
@@ -25,6 +25,7 @@ public class NotesWidget extends LinearLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_notes, this, true);
         textView = findViewById(R.id.notes_text);
     }

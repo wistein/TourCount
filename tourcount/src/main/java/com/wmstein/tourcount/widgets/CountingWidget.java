@@ -19,6 +19,7 @@ import com.wmstein.tourcount.database.Count;
  * Interface for widget_counting_i.xml
  * Created by wmstein 2016-12-18
  * modified for TourCount on 2018-03-31
+ * last edited on 2019-01-27
  */
 public class CountingWidget extends RelativeLayout
 {
@@ -44,6 +45,7 @@ public class CountingWidget extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_counting_i, this, true);
         namef1i = findViewById(R.id.f1iName);
         namef2i = findViewById(R.id.f2iName);

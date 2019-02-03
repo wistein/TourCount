@@ -11,7 +11,7 @@ import com.wmstein.tourcount.R;
 /***************************************************
  * EditHeadWidget.java used by EditMetaActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-04-03,
- * last edited on 2018-03-31
+ * last edited on 2019-01-27
  */
 public class ListHeadWidget extends LinearLayout
 {
@@ -27,6 +27,7 @@ public class ListHeadWidget extends LinearLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_list_head, this, true);
         widget_lco = findViewById(R.id.widgetLCo);
         widget_lco1 = findViewById(R.id.widgetLCo1);

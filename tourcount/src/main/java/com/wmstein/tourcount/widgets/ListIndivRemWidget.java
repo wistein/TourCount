@@ -11,7 +11,7 @@ import com.wmstein.tourcount.database.Individuals;
 
 /**********************************
  * Created by wmstein on 2018-03-21
- * Last edited on 2018-03-31
+ * Last edited on 2019-01-27
  */
 public class ListIndivRemWidget extends RelativeLayout
 {
@@ -22,6 +22,7 @@ public class ListIndivRemWidget extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_list_indiv_rem, this, true);
         txtBemInd = findViewById(R.id.txtBemInd);
     }

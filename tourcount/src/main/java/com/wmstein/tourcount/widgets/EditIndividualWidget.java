@@ -12,7 +12,7 @@ import com.wmstein.tourcount.R;
 /***************************************************************
  * EditIndividualWidget.java used by EditIndividualActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
- * Last edited on 2018-03-31
+ * Last edited on 2019-01-27
  */
 public class EditIndividualWidget extends LinearLayout
 {
@@ -37,6 +37,7 @@ public class EditIndividualWidget extends LinearLayout
     {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_edit_individual, this, true);
         widget_locality1 = findViewById(R.id.widgetLocality1); // Locality
         widget_locality2 = findViewById(R.id.widgetLocality2);

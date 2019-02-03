@@ -14,10 +14,10 @@ import com.wmstein.tourcount.R;
  * Adopted for TourCount by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31
+ * last edited on 2019-01-27
  */
 public class DbHelper extends SQLiteOpenHelper
 {
-    private SQLiteDatabase database;
     static final String TAG = "TourCount DBHelper";
     private static final String DATABASE_NAME = "tourcount.db";
     private static final int DATABASE_VERSION = 3;

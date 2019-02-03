@@ -64,7 +64,7 @@ import java.util.Locale;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2018-09-20
+ * last modification on 2019-01-27
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -103,11 +103,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private String buttonAlertSound;
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
-
-    private String[] idArray;
-    private String[] nameArray;
-    private String[] codeArray;
-    private Integer[] imageArray;
 
     // data sources
     private SectionDataSource sectionDataSource;
@@ -274,6 +269,11 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(section.name);
 
+        String[] idArray;
+        String[] nameArray;
+        String[] codeArray;
+        Integer[] imageArray;
+
         switch (sortPref)
         {
         case "names_alpha":
@@ -365,13 +365,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 locationService.stopListener();
                 break;
             }
-        }
-        else
-        {
-//            if (modePerm == 1)
-//                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
-            // don't use location service
-//            PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
         }
     }
 

@@ -37,7 +37,7 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2018-08-03
+ * last edited on 2019-01-27
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -58,8 +58,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private HeadDataSource headDataSource;
     private IndividualsDataSource individualsDataSource;
 
-    private SQLiteDatabase database;
-    private DbHelper dbHandler;
     ListSumWidget lsw;
 
     @Override
@@ -167,11 +165,10 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         individualsDataSource.open();
 
         // Calculate mean average values for coords and uncertainty
-        dbHandler = new DbHelper(this);
-        database = dbHandler.getWritableDatabase();
+        DbHelper dbHandler = new DbHelper(this);
+        SQLiteDatabase database = dbHandler.getWritableDatabase();
         Cursor curAInd;
         curAInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE, null);
-        frst = 0;
         while (curAInd.moveToNext())
         {
             longi = curAInd.getDouble(4);
@@ -273,7 +270,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         lsw.setSum(sumsp, sumind);
         spec_area.addView(lsw);
         
-        int spec_count = 0;
+        int spec_count;
         List<Individuals> indivs; // List of individuals
         // display all the counts by adding them to listSpecies layout
         for (Count spec : specs)

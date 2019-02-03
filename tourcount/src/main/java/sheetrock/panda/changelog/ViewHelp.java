@@ -1,22 +1,3 @@
-/**
- * Based on ChangeLog.java
- * Copyright (C) 2011-2013, Karsten Priegnitz
- * <p/>
- * Permission to use, copy, modify, and distribute this piece of software
- * for any purpose with or without fee is hereby granted, provided that
- * the above copyright notice and this permission notice appear in the
- * source code of all copies.
- * <p/>
- * It would be appreciated if you mention the author in your change log,
- * contributors list or the like.
- *
- * @author: Karsten Priegnitz
- * @see: http://code.google.com/p/android-change-log/
- * <p/>
- * Adaptation for ViewHelp:
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
- */
-
 package sheetrock.panda.changelog;
 
 import android.app.AlertDialog;
@@ -39,6 +20,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
+/**
+ * Based on ChangeLog.java
+ * Copyright (C) 2011-2013, Karsten Priegnitz
+ * <p/>
+ * Permission to use, copy, modify, and distribute this piece of software
+ * for any purpose with or without fee is hereby granted, provided that
+ * the above copyright notice and this permission notice appear in the
+ * source code of all copies.
+ * <p/>
+ * It would be appreciated if you mention the author in your change log,
+ * contributors list or the like.
+ *
+ * @author: Karsten Priegnitz
+ * @see: http://code.google.com/p/android-change-log/
+ * <p/>
+ * Adaptation for ViewHelp:
+ * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+ */
 public class ViewHelp
 {
     // this is the key for storing the version name in SharedPreferences

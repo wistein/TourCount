@@ -19,7 +19,7 @@ import com.wmstein.tourcount.database.Count;
 /****************************************************
  * Interface for widget_counting_head1.xml
  * Created by wmstein 2016-12-18
- * Last edited on 2018-03-31
+ * Last edited on 2019-01-27
  */
 public class CountingWidget_head1 extends ArrayAdapter<String>
 {
@@ -30,11 +30,6 @@ public class CountingWidget_head1 extends ArrayAdapter<String>
     private String[] contentArray1;
     private String[] contentArray2;
     private Integer[] imageArray;
-
-    private TextView countId;
-    private TextView countName;
-    private TextView countCode;
-    private ImageView pSpecies;
 
     public Count count;
     LayoutInflater inflater;
@@ -68,16 +63,16 @@ public class CountingWidget_head1 extends ArrayAdapter<String>
     {
         View row = inflater.inflate(R.layout.widget_counting_head1, parent, false);
 
-        countId = row.findViewById(R.id.countId);
+        TextView countId = row.findViewById(R.id.countId);
         countId.setText(idArray[position]);
 
-        countName = row.findViewById(R.id.countName);
+        TextView countName = row.findViewById(R.id.countName);
         countName.setText(contentArray1[position]);
 
-        countCode = row.findViewById(R.id.countCode);
+        TextView countCode = row.findViewById(R.id.countCode);
         countCode.setText(contentArray2[position]);
 
-        pSpecies = row.findViewById(R.id.pSpecies);
+        ImageView pSpecies = row.findViewById(R.id.pSpecies);
         pSpecies.setImageResource(imageArray[position]);
 
         return row;

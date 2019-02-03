@@ -12,7 +12,7 @@ import com.wmstein.tourcount.database.Section;
 /*******************************************************************
  * ListMetaWidget.java used by ListSpeciesActivity.java and controls 
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
- * last edited on 2018-03-31
+ * last edited on 2019-01-27
  */
 public class ListMetaWidget extends LinearLayout
 {
@@ -45,6 +45,7 @@ public class ListMetaWidget extends LinearLayout
     {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_list_meta, this, true);
         widget_lmeta1 = findViewById(R.id.widgetLMeta1);
         widget_litem1 = findViewById(R.id.widgetLItem1);

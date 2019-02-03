@@ -19,7 +19,7 @@ import java.io.File;
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2018-03-27
+ * last change on 2019-01-27
  */
 public class TourCountApplication extends Application
 {
@@ -100,6 +100,7 @@ public class TourCountApplication extends Application
         boolean screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        assert wm != null;
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);

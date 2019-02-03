@@ -310,7 +310,6 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
 
     /*
      * Scroll to end of view
-     * by wmstein
      */
     private void ScrollToEndOfView(View scrlV)
     {
@@ -319,9 +318,9 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         boolean pageend = false;
         while (!pageend)
         {
-            scrlV.scrollTo(0, scroll_amount);            //scroll
+            scrlV.scrollTo(0, scroll_amount);           //scroll
             scroll_amount = scroll_amount + scroll_amount; //increase scroll_amount 
-            scrollY = scrollY + scrlV.getScrollY();      //scroll position 1. row
+            scrollY = scrollY + scrlV.getScrollY();        //scroll position 1. row
             if (scroll_amount > scrollY)
             {
                 pageend = true;

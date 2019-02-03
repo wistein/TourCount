@@ -24,7 +24,7 @@ import android.widget.Toast;
  * licensed under the MIT License.
  * 
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2018-09-20
+ * last modification on 2019-01-27
  */
 
 public class LocationService extends Service implements LocationListener
@@ -46,7 +46,7 @@ public class LocationService extends Service implements LocationListener
         getLocation();
     }
 
-    // Default constructor for service declaration in AndroidManifest.xml
+    // Default constructor demanded for service declaration in AndroidManifest.xml
     public LocationService () {}
 
     private Location getLocation()
@@ -92,10 +92,6 @@ public class LocationService extends Service implements LocationListener
                             }
                         }
                     }
-                    else
-                    {
-                        // nope
-                    }
                 }
 
                 // if GPS is enabled get position using GPS Service
@@ -119,10 +115,6 @@ public class LocationService extends Service implements LocationListener
                                 uncertainty = location.getAccuracy();
                             }
                         }
-                    }
-                    else
-                    {
-                        // nope
                     }
                 } 
 

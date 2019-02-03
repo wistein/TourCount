@@ -1,20 +1,3 @@
-/************************************************************************
- * Copyright (C) 2011-2013, Karsten Priegnitz
- * <p/>
- * Permission to use, copy, modify, and distribute this piece of software
- * for any purpose with or without fee is hereby granted, provided that
- * the above copyright notice and this permission notice appear in the
- * source code of all copies.
- * <p/>
- * It would be appreciated if you mention the author in your change log,
- * contributors list or the like.
- *
- * @author: Karsten Priegnitz
- * @see: http://code.google.com/p/android-change-log/
- * <p/>
- * Changed by wmstein on 18.02.2016
- */
-
 package sheetrock.panda.changelog;
 
 import android.annotation.SuppressLint;
@@ -38,6 +21,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
+/************************************************************************
+ * Copyright (C) 2011-2013, Karsten Priegnitz
+ * <p/>
+ * Permission to use, copy, modify, and distribute this piece of software
+ * for any purpose with or without fee is hereby granted, provided that
+ * the above copyright notice and this permission notice appear in the
+ * source code of all copies.
+ * <p/>
+ * It would be appreciated if you mention the author in your change log,
+ * contributors list or the like.
+ *
+ * @author: Karsten Priegnitz
+ * @see: http://code.google.com/p/android-change-log/
+ * <p/>
+ * Changed by wmstein on 18.02.2016
+ */
 public class ChangeLog
 {
     // this is the key for storing the version name in SharedPreferences

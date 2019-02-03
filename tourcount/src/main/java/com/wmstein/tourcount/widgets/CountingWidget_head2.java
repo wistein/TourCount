@@ -19,7 +19,7 @@ import com.wmstein.tourcount.database.Count;
 /****************************************************
  * Interface for widget_counting_head1.xml
  * Created by wmstein 18.12.2016
- * Last edited on 2018-03-31
+ * Last edited on 2019-01-27
  */
 public class CountingWidget_head2 extends RelativeLayout
 {
@@ -34,6 +34,7 @@ public class CountingWidget_head2 extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         inflater.inflate(R.layout.widget_counting_head2, this, true);
         countHead2 = findViewById(R.id.countHead2);
     }
