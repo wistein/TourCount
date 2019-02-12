@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+import java.util.Objects;
+
 /****************************************************
  * ListSumWidget shows count totals area for
  * ListSpeciesActivity that shows the result page
  * Created for TourCount by wmstein on 2017-05-27,
- * last edited on 2019-01-27
+ * last edited on 2019-02-12
  */
 public class ListSumWidget extends LinearLayout
 {
@@ -26,8 +28,7 @@ public class ListSumWidget extends LinearLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_sum_species, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_sum_species, this, true);
         sumSpecies = findViewById(R.id.sumSpecies);
         sumIndividuals = findViewById(R.id.sumIndividuals);
     }

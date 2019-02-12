@@ -26,7 +26,7 @@ Die App benötigt
 - Einstellungsänderungsrechte zwecks Helligkeitssteuerung des Bildschirms, 
 - Recht zur Steuerung des Ruhezustands um Bildschirm abzuschalten, solange das Smartphone eingesteckt wird.
 Die Auflösung des Smartphone-Bildschirm sollte mindestens 1920 x 1024 Pixel sein. 
-Die App kann ab Android-Version 4.2.2 oder neuer verwendet werden.
+Die App kann ab Android-Version 4.4 (KitKat) oder neuer verwendet werden.
 
 Dokumentation ist unter
 https://github.com/wistein/TourCount/tree/master/docs.

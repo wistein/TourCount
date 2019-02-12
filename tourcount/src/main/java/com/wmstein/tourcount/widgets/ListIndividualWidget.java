@@ -9,9 +9,12 @@ import android.widget.TextView;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Individuals;
 
+import java.util.Objects;
+
 /**********************************
  * Created by wmstein on 2018-02-22
- * Last edited on 2019-01-27
+ * used by ListSpeciesActivity
+ * Last edited on 2019-02-12
  */
 public class ListIndividualWidget extends RelativeLayout
 {
@@ -29,8 +32,7 @@ public class ListIndividualWidget extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_list_individual, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_individual, this, true);
         txtIndLoc = findViewById(R.id.txtIndLoc);
         txtIndSex = findViewById(R.id.txtIndSex);
         txtIndStad = findViewById(R.id.txtIndStad);

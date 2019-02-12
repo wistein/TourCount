@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+import java.util.Objects;
+
 /**********************************
- * Used by CountOptionsActivity
+ * EditNotesWidget used by CountOptionsActivity
  * Created by wmstein on 2016-02-18,
- * last edited on 2019-01-27
+ * last edited on 2019-02-12
  */
 public class EditNotesWidget extends LinearLayout
 {
@@ -25,8 +27,7 @@ public class EditNotesWidget extends LinearLayout
         super(context, attrs);
         
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_edit_title, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_title, this, true);
         widget_title = findViewById(R.id.widgetTitle);
         notes_name = findViewById(R.id.sectionName);
         notes_name.requestFocus();

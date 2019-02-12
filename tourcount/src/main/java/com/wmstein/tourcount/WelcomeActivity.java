@@ -72,7 +72,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private static final int FILE_CHOOSER = 11;
     LocationService locationService;
     
-    // Permission dispatcher mode: 
+    // Permission dispatcher mode modePerm: 
     //  1 = use location service
     //  2 = end location service
     //  3 = export DB
@@ -610,8 +610,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         sectionDataSource.close();
 
         // Stop location service with permissions check
-            modePerm = 2;
-            permissionCaptureFragment();
+        modePerm = 2;
+        permissionCaptureFragment();
     }
 
     public void onDestroy()

@@ -8,10 +8,12 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+import java.util.Objects;
+
 /***************************************************
  * EditHeadWidget.java used by EditMetaActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-04-03,
- * last edited on 2019-01-27
+ * last edited on 2019-02-12
  */
 public class ListHeadWidget extends LinearLayout
 {
@@ -27,8 +29,7 @@ public class ListHeadWidget extends LinearLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_list_head, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_head, this, true);
         widget_lco = findViewById(R.id.widgetLCo);
         widget_lco1 = findViewById(R.id.widgetLCo1);
         widget_lname = findViewById(R.id.widgetLName);

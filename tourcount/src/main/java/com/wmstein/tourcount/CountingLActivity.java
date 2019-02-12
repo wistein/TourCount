@@ -368,6 +368,11 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
                 break;
             }
         }
+        else
+        {
+            if (modePerm == 1)
+                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+        }
     }
 
     // if API level > 23 test for permissions granted

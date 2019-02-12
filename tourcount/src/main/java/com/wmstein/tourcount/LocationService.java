@@ -49,7 +49,7 @@ public class LocationService extends Service implements LocationListener
     // Default constructor demanded for service declaration in AndroidManifest.xml
     public LocationService () {}
 
-    private Location getLocation()
+    private void getLocation()
     {
         try
         {
@@ -122,8 +122,6 @@ public class LocationService extends Service implements LocationListener
         {
             e.printStackTrace();
         }
-
-        return location;
     }
 
     // Stop location service

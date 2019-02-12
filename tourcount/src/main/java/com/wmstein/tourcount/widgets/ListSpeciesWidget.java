@@ -12,12 +12,13 @@ import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Count;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 /*******************************************************
  * ListSpeciesWidget shows count info area for a species
  * ListSpeciesActivity shows the result page
  * Created for TourCount by wmstein on 15.03.2016
- * Last edited on 2019-01-27
+ * Last edited on 2019-02-12
  */
 public class ListSpeciesWidget extends RelativeLayout
 {
@@ -38,8 +39,7 @@ public class ListSpeciesWidget extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_list_species, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_species, this, true);
         txtSpecName = findViewById(R.id.txtSpecName);
         txtSpecRemT = findViewById(R.id.txtSpecRemT);
         txtSpecRem = findViewById(R.id.txtSpecRem);

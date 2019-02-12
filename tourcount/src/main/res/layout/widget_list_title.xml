@@ -31,7 +31,6 @@
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:paddingTop="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="17sp"
             android:textStyle="bold"/>
 
@@ -44,6 +43,7 @@
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="16sp"
             android:textStyle="bold"/>
 

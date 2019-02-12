@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+import java.util.Objects;
+
 /*************************************
- * Created by milo on 03/06/2014.
- * Changes by wmstein since 2016-02-18,
- * last edited on 2019-01-27
+ * EditTitleWidget used by EditMetaActivity
+ * Adopted by wmstein for TourCount 2016-02-18,
+ * last edited on 2019-02-12
  */
 public class EditTitleWidget extends LinearLayout
 {
@@ -23,8 +25,7 @@ public class EditTitleWidget extends LinearLayout
     {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_edit_title, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_title, this, true);
         widget_title = findViewById(R.id.widgetTitle);
         section_name = findViewById(R.id.sectionName);
     }

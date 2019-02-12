@@ -44,9 +44,11 @@
 
 $ 3.0.8
   % Version 3.0.8
-  _ 02.02.2019
+  _ 12.02.2019
     * Code-Bereinigungen
+    * Kleinere Design-Änderungen
   	* Projekt-Anpassung für Android Studio 3.3 und Gradle 4.10.1
+  	* Minimale Android-Version geändert in 4.4 (KitKat)
 
 $ 3.0.7
   % Version 3.0.7

@@ -10,13 +10,13 @@ import android.widget.LinearLayout;
 import com.wmstein.tourcount.R;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /************************************************
  * Used by EditSectionActivity
- * 
- * Created by milo on 04/06/2014.
+ * shows line with species name, code and delete button
  * Adopted for TourCount by wmstein on 2016-02-18
- * last edited by wmstein on 2019-01-27
+ * last edited by wmstein on 2019-02-12
  */
 public class CountEditWidget extends LinearLayout implements Serializable
 {
@@ -30,8 +30,7 @@ public class CountEditWidget extends LinearLayout implements Serializable
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_edit_count, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_count, this, true);
         countName = findViewById(R.id.countName);
         countCode = findViewById(R.id.countCode);
         deleteButton = findViewById(R.id.deleteCount);

@@ -9,10 +9,12 @@ import android.widget.TextView;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Section;
 
-/*******************************************************************
- * ListMetaWidget.java used by ListSpeciesActivity.java and controls 
+import java.util.Objects;
+
+/*************************************************************
+ * ListMetaWidget.java used by ListSpeciesActivity.java 
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
- * last edited on 2019-01-27
+ * last edited on 2019-02-12
  */
 public class ListMetaWidget extends LinearLayout
 {
@@ -45,8 +47,7 @@ public class ListMetaWidget extends LinearLayout
     {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_list_meta, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_meta, this, true);
         widget_lmeta1 = findViewById(R.id.widgetLMeta1);
         widget_litem1 = findViewById(R.id.widgetLItem1);
         widget_lmeta2 = findViewById(R.id.widgetLMeta2);

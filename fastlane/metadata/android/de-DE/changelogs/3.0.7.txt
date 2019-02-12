@@ -1,0 +1,6 @@
+Version 3.0.7 (16.12.2018)
+- Zusätzliche Schmetterlingsabbildungen
+- Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
+- Kleinere Designänderungen in einigen App-Seiten
+- Absturzfehler bei schnell wiederholtem Klicken der Art-Auswahl behoben
+- Doku. teilweise überarbeitet

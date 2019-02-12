@@ -16,10 +16,13 @@ import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Count;
 
+import java.util.Objects;
+
 /****************************************************
  * Interface for widget_counting_head1.xml
- * Created by wmstein 18.12.2016
- * Last edited on 2019-01-27
+ * used by Counting(L)Activity
+ * Created by wmstein 2016-12-18
+ * Last edited on 2019-02-12
  */
 public class CountingWidget_head2 extends RelativeLayout
 {
@@ -34,8 +37,7 @@ public class CountingWidget_head2 extends RelativeLayout
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_counting_head2, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_head2, this, true);
         countHead2 = findViewById(R.id.countHead2);
     }
 

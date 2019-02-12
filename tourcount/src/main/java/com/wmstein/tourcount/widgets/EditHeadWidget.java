@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
 
+import java.util.Objects;
+
 /***************************************************
  * EditHeadWidget.java used by EditMetaActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-03-31,
- * last edited on 2019-01-27
+ * last edited on 2019-02-12
  */
 public class EditHeadWidget extends LinearLayout
 {
@@ -25,8 +27,7 @@ public class EditHeadWidget extends LinearLayout
     {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        inflater.inflate(R.layout.widget_edit_head, this, true);
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_head, this, true);
         widget_co1 = findViewById(R.id.widgetCo1);
         widget_co2 = findViewById(R.id.widgetCo2);
         widget_name1 = findViewById(R.id.widgetName1);

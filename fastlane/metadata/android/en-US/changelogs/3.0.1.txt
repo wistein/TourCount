@@ -1,2 +1,4 @@
 Version 3.0.1 (2018-04-03)
 - Unnecessary permission WRITE_SETTINGS removed
+- Disabled multi-window-mode (Android 7+) for incompatible pull-down-menu (Spinner)
+- Minor changes in results page

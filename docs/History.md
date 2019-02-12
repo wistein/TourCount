@@ -2,9 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2018, Wilhelm Stein
 
-#### Version 3.0.8 (2019-02-02)
+#### Version 3.0.8 (2019-02-12)
 - Some code cleaning
+- Some minor screen design changes
 - Project adaption for Android Studio 3.3 and Gradle 4.10.1
+- Minimum Android version changed to 4.4 KitKat 
 
 #### Version 3.0.7 (2018-12-16)
 - Additional butterfly pictures

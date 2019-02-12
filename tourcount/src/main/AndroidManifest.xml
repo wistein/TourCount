@@ -5,6 +5,7 @@
           android:largeHeap="true"
           android:versionName="3.0.8">
 
+    <!-- Permission needed to import/export database files -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- Permission needed for GPS location provider -->

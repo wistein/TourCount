@@ -26,7 +26,7 @@ The app demands for
 - the permit to write settings for setting the screen brightness,
 - the permit to keep the device awake and to switch off the counting screen when the phone is pocketed.
 The smartphone screen should have a minimum resolution of 1920 x 1024 pixels. 
-The app is usable with Android version 4.2.2 or newer.
+The app is usable with Android version 4.4 (KitKat) or newer.
 
 Documentation is provided under  
 https://github.com/wistein/TourCount/tree/master/docs.

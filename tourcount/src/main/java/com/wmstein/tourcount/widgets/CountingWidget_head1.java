@@ -18,8 +18,9 @@ import com.wmstein.tourcount.database.Count;
 
 /****************************************************
  * Interface for widget_counting_head1.xml
+ * used by Counting(L)Activity
  * Created by wmstein 2016-12-18
- * Last edited on 2019-01-27
+ * Last edited on 2019-02-12
  */
 public class CountingWidget_head1 extends ArrayAdapter<String>
 {

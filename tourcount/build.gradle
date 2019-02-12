@@ -7,7 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.3.1'
     }
 }
 
@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.wmstein.tourcount"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 308
     }
