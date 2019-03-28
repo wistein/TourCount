@@ -1,10 +1,10 @@
 package com.wmstein.tourcount.database;
 
-/**
+/********************************
  * Created by milo on 05/05/2014.
- * Adopted by wmstein on 2016-02-18, last change on 2018-03-19
+ * Adopted by wmstein on 2016-02-18, 
+ * last change on 2019-03-25
  */
-
 public class Count
 {
     public int id;
@@ -17,6 +17,7 @@ public class Count
     public String name;
     public String code;
     public String notes;
+    public String name_g;
 
     public int increase_f1i()
     {

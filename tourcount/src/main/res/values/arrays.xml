@@ -60,6 +60,46 @@
         <item>Autographa gamma</item>
         <item>Euplagia quadripunctaria</item>
     </string-array>
+
+    <string-array name="initSpecs_g">
+        <item>Six-spot burnet</item>
+        <item>Hummingbird hawk-moth</item>
+        <item>Essex Skipper</item>
+        <item>Small skipper</item>
+        <item>Large skipper</item>
+        <item>Swallowtail</item>
+        <item>Wood white</item>
+        <item>Large white</item>
+        <item>Small white</item>
+        <item>Green-veined white</item>
+        <item>Dark clouded yellow</item>
+        <item>Pale clouded yellow</item>
+        <item>Common brimstone</item>
+        <item>Small copper</item>
+        <item>Holly blue</item>
+        <item>Common blue</item>
+        <item>Red admiral</item>
+        <item>Painted lady</item>
+        <item>Peacock</item>
+        <item>Small tortoiseshell</item>
+        <item>Comma</item>
+        <item>Map</item>
+        <item>Speckled wood</item>
+        <item>Wall brown</item>
+        <item>Small heath</item>
+        <item>Gatekeeper</item>
+        <item>Ringlet</item>
+        <item>Meadow brown</item>
+        <item>Marbled white</item>
+        <item>Speckled yellow</item>
+        <item>Common heath</item>
+        <item>Black-veined moth</item>
+        <item>Yellow shell</item>
+        <item>Burnet companion</item>
+        <item>Silver Y</item>
+        <item>Jersey tiger</item>
+    </string-array>
+
     <string-array name="initCodes">
         <item>03998</item>
         <item>06843</item>

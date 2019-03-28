@@ -16,12 +16,13 @@ import java.util.Objects;
  * Used by EditSectionActivity
  * shows line with species name, code and delete button
  * Adopted for TourCount by wmstein on 2016-02-18
- * last edited by wmstein on 2019-02-12
+ * last edited by wmstein on 2019-03-25
  */
 public class CountEditWidget extends LinearLayout implements Serializable
 {
     public int countId;
     private final transient EditText countName;
+    private final transient EditText countNameG;
     private final transient EditText countCode;
     private final ImageButton deleteButton;
 
@@ -32,6 +33,7 @@ public class CountEditWidget extends LinearLayout implements Serializable
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_count, this, true);
         countName = findViewById(R.id.countName);
+        countNameG = findViewById(R.id.countNameG);
         countCode = findViewById(R.id.countCode);
         deleteButton = findViewById(R.id.deleteCount);
         deleteButton.setTag(0);
@@ -45,6 +47,16 @@ public class CountEditWidget extends LinearLayout implements Serializable
     public void setCountName(String name)
     {
         countName.setText(name);
+    }
+
+    public String getCountNameG()
+    {
+        return countNameG.getText().toString();
+    }
+
+    public void setCountNameG(String name)
+    {
+        countNameG.setText(name);
     }
 
     public String getCountCode()

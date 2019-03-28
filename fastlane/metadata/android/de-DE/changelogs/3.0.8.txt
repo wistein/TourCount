@@ -1,5 +1,9 @@
-Version 3.0.8 (12.02.2019)
-- Code-Bereinigungen
+Version 3.0.8 (25.03.2019)
+- DB-Struktur ergänzt für lokale Schmetterlingsnamen
+- Beispiel-Datenbanken mit lokalen Schmetterlingsnamen
+- Ergebnisdarstellung mit lokalen Schmetterlingsnamen
+- Zusätzliche Schmetterlingsabbildungen
 - Kleinere Design-Änderungen
-- Projekt-Anpassung für Android Studio 3.3 und Gradle 4.10.1
+- Code-Bereinigungen
+- Projekt-Anpassung für Android Studio 3.3.2 und Gradle 4.10.1
 - Minimale Android-Version geändert in 4.4 (KitKat)

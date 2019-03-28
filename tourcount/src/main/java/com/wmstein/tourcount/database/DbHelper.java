@@ -9,18 +9,21 @@ import android.util.Log;
 import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 
-/**
- * Created by milo on 05/05/2014.
+/**************************************************
+ * Based on DbHelper created by milo on 05/05/2014.
  * Adopted for TourCount by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31
- * last edited on 2019-01-27
+ * last edited on 2019-03-25
  */
 public class DbHelper extends SQLiteOpenHelper
 {
     static final String TAG = "TourCount DBHelper";
     private static final String DATABASE_NAME = "tourcount.db";
-    private static final int DATABASE_VERSION = 3;
+    //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
+    //DATABASE_VERSION 3: New extra columns for sexus and stadiums added to COUNT_TABLE
+    //DATABASE_VERSION 4: Column C_NAME_G added to COUNT_TABLE for local butterfly names 
+    private static final int DATABASE_VERSION = 4;
 
     // tables
     public static final String SECTION_TABLE = "sections";
@@ -54,6 +57,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String C_NAME = "name";
     public static final String C_CODE = "code";
     public static final String C_NOTES = "notes";
+    public static final String C_NAME_G = "name_g";
 
     public static final String C_COUNT = "count"; //deprecated
 
@@ -121,7 +125,8 @@ public class DbHelper extends SQLiteOpenHelper
             + C_COUNT_EI + " int, "
             + C_NAME + " text, "
             + C_CODE + " text, "
-            + C_NOTES + " text)";
+            + C_NOTES + " text, "
+            + C_NAME_G + " text)";
         db.execSQL(sql);
         sql = "create table " + HEAD_TABLE + " ("
             + H_ID + " integer primary key, "
@@ -180,9 +185,10 @@ public class DbHelper extends SQLiteOpenHelper
     // initial data for COUNT_TABLE
     private void initialCounts(SQLiteDatabase db)
     {
-        String[] specs, codes;
+        String[] specs, codes, specs_g;
         specs = mContext.getResources().getStringArray(R.array.initSpecs);
         codes = mContext.getResources().getStringArray(R.array.initCodes);
+        specs_g = mContext.getResources().getStringArray(R.array.initSpecs_g);
 
         for (int i = 1; i < specs.length; i++)
         {
@@ -197,6 +203,7 @@ public class DbHelper extends SQLiteOpenHelper
             values4.put(C_COUNT_LI, 0);
             values4.put(C_COUNT_EI, 0);
             values4.put(C_NOTES, "");
+            values4.put(C_NAME_G, specs_g[i]);
             db.insert(COUNT_TABLE, null, values4);
         }
     }
@@ -207,14 +214,20 @@ public class DbHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        if (oldVersion == 3)
+        {
+            version_4(db);
+        }
         if (oldVersion == 2)
         {
             version_3(db);
+            version_4(db);
         }
         if (oldVersion == 1)
         {
             version_2(db);
             version_3(db);
+            version_4(db);
         }
     }
 
@@ -377,6 +390,17 @@ public class DbHelper extends SQLiteOpenHelper
             if (MyDebug.LOG)
                 Log.d(TAG, "Upgraded database to version 3");
         }
+    }
+
+    // Add column C_NAME_G
+    private void version_4(SQLiteDatabase db)
+    {
+        String sql;
+        sql = "alter table " + COUNT_TABLE + " add column " + C_NAME_G + " text";
+        db.execSQL(sql);
+
+        if (MyDebug.LOG)
+            Log.d(TAG, "Upgraded database to version 4");
     }
 
 }

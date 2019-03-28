@@ -8,7 +8,7 @@ Features
 - The app contains an editor to setup or adapt the current species list,
 - an editor to prepare the meta data for a tour,
 - an editor for individual species data of a count (e.g. state, remark or bulk count entry).
-- Species can be selected per scroll-down-menu with butterfly pictures on the counting page.
+- Species can be selected per scroll-down-menu with butterfly names and pictures on the counting page.
 - The counting page has 6 separate counters for ♂ or ♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
 - location data by reverse OSM-geocoding provided that GPS and internet are accessible.

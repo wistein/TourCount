@@ -19,10 +19,10 @@ import com.wmstein.tourcount.database.Count;
 import java.util.Objects;
 
 /****************************************************
- * Interface for widget_counting_head1.xml
+ * Interface for widget_counting_head2.xml
  * used by Counting(L)Activity
  * Created by wmstein 2016-12-18
- * Last edited on 2019-02-12
+ * Last edited on 2019-03-26
  */
 public class CountingWidget_head2 extends RelativeLayout
 {

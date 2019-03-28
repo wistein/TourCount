@@ -22,4 +22,43 @@
         <item>codes</item>
     </string-array>
 
+    <string-array name="initSpecs_g">
+        <item>Sechsfleck-Widderchen</item>
+        <item>Taubenschwänzchen</item>
+        <item>Schwarzkolbiger Braundickkopffalter</item>
+        <item>Braunkolbiger Braundickkopffalter</item>
+        <item>Rostfarbiger Dickkopffalter</item>
+        <item>Schwalbenschwanz</item>
+        <item>Tintenfleck-Weißling</item>
+        <item>Großer Kohlweißling</item>
+        <item>Kleiner Kohlweißling</item>
+        <item>Grünader-Weißling</item>
+        <item>Postillion</item>
+        <item>Goldene Acht</item>
+        <item>Zitronenfalter</item>
+        <item>Kleiner Feuerfalter</item>
+        <item>Faulbaumbläuling</item>
+        <item>Hauhechel-Bläuling</item>
+        <item>Admiral</item>
+        <item>Distelfalter</item>
+        <item>Tagpfauenauge</item>
+        <item>Kleiner Fuchs</item>
+        <item>C-Falter</item>
+        <item>Landkärtchen</item>
+        <item>Waldbrettspiel</item>
+        <item>Mauerfuchs</item>
+        <item>Kleines Wiesenvögelchen</item>
+        <item>Rotbraunes Ochsenauge</item>
+        <item>Schornsteinfeger</item>
+        <item>Großes Ochsenauge</item>
+        <item>Schachbrett</item>
+        <item>Pantherspanner</item>
+        <item>Heideland-Tagspanner</item>
+        <item>Hartheuspanner</item>
+        <item>Ockergelber Blattspanner</item>
+        <item>Braune Tageule</item>
+        <item>Gammaeule</item>
+        <item>Spanische Flagge</item>
+    </string-array>
+
 </resources>

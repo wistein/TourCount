@@ -13,11 +13,12 @@ CREATE TABLE counts
   name text,
   code text,
   notes text DEFAULT "",
+  name_g text,
   PRIMARY KEY(_id)
 );
 
-INSERT INTO counts (name, code)
-  SELECT name, code
+INSERT INTO counts (name, code, name_g)
+  SELECT name, code, name_g
   FROM counts_old
   order by code;
 

@@ -2,7 +2,7 @@
 
 <!-- widget_list_species.xml
  used by ListSpeciesWidget.java and ListSpeciesActivity.java.
- Shows a species of purged list of species counts -->
+ Shows purged list of species counts -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -19,9 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingEnd="6dp"
+        android:paddingEnd="5dp"
         android:paddingStart="3dp"
-        android:paddingTop="3dp">
+        android:paddingTop="0dp">
 
         <!-- Line -->
         <View
@@ -37,21 +37,46 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
-            <!-- Name of species -->
-            <TextView
-                android:id="@+id/txtSpecName"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="6.6"
-                android:layout_gravity="center"
-                android:layout_marginBottom="0dp"
-                android:padding="4sp"
-                android:textColor="#bfffff"
-                android:textSize="17sp"
-                android:textStyle="bold"/>
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:orientation="vertical">
+
+                <!-- Name of species -->
+                <TextView
+                    android:id="@+id/txtSpecName"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:gravity="start"
+                    android:padding="4sp"
+                    android:hint="@string/countNameHint"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#BFFFFF"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <!-- Local name of species -->
+                <TextView
+                    android:id="@+id/txtSpecNameG"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:gravity="start"
+                    android:padding="4sp"
+                    android:hint="@string/countNameHintG"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#A7C2C2"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
 
             <Space
                 android:layout_width="0dp"
@@ -62,7 +87,7 @@
                 android:id="@+id/picSpecies"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.2"
+                android:layout_weight="2.3"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingEnd="1dp"
                 android:paddingStart="1dp"

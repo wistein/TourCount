@@ -21,7 +21,7 @@ import java.util.Objects;
  * Interface for widget_counting_i.xml
  * Created by wmstein 2016-12-18
  * modified for TourCount on 2018-03-31
- * last edited on 2019-02-12
+ * last edited on 2019-03-26
  */
 public class CountingWidget extends RelativeLayout
 {
@@ -33,7 +33,7 @@ public class CountingWidget extends RelativeLayout
     private TextView namepi;
     private TextView nameli;
     private TextView nameei;
-    private AutoFitText countCountf1i; // section internal counters
+    private AutoFitText countCountf1i;
     private AutoFitText countCountf2i;
     private AutoFitText countCountf3i;
     private AutoFitText countCountpi;

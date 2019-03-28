@@ -852,10 +852,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrEmpt);
 
                 // write counts headline
-                //    Species Name, Spec.-Code, Counts ♂♀, Counts ♂, Counts ♀, Counts Pupa, Counts Caterp., Counts Egg, Spec.-Notes
+                //    Species Name, Local Name, Code, Counts, Spec.-Notes
                 String arrCntHead[] =
                     {
-                        getString(R.string.spec),
+                        getString(R.string.name_spec),
+                        getString(R.string.name_spec_g),
                         getString(R.string.speccode),
                         getString(R.string.cntsmf),
                         getString(R.string.cntsm),
@@ -1010,6 +1011,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     String arrStr[] =
                         {
                             spname,                 // species name
+                            curCSVCnt.getString(10), // local name 
                             curCSVCnt.getString(8), // species code 
                             strcntsmf,              // count ♂ o. ♀
                             strcntsm,               // count ♂
@@ -1040,7 +1042,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 // write total sum
                 String arrSum[] =
                     {
-                        "",
+                        "","",
                         getString(R.string.sum),
                         Integer.toString(summf),
                         Integer.toString(summ),
@@ -1048,6 +1050,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         Integer.toString(sump),
                         Integer.toString(suml),
                         Integer.toString(sume),
+                        getString(R.string.sum_total),
                         Integer.toString(sum)
                     };
                 csvWrite.writeNext(arrSum);

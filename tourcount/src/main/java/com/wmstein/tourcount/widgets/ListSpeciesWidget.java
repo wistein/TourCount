@@ -23,6 +23,7 @@ import java.util.Objects;
 public class ListSpeciesWidget extends RelativeLayout
 {
     private final TextView txtSpecName;
+    private final TextView txtSpecNameG;
     private final ImageView picSpecies;
     private final TextView specCount;
     private final TextView specCountf1i;
@@ -41,6 +42,7 @@ public class ListSpeciesWidget extends RelativeLayout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_species, this, true);
         txtSpecName = findViewById(R.id.txtSpecName);
+        txtSpecNameG = findViewById(R.id.txtSpecNameG);
         txtSpecRemT = findViewById(R.id.txtSpecRemT);
         txtSpecRem = findViewById(R.id.txtSpecRem);
         specCount = findViewById(R.id.specCount);
@@ -66,6 +68,18 @@ public class ListSpeciesWidget extends RelativeLayout
         int spCount = spec.count_f1i + spec.count_f2i + spec.count_f3i + spec.count_pi 
             + spec.count_li + spec.count_ei;
         txtSpecName.setText(spec.name);
+        if (spec.name_g != null)
+        {
+            if (!spec.name_g.isEmpty())
+            {
+                txtSpecNameG.setText(spec.name_g);
+            }
+            else
+            {
+                txtSpecNameG.setText("");
+            }
+        }
+
         specCount.setText(String.valueOf(spCount));
         specCountf1i.setText(String.valueOf(spec.count_f1i));
         specCountf2i.setText(String.valueOf(spec.count_f2i));

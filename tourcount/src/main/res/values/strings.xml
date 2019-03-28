@@ -46,6 +46,8 @@
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
+    <string name="name_spec">Species Name</string>
+    <string name="name_spec_g">English Name</string>
     <string name="cntsmf">Counts ♂ ♀</string>
     <string name="cntsm">Counts ♂</string>
     <string name="cntsf">Counts ♀</string>
@@ -53,6 +55,7 @@
     <string name="cntsl">Counts Ca.</string>
     <string name="cntse">Counts Eg.</string>
     <string name="sum">Sum:</string>
+    <string name="sum_total">Total:</string>
     <string name="avCoords">Average coordinates:</string>
     <string name="back_twice">Press again to exit</string>
     <string name="resetFail">Your database could not be resetted!</string>
@@ -174,6 +177,7 @@
 
     <!-- CountOptionsActivity -->
     <string name="countName">New Species</string>
+    <string name="countNameG">New Species (English name)</string>
     <string name="countCode">Code</string>
     <string name="notesSpecies">Species Notes</string>
     <string name="yesDeleteIt">Delete</string>
@@ -204,6 +208,7 @@
     <!-- other stuff -->
     <string name="charZero">0</string>
     <string name="countNameHint">Name of Species</string>
+    <string name="countNameHintG">Name of Species (English)</string>
     <string name="hintTitle">Title</string>
     <string name="hintName">Name</string>
     <string name="hintSectionNotes">List notes.</string>

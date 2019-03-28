@@ -39,7 +39,7 @@ import java.util.List;
  * Uses CountEditWidget.java, activity_edit_section.xml.
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted by wmstein on 2016-02-18,
- * last edited on 2018-08-03
+ * last edited on 2019-03-25
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -50,9 +50,11 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
     // the actual data
     private Section section;
     private LinearLayout counts_area;
+    
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
-    private View markedForDelete;
+
+    private View viewMarkedForDelete;
     private int idToDelete;
     private Bitmap bMap;
     private BitmapDrawable bg;
@@ -179,6 +181,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             // widget
             CountEditWidget cew = new CountEditWidget(this, null);
             cew.setCountName(count.name);
+            cew.setCountNameG(count.name_g);
             cew.setCountCode(count.code);
             cew.setCountId(count.id);
             counts_area.addView(cew);
@@ -264,14 +267,14 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                             if (MyDebug.LOG)
                                 Log.d(TAG, "Creating!");
                             //creates new species entry
-                            countDataSource.createCount(cew.getCountName(), cew.getCountCode());
+                            countDataSource.createCount(cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
                         }
                         else
                         {
                             if (MyDebug.LOG)
                                 Log.d(TAG, "Updating!");
                             //updates species name and code
-                            countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode());
+                            countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
                         }
                         retValue = true;
                     }
@@ -344,12 +347,12 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
      */
     public void deleteCount(View view)
     {
-        markedForDelete = view;
+        viewMarkedForDelete = view;
         idToDelete = (Integer) view.getTag();
         if (idToDelete == 0)
         {
-            // the actual CountEditWidget is two levels up from the button in which it is embedded
-            counts_area.removeView((CountEditWidget) view.getParent().getParent());
+            // the actual CountEditWidget is 3 levels up from the button in which it is embedded
+            counts_area.removeView((CountEditWidget) view.getParent().getParent().getParent());
         }
         else
         {
@@ -362,7 +365,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                 {
                     // go ahead for the delete
                     countDataSource.deleteCountById(idToDelete);
-                    counts_area.removeView((CountEditWidget) markedForDelete.getParent().getParent());
+                    counts_area.removeView((CountEditWidget) viewMarkedForDelete.getParent().getParent().getParent());
                 }
             });
             areYouSure.setNegativeButton(R.string.noCancel, new DialogInterface.OnClickListener()

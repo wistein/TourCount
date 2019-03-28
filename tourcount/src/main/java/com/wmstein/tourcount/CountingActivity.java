@@ -271,6 +271,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         String[] idArray;
         String[] nameArray;
+        String[] nameArrayG;
         String[] codeArray;
         Integer[] imageArray;
 
@@ -280,18 +281,21 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             idArray = countDataSource.getAllIdsSrtName();
             nameArray = countDataSource.getAllStringsSrtName("name");
             codeArray = countDataSource.getAllStringsSrtName("code");
+            nameArrayG = countDataSource.getAllStringsSrtName("name_g");
             imageArray = countDataSource.getAllImagesSrtName();
             break;
         case "codes":
             idArray = countDataSource.getAllIdsSrtCode();
             nameArray = countDataSource.getAllStringsSrtCode("name");
             codeArray = countDataSource.getAllStringsSrtCode("code");
+            nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
             imageArray = countDataSource.getAllImagesSrtCode();
             break;
         default:
             idArray = countDataSource.getAllIds();
             nameArray = countDataSource.getAllStrings("name");
             codeArray = countDataSource.getAllStrings("code");
+            nameArrayG = countDataSource.getAllStrings("name_g");
             imageArray = countDataSource.getAllImages();
             break;
         }
@@ -322,7 +326,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         CountingWidget_head1 adapter = new CountingWidget_head1(this,
-            idArray, nameArray, codeArray, imageArray);
+            idArray, nameArray, codeArray, imageArray, nameArrayG);
         spinner.setAdapter(adapter);
         spinner.setSelection(itemPosition);
         spinnerListener();
@@ -473,7 +477,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                     count_area.removeAllViews();
 
                     String sid = ((TextView) view.findViewById(R.id.countId)).getText().toString();
-                    iid = Integer.parseInt(sid);
+                    iid = Integer.parseInt(sid); // get species id
                     itemPosition = position;
 
                     count = countDataSource.getCountById(iid);

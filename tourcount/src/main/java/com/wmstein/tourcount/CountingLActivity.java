@@ -273,6 +273,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
         String[] idArray;
         String[] nameArray;
+        String[] nameArrayG;
         String[] codeArray;
         Integer[] imageArray;
 
@@ -282,18 +283,21 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             idArray = countDataSource.getAllIdsSrtName();
             nameArray = countDataSource.getAllStringsSrtName("name");
             codeArray = countDataSource.getAllStringsSrtName("code");
+            nameArrayG = countDataSource.getAllStringsSrtName("name_g");
             imageArray = countDataSource.getAllImagesSrtName();
             break;
         case "codes":
             idArray = countDataSource.getAllIdsSrtCode();
             nameArray = countDataSource.getAllStringsSrtCode("name");
             codeArray = countDataSource.getAllStringsSrtCode("code");
+            nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
             imageArray = countDataSource.getAllImagesSrtCode();
             break;
         default:
             idArray = countDataSource.getAllIds();
             nameArray = countDataSource.getAllStrings("name");
             codeArray = countDataSource.getAllStrings("code");
+            nameArrayG = countDataSource.getAllStrings("name_g");
             imageArray = countDataSource.getAllImages();
             break;
         }
@@ -324,7 +328,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         }
 
         CountingWidget_head1 adapterL = new CountingWidget_head1(this,
-            idArray, nameArray, codeArray, imageArray);
+            idArray, nameArray, codeArray, imageArray, nameArrayG);
         spinnerL.setAdapter(adapterL);
         spinnerL.setSelection(itemPosition);
         spinnerListenerL();

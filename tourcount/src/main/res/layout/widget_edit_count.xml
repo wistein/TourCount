@@ -2,63 +2,90 @@
 <!--
     widget_edit_count.xml
     used by CountEditWidget.java
-    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+    Copyright (c) 2016-2019. Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginEnd="5dp"
-              android:layout_marginStart="5dp"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
               android:layout_marginTop="5dp"
-              android:background="@drawable/rounded_corner"
-              android:orientation="horizontal"
+              android:background="@drawable/rounded_corner_ec"
+              android:orientation="vertical"
               android:paddingEnd="5dp"
               android:paddingStart="5dp"
               android:paddingTop="5dp">
 
-    <EditText
-        android:id="@+id/countName"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|start|end|top"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="10"
-        android:background="@drawable/count_background"
-        android:hint="@string/countName"
-        android:inputType="textCapSentences|textNoSuggestions"
-        android:padding="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/countCode"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|start|end|top"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="3"
-        android:background="@drawable/count_background"
-        android:hint="@string/countCode"
-        android:inputType="textPostalAddress"
-        android:padding="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"/>
 
-    <ImageButton
-        android:id="@+id/deleteCount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end|top"
-        android:layout_margin="5dp"
-        android:layout_weight="2"
-        android:gravity="center_vertical|end"
-        android:onClick="deleteCount"
-        android:src="@android:drawable/ic_menu_delete"
-        tools:ignore="ContentDescription"/>
+        <EditText
+            android:id="@+id/countName"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="10"
+            android:background="@drawable/edit_background"
+            android:hint="@string/countName"
+            android:inputType="textCapSentences|textNoSuggestions"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"/>
+
+        <EditText
+            android:id="@+id/countCode"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="3"
+            android:background="@drawable/edit_background"
+            android:hint="@string/countCode"
+            android:inputType="textPostalAddress"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/countNameG"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="10"
+            android:background="@drawable/edit_background"
+            android:hint="@string/countNameG"
+            android:inputType="textCapSentences|textNoSuggestions"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"/>
+
+        <ImageButton
+            android:id="@+id/deleteCount"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical|end"
+            android:onClick="deleteCount"
+            android:src="@android:drawable/ic_menu_delete"/>
+    </LinearLayout>
 
 </LinearLayout>

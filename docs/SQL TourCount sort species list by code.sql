@@ -13,11 +13,12 @@ CREATE TABLE counts
   name text,
   code text,
   notes text DEFAULT "",
+  name_g text,
   PRIMARY KEY(_id)
 );
 
-INSERT INTO counts (count_f1i, count_f2i, count_f3i, count_pi, count_li, count_ei, name, code, notes)
-  SELECT count_f1i, count_f2i, count_f3i, count_pi, count_li, count_ei, name, code, notes
+INSERT INTO counts (count_f1i, count_f2i, count_f3i, count_pi, count_li, count_ei, name, code, notes, name_g)
+  SELECT count_f1i, count_f2i, count_f3i, count_pi, count_li, count_ei, name, code, notes, name_g
   FROM counts_old
   order by code;
 

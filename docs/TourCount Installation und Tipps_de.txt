@@ -1,0 +1,44 @@
+Installation der App
+
+Download entweder von F-Droid,
+(nur App aber mit Updates über F-Droid-Store)
+oder hole die App direkt von GitHub (immer der aktuellste Bearbeitungsstand).
+
+F-Droid-Store:
+https://f-droid.org/repository/browse/?fdid=com.wmstein.tourcount
+Nach Installation der App von F-Droid sollten noch Doku und Basis-DB aus GitHub geladen werden. 
+Doku und Basis-DB können hier nur per Link zu GitHub geladen werden.
+
+GitHub: 
+Auf GitHub publiziert der Autor das komplette Projekt mit App, Quellcode, Doku und Basis-DB in Deutsch und Englisch:
+
+Projektseite:   https://github.com/wistein/TourCount
+App (apk-Datei): https://github.com/wistein/TourCount/tree/master/apk
+Doku, DBs, SQL-Scripts:   https://github.com/wistein/TourCount/tree/master/docs
+
+In jedem Fall muss vor der Installation die Option "Unbekannte Herkunft" unter "Einstellungen -> Sicherheit" aktiviert werden.
+
+Nach dem Download kann die App mittels eines Download- oder Dateimanagers aus dem Download-Verzeichnis installiert werden.
+Die Basis-DB Datendatei muss aus dem Download-Verzeichnis ins Basis-Verzeichnis (/storage/emulated/0) kopiert werden.
+
+Wichtig: Danach die Option "Unbekannte Herkunft" wieder deaktivieren!
+
+Anmerkungen zum F-Droid-App-Store:
+Der Bezug von Apps aus F-Droid ist mindestens so sicher wie der Bezug von Apps aus Google's Play Store.
+Es wird bei den Apps besonders auf die Einhaltung des Schutzes der Privatsphäre geachtet. 
+Alle Apps werden geprüft und durch F-Droid selbst kompiliert. 
+Nachteilige Features wie Werbung, Tracking oder versteckte Kosten werden bei F-Droid in der Beschreibung einer App als Anti-Features angeführt. 
+
+Die unter GitHub veröffentlichte apk-Datei (installierbare App) ist funktional identisch mit der von F-Droid. 
+Wegen unterschiedlicher Signaturen bei der Kompilation kann aber die App von GitHub nicht mit der apk-Datei von F-Droid upgedatet werden und umgekehrt. 
+Bei Wechsel der Installationsquelle ist eine Neuinstallation erforderlich.
+
+
+Tipps
+
+Um Datenbankdateien von TourCount vorzubereiten oder zu bearbeiten, ist das kostenlose Tool "DB Browser for SQLite" nützlich (erhältlich für Windows, OSX, Linux, Android u.a.).
+Beispielsweise lassen sich neue Einträge erzeugen oder Einträge per SQL-Script sortieren oder korrigieren.
+  
+Vorbereitete Scripts (*.sql) existieren für:
+ - Sortieren der Spezies-Liste der Basis-DB tourcount0.db nach Spezies-Code
+ - Sortieren der Spezies-Liste einer beliebigen tourcount*.db nach Spezies-Code

@@ -17,8 +17,9 @@ Android SDK with
 ### External Libraries (part of or imported by Android Studio)
 - Android API 27 Platform
 - Java jdk1.8.0_152 (or current version)
-- com.android.support:appcompat-v7:27.1.0
-- com.android.support:support-v4:27.1.0
+- com.android.support:appcompat-v7:27.1.1
+- com.android.support:support-v4:27.1.1
+- com.android.support:design:27.1.1
 
 ## Start the Project
 Get the project source by downloading the master.zip.

@@ -15,9 +15,9 @@ import java.util.List;
 import static com.wmstein.tourcount.database.DbHelper.COUNT_TABLE;
 
 /*************************************************************
- * Created by milo on 05/05/2014.
- * Adopted by wmstein on 2016-02-18,
- * last change on 2018-07-13
+ * Based on CountDataSource.java by milo on 05/05/2014.
+ * Adopted for TourCount by wmstein on 2016-02-18,
+ * last change on 2019-03-26
  */
 public class CountDataSource
 {
@@ -34,7 +34,8 @@ public class CountDataSource
         DbHelper.C_COUNT_EI,
         DbHelper.C_NAME,
         DbHelper.C_CODE,
-        DbHelper.C_NOTES
+        DbHelper.C_NOTES,
+        DbHelper.C_NAME_G
     };
 
     public CountDataSource(Context context)
@@ -52,7 +53,7 @@ public class CountDataSource
         dbHandler.close();
     }
 
-    public void createCount(String name, String code)
+    public void createCount(String name, String code, String name_g)
     {
         if (database.isOpen())
         {
@@ -65,7 +66,8 @@ public class CountDataSource
             values.put(DbHelper.C_COUNT_LI, 0);
             values.put(DbHelper.C_COUNT_EI, 0);
             values.put(DbHelper.C_CODE, code);
-            // notes should be default null and so isn't created here
+            values.put(DbHelper.C_NOTES, "");
+            values.put(DbHelper.C_NAME_G, name_g);
 
             int insertId = (int) database.insert(COUNT_TABLE, null, values);
             Cursor cursor = database.query(COUNT_TABLE,
@@ -87,6 +89,7 @@ public class CountDataSource
         newcount.count_ei = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_EI));
         newcount.code = cursor.getString(cursor.getColumnIndex(DbHelper.C_CODE));
         newcount.notes = cursor.getString(cursor.getColumnIndex(DbHelper.C_NOTES));
+        newcount.name_g = cursor.getString(cursor.getColumnIndex(DbHelper.C_NAME_G));
         return newcount;
     }
 
@@ -109,6 +112,7 @@ public class CountDataSource
         dataToInsert.put(DbHelper.C_NAME, count.name);
         dataToInsert.put(DbHelper.C_CODE, count.code);
         dataToInsert.put(DbHelper.C_NOTES, count.notes);
+        dataToInsert.put(DbHelper.C_NAME_G, count.name_g);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -174,13 +178,14 @@ public class CountDataSource
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
     }
 
-    public void updateCountName(int id, String name, String code)
+    public void updateCountName(int id, String name, String code, String name_g)
     {
         if (database.isOpen())
         {
             ContentValues dataToInsert = new ContentValues();
             dataToInsert.put(DbHelper.C_NAME, name);
             dataToInsert.put(DbHelper.C_CODE, code);
+            dataToInsert.put(DbHelper.C_NAME_G, name_g);
             String where = DbHelper.C_ID + " = ?";
             String[] whereArgs = {String.valueOf(id)};
             database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
