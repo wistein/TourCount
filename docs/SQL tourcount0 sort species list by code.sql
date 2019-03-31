@@ -13,7 +13,7 @@ CREATE TABLE counts
   name text,
   code text,
   notes text DEFAULT "",
-  name_g text,
+  name_g text DEFAULT "",
   PRIMARY KEY(_id)
 );
 
