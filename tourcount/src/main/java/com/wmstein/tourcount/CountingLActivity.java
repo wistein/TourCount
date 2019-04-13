@@ -13,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -79,6 +80,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;
+    private final Handler mHandler = new Handler();
 
     // the actual data
     private Count count;
@@ -1803,8 +1805,17 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
                 disableProximitySensor();
             }
 
-            Intent intent = new Intent(CountingLActivity.this, EditSectionActivity.class);
-            startActivity(intent);
+            Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
+
+            // pause for 100 msec to show toast
+            mHandler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    Intent intent = new Intent(CountingLActivity.this, EditSectionActivity.class);
+                    startActivity(intent);
+                }
+            }, 100);
             return true;
         }
         else if (id == R.id.menuTakePhoto)

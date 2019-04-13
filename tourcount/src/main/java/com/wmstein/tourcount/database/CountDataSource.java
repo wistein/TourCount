@@ -432,13 +432,53 @@ public class CountDataSource
         return imageArray;
     }
 
-    // Used by ListSpeciesActivity
+    // Used by EditSectionActivity
     public List<Count> getAllSpecies()
     {
         List<Count> speci = new ArrayList<>();
 
         Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
             + " order by " + DbHelper.C_ID, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            speci.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return speci;
+    }
+
+    // Used by EditSectionActivity
+    public List<Count> getAllSpeciesSrtName()
+    {
+        List<Count> speci = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
+            + " order by " + DbHelper.C_NAME, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Count count = cursorToCount(cursor);
+            speci.add(count);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return speci;
+    }
+
+    // Used by EditSectionActivity
+    public List<Count> getAllSpeciesSrtCode()
+    {
+        List<Count> speci = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
+            + " order by " + DbHelper.C_CODE, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())

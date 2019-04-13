@@ -36,7 +36,7 @@ $ 9
   !
   ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden. 
   _ 
-  ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite). Hier ggf. weitere Arten per (+)-Button hinzufügen. 
+  ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite). Hier ggf. weitere Arten per (+)-Button aus der integrierten Liste europäischer Arten hinzufügen. 
   _  
   ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>) heruntergeladen, ins Home-Verzeichnis /storage/emulated/0 (oder /sdcard0 bzw. /sdcard, ist je nach Smartphone-Modell und Android-Version unterschiedlich) kopiert und von dort importiert und dann angepasst werden. 
   _ 

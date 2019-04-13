@@ -10,6 +10,7 @@
     <string name="title_activity_edit_individual">EditIndividualActivity</string>
     <string name="title_activity_edit_section">EditSectionActivity</string>
     <string name="title_activity_file_chooser">AdvFileChooser</string>
+    <string name="title_activity_add_species">AddSpeciesActivity</string>
 
     <!-- generic -->
     <string name="app_name">TourCount</string>
@@ -132,6 +133,9 @@
     <string name="deleteCount">Delete Item</string>
     <string name="reallyDeleteCount">Are you sure? This item will be deleted immediately.</string>
     <string name="isdouble"> is double!</string>
+    
+    <!-- AddSpeciesActivity -->
+    <string name="addTitle">Add Species</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App Info</string>

@@ -36,7 +36,7 @@ $ 9
   !
   ! Before initial use you should adapt the settings to your liking. 
   _ 
-  ! Then you should edit the preliminary species list. (Use the Pencil-Button in the action bar of the counting page for this). Here you may add more species per (+)-Button.
+  ! Then you should edit the preliminary species list. (Use the Pencil-Button in the action bar of the counting page for this). Here you may add more species per (+)-Button from an integrated list of european species.
   _ 
   ! Alternatively, you could download a more comprehensive or special example Basic DB (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>). Copy it to your home directory /storage/emulated/0 (or /sdcard0, or /sdcard, it differs between smartphone models and Android versions), then import and adapt it.
   _ 

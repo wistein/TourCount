@@ -3,7 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:largeHeap="true"
-          android:versionName="3.0.8">
+          android:versionName="3.1.0">
 
     <!-- Permission needed to import/export database files -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -136,7 +136,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="CountingActivity"/>
         </activity>
-        
+
+        <activity
+            android:name="com.wmstein.tourcount.AddSpeciesActivity"
+            android:label="@string/title_activity_add_species"
+            android:parentActivityName="com.wmstein.tourcount.EditSectionActivity"
+            android:theme="@style/Theme.AppCompat">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="EditSectionActivity"/>
+        </activity>
+
         <service android:name="com.wmstein.tourcount.LocationService"
                  android:exported="false">
         </service>

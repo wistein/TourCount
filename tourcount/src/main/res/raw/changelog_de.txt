@@ -42,9 +42,15 @@
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _
 
+$ 3.1.0
+  % Version 3.1.0
+  _ 13.04.2019
+  	* Integrierte Liste mit vielen Europäischen Spezies
+		* Anstelle von manueller Eingabe weitere Spezies mittels Scroll-Down-Auswahl der Speziesliste hinzufügen  
+
 $ 3.0.8
   % Version 3.0.8
-  _ 25.02.2019
+  _ 25.03.2019
   	* DB-Struktur ergänzt für lokale Schmetterlingsnamen
   	* Beispiel-Datenbanken mit lokalen Schmetterlingsnamen
   	* Ergebnisdarstellung mit lokalen Schmetterlingsnamen

@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
+#### Version 3.1.0 ()2019-04-13)
+- Integrated list of many European species
+-	Instead of manual input, add further species to your species list by scroll-down selection
+
 #### Version 3.0.8 (2019-03-25)
 - Database structure supplemented for local butterfly names
 - Example databases adapted for local butterfly names

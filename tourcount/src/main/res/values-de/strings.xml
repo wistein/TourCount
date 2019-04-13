@@ -10,6 +10,7 @@
     <string name="title_activity_edit_individual">EditIndividualActivity</string>
     <string name="title_activity_edit_section">EditSectionActivity</string>
     <string name="title_activity_file_chooser">AdvFileChooser</string>
+    <string name="title_activity_add_species">AddSpeciesActivity</string>
 
     <!-- generic -->
     <string name="app_name">TourCount</string>
@@ -132,6 +133,9 @@
     <string name="deleteCount">Element löschen</string>
     <string name="reallyDeleteCount">Bist Du sicher? Das Element wird sofort gelöscht.</string>
     <string name="isdouble"> ist doppelt!</string>
+
+    <!-- AddSpeciesActivity -->
+    <string name="addTitle">Art hinzufügen</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App-Info</string>

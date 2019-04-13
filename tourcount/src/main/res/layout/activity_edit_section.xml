@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_edit_section is used by EditSectionActivity.java -->
+<!-- activity_edit_section.xml is used by EditSectionActivity.java -->
 
 <ScrollView android:id="@+id/editingScreen"
             xmlns:android="http://schemas.android.com/apk/res/android"

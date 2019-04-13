@@ -13,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -55,9 +56,9 @@ import java.util.Locale;
 
 /****************************************************************************************
  * CountingActivity is the central activity of TourCount in portrait mode. 
- * It provides the counters, starts 
- * GPS-location polling, starts EditIndividualActivity, starts editSectionActivity, 
- * switches screen off when pocketed and allows taking pictures and sending notes.
+ * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
+ * starts editSectionActivity, switches screen off when pocketed 
+ * and allows taking pictures and sending notes.
  *
  * CountingActivity uses CountingWidget.java, CountingWidgetLH.java, NotesWidget.java, 
  * activity_counting.xml and activity_counting_lh.xml
@@ -77,6 +78,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;
+    private final Handler mHandler = new Handler();
 
     // the actual data
     private Count count;
@@ -1801,8 +1803,17 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 disableProximitySensor();
             }
 
-            Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
-            startActivity(intent);
+            Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
+
+            // pause for 100 msec to show toast
+            mHandler.postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
+                    startActivity(intent);
+                }
+            }, 100);
             return true;
         }
         else if (id == R.id.menuTakePhoto)

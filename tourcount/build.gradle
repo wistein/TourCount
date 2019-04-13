@@ -19,7 +19,7 @@ android {
         applicationId "com.wmstein.tourcount"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 308
+        versionCode 310
     }
 
     buildTypes {
