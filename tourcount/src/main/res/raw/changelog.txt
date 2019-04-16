@@ -44,9 +44,9 @@
 
 $ 3.1.0
   % Version 3.1.0
-  _ 2019-04-13
+  _ 2019-04-16
   	* Integrated list of many European species
-		* Instead of manual input, add further species to your species list by scroll-down selection
+		* Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
 
 $ 3.0.8
   % Version 3.0.8

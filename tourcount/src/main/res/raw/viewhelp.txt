@@ -42,14 +42,17 @@ $ 9
   _ 
   ! Then you may enter universal parts of the master data under “PREPARE RECORDING” and finish this by clicking the saving symbol. Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”. The editable meta data may be modified anytime later. 
   _ 
-  ! Then edit the species list on "COUNTING". Use the Pencil-Button in the action bar for that.
-  ! Add an entry by the (+)-Button and enter a name and a code (five-digit with leading zeros). Repeat this for each expected species, e.g.:
+  ! Then edit the species list on "COUNTING". Use the Pencil-Button in the action bar for that. 
+  ! Add an entry by the (+)-Button and selecting the species from the scroll-down list. At the end of this list you may select a non-existing species (NN). This can then be edited by entering its scientific name, common name and code (five-digit with leading zeros), e.g.:
   _ 
   ! ---------------------------------------------
   ! ...
-  ! Pieris napi ................ 07000
   ! Pieris rapae .............. 06998
+  ! Small white
+  ! Pieris napi ................ 07000
+  ! Green-veined white
   ! Pieris na./ra.-compl.	07000*
+  ! Small whites complex
   ! ...
   _ 
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.

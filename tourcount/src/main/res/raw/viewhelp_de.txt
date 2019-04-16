@@ -42,14 +42,17 @@ $ 9
   _ 
   ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „ERFASSUNG VORBEREITEN“ eingegeben werden. Die ortsbezogenen Meta-Daten werden bei Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt. Die editierbaren Metadaten können später jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen. 
   _ 
-  ! Dann unter "ZÄHLEN" die Artenliste editieren. Aufruf mittels Bleistift-Button in der Kopfzeile.
-  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag (Name und 5-stelliger Code mit führenden Nullen), z.B.:
+  ! Dann unter "ZÄHLEN" die Artenliste editieren. Aufruf mittels Bleistift-Button in der Kopfzeile der Zählseite.
+  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag per Scroll-Down-Auswahl. Am Ende der Scroll-Down-Liste kann eine nicht vorhandene Art (NN) hinzugefügt werden, die anschließend editiert wird (Name, ggf. deutscher Name und 5-stelliger Code mit führenden Nullen), z.B.:
   _ 
   ! ---------------------------------------------
   ! ...
-  ! Pieris napi ................ 07000
   ! Pieris rapae .............. 06998
+  ! Kleiner Kohlweißling 
+  ! Pieris napi ................ 07000
+  ! Grünaderweißling
   ! Pieris na./ra.-Kompl.	07000*
+  ! Weißlinge-Komplex
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite. 

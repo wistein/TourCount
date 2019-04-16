@@ -5,8 +5,9 @@ Features
 - The app comes with a prepared basic database with the most common species in Europe as a starting point.
 - Databases can be individually created and adapted within the app regarding meta data and expected butterfly species.
 - You may use an individual species list per region.
-- The app contains an editor to setup or adapt the current species list,
-- an editor to prepare the meta data for a tour,
+- The app contains an editor to setup or adapt the current species list.
+- Add new species to the list by scroll-down-selection from a comprehensive internal species list. 
+- There is an editor to prepare the meta data for a tour and
 - an editor for individual species data of a count (e.g. state, remark or bulk count entry).
 - Species can be selected per scroll-down-menu with butterfly names and pictures on the counting page.
 - The counting page has 6 separate counters for ♂ or ♀, ♂, ♀, pupa, larva or egg.

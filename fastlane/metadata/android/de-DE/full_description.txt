@@ -5,9 +5,10 @@ Eigenschaften
 - Die App enthält eine vorbereitete Datenbank mit den häufigsten zu erwartenden europäischen Arten als Ausgangspunkt.
 - Datenbanken können innerhalb der App individuell erstellt und angepasst werden bezüglich Meta-Daten und zu erwartenden Arten.
 - Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
-- Die App enthält einen Editor für die Einrichtung und Pflege der Artenliste,
-- einen Editor für Meta-Daten zur Vorbereitung einer Tour,
-- einen Editor für individuelle Spezies-Daten pro Sichtung (z.B. Zustand, Bemerkung oder größere Anzahl).
+- Die App enthält einen Editor für die Einrichtung und Pflege der Artenliste.
+- Hinzufügen neuer Arten per Scroll-Down-Auswahl aus einer umfassenden internen Artenliste.
+- Meta-Daten zur Vorbereitung einer Tour könne editiert werden.
+- Individuelle Spezies-Daten können pro Sichtung editiert werden (z.B. Zustand, Bemerkung oder größere Anzahl).
 - Die Artauswahl erfolgt auf der Zählerseite per Rollbalken-Menü mit Schmetterlingsnamen und -abbildungen.
 - Die Zählerseite hat 6 unabhängige Zähler für ♂ oder ♀, ♂, ♀, Puppe, Raupe oder Ei.
 - Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie

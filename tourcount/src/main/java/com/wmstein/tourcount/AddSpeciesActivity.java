@@ -19,19 +19,22 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.SpeciesAddWidget;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-/***************************************************************
- * AddSpeciesActivity lets you insert a new species into the species list)
+/************************************************************************
+ * AddSpeciesActivity lets you insert a new species into the species list
  * AddSpeciesActivity is called from EditSectionActivity
  * Uses SpeciesAddWidget.java, widget_add_spec.xml.
  *
  * Created for TourCount by wmstein on 2019-04-12,
- * last edited on 2019-04-13
+ * last edited on 2019-04-16
  */
 public class AddSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -43,14 +46,10 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
     // the actual data
     private CountDataSource countDataSource;
 
-    private String[] idArray;
-    private String[] nameArray;
-    private String[] nameArrayG;
-    private String[] codeArray;
-    private Integer[] imageArray;
+    private String[] idArray; // Id list of missing species
+    ArrayList<String> namesCompleteArrayList, namesGCompleteArrayList, codesCompleteArrayList; // complete ArrayLists of species
+    String specName, specCode, specNameG; // selected species
 
-    String specName, specCode, specNameG;
-    
     private Bitmap bMap;
     private BitmapDrawable bg;
 
@@ -69,7 +68,6 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         setContentView(R.layout.activity_add_species);
-
         ScrollView add_screen = findViewById(R.id.addScreen);
 
         if (screenOrientL)
@@ -95,18 +93,11 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         add_screen.setBackground(bg);
 
         add_area = findViewById(R.id.addSpecLayout);
-
-        nameArray = getResources().getStringArray(R.array.selSpecs);
-        nameArrayG = getResources().getStringArray(R.array.selSpecs_g);
-        codeArray = getResources().getStringArray(R.array.selCodes);
-        idArray = setIdsSelSpecs(); // create idArray from codeArray
-        imageArray = getAllImagesSelCodes(); // create imageArray
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
+        
+        // Load complete species ArrayList from arrays.xml (lists are sorted by code)
+        namesCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selSpecs)));
+        namesGCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selSpecs_g)));
+        codesCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selCodes)));
     }
 
     @Override
@@ -137,69 +128,74 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.addTitle);
 
-        // load the species data to the widgets
+        // get the list of only new species not already contained in the species counting list
+        List<Count> counts;
+        ArrayList<String> specCodesContainedList = new ArrayList<>(); // code list of contained species
+
+        counts = countDataSource.getAllSpeciesSrtCode(); // get species of the counting list
+
+        // build code ArrayList of already contained species
+        for (Count count : counts)
+        {
+            specCodesContainedList.add(count.code);
+        }
+        
+        // build lists of missing species
+        int specCodesContainedListSize = specCodesContainedList.size();
+        int posSpec;
+        
+        // for already contained species reduce complete arraylists
+        for (int i = 0; i < specCodesContainedListSize; i++)
+        {
+            if (codesCompleteArrayList.contains(specCodesContainedList.get(i)))
+            {
+                // Remove species with code x from missing species lists.
+                // Prerequisites: exactly correlated arrays of selCodes, selSpecs and selSpecs_g
+                //   for all localisations
+                specCode = specCodesContainedList.get(i);
+                posSpec = codesCompleteArrayList.indexOf(specCode);
+
+                namesCompleteArrayList.remove(posSpec);
+                namesGCompleteArrayList.remove(posSpec);
+                codesCompleteArrayList.remove(specCode);
+            }
+        }
+
+        idArray = setIdsSelSpecs(codesCompleteArrayList); // create idArray from codeArray
+
+        // load the species data into the widgets
         int i;
-        for (i = 0; i < codeArray.length; i++)
+        for (i = 0; i < codesCompleteArrayList.size(); i++)
         {
             SpeciesAddWidget saw = new SpeciesAddWidget(this, null);
 
-            saw.setSpecName(nameArray[i]);
-            saw.setSpecNameG(nameArrayG[i]);
-            saw.setSpecCode(codeArray[i]);
-            saw.setPSpec(codeArray[i]);
+            saw.setSpecName(namesCompleteArrayList.get(i));
+            saw.setSpecNameG(namesGCompleteArrayList.get(i));
+            saw.setSpecCode(codesCompleteArrayList.get(i));
+            saw.setPSpec(codesCompleteArrayList.get(i));
             saw.setSpecId(idArray[i]);
             add_area.addView(saw);
         }
 
     } // end of Resume
 
-    private String[] setIdsSelSpecs()
+
+    // create idArray from codeArray
+    private String[] setIdsSelSpecs(ArrayList<String> speccodesm)
     {
         int i;
-        idArray = new String[codeArray.length];
-        for (i = 0; i < codeArray.length; i++)
+        idArray = new String[speccodesm.size()];
+        for (i = 0; i < speccodesm.size(); i++)
         {
             idArray[i] = String.valueOf(i + 1);
         }
         return idArray;
     }
 
-    private Integer[] getAllImagesSelCodes()
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
     {
-        int i;
-        imageArray = new Integer[codeArray.length];
-        for (i = 0; i < codeArray.length; i++)
-        {
-            String ucode = codeArray[i];
-
-            String rname = "p" + ucode; // species picture resource name
-            int resId = getResId(rname);
-            int resId0 = getResId("p00000");
-
-            if (resId != 0)
-            {
-                imageArray[i] = resId;
-            }
-            else
-            {
-                imageArray[i] = resId0;
-            }
-        }
-        return imageArray;
-    }
-
-    // Get resource ID from resource name
-    private int getResId(String rName)
-    {
-        try
-        {
-            Class res = R.drawable.class;
-            Field idField = res.getField(rName);
-            return idField.getInt(null);
-        } catch (Exception e)
-        {
-            return 0;
-        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -226,11 +222,11 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
 
         int idToAdd = (Integer) view.getTag();
         SpeciesAddWidget saw1 = (SpeciesAddWidget) add_area.getChildAt(idToAdd);
-        
+
         specName = saw1.getSpecName();
         specCode = saw1.getSpecCode();
         specNameG = saw1.getSpecNameG();
-            
+
         try
         {
             countDataSource.createCount(specName, specCode, specNameG);

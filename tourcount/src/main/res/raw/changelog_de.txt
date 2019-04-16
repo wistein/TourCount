@@ -44,9 +44,9 @@
 
 $ 3.1.0
   % Version 3.1.0
-  _ 13.04.2019
-  	* Integrierte Liste mit vielen Europäischen Spezies
-		* Anstelle von manueller Eingabe weitere Spezies mittels Scroll-Down-Auswahl der Speziesliste hinzufügen  
+  _ 16.04.2019
+  	* Integrierte Auswahlliste mit vielen Europäischen Spezies
+		* Hinzufügen neuer Spezies mittels Scroll-Down-Auswahl aus einer umfassenden Liste, die nur nicht vorhandene Spezies anzeigt   
 
 $ 3.0.8
   % Version 3.0.8
