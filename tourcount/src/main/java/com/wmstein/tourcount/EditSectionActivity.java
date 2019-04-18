@@ -281,25 +281,10 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                     if (isNotEmpty(cew.getCountName()))
                     {
                         if (MyDebug.LOG)
-                            Log.d(TAG, "cew: " + String.valueOf(cew.countId) + ", " + cew.getCountName());
-/*
-                        // create or update
-                        if (cew.countId == 0)
-                        {
-                            if (MyDebug.LOG)
-                                Log.d(TAG, "Creating!");
-                            //creates new species entry
-                            countDataSource.createCount(cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
-                        }
-                        else
-*/
-                        {
-
-                            if (MyDebug.LOG)
-                                Log.d(TAG, "Updating!");
-                            //updates species name and code
-                            countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
-                        }
+                            Log.d(TAG, "cew: " + cew.countId + ", " + cew.getCountName());
+                        
+                        //updates species name and code
+                        countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
                         retValue = true;
                     }
                 }
