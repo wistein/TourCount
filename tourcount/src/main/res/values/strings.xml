@@ -67,7 +67,6 @@
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Count List Notes</string>
-    <string name="spec">Species</string>
     <string name="speccode">Spec. Code</string>
     <string name="cnts">Counts</string>
     <string name="bema">Spec. Notes</string>

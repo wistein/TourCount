@@ -33,8 +33,11 @@ import java.util.Objects;
  * AddSpeciesActivity is called from EditSectionActivity
  * Uses SpeciesAddWidget.java, widget_add_spec.xml.
  *
+ * The sorting order of the species to add cannot be changed, as it is determined 
+ * by 3 interdependent and correlated arrays in arrays.xml
+ *
  * Created for TourCount by wmstein on 2019-04-12,
- * last edited on 2019-04-16
+ * last edited on 2019-04-18
  */
 public class AddSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {

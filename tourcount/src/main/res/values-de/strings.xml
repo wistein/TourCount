@@ -67,7 +67,6 @@
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Bem. zur Liste</string>
-    <string name="spec">Spezies</string>
     <string name="speccode">Spez.-Code</string>
     <string name="cnts">Anzahl</string>
     <string name="bema">Art-Bemerkung</string>
