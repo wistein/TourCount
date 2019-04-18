@@ -43,7 +43,7 @@ import java.util.List;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2019-04-13
+ * last edited on 2019-04-18
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -179,7 +179,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                 Log.e(TAG, "NullPointerException: No section name!");
         }
 
-        // load and sort the counts data
+        // load the sorted species data
         List<Count> counts;
         switch (sortPref)
         {
@@ -282,6 +282,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                     {
                         if (MyDebug.LOG)
                             Log.d(TAG, "cew: " + String.valueOf(cew.countId) + ", " + cew.getCountName());
+/*
                         // create or update
                         if (cew.countId == 0)
                         {
@@ -291,7 +292,9 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
                             countDataSource.createCount(cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
                         }
                         else
+*/
                         {
+
                             if (MyDebug.LOG)
                                 Log.d(TAG, "Updating!");
                             //updates species name and code
@@ -304,7 +307,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             else
             {
 //                Toast.makeText(this, isDbl + " " + getString(R.string.isdouble), Toast.LENGTH_SHORT).show();
-                showSnackbarRed(isDbl + " " + getString(R.string.isdouble)+ " " 
+                showSnackbarRed(isDbl + " " + getString(R.string.isdouble) + " "
                     + getString(R.string.duplicate));
                 retValue = false;
             }
@@ -331,7 +334,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
             isDbl = compCountNames();
             if (!isDbl.equals(""))
             {
-                showSnackbarRed(isDbl + " " + getString(R.string.isdouble)+ " "
+                showSnackbarRed(isDbl + " " + getString(R.string.isdouble) + " "
                     + getString(R.string.duplicate));
                 retValue = false;
             }
@@ -349,26 +352,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         sB.show();
     }
 
-    /*
-     * Scroll to end of view
-     */
-    private void ScrollToEndOfView(View scrlV)
-    {
-        int scroll_amount = scrlV.getBottom();
-        int scrollY = scroll_amount;
-        boolean pageend = false;
-        while (!pageend)
-        {
-            scrlV.scrollTo(0, scroll_amount);           //scroll
-            scroll_amount = scroll_amount + scroll_amount; //increase scroll_amount 
-            scrollY = scrollY + scrlV.getScrollY();        //scroll position 1. row
-            if (scroll_amount > scrollY)
-            {
-                pageend = true;
-            }
-        }
-    }
-
+    // Start AddSpeciesActivity to add a new species to the species list
     public void newCount(View view)
     {
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
@@ -384,7 +368,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }, 100);
     }
 
-    // Purging counts
+    // Purging species
     public void deleteCount(View view)
     {
         viewMarkedForDelete = view;
@@ -446,7 +430,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         }
         return super.onKeyDown(keyCode, event);
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -459,11 +443,11 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         int id = item.getItemId();
         if (id == R.id.home)
         {
-                savedCounts.clear();
-                Intent intent = NavUtils.getParentActivityIntent(this);
-                assert intent != null;
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                NavUtils.navigateUpTo(this, intent);
+            savedCounts.clear();
+            Intent intent = NavUtils.getParentActivityIntent(this);
+            assert intent != null;
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            NavUtils.navigateUpTo(this, intent);
         }
         else if (id == R.id.menuSaveExit)
         {

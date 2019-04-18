@@ -43,7 +43,7 @@ $ 9
   ! Then you may enter universal parts of the master data under “PREPARE RECORDING” and finish this by clicking the saving symbol. Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”. The editable meta data may be modified anytime later. 
   _ 
   ! Then edit the species list on "COUNTING". Use the Pencil-Button in the action bar for that. 
-  ! Add an entry by the (+)-Button and selecting the species from the scroll-down list. At the end of this list you may select a non-existing species (NN). This can then be edited by entering its scientific name, common name and code (five-digit with leading zeros), e.g.:
+  ! Add an entry by the (+)-Button and select the species from the scroll-down list. At the end of this list you may select a non-existing species (NN). This can then be edited by entering its scientific name, common name and code (five-digit with leading zeros), e.g.:
   _ 
   ! ---------------------------------------------
   ! ...

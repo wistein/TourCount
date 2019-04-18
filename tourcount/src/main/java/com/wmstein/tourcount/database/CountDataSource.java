@@ -472,7 +472,7 @@ public class CountDataSource
         return speci;
     }
 
-    // Used by EditSectionActivity
+    // Used by EditSectionActivity and AddSpeciesActivity
     public List<Count> getAllSpeciesSrtCode()
     {
         List<Count> speci = new ArrayList<>();

@@ -4,7 +4,7 @@
 
 #### Version 3.1.0 ()2019-04-16)
 - Integrated list of many European species
--	Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
+- Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
 
 #### Version 3.0.8 (2019-03-25)
 - Database structure supplemented for local butterfly names
