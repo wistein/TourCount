@@ -43,7 +43,7 @@ import java.util.List;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2019-04-18
+ * last edited on 2019-04-19
  */
 public class EditSectionActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -266,7 +266,7 @@ public class EditSectionActivity extends AppCompatActivity implements SharedPref
         int childcount; //No. of species in list
         childcount = counts_area.getChildCount();
         if (MyDebug.LOG)
-            Log.d(TAG, "childcount: " + String.valueOf(childcount));
+            Log.d(TAG, "childcount: " + childcount);
 
         // check for unique species names
         if (dupPref)

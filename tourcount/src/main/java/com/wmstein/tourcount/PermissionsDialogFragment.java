@@ -20,7 +20,7 @@ import android.support.v7.app.AlertDialog;
  * licensed under the MIT License.
  * 
  * Adopted for TourCount by wistein on 2018-06-20,
- * last edited on 2018-08-03.
+ * last edited on 2019-04-19.
  */
 
 public class PermissionsDialogFragment extends DialogFragment
@@ -100,7 +100,7 @@ public class PermissionsDialogFragment extends DialogFragment
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
         shouldResolve = true;
         shouldRetry = false;

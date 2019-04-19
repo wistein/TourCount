@@ -62,7 +62,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2019-02-02
+ * last modification on 2019-04-19
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -357,7 +357,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 {
                     URL url;
                     String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
+                        + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                     try
                     {
                         url = new URL(urlString);
@@ -776,7 +776,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 head = headDataSource.getHead();
                 inspecName = head.observer;
 
-                String arrHead[] =
+                String[] arrHead =
                     {
                         getString(R.string.zlist) + ":", //Count List:
                         sectName,                        //section name
@@ -788,11 +788,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrHead);
 
                 // Empty row
-                String arrEmpt[] = {};
+                String[] arrEmpt = {};
                 csvWrite.writeNext(arrEmpt);
 
                 // set location headline
-                String arrLocHead[] =
+                String[] arrLocHead =
                     {
                         getString(R.string.country),
                         getString(R.string.plz),
@@ -803,7 +803,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrLocHead);
 
                 // set location dataline
-                String arrLocation[] =
+                String[] arrLocation =
                     {
                         country,
                         plz,
@@ -817,7 +817,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrEmpt);
 
                 // set environment headline
-                String arrEnvHead[] =
+                String[] arrEnvHead =
                     {
                         getString(R.string.temperature),
                         getString(R.string.wind),
@@ -837,7 +837,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 end_tm = section.end_tm;
 
                 // write environment data
-                String arrEnvironment[] =
+                String[] arrEnvironment =
                     {
                         String.valueOf(temp),
                         String.valueOf(wind),
@@ -853,7 +853,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 // write counts headline
                 //    Species Name, Local Name, Code, Counts, Spec.-Notes
-                String arrCntHead[] =
+                String[] arrCntHead =
                     {
                         getString(R.string.name_spec),
                         getString(R.string.name_spec_g),
@@ -874,24 +874,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                 Cursor curCSVCnt;
 
-                switch (sortPref) // sort mode species list
+                // sort mode species list
+                if ("codes".equals(sortPref))
                 {
-                case "codes":
                     curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
                         + " WHERE " + " ("
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
                         + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
                         + " order by " + DbHelper.C_CODE, null, null);
-                    break;
-                default:
+                }
+                else
+                {
                     curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
                         + " WHERE " + " ("
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
                         + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
                         + " order by " + DbHelper.C_NAME, null, null);
-                    break;
                 }
 
                 // open Individuals table 
@@ -1008,7 +1008,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     else
                         strcntse = "";
 
-                    String arrStr[] =
+                    String[] arrStr =
                         {
                             spname,                 // species name
                             curCSVCnt.getString(10), // local name 
@@ -1040,9 +1040,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 curCSVCnt.close();
 
                 // write total sum
-                String arrSum[] =
+                String[] arrSum =
                     {
-                        "","",
+                        "", "",
                         getString(R.string.sum),
                         Integer.toString(summf),
                         Integer.toString(summ),
@@ -1061,7 +1061,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 // write individual headline
                 //    Species, Counts, Locality, Longitude, Latitude, Uncertainty, 
                 //    Date, Time, Sexus, Stadium, Stadium, State, Indiv.-Notes 
-                String arrIndHead[] =
+                String[] arrIndHead =
                     {
                         getString(R.string.individuals),
                         getString(R.string.cnts),
@@ -1114,7 +1114,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         latit = String.valueOf(lati);
                     }
 
-                    String arrIndividual[] =
+                    String[] arrIndividual =
                         {
                             curCSVInd.getString(2),  //species name
                             strcnts,                             //indiv. counts
@@ -1161,7 +1161,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrEmpt);
 
                 // write Average Coords
-                String arrACoordHead[] =
+                String[] arrACoordHead =
                     {
                         "",
                         "",
@@ -1199,7 +1199,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
 
 
-                String arrAvCoords[] =
+                String[] arrAvCoords =
                     {
                         "",
                         "",

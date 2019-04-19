@@ -67,7 +67,7 @@ import java.util.Locale;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2019-01-27
+ * last modification on 2019-04-19
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -424,7 +424,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
                 {
                     URL url;
                     String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                        + Double.toString(latitude) + "&lon=" + Double.toString(longitude) + "&zoom=18&addressdetails=1";
+                        + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                     try
                     {
                         url = new URL(urlString);

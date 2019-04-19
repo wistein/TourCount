@@ -23,7 +23,7 @@ import android.widget.Toast;
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2016-05-15,
- * last edited on 2019-01-27
+ * last edited on 2019-04-19
  */
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -196,12 +196,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch (item.getItemId())
+        if (item.getItemId() == android.R.id.home)
         {
-        case android.R.id.home:
             startActivity(new Intent(this, WelcomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            break;
-        default:
+        }
+        else
+        {
             return super.onOptionsItemSelected(item);
         }
         return true;
