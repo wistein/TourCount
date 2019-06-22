@@ -2,7 +2,15 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
-#### Version 3.1.0 ()2019-04-16)
+#### Version 3.1.2 (2019-04-22)
+- Added/changed butterfly pictures
+
+#### Version 3.1.1 (2019-04-12)
+- Project adaption for Gradle 3.4.1 and Gradle 5.1.1
+- Minimal changes to starting page
+- Bugfix
+
+#### Version 3.1.0 (2019-04-16)
 - Integrated list of many European species
 - Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
 
