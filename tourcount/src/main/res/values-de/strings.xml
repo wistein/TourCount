@@ -55,8 +55,9 @@
     <string name="cntsp">Anzahl Pu.</string>
     <string name="cntsl">Anzahl Ra.</string>
     <string name="cntse">Anzahl Ei</string>
-    <string name="sum">Summe:</string>
-    <string name="sum_total">Insgesamt:</string>
+    <string name="sum">Summen:</string>
+    <string name="sum_total">Gesamtsumme:</string>
+    <string name="sumSpec">Arten:</string>
     <string name="avCoords">Mittlere Koordinaten:</string>
     <string name="back_twice">Zum Beenden erneut drücken</string>
     <string name="resetFail">Die Datenbank konnte nicht zurückgesetzt werden!</string>

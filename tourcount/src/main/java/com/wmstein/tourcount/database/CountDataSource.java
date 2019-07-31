@@ -13,11 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.wmstein.tourcount.database.DbHelper.COUNT_TABLE;
+import static com.wmstein.tourcount.database.DbHelper.C_CODE;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_EI;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F1I;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F2I;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F3I;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_LI;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_PI;
 
 /*************************************************************
  * Based on CountDataSource.java by milo on 05/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
- * last change on 2019-03-26
+ * last change on 2019-07-31
  */
 public class CountDataSource
 {
@@ -26,14 +33,14 @@ public class CountDataSource
     private final DbHelper dbHandler;
     private final String[] allColumns = {
         DbHelper.C_ID,
-        DbHelper.C_COUNT_F1I,
-        DbHelper.C_COUNT_F2I,
-        DbHelper.C_COUNT_F3I,
-        DbHelper.C_COUNT_PI,
-        DbHelper.C_COUNT_LI,
-        DbHelper.C_COUNT_EI,
+        C_COUNT_F1I,
+        C_COUNT_F2I,
+        C_COUNT_F3I,
+        C_COUNT_PI,
+        C_COUNT_LI,
+        C_COUNT_EI,
         DbHelper.C_NAME,
-        DbHelper.C_CODE,
+        C_CODE,
         DbHelper.C_NOTES,
         DbHelper.C_NAME_G
     };
@@ -59,13 +66,13 @@ public class CountDataSource
         {
             ContentValues values = new ContentValues();
             values.put(DbHelper.C_NAME, name);
-            values.put(DbHelper.C_COUNT_F1I, 0);
-            values.put(DbHelper.C_COUNT_F2I, 0);
-            values.put(DbHelper.C_COUNT_F3I, 0);
-            values.put(DbHelper.C_COUNT_PI, 0);
-            values.put(DbHelper.C_COUNT_LI, 0);
-            values.put(DbHelper.C_COUNT_EI, 0);
-            values.put(DbHelper.C_CODE, code);
+            values.put(C_COUNT_F1I, 0);
+            values.put(C_COUNT_F2I, 0);
+            values.put(C_COUNT_F3I, 0);
+            values.put(C_COUNT_PI, 0);
+            values.put(C_COUNT_LI, 0);
+            values.put(C_COUNT_EI, 0);
+            values.put(C_CODE, code);
             values.put(DbHelper.C_NOTES, "");
             values.put(DbHelper.C_NAME_G, name_g);
 
@@ -81,13 +88,13 @@ public class CountDataSource
         Count newcount = new Count();
         newcount.id = cursor.getInt(cursor.getColumnIndex(DbHelper.C_ID));
         newcount.name = cursor.getString(cursor.getColumnIndex(DbHelper.C_NAME));
-        newcount.count_f1i = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_F1I));
-        newcount.count_f2i = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_F2I));
-        newcount.count_f3i = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_F3I));
-        newcount.count_pi = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_PI));
-        newcount.count_li = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_LI));
-        newcount.count_ei = cursor.getInt(cursor.getColumnIndex(DbHelper.C_COUNT_EI));
-        newcount.code = cursor.getString(cursor.getColumnIndex(DbHelper.C_CODE));
+        newcount.count_f1i = cursor.getInt(cursor.getColumnIndex(C_COUNT_F1I));
+        newcount.count_f2i = cursor.getInt(cursor.getColumnIndex(C_COUNT_F2I));
+        newcount.count_f3i = cursor.getInt(cursor.getColumnIndex(C_COUNT_F3I));
+        newcount.count_pi = cursor.getInt(cursor.getColumnIndex(C_COUNT_PI));
+        newcount.count_li = cursor.getInt(cursor.getColumnIndex(C_COUNT_LI));
+        newcount.count_ei = cursor.getInt(cursor.getColumnIndex(C_COUNT_EI));
+        newcount.code = cursor.getString(cursor.getColumnIndex(C_CODE));
         newcount.notes = cursor.getString(cursor.getColumnIndex(DbHelper.C_NOTES));
         newcount.name_g = cursor.getString(cursor.getColumnIndex(DbHelper.C_NAME_G));
         return newcount;
@@ -103,14 +110,14 @@ public class CountDataSource
     public void saveCount(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_F1I, count.count_f1i);
-        dataToInsert.put(DbHelper.C_COUNT_F2I, count.count_f2i);
-        dataToInsert.put(DbHelper.C_COUNT_F3I, count.count_f3i);
-        dataToInsert.put(DbHelper.C_COUNT_PI, count.count_pi);
-        dataToInsert.put(DbHelper.C_COUNT_LI, count.count_li);
-        dataToInsert.put(DbHelper.C_COUNT_EI, count.count_ei);
+        dataToInsert.put(C_COUNT_F1I, count.count_f1i);
+        dataToInsert.put(C_COUNT_F2I, count.count_f2i);
+        dataToInsert.put(C_COUNT_F3I, count.count_f3i);
+        dataToInsert.put(C_COUNT_PI, count.count_pi);
+        dataToInsert.put(C_COUNT_LI, count.count_li);
+        dataToInsert.put(C_COUNT_EI, count.count_ei);
         dataToInsert.put(DbHelper.C_NAME, count.name);
-        dataToInsert.put(DbHelper.C_CODE, count.code);
+        dataToInsert.put(C_CODE, count.code);
         dataToInsert.put(DbHelper.C_NOTES, count.notes);
         dataToInsert.put(DbHelper.C_NAME_G, count.name_g);
         String where = DbHelper.C_ID + " = ?";
@@ -122,7 +129,7 @@ public class CountDataSource
     public void saveCountf1i(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_F1I, count.count_f1i);
+        dataToInsert.put(C_COUNT_F1I, count.count_f1i);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -132,7 +139,7 @@ public class CountDataSource
     public void saveCountf2i(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_F2I, count.count_f2i);
+        dataToInsert.put(C_COUNT_F2I, count.count_f2i);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -142,7 +149,7 @@ public class CountDataSource
     public void saveCountf3i(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_F3I, count.count_f3i);
+        dataToInsert.put(C_COUNT_F3I, count.count_f3i);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -152,7 +159,7 @@ public class CountDataSource
     public void saveCountpi(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_PI, count.count_pi);
+        dataToInsert.put(C_COUNT_PI, count.count_pi);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -162,7 +169,7 @@ public class CountDataSource
     public void saveCountli(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_LI, count.count_li);
+        dataToInsert.put(C_COUNT_LI, count.count_li);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -172,7 +179,7 @@ public class CountDataSource
     public void saveCountei(Count count)
     {
         ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.C_COUNT_EI, count.count_ei);
+        dataToInsert.put(C_COUNT_EI, count.count_ei);
         String where = DbHelper.C_ID + " = ?";
         String[] whereArgs = {String.valueOf(count.id)};
         database.update(COUNT_TABLE, dataToInsert, where, whereArgs);
@@ -184,7 +191,7 @@ public class CountDataSource
         {
             ContentValues dataToInsert = new ContentValues();
             dataToInsert.put(DbHelper.C_NAME, name);
-            dataToInsert.put(DbHelper.C_CODE, code);
+            dataToInsert.put(C_CODE, code);
             dataToInsert.put(DbHelper.C_NAME_G, name_g);
             String where = DbHelper.C_ID + " = ?";
             String[] whereArgs = {String.valueOf(id)};
@@ -250,7 +257,7 @@ public class CountDataSource
     public String[] getAllIdsSrtCode()
     {
         Cursor cursor = database.query(COUNT_TABLE, allColumns,
-            null, null, null, null, DbHelper.C_CODE);
+            null, null, null, null, C_CODE);
 
         String[] idArray = new String[cursor.getCount()];
         cursor.moveToFirst();
@@ -316,7 +323,7 @@ public class CountDataSource
     {
 
         Cursor cursor = database.query(COUNT_TABLE, allColumns,
-            null, null, null, null, DbHelper.C_CODE);
+            null, null, null, null, C_CODE);
 
         String[] uArray = new String[cursor.getCount()];
         cursor.moveToFirst();
@@ -403,7 +410,7 @@ public class CountDataSource
     public Integer[] getAllImagesSrtCode()
     {
         Cursor cursor = database.query(COUNT_TABLE, allColumns,
-            null, null, null, null, DbHelper.C_CODE);
+            null, null, null, null, C_CODE);
 
         Integer[] imageArray = new Integer[cursor.getCount()];
         cursor.moveToFirst();
@@ -452,6 +459,27 @@ public class CountDataSource
         return speci;
     }
 
+    // Used by WelcomeActivity
+    public int getDiffSpec()
+    {
+        int cntSpec = 0;
+        Cursor cursor = database.rawQuery("select DISTINCT " + C_CODE + " from " + COUNT_TABLE
+            + " WHERE " + " ("
+            + C_COUNT_F1I + " > 0 or " + C_COUNT_F2I + " > 0 or "
+            + C_COUNT_F3I + " > 0 or " + C_COUNT_PI + " > 0 or "
+            + C_COUNT_LI + " > 0 or " + C_COUNT_EI + " > 0)", null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            cntSpec++;
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+        return cntSpec;
+    }
+
     // Used by EditSectionActivity
     public List<Count> getAllSpeciesSrtName()
     {
@@ -478,7 +506,7 @@ public class CountDataSource
         List<Count> speci = new ArrayList<>();
 
         Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
-            + " order by " + DbHelper.C_CODE, null);
+            + " order by " + C_CODE, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
@@ -499,9 +527,9 @@ public class CountDataSource
 
         Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
             + " WHERE ("
-            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+            + C_COUNT_F1I + " > 0 or " + C_COUNT_F2I + " > 0 or "
+            + C_COUNT_F3I + " > 0 or " + C_COUNT_PI + " > 0 or "
+            + C_COUNT_LI + " > 0 or " + C_COUNT_EI + " > 0)"
             + " order by " + DbHelper.C_ID, null, null);
 
         cursor.moveToFirst();
@@ -523,9 +551,9 @@ public class CountDataSource
 
         Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
             + " WHERE " + " ("
-            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+            + C_COUNT_F1I + " > 0 or " + C_COUNT_F2I + " > 0 or "
+            + C_COUNT_F3I + " > 0 or " + C_COUNT_PI + " > 0 or "
+            + C_COUNT_LI + " > 0 or " + C_COUNT_EI + " > 0)"
             + " order by " + DbHelper.C_NAME, null, null);
 
         cursor.moveToFirst();
@@ -547,10 +575,10 @@ public class CountDataSource
 
         Cursor cursor = database.rawQuery("select * from " + COUNT_TABLE
             + " WHERE " + " ("
-            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-            + " order by " + DbHelper.C_CODE, null, null);
+            + C_COUNT_F1I + " > 0 or " + C_COUNT_F2I + " > 0 or "
+            + C_COUNT_F3I + " > 0 or " + C_COUNT_PI + " > 0 or "
+            + C_COUNT_LI + " > 0 or " + C_COUNT_EI + " > 0)"
+            + " order by " + C_CODE, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast())

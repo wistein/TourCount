@@ -37,7 +37,7 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2019-01-27
+ * last edited on 2019-07-30
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -128,7 +128,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     private void loadData()
     {
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sumo = 0;
-        int sumsp = 0, sumind = 0;
+        int sumsp = 0, sumind = 0; // sum of counted species, sum of counted individuals
         double longi = 0, lati = 0, uncer = 0;
         int frst = 0;
         double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;

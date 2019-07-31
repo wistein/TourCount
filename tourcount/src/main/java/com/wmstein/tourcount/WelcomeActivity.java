@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
+import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
@@ -62,7 +63,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2019-04-19
+ * last modification on 2019-07-31
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -115,6 +116,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private SQLiteDatabase database;
     private DbHelper dbHandler;
     private SectionDataSource sectionDataSource;
+    private CountDataSource countDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -577,6 +579,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         editor.apply();
 
         sectionDataSource.close();
+        countDataSource.close();
     }
 
     @Override
@@ -608,6 +611,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onStop();
 
         sectionDataSource.close();
+        countDataSource.close();
 
         // Stop location service with permissions check
         modePerm = 2;
@@ -619,6 +623,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onDestroy();
 
         sectionDataSource.close();
+        countDataSource.close();
 
         // Stop location service with permissions check
             modePerm = 2;
@@ -1039,10 +1044,16 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
                 curCSVCnt.close();
 
+                countDataSource = new CountDataSource(this);
+                countDataSource.open();
+                int sumSpec = countDataSource.getDiffSpec(); // get number of different species
+                countDataSource.close();
+                
                 // write total sum
                 String[] arrSum =
                     {
-                        "", "",
+                        getString(R.string.sumSpec), 
+                        Integer.toString(sumSpec),
                         getString(R.string.sum),
                         Integer.toString(summf),
                         Integer.toString(summ),

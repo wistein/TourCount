@@ -55,9 +55,10 @@
     <string name="cntsp">Counts Pu.</string>
     <string name="cntsl">Counts Ca.</string>
     <string name="cntse">Counts Eg.</string>
-    <string name="sum">Sum:</string>
-    <string name="sum_total">Total:</string>
-    <string name="avCoords">Average coordinates:</string>
+    <string name="sum">Totals:</string>
+    <string name="sum_total">Sum Total:</string>
+    <string name="sumSpec">Diff. Species:</string>
+    <string name="avCoords">Average Coordinates:</string>
     <string name="back_twice">Press again to exit</string>
     <string name="resetFail">Your database could not be resetted!</string>
 
