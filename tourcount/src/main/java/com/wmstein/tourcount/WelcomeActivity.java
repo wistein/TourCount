@@ -63,7 +63,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2019-07-31
+ * last modification on 2019-08-04
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -169,6 +169,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
+            sectionDataSource.close();
             sname = getString(R.string.errorDb);
 //            Toast.makeText(this, R.string.corruptDb, Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.corruptDb));
@@ -231,6 +232,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             sectionDataSource = new SectionDataSource(this);
             sectionDataSource.open();
             section = sectionDataSource.getSection();
+            sectionDataSource.close();
             sname = section.name;
         } catch (SQLiteException e)
         {
@@ -578,8 +580,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         editor.putBoolean("permLoc_Given", permLocGiven);
         editor.apply();
 
-        sectionDataSource.close();
-        countDataSource.close();
+//        sectionDataSource.close();
     }
 
     @Override
@@ -610,8 +611,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onStop();
 
-        sectionDataSource.close();
-        countDataSource.close();
+//        sectionDataSource.close();
 
         // Stop location service with permissions check
         modePerm = 2;
@@ -622,8 +622,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onDestroy();
 
-        sectionDataSource.close();
-        countDataSource.close();
+//        sectionDataSource.close();
 
         // Stop location service with permissions check
             modePerm = 2;
@@ -761,16 +760,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // export the purged count table to csv
             try
             {
-                // open Head and Section tables for head and meta info
-                HeadDataSource headDataSource = new HeadDataSource(this);
-                headDataSource.open();
-                sectionDataSource = new SectionDataSource(this);
-                sectionDataSource.open();
-
                 // export purged db as csv
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(outfile));
 
+                // consult Section an Head tables for head and meta info
+                sectionDataSource = new SectionDataSource(this);
+                sectionDataSource.open();
                 section = sectionDataSource.getSection();
+                sectionDataSource.close();
+                
                 sectName = section.name;
                 sectNotes = section.notes;
                 country = section.country;
@@ -778,7 +776,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 city = section.city;
                 place = section.place;
 
+                HeadDataSource headDataSource = new HeadDataSource(this);
+                headDataSource.open();
                 head = headDataSource.getHead();
+                headDataSource.close();
+                
                 inspecName = head.observer;
 
                 String[] arrHead =
@@ -1168,6 +1170,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                 }
 
+                individualsDataSource.close();
+                curCSVInd.close();
+
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
 
@@ -1222,13 +1227,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrAvCoords);
 
                 csvWrite.close();
-                curCSVInd.close();
                 dbHandler.close();
-
-                headDataSource.close();
-                sectionDataSource.close();
-                individualsDataSource.close();
-
+                
 //                Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
                 showSnackbar(getString(R.string.saveWin));
             } catch (IOException e)
@@ -1525,6 +1525,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             sectionDataSource = new SectionDataSource(getApplicationContext());
                             sectionDataSource.open();
                             section = sectionDataSource.getSection();
+                            sectionDataSource.close();
 
                             // List tour name as title
                             try
@@ -1534,7 +1535,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             {
                                 // nothing
                             }
-                            sectionDataSource.close();
                         } catch (IOException e)
                         {
                             if (MyDebug.LOG)
