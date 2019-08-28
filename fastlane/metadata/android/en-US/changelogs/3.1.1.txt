@@ -1,4 +1,4 @@
 Version 3.1.1 (2019-06-12)
-- Project adaption for Gradle 3.4.1 and Gradle 5.1.1
+- Project adaption for Android Studio 3.4.1 and Gradle 5.1.1
 - Minimal changes to starting page
 - Bugfix
