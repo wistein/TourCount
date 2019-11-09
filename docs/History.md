@@ -2,8 +2,9 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
-#### Version 3.1.3 (2019-08-28)
-- Project adaption for Android Studio 3.5.0 and Gradle 5.4.1
+#### Version 3.1.3 (2019-11-09)
+- Undercutting of species names in results page corrected
+- Project adaption for Android Studio 3.5.2 and Gradle 5.4.1
 
 #### Version 3.1.2 (2019-08-04)
 - Added/changed butterfly pictures
