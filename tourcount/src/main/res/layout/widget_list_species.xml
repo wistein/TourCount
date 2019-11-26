@@ -128,20 +128,22 @@
             <!-- Remark of species -->
             <TextView
                 android:id="@+id/txtSpecRemT"
-                android:visibility="gone"                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.15"
+                android:layout_weight="0.2"
                 android:gravity="start|top"
-                android:hint="@string/rem"
+                android:hint="@string/rem_Sp"
                 android:padding="4sp"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/txtSpecRem"
-                android:visibility="gone"                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.75"
                 android:gravity="start|top"
                 android:padding="4sp"
                 android:textColor="#FFFFFF"
