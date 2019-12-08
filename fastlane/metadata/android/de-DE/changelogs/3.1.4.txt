@@ -1,0 +1,5 @@
+Version 3.1.4 (08.12.2019)
+- Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
+- Kleinere Text-Verbesserungen
+- Projekt-Anpassung für Android Studio 3.5.3 und Gradle 5.4.1
+- Änderungen in AndroidManifest.xml und build.gradle

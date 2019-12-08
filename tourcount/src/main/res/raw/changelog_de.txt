@@ -42,12 +42,13 @@
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _
 
-$ 3.1.3
-  % Version 3.1.3
-  _ 25.11.2019
+$ 3.1.4
+  % Version 3.1.4
+  _ 08.12.2019
 		* Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
 		* Kleinere Text-Verbesserungen
-  	* Projekt-Anpassung für Android Studio 3.5.2 und Gradle 5.4.1
+  	* Projekt-Anpassung für Android Studio 3.5.3 und Gradle 5.4.1
+		* Änderungen in AndroidManifest.xml und build.gradle
 
 $ 3.1.2
   % Version 3.1.2
