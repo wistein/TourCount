@@ -22,11 +22,11 @@ import java.util.Objects;
  * used by Counting(L)Activity
  * Created by wmstein 2016-12-18
  * modified for TourCount on 2018-03-31
- * last edited on 2019-02-12
+ * last edited on 2020-01-26
  */
 public class CountingWidgetLH extends RelativeLayout
 {
-    public static String TAG = "tourcountCountWidgetLH";
+    private static final String TAG = "tourcountCountWidgetLH";
 
     private TextView namef1i;
     private TextView namef2i;

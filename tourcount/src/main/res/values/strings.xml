@@ -8,7 +8,7 @@
     <string name="title_activity_list_species">ListSpeciesActivity</string>
     <string name="title_activity_count_options">CountOptionsActivity</string>
     <string name="title_activity_edit_individual">EditIndividualActivity</string>
-    <string name="title_activity_edit_section">EditSectionActivity</string>
+    <string name="title_activity_edit_section">EditSpecListActivity</string>
     <string name="title_activity_file_chooser">AdvFileChooser</string>
     <string name="title_activity_add_species">AddSpeciesActivity</string>
 
@@ -126,7 +126,7 @@
     <string name="chooserTitle">Select photo app</string>
 	<string name="takePhoto">Foto aufnehmen</string>
 
-    <!-- EditSectionActivity -->
+    <!-- EditSpecListActivity -->
     <string name="titleEdit">List Name</string>
     <string name="notesHere">List Notes</string>
     <string name="notesHint">Type notes here&#8230;</string>

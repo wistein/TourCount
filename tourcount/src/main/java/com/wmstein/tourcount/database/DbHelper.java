@@ -14,11 +14,11 @@ import com.wmstein.tourcount.R;
  * Adopted for TourCount by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31
- * last edited on 2019-03-25
+ * last edited on 2020-01-26
  */
 public class DbHelper extends SQLiteOpenHelper
 {
-    static final String TAG = "TourCount DBHelper";
+    private static final String TAG = "TourCount DBHelper";
     private static final String DATABASE_NAME = "tourcount.db";
     //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
     //DATABASE_VERSION 3: New extra columns for sexus and stadiums added to COUNT_TABLE

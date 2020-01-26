@@ -39,12 +39,12 @@ import java.util.Locale;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2018-08-03
+ * last edit on 2020-01-26
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "tourcountEditMetaAct";
-    private TourCountApplication tourCount;
+    private static final String TAG = "tourcountEditMetaAct";
+    private static TourCountApplication tourCount;
 
     SharedPreferences prefs;
     private boolean screenOrientL; // option for screen orientation
@@ -309,7 +309,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // formatted date
-    public String getformDate(Date date)
+    public static String getformDate(Date date)
     {
         DateFormat dform;
         String lng = Locale.getDefault().toString().substring(0, 2);
@@ -326,7 +326,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // date for start_tm and end_tm
-    public String getformTime(Date date)
+    public static String getformTime(Date date)
     {
         DateFormat dform = new SimpleDateFormat("HH:mm", Locale.US);
         return dform.format(date);

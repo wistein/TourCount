@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class ListSumWidget extends LinearLayout
 {
-    public static String TAG = "tourcountListSumWidget";
+    public static final String TAG = "tourcountListSumWidget";
 
     private TextView sumSpecies;
     private TextView sumIndividuals;

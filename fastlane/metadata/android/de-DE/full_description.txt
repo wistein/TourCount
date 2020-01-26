@@ -7,15 +7,15 @@ Eigenschaften
 - Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
 - Die App enthält einen Editor für die Einrichtung und Pflege der Artenliste.
 - Hinzufügen neuer Arten per Scroll-Down-Auswahl aus einer umfassenden internen Artenliste.
-- Meta-Daten zur Vorbereitung einer Tour könne editiert werden.
+- Meta-Daten zur Vorbereitung einer Tour können editiert werden.
 - Individuelle Spezies-Daten können pro Sichtung editiert werden (z.B. Zustand, Bemerkung oder größere Anzahl).
 - Die Artauswahl erfolgt auf der Zählerseite per Rollbalken-Menü mit Schmetterlingsnamen und -abbildungen.
-- Die Zählerseite hat 6 unabhängige Zähler für ♂ oder ♀, ♂, ♀, Puppe, Raupe oder Ei.
+- Die Zählerseite hat 6 unabhängige Zähler für ♂ oder ♀ unbestimmt, ♂, ♀, Puppe, Raupe oder Ei.
 - Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie
 - Ortsdaten durch inverse OSM-Geocodierung, wenn GPS und Internet funktionieren.
-- Die Ergebnisse sind aufbereitet für die Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung.
+- Die Ergebnisse sind aufbereitet für die Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung unter www.falterfunde.de.
 - Die Ergebnisseite zeigt Meta-Daten, Summen, Bemerkungen und Zählergebnisse pro Art und Individuum.
-- Die Ergebnisse können als SQLite-Datei oder im CSV-Format ausgegeben werden (zwecks transfer und Weiterverwendung auf einem PC.)
+- Die Ergebnisse können als SQLite-Datei oder im CSV-Format ausgegeben werden (zwecks Transfer und Weiterverwendung auf einem PC.)
 - Die Hilfe enthält eine detaillierte Benutzeranleitung.
 - TourCount verwendet die europäische Kodierung der Schmetterlinge nach Karsholt/Razowski.
 

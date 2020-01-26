@@ -35,15 +35,17 @@ import java.util.Locale;
  * @author: Karsten Priegnitz
  * @see: http://code.google.com/p/android-change-log/
  * <p/>
- * Changed by wmstein on 18.02.2016
+ * Adaptation for ViewHelp:
+ * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
+ * last edited on 2020-01-26
  */
 public class ChangeLog
 {
-    // this is the key for storing the version name in SharedPreferences
+    private static final String TAG = "ChangeLog";
+    // key for storing the version name in SharedPreferences
     private static final String VERSION_KEY = "PREFS_VERSION_KEY";
     private static final String NO_VERSION = "";
     private static final String EOCL = "END_OF_CHANGE_LOG";
-    private static final String TAG = "ChangeLog";
     private final Context context;
     private final String lastVersion;
     private String thisVersion;

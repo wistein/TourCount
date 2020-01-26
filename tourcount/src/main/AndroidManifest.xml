@@ -2,8 +2,7 @@
 <manifest package="com.wmstein.tourcount"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:largeHeap="true"
-          android:versionName="3.1.3">
+          android:largeHeap="true">
 
     <!-- Permission needed to import/export database files -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -128,7 +127,7 @@
         </activity>
 
         <activity
-            android:name="com.wmstein.tourcount.EditSectionActivity"
+            android:name="com.wmstein.tourcount.EditSpecListActivity"
             android:label="@string/title_activity_edit_section"
             android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:theme="@style/Theme.AppCompat">
@@ -140,11 +139,11 @@
         <activity
             android:name="com.wmstein.tourcount.AddSpeciesActivity"
             android:label="@string/title_activity_add_species"
-            android:parentActivityName="com.wmstein.tourcount.EditSectionActivity"
+            android:parentActivityName="com.wmstein.tourcount.EditSpecListActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="EditSectionActivity"/>
+                android:value="EditSpecListActivity"/>
         </activity>
 
         <service android:name="com.wmstein.tourcount.LocationService"

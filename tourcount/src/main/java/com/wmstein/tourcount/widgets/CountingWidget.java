@@ -21,11 +21,11 @@ import java.util.Objects;
  * Interface for widget_counting_i.xml
  * Created by wmstein 2016-12-18
  * modified for TourCount on 2018-03-31
- * last edited on 2019-03-26
+ * last edited on 2020-01-26
  */
 public class CountingWidget extends RelativeLayout
 {
-    public static String TAG = "tourcountCountWidget";
+    private static final String TAG = "tourcountCountWidget";
 
     private TextView namef1i;
     private TextView namef2i;

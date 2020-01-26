@@ -20,11 +20,11 @@ import com.wmstein.tourcount.database.Count;
  * Interface for widget_counting_head1.xml
  * used by Counting(L)Activity
  * Created by wmstein 2016-12-18
- * Last edited on 2019-03-26
+ * Last edited on 2020-01-26
  */
 public class CountingWidget_head1 extends ArrayAdapter<String>
 {
-    public static String TAG = "tourcountCountWidget_head1";
+    private static final String TAG = "tourcountCountWidget_head1";
 
     private Context context;
     private String[] idArray;

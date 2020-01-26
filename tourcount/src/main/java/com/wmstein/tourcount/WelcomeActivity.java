@@ -63,12 +63,12 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2019-08-04
+ * last modification on 2020-01-26
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountWelcomeAct";
-    private TourCountApplication tourCount;
+    private static TourCountApplication tourCount;
 
     private static final int FILE_CHOOSER = 11;
     LocationService locationService;
@@ -405,7 +405,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
     
     // Date for filename of Export-DB
-    private String getcurDate()
+    private static String getcurDate()
     {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat")
@@ -1656,7 +1656,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     /**********************************************************************************************/
     // http://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
-    private void copy(File src, File dst) throws IOException
+    private static void copy(File src, File dst) throws IOException
     {
         FileInputStream in = new FileInputStream(src);
         FileOutputStream out = new FileOutputStream(dst);

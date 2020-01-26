@@ -25,7 +25,7 @@ import java.io.Writer;
  * @author Glen Smith
  *
  * Reduced to needed functions with modifications for TourCount by wmstein
- * Last edited on 2018-04-17
+ * Last edited on 2020-01-26
  */
 class CSVWriter implements Closeable, Flushable
 {
@@ -147,7 +147,7 @@ class CSVWriter implements Closeable, Flushable
 
             Boolean stringContainsSpecialCharacters = stringContainsSpecialCharacters(nextElement);
 
-            if ((applyQuotesToAll || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
+            if (stringContainsSpecialCharacters && quotechar != NO_QUOTE_CHARACTER)
             {
                 sb.append(quotechar);
             }
@@ -161,7 +161,7 @@ class CSVWriter implements Closeable, Flushable
                 sb.append(nextElement);
             }
 
-            if ((applyQuotesToAll || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
+            if (stringContainsSpecialCharacters && quotechar != NO_QUOTE_CHARACTER)
             {
                 sb.append(quotechar);
             }

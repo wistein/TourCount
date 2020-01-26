@@ -2,6 +2,9 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
+#### Version 3.1.5 (2020-01-26)
+- Code optimized for storage and power efficiency
+
 #### Version 3.1.4 (2019-12-08)
 - Undercutting of species names in results page corrected
 - Minor text improvements

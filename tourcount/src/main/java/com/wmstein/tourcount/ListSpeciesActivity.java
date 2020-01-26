@@ -37,12 +37,12 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2019-07-30
+ * last edited on 2020-01-26
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "tourcountListSpeciesAct";
-    private TourCountApplication tourCount;
+    private static final String TAG = "tourcountListSpeciesAct";
+    private static TourCountApplication tourCount;
     private SharedPreferences prefs;
 
     private LinearLayout spec_area;

@@ -24,11 +24,11 @@ import com.wmstein.tourcount.widgets.EditNotesWidget;
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2019-01-27
+ * last edited on 2020-01-26
  */
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static String TAG = "tourcountCountOptionAct";
+    private static final String TAG = "tourcountCountOptionAct";
     private TourCountApplication tourCount;
     private LinearLayout static_widget_area;
     private EditNotesWidget enw;

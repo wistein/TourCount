@@ -33,12 +33,12 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2019-01-27
+ * last modification an 2020-01-26
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "TourCountEditIndivAct";
-    private TourCountApplication tourCount;
+    private static TourCountApplication tourCount;
     private SharedPreferences prefs;
     private Individuals individuals;
     private Temp temp;

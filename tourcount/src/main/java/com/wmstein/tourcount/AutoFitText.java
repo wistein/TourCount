@@ -29,22 +29,21 @@ import android.widget.TextView;
  * 
  * Modified for TourCount by wmstein since 2016-03-18
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
- * last edited by wmstein on 2018-03-19
+ * last edited by wmstein on 2020-01-26
  */
 @SuppressWarnings("unused")
 public class AutoFitText extends android.support.v7.widget.AppCompatTextView
 {
-    private static String TAG = "tourcountAutoFitText";
-    /**
-     * Global min and max for text size. Remember: values are in pixels!
-     */
-    final int MIN_TEXT_SIZE = 8;   // was 10
-    final int MAX_TEXT_SIZE = 100; // was 400, best: 80?
+    private static final String TAG = "tourcountAutoFitText";
+    
+    // Global min and max for text size. Remember: values are in pixels!
+    final static int MIN_TEXT_SIZE = 8;   // was 10
+    final static int MAX_TEXT_SIZE = 100; // was 400, best: 80?
     /**
      * Defines how close we want to be to the factual size of the Text-field. Lower values mean
      * higher precision but also exponentially higher computing cost (more loop runs)
      */
-    final float mThreshold = 0.5f; // original was 0.5f
+    final static float mThreshold = 0.5f; // original was 0.5f
     /**
      * Scaling factor for fonts. It's a method of calculating independently (!) from the actual
      * density of the screen that is used so users have the same experience on different devices. We

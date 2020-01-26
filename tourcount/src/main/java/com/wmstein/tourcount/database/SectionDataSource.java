@@ -84,7 +84,7 @@ public class SectionDataSource
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
     }
 
-    // called from CountingActivity and EditSectionActivity
+    // called from CountingActivity and EditSpecListActivity
     public Section getSection()
     {
         Section section;

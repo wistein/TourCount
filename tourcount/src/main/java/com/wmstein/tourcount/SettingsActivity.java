@@ -23,18 +23,19 @@ import android.widget.Toast;
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2016-05-15,
- * last edited on 2019-04-19
+ * last edited on 2020-01-26
  */
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
+    private static final String TAG = "tourcountPrefAct";
     private static final int SELECT_PICTURE = 1; // requestCode 1
     private static final int GET_SOUND = 10; // requestCode 10
-    private static final String TAG = "tourcountPrefAct";
+    
     SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private boolean screenOrientL; // option for screen orientation
     private Uri alert_button_uri;
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    final private static int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     @SuppressLint("CommitPrefEdits")

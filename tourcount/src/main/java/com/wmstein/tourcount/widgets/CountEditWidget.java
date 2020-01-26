@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 /************************************************
- * Used by EditSectionActivity
+ * Used by EditSpecListActivity
  * shows line with species name, code and delete button
  * Adopted for TourCount by wmstein on 2016-02-18
  * last edited by wmstein on 2019-04-02

@@ -439,7 +439,7 @@ public class CountDataSource
         return imageArray;
     }
 
-    // Used by EditSectionActivity
+    // Used by EditSpecListActivity
     public List<Count> getAllSpecies()
     {
         List<Count> speci = new ArrayList<>();
@@ -480,7 +480,7 @@ public class CountDataSource
         return cntSpec;
     }
 
-    // Used by EditSectionActivity
+    // Used by EditSpecListActivity
     public List<Count> getAllSpeciesSrtName()
     {
         List<Count> speci = new ArrayList<>();
@@ -500,7 +500,7 @@ public class CountDataSource
         return speci;
     }
 
-    // Used by EditSectionActivity and AddSpeciesActivity
+    // Used by EditSpecListActivity and AddSpeciesActivity
     public List<Count> getAllSpeciesSrtCode()
     {
         List<Count> speci = new ArrayList<>();

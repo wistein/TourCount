@@ -24,7 +24,7 @@ import android.widget.Toast;
  * licensed under the MIT License.
  * 
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2019-01-27
+ * last modification on 2020-01-26
  */
 
 public class LocationService extends Service implements LocationListener

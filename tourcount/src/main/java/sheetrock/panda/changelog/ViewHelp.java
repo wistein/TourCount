@@ -36,13 +36,14 @@ import java.util.Locale;
  * @see: http://code.google.com/p/android-change-log/
  * <p/>
  * Adaptation for ViewHelp:
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+ * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
+ * last edited on 2020-01-26
  */
 public class ViewHelp
 {
-    // this is the key for storing the version name in SharedPreferences
-    private static final String NO_VERSION = "";
     private static final String TAG = "ViewHelp";
+    // key for storing the version name in SharedPreferences
+    private static final String NO_VERSION = "";
     private final Context context;
     private String thisVersion;
     private Listmode listMode = Listmode.NONE;

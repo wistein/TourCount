@@ -57,7 +57,7 @@ import java.util.Locale;
 /****************************************************************************************
  * CountingActivity is the central activity of TourCount in portrait mode. 
  * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
- * starts editSectionActivity, switches screen off when pocketed 
+ * starts EditSpecListActivity, switches screen off when pocketed 
  * and allows taking pictures and sending notes.
  *
  * CountingActivity uses CountingWidget.java, CountingWidgetLH.java, NotesWidget.java, 
@@ -65,11 +65,11 @@ import java.util.Locale;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2019-04-19
+ * last modification on 2020-01-26
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
-    private static String TAG = "TourCountCountAct";
+    private static final String TAG = "TourCountCountAct";
 
     private SharedPreferences prefs;
 
@@ -1810,7 +1810,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             {
                 public void run()
                 {
-                    Intent intent = new Intent(CountingActivity.this, EditSectionActivity.class);
+                    Intent intent = new Intent(CountingActivity.this, EditSpecListActivity.class);
                     startActivity(intent);
                 }
             }, 100);
