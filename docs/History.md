@@ -2,8 +2,9 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
-#### Version 3.1.5 (2020-01-26)
+#### Version 3.1.5 (2020-02-02)
 - Code optimized for storage and power efficiency
+- App icon adapted to better match Android 9 screen
 
 #### Version 3.1.4 (2019-12-08)
 - Undercutting of species names in results page corrected

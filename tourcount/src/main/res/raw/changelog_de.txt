@@ -44,8 +44,9 @@
 
 $ 3.1.5
   % Version 3.1.5
-  _ 26.01.2020
+  _ 02.02.2020
 		* Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
+		* App-Icon angepasst für bessere Darstellung auf Android 9
 
 $ 3.1.4
   % Version 3.1.4

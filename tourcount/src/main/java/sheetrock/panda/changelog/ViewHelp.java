@@ -42,7 +42,7 @@ import java.util.Locale;
 public class ViewHelp
 {
     private static final String TAG = "ViewHelp";
-    // key for storing the version name in SharedPreferences
+
     private static final String NO_VERSION = "";
     private final Context context;
     private String thisVersion;
