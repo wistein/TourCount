@@ -30,7 +30,7 @@
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveWin">Die Datenbank wurde ins Basis-Verzeichnis exportiert.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
-    <string name="exportMenu">Export DB</string>
+    <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
     <string name="exportCSVMenu">Export Daten -> CSV-Datei</string>
     <string name="resetDBMenu">Reset Daten</string>

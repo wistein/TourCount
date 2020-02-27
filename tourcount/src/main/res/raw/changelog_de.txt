@@ -44,9 +44,10 @@
 
 $ 3.1.5
   % Version 3.1.5
-  _ 02.02.2020
+  _ 26.02.2020
 		* Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
 		* App-Icon angepasst für bessere Darstellung auf Android 9
+		* Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
 
 $ 3.1.4
   % Version 3.1.4

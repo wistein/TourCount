@@ -31,7 +31,7 @@
     <string name="saveWin">Your database has been exported to your Basic Directory.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="loadFileMenu">Import DB</string>
-    <string name="exportMenu">Export DB</string>
+    <string name="exportMenu">Export current DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
     <string name="exportCSVMenu">Export Data -> CSV File</string>
     <string name="resetDBMenu">Reset Data</string>
