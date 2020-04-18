@@ -3,7 +3,6 @@ package com.wmstein.tourcount;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -16,9 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -48,7 +45,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
 
@@ -116,8 +116,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private SQLiteDatabase database;
     private DbHelper dbHandler;
     private SectionDataSource sectionDataSource;
-    private CountDataSource countDataSource;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -171,13 +171,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             sectionDataSource.close();
             sname = getString(R.string.errorDb);
-//            Toast.makeText(this, R.string.corruptDb, Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.corruptDb));
         }
 
         try
         {
-            getSupportActionBar().setTitle(sname);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(sname);
         } catch (NullPointerException e)
         {
             // nothing
@@ -187,7 +186,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         vh = new ViewHelp(this);
         // Show changelog for new version
         if (cl.firstRun())
-            cl.getLogDialog().show(); 
+            cl.getLogDialog().show();
+
+        // test for existence of directory /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
+        infile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
+        if (!infile.exists())
+            exportBasisDb(); // create directory and initial Basis DB
+
     } // end of onCreate
 
     // check initial location permission
@@ -204,6 +209,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onResume()
     {
@@ -242,7 +248,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         try
         {
-            getSupportActionBar().setTitle(sname);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(sname);
         } catch (NullPointerException e)
         {
             // nothing
@@ -354,23 +360,18 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
+            runOnUiThread(() -> {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                try
                 {
-                    URL url;
-                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                        + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                    try
-                    {
-                        url = new URL(urlString);
-                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                        getXML.execute(url);
-                    } catch (IOException e)
-                    {
-                        // do nothing
-                    }
+                    url = new URL(urlString);
+                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                    getXML.execute(url);
+                } catch (IOException e)
+                {
+                    // do nothing
                 }
             });
         }
@@ -504,13 +505,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
             // pause for 100 msec to show toast
-            mHandler.postDelayed(new Runnable()
-            {
-                public void run()
-                {
-                    startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                }
-            }, 100);
+            mHandler.postDelayed(() -> 
+                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -551,13 +547,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
         // pause for 100 msec to show toast
-        mHandler.postDelayed(new Runnable()
-        {
-            public void run()
-            {
-                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
-        }, 100);
+        mHandler.postDelayed(() -> 
+            startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
@@ -595,15 +586,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, R.string.back_twice, Toast.LENGTH_SHORT).show();
 
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                doubleBackToExitPressedOnce = false;
-                // Clear last locality in temp
-                clear_loc();
-            }
+        new Handler().postDelayed(() -> {
+            doubleBackToExitPressedOnce = false;
+            // Clear last locality in temp
+            clear_loc();
         }, 1000);
     }
 
@@ -645,8 +631,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     private void doExportDB()
     {
-        // outfile -> /storage/emulated/0/tourcount_yyyy-MM-dd_HHmmss.db
-        outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount_" + getcurDate() + ".db");
+        // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_yyyy-MM-dd_HHmmss.db
+        outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount_" + getcurDate() + ".db");
         
         // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
         String inPath = getApplicationContext().getFilesDir().getPath();
@@ -675,7 +661,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             if (MyDebug.LOG)
                 Log.e(TAG, "No sdcard access");
-//            Toast.makeText(this, getString(R.string.noCard), Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -685,13 +670,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             {
                 // export db
                 copy(infile, outfile);
-//                Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
                 showSnackbar(getString(R.string.saveWin));
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
                     Log.e(TAG, "Failed to copy database");
-//                Toast.makeText(this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -712,8 +695,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     private void doExportDb2CSV()
     {
-        // outfile -> /storage/emulated/0/tourcount_yyyy-MM-dd_HHmmss.csv
-        outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount_" + getcurDate() + ".csv");
+        // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_yyyy-MM-dd_HHmmss.csv
+        outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount_" + getcurDate() + ".csv");
 
         Section section;
         String sectName;
@@ -752,7 +735,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             if (MyDebug.LOG)
                 Log.d(TAG, "No sdcard access");
-//            Toast.makeText(this, getString(R.string.noCard), Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1046,7 +1028,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 }
                 curCSVCnt.close();
 
-                countDataSource = new CountDataSource(this);
+                CountDataSource countDataSource = new CountDataSource(this);
                 countDataSource.open();
                 int sumSpec = countDataSource.getDiffSpec(); // get number of different species
                 countDataSource.close();
@@ -1229,13 +1211,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.close();
                 dbHandler.close();
                 
-//                Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
                 showSnackbar(getString(R.string.saveWin));
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
                     Log.e(TAG, "Failed to export csv file");
-//                Toast.makeText(this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1258,8 +1238,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db";
         File tmpfile = new File(tmpPath);
 
-        // outfile -> /storage/emulated/0/tourcount0.db
-        outfile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
+        // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
+        outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
         
         // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
         String inPath = getApplicationContext().getFilesDir().getPath();
@@ -1288,7 +1268,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             if (MyDebug.LOG)
                 Log.d(TAG, "No sdcard access");
-//            Toast.makeText(this, getString(R.string.noCard), Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1312,14 +1291,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 boolean d0 = tmpfile.delete();
                 if (d0)
                 {
-//                    Toast.makeText(this, getString(R.string.saveWin), Toast.LENGTH_SHORT).show();
                     showSnackbar(getString(R.string.saveWin));
                 }
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
                     Log.e(TAG, "Failed to export Basic DB");
-//                Toast.makeText(this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1336,40 +1313,29 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         builder.setMessage(R.string.confirmResetDB);
         builder.setCancelable(false);
 
-        builder.setPositiveButton(R.string.deleteButton, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
+        builder.setPositiveButton(R.string.deleteButton, (dialog, id) -> {
+            boolean r_ok = clearDBValues();
+            if (r_ok)
             {
-                boolean r_ok = clearDBValues();
-                if (r_ok)
-                {
-                    showSnackbar(getString(R.string.reset2basic));
-//                    Toast.makeText(getApplicationContext(), getString(R.string.reset2basic), Toast.LENGTH_SHORT).show();
-                }
-                //noinspection ConstantConditions
-                getSupportActionBar().setTitle("");
+                showSnackbar(getString(R.string.reset2basic));
             }
+            //noinspection ConstantConditions
+            getSupportActionBar().setTitle("");
         });
 
-        builder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
         alert = builder.create();
         alert.show();
     }
 
-    // Clear temp_loc in temp
+    // Clear temp_loc in temp (name temp works, but is misinterpreted) 
     private void clear_loc()
     {
         dbHandler = new DbHelper(this);
         database = dbHandler.getWritableDatabase();
 
-        String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-            + DbHelper.T_TEMP_LOC + " = '';";
+//        String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET " + DbHelper.T_TEMP_LOC + " = '';";
+        String sql = "UPDATE temp SET temp_loc = '';";
         database.execSQL(sql);
         dbHandler.close();
     }
@@ -1421,7 +1387,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             if (MyDebug.LOG)
                 Log.e(TAG, "Failed to reset DB");
-//            Toast.makeText(this, getString(R.string.resetFail), Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.resetFail));
             r_ok = false;
         }
@@ -1456,6 +1421,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // onActivityResult is part of loadFile() and processes the result of AdvFileChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
+        
         String fileSelected = "";
         if ((requestCode == FILE_CHOOSER) && (resultCode == -1))
         {
@@ -1464,10 +1431,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         //infile = selected File
+        assert fileSelected != null;
         if (!fileSelected.equals(""))
         {
             infile = new File(fileSelected);
-            
+
             // outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
             String destPath = this.getFilesDir().getPath();
             destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
@@ -1477,10 +1445,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.setMessage(R.string.confirmDBImport)
-                .setCancelable(false).setPositiveButton(R.string.importButton, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int id)
-                {
+                .setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) -> {
                     // START
                     // replace this with another function rather than this lazy c&p
                     if (Environment.MEDIA_MOUNTED.equals(state))
@@ -1505,7 +1470,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     {
                         if (MyDebug.LOG)
                             Log.d(TAG, "No sdcard access");
-//                        Toast.makeText(getApplicationContext(), getString(R.string.noCard), Toast.LENGTH_LONG).show();
                         showSnackbarRed(getString(R.string.noCard));
                     }
                     else
@@ -1513,7 +1477,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         try
                         {
                             copy(infile, outfile);
-//                            Toast.makeText(getApplicationContext(), getString(R.string.importWin), Toast.LENGTH_SHORT).show();
                             showSnackbar(getString(R.string.importWin));
                             // save values for initial count-id and itemposition 
                             SharedPreferences.Editor editor = prefs.edit();
@@ -1530,7 +1493,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                             // List tour name as title
                             try
                             {
-                                getSupportActionBar().setTitle(section.name);
+                                Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
                             } catch (NullPointerException e)
                             {
                                 // nothing
@@ -1539,19 +1502,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         {
                             if (MyDebug.LOG)
                                 Log.e(TAG, "Failed to import database");
-//                            Toast.makeText(getApplicationContext(), getString(R.string.importFail), Toast.LENGTH_LONG).show();
                             showSnackbarRed(getString(R.string.importFail));
                         }
                     }
                     // END
-                }
-            }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int id)
-                {
-                    dialog.cancel();
-                }
-            });
+                }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
             alert = builder.create();
             alert.show();
         }
@@ -1569,8 +1524,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     
     private void doImportBasisDB()
     {
-        // infile <- /storage/emulated/0/tourcount0.db
-        infile = new File(Environment.getExternalStorageDirectory() + "/tourcount0.db");
+        // infile <- /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
+        infile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
         
         // outfile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
         String destPath = getApplicationContext().getFilesDir().getPath();
@@ -1578,7 +1533,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         outfile = new File(destPath);
         if (!(infile.exists()))
         {
-//            Toast.makeText(this, getString(R.string.noDb), Toast.LENGTH_LONG).show();
             showSnackbar(getString(R.string.noDb));
             return;
         }
@@ -1586,70 +1540,57 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // confirm dialogue before anything else takes place
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setMessage(R.string.confirmBasisImport).setCancelable(false).setPositiveButton(R.string.importButton, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
+        builder.setMessage(R.string.confirmBasisImport).setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) -> {
+            // START
+            // replace this with another function rather than this lazy c&p
+            if (Environment.MEDIA_MOUNTED.equals(state))
             {
-                // START
-                // replace this with another function rather than this lazy c&p
-                if (Environment.MEDIA_MOUNTED.equals(state))
-                {
-                    // We can read and write the media
-                    mExternalStorageAvailable = mExternalStorageWriteable = true;
-                }
-                else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-                {
-                    // We can only read the media
-                    mExternalStorageAvailable = true;
-                    mExternalStorageWriteable = false;
-                }
-                else
-                {
-                    // Something else is wrong. It may be one of many other states, but all we need
-                    //  to know is we can neither read nor write
-                    mExternalStorageAvailable = mExternalStorageWriteable = false;
-                }
+                // We can read and write the media
+                mExternalStorageAvailable = mExternalStorageWriteable = true;
+            }
+            else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+            {
+                // We can only read the media
+                mExternalStorageAvailable = true;
+                mExternalStorageWriteable = false;
+            }
+            else
+            {
+                // Something else is wrong. It may be one of many other states, but all we need
+                //  to know is we can neither read nor write
+                mExternalStorageAvailable = mExternalStorageWriteable = false;
+            }
 
-                if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
+            if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
+            {
+                if (MyDebug.LOG)
+                    Log.d(TAG, "No sdcard access");
+                showSnackbarRed(getString(R.string.noCard));
+            }
+            else
+            {
+                try
+                {
+                    copy(infile, outfile);
+                    showSnackbar(getString(R.string.importWin));
+
+                    // save values for initial count-id and itemposition 
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("count_id", 1);
+                    editor.putInt("item_Position", 0);
+                    editor.apply();
+
+                    //noinspection ConstantConditions
+                    getSupportActionBar().setTitle("");
+                } catch (IOException e)
                 {
                     if (MyDebug.LOG)
-                        Log.d(TAG, "No sdcard access");
-//                    Toast.makeText(getApplicationContext(), getString(R.string.noCard), Toast.LENGTH_LONG).show();
-                    showSnackbarRed(getString(R.string.noCard));
+                        Log.e(TAG, "Failed to import database");
+                    showSnackbarRed(getString(R.string.importFail));
                 }
-                else
-                {
-                    try
-                    {
-                        copy(infile, outfile);
-//                        Toast.makeText(getApplicationContext(), getString(R.string.importWin), Toast.LENGTH_SHORT).show();
-                        showSnackbar(getString(R.string.importWin));
-
-                        // save values for initial count-id and itemposition 
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("count_id", 1);
-                        editor.putInt("item_Position", 0);
-                        editor.apply();
-
-                        //noinspection ConstantConditions
-                        getSupportActionBar().setTitle("");
-                    } catch (IOException e)
-                    {
-                        if (MyDebug.LOG)
-                            Log.e(TAG, "Failed to import database");
-//                        Toast.makeText(getApplicationContext(), getString(R.string.importFail), Toast.LENGTH_LONG).show();
-                        showSnackbarRed(getString(R.string.importFail));
-                    }
-                }
-                // END
             }
-        }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.cancel();
-            }
-        });
+            // END
+        }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
         alert = builder.create();
         alert.show();
     }

@@ -3,11 +3,9 @@ package sheetrock.panda.changelog;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.webkit.WebView;
@@ -20,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
+
+import androidx.preference.PreferenceManager;
 
 /************************************************************************
  * Copyright (C) 2011-2013, Karsten Priegnitz
@@ -37,7 +37,7 @@ import java.util.Locale;
  * <p/>
  * Adaptation for ViewHelp:
  * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class ChangeLog
 {
@@ -147,26 +147,13 @@ public class ChangeLog
             .setPositiveButton(
                 context.getResources().getString(
                     R.string.ok_button),
-                new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-                        updateVersionInPreferences();
-                    }
-                });
+                (dialog, which) -> updateVersionInPreferences());
 
         if (!full)
         {
             // "more ..." button
             builder.setNegativeButton(R.string.changelog_show_full,
-                new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        getFullLogDialog().show();
-                    }
-                });
+                (dialog, id) -> getFullLogDialog().show());
         }
 
         return builder.create();
@@ -241,6 +228,13 @@ public class ChangeLog
                         // line contains version title
                         this.closeList();
                         sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                        break;
+                    case '&':
+                        // line contains bold red text
+                        this.closeList();
+                        sb.append("<div class='boldredtext'>");
+                        sb.append(line.substring(1).trim());
+                        sb.append("</div>\n");
                         break;
                     case '_':
                         // line contains version title

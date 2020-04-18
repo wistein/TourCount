@@ -1,7 +1,7 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -9,9 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Section;
@@ -33,6 +31,10 @@ import com.wmstein.tourcount.widgets.CountEditWidget;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 /***************************************************************
  * EditSpecListActivity lets you edit the species list (change, delete, select 
@@ -43,7 +45,7 @@ import java.util.List;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -69,6 +71,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     private boolean screenOrientL; // option for landscape screen orientation
     private boolean brightPref;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -123,7 +126,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
+    protected void onSaveInstanceState(@NonNull Bundle outState)
     {
         /*
          * Before these widgets can be serialised they must be removed from their parent, or else
@@ -343,13 +346,9 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
         // pause for 100 msec to show toast
-        mHandler.postDelayed(new Runnable()
-        {
-            public void run()
-            {
-                Intent intent = new Intent(EditSpecListActivity.this, AddSpeciesActivity.class);
-                startActivity(intent);
-            }
+        mHandler.postDelayed(() -> {
+            Intent intent = new Intent(EditSpecListActivity.this, AddSpeciesActivity.class);
+            startActivity(intent);
         }, 100);
     }
 
@@ -368,21 +367,13 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             AlertDialog.Builder areYouSure = new AlertDialog.Builder(this);
             areYouSure.setTitle(getString(R.string.deleteCount));
             areYouSure.setMessage(getString(R.string.reallyDeleteCount));
-            areYouSure.setPositiveButton(R.string.yesDeleteIt, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    // go ahead for the delete
-                    countDataSource.deleteCountById(idToDelete);
-                    counts_area.removeView((CountEditWidget) viewMarkedForDelete.getParent().getParent().getParent());
-                }
+            areYouSure.setPositiveButton(R.string.yesDeleteIt, (dialog, whichButton) -> {
+                // go ahead for the delete
+                countDataSource.deleteCountById(idToDelete);
+                counts_area.removeView((CountEditWidget) viewMarkedForDelete.getParent().getParent().getParent());
             });
-            areYouSure.setNegativeButton(R.string.noCancel, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int whichButton)
-                {
-                    // Cancelled.
-                }
+            areYouSure.setNegativeButton(R.string.noCancel, (dialog, whichButton) -> {
+                // Cancelled.
             });
             areYouSure.show();
         }
@@ -417,7 +408,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
     {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -447,19 +438,16 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
             // pause for 100 msec to show toast
-            mHandler.postDelayed(new Runnable()
-            {
-                public void run()
-                {
-                    Intent intent = new Intent(EditSpecListActivity.this, AddSpeciesActivity.class);
-                    startActivity(intent);
-                }
+            mHandler.postDelayed(() -> {
+                Intent intent = new Intent(EditSpecListActivity.this, AddSpeciesActivity.class);
+                startActivity(intent);
             }, 100);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView counting_screen = findViewById(R.id.editingScreen);

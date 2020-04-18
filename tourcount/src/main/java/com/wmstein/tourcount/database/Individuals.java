@@ -8,14 +8,14 @@ package com.wmstein.tourcount.database;
 public class Individuals
 {
     public int id;
-    public int count_id;
+    int count_id;
     public String name;
     public double coord_x; // latitude
     public double coord_y; // longitude
     public double coord_z;
     public String uncert;
-    public String date_stamp;
-    public String time_stamp;
+    String date_stamp;
+    String time_stamp;
     public String locality;
     public String sex;
     public String stadium;

@@ -25,7 +25,7 @@ import java.io.Writer;
  * @author Glen Smith
  *
  * Reduced to needed functions with modifications for TourCount by wmstein
- * Last edited on 2020-01-26
+ * Last edited on 2020-04-17
  */
 class CSVWriter implements Closeable, Flushable
 {
@@ -51,17 +51,15 @@ class CSVWriter implements Closeable, Flushable
 
     /**
      * Constructs CSVWriter using a comma for the separator.
-     *
      * @param writer the writer to an underlying CSV source.
      */
-    public CSVWriter(Writer writer)
+    CSVWriter(Writer writer)
     {
         this(writer, DEFAULT_SEPARATOR);
     }
 
     /**
      * Constructs CSVWriter with supplied separator.
-     *
      * @param writer    the writer to an underlying CSV source.
      * @param separator the delimiter to use for separating entries.
      */
@@ -116,15 +114,11 @@ class CSVWriter implements Closeable, Flushable
 
     /**
      * Writes the next line to the file.
-     *
      * @param nextLine         a string array with each comma-separated element as a separate
      *                         entry.
-     * @param applyQuotesToAll true if all values are to be quoted.  false applies quotes only
-     *                         to values which contain the separator, escape, quote or new line characters.
      */
-    private void writeNext(String[] nextLine, boolean applyQuotesToAll)
+    void writeNext(String[] nextLine)
     {
-
         if (nextLine == null)
         {
             return;
@@ -139,14 +133,12 @@ class CSVWriter implements Closeable, Flushable
             }
 
             String nextElement = nextLine[i];
-
             if (nextElement == null)
             {
                 continue;
             }
 
-            Boolean stringContainsSpecialCharacters = stringContainsSpecialCharacters(nextElement);
-
+            boolean stringContainsSpecialCharacters = stringContainsSpecialCharacters(nextElement);
             if (stringContainsSpecialCharacters && quotechar != NO_QUOTE_CHARACTER)
             {
                 sb.append(quotechar);
@@ -168,17 +160,6 @@ class CSVWriter implements Closeable, Flushable
         }
         sb.append(lineEnd);
         pw.write(sb.toString());
-    }
-
-    /**
-     * Writes the next line to the file.
-     *
-     * @param nextLine a string array with each comma-separated element as a separate
-     *                 entry.
-     */
-    public void writeNext(String[] nextLine)
-    {
-        writeNext(nextLine, true);
     }
 
     /**

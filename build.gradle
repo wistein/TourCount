@@ -6,11 +6,13 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.0'
+        classpath 'com.android.tools.build:gradle:3.6.2'
     }
 }
 
-repositories {
-    jcenter()
-    google()
+allprojects {
+	repositories {
+		jcenter()
+		google()
+	}
 }

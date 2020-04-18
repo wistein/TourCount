@@ -29,10 +29,10 @@ import android.widget.TextView;
  * 
  * Modified for TourCount by wmstein since 2016-03-18
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
- * last edited by wmstein on 2020-01-26
+ * last edited by wmstein on 2020-04-17
  */
 @SuppressWarnings("unused")
-public class AutoFitText extends android.support.v7.widget.AppCompatTextView
+public class AutoFitText extends androidx.appcompat.widget.AppCompatTextView
 {
     private static final String TAG = "tourcountAutoFitText";
     
@@ -191,7 +191,6 @@ public class AutoFitText extends android.support.v7.widget.AppCompatTextView
         int targetFieldWidth = this.getWidth();
         int targetFieldHeight = this.getHeight();
 
-        //noinspection StatementWithEmptyBody
         if (targetFieldWidth <= 0 || targetFieldHeight <= 0 || text.equals(""))
         {
             if (MyDebug.LOG)

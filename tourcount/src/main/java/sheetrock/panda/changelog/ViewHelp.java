@@ -2,11 +2,8 @@ package sheetrock.panda.changelog;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.webkit.WebView;
@@ -37,33 +34,23 @@ import java.util.Locale;
  * <p/>
  * Adaptation for ViewHelp:
  * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class ViewHelp
 {
     private static final String TAG = "ViewHelp";
 
-    private static final String NO_VERSION = "";
     private final Context context;
     private String thisVersion;
+    private static final String NO_VERSION = "";
     private Listmode listMode = Listmode.NONE;
     private StringBuffer sb = null;
 
     /**
-     * Constructor  <p/>
+     * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
      */
     public ViewHelp(Context context)
-    {
-        this(context, PreferenceManager.getDefaultSharedPreferences(context));
-    }
-
-    /**
-     * Constructor <p/>
-     * Retrieves the version names and stores the new version name in SharedPreferences
-     * @param sp      the shared preferences to store the last version name into
-     */
-    private ViewHelp(Context context, SharedPreferences sp)
     {
         this.context = context;
 
@@ -106,12 +93,7 @@ public class ViewHelp
             .setPositiveButton(
                 context.getResources().getString(
                     R.string.ok_button),
-                new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-                    }
+                (dialog, which) -> {
                 });
 
         return builder.create();
@@ -160,6 +142,11 @@ public class ViewHelp
                     // line contains free text
                     this.closeList();
                     sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                    break;
+                case ')':
+                    // line contains small text
+                    this.closeList();
+                    sb.append("<div class='smalltext'>").append(line.substring(1).trim()).append("</div>\n");
                     break;
                 case '#':
                     // line contains numbered list item

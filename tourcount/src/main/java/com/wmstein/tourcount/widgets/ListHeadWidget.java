@@ -17,8 +17,6 @@ import java.util.Objects;
  */
 public class ListHeadWidget extends LinearLayout
 {
-    public static final String TAG = "tourcountListHeadWidget";
-
     private final TextView widget_lco; // used for country title
     private final TextView widget_lco1; // used for country
     private final TextView widget_lname; // used for observer title

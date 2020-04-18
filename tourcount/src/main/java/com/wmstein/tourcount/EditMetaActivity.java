@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
@@ -7,21 +8,16 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
 import com.wmstein.tourcount.database.Section;
@@ -36,14 +32,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2020-01-26
+ * last edit on 2020-04-17
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final String TAG = "tourcountEditMetaAct";
     private static TourCountApplication tourCount;
 
     SharedPreferences prefs;
@@ -67,6 +65,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private Bitmap bMap;
     private BitmapDrawable bg;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -109,18 +108,13 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         getSupportActionBar().setTitle(getString(R.string.editHeadTitle));
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-    }
-
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onResume()
     {
         super.onResume();
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
@@ -196,115 +190,73 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         eTime = this.findViewById(R.id.widgetEndTm2);
 
         // get current date by click
-        sDate.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Date date = new Date();
-                sDate.setText(getformDate(date));
-            }
+        sDate.setOnClickListener(v -> {
+            Date date = new Date();
+            sDate.setText(getformDate(date));
         });
 
         // get date picker result
-        final DatePickerDialog.OnDateSetListener dpd = new DatePickerDialog.OnDateSetListener()
-        {
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                pdate.set(Calendar.YEAR, year);
-                pdate.set(Calendar.MONTH, monthOfYear);
-                pdate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                Date date = pdate.getTime();
-                sDate.setText(getformDate(date));
-            }
+        final DatePickerDialog.OnDateSetListener dpd = (view, year, monthOfYear, dayOfMonth) -> {
+            pdate.set(Calendar.YEAR, year);
+            pdate.set(Calendar.MONTH, monthOfYear);
+            pdate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            Date date = pdate.getTime();
+            sDate.setText(getformDate(date));
         };
 
         // select date by long click
-        sDate.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                new DatePickerDialog(EditMetaActivity.this, dpd,
-                    pdate.get(Calendar.YEAR),
-                    pdate.get(Calendar.MONTH),
-                    pdate.get(Calendar.DAY_OF_MONTH)).show();
-                return true;
-            }
+        sDate.setOnLongClickListener(v -> {
+            new DatePickerDialog(EditMetaActivity.this, dpd,
+                pdate.get(Calendar.YEAR),
+                pdate.get(Calendar.MONTH),
+                pdate.get(Calendar.DAY_OF_MONTH)).show();
+            return true;
         });
 
         // get current start time
-        sTime.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Date date = new Date();
-                sTime.setText(getformTime(date));
-            }
+        sTime.setOnClickListener(v -> {
+            Date date = new Date();
+            sTime.setText(getformTime(date));
         });
 
         // get start time picker result
-        final TimePickerDialog.OnTimeSetListener stpd = new TimePickerDialog.OnTimeSetListener()
-        {
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-            {
-                ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                ptime.set(Calendar.MINUTE, minute);
-                Date date = ptime.getTime();
-                sTime.setText(getformTime(date));
-            }
+        final TimePickerDialog.OnTimeSetListener stpd = (view, hourOfDay, minute) -> {
+            ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            ptime.set(Calendar.MINUTE, minute);
+            Date date = ptime.getTime();
+            sTime.setText(getformTime(date));
         };
 
         // select start time
-        sTime.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                new TimePickerDialog(EditMetaActivity.this, stpd,
-                    ptime.get(Calendar.HOUR_OF_DAY),
-                    ptime.get(Calendar.MINUTE),
-                    true).show();
-                return true;
-            }
+        sTime.setOnLongClickListener(v -> {
+            new TimePickerDialog(EditMetaActivity.this, stpd,
+                ptime.get(Calendar.HOUR_OF_DAY),
+                ptime.get(Calendar.MINUTE),
+                true).show();
+            return true;
         });
 
         // get current end time
-        eTime.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Date date = new Date();
-                eTime.setText(getformTime(date));
-            }
+        eTime.setOnClickListener(v -> {
+            Date date = new Date();
+            eTime.setText(getformTime(date));
         });
 
         // get start time picker result
-        final TimePickerDialog.OnTimeSetListener etpd = new TimePickerDialog.OnTimeSetListener()
-        {
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-            {
-                ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                ptime.set(Calendar.MINUTE, minute);
-                Date date = ptime.getTime();
-                eTime.setText(getformTime(date));
-            }
+        final TimePickerDialog.OnTimeSetListener etpd = (view, hourOfDay, minute) -> {
+            ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            ptime.set(Calendar.MINUTE, minute);
+            Date date = ptime.getTime();
+            eTime.setText(getformTime(date));
         };
 
         // select end time
-        eTime.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                new TimePickerDialog(EditMetaActivity.this, etpd,
-                    ptime.get(Calendar.HOUR_OF_DAY),
-                    ptime.get(Calendar.MINUTE),
-                    true).show();
-                return true;
-            }
+        eTime.setOnLongClickListener(v -> {
+            new TimePickerDialog(EditMetaActivity.this, etpd,
+                ptime.get(Calendar.HOUR_OF_DAY),
+                ptime.get(Calendar.MINUTE),
+                true).show();
+            return true;
         });
     }
 
@@ -430,6 +382,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         super.onBackPressed();
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);

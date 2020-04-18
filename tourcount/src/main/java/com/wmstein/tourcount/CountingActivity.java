@@ -17,10 +17,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -54,6 +51,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 /****************************************************************************************
  * CountingActivity is the central activity of TourCount in portrait mode. 
  * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
@@ -65,7 +66,7 @@ import java.util.Locale;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2020-01-26
+ * last modification on 2020-04-17
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -176,6 +177,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             try
             {
+                assert mPowerManager != null;
                 if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
                 {
                     mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "TourCount:WAKELOCK");
@@ -263,7 +265,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             if (MyDebug.LOG)
                 Log.e(TAG, "Problem loading section: " + e.toString());
-//            Toast.makeText(CountingActivity.this, getString(R.string.getHelp), Toast.LENGTH_LONG).show();
             showSnackbarRed(getString(R.string.getHelp));
             finish();
         }
@@ -415,23 +416,18 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
+            runOnUiThread(() -> {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                try
                 {
-                    URL url;
-                    String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                        + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                    try
-                    {
-                        url = new URL(urlString);
-                        RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                        getXML.execute(url);
-                    } catch (IOException e)
-                    {
-                        // do nothing
-                    }
+                    url = new URL(urlString);
+                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                    getXML.execute(url);
+                } catch (IOException e)
+                {
+                    // do nothing
                 }
             });
         }
@@ -570,7 +566,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         if (widget != null)
         {
@@ -625,7 +621,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         buttonSound();
         int iAtt = 1;
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         if (widget != null)
         {
@@ -680,7 +676,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownf1i(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -705,7 +701,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -718,7 +714,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownLHf1i(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -742,7 +738,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -758,7 +754,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         if (widget != null)
         {
@@ -813,7 +809,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         buttonSound();
         int iAtt = 2;
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         if (widget != null)
         {
@@ -868,7 +864,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownf2i(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -892,7 +888,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -905,7 +901,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownLHf2i(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -928,7 +924,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -942,7 +938,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         if (widget != null)
         {
@@ -997,7 +993,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         buttonSound();
         int iAtt = 3;
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         if (widget != null)
         {
@@ -1052,7 +1048,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownf3i(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1076,7 +1072,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1089,7 +1085,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownLHf3i(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1112,7 +1108,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1126,7 +1122,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         if (widget != null)
         {
@@ -1181,7 +1177,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         buttonSound();
         int iAtt = 4;
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         if (widget != null)
         {
@@ -1236,7 +1232,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownpi(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1260,7 +1256,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1273,7 +1269,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownLHpi(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1296,7 +1292,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1310,7 +1306,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         if (widget != null)
         {
@@ -1365,7 +1361,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         buttonSound();
         int iAtt = 5;
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         if (widget != null)
         {
@@ -1420,7 +1416,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownli(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1444,7 +1440,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1457,7 +1453,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownLHli(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1480,7 +1476,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1494,7 +1490,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         if (widget != null)
         {
@@ -1549,7 +1545,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         buttonSound();
         int iAtt = 6;
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         if (widget != null)
         {
@@ -1604,7 +1600,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownei(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1627,7 +1623,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1640,7 +1636,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     public void countDownLHei(View view)
     {
         buttonSound();
-        int count_id = Integer.valueOf(view.getTag().toString());
+        int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
@@ -1664,7 +1660,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
                 i_Id--;
                 return;
             }
-            if (i_Id > 0 && icount > 1)
+            if (i_Id > 0)
             {
                 int icount1 = icount - 1;
                 individualsDataSource.decreaseIndividual(i_Id, icount1);
@@ -1806,13 +1802,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
             // pause for 100 msec to show toast
-            mHandler.postDelayed(new Runnable()
-            {
-                public void run()
-                {
-                    Intent intent = new Intent(CountingActivity.this, EditSpecListActivity.class);
-                    startActivity(intent);
-                }
+            mHandler.postDelayed(() -> {
+                Intent intent = new Intent(CountingActivity.this, EditSpecListActivity.class);
+                startActivity(intent);
             }, 100);
             return true;
         }
@@ -1866,7 +1858,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         if (!mProximityWakeLock.isHeld())
         {
-            mProximityWakeLock.acquire();
+            mProximityWakeLock.acquire(30*60*1000L /*30 minutes*/);
         }
     }
 

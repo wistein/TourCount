@@ -6,14 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.wmstein.tourcount.R;
+import com.wmstein.tourcount.TourCountApplication;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -22,14 +19,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * AdvFileChooser lets you select files from sdcard directory.
  * It will be called within WelcomeActivity and uses FileArrayAdapter and Option.
  * Based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- * Adopted by wmstein on 2016-06-18, last change on 2018-03-18
+ * Adopted by wmstein on 2016-06-18, last change on 2020-04-17
  */
-
 public class AdvFileChooser extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private File currentDir;
@@ -39,12 +36,13 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
     private String filterFileName;
     private boolean screenOrientL; // option for screen orientation
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
@@ -65,25 +63,17 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
             {
                 extensions = extras.getStringArrayList("filterFileExtension");
                 filterFileName = extras.getString("filterFileName");
-                fileFilter = new FileFilter()
-                {
-                    @Override
-                    public boolean accept(File pathname)
-                    {
-                        return
-                            (
-                                (pathname.getName().contains(".") &&
-                                    pathname.getName().contains(filterFileName) &&
-                                    extensions.contains(pathname.getName().substring(pathname.getName().lastIndexOf(".")))
-                                )
-                            );
-                    }
-                };
+                fileFilter = pathname -> (
+                    (pathname.getName().contains(".") &&
+                        pathname.getName().contains(filterFileName) &&
+                        extensions.contains(pathname.getName().substring(pathname.getName().lastIndexOf(".")))
+                    )
+                );
             }
         }
 
-        // currentDir = new File ("/sdcard/")
-        currentDir = new File(Environment.getExternalStorageDirectory().getPath());
+        //currentDir = /storage/emulated/0/Android/data/com.wmstein.tourcount/files
+        currentDir = new File(Objects.requireNonNull(getApplicationContext().getExternalFilesDir(null)).getAbsolutePath());
         fill(currentDir);
     }
 
@@ -114,13 +104,14 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
         DateFormat dform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try
         {
+            assert dirs != null;
             for (File ff : dirs)
             {
                 if (!ff.isHidden())
                 {
                     fls.add(new Option(ff.getName(), getString(R.string.fileSize) + ": "
                         + ff.length() + " B,  " + getString(R.string.date) + ": "
-                        + dform.format(ff.lastModified()), ff.getAbsolutePath(), false, false, false));
+                        + dform.format(ff.lastModified()), ff.getAbsolutePath(), false));
                 }
             }
         } catch (Exception e)
@@ -129,25 +120,19 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
         }
 
         Collections.sort(fls);
-        ListView listView = (ListView) findViewById(R.id.lvFiles);
+        ListView listView = findViewById(R.id.lvFiles);
 
         adapter = new FileArrayAdapter(listView.getContext(), R.layout.file_view, fls);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position,
-                                    long id)
-            {
-                // TODO Auto-generated method stub
-                Option o = adapter.getItem(position);
+        listView.setOnItemClickListener((l, v, position, id) -> {
+            Option o = adapter.getItem(position);
+                assert o != null;
                 if (!o.isBack())
                     doSelect(o);
                 else
                 {
                     currentDir = new File(o.getPath());
                     fill(currentDir);
-                }
             }
 
         });

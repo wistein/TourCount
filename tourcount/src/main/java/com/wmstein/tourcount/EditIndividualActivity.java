@@ -9,8 +9,6 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Individuals;
@@ -29,11 +28,13 @@ import com.wmstein.tourcount.database.Temp;
 import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2020-01-26
+ * last modification an 2020-04-17
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -65,6 +66,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private String specName;
     private Boolean sdata; // true: data saved already
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -120,12 +122,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         sdata = false;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-    }
-
     // Load preferences
     private void getPrefs()
     {
@@ -135,7 +131,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
-    @SuppressLint("LongLogTag")
+    @SuppressLint({"LongLogTag", "DefaultLocale"})
     @Override
     protected void onResume()
     {
@@ -184,11 +180,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         switch (iAtt)
         {
         case 1: // ♂♀
-            eiw.setWidgetStadium2(getString(R.string.stadium_1));
-            break;
         case 2: // ♂
-            eiw.setWidgetStadium2(getString(R.string.stadium_1));
-            break;
         case 3: // ♀
             eiw.setWidgetStadium2(getString(R.string.stadium_1));
             break;
@@ -411,6 +403,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView individ_screen = findViewById(R.id.editIndividualScreen);

@@ -34,13 +34,14 @@ package com.wmstein.egm;
  * @since 2.0
  * 
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
+ * Last change on 2020-04-17
  */
 public abstract class AbstractMathTransform 
 {
     /**
      * Constructs a math transform.
      */
-    protected AbstractMathTransform() 
+    AbstractMathTransform() 
 	{
     }
 

@@ -4,14 +4,13 @@
 
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
 /************************************************************************
  * AddSpeciesActivity lets you insert a new species into the species list
  * AddSpeciesActivity is called from EditSpecListActivity
@@ -41,7 +43,6 @@ import java.util.Objects;
  */
 public class AddSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final String TAG = "TourCountAddSpecAct";
     private static TourCountApplication tourCount;
 
     private LinearLayout add_area;
@@ -59,6 +60,7 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
     private boolean screenOrientL; // option for landscape screen orientation
     private boolean brightPref;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -196,12 +198,6 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onPause()
     {
         super.onPause();
@@ -276,6 +272,7 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView add_screen = findViewById(R.id.addScreen);

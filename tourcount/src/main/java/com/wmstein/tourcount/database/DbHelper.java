@@ -14,7 +14,7 @@ import com.wmstein.tourcount.R;
  * Adopted for TourCount by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class DbHelper extends SQLiteOpenHelper
 {
@@ -28,14 +28,14 @@ public class DbHelper extends SQLiteOpenHelper
     // tables
     public static final String SECTION_TABLE = "sections";
     public static final String COUNT_TABLE = "counts";
-    public static final String HEAD_TABLE = "head";
+    static final String HEAD_TABLE = "head";
     public static final String INDIVIDUALS_TABLE = "individuals";
     public static final String TEMP_TABLE = "temp";
 
     // fields
-    public static final String S_ID = "_id";
+    static final String S_ID = "_id";
     public static final String S_NAME = "name";
-    public static final String S_COUNTRY = "country";
+    static final String S_COUNTRY = "country";
     public static final String S_PLZ = "plz";
     public static final String S_CITY = "city";
     public static final String S_PLACE = "place";
@@ -47,7 +47,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String S_END_TM = "end_tm";
     public static final String S_NOTES = "notes";
     
-    public static final String C_ID = "_id";
+    static final String C_ID = "_id";
     public static final String C_COUNT_F1I = "count_f1i";
     public static final String C_COUNT_F2I = "count_f2i";
     public static final String C_COUNT_F3I = "count_f3i";
@@ -57,31 +57,31 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String C_NAME = "name";
     public static final String C_CODE = "code";
     public static final String C_NOTES = "notes";
-    public static final String C_NAME_G = "name_g";
+    static final String C_NAME_G = "name_g";
 
-    public static final String C_COUNT = "count"; //deprecated
+    private static final String C_COUNT = "count"; //deprecated
 
-    public static final String H_ID = "_id";
-    public static final String H_OBSERVER = "observer";
+    static final String H_ID = "_id";
+    static final String H_OBSERVER = "observer";
 
-    public static final String I_ID = "_id";
+    static final String I_ID = "_id";
     public static final String I_COUNT_ID = "count_id";
     public static final String I_NAME = "name";
-    public static final String I_COORD_X = "coord_x";
-    public static final String I_COORD_Y = "coord_y";
-    public static final String I_COORD_Z = "coord_z";
-    public static final String I_UNCERT = "uncert";
-    public static final String I_DATE_STAMP = "date_stamp";
-    public static final String I_TIME_STAMP = "time_stamp";
-    public static final String I_LOCALITY = "locality";
+    static final String I_COORD_X = "coord_x";
+    static final String I_COORD_Y = "coord_y";
+    static final String I_COORD_Z = "coord_z";
+    static final String I_UNCERT = "uncert";
+    static final String I_DATE_STAMP = "date_stamp";
+    static final String I_TIME_STAMP = "time_stamp";
+    static final String I_LOCALITY = "locality";
     public static final String I_SEX = "sex";
     public static final String I_STADIUM = "stadium";
-    public static final String I_STATE_1_6 = "state_1_6";
-    public static final String I_NOTES = "notes";
-    public static final String I_ICOUNT = "icount";
-    public static final String I_CATEGORY = "icategory";
+    static final String I_STATE_1_6 = "state_1_6";
+    static final String I_NOTES = "notes";
+    static final String I_ICOUNT = "icount";
+    static final String I_CATEGORY = "icategory";
 
-    public static final String T_ID = "_id";
+    static final String T_ID = "_id";
     public static final String T_TEMP_LOC = "temp_loc";
     public static final String T_TEMP_CNT = "temp_cnt";
 

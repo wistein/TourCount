@@ -1,0 +1,47 @@
+Installation von TourCount
+
+Download entweder von F-Droid, (nur App aber mit Updates über F-Droid-Store)
+oder hole die App direkt von der GitHub-seite des Autors (immer der aktuellste Bearbeitungsstand).
+
+
+- Von F-Droid:
+  nur Apps, ohne Doku und Basis-DB aber mit Updates über F-Droid-App 
+  (mit Signatur von F-Droid, daher nicht updatebar mit Entwickler-Version):
+
+  https://f-droid.org/repository/browse/?fdid=com.wmstein.tourcount
+
+  Nach der Installation per F-Droid-Repository sollten noch Doku und Beispiel-DBs von den GitHub-Seiten des 
+  Autors (s.u.) geladen werden. 
+
+  
+- Von den GitHub-Projektseiten des Autors:
+  (aktueller Bearbeitungsstand) mit App, Quellcode, Doku und Basis- und Beispiel-DBs:
+
+  App, apk-Datei: 	https://github.com/wistein/TourCount/tree/master/apk
+  Doku und DBs: 	https://github.com/wistein/TourCount/tree/master/docs
+
+
+Die Android-Option "Unbekannte Herkunft" unter "Einstellungen -> Sicherheit" vor der 
+Installation aktivieren.
+
+Nach Download die App mittels Klick auf die apk-Datei im Download-Verzeichnis installieren.
+Relevante Beispiel-DBs aus dem Download-Verzeichnis ins files-Verzeichnis der App
+/storage/emulated/0/Android/data/com.wmstein.tourcount/files kopieren.
+
+Wichtig: Die Option "Unbekannte Herkunft" wieder deaktivieren!
+
+
+Anmerkung:
+
+Der Bezug von Apps aus F-Droid ist mindestens so sicher wie der Bezug von Apps aus Google's Play Store.
+Es wird bei den Apps besonders auf die Einhaltung des Schutzes der Privatsphäre geachtet. 
+Alle Apps werden geprüft und durch F-Droid selbst kompiliert. 
+Nachteilige Features wie Werbung, Tracking oder versteckte Kosten werden bei F-Droid in der Beschreibung einer App als Anti-Features angeführt. 
+
+Die unter GitHub veröffentlichte apk-Datei (installierbare App) ist funktional identisch mit der von F-Droid. 
+Wegen unterschiedlicher Signaturen bei der Kompilation kann aber die App von GitHub nicht mit der apk-Datei von F-Droid upgedatet werden und umgekehrt. 
+Bei Wechsel der Installationsquelle ist eine Neuinstallation erforderlich.
+
+Beachte, dass eine De-Installation der App alle Dateien in 
+/storage/emulated/0/Android/data/com.wmstein.tourcount/files löscht.
+

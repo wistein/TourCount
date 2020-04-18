@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -16,10 +15,12 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import androidx.preference.PreferenceManager;
+
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2020-01-26
+ * last change on 2020-04-17
  */
 public class TourCountApplication extends Application
 {
@@ -107,7 +108,6 @@ public class TourCountApplication extends Application
         width = size.x;
         height = size.y;
 
-        assert backgroundPref != null;
         switch (backgroundPref)
         {
         case "none":
@@ -117,7 +117,6 @@ public class TourCountApplication extends Application
             bMap.eraseColor(Color.BLACK);
             break;
         case "custom":
-            assert pictPref != null;
             if (!(pictPref.equals("")))
             {
                 if (new File(pictPref).isFile())

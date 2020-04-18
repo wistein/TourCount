@@ -22,11 +22,11 @@ import java.util.Objects;
  * Interface for widget_counting_head2.xml
  * used by Counting(L)Activity
  * Created by wmstein 2016-12-18
- * Last edited on 2020-01-26
+ * Last edited on 2020-04-17
  */
 public class CountingWidget_head2 extends RelativeLayout
 {
-    private static final String TAG = "tourcountCountingWidget_head2";
+    private static final String TAG = "tourcountCntWidget_hd2";
 
     private TextView countHead2;
 

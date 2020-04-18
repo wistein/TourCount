@@ -12,18 +12,18 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 /**********************************************************
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2016-05-15,
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -38,7 +38,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     final private static int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint({"CommitPrefEdits", "SourceLockedOrientationActivity"})
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState)
     {
@@ -58,30 +58,20 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        Preference button = findPreference("button");
-        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference arg0)
-            {
-                getImage();
-                return true;
-            }
+        android.preference.Preference button = findPreference("button");
+        button.setOnPreferenceClickListener(arg0 -> {
+            getImage();
+            return true;
         });
 
         // Sound for keypresses
         String strButtonSoundPreference = prefs.getString("alert_button_sound", "DEFAULT_SOUND");
         alert_button_uri = Uri.parse(strButtonSoundPreference);
 
-        Preference alert_button_sound = findPreference("alert_button_sound");
-        alert_button_sound.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference arg0)
-            {
-                getSound(alert_button_uri);
-                return true;
-            }
+        android.preference.Preference alert_button_sound = findPreference("alert_button_sound");
+        alert_button_sound.setOnPreferenceClickListener(arg0 -> {
+            getSound(alert_button_uri);
+            return true;
         });
 
         editor = prefs.edit(); // will be committed on pause
@@ -141,7 +131,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                  * The try is here because this action fails if the user uses a file manager; the gallery
                  * seems to work nicely, though.
                  */
-                Cursor cursor = null;
+                Cursor cursor;
                 try
                 {
                     cursor = getContentResolver().query(_uri, new String[]
@@ -155,6 +145,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 
                 try
                 {
+                    assert cursor != null;
                     cursor.moveToFirst(); // blows up here if file manager used
                 } catch (NullPointerException e)
                 {
@@ -206,12 +197,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

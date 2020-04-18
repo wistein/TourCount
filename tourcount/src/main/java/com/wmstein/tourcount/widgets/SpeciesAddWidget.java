@@ -18,7 +18,7 @@ import java.util.Objects;
  * Used by AddSpeciesActivity
  * shows list of selectable species with name, code, picture and add button
  * Created for TourCount by wmstein on 2019-04-03
- * last edited by wmstein on 2019-04-13
+ * last edited by wmstein on 2020-04-17
  */
 public class SpeciesAddWidget extends LinearLayout implements Serializable
 {
@@ -80,7 +80,7 @@ public class SpeciesAddWidget extends LinearLayout implements Serializable
     public void setSpecId(String id)
     {
         specId.setText(id);
-        addButton.setTag(Integer.valueOf(id)-1);
+        addButton.setTag(Integer.parseInt(id)-1);
     }
 
     public void setPSpec(String ucode)

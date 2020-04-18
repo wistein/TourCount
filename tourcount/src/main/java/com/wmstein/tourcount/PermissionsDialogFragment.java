@@ -2,15 +2,15 @@ package com.wmstein.tourcount;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * PermissionsDialogFragment provides the permission handling, which is
@@ -20,12 +20,11 @@ import android.support.v7.app.AlertDialog;
  * licensed under the MIT License.
  * 
  * Adopted for TourCount by wistein on 2018-06-20,
- * last edited on 2019-04-19.
+ * last edited on 2020-04-17.
  */
-
 public class PermissionsDialogFragment extends DialogFragment
 {
-    private final int PERMISSION_REQUEST_CODE = 101;
+    private static final int PERMISSION_REQUEST_CODE = 101;
 
     private Context context;
     private PermissionsGrantedCallback listener;
@@ -34,7 +33,7 @@ public class PermissionsDialogFragment extends DialogFragment
     private boolean shouldRetry;
     private boolean externalGrantNeeded;
 
-    public static PermissionsDialogFragment newInstance()
+    static PermissionsDialogFragment newInstance()
     {
         return new PermissionsDialogFragment();
     }
@@ -44,7 +43,7 @@ public class PermissionsDialogFragment extends DialogFragment
     }
 
     @Override
-    public void onAttach(Context context)
+    public void onAttach(@NonNull Context context)
     {
         super.onAttach(context);
         this.context = context;
@@ -137,56 +136,29 @@ public class PermissionsDialogFragment extends DialogFragment
         new AlertDialog.Builder(context)
             .setTitle(getString(R.string.perm_required))
             .setMessage(getString(R.string.perm_hint) + " " + getString(R.string.perm_hint1))
-            .setPositiveButton(getString(R.string.app_settings), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", context.getApplicationContext().getPackageName(), null);
-                    intent.setData(uri);
-                    context.startActivity(intent);
-                    dismiss();
-                }
+            .setPositiveButton(getString(R.string.app_settings), (dialogInterface, i) -> {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", context.getApplicationContext().getPackageName(), null);
+                intent.setData(uri);
+                context.startActivity(intent);
+                dismiss();
             })
-            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
-                    dismiss();
-                }
-            }).create().show();
+            .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> dismiss()).create().show();
     }
-
 
     private void showRetryDialog()
     {
         new AlertDialog.Builder(context)
             .setTitle(getString(R.string.perm_declined))
             .setMessage(getString(R.string.perm_hint))
-            .setPositiveButton(getString(R.string.retry), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
-                    requestNecessaryPermissions();
-                }
-            })
-            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
-                    dismiss();
-                }
-            }).create().show();
+            .setPositiveButton(getString(R.string.retry), (dialogInterface, i) -> requestNecessaryPermissions())
+            .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> dismiss()).create().show();
     }
-
 
     public interface PermissionsGrantedCallback
     {
         void permissionCaptureFragment();
     }
+    
 }

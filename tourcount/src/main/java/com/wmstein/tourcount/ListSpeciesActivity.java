@@ -1,12 +1,11 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -31,6 +30,9 @@ import com.wmstein.tourcount.widgets.ListSumWidget;
 import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import static java.lang.Math.sqrt;
 
@@ -60,6 +62,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
 
     ListSumWidget lsw;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -348,6 +351,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         super.onBackPressed();
     }
     
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView listSpec_screen = findViewById(R.id.listSpecScreen);

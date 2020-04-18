@@ -9,6 +9,9 @@
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
+      div.smalltext    { 
+          color:#F0F0F0; 
+          font-size:0.8em }
       div.subtitle { 
           color:#C0F0C0; 
           font-size:1.0em;
@@ -38,31 +41,33 @@ $ 9
   _ 
   ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite). Hier ggf. weitere Arten per (+)-Button aus der integrierten Liste europäischer Arten hinzufügen. 
   _  
-  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>) heruntergeladen, ins Home-Verzeichnis /storage/emulated/0 (oder /sdcard0 bzw. /sdcard, ist je nach Smartphone-Modell und Android-Version unterschiedlich) kopiert und von dort importiert und dann angepasst werden. 
+  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>) heruntergeladen, in das App-Datenverzeichnis /storage/emulated/0/Android/data/com.wmstein.tourcount/files kopiert und von dort importiert und dann angepasst werden. Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt. Achtung: Bei Deinstallation von TransektCount werden diese Daten gelöscht. Daher empfiehlt es sich, diese Dateien an anderer Stelle zu sichern.
   _ 
-  ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „ERFASSUNG VORBEREITEN“ eingegeben werden. Die ortsbezogenen Meta-Daten werden bei Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt. Die editierbaren Metadaten können später jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen. 
+  ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „ERFASSUNG VORBEREITEN“ eingegeben werden. Die ortsbezogenen Meta-Daten werden bei Internetverbindung und Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt. Die editierbaren Metadaten können später jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen. 
   _ 
   ! Dann unter "ZÄHLEN" die Artenliste editieren. Aufruf mittels Bleistift-Button in der Kopfzeile der Zählseite.
-  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag per Scroll-Down-Auswahl. Am Ende der Scroll-Down-Liste kann eine nicht vorhandene Art (NN) hinzugefügt werden, die anschließend editiert wird (Name, ggf. deutscher Name und 5-stelliger Code mit führenden Nullen), z.B.:
+  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag per Scroll-Down-Auswahl. Am Ende der Scroll-Down-Liste kann eine nicht vorhandene Art (NN) hinzugefügt werden, die anschließend editiert wird (Name, 5-stelliger Code mit führenden Nullen und ggf. deutscher Name, siehe "Liste Tagfalter Europas.pdf" oder "Liste Nachtfalter Europas.pdf"<a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
   _ 
+  !                   (Ausschnitt der Artenliste)
   ! ---------------------------------------------
   ! ...
   ! Pieris rapae .............. 06998
-  ! Kleiner Kohlweißling 
+  ) Kleiner Kohlweißling 
   ! Pieris napi ................ 07000
-  ! Grünaderweißling
+  ) Grünaderweißling
   ! Pieris na./ra.-Kompl.	07000*
-  ! Weißlinge-Komplex
+  ) Weißlinge-Komplex
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.de</a> (dazu s. auch docs in GitHub). 
+  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="http://www.lepiforum.de" target="_blank">http://www.lepiforum.de</a>. 
+  _
   ! Das angehängte *-Symbol kennzeichnet eine Gruppe schwer unterscheidbarer Arten. Zwecks Sortierfolge sollte hierzu der größere der Gruppenarten-Codes gewählt werden. 
   ! Mit "Speichern" wird die Liste in die Datenbank übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
-  ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als Basis-Datenbank exportiert werden. Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite. Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im Home-Verzeichnis abgelegt.
+  ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als Basis-Datenbank exportiert werden. Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite. Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im Daten-Verzeichnis der App (/storage/emulated/0/Android/data/com.wmstein.tourcount/files) abgelegt.
   _ 
-  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann auch später, z.B. nach Änderung der Liste, erneut exportiert werden.  
+  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden. Beim Speichern als Basis-DB werden alle begehungsspezifischen Daten ignoriert). 
 
 $ 8
   % 3. Benutzung
@@ -101,24 +106,33 @@ $ 7
   _ 
   ! Zwecks Vorbereitung einer neuen Tour können mittels "Reset Daten“ die tourspezifischen Metadaten und alle Zählerdaten gelöscht werden. Alternativ kann die angelegte Basis-DB "tourcount0.db" importiert werden.
   _ 
-  ! TourCount arbeitet intern immer mit einer gleichnamigen DB-Datei im App-eigenen, für den Anwender gesperrten Speicherbereich. Deshalb sind Export und Import der Datenbanken in/von durch den Anwender erreichbaren Speicherbereich erforderlich. 
+  ! TourCount arbeitet Android-spezifisch intern immer mit einer gleichnamigen DB-Datei im App-eigenen, für den Anwender gesperrten Speicherbereich. Deshalb sind Export und Import der Datenbanken in/von durch den Anwender erreichbaren Speicherbereich erforderlich. Auch die Verwendung verschiedener Anwenderdateien ist nur per Im- und Export möglich.
   _ 
   ! Der Export der DB als Basis-DB ist sinnvoll, wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden (z.B. neue Arten hinzugefügt).
   _ 
   ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw. (Merke: Der Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden). 
   _ 
-  ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach „/storage/emulated/0/tourcount_JJJJ-MM-TT_hhmmss.db". 
+  ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach „/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.db". 
   _ 
-  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach „/storage/emulated/0/tourcount_JJJJ-MM-TT_hhmmss.csv".
+  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach „/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.csv".
   _ 
   ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweis ist unter "App-Info" abrufbar.
   _ 
-  ! In der Zähler-Ansicht wird die Anzeige temporär per Näherungssensor abgeschaltet, wenn das Handy eingesteckt wird (unter Android 5.0.1 oder neuer). Das Menü der Zählerseite hat eine Mitteilungsfunktion, um eine Nachricht über eine Standard-App, wie SMS oder E-Mail versenden zu können.
+  ! In der Zähler-Ansicht wird die Anzeige temporär per Näherungssensor abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird (ab Android-Version 5.0.1). 
+  ! Das Menü der Zählerseite hat eine Mitteilungsfunktion, um eine Nachricht über eine Standard-App, wie SMS oder E-Mail versenden zu können.
   _ 
-  ! IT-affine Anwender können die mittels Exportfunktionen erzeugten Dateien "tourcount_JJJJ-MM-TT_hhmmss.db" bzw. "...csv" auf einen PC übertragen.
-  ! Dort kann mit Hilfe eines kostenlosen Tools wie "SqliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) die .db-Datei bearbeitet bzw. die .csv-Datei in Excel als Text-Datei (Unicode UTF-8, Komma-getrennt) importiert und bearbeitet werden.
-  !
-  
+  ! IT-affine Anwender können die mittels Exportfunktionen erzeugten Dateien "tourcount_JJJJ-MM-TT_hhmmss.db" bzw. "...csv" von /storage/emulated/0/Android/data/com.wmstein.tourcount/files auf einen PC übertragen.
+  ! Dort können mit Hilfe eines kostenlosen Tools wie "SqliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
+  _ 
+  ! Die .csv-Dateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in MS Excel (oder kompatible Software) importiert werden. Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze auf
+  _
+  ! - Komma als Trennzeichen,
+  ! - Anführungszeichen zur Texterkennung, 
+  ! - Dateiursprung im Format "Unicode UTF-8" und
+	! - alle Daten als Text
+  ! zu achten.
+	_ 
+	  
 $ END_OF_VIEW_HELP
   </body>
 </html>

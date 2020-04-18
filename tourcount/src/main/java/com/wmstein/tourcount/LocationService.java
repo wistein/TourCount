@@ -10,9 +10,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
 
 /******************************************************************
  * LocationService provides the location data: latitude, longitude, height, uncertainty.
@@ -24,9 +25,8 @@ import android.widget.Toast;
  * licensed under the MIT License.
  * 
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2020-01-26
+ * last modification on 2020-04-17
  */
-
 public class LocationService extends Service implements LocationListener
 {
     private static final String TAG = "TourCountLocationSrv";
@@ -47,7 +47,7 @@ public class LocationService extends Service implements LocationListener
     }
 
     // Default constructor demanded for service declaration in AndroidManifest.xml
-    public LocationService () {}
+    //public LocationService () {}
 
     private void getLocation()
     {
@@ -56,6 +56,7 @@ public class LocationService extends Service implements LocationListener
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
             // get GPS status
+            assert locationManager != null;
             checkGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             // get network provider status

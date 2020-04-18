@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.wmstein.tourcount.MyDebug;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import static com.wmstein.tourcount.database.DbHelper.INDIVIDUALS_TABLE;
 
 /*************************************************
  * Created by wmstein for TourCount on 2016-04-20,
- * last edited on 2018-03-30
+ * last edited on 2020-04-17
  */
 public class IndividualsDataSource
 {
@@ -172,7 +174,8 @@ public class IndividualsDataSource
         if (!cursor.isAfterLast())
         {
             individuals = cursorToIndividuals(cursor);
-            Log.e("IndividDataSource: ", "i_Id = " + String.valueOf(individuals.id));
+            if (MyDebug.LOG)
+                Log.e("IndividDataSource: ", "i_Id = " + individuals.id);
             cursor.close();
             return individuals.id;
         }

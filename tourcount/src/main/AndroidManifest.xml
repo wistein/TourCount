@@ -24,6 +24,7 @@
          solution: android:resizeableActivity="false" prohibits multi-window-mode -->
     <application
         android:name=".TourCountApplication"
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="TourCount"
@@ -88,7 +89,8 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>
@@ -100,7 +102,8 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>

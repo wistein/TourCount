@@ -28,13 +28,14 @@ package com.wmstein.egm;
  * @since 2.3
  * 
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
+ * Last edited on 2020-04-17
  */
 public abstract class VerticalTransform extends AbstractMathTransform 
 {
     /**
      * Creates a new instance of VerticalTransform.
      */
-    protected VerticalTransform() 
+    VerticalTransform() 
 	{
     }
 

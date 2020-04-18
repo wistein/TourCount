@@ -9,6 +9,13 @@
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
+      div.boldredtext { 
+          color:#FF0000; 
+          font-size:1.2em; 
+          font-weight:bold; 
+          margin-top:1em; 
+          margin-bottom:0.5em; 
+          text-align:start }
       div.subtitle { 
           color:#C0F0C0; 
           font-size:0.8em; 
@@ -24,6 +31,10 @@
   _ Copyright (C) 2016-2019, Wilhelm Stein
   _
   _ email: stein.wm@web.de
+  _
+  & Attention: Modified directory! 
+  	! For compatibility reasons with Android 10 file access had to be changed to an app-specific directoy. Now database files (.db) are stored in /storage/emulated/0/Android/data/com.wmstein.tourcount/files/. For further infos see Help.
+  & ------------------------------
   _
   	! TourCount supports species-specific and individually GPS-localized registering of butterflies. 
   _ 
@@ -41,6 +52,15 @@
   _ 
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _ 
+
+$ 3.2.0
+  % Version 3.2.0
+  _ 2020-04-17
+		* Code adapted for restricted Storage Access of Android 10
+		* Use of AndroidX libraries
+		* Help text updated
+		* Many minor code refinements
+		* Project adaption for Android Studio 3.6.2
 
 $ 3.1.5
   % Version 3.1.5

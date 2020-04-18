@@ -1,13 +1,12 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,15 +19,17 @@ import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
 /**********************************
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    private static final String TAG = "tourcountCountOptionAct";
     private TourCountApplication tourCount;
     private LinearLayout static_widget_area;
     private EditNotesWidget enw;
@@ -40,6 +41,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private boolean brightPref;
     private boolean screenOrientL; // option for screen orientation
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -111,16 +113,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-    /*
-     * Before these widgets can be serialised they must be removed from their parent, or else
-     * trying to add them to a new parent causes a crash because they've already got one.
-     */
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onPause()
     {
         super.onPause();
@@ -185,6 +177,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         LinearLayout counting_screen = findViewById(R.id.count_options);

@@ -24,11 +24,11 @@ import android.content.Context;
 
 import com.wmstein.tourcount.R;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 /**
@@ -50,7 +50,7 @@ import java.util.StringTokenizer;
  * @since 2.3
  * 
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
- * Last edit on 2018-09-19
+ * Last edit on 2020-04-17
  */
 public final class EarthGravitationalModel extends VerticalTransform 
 {
@@ -66,7 +66,7 @@ public final class EarthGravitationalModel extends VerticalTransform
     /**
      * The default value for #nmax.
      */
-    static final int DEFAULT_ORDER = 180;
+    private static final int DEFAULT_ORDER = 180;
 
     /**
      * Maximum degree and order attained.
@@ -193,18 +193,12 @@ public final class EarthGravitationalModel extends VerticalTransform
      * uncompressed and 248 kb compressed. So surprisingly, the ASCII file is more compact than
      * the binary file after compression. Since it is the primary format provided by the
      * Earth-Info web site, we use it directly in order to avoid a multiplication of formats.
-     *
-     * @throws IOException if the file can't be read or has an invalid content.
      */
     public void load(Context context) throws IOException 
 	{
         final InputStream EGM = context.getResources().openRawResource(R.raw.egm180);
-        if (EGM == null)
-		{
-            throw new FileNotFoundException("egm180");
-        }
         final LineNumberReader in;
-        in = new LineNumberReader(new InputStreamReader(EGM, "ISO-8859-1"));
+        in = new LineNumberReader(new InputStreamReader(EGM, StandardCharsets.ISO_8859_1));
         String line;
         while ((line = in.readLine()) != null) 
 		{
@@ -301,11 +295,9 @@ public final class EarthGravitationalModel extends VerticalTransform
      * @param latitude  The geodetic latitude, in decimal degrees.
      * @param height    The height above the ellipsoid in metres.
      * @return The value to add in order to get the height above the geoid (in metres).
-     * @throws Exception if the offset can't be computed for the specified coordinates.
      */
     public double heightOffset(final double longitude, final double latitude, final double height)
-            throws Exception 
-	{
+    {
         /*
          * Note: no need to ensure that longitude is in [-180..+180°] range, because its value
          * is used only in trigonometric functions (sin / cos), which roll it as we would expect.

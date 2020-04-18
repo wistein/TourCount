@@ -17,11 +17,11 @@ import java.util.Objects;
  * shows scalable notes line
  * Created by milo on 26/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
- * last edited on 2020-01-26
+ * last edited on 2020-04-17
  */
 public class NotesWidget extends LinearLayout
 {
-    private static final String TAG = "TourCount Notes Widget";
+    private static final String TAG = "TourCountNotesWidget";
     private final TextView textView;
 
     public NotesWidget(Context context, AttributeSet attrs)
