@@ -55,12 +55,14 @@
 
 $ 3.2.0
   % Version 3.2.0
-  _ 17.04.2020
-		* Code angepasst für eingeschränkten Speicher-Zugriff von Android 10
+  _ 20.04.2020
+		* Code für eingeschränkten Speicher-Zugriff angepasst für Android 10
+		* Code für Einstellungen angepasst für Android 10
 		* Verwendung von AndroidX-Bibliotheken
 		* Hilfetext angepasst
 		* Einige kleine Code-Verbesserungen
 		* Projekt-Anpassung für Android Studio 3.6.2
+		* Doku angepasst
 
 $ 3.1.5
   % Version 3.1.5

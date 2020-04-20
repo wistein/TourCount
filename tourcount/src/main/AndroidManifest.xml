@@ -31,7 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:resizeableActivity="false"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
         <activity
             android:name="com.wmstein.tourcount.WelcomeActivity"

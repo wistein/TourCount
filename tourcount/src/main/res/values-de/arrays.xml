@@ -2,12 +2,10 @@
 <resources>
     <string-array name="pref_bg_entries">
         <item>Kein</item>
-        <item>Ausgewählt (Liste unten)</item>
         <item>TourCount (Standard)</item>
     </string-array>
     <string-array name="pref_bg_values">
         <item>none</item>
-        <item>custom</item>
         <item>default</item>
     </string-array>
 

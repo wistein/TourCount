@@ -3,11 +3,7 @@
     <PreferenceCategory
         android:title="@string/prefs_appearance">
         android:key="key_prefs_appearance">
-        <Preference
-            android:icon="@drawable/ic_image_black_48dp"
-            android:key="button"
-            android:summary="@string/explainImg"
-            android:title="@string/chooseImg"/>
+        
         <ListPreference
             android:entries="@array/pref_bg_entries"
             android:entryValues="@array/pref_bg_values"
@@ -15,6 +11,7 @@
             android:key="pref_back"
             android:summary="@string/pref_bg_summ"
             android:title="@string/pref_bg"/>
+        
         <ListPreference
             android:entries="@array/pref_sort_sp_entries"
             android:entryValues="@array/pref_sort_sp_values"
@@ -22,19 +19,22 @@
             android:key="pref_sort_sp"
             android:summary="@string/pref_sort_order_sp_summ"
             android:title="@string/pref_sort_order"/>
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:icon="@drawable/ic_format_size_black_48dp"
             android:key="pref_note_font"
             android:summary="@string/pref_note_font_summ"
             android:title="@string/pref_note_font"/>
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:icon="@drawable/ic_panl_tool_black_48dp"
             android:key="pref_left_hand"
             android:summary="@string/pref_left_hand_summ"
             android:title="@string/pref_left_hand"/>
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:icon="@drawable/ic_rot_portr_landsc_black_48dp"
             android:key="screen_Orientation"
@@ -46,35 +46,34 @@
     <PreferenceCategory
         android:title="@string/prefs_sound">
         android:key="key_prefs_sound">
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:icon="@drawable/ic_music_video_black_48dp"
             android:key="pref_button_sound"
             android:summary="@string/pref_button_sound_summary"
             android:title="@string/pref_button_sound"/>
-        <Preference
-            android:icon="@drawable/ic_music_video_black_48dp"
-            android:key="alert_button_sound"
-            android:summary="@string/explain_button_alert"
-            android:title="@string/choose_button_alert"/>
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/prefs_counting">
         android:key="key_prefs_counting">
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:icon="@drawable/ic_stay_current_portrait_grey_48dp"
             android:key="pref_awake"
             android:summary="@string/pref_awake_summ"
             android:title="@string/pref_awake"/>
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:icon="@drawable/ic_stay_current_portrait_black_48dp"
             android:key="pref_bright"
             android:summary="@string/pref_bright_summ"
             android:title="@string/pref_bright"/>
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:icon="@drawable/ic_playlist_add_check_black_48dp"
             android:key="pref_duplicate"
@@ -85,7 +84,8 @@
     <PreferenceCategory
         android:title="@string/prefs_metadata">
         android:key="key_prefs_metadata">
-        <CheckBoxPreference
+        
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:icon="@drawable/ic_room_black_48dp"
             android:key="pref_metadata"
