@@ -2,6 +2,8 @@
 <!-- strings.xml German strings -->
 <resources>
 
+    <!-- generic -->
+    <string name="app_name">TourCount</string>
     <string name="action_settings">Einstellungen</string>
     <string name="title_activity_meta">EditMetaActivity</string>
     <string name="title_activity_counting">CountingActivity</string>
@@ -12,12 +14,6 @@
     <string name="title_activity_file_chooser">AdvFileChooser</string>
     <string name="title_activity_add_species">AddSpeciesActivity</string>
 
-    <!-- generic -->
-    <string name="app_name">TourCount</string>
-    <string name="customMissing">Dein Hintergrundbild wurde nicht gefunden; es wird der Standard-Hintergrund verwendet.</string>
-    <string name="customNotDefined">Es wurde kein Hintergrundbild gewählt; es wird der Standard-Hintergrund verwendet.</string>
-    <string name="customTooBig">Leider erzeugt der Versuch, das gewählte Hintergrundbild zu setzen, einen Out-of-Memory-Fehler.</string>
-
     <!-- WelcomeActivity -->
     <string name="hello">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
     <string name="zlist">Zählliste</string>
@@ -26,9 +22,9 @@
     <string name="editMetaButton">Erfassung vorbereiten</string>
     <string name="changeLogTitle">App-Info</string>
     <string name="viewHelpTitle">Hilfe</string>
-    <string name="noCard">Das Basis-Verzeichnis des Speichers kann nicht verwendet werden!</string>
+    <string name="noCard">Das TourCount files-Directory kann nicht verwendet werden!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
-    <string name="saveWin">Die Datenbank wurde ins Basis-Verzeichnis exportiert.</string>
+    <string name="saveWin">Die Datenbank wurde ins TourCount files-Verzeichnis exportiert.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
@@ -40,7 +36,7 @@
     <string name="importWin">Die Datenbank wurde importiert.</string>
     <string name="errorDb">DB-Fehler!</string>
     <string name="corruptDb">Datenbankfehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
-    <string name="noDb">Bitte kopiere die Datenbankdatei \"tourcount0.db\" ins Basis-Verzeichnis des Speichers.</string>
+    <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis Android/data/com.wmstein.tourcount/files.</string>
     <string name="importButton">Import</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="individuals">Individuen</string>

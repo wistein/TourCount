@@ -2,13 +2,18 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
+#### Version 3.2.1 (2020-04-22)
+- Background picture better scaled for long displays
+- Strings cleared up
+
 #### Version 3.2.0 (2020-04-20)
 - Code for restricted Storage Access adapted for Android 10
+- Data files now in app specific directory 
 - Code for Preferences adapted for Android 10
 - Use of AndroidX libraries
 - Help text updated
 - Many minor code refinements
-- Project adaption for Android Studio 3.6.2
+- Project adaption for Android Studio 3.6.3
 - Docs updated
 
 #### Version 3.1.5 (2020-02-26)

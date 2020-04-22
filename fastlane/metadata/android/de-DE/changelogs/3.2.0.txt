@@ -4,5 +4,5 @@ Version 3.2.0 (20.04.2020)
 - Verwendung von AndroidX-Bibliotheken
 - Hilfetext angepasst
 - Einige kleine Code-Verbesserungen
-- Projekt-Anpassung für Android Studio 3.6.2
+- Projekt-Anpassung für Android Studio 3.6.3
 - Doku angepasst

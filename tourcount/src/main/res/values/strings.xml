@@ -2,6 +2,8 @@
 <!-- strings.xml English strings -->
 <resources>
 
+    <!-- generic -->
+    <string name="app_name">TourCount</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_meta">EditMetaActivity</string>
     <string name="title_activity_counting">CountingActivity</string>
@@ -12,12 +14,6 @@
     <string name="title_activity_file_chooser">AdvFileChooser</string>
     <string name="title_activity_add_species">AddSpeciesActivity</string>
 
-    <!-- generic -->
-    <string name="app_name">TourCount</string>
-    <string name="customMissing">Your custom background image could not be found; the default will be used instead.</string>
-    <string name="customNotDefined">A custom background image is not defined; the default will be used instead.</string>
-    <string name="customTooBig">Sorry, trying to set the background image has caused an out of memory error.</string>
-
     <!-- WelcomeActivity -->
     <string name="hello">Species-specific counting\n\nof butterflies on walks</string>
     <string name="zlist">Counting List</string>
@@ -26,9 +22,9 @@
     <string name="editMetaButton">Prepare Recording</string>
     <string name="changeLogTitle">App Info</string>
     <string name="viewHelpTitle">Help</string>
-    <string name="noCard">Your Basic Directory could not be accessed!</string>
+    <string name="noCard">Cannot access the TourCount files directory!</string>
     <string name="saveFail">Your database could not be exported!</string>
-    <string name="saveWin">Your database has been exported to your Basic Directory.</string>
+    <string name="saveWin">Your database has been exported to TourCount files Directory.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="loadFileMenu">Import DB</string>
     <string name="exportMenu">Export current DB</string>
@@ -40,7 +36,7 @@
     <string name="importWin">Your database has been imported.</string>
     <string name="errorDb">DB Error!</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
-    <string name="noDb">Please put \'tourcount0.db\' in the Basic Directory of your memory.</string>
+    <string name="noDb">Please provide \'tourcount0.db\' into the directory Android/data/com.wmstein.tourcount/files.</string>
     <string name="importButton">Import</string>
     <string name="individuals">Individuals</string>
     <string name="cancelButton">Cancel</string>
@@ -152,14 +148,14 @@
     <string name="pref_sort_order">Sorting</string>
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
     <string name="pref_note_font">Note font</string>
-    <string name="pref_note_font_summ">Select this option to increase the size of note fonts on the counting screen.</string>
+    <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
     <string name="screen_orientation">Show screen in Landscape Mode instead of Portrait Mode.</string>
     <string name="titel_screen_orientation">Landscape instead of Portrait</string>
     <string name="prefs_sound">Sound</string>
     <string name="pref_button_sound">Button sounds</string>
-    <string name="pref_button_sound_summary">Make a sound upon pressing the count up or count down buttons.</string>
+    <string name="pref_button_sound_summary">Make a sound upon pressing e.g. a count button.</string>
     <string name="prefs_counting">Counting</string>
     <string name="pref_awake">Keep screen on</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
