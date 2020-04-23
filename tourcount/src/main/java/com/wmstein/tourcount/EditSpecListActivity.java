@@ -1,14 +1,18 @@
 package com.wmstein.tourcount;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,12 +33,15 @@ import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountEditWidget;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
 /***************************************************************
  * EditSpecListActivity lets you edit the species list (change, delete, select 
@@ -45,9 +52,9 @@ import androidx.core.app.NavUtils;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2020-04-17
+ * last edited on 2020-04-23
  */
-public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountEditSecAct";
     private static TourCountApplication tourCount;
@@ -66,10 +73,22 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     private Bitmap bMap;
     private BitmapDrawable bg;
 
+    // Location info handling
+    private double latitude, longitude;
+    LocationService locationService;
+
+    // Permission dispatcher mode modePerm: 
+    //  1 = use location service
+    //  2 = end location service
+    int modePerm;
+
+    // Preferences
     private boolean dupPref;
     private String sortPref;
     private boolean screenOrientL; // option for landscape screen orientation
     private boolean brightPref;
+    private boolean metaPref;      // option for reverse geocoding
+    private String emailString = ""; // mail address for OSM query
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -150,6 +169,8 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         dupPref = prefs.getBoolean("pref_duplicate", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
         brightPref = prefs.getBoolean("pref_bright", true);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
         // Set full brightness of screen
         if (brightPref)
@@ -159,6 +180,10 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
+
+        // Get location with permissions check
+        modePerm = 1;
+        permissionCaptureFragment();
 
         // clear any existing views
         counts_area.removeAllViews();
@@ -224,6 +249,10 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         // close the data sources
         sectionDataSource.close();
         countDataSource.close();
+
+        // Stop location service with permissions check
+        modePerm = 2;
+        permissionCaptureFragment();
     }
 
     // Compare count names for duplicates and returns name of 1. duplicate found
@@ -466,6 +495,79 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         counting_screen.setBackground(null);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);
+    }
+
+    @Override
+    public void permissionCaptureFragment()
+    {
+        {
+            if (isPermissionGranted())
+            {
+                switch (modePerm)
+                {
+                case 1: // get location
+                    getLoc();
+                    break;
+                case 2: // stop location service
+                    locationService.stopListener();
+                    break;
+                }
+            }
+            else
+            {
+                if (modePerm == 1)
+                    PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+            }
+        }
+    }
+
+    // if API level > 23 test for permissions granted
+    private boolean isPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else
+        {
+            // handle permissions for Build.VERSION_CODES < M here
+            return true;
+        }
+    }
+
+    // get the location data
+    public void getLoc()
+    {
+        locationService = new LocationService(this);
+
+        if (locationService.canGetLocation())
+        {
+            longitude = locationService.getLongitude();
+            latitude = locationService.getLatitude();
+        }
+
+        // get reverse geocoding
+        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(() -> {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                try
+                {
+                    url = new URL(urlString);
+                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                    getXML.execute(url);
+                } catch (IOException e)
+                {
+                    // do nothing
+                }
+            });
+        }
     }
 
     /**

@@ -2,9 +2,12 @@
 
 #### TourCount Copyright (C) 2016-2019, Wilhelm Stein
 
-#### Version 3.2.1 (2020-04-22)
+#### Version 3.2.1 (2020-04-23)
 - Background picture better scaled for long displays
 - Strings cleared up
+- Location service in major activities
+- Bug fix in button sound
+
 
 #### Version 3.2.0 (2020-04-20)
 - Code for restricted Storage Access adapted for Android 10

@@ -55,9 +55,11 @@
 
 $ 3.2.1
   % Version 3.2.1
-  _ 2020-04-22
+  _ 2020-04-23
 		* Background picture better scaled for long displays
 		* Strings cleared up
+		* Location service in major activities
+		* Bug fix in button sound
 
 $ 3.2.0
   % Version 3.2.0

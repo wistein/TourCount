@@ -1,13 +1,17 @@
 package com.wmstein.tourcount;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +30,8 @@ import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,18 +40,22 @@ import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2020-04-17
+ * last edit on 2020-04-23
  */
-public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static TourCountApplication tourCount;
 
     SharedPreferences prefs;
+    private boolean brightPref;    // option for full bright screen
     private boolean screenOrientL; // option for screen orientation
+    private boolean metaPref;      // option for reverse geocoding
+    private String emailString = ""; // mail address for OSM query
     
     private Head head;
     private Section section;
@@ -61,7 +71,17 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private EditTitleWidget enw;
     private EditHeadWidget ehw;
     private EditMetaWidget etw;
-    
+
+    // Location info handling
+    private double latitude;
+    private double longitude;
+    LocationService locationService;
+
+    // Permission dispatcher mode modePerm: 
+    //  1 = use location service
+    //  2 = end location service
+    int modePerm;
+
     private Bitmap bMap;
     private BitmapDrawable bg;
 
@@ -74,7 +94,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        boolean brightPref = prefs.getBoolean("pref_bright", true);
+        brightPref = prefs.getBoolean("pref_bright", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         setContentView(R.layout.activity_edit_head);
@@ -117,6 +137,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
         if (screenOrientL)
         {
@@ -125,6 +147,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        // Get location with permissions check
+        modePerm = 1;
+        permissionCaptureFragment();
 
         //clear existing view
         head_area.removeAllViews();
@@ -292,6 +318,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         // close the data sources
         headDataSource.close();
         sectionDataSource.close();
+
+        // Stop location service with permissions check
+        modePerm = 2;
+        permissionCaptureFragment();
     }
 
     // triggered by save button in actionbar
@@ -400,4 +430,78 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         editHead_screen.setBackground(bg);
     }
 
+    @Override
+    public void permissionCaptureFragment()
+    {
+        {
+            if (isPermissionGranted())
+            {
+                switch (modePerm)
+                {
+                case 1: // get location
+                    getLoc();
+                    break;
+                case 2: // stop location service
+                    locationService.stopListener();
+                    break;
+                }
+            }
+            else
+            {
+                if (modePerm == 1)
+                    PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+            }
+        }
+    }
+
+    // if API level > 23 test for permissions granted
+    private boolean isPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else
+        {
+            // handle permissions for Build.VERSION_CODES < M here
+            return true;
+        }
+    }
+
+    // get the location data
+    public void getLoc()
+    {
+        locationService = new LocationService(this);
+
+        if (locationService.canGetLocation())
+        {
+            longitude = locationService.getLongitude();
+            latitude = locationService.getLatitude();
+        }
+
+        // get reverse geocoding
+        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(() -> {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                try
+                {
+                    url = new URL(urlString);
+                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                    getXML.execute(url);
+                } catch (IOException e)
+                {
+                    // do nothing
+                }
+            });
+        }
+    }
+
 }
+

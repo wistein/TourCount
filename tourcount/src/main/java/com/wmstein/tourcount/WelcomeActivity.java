@@ -63,7 +63,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2020-01-26
+ * last modification on 2020-04-23
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -152,10 +152,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("permLoc_Given", permLocGiven);
         editor.apply();
-
-        // Get location with permissions check
-        modePerm = 1; // get location
-        permissionCaptureFragment();
 
         // List tour name as title
         Section section;
@@ -253,6 +249,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             // nothing
         }
+
+        // Get location with permissions check
+        modePerm = 1; // get location
+        permissionCaptureFragment();
 
     } // end of onResume
 
@@ -570,8 +570,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("permLoc_Given", permLocGiven);
         editor.apply();
-
-//        sectionDataSource.close();
     }
 
     @Override
@@ -597,22 +595,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onStop();
 
-//        sectionDataSource.close();
-
         // Stop location service with permissions check
         modePerm = 2;
         permissionCaptureFragment();
-    }
-
-    public void onDestroy()
-    {
-        super.onDestroy();
-
-//        sectionDataSource.close();
-
-        // Stop location service with permissions check
-            modePerm = 2;
-            permissionCaptureFragment();
     }
 
     /*************************************************************************

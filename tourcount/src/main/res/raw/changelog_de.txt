@@ -55,9 +55,11 @@
 
 $ 3.2.1
   % Version 3.2.1
-  _ 22.04.2020
+  _ 23.04.2020
 		* Hintergrundbild besser skaliert für längere Displays
 		* Meldungen bereinigt
+		* Location-Dienst in den Hauptfunktionen
+		* Fehler in Einstellung für Button-Sound behoben
 
 $ 3.2.0
   % Version 3.2.0

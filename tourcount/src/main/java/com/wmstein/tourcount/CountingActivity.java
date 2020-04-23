@@ -66,7 +66,7 @@ import androidx.core.content.ContextCompat;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2020-04-17
+ * last modification on 2020-04-23
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -92,6 +92,10 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // Location info handling
     private double latitude, longitude, height, uncertainty;
     LocationService locationService;
+
+    // Permission dispatcher mode modePerm: 
+    //  1 = use location service
+    //  2 = end location service
     int modePerm;
 
     private PowerManager.WakeLock mProximityWakeLock;

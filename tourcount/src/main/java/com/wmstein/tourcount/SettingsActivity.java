@@ -88,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         {
             Uri button_sound_uri = Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button);
             ringtone = button_sound_uri.toString();
-            editor.putString("button_sound", ringtone);
+            editor.putString("alert_button_sound", ringtone);
         }
 
         editor.commit();

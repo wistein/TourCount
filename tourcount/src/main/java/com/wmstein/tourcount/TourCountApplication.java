@@ -17,7 +17,7 @@ import androidx.preference.PreferenceManager;
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2020-04-21
+ * last change on 2020-04-22
  */
 public class TourCountApplication extends Application
 {

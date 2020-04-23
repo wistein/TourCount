@@ -1,12 +1,16 @@
 package com.wmstein.tourcount;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,16 +23,20 @@ import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
 
+import java.io.IOException;
+import java.net.URL;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
 /**********************************
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2020-04-17
+ * last edited on 2020-04-23
  */
-public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private TourCountApplication tourCount;
     private LinearLayout static_widget_area;
@@ -38,8 +46,23 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
     private CountDataSource countDataSource;
     private Bitmap bMap;
     private BitmapDrawable bg;
+
+    // Preferences
     private boolean brightPref;
     private boolean screenOrientL; // option for screen orientation
+    private boolean metaPref;      // option for reverse geocoding
+    private String emailString = ""; // mail address for OSM query
+
+    // Location info handling
+    private double latitude;
+    private double longitude;
+    LocationService locationService;
+
+    // Permission dispatcher mode modePerm: 
+    //  1 = use location service
+    //  2 = end location service
+    int modePerm;
+
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -52,6 +75,8 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         prefs.registerOnSharedPreferenceChangeListener(this);
         brightPref = prefs.getBoolean("pref_bright", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
         setContentView(R.layout.activity_count_options);
 
@@ -95,6 +120,10 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         // clear any existing views
         static_widget_area.removeAllViews();
 
+        // Get location with permissions check
+        modePerm = 1;
+        permissionCaptureFragment();
+
         // get the data sources
         countDataSource = new CountDataSource(this);
         countDataSource.open();
@@ -119,11 +148,16 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
         // finally, close the database
         countDataSource.close();
+        
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (imm != null)
         {
             imm.hideSoftInputFromWindow(enw.getWindowToken(), 0);
         }
+
+        // Stop location service with permissions check
+        modePerm = 2;
+        permissionCaptureFragment();
     }
 
     public void saveAndExit(View view)
@@ -196,4 +230,77 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         counting_screen.setBackground(bg);
     }
 
+    @Override
+    public void permissionCaptureFragment()
+    {
+        {
+            if (isPermissionGranted())
+            {
+                switch (modePerm)
+                {
+                case 1: // get location
+                    getLoc();
+                    break;
+                case 2: // stop location service
+                    locationService.stopListener();
+                    break;
+                }
+            }
+            else
+            {
+                if (modePerm == 1)
+                    PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+            }
+        }
+    }
+
+    // if API level > 23 test for permissions granted
+    private boolean isPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else
+        {
+            // handle permissions for Build.VERSION_CODES < M here
+            return true;
+        }
+    }
+
+    // get the location data
+    public void getLoc()
+    {
+        locationService = new LocationService(this);
+
+        if (locationService.canGetLocation())
+        {
+            longitude = locationService.getLongitude();
+            latitude = locationService.getLatitude();
+        }
+
+        // get reverse geocoding
+        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(() -> {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                try
+                {
+                    url = new URL(urlString);
+                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                    getXML.execute(url);
+                } catch (IOException e)
+                {
+                    // do nothing
+                }
+            });
+        }
+    }
+    
 }

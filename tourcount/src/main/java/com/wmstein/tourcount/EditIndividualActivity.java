@@ -1,14 +1,18 @@
 package com.wmstein.tourcount;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Individuals;
@@ -28,15 +33,19 @@ import com.wmstein.tourcount.database.Temp;
 import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
+import java.io.IOException;
+import java.net.URL;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2020-04-17
+ * last modification an 2020-04-23
  */
-public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountEditIndivAct";
     private static TourCountApplication tourCount;
@@ -47,19 +56,29 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private LinearLayout individ_area;
     private EditIndividualWidget eiw;
 
-    // the actual data
+    // The actual data
     private IndividualsDataSource individualsDataSource;
     private TempDataSource tempDataSource;
     private CountDataSource countDataSource;
     private Bitmap bMap;
     private BitmapDrawable bg;
+    
+    // Preferences
     private boolean buttonSoundPref;
     private String buttonAlertSound;
-    private boolean brightPref;
+    private boolean brightPref;    // option for full bright screen
     private boolean screenOrientL; // option for screen orientation
+    private boolean metaPref;      // option for reverse geocoding
+    private String emailString = ""; // mail address for OSM query
 
     // Location info handling
     private double latitude, longitude, height, uncertainty;
+    LocationService locationService;
+
+    // Permission dispatcher mode modePerm: 
+    //  1 = use location service
+    //  2 = end location service
+    int modePerm;
 
     private int count_id;
     private int i_id, iAtt;
@@ -129,6 +148,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         buttonAlertSound = prefs.getString("alert_button_sound", null);
         brightPref = prefs.getBoolean("pref_bright", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
     }
 
     @SuppressLint({"LongLogTag", "DefaultLocale"})
@@ -136,6 +157,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     protected void onResume()
     {
         super.onResume();
+
+        // Get location with permissions check
+        modePerm = 1;
+        permissionCaptureFragment();
 
         // clear any existing views
         individ_area.removeAllViews();
@@ -227,6 +252,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individualsDataSource.close();
         tempDataSource.close();
         countDataSource.close();
+
+        // Stop location service with permissions check
+        modePerm = 2;
+        permissionCaptureFragment();
     }
 
     private boolean saveData()
@@ -423,6 +452,111 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individ_screen.setBackground(bg);
     }
 
+    @Override
+    public void permissionCaptureFragment()
+    {
+        {
+            if (isPermissionGranted())
+            {
+                switch (modePerm)
+                {
+                case 1: // get location
+                    getLoc();
+                    break;
+                case 2: // stop location service
+                    locationService.stopListener();
+                    break;
+                }
+            }
+            else
+            {
+                if (modePerm == 1)
+                    PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+            }
+        }
+    }
+
+    // if API level > 23 test for permissions granted
+    private boolean isPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        else
+        {
+            // handle permissions for Build.VERSION_CODES < M here
+            return true;
+        }
+    }
+
+    // get the location data
+    public void getLoc()
+    {
+        locationService = new LocationService(this);
+
+        if (locationService.canGetLocation())
+        {
+            longitude = locationService.getLongitude();
+            latitude = locationService.getLatitude();
+            height = locationService.getAltitude();
+            if (height != 0)
+                height = correctHeight(latitude, longitude, height);
+            uncertainty = locationService.getAccuracy();
+        }
+
+        // get reverse geocoding
+        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            runOnUiThread(() -> {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
+                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                try
+                {
+                    url = new URL(urlString);
+                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
+                    getXML.execute(url);
+                } catch (IOException e)
+                {
+                    // do nothing
+                }
+            });
+        }
+    }
+
+    // Correct height with geoid offset from EarthGravitationalModel
+    private double correctHeight(double latitude, double longitude, double gpsHeight)
+    {
+        double corrHeight;
+        double nnHeight;
+
+        EarthGravitationalModel gh = new EarthGravitationalModel();
+        try
+        {
+            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
+        } catch (IOException e)
+        {
+            return 0;
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try
+        {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+
+        nnHeight = gpsHeight + corrHeight;
+        return nnHeight;
+    }
+    
     /**
      * Checks if a CharSequence is whitespace, empty ("") or null
      * <p>

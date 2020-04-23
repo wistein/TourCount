@@ -161,12 +161,6 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
     }
 
     @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-    }
-    
-    @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
