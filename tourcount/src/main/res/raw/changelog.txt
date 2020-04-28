@@ -53,13 +53,18 @@
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _ 
 
+$ 3.2.2
+  % Version 3.2.2
+  _ 2020-04-29
+		* Location service active in major activities
+		* Bug fix in button sound
+		* More butterfly pictures integrated
+
 $ 3.2.1
   % Version 3.2.1
   _ 2020-04-23
 		* Background picture better scaled for long displays
 		* Strings cleared up
-		* Location service in major activities
-		* Bug fix in button sound
 
 $ 3.2.0
   % Version 3.2.0

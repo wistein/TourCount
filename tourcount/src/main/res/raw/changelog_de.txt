@@ -53,13 +53,18 @@
   _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
   _
 
+$ 3.2.2
+  % Version 3.2.2
+  _ 29.04.2020
+		* Location-Dienst in den Hauptfunktionen
+		* Fehler in Einstellung für Button-Sound behoben
+		* Weitere Schmetterlingsabbildungen integriert
+
 $ 3.2.1
   % Version 3.2.1
   _ 23.04.2020
 		* Hintergrundbild besser skaliert für längere Displays
 		* Meldungen bereinigt
-		* Location-Dienst in den Hauptfunktionen
-		* Fehler in Einstellung für Button-Sound behoben
 
 $ 3.2.0
   % Version 3.2.0

@@ -175,7 +175,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        // check for API-Level >= 21
+        // check for API-Level >= 21 for proximity wakelock support 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -239,7 +239,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().setAttributes(params);
         }
 
-        // check for API-Level >= 21
+        // check for API-Level >= 21 for proximity wakelock support 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             enableProximitySensor();

@@ -63,6 +63,7 @@
 		<item comment="00063">Ampfer-Wurzelbohrer</item>
 		<item comment="00080">Großer Hopfen-Wurzelbohrer</item>
 		<item comment="01348">Pflaumen-Gespinstmotte</item>
+		<item comment="01350">Pfaffenhütchen-Gespinstmotte</item>
 		<item comment="03925">Heide-Grünwidderchen</item>
 		<item comment="03938">Dickfühler-Grünwidderchen</item>
 		<item comment="03941">Kupferglanz-Grünwidderchen</item>
@@ -375,9 +376,11 @@
 		<item comment="07476">Kleiner Monarch</item>
 		<item comment="07503">Zweipunkt-Sichelflügler</item>
 		<item comment="07508">Heller Sichelflügler</item>
+		<item comment="07522">Stachelbeer-Harlekin</item>
 		<item comment="07547">Klee-Gitterspanner</item>
 		<item comment="07613">Gelbspanner</item>
 		<item comment="07620">Pantherspanner</item>
+		<item comment="07659">Nachtschwalbenschwanz</item>
 		<item comment="07804">Heideland-Tagspanner</item>
 		<item comment="07824">Weißstirn-Weißspanner</item>
 		<item comment="07916">Hartheuspanner</item>
@@ -396,7 +399,9 @@
 		<item comment="08967">Scheck-Tageule</item>
 		<item comment="08969">Braune Tageule</item>
 		<item comment="08994">Nessel-Schnabeleule</item>
+		<item comment="09051">Schafgarben-Silbereule</item>
 		<item comment="09056">Gammaeule</item>
+		<item comment="09338">Hornkraut-Tageulchen</item>
 		<item comment="10000">Weißfleck-Graseule</item>
 		<item comment="10099">Breitflügelige Bandeule</item>
 		<item comment="10102">Janthina-Bandeule</item>

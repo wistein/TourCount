@@ -1,0 +1,4 @@
+Version 3.2.2 (29.04.2020)
+- Location-Dienst in den Hauptfunktionen
+- Fehler in Einstellung für Button-Sound behoben
+- Weitere Schmetterlingsabbildungen integriert

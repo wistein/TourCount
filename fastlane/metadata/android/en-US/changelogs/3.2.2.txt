@@ -1,0 +1,4 @@
+Version 3.2.2 (2020-04-29)
+- Location service in major activities
+- Bug fix in button sound
+- More butterfly pictures integrated

@@ -23,7 +23,7 @@ import androidx.core.app.ActivityCompat;
  * Based on LocationSrv created by anupamchugh on 28/11/16, published under
  * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
  * licensed under the MIT License.
- * 
+ *
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last modification on 2020-04-17
  */
@@ -72,52 +72,52 @@ public class LocationService extends Service implements LocationListener
             }
 
             // if only Network is enabled get position using Network Service
-                if (checkNetwork && !checkGPS)
+            if (checkNetwork && !checkGPS)
+            {
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
                 {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                    {
-                        locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_FOR_UPDATES, this);
+                    locationManager.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER,
+                        MIN_TIME_BW_UPDATES,
+                        MIN_DISTANCE_FOR_UPDATES, this);
 
-                        if (locationManager != null)
+                    if (locationManager != null)
+                    {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null)
                         {
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            if (location != null)
-                            {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                height = 0;
-                                uncertainty = 500;
-                            }
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            height = 0;
+                            uncertainty = 500;
                         }
                     }
                 }
+            }
 
-                // if GPS is enabled get position using GPS Service
-                if (checkGPS)
+            // if GPS is enabled get position using GPS Service
+            if (checkGPS)
+            {
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
                 {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                    {
-                        locationManager.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_FOR_UPDATES, this);
+                    locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        MIN_TIME_BW_UPDATES,
+                        MIN_DISTANCE_FOR_UPDATES, this);
 
-                        if (locationManager != null)
+                    if (locationManager != null)
+                    {
+                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if (location != null)
                         {
-                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null)
-                            {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                height = location.getAltitude();
-                                uncertainty = location.getAccuracy();
-                            }
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            height = location.getAltitude();
+                            uncertainty = location.getAccuracy();
                         }
                     }
-                } 
+                }
+            }
 
         } catch (Exception e)
         {
@@ -143,7 +143,6 @@ public class LocationService extends Service implements LocationListener
             }
         } catch (Exception e)
         {
-            // do nothing
             Log.e(TAG, "StopListener: " + e.toString());
         }
     }

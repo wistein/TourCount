@@ -141,6 +141,7 @@
 		<item comment="00063">Triodia sylvina</item>
 		<item comment="00080">Hepialus humili</item>
 		<item comment="01348">Yponomeuta padella</item>
+		<item comment="01350">Yponomeuta cagnagella</item>
 		<item comment="03925">Rhagades pruni</item>
 		<item comment="03938">Jordanita subsolana</item>
 		<item comment="03941">Jordanita chloros</item>
@@ -453,9 +454,11 @@
 		<item comment="07476">Danaus chrysippus</item>
 		<item comment="07503">Watsonalla binaria</item>
 		<item comment="07508">Drepana falcataria</item>
+		<item comment="07522">Abraxas grossulariata</item>
 		<item comment="07547">Chiasmia clathrata</item>
 		<item comment="07613">Opisthograptis luteolata</item>
 		<item comment="07620">Pseudopanthera macularia</item>
+		<item comment="07659">Ourapteryx sambucaria</item>
 		<item comment="07804">Ematurga atomaria</item>
 		<item comment="07824">Cabera pusaria</item>
 		<item comment="07916">Siona lineata</item>
@@ -474,7 +477,9 @@
 		<item comment="08967">Callistege mi</item>
 		<item comment="08969">Euclidia glyphica</item>
 		<item comment="08994">Hypena proboscidalis</item>
+		<item comment="09051">Macdunnoughia confusa</item>
 		<item comment="09056">Autographa gamma</item>
+		<item comment="09338">Panemeria tenebrata</item>
 		<item comment="10000">Mythimna conigera</item>
 		<item comment="10099">Noctua comes</item>
 		<item comment="10102">Noctua janthina</item>
@@ -501,6 +506,7 @@
 		<item comment="00063">Orange swift</item>
 		<item comment="00080">Ghost moth</item>
 		<item comment="01348">Orchard ermine</item>
+		<item comment="01350">Spindle ermine</item>
 		<item comment="03925">Blackthorn aurora moth</item>
 		<item comment="03938">Ofen forester</item>
 		<item comment="03941">Bronze forester</item>
@@ -813,9 +819,11 @@
 		<item comment="07476">Plain tiger</item>
 		<item comment="07503">Oak hook-tip</item>
 		<item comment="07508">Pebble hook-tip</item>
+		<item comment="07522">Magpie moth</item>
 		<item comment="07547">Latticed heath</item>
 		<item comment="07613">Brimstone moth</item>
 		<item comment="07620">Speckled yellow</item>
+		<item comment="07659">Swallow-tailed moth</item>
 		<item comment="07804">Common heath</item>
 		<item comment="07824">Common white wave</item>
 		<item comment="07916">Black-veined moth</item>
@@ -834,7 +842,9 @@
 		<item comment="08967">Mother shipton</item>
 		<item comment="08969">Burnet companion</item>
 		<item comment="08994">Snout</item>
+		<item comment="09051">Dewick\'s plusia</item>
 		<item comment="09056">Silver Y</item>
+		<item comment="09338">Small yellow underwing</item>
 		<item comment="10000">Brown-line bright eye</item>
 		<item comment="10099">Lesser yellow underwing</item>
 		<item comment="10102">Langmaid\'s yellow underwing</item>
@@ -861,6 +871,7 @@
 		<item>00063</item>
 		<item>00080</item>
 		<item>01348</item>
+		<item>01350</item>
 		<item>03925</item>
 		<item>03938</item>
 		<item>03941</item>
@@ -1173,9 +1184,11 @@
 		<item>07476</item>
 		<item>07503</item>
 		<item>07508</item>
+		<item>07522</item>
 		<item>07547</item>
 		<item>07613</item>
 		<item>07620</item>
+		<item>07659</item>
 		<item>07804</item>
 		<item>07824</item>
 		<item>07916</item>
@@ -1194,7 +1207,9 @@
 		<item>08967</item>
 		<item>08969</item>
 		<item>08994</item>
+		<item>09051</item>
 		<item>09056</item>
+		<item>09338</item>
 		<item>10000</item>
 		<item>10099</item>
 		<item>10102</item>
