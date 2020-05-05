@@ -20,44 +20,81 @@
         <item>codes</item>
     </string-array>
 
-    <string-array name="initSpecs_g">
-        <item>Sechsfleck-Widderchen</item>
-        <item>Taubenschwänzchen</item>
-        <item>Schwarzkolbiger Braundickkopffalter</item>
-        <item>Braunkolbiger Braundickkopffalter</item>
-        <item>Rostfarbiger Dickkopffalter</item>
-        <item>Schwalbenschwanz</item>
-        <item>Tintenfleck-Weißling</item>
-        <item>Großer Kohlweißling</item>
-        <item>Kleiner Kohlweißling</item>
-        <item>Grünader-Weißling</item>
-        <item>Postillion</item>
-        <item>Goldene Acht</item>
-        <item>Zitronenfalter</item>
-        <item>Kleiner Feuerfalter</item>
-        <item>Faulbaumbläuling</item>
-        <item>Hauhechel-Bläuling</item>
-        <item>Admiral</item>
-        <item>Distelfalter</item>
-        <item>Tagpfauenauge</item>
-        <item>Kleiner Fuchs</item>
-        <item>C-Falter</item>
-        <item>Landkärtchen</item>
-        <item>Waldbrettspiel</item>
-        <item>Mauerfuchs</item>
-        <item>Kleines Wiesenvögelchen</item>
-        <item>Rotbraunes Ochsenauge</item>
-        <item>Schornsteinfeger</item>
-        <item>Großes Ochsenauge</item>
-        <item>Schachbrett</item>
-        <item>Pantherspanner</item>
-        <item>Heideland-Tagspanner</item>
-        <item>Hartheuspanner</item>
-        <item>Ockergelber Blattspanner</item>
-        <item>Braune Tageule</item>
-        <item>Gammaeule</item>
-        <item>Spanische Flagge</item>
-    </string-array>
+	<string-array name="initSpecs_g">
+		<item comment="03998">Sechsfleck-Widderchen</item>
+		<item comment="06605">Purpurroter Zünsler</item>
+		<item comment="06788">Nagelfleck</item>
+		<item comment="06843">Taubenschwänzchen</item>
+		<item comment="06919">Gelbwürfeliger Dickkopffalter</item>
+		<item comment="06923">Schwarzkolbiger Braundickkopffalter</item>
+		<item comment="06924">Braunkolbiger Braundickkopffalter</item>
+		<item comment="06930">Rostfarbiger Dickkopffalter</item>
+		<item comment="06955">Apollo</item>
+		<item comment="06958">Segelfalter</item>
+		<item comment="06960">Schwalbenschwanz</item>
+		<item comment="06966">Tintenfleck-Weißling</item>
+		<item comment="06973">Aurorafalter</item>
+		<item comment="06993">Baumweißling</item>
+		<item comment="06995">Großer Kohlweißling</item>
+		<item comment="06997">Karstweißling</item>
+		<item comment="06998">Kleiner Kohlweißling</item>
+		<item comment="07000">Grünader-Weißling</item>
+		<item comment="07015">Postillion</item>
+		<item comment="07021">Goldene Acht</item>
+		<item comment="07024">Zitronenfalter</item>
+		<item comment="07030">Schlüsselblumen-Würfelfalter</item>
+		<item comment="07034">Kleiner Feuerfalter</item>
+		<item comment="07037">Dukaten-Feuerfalter</item>
+		<item comment="07039">Brauner Feuerfalter</item>
+		<item comment="07047">Nierenfleck-Zipfelfalter</item>
+		<item comment="07049">Blauer Eichen-Zipfelfalter</item>
+		<item comment="07058">Grüner Zipfelfalter</item>
+		<item comment="07063">Pflaumen-Zipfelfalter</item>
+		<item comment="07093">Kurzschwänziger Bläuling</item>
+		<item comment="07097">Faulbaumbläuling</item>
+		<item comment="07145">Kleiner Sonnenröschen-Bläuling</item>
+		<item comment="07152">Rotklee-Bläuling</item>
+		<item comment="07163">Hauhechel-Bläuling</item>
+		<item comment="07202">Kaisermantel</item>
+		<item comment="07204">Großer Perlmuttfalter</item>
+		<item comment="07210">Kleiner Perlmuttfalter</item>
+		<item comment="07220">Silberfleck-Perlmuttfalter</item>
+		<item comment="07222">Braunfleckiger Perlmuttfalter</item>
+		<item comment="07243">Admiral</item>
+		<item comment="07245">Distelfalter</item>
+		<item comment="07248">Tagpfauenauge</item>
+		<item comment="07250">Kleiner Fuchs</item>
+		<item comment="07252">C-Falter</item>
+		<item comment="07255">Landkärtchen</item>
+		<item comment="07257">Trauermantel</item>
+		<item comment="07258">Großer Fuchs</item>
+		<item comment="07283">Wachtelweizen-Scheckenfalter</item>
+		<item comment="07287">Kleiner Eisvogel</item>
+		<item comment="07298">Kleiner Schillerfalter</item>
+		<item comment="07307">Waldbrettspiel</item>
+		<item comment="07309">Mauerfuchs</item>
+		<item comment="07312">Braunauge</item>
+		<item comment="07334">Kleines Wiesenvögelchen</item>
+		<item comment="07340">Rotbraunes Ochsenauge</item>
+		<item comment="07344">Schornsteinfeger</item>
+		<item comment="07350">Großes Ochsenauge</item>
+		<item comment="07360">Weißbindiger Mohrenfalter</item>
+		<item comment="07361">Bergwald-Mohrenfalter</item>
+		<item comment="07415">Schachbrett</item>
+		<item comment="07436">Rostbinde</item>
+		<item comment="07547">Klee-Gitterspanner</item>
+		<item comment="07620">Pantherspanner</item>
+		<item comment="07804">Heideland-Tagspanner</item>
+		<item comment="07916">Hartheuspanner</item>
+		<item comment="08275">Graubinden-Labkrautspanner</item>
+		<item comment="08289">Ockergelber Blattspanner</item>
+		<item comment="08967">Scheck-Tageule</item>
+		<item comment="08969">Braune Tageule</item>
+		<item comment="09056">Gammaeule</item>
+		<item comment="10603">Schönbär</item>
+		<item comment="10605">Spanische Flagge</item>
+		<item comment="10607">Blutbär</item>
+	</string-array>
 
 	<string-array name="selSpecs_g">
 		<item comment="00063">Ampfer-Wurzelbohrer</item>

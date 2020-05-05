@@ -55,10 +55,11 @@
 
 $ 3.2.2
   % Version 3.2.2
-  _ 29.04.2020
+  _ 05.05.2020
 		* Location-Dienst in den Hauptfunktionen
 		* Fehler in Einstellung für Button-Sound behoben
 		* Weitere Schmetterlingsabbildungen integriert
+		* Integrierte Auswahlliste der Arten vergrößert
 
 $ 3.2.1
   % Version 3.2.1

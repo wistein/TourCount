@@ -55,10 +55,11 @@
 
 $ 3.2.2
   % Version 3.2.2
-  _ 2020-04-29
+  _ 2020-05-05
 		* Location service active in major activities
 		* Bug fix in button sound
 		* More butterfly pictures integrated
+		* Initial integrated list of species enlarged
 
 $ 3.2.1
   % Version 3.2.1

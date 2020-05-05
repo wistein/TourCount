@@ -21,120 +21,231 @@
     </string-array>
 
     <string-array name="initSpecs">
-        <item>Zygaena filipendulae</item>
-        <item>Macrogl. stellatarum</item>
-        <item>Thymelicus lineola</item>
-        <item>Thymelicus sylvestris</item>
-        <item>Ochlodes sylvanus</item>
-        <item>Papilio machaon</item>
-        <item>Leptidea sinapis</item>
-        <item>Pieris brassicae</item>
-        <item>Pieris rapae</item>
-        <item>Pieris napi</item>
-        <item>Colias crocea</item>
-        <item>Colias hyale</item>
-        <item>Gonepteryx rhamni</item>
-        <item>Lycaena phlaeas</item>
-        <item>Celastrina argiolus</item>
-        <item>Polyommatus icarus</item>
-        <item>Vanessa atalanta</item>
-        <item>Vanessa cardui</item>
-        <item>Inachis io</item>
-        <item>Aglais urticae</item>
-        <item>Polygonia c-album</item>
-        <item>Araschnia levana</item>
-        <item>Pararge aegeria</item>
-        <item>Lasiommata megera</item>
-        <item>Coenon. pamphilus</item>
-        <item>Maniola tithonus</item>
-        <item>Aphant. hyperantus</item>
-        <item>Maniola jurtina</item>
-        <item>Melanargia galathea</item>
-        <item>Pseudop. macularia</item>
-        <item>Ematurga atomaria</item>
-        <item>Siona lineata</item>
-        <item>Camptogr. bilineata</item>
-        <item>Euclidia glyphica</item>
-        <item>Autographa gamma</item>
-        <item>Euplagia quadripunctaria</item>
+        <item comment="03998">Zygaena filipendulae</item>
+		<item comment="06605">Pyrausta purpuralis</item>
+		<item comment="06788">Aglia tau</item>
+        <item comment="06843">Macrogl. stellatarum</item>
+		<item comment="06919">Carterocephalus palaemon</item>
+        <item comment="06923">Thymelicus lineola</item>
+        <item comment="06924">Thymelicus sylvestris</item>
+        <item comment="06930">Ochlodes sylvanus</item>
+		<item comment="06955">Parnassius apollo</item>
+		<item comment="06958">Iphiclides podalirius</item>
+        <item comment="06960">Papilio machaon</item>
+        <item comment="06966">Leptidea sinapis</item>
+		<item comment="06973">Anthocharis cardamines</item>
+		<item comment="06993">Aporia crataegi</item>
+        <item comment="06995">Pieris brassicae</item>
+		<item comment="06997">Pieris mannii</item>
+        <item comment="06998">Pieris rapae</item>
+        <item comment="07000">Pieris napi</item>
+        <item comment="07015">Colias croceus</item>
+        <item comment="07021">Colias hyale</item>
+        <item comment="07024">Gonepteryx rhamni</item>
+		<item comment="07030">Hamearis lucina</item>
+        <item comment="07034">Lycaena phlaeas</item>
+		<item comment="07037">Lycaena virgaureae</item>
+		<item comment="07039">Lycaena tityrus</item>
+		<item comment="07047">Thecla betulae</item>
+		<item comment="07049">Neozephyrus quercus</item>
+		<item comment="07058">Callophrys rubi</item>
+		<item comment="07063">Satyrium pruni</item>
+		<item comment="07093">Cupido argiades</item>
+        <item comment="07097">Celastrina argiolus</item>
+		<item comment="07145">Aricia agestis</item>
+		<item comment="07152">Polyommatus semiargus</item>
+        <item comment="07163">Polyommatus icarus</item>
+		<item comment="07202">Argynnis paphia</item>
+		<item comment="07204">Argynnis aglaija</item>
+		<item comment="07210">Issoria lathonia</item>
+		<item comment="07220">Boloria euphrosyne</item>
+		<item comment="07222">Boloria selene</item>
+        <item comment="07243">Vanessa atalanta</item>
+        <item comment="07245">Vanessa cardui</item>
+        <item comment="07248">Inachis io</item>
+        <item comment="07250">Nymphalis urticae</item>
+        <item comment="07252">Polygonia c-album</item>
+        <item comment="07255">Araschnia levana</item>
+		<item comment="07257">Nymphalis antiopa</item>
+		<item comment="07258">Nymphalis polychloros</item>
+		<item comment="07283">Melitaea athalia</item>
+		<item comment="07287">Limenitis camilla</item>
+		<item comment="07298">Apatura ilia</item>
+        <item comment="07307">Pararge aegeria</item>
+        <item comment="07309">Lasiommata megera</item>
+		<item comment="07312">Lasiommata maera</item>
+        <item comment="07334">Coenon. pamphilus</item>
+        <item comment="07340">Maniola tithonus</item>
+        <item comment="07344">Aphant. hyperantus</item>
+        <item comment="07350">Maniola jurtina</item>
+		<item comment="07360">Erebia ligea</item>
+		<item comment="07361">Erebia euryale</item>
+        <item comment="07415">Melanargia galathea</item>
+		<item comment="07436">Hipparchia semele</item>
+		<item comment="07547">Chiasmia clathrata</item>
+		<item comment="07620">Pseudopanthera macularia</item>
+        <item comment="07804">Ematurga atomaria</item>
+        <item comment="07916">Siona lineata</item>
+		<item comment="08275">Epirrhoe alternata</item>
+        <item comment="08289">Camptogr. bilineata</item>
+		<item comment="08967">Callistege mi</item>
+        <item comment="08969">Euclidia glyphica</item>
+        <item comment="09056">Autographa gamma</item>
+		<item comment="10603">Callimorpha dominula</item>
+        <item comment="10605">Euplagia quadripunctaria</item>
+		<item comment="10607">Tyria jacobaeae</item>
     </string-array>
 
     <string-array name="initSpecs_g">
-        <item>Six-spot burnet</item>
-        <item>Hummingbird hawk-moth</item>
-        <item>Essex Skipper</item>
-        <item>Small skipper</item>
-        <item>Large skipper</item>
-        <item>Swallowtail</item>
-        <item>Wood white</item>
-        <item>Large white</item>
-        <item>Small white</item>
-        <item>Green-veined white</item>
-        <item>Dark clouded yellow</item>
-        <item>Pale clouded yellow</item>
-        <item>Common brimstone</item>
-        <item>Small copper</item>
-        <item>Holly blue</item>
-        <item>Common blue</item>
-        <item>Red admiral</item>
-        <item>Painted lady</item>
-        <item>Peacock</item>
-        <item>Small tortoiseshell</item>
-        <item>Comma</item>
-        <item>Map</item>
-        <item>Speckled wood</item>
-        <item>Wall brown</item>
-        <item>Small heath</item>
-        <item>Gatekeeper</item>
-        <item>Ringlet</item>
-        <item>Meadow brown</item>
-        <item>Marbled white</item>
-        <item>Speckled yellow</item>
-        <item>Common heath</item>
-        <item>Black-veined moth</item>
-        <item>Yellow shell</item>
-        <item>Burnet companion</item>
-        <item>Silver Y</item>
-        <item>Jersey tiger</item>
+        <item comment="03998">Six-spot burnet</item>
+		<item comment="06605">-</item>
+		<item comment="06788">Tau emperor</item>
+        <item comment="06843">Hummingbird hawk-moth</item>
+		<item comment="06919">Chequered skipper</item>
+        <item comment="06923">Essex Skipper</item>
+        <item comment="06924">Small skipper</item>
+        <item comment="06930">Large skipper</item>
+		<item comment="06955">Apollo</item>
+		<item comment="06958">Scarce swallowtail</item>
+        <item comment="06960">Swallowtail</item>
+        <item comment="06966">Wood white</item>
+		<item comment="06973">Orange tip</item>
+		<item comment="06993">Black-veined white</item>
+        <item comment="06995">Large white</item>
+		<item comment="06997">Southern small white</item>
+        <item comment="06998">Small white</item>
+        <item comment="07000">Green-veined white</item>
+        <item comment="07015">Dark clouded yellow</item>
+        <item comment="07021">Pale clouded yellow</item>
+        <item comment="07024">Common brimstone</item>
+		<item comment="07030">Duke of Burgundy</item>
+        <item comment="07034">Small copper</item>
+		<item comment="07037">Scarce copper</item>
+		<item comment="07039">Sooty copper</item>
+		<item comment="07047">Brown hairstreak</item>
+		<item comment="07049">Purple hairstreak</item>
+		<item comment="07058">Green hairstreak</item>
+		<item comment="07063">Black hairstreak</item>
+		<item comment="07093">Short-tailed blue</item>
+        <item comment="07097">Holly blue</item>
+		<item comment="07145">Brown argus</item>
+		<item comment="07152">Mazarine blue</item>
+        <item comment="07163">Common blue</item>
+		<item comment="07202">Silver-washed fritillary</item>
+		<item comment="07204">Dark green fritillary</item>
+		<item comment="07210">Queen of Spain fritillary</item>
+		<item comment="07220">Pearl-bordered fritillary</item>
+		<item comment="07222">Small pearl-bordered fritillary</item>
+        <item comment="07243">Red admiral</item>
+        <item comment="07245">Painted lady</item>
+        <item comment="07248">Peacock</item>
+        <item comment="07250">Small tortoiseshell</item>
+        <item comment="07252">Comma</item>
+        <item comment="07255">Map</item>
+		<item comment="07257">Camberwell beauty</item>
+		<item comment="07258">Large tortoiseshell</item>
+		<item comment="07283">Heath fritillary</item>
+		<item comment="07287">White admiral</item>
+		<item comment="07298">Lesser purple emperor</item>
+        <item comment="07307">Speckled wood</item>
+        <item comment="07309">Wall brown</item>
+		<item comment="07312">Large wall</item>
+        <item comment="07334">Small heath</item>
+        <item comment="07340">Gatekeeper</item>
+        <item comment="07344">Ringlet</item>
+        <item comment="07350">Meadow brown</item>
+		<item comment="07360">Arran brown</item>
+		<item comment="07361">Large ringlet</item>
+        <item comment="07415">Marbled white</item>
+		<item comment="07436">Grayling</item>
+		<item comment="07547">Latticed heath</item>
+        <item comment="07620">Speckled yellow</item>
+        <item comment="07804">Common heath</item>
+        <item comment="07916">Black-veined moth</item>
+		<item comment="08275">Common carpet</item>
+        <item comment="08289">Yellow shell</item>
+		<item comment="08967">Mother shipton</item>
+        <item comment="08969">Burnet companion</item>
+        <item comment="09056">Silver Y</item>
+		<item comment="10603">Scarlet tiger</item>
+        <item comment="10605">Jersey tiger</item>
+		<item comment="10607">Cinnabar</item>
     </string-array>
 
     <string-array name="initCodes">
         <item>03998</item>
+		<item>06605</item>
+		<item>06788</item>
         <item>06843</item>
+		<item>06919</item>
         <item>06923</item>
         <item>06924</item>
         <item>06930</item>
+		<item>06955</item>
+		<item>06958</item>
         <item>06960</item>
         <item>06966</item>
+		<item>06973</item>
+		<item>06993</item>
         <item>06995</item>
-        <item>06998</item>
+		<item>06997</item>
+		<item>06998</item>
         <item>07000</item>
         <item>07015</item>
         <item>07021</item>
         <item>07024</item>
+		<item>07030</item>
         <item>07034</item>
+		<item>07037</item>
+		<item>07039</item>
+		<item>07047</item>
+		<item>07049</item>
+		<item>07058</item>
+		<item>07063</item>
+		<item>07093</item>
         <item>07097</item>
+		<item>07145</item>
+		<item>07152</item>
         <item>07163</item>
-        <item>07243</item>
+        <item>07202</item>
+		<item>07204</item>
+		<item>07210</item>
+		<item>07220</item>
+		<item>07222</item>
+		<item>07243</item>
         <item>07245</item>
         <item>07248</item>
         <item>07250</item>
         <item>07252</item>
-        <item>07255</item>
+		<item>07255</item>
+        <item>07257</item>
+		<item>07258</item>
+		<item>07283</item>
+		<item>07287</item>
+		<item>07298</item>
         <item>07307</item>
         <item>07309</item>
+		<item>07312</item>
         <item>07334</item>
         <item>07340</item>
         <item>07344</item>
         <item>07350</item>
+		<item>07360</item>
+		<item>07361</item>
         <item>07415</item>
+		<item>07436</item>
+		<item>07547</item>
         <item>07620</item>
         <item>07804</item>
         <item>07916</item>
+		<item>08275</item>
         <item>08289</item>
+		<item>08967</item>
         <item>08969</item>
         <item>09056</item>
+		<item>10603</item>
         <item>10605</item>
+		<item>10607</item>
     </string-array>
 
 	<string-array name="selSpecs">

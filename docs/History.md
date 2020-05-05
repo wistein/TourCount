@@ -1,11 +1,12 @@
 # History
 
-#### TourCount Copyright (C) 2016-2019, Wilhelm Stein
+#### TourCount Copyright (C) 2016-2020, Wilhelm Stein
 
-#### Version 3.2.2 (2020-04-29)
+#### Version 3.2.2 (2020-05-05)
 - Location service in major activities
 - Bug fix in button sound
 - More butterfly pictures integrated
+- Initial integrated list of species enlarged
 
 #### Version 3.2.1 (2020-04-23)
 - Background picture better scaled for long displays
