@@ -1,0 +1,3 @@
+Version 3.2.3 (2020-09-09)
+- Location service fix for coarse location
+- Project adaption for Android Studio 4.0.1 and Gradle 6.1.1

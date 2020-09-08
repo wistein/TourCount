@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2020, Wilhelm Stein
 
+#### Version 3.2.3 (2020-09-09)
+- Location service fix for coarse location
+- Project adaption for Android Studio 4.0.1 and Gradle 6.1.1
+
 #### Version 3.2.2 (2020-05-05)
 - Location service in major activities
 - Bug fix in button sound
