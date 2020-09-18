@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/widgetLPlz1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -74,7 +74,7 @@
 
                 <TextView
                     android:id="@+id/widgetLCity"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -109,7 +109,7 @@
 
                 <TextView
                     android:id="@+id/widgetLPlace"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -152,7 +152,7 @@
 
                 <TextView
                     android:id="@+id/widgetLMeta1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -187,7 +187,7 @@
 
                 <TextView
                     android:id="@+id/widgetLMeta2"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -222,7 +222,7 @@
 
                 <TextView
                     android:id="@+id/widgetLMeta3"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -265,7 +265,7 @@
 
                 <TextView
                     android:id="@+id/widgetdlo1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -301,7 +301,7 @@
 
                 <TextView
                     android:id="@+id/widgetdla1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -337,7 +337,7 @@
 
                 <TextView
                     android:id="@+id/widgetmuncert1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="start|top"
                     android:singleLine="true"
@@ -381,7 +381,7 @@
 
                 <TextView
                     android:id="@+id/widgetLDate1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -416,7 +416,7 @@
 
                 <TextView
                     android:id="@+id/widgetLStartTm1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -451,7 +451,7 @@
 
                 <TextView
                     android:id="@+id/widgetLEndTm1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
