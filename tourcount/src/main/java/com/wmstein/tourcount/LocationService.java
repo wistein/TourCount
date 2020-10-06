@@ -24,7 +24,7 @@ import androidx.core.app.ActivityCompat;
  * licensed under the MIT License.
  *
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2020-06-24
+ * last modification on 2020-10-06
  */
 public class LocationService extends Service implements LocationListener
 {
@@ -47,7 +47,7 @@ public class LocationService extends Service implements LocationListener
     }
 
     // Default constructor demanded for service declaration in AndroidManifest.xml
-    //public LocationService () {}
+    public LocationService () {}
 
     private void getLocation()
     {
@@ -74,7 +74,8 @@ public class LocationService extends Service implements LocationListener
             // if GPS is enabled get position using GPS Service
             if (checkGPS && canGetLocation)
             {
-                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
                 {
                     locationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
@@ -103,7 +104,8 @@ public class LocationService extends Service implements LocationListener
                 // if Network is enabled and still no GPS fix achieved
                 if (checkNetwork && canGetLocation)
                 {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
                     {
                         locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,

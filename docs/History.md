@@ -2,9 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2020, Wilhelm Stein
 
-#### Version 3.2.4 (2020-09-19)
+#### Version 3.2.4 (2020-10-06)
 - Layout and function of Edit species list improved
 - Outdated code names updated
+- Permission handling for Access Background Location
+- Project adaption for Android Studio 4.0.2
 
 #### Version 3.2.3 (2020-09-09)
 - Location service fix for coarse location

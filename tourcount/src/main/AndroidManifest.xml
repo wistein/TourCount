@@ -155,7 +155,7 @@
         </activity>
 
         <service android:name="com.wmstein.tourcount.LocationService"
-                 android:exported="false">
+            android:exported="false">
         </service>
     
 <!-- multiwindow crashes when rotating the screen, reason: spinner in CountingActivity
