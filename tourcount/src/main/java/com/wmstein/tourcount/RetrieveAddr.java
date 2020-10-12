@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
 
 import static android.content.ContentValues.TAG;
 
@@ -45,6 +46,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
         {
             //HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); // https-version?
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestProperty("Accept-Encoding", "gzip");
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
@@ -58,7 +60,12 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             }
 
             // get the XML from input stream
-            InputStream iStream = urlConnection.getInputStream();
+            InputStream iStream;
+            if ("gzip".equals(urlConnection.getContentEncoding())) {
+                iStream = new GZIPInputStream(urlConnection.getInputStream());
+            } else {
+                iStream = urlConnection.getInputStream();
+            }
 
             xmlString = convertStreamToString(iStream);
             if (MyDebug.LOG)
