@@ -1,0 +1,3 @@
+Version 3.2.3 (09.09.2020)
+- Bug in Location-Dienst behoben
+- Projekt-Anpassung für Android Studio 4.0.1 und Gradle 6.1.1

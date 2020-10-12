@@ -230,10 +230,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         eiw.setWidgetIndivNote2(individuals.notes);
 
         eiw.setWidgetXCoord1(getString(R.string.xcoord));
-        eiw.setWidgetXCoord2(Double.toString(latitude));
+        eiw.setWidgetXCoord2(String.format("%.6f", latitude));
 
         eiw.setWidgetYCoord1(getString(R.string.ycoord));
-        eiw.setWidgetYCoord2(Double.toString(longitude));
+        eiw.setWidgetYCoord2(String.format("%.6f", longitude));
 
         individ_area.addView(eiw);
     }

@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/widgetLocality1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -76,7 +76,7 @@
 
                 <TextView
                     android:id="@+id/widgetZCoord1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -120,7 +120,7 @@
 
                 <TextView
                     android:id="@+id/widgetXCoord1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -155,7 +155,7 @@
 
                 <TextView
                     android:id="@+id/widgetYCoord1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -200,7 +200,7 @@
 
                 <TextView
                     android:id="@+id/widgetStadium1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -237,7 +237,7 @@
 
                 <TextView
                     android:id="@+id/widgetState1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -271,7 +271,7 @@
 
                 <TextView
                     android:id="@+id/widgetCount1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -317,7 +317,7 @@
 
                 <TextView
                     android:id="@+id/widgetIndivNote1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"

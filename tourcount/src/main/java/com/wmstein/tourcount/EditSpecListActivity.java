@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +31,8 @@ import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountEditWidget;
+import com.wmstein.tourcount.widgets.EditNotesWidget;
+import com.wmstein.tourcount.widgets.EditTitleWidget;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +53,7 @@ import androidx.core.content.ContextCompat;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2020-04-23
+ * last edited on 2020-09-19
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -61,6 +62,9 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
 
     private ArrayList<CountEditWidget> savedCounts;
     private LinearLayout counts_area;
+    private LinearLayout notes_area2;
+    private EditTitleWidget etw;
+    private EditNotesWidget enw;
     private final Handler mHandler = new Handler();
 
     // the actual data
@@ -90,6 +94,8 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
+    String oldname;
+
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -105,8 +111,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         setContentView(R.layout.activity_edit_section);
-
-        ScrollView counting_screen = findViewById(R.id.editingScreen);
+        LinearLayout counting_screen = findViewById(R.id.editSect);
 
         if (screenOrientL)
         {
@@ -131,6 +136,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         counting_screen.setBackground(bg);
 
         savedCounts = new ArrayList<>();
+        notes_area2 = findViewById(R.id.editingNotesLayout);
         counts_area = findViewById(R.id.editingCountsLayout);
 
         // Restore any edit widgets the user has added previously
@@ -187,6 +193,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
 
         // clear any existing views
         counts_area.removeAllViews();
+        notes_area2.removeAllViews();
 
         // setup the data sources
         sectionDataSource = new SectionDataSource(this);
@@ -196,16 +203,30 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
 
         // load the sections data
         section = sectionDataSource.getSection();
+        oldname = section.name;
         try
         {
             //noinspection ConstantConditions
-            getSupportActionBar().setTitle(section.name);
+            getSupportActionBar().setTitle(oldname);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e)
         {
             if (MyDebug.LOG)
                 Log.e(TAG, "NullPointerException: No section name!");
         }
+
+        // display the section title
+        etw = new EditTitleWidget(this, null);
+        etw.setSectionName(oldname);
+        etw.setWidgetTitle(getString(R.string.titleEdit));
+        notes_area2.addView(etw);
+
+        // display editable section notes; the same class
+        enw = new EditNotesWidget(this, null);
+        enw.setNotesName(section.notes);
+        enw.setWidgetTitle(getString(R.string.notesHere));
+        enw.setHint(getString(R.string.notesHint));
+        notes_area2.addView(enw);
 
         // load the sorted species data
         List<Count> counts;
@@ -294,6 +315,38 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     {
         // test for double entries and save species list
         boolean retValue = true;
+
+        // add title if the user has written one...
+        String section_name = etw.getSectionName();
+        if (isNotEmpty(section_name))
+        {
+            section.name = section_name;
+        }
+        // ...or save if the name has a value
+        else
+        {
+            if (isNotEmpty(section.name))
+            {
+                section.name = section_name;
+            }
+        }
+        
+        // add notes if the user has written some...
+        String section_notes = enw.getNotesName();
+        if (isNotEmpty(section_notes))
+        {
+            section.notes = section_notes;
+        }
+        // ...or save if the current notes have a value
+        else
+        {
+            if (isNotEmpty(section.notes))
+            {
+                section.notes = section_notes;
+            }
+        }
+        sectionDataSource.saveSection(section);
+        
         String isDbl;
         int childcount; //No. of species in list
         childcount = counts_area.getChildCount();
@@ -479,7 +532,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView counting_screen = findViewById(R.id.editingScreen);
+        LinearLayout counting_screen = findViewById(R.id.editSect);
         dupPref = prefs.getBoolean("pref_duplicate", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
         if (screenOrientL)

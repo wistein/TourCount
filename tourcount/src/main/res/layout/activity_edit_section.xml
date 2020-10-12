@@ -1,63 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- activity_edit_section.xml is used by EditSpecListActivity.java -->
 
-<ScrollView android:id="@+id/editingScreen"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editSect"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- insert section title and notes -->
+    <LinearLayout
+        android:id="@+id/editingNotesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <Space
+        android:layout_width="10dp"
+        android:layout_height="5dp" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:shrinkColumns="*"
+        android:stretchColumns="*">
 
-        <LinearLayout
-            android:id="@+id/editingNotesLayout"
-            android:layout_width="fill_parent"
+        <Button
+            android:id="@+id/addNewCountButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:orientation="vertical">
-        </LinearLayout>
-        <!-- insert section title and notes -->
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:onClick="newCount"
+            android:text="@string/labelNewCountButton">
+        </Button>
 
+        <Button
+            android:id="@+id/newsectSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:onClick="saveAndExit"
+            android:text="@string/labelNewsectSaveButton">
+        </Button>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="10dp"
+        android:layout_height="5dp" />
+
+    <ScrollView
+        android:id="@+id/editingScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- insert species as they are created in here -->
         <LinearLayout
             android:id="@+id/editingCountsLayout"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
             android:orientation="vertical">
         </LinearLayout>
-        <!-- insert counts as they are created in here -->
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:shrinkColumns="*"
-            android:stretchColumns="*">
-
-            <Button
-                android:id="@+id/addNewCountButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:onClick="newCount"
-                android:text="@string/labelNewCountButton">
-            </Button>
-
-            <Button
-                android:id="@+id/newsectSaveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:onClick="saveAndExit"
-                android:text="@string/labelNewsectSaveButton">
-            </Button>
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>
 

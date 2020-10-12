@@ -3,7 +3,6 @@ package com.wmstein.tourcount.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import java.util.Objects;
 /**********************************
  * EditNotesWidget used by CountOptionsActivity
  * Created by wmstein on 2016-02-18,
- * last edited on 2019-02-12
+ * last edited on 2020-09-19
  */
 public class EditNotesWidget extends LinearLayout
 {
@@ -30,12 +29,6 @@ public class EditNotesWidget extends LinearLayout
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_title, this, true);
         widget_title = findViewById(R.id.widgetTitle);
         notes_name = findViewById(R.id.sectionName);
-        notes_name.requestFocus();
-        
-        //Force to show keyboard, needs hideSoftInputFromWindow in CountOptionsActivity
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     public void setWidgetTitle(String title)

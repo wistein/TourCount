@@ -17,15 +17,14 @@ import androidx.core.app.ActivityCompat;
 
 /******************************************************************
  * LocationService provides the location data: latitude, longitude, height, uncertainty.
- * It is started and ended by WelcomeActivity.
- * Its data may be read by any TourCount activity.
+ * Its data may be read by most TourCount activities.
  *
  * Based on LocationSrv created by anupamchugh on 28/11/16, published under
  * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
  * licensed under the MIT License.
  *
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2020-04-17
+ * last modification on 2020-10-06
  */
 public class LocationService extends Service implements LocationListener
 {
@@ -39,6 +38,7 @@ public class LocationService extends Service implements LocationListener
     private static final long MIN_DISTANCE_FOR_UPDATES = 10; // (m)
     private static final long MIN_TIME_BW_UPDATES = 10000; // (msec)
     protected LocationManager locationManager;
+    private boolean exactLocation = false;
 
     public LocationService(Context mContext)
     {
@@ -47,7 +47,7 @@ public class LocationService extends Service implements LocationListener
     }
 
     // Default constructor demanded for service declaration in AndroidManifest.xml
-    //public LocationService () {}
+    public LocationService () {}
 
     private void getLocation()
     {
@@ -71,34 +71,11 @@ public class LocationService extends Service implements LocationListener
                 Toast.makeText(mContext, getString(R.string.no_provider), Toast.LENGTH_SHORT).show();
             }
 
-            // if only Network is enabled get position using Network Service
-            if (checkNetwork && !checkGPS)
-            {
-                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                {
-                    locationManager.requestLocationUpdates(
-                        LocationManager.NETWORK_PROVIDER,
-                        MIN_TIME_BW_UPDATES,
-                        MIN_DISTANCE_FOR_UPDATES, this);
-
-                    if (locationManager != null)
-                    {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null)
-                        {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                            height = 0;
-                            uncertainty = 500;
-                        }
-                    }
-                }
-            }
-
             // if GPS is enabled get position using GPS Service
-            if (checkGPS)
+            if (checkGPS && canGetLocation)
             {
-                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
                 {
                     locationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
@@ -108,17 +85,51 @@ public class LocationService extends Service implements LocationListener
                     if (locationManager != null)
                     {
                         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
                         if (location != null)
                         {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
                             height = location.getAltitude();
                             uncertainty = location.getAccuracy();
+                            exactLocation = true;
+                        }
+
+                    }
+                }
+            }
+            
+            if (!exactLocation)
+            {
+                // if Network is enabled and still no GPS fix achieved
+                if (checkNetwork && canGetLocation)
+                {
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    {
+                        locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_FOR_UPDATES, this);
+
+                        if (locationManager != null)
+                        {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                            if (location != null)
+                            {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                                height = location.getAltitude(); // 0
+                                uncertainty = location.getAccuracy(); // 200
+                                exactLocation = false;
+                            }
+
                         }
                     }
                 }
             }
-
+            
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -197,24 +208,24 @@ public class LocationService extends Service implements LocationListener
     @Override
     public void onLocationChanged(Location location)
     {
-
+        // do nothing
     }
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle)
     {
-
+        // do nothing
     }
 
     @Override
     public void onProviderEnabled(String s)
     {
-
+        // do nothing
     }
 
     @Override
     public void onProviderDisabled(String s)
     {
-
+        // do nothing
     }
 }

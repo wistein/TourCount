@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/widgetPlz1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -76,7 +76,7 @@
 
                 <TextView
                     android:id="@+id/widgetCity"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -113,7 +113,7 @@
 
                 <TextView
                     android:id="@+id/widgetPlace"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -158,7 +158,7 @@
 
                 <TextView
                     android:id="@+id/widgetTemp1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -194,7 +194,7 @@
 
                 <TextView
                     android:id="@+id/widgetWind1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -230,7 +230,7 @@
 
                 <TextView
                     android:id="@+id/widgetClouds1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -277,7 +277,7 @@
 
                 <TextView
                     android:id="@+id/widgetDate1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -314,7 +314,7 @@
 
                 <TextView
                     android:id="@+id/widgetStartTm1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
@@ -351,7 +351,7 @@
 
                 <TextView
                     android:id="@+id/widgetEndTm1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:paddingBottom="5dp"
