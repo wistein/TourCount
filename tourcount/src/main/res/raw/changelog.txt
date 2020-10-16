@@ -55,11 +55,11 @@
 
 $ 3.2.4
   % Version 3.2.4
-  _ 2020-10-06
+  _ 2020-10-16
 		* Layout and function of Edit species list improved
 		* Outdated code names updated
 		* Permission handling for Access Background Location
-		* Project adaption for Android Studio 4.0.2
+		* Project adaption for Android Studio 4.1 and Gradle 6.5
 
 $ 3.2.3
   % Version 3.2.3

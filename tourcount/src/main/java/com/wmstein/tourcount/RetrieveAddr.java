@@ -21,29 +21,28 @@ import static android.content.ContentValues.TAG;
 
 /**************************************************************************
  * Get, parse and store address info from Reverse Geocoder of OpenStreetMap
- * 
- * Copyright 2018 wmstein, created on 2018-03-10,
- * last modification on 2018-07-23
+ *
+ * Copyright 2018 wmstein, created on 2018-03-10.
+ * last modification on 2020-10-16
  */
 public class RetrieveAddr extends AsyncTask<URL, Void, String>
 {
     @SuppressLint("StaticFieldLeak")
-    private Context aContext;
+    private final Context aContext;
 
-    RetrieveAddr (Context context)
+    RetrieveAddr(Context context)
     {
         aContext = context;
     }
-    
+
     @Override
     protected String doInBackground(URL... params)
     {
         URL url = params[0];
         String xmlString;
-        
+
         try
         {
-            //HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); // https-version?
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
@@ -62,8 +61,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
 
             xmlString = convertStreamToString(iStream);
             if (MyDebug.LOG)
-                Log.d(TAG, "xmlString: " + xmlString); // Log content of url
-
+                Log.d(TAG, "xmlString: " + xmlString); // Log gzip-content of url
 
         } catch (IOException e)
         {
@@ -82,8 +80,8 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
 
         SectionDataSource sectionDataSource;
         TempDataSource tempDataSource;
-        String sLocality = "", sPlz = "", sCity = "", sPlace = "", sCountry = "";
-        
+        String sLocality, sPlz, sCity, sPlace, sCountry;
+
         // parse the XML content 
         if (xmlString.contains("<addressparts>"))
         {
@@ -192,7 +190,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
                 }
             }
             sCity = city.toString();
-            
+
             // 5. country 
             if (xmlString.contains("<country>"))
             {
@@ -209,22 +207,22 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             section = sectionDataSource.getSection();
 
             // Save sCountry, sPlz, sCity, sPlace to DB Section
-            if(sCountry.length() > 0)
+            if (sCountry.length() > 0)
             {
                 section.country = sCountry;
                 sectionDataSource.updateEmptyCountry(section.id, section.country);
             }
-            if(sPlz.length() > 0)
+            if (sPlz.length() > 0)
             {
                 section.plz = sPlz;
                 sectionDataSource.updateEmptyPlz(section.id, section.plz);
             }
-            if(sCity.length() > 0)
+            if (sCity.length() > 0)
             {
                 section.city = sCity;
                 sectionDataSource.updateEmptyCity(section.id, section.city);
             }
-            if(sPlace.length() > 0)
+            if (sPlace.length() > 0)
             {
                 section.place = sPlace;
                 sectionDataSource.updateEmptyPlace(section.id, section.place);
@@ -236,7 +234,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             tempDataSource.open();
             temp = tempDataSource.getTemp();
 
-            if(sLocality.length() > 0)
+            if (sLocality.length() > 0)
             {
                 temp.temp_loc = sLocality;
                 tempDataSource.saveTempLoc(temp);
@@ -276,5 +274,5 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
         }
         return sb.toString();
     }
-    
+
 }
