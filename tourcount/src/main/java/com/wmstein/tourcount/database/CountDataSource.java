@@ -24,7 +24,7 @@ import static com.wmstein.tourcount.database.DbHelper.C_COUNT_PI;
 /*************************************************************
  * Based on CountDataSource.java by milo on 05/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
- * last change on 2019-07-31
+ * last change on 2020-10-17
  */
 public class CountDataSource
 {
@@ -597,7 +597,7 @@ public class CountDataSource
     {
         try
         {
-            Class res = R.drawable.class;
+            Class<R.drawable> res = R.drawable.class;
             Field idField = res.getField(rName);
             return idField.getInt(null);
         } catch (Exception e)

@@ -18,7 +18,7 @@ import java.util.Objects;
  * ListSpeciesWidget shows count info area for a species
  * ListSpeciesActivity shows the result page
  * Created for TourCount by wmstein on 15.03.2016
- * Last edited on 2019-02-12
+ * Last edited on 2020-10-17
  */
 public class ListSpeciesWidget extends RelativeLayout
 {
@@ -145,7 +145,7 @@ public class ListSpeciesWidget extends RelativeLayout
     {
         try
         {
-            Class res = R.drawable.class;
+            Class<R.drawable> res = R.drawable.class;
             Field idField = res.getField(rName);
             return idField.getInt(null);
         } catch (Exception e)

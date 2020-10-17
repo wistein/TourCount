@@ -55,9 +55,12 @@
 
 $ 3.2.4
   % Version 3.2.4
-  _ 19.09.2020
+  _ 17.10.2020
 		* Verbesserung von Layout und Funktion des Spezieslisten-Editors
 		* Veraltete Code-Bezeichnungen aktualisiert
+		* Berechtigungsabfrage für Standortabfrage im Hintergrund
+		* Verwendung von Android Studio 4.1 mit build:gradle:4.0.2 
+  		anstelle von 4.1 (da dort Bilder-Ladefunktion defekt)
 
 $ 3.2.3
   % Version 3.2.3

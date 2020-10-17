@@ -19,7 +19,7 @@ import java.util.Objects;
  * Used by EditSpecListActivity
  * shows line with species name, code and delete button
  * Adopted for TourCount by wmstein on 2016-02-18
- * last edited by wmstein on 2019-04-02
+ * last edited by wmstein on 2020-10-17
  */
 public class CountEditWidget extends LinearLayout implements Serializable
 {
@@ -97,7 +97,7 @@ public class CountEditWidget extends LinearLayout implements Serializable
     {
         try
         {
-            Class res = R.drawable.class;
+            Class<R.drawable> res = R.drawable.class;
             Field idField = res.getField(rName);
             return idField.getInt(null);
         } catch (Exception e)
