@@ -17,21 +17,24 @@ import androidx.preference.PreferenceManager;
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2020-04-22
+ * last change on 2020-10-18
  */
 public class TourCountApplication extends Application
 {
     private static final String TAG = "TourCountAppl";
     private static SharedPreferences prefs;
+    private static Context context;
     private BitmapDrawable bMapDraw;
     private Bitmap bMap;
     int width;
     int height;
-    
+    int resID;
+
     @Override
     public void onCreate()
     {
         super.onCreate();
+        TourCountApplication.context = getApplicationContext();
         bMapDraw = null;
         bMap = null;
         try
@@ -42,6 +45,12 @@ public class TourCountApplication extends Application
             if (MyDebug.LOG)
                 Log.e(TAG, e.toString());
         }
+    }
+
+    // Provide access to Application Context
+    public static Context getAppContext()
+    {
+        return TourCountApplication.context;
     }
 
     public BitmapDrawable getBackground()
@@ -169,6 +178,20 @@ public class TourCountApplication extends Application
     public static SharedPreferences getPrefs()
     {
         return prefs;
+    }
+
+    // Get resource ID from resource name
+    public int getResId(String rName) // non-static method
+    {
+        try
+        {
+            resID = getAppContext().getResources().getIdentifier(rName, "drawable",
+                getAppContext().getPackageName());
+            return resID;
+        } catch (Exception e)
+        {
+            return 0;
+        }
     }
 
 }

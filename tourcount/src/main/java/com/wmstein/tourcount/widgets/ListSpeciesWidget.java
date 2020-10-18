@@ -9,16 +9,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wmstein.tourcount.R;
+import com.wmstein.tourcount.TourCountApplication;
 import com.wmstein.tourcount.database.Count;
 
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 /*******************************************************
  * ListSpeciesWidget shows count info area for a species
  * ListSpeciesActivity shows the result page
  * Created for TourCount by wmstein on 15.03.2016
- * Last edited on 2020-10-17
+ * Last edited on 2020-10-18
  */
 public class ListSpeciesWidget extends RelativeLayout
 {
@@ -59,7 +59,10 @@ public class ListSpeciesWidget extends RelativeLayout
     {
         String rname = "p" + spec.code; // species picture resource name
 
-        int resId = getResId(rname);
+        // make instance of class TransektCountApplication to reference non-static method 
+        TourCountApplication tourCountApp = new TourCountApplication();
+
+        int resId = tourCountApp.getResId(rname);
         if (resId != 0)
         {
             picSpecies.setImageResource(resId);
@@ -138,20 +141,6 @@ public class ListSpeciesWidget extends RelativeLayout
     public String getSpec_name(Count newcount)
     {
         return newcount.name;
-    }
-
-    // Get resource ID from resource name
-    private int getResId(String rName)
-    {
-        try
-        {
-            Class<R.drawable> res = R.drawable.class;
-            Field idField = res.getField(rName);
-            return idField.getInt(null);
-        } catch (Exception e)
-        {
-            return 0;
-        }
     }
 
 }

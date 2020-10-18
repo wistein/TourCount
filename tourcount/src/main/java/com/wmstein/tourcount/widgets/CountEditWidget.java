@@ -9,10 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.wmstein.tourcount.R;
+import com.wmstein.tourcount.TourCountApplication;
 import com.wmstein.tourcount.database.Count;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 /************************************************
@@ -79,7 +79,10 @@ public class CountEditWidget extends LinearLayout implements Serializable
     {
         String rname = "p" + spec.code; // species picture resource name
 
-        int resId = getResId(rname);
+        // make instance of class TransektCountApplication to reference non-static method 
+        TourCountApplication tourCountApp = new TourCountApplication();
+
+        int resId = tourCountApp.getResId(rname);
         if (resId != 0)
         {
             pSpecies.setImageResource(resId);
@@ -92,18 +95,4 @@ public class CountEditWidget extends LinearLayout implements Serializable
         deleteButton.setTag(id);
     }
 
-    // Get resource ID from resource name
-    private int getResId(String rName)
-    {
-        try
-        {
-            Class<R.drawable> res = R.drawable.class;
-            Field idField = res.getField(rName);
-            return idField.getInt(null);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-    }
-    
 }
