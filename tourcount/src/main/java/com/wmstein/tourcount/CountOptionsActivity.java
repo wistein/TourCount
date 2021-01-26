@@ -34,7 +34,7 @@ import androidx.core.content.ContextCompat;
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2020-04-23
+ * last edited on 2021-01-26
  */
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -129,7 +129,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         countDataSource.open();
 
         count = countDataSource.getCountById(count_id);
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle(count.name);
 
         enw = new EditNotesWidget(this, null);

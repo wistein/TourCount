@@ -45,10 +45,11 @@ import androidx.core.content.ContextCompat;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2020-04-23
+ * last edit on 2021-01-26
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
+    @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
     SharedPreferences prefs;
@@ -124,7 +125,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
         head_area = findViewById(R.id.edit_head);
 
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle(getString(R.string.editHeadTitle));
     }
 

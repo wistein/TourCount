@@ -63,11 +63,12 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2020-04-23
+ * last modification on 2021-01-26
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountWelcomeAct";
+    @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
     private static final int FILE_CHOOSER = 11;
@@ -101,7 +102,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private File outfile;
     private boolean mExternalStorageAvailable = false;
     private boolean mExternalStorageWriteable = false;
-    private String state = Environment.getExternalStorageState();
+    private final String state = Environment.getExternalStorageState();
     private AlertDialog alert;
     private final Handler mHandler = new Handler();
 
@@ -476,24 +477,20 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.viewCounts)
         {
+            Intent intent;
             if (screenOrientL)
             {
-                Intent intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
-                intent.putExtra("Latitude", latitude);
-                intent.putExtra("Longitude", longitude);
-                intent.putExtra("Height", height);
-                intent.putExtra("Uncert", uncertainty);
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
             }
             else
             {
-                Intent intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-                intent.putExtra("Latitude", latitude);
-                intent.putExtra("Longitude", longitude);
-                intent.putExtra("Height", height);
-                intent.putExtra("Uncert", uncertainty);
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             }
+            intent.putExtra("Latitude", latitude);
+            intent.putExtra("Longitude", longitude);
+            intent.putExtra("Height", height);
+            intent.putExtra("Uncert", uncertainty);
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
         else if (id == R.id.editMeta)
         {
@@ -515,24 +512,20 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Handle button click "Counting" here 
     public void viewCounts(View view)
     {
+        Intent intent;
         if (screenOrientL)
         {
-            Intent intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
-            intent.putExtra("Latitude", latitude);
-            intent.putExtra("Longitude", longitude);
-            intent.putExtra("Height", height);
-            intent.putExtra("Uncert", uncertainty);
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
         }
         else
         {
-            Intent intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-            intent.putExtra("Latitude", latitude);
-            intent.putExtra("Longitude", longitude);
-            intent.putExtra("Height", height);
-            intent.putExtra("Uncert", uncertainty);
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
         }
+        intent.putExtra("Latitude", latitude);
+        intent.putExtra("Longitude", longitude);
+        intent.putExtra("Height", height);
+        intent.putExtra("Uncert", uncertainty);
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     // Handle button click "Prepare Inspection" here 
@@ -1304,7 +1297,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             {
                 showSnackbar(getString(R.string.reset2basic));
             }
-            //noinspection ConstantConditions
             getSupportActionBar().setTitle("");
         });
 
@@ -1565,7 +1557,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     editor.putInt("item_Position", 0);
                     editor.apply();
 
-                    //noinspection ConstantConditions
                     getSupportActionBar().setTitle("");
                 } catch (IOException e)
                 {

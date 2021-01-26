@@ -14,7 +14,7 @@ import java.util.Objects;
 /*************************************************************
  * ListMetaWidget.java used by ListSpeciesActivity.java 
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
- * last edited on 2019-02-12
+ * last edited on 2021-01-26
  */
 public class ListMetaWidget extends LinearLayout
 {
@@ -126,7 +126,7 @@ public class ListMetaWidget extends LinearLayout
     }
     public void setWidget_muncert2(double name)
     {
-        widget_muncert2.setText(String.format("%s m", String.valueOf(Math.round(name))));
+        widget_muncert2.setText(String.format("%s m", Math.round(name)));
     }
     
 }

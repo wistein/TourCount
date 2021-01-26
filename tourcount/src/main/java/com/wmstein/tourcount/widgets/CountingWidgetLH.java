@@ -22,22 +22,22 @@ import java.util.Objects;
  * used by Counting(L)Activity
  * Created by wmstein 2016-12-18
  * modified for TourCount on 2018-03-31
- * last edited on 2020-04-17
+ * last edited on 2021-01-26
  */
 public class CountingWidgetLH extends RelativeLayout
 {
-    private TextView namef1i;
-    private TextView namef2i;
-    private TextView namef3i;
-    private TextView namepi;
-    private TextView nameli;
-    private TextView nameei;
-    private AutoFitText countCountf1i; // section internal counters
-    private AutoFitText countCountf2i;
-    private AutoFitText countCountf3i;
-    private AutoFitText countCountpi;
-    private AutoFitText countCountli;
-    private AutoFitText countCountei;
+    private final TextView namef1i;
+    private final TextView namef2i;
+    private final TextView namef3i;
+    private final TextView namepi;
+    private final TextView nameli;
+    private final TextView nameei;
+    private final AutoFitText countCountf1i; // section internal counters
+    private final AutoFitText countCountf2i;
+    private final AutoFitText countCountf3i;
+    private final AutoFitText countCountpi;
+    private final AutoFitText countCountli;
+    private final AutoFitText countCountei;
 
     public Count count;
 

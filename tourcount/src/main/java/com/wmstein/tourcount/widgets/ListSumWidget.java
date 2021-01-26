@@ -14,12 +14,12 @@ import java.util.Objects;
  * ListSumWidget shows count totals area for
  * ListSpeciesActivity that shows the result page
  * Created for TourCount by wmstein on 2017-05-27,
- * last edited on 2020-04-17
+ * last edited on 2021-01-26
  */
 public class ListSumWidget extends LinearLayout
 {
-    private TextView sumSpecies;
-    private TextView sumIndividuals;
+    private final TextView sumSpecies;
+    private final TextView sumIndividuals;
     
     public ListSumWidget(Context context, AttributeSet attrs)
     {

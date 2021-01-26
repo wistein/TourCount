@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,12 +18,13 @@ import androidx.preference.PreferenceManager;
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2020-10-18
+ * last change on 2021-01-26
  */
 public class TourCountApplication extends Application
 {
     private static final String TAG = "TourCountAppl";
     private static SharedPreferences prefs;
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
     private BitmapDrawable bMapDraw;
     private Bitmap bMap;

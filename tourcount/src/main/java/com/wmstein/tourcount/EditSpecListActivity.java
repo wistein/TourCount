@@ -53,11 +53,12 @@ import androidx.core.content.ContextCompat;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2020-09-19
+ * last edited on 2021-01-26
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountEditSecAct";
+    @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
     private ArrayList<CountEditWidget> savedCounts;
@@ -206,7 +207,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         oldname = section.name;
         try
         {
-            //noinspection ConstantConditions
             getSupportActionBar().setTitle(oldname);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e)

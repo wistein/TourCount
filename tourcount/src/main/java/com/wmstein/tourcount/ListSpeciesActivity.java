@@ -39,11 +39,12 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2020-01-26
+ * last edited on 2021-01-26
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "tourcountListSpeciesAct";
+    @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
     private SharedPreferences prefs;
 
@@ -92,7 +93,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         ScrollView listSpec_screen = findViewById(R.id.listSpecScreen);
         listSpec_screen.setBackground(tourCount.getBackground());
 
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle(getString(R.string.viewSpecTitle));
 
         spec_area = findViewById(R.id.listSpecLayout);
@@ -132,9 +132,9 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     {
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sumo = 0;
         int sumsp = 0, sumind = 0; // sum of counted species, sum of counted individuals
-        double longi = 0, lati = 0, uncer = 0;
+        double longi, lati, uncer;
         int frst = 0;
-        double lo = 0, la = 0, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc = 0, uncer1 = 0;
+        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
         headDataSource.open();
         sectionDataSource.open();

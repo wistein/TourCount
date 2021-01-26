@@ -66,7 +66,7 @@ import androidx.core.content.ContextCompat;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2020-04-23
+ * last modification on 2021-01-26
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -273,7 +273,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             finish();
         }
 
-        //noinspection ConstantConditions
         getSupportActionBar().setTitle(section.name);
 
         String[] idArray;
@@ -597,7 +596,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -651,7 +649,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -682,7 +679,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f1i;
         if (spec_count > 0)
@@ -720,7 +716,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f1i;
         if (spec_count > 0)
@@ -785,7 +780,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -839,7 +833,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -870,7 +863,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f2i;
         if (spec_count > 0)
@@ -907,7 +899,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f2i;
         if (spec_count > 0)
@@ -969,7 +960,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1023,7 +1013,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1054,7 +1043,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f3i;
         if (spec_count > 0)
@@ -1091,7 +1079,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f3i;
         if (spec_count > 0)
@@ -1153,7 +1140,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1207,7 +1193,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1238,7 +1223,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_pi;
         if (spec_count > 0)
@@ -1275,7 +1259,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_pi;
         if (spec_count > 0)
@@ -1337,7 +1320,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1391,7 +1373,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1422,7 +1403,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_li;
         if (spec_count > 0)
@@ -1459,7 +1439,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_li;
         if (spec_count > 0)
@@ -1521,7 +1500,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1575,7 +1553,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        //noinspection ConstantConditions
         name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
@@ -1606,7 +1583,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_ei;
         if (spec_count > 0)
@@ -1642,7 +1618,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         buttonSound();
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        //noinspection ConstantConditions
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_ei;
         if (spec_count > 0)

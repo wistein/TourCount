@@ -2,11 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2020, Wilhelm Stein
 
-#### Version 3.2.4 (2020-10-18)
+#### Version 3.2.4 (2021-01-26)
 - Layout and function of Edit species list improved
 - Outdated code names updated
 - Permission handling for Access Background Location
-- Project adaption for Android Studio 4.1 and Gradle 6.5
+- Project adaption for Android Studio 4.1.2 and Gradle 6.5
 - Fix for broken loading picture function since Gradle 6.5
 
 #### Version 3.2.3 (2020-09-09)

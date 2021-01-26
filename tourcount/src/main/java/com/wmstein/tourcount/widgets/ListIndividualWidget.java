@@ -14,7 +14,7 @@ import java.util.Objects;
 /**********************************
  * Created by wmstein on 2018-02-22
  * used by ListSpeciesActivity
- * Last edited on 2019-02-12
+ * Last edited on 2021-01-26
  */
 public class ListIndividualWidget extends RelativeLayout
 {
@@ -91,7 +91,7 @@ public class ListIndividualWidget extends RelativeLayout
         }
         else
         {
-            txtIndHt.setText(String.format("%s m", String.valueOf(Math.round(individual.coord_z))));
+            txtIndHt.setText(String.format("%s m", Math.round(individual.coord_z)));
         }
         txtIndStat.setText(String.valueOf(individual.state_1_6));
         txtIndCnt.setText(String.valueOf(individual.icount));

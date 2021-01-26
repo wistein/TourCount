@@ -14,7 +14,7 @@ import com.wmstein.tourcount.R;
  * Adopted for TourCount by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31
- * last edited on 2020-04-17
+ * last edited on 2021-01-26
  */
 public class DbHelper extends SQLiteOpenHelper
 {
@@ -85,7 +85,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String T_TEMP_LOC = "temp_loc";
     public static final String T_TEMP_CNT = "temp_cnt";
 
-    private Context mContext;
+    private final Context mContext;
 
     // constructor
     public DbHelper(Context context)

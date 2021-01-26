@@ -43,11 +43,12 @@ import androidx.core.content.ContextCompat;
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2020-04-23
+ * last modification an 2021-01-26
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountEditIndivAct";
+    @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
     private SharedPreferences prefs;
     private Individuals individuals;
@@ -182,7 +183,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // set title
         try
         {
-            //noinspection ConstantConditions
             getSupportActionBar().setTitle(specName);
         } catch (NullPointerException e)
         {
