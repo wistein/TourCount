@@ -5,3 +5,4 @@ Version 3.2.4 (2021-04-11)
 - Project adaption for Android Studio 4.1.2 and Gradle 6.5
 - Fix for broken loading picture function since Gradle 6.5
 - Some pictures improved
+- Species family names updated where appropriate
