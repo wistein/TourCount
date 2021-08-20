@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2021, Wilhelm Stein
 
+#### Version 3.2.6 (2021-08-20)
+- Project adaption for Android Studio 2020.3.1 and Gradle 6.7.1
+- Some butterfly names updated
+
 #### Version 3.2.5 (2021-06-05)
 - Project adaption for Android Studio 4.2.1 and Gradle 6.7.1
 - Compiled with SDK Ver. 30 for targetSdkVersion 29 (targetSdkVersion 30 prevents installation from "unknown sources" and inhibits testing of the own compilation under Android 11!)

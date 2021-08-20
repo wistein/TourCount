@@ -24,7 +24,7 @@
         <item comment="03998">Zygaena filipendulae</item>
 		<item comment="06605">Pyrausta purpuralis</item>
 		<item comment="06788">Aglia tau</item>
-        <item comment="06843">Macrogl. stellatarum</item>
+        <item comment="06843">Macroglossa stellatarum</item>
 		<item comment="06919">Carterocephalus palaemon</item>
         <item comment="06923">Thymelicus lineola</item>
         <item comment="06924">Thymelicus sylvestris</item>
@@ -32,7 +32,7 @@
 		<item comment="06955">Parnassius apollo</item>
 		<item comment="06958">Iphiclides podalirius</item>
         <item comment="06960">Papilio machaon</item>
-        <item comment="06966">Leptidea sinapis</item>
+        <item comment="06966">Leptidea sinapis&#47;juvern.</item>
 		<item comment="06973">Anthocharis cardamines</item>
 		<item comment="06993">Aporia crataegi</item>
         <item comment="06995">Pieris brassicae</item>
@@ -47,7 +47,7 @@
 		<item comment="07037">Lycaena virgaureae</item>
 		<item comment="07039">Lycaena tityrus</item>
 		<item comment="07047">Thecla betulae</item>
-		<item comment="07049">Neozephyrus quercus</item>
+		<item comment="07049">Favonius quercus</item>
 		<item comment="07058">Callophrys rubi</item>
 		<item comment="07063">Satyrium pruni</item>
 		<item comment="07093">Cupido argiades</item>
@@ -74,9 +74,9 @@
         <item comment="07307">Pararge aegeria</item>
         <item comment="07309">Lasiommata megera</item>
 		<item comment="07312">Lasiommata maera</item>
-        <item comment="07334">Coenon. pamphilus</item>
-        <item comment="07340">Maniola tithonus</item>
-        <item comment="07344">Aphant. hyperantus</item>
+        <item comment="07334">Coenonympha pamphilus</item>
+        <item comment="07340">Pyronia tithonus</item>
+        <item comment="07344">Aphantopus hyperantus</item>
         <item comment="07350">Maniola jurtina</item>
 		<item comment="07360">Erebia ligea</item>
 		<item comment="07361">Erebia euryale</item>
@@ -87,7 +87,7 @@
         <item comment="07804">Ematurga atomaria</item>
         <item comment="07916">Siona lineata</item>
 		<item comment="08275">Epirrhoe alternata</item>
-        <item comment="08289">Camptogr. bilineata</item>
+        <item comment="08289">Camptogramma bilineata</item>
 		<item comment="08967">Callistege mi</item>
         <item comment="08969">Euclidia glyphica</item>
         <item comment="09056">Autographa gamma</item>
@@ -302,7 +302,7 @@
 		<item comment="06830">Acherontia atropos</item>
 		<item comment="06832">Sphinx ligustri</item>
 		<item comment="06834">Sphinx pinastri</item>
-		<item comment="06840">Haemaris fuciformis</item>
+		<item comment="06840">Hemaris fuciformis</item>
 		<item comment="06843">Macroglossum stellatarum</item>
 		<item comment="06849">Proserpinus proserpina</item>
 		<item comment="06853">Hyles euphorbiae</item>
@@ -346,7 +346,7 @@
 		<item comment="06960">Papilio machaon</item>
 		<item comment="06961">Papilio hospiton</item>
 		<item comment="06962">Papilio alexanor</item>
-		<item comment="06966">Leptidea sinapis</item>
+		<item comment="06966">Leptidea sinapis&#47;juvern.</item>
 		<item comment="06967">Leptidea reali</item>
 		<item comment="06968">Leptidea duponcheli</item>
 		<item comment="06969">Leptidea morsei</item>
@@ -398,7 +398,7 @@
 		<item comment="07041">Lycaena hippothoe</item>
 		<item comment="07043">Lycaena thersamon</item>
 		<item comment="07047">Thecla betulae</item>
-		<item comment="07049">Neozephyrus quercus</item>
+		<item comment="07049">Favonius quercus</item>
 		<item comment="07054">Tomares ballus</item>
 		<item comment="07058">Callophrys rubi</item>
 		<item comment="07060">Callophrys avis</item>
