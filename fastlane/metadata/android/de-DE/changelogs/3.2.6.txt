@@ -1,0 +1,4 @@
+Version 3.2.6 (22.08.2021)
+- Projekt Anpassung für Android Studio 2020.3.1 und Gradle 7.0.1
+- Einige veraltete Schmetterlingsnamen angepasst
+- Einige fehlende Schmetterlingsabbildungen hinzugefügt

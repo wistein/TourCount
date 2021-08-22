@@ -55,15 +55,16 @@
 
 $ 3.2.6
   % Version 3.2.6
-  _ 2021-08-20
-		* Project adaption for Android Studio 2020.3.1 and Gradle 6.7.1
-		* Some butterfly names updated
+  _ 2021-08-22
+		* Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
+		* Some outdated butterfly names updated (in app and example DBs)
+		* Some missing butterfly pictures added
 		
 $ 3.2.5
   % Version 3.2.5
   _ 2021-06-05
 		* Project adaption for Android Studio 4.2.1 and Gradle 6.7.1
-		* Compiled with SDK Ver. 30 for targetSdkVersion 29 (targetSdkVersion 30 prevents installation from "unknown sources" and inhibits testing of the own compilation under Android 11!)
+		* Compiled with SDK Ver. 30 for targetSdkVersion 29 (targetSdkVersion 30 prevents installation from "unknown sources" and so inhibits testing of the own compilation under Android 11!)
 
 $ 3.2.4
   % Version 3.2.4

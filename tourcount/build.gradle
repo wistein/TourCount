@@ -6,6 +6,9 @@ android {
     defaultConfig {
         applicationId "com.wmstein.tourcount"
         minSdkVersion 19
+        // Compile with SDK Ver. 30 but for targetSdkVersion 29!
+        // (targetSdkVersion 30 prevents installation from "unknown sources" 
+        //  and so inhibits testing of the own compilation under Android 11) 
         targetSdkVersion 29
         versionCode 326
         versionName="3.2.6"
@@ -30,8 +33,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = 11
+        targetCompatibility = 11
     }
 
     applicationVariants.all { variant ->
