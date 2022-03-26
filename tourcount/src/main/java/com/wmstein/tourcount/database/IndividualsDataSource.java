@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,9 +15,10 @@ import java.util.List;
 
 import static com.wmstein.tourcount.database.DbHelper.INDIVIDUALS_TABLE;
 
-/*************************************************
+/********************************************************************
+ * Class IndividualsDataSource provides methods for table Individuals
  * Created by wmstein for TourCount on 2016-04-20,
- * last edited on 2020-04-17
+ * last edited on 2022-03-24
  */
 public class IndividualsDataSource
 {
@@ -106,6 +108,7 @@ public class IndividualsDataSource
         database.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs);
     }
     
+    @SuppressLint("Range")
     private Individuals cursorToIndividuals(Cursor cursor)
     {
         Individuals newindividuals = new Individuals();

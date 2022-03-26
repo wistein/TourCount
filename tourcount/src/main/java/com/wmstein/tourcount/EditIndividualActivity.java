@@ -35,6 +35,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -42,8 +43,8 @@ import androidx.core.content.ContextCompat;
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
- * Copyright 2016-2018 wmstein, created on 2016-05-15, 
- * last modification an 2021-01-26
+ * Copyright 2016-2022 wmstein
+ * created on 2016-05-15, last modification an 2022-03-26
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -85,6 +86,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private int i_id, iAtt;
     private String specName;
     private Boolean sdata; // true: data saved already
+    private Boolean phase123; // true for butterfly (♂♀, ♂ or ♀), false for egg, caterpillar or pupa
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -183,7 +185,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         // set title
         try
         {
-            getSupportActionBar().setTitle(specName);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(specName);
         } catch (NullPointerException e)
         {
             if (MyDebug.LOG)
@@ -208,20 +210,41 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         case 2: // ♂
         case 3: // ♀
             eiw.setWidgetStadium2(getString(R.string.stadium_1));
+            phase123 = true;
             break;
         case 4: // Pupa
             eiw.setWidgetStadium2(getString(R.string.stadium_2));
+            phase123 = false;
             break;
         case 5: // Larva
             eiw.setWidgetStadium2(getString(R.string.stadium_3));
+            phase123 = false;
             break;
         case 6: // Egg
             eiw.setWidgetStadium2(getString(R.string.stadium_4));
+            phase123 = false;
             break;
         }
 
-        eiw.setWidgetState1(getString(R.string.state));
-        eiw.setWidgetState2(individuals.state_1_6);
+        if (phase123)
+        {
+            eiw.widgetState1(true); // headline state
+            eiw.setWidgetState1(getString(R.string.state));
+            
+            eiw.widgetState2(true); // state
+            String istate = Integer.toString(individuals.state_1_6);
+            if (istate.equals("0"))
+                eiw.setWidgetState2("-");
+            else
+                eiw.setWidgetState2(individuals.state_1_6);
+        }
+        else
+        {
+            eiw.widgetState1(false);
+            
+            eiw.setWidgetState2("-");
+            eiw.widgetState2(false);
+        }
 
         eiw.setWidgetCount1(getString(R.string.count1)); // icount
         eiw.setWidgetCount2(1);
@@ -282,19 +305,25 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         individuals.stadium = eiw.getWidgetStadium2();
 
         // State_1-6
-        int newstate = eiw.getWidgetState2();
-        if (newstate >= 0 && newstate < 7)
-        {
-            individuals.state_1_6 = newstate;
-        }
+        String newstate0  = eiw.getWidgetState2();
+        if (newstate0.equals("-"))
+            individuals.state_1_6 = 0;
         else
         {
+            int newstate = Integer.parseInt(newstate0);
+            if (newstate >= 0 && newstate < 7)
+            {
+                individuals.state_1_6 = newstate;
+            }
+            else
+            {
 //            Toast.makeText(this, getString(R.string.valState), Toast.LENGTH_SHORT).show();
-            showSnackbarRed(getString(R.string.valState));
+                showSnackbarRed(getString(R.string.valState));
 
-            return false;
+                return false;
+            }
         }
-
+        
         // number of individuals
         int newcount = eiw.getWidgetCount2();
         if (newcount > 0) // valid newcount
@@ -302,7 +331,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             switch (iAtt)
             {
             case 1:
-                //  counts.count = counts.count + newcount - 1; // -1 when CountingActivity already added 1
+                // ♂ or ♀
                 counts.count_f1i = counts.count_f1i + newcount;
                 individuals.icount = newcount;
                 individuals.sex = "-";
@@ -311,6 +340,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 break;
 
             case 2:
+                // ♂
                 counts.count_f2i = counts.count_f2i + newcount;
                 individuals.icount = newcount;
                 individuals.sex = "m";
@@ -318,6 +348,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 countDataSource.saveCountf2i(counts);
                 break;
             case 3:
+                // ♀
                 counts.count_f3i = counts.count_f3i + newcount;
                 individuals.icount = newcount;
                 individuals.sex = "f";
@@ -325,6 +356,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 countDataSource.saveCountf3i(counts);
                 break;
             case 4:
+                // pupa
                 counts.count_pi = counts.count_pi + newcount;
                 individuals.icount = newcount;
                 individuals.sex = "-";
@@ -332,6 +364,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 countDataSource.saveCountpi(counts);
                 break;
             case 5:
+                // larva
                 counts.count_li = counts.count_li + newcount;
                 individuals.icount = newcount;
                 individuals.sex = "-";
@@ -339,6 +372,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
                 countDataSource.saveCountli(counts);
                 break;
             case 6:
+                // eggs
                 counts.count_ei = counts.count_ei + newcount;
                 individuals.icount = newcount;
                 individuals.sex = "-";
@@ -507,6 +541,8 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
 
         // get reverse geocoding
+        // lat=0 and lon=0 position is in atlantic ocean with zero chance of meeting a butterfly,
+        // here the criteria makes sure that we actually got a location 
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -529,7 +565,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         }
     }
 
-    // Correct height with geoid offset from EarthGravitationalModel
+    // Correct height with geoid offset from a simplified EarthGravitationalModel
     private double correctHeight(double latitude, double longitude, double gpsHeight)
     {
         double corrHeight;

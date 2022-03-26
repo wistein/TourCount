@@ -1,10 +1,17 @@
 # History
 
-#### TourCount Copyright (C) 2016-2021, Wilhelm Stein
+#### TourCount Copyright (C) 2016-2022, Wilhelm Stein
+
+#### Version 3.2.7 (2022-03-26)
+- Project adaption for Android Studio 2021.1.1 and Gradle 7.2
+- Compiled for SDK version 31 (needed for current libs)
+- Some more moths species with pictures added
+- State info for pupa, caterpillar or egg omitted
+- Minor code corrections 
 
 #### Version 3.2.6 (2021-08-22)
 - Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
-- Some outdated butterfly names updated (in app and example DBs)
+- Some outdated butterfly names updated (within app and example DBs)
 - Some missing butterfly pictures added
 
 #### Version 3.2.5 (2021-06-05)

@@ -250,7 +250,7 @@
 
 	<string-array name="selSpecs">
 		<item comment="00063">Triodia sylvina</item>
-		<item comment="00080">Hepialus humili</item>
+		<item comment="00080">Hepialus humuli</item>
 		<item comment="01348">Yponomeuta padella</item>
 		<item comment="01350">Yponomeuta cagnagella</item>
 		<item comment="03925">Rhagades pruni</item>
@@ -566,21 +566,32 @@
 		<item comment="07503">Watsonalla binaria</item>
 		<item comment="07508">Drepana falcataria</item>
 		<item comment="07522">Abraxas grossulariata</item>
+		<item comment="07537">Heliomata glarearia</item>
 		<item comment="07547">Chiasmia clathrata</item>
+		<item comment="07561">Isturgia limbaria</item>
 		<item comment="07613">Opisthograptis luteolata</item>
 		<item comment="07620">Pseudopanthera macularia</item>
+		<item comment="07641">Selenia dentaria</item>
 		<item comment="07659">Ourapteryx sambucaria</item>
 		<item comment="07804">Ematurga atomaria</item>
 		<item comment="07824">Cabera pusaria</item>
+		<item comment="07826">Cabera exanthemata</item>
+		<item comment="07836">Campaea margaritaria</item>
+		<item comment="07902">Psodos quadrifaria</item>
 		<item comment="07916">Siona lineata</item>
+		<item comment="08000">Hemistola chrysoprasaria</item>
 		<item comment="08028">Timandra comae</item>
+		<item comment="08184">Idea aversata</item>
 		<item comment="08221">Lythria purpuraria</item>
+		<item comment="08253">Xanthorhoe ferrugata</item>
 		<item comment="08255">Xanthorhoe montanata</item>
 		<item comment="08274">Epirrhoe tristata</item>
 		<item comment="08275">Epirrhoe alternata</item>
 		<item comment="08289">Camptogramma bilineata</item>
 		<item comment="08304">Larentia clavaria</item>
+		<item comment="08330">Eulithis prunata</item>
 		<item comment="08411">Melanthia procellata</item>
+		<item comment="08447">Operophtera brumata</item>
 		<item comment="08631">Odezia atrata</item>
 		<item comment="08698">Clostera curtula</item>
 		<item comment="08750">Phalera bucephala</item>
@@ -591,7 +602,10 @@
 		<item comment="09051">Macdunnoughia confusa</item>
 		<item comment="09056">Autographa gamma</item>
 		<item comment="09338">Panemeria tenebrata</item>
+		<item comment="09417">Caradrina morpheus</item>
+		<item comment="09917">Lacanobia oleracea</item>
 		<item comment="10000">Mythimna conigera</item>
+		<item comment="10001">Mythimna ferrago</item>
 		<item comment="10099">Noctua comes</item>
 		<item comment="10102">Noctua janthina</item>
 		<item comment="10397">Orgya antiqua</item>
@@ -931,21 +945,32 @@
 		<item comment="07503">Oak hook-tip</item>
 		<item comment="07508">Pebble hook-tip</item>
 		<item comment="07522">Magpie moth</item>
+		<item comment="07537">-</item>
 		<item comment="07547">Latticed heath</item>
+		<item comment="07561">Frosted yellow</item>
 		<item comment="07613">Brimstone moth</item>
 		<item comment="07620">Speckled yellow</item>
+		<item comment="07641">Early thorn</item>
 		<item comment="07659">Swallow-tailed moth</item>
 		<item comment="07804">Common heath</item>
 		<item comment="07824">Common white wave</item>
+		<item comment="07826">Common wave</item>
+		<item comment="07836">Light emerald</item>
+		<item comment="07902">-</item>
 		<item comment="07916">Black-veined moth</item>
+		<item comment="08000">Small emerald</item>
 		<item comment="08028">Blood-vein</item>
+		<item comment="08184">Riband wave</item>
 		<item comment="08221">Purple-barred yellow</item>
+		<item comment="08253">Dark-barred twin-spot carpet</item>
 		<item comment="08255">Silver-ground carpet</item>
 		<item comment="08274">Small argent and sable</item>
 		<item comment="08275">Common carpet</item>
 		<item comment="08289">Yellow shell</item>
 		<item comment="08304">Mallow</item>
+		<item comment="08330">Phoenix</item>
 		<item comment="08411">Pretty chalk carpet</item>
+		<item comment="08447">Winter moth</item>
 		<item comment="08631">Chimney sweeper</item>
 		<item comment="08698">Chocolate-tip</item>
 		<item comment="08750">Buff-tip</item>
@@ -956,7 +981,10 @@
 		<item comment="09051">Dewick\'s plusia</item>
 		<item comment="09056">Silver Y</item>
 		<item comment="09338">Small yellow underwing</item>
+		<item comment="09417">Mottled rustic</item>
+		<item comment="09917">Bright-line brown-eye</item>
 		<item comment="10000">Brown-line bright eye</item>
+		<item comment="10001">Clay</item>
 		<item comment="10099">Lesser yellow underwing</item>
 		<item comment="10102">Langmaid\'s yellow underwing</item>
 		<item comment="10397">Vapourer</item>
@@ -1296,21 +1324,32 @@
 		<item>07503</item>
 		<item>07508</item>
 		<item>07522</item>
+		<item>07537</item>
 		<item>07547</item>
+		<item>07561</item>
 		<item>07613</item>
 		<item>07620</item>
+		<item>07641</item>
 		<item>07659</item>
 		<item>07804</item>
 		<item>07824</item>
+		<item>07826</item>
+		<item>07836</item>
+		<item>07902</item>
 		<item>07916</item>
+		<item>08000</item>
 		<item>08028</item>
+		<item>08184</item>
 		<item>08221</item>
+		<item>08253</item>
 		<item>08255</item>
 		<item>08274</item>
 		<item>08275</item>
 		<item>08289</item>
 		<item>08304</item>
+		<item>08330</item>
 		<item>08411</item>
+		<item>08447</item>
 		<item>08631</item>
 		<item>08698</item>
 		<item>08750</item>
@@ -1321,7 +1360,10 @@
 		<item>09051</item>
 		<item>09056</item>
 		<item>09338</item>
+		<item>09417</item>
+		<item>09917</item>
 		<item>10000</item>
+		<item>10001</item>
 		<item>10099</item>
 		<item>10102</item>
 		<item>10397</item>

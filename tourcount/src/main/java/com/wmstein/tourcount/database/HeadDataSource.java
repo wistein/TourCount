@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,7 +8,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 /*
- * Created by wmstein on 31.03.2016.
+ * Class HeadDataSource provides methods for table Head
+ * Created by wmstein on 2016-03-31,
+ * last edited on 2022-03-23
  */
 public class HeadDataSource
 {
@@ -42,6 +45,7 @@ public class HeadDataSource
         database.update(DbHelper.HEAD_TABLE, dataToInsert, null, null);
     }
 
+    @SuppressLint("Range")
     private Head cursorToHead(Cursor cursor)
     {
         Head head = new Head();

@@ -1,7 +1,9 @@
 package com.wmstein.tourcount.database;
 
 /**********************************
- * Created by wmstein on 18.02.2016
+ * Definitions for table Section
+ * Created by wmstein on 2016-02-18
+ * last edited on 2022-03-23
  */
 public class Section
 {

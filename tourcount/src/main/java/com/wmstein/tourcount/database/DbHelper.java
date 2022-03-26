@@ -10,11 +10,12 @@ import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 
 /**************************************************
- * Based on DbHelper created by milo on 05/05/2014.
- * Adopted for TourCount by wmstein on 2016-04-19,
+ * Basic structure by milo on 05/05/2014.
+ * Created by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31
- * last edited on 2021-01-26
+ * updated to version 4 on 2019-03-25
+ * last edited on 2022-03-24
  */
 public class DbHelper extends SQLiteOpenHelper
 {
@@ -245,7 +246,7 @@ public class DbHelper extends SQLiteOpenHelper
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Column already present: " + e.toString());
+                Log.e(TAG, "Column already present: " + e);
         }
 
         if (MyDebug.LOG)
@@ -268,7 +269,7 @@ public class DbHelper extends SQLiteOpenHelper
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Column already present: " + e.toString());
+                Log.e(TAG, "Column already present: " + e);
             colExist = true;
         }
 
@@ -330,7 +331,7 @@ public class DbHelper extends SQLiteOpenHelper
         }  catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Column I_CATEGORY already present: " + e.toString());
+                Log.e(TAG, "Column I_CATEGORY already present: " + e);
             colCatExist = true;
         }
 

@@ -1,9 +1,9 @@
 package com.wmstein.tourcount.database;
 
 /*************************************************
- * 
+ * Definitions for table Individuals
  * Created by wmstein for TourCount on 2016-04-20
- * Last updated on 2018-03-26
+ * Last edited on 2022-03-25
  */
 public class Individuals
 {
@@ -19,7 +19,7 @@ public class Individuals
     public String locality;
     public String sex;
     public String stadium;
-    public int state_1_6;
+    public int state_1_6; // takes numbers 0-6 with 0 translated to "-"
     public String notes;
     public int icount;
     public int icategory; // 1=♂♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg

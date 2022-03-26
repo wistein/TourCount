@@ -1,9 +1,10 @@
 package com.wmstein.tourcount.database;
 
-/********************************
- * Created by milo on 05/05/2014.
- * Adopted by wmstein on 2016-02-18, 
- * last change on 2019-03-25
+/*************************************************
+ * Definitions and basic functions for table Count
+ * Basic structure by milo on 05/05/2014.
+ * Created by wmstein on 2016-02-18, 
+ * last change on 2022-03-23
  */
 public class Count
 {

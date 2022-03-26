@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,10 +21,11 @@ import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F3I;
 import static com.wmstein.tourcount.database.DbHelper.C_COUNT_LI;
 import static com.wmstein.tourcount.database.DbHelper.C_COUNT_PI;
 
-/*************************************************************
- * Based on CountDataSource.java by milo on 05/05/2014.
- * Adopted for TourCount by wmstein on 2016-02-18,
- * last change on 2020-10-18
+/********************************************************
+ * Class CountDataSource provides methods for table Count
+ * Basic structure by milo on 05/05/2014.
+ * Created by wmstein on 2016-02-18,
+ * last change on 2022-03-23
  */
 public class CountDataSource
 {
@@ -84,6 +86,7 @@ public class CountDataSource
         }
     }
 
+    @SuppressLint("Range")
     private Count cursorToCount(Cursor cursor)
     {
         Count newcount = new Count();
@@ -286,7 +289,7 @@ public class CountDataSource
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
         {
-            String uname = cursor.getString(cursor.getColumnIndex(sname));
+            @SuppressLint("Range") String uname = cursor.getString(cursor.getColumnIndex(sname));
             uArray[i] = uname;
             i++;
             cursor.moveToNext();
@@ -309,7 +312,7 @@ public class CountDataSource
         int i = 0;
         while (!cursor.isAfterLast())
         {
-            String uname = cursor.getString(cursor.getColumnIndex(sname));
+            @SuppressLint("Range") String uname = cursor.getString(cursor.getColumnIndex(sname));
             uArray[i] = uname;
             i++;
             cursor.moveToNext();
@@ -331,7 +334,7 @@ public class CountDataSource
         int i = 0;
         while (!cursor.isAfterLast())
         {
-            String uname = cursor.getString(cursor.getColumnIndex(sname));
+            @SuppressLint("Range") String uname = cursor.getString(cursor.getColumnIndex(sname));
             uArray[i] = uname;
             i++;
             cursor.moveToNext();
@@ -352,7 +355,7 @@ public class CountDataSource
         int i = 0;
         while (!cursor.isAfterLast())
         {
-            String ucode = cursor.getString(cursor.getColumnIndex("code"));
+            @SuppressLint("Range") String ucode = cursor.getString(cursor.getColumnIndex("code"));
 
             String rname = "p" + ucode; // species picture resource name
             int resId = tourCountApp.getResId(rname);
@@ -385,7 +388,7 @@ public class CountDataSource
         int i = 0;
         while (!cursor.isAfterLast())
         {
-            String ucode = cursor.getString(cursor.getColumnIndex("code"));
+            @SuppressLint("Range") String ucode = cursor.getString(cursor.getColumnIndex("code"));
 
             String rname = "p" + ucode; // species picture resource name
             int resId = tourCountApp.getResId(rname);
@@ -418,7 +421,7 @@ public class CountDataSource
         int i = 0;
         while (!cursor.isAfterLast())
         {
-            String ucode = cursor.getString(cursor.getColumnIndex("code"));
+            @SuppressLint("Range") String ucode = cursor.getString(cursor.getColumnIndex("code"));
 
             String rname = "p" + ucode; // species picture resource name
             int resId = tourCountApp.getResId(rname);

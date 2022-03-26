@@ -14,7 +14,7 @@ import java.util.Objects;
 /***************************************************************
  * EditIndividualWidget.java used by EditIndividualActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
- * Last edited on 2019-02-12
+ * Last edited on 2022-03-26
  */
 public class EditIndividualWidget extends LinearLayout
 {
@@ -145,30 +145,54 @@ public class EditIndividualWidget extends LinearLayout
         widget_stadium2.setText(name);
     }
 
-    // get state with plausi
-    public int getWidgetState2()
+    public void widgetState1(Boolean enabled)
+    {
+        if (enabled)
+            widget_state1.setVisibility(VISIBLE);
+        else
+            widget_state1.setVisibility(INVISIBLE);
+    }
+
+
+    // get state number with plausi
+    public String getWidgetState2()
     {
         String text = widget_state2.getText().toString();
+        if (text.equals("-"))
+            text = "0";
         String regEx = "^[0-9]*$";
         if (text.equals(""))
-            return 0;
+            return "0";
         else if (!text.trim().matches(regEx))
-            return 100;
+            return "100";
         else
         {
             try
             {
-                return Integer.parseInt(text.replaceAll("[\\D]",""));
+                return text.replaceAll("[\\D]","");
             } catch (NumberFormatException nfe)
             {
-                return 0;
+                return "0";
             }
         }
+    }
+
+    public void widgetState2(Boolean enabled)
+    {
+        if (enabled)
+            widget_state2.setVisibility(VISIBLE);
+        else
+            widget_state2.setVisibility(INVISIBLE);
     }
 
     public void setWidgetState2(int name)
     {
         widget_state2.setText(String.valueOf(name));
+    }
+
+    public void setWidgetState2(String name)
+    {
+        widget_state2.setText(name);
     }
 
     // get number of individuals
@@ -190,7 +214,7 @@ public class EditIndividualWidget extends LinearLayout
         widget_count2.setText(String.valueOf(name));
     }
 
-    // get PLZ with plausi
+    // get note of individual
     public String getWidgetIndivNote2()
     {
         return widget_indivnote2.getText().toString();

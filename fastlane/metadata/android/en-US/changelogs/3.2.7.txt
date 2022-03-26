@@ -1,0 +1,6 @@
+Version 3.2.7 (2022-03-26)
+- Project adaption for Android Studio 2021.1.1 and Gradle 7.2
+- Compiled for SDK version 31 (needed for current libs)
+- Some more moths species with pictures added
+- State info for pupa, caterpillar or egg omitted
+- Minor code corrections 

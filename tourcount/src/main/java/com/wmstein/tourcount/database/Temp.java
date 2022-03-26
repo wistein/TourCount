@@ -1,8 +1,9 @@
 package com.wmstein.tourcount.database;
 
 /***********************************
+ * Definitions for table Temp
  * Created by wmstein on 2016-05-15,
- * last edited on 2020-04-17
+ * last edited on 2022-03-23
  */
 public class Temp
 {

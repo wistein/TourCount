@@ -291,7 +291,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
             spec_count = spec_countf1i + spec_countf2i + spec_countf3i 
                 + spec_countpi + spec_countli + spec_countei;
             
-            String tRem;
             
             // fill widget only for counted species
             if (spec_count > 0)
@@ -308,6 +307,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
                     spec_area.addView(iwidget);
 
                     // show individual notes only when provided
+                    String tRem;
                     ListIndivRemWidget rwidget = new ListIndivRemWidget(this, null);
                     if (iwidget.getIndNotes(indiv) == null)
                         tRem = "";

@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -207,7 +208,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         oldname = section.name;
         try
         {
-            getSupportActionBar().setTitle(oldname);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(oldname);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e)
         {

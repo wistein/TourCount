@@ -1,4 +1,4 @@
 Version 3.2.6 (2021-08-22)
 - Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
-- Some outdated butterfly names updated (in app and example DBs)
+- Some outdated butterfly names updated (within app and example DBs)
 - Some missing butterfly pictures added

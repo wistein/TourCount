@@ -57,13 +57,13 @@ import static java.lang.Math.sqrt;
 
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
- * import/export/help/info methods and starts
+ * import/export/help/info methods and lets you call 
  * EditMetaActivity, Counting(L)Activity and ListSpeciesActivity.
  * It uses further LocationService and PermissionDialogFragment.
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2021-01-26
+ * last modification on 2022-03-26
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -378,7 +378,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
     }
 
-        // Correct height with geoid offset from EarthGravitationalModel
+        // Correct height with geoid offset from simplified EarthGravitationalModel
         private double correctHeight(double latitude, double longitude, double gpsHeight)
         {
             double corrHeight;
@@ -659,9 +659,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     /***********************************************************************/
-    // Exports DB to SdCard/tourcount_yyyy-MM-dd_HHmmss.csv
-    // purged data set into appropriate table
-    // Excel can import this csv file with Unicode UTF-8 filter
+    // Exports DB to tourcount_yyyy-MM-dd_HHmmss.csv
+    //   with purged data set
+    // MS Excel or compatble programs can import this csv file with Unicode UTF-8 filter
     // 15.05.2016, wm.stein
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportDb2CSV()
@@ -686,6 +686,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         String plz, city, place;
         String date, start_tm, end_tm;
         int spstate;
+        String spstate0;
         double longi, lati, heigh, uncer;
         int frst, sum = 0;
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
@@ -868,7 +869,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 // get the number of individuals with attributes
                 int cnts; // individuals icount
                 String strcnts;
-                int cntsmf; // Imago male, female
+                int cntsmf; // Imago male or female
                 String strcntsmf;
                 int cntsm = 0; // Imago male
                 String strcntsm;
@@ -891,12 +892,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 while (curCSVCnt.moveToNext())
                 {
                     String spname = curCSVCnt.getString(7); // species name
-
                     String slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
                         + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_SEX + " = ? AND " + DbHelper.I_STADIUM + " = ?";
 
-                    curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1}); // select male
-
+                    // select male
+                    curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1}); 
                     while (curCSVInd.moveToNext())
                     {
                         cnts = curCSVInd.getInt(14); // individuals icount
@@ -904,8 +904,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     curCSVInd.close();
 
-                    curCSVInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1}); // select female
-
+                    // select female
+                    curCSVInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1}); 
                     while (curCSVInd.moveToNext())
                     {
                         cnts = curCSVInd.getInt(14); // individuals icount
@@ -916,8 +916,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
                         + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
 
-                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2}); // select pupa
-
+                    // select pupa
+                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2}); 
                     while (curCSVInd.moveToNext())
                     {
                         cnts = curCSVInd.getInt(14); // individuals icount
@@ -925,8 +925,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     curCSVInd.close();
 
+                    // select caterpillar
                     curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
-
                     while (curCSVInd.moveToNext())
                     {
                         cnts = curCSVInd.getInt(14); // individuals icount
@@ -934,8 +934,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     curCSVInd.close();
 
+                    // select egg
                     curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
-
                     while (curCSVInd.moveToNext())
                     {
                         cnts = curCSVInd.getInt(14); // individuals icount
@@ -1032,8 +1032,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.writeNext(arrEmpt);
 
                 // write individual headline
-                //    Species, Counts, Locality, Longitude, Latitude, Uncertainty, 
-                //    Date, Time, Sexus, Stadium, Stadium, State, Indiv.-Notes 
+                //    Individuals, Counts, Locality, Longitude, Latitude, Uncertainty, Height,
+                //    Date, Time, Sexus, Phase, State, Indiv.-Notes 
                 String[] arrIndHead =
                     {
                         getString(R.string.individuals),
@@ -1065,6 +1065,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     uncer = Math.rint(curCSVInd.getDouble(6));
                     heigh = Math.rint(curCSVInd.getDouble(5));
                     spstate = curCSVInd.getInt(12);
+                    if (spstate == 0)
+                        spstate0 ="-";
+                    else
+                        spstate0 = Integer.toString(spstate);
                     cnts = curCSVInd.getInt(14);
                     if (cnts > 0)
                         strcnts = String.valueOf(cnts);
@@ -1089,18 +1093,18 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
                     String[] arrIndividual =
                         {
-                            curCSVInd.getString(2),  //species name
-                            strcnts,                             //indiv. counts
-                            curCSVInd.getString(9),  //locality
-                            lngi,                                //longitude
-                            latit,                               //latitude
+                            curCSVInd.getString(2), //species name
+                            strcnts,                   //indiv. counts
+                            curCSVInd.getString(9), //locality
+                            lngi,                      //longitude
+                            latit,                     //latitude
                             String.valueOf(Math.round(uncer + 20)), //uncertainty + 20 m extra
-                            String.valueOf(Math.round(heigh)),   //height
+                            String.valueOf(Math.round(heigh)),      //height
                             curCSVInd.getString(7),  //date
                             curCSVInd.getString(8),  //time
                             curCSVInd.getString(10), //sexus
                             curCSVInd.getString(11), //stadium
-                            String.valueOf(spstate),             //state
+                            spstate0,                   //state
                             curCSVInd.getString(13)  //indiv. notes
                         };
                     csvWrite.writeNext(arrIndividual);
@@ -1297,7 +1301,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             {
                 showSnackbar(getString(R.string.reset2basic));
             }
-            getSupportActionBar().setTitle("");
+            Objects.requireNonNull(getSupportActionBar()).setTitle("");
         });
 
         builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
@@ -1557,7 +1561,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     editor.putInt("item_Position", 0);
                     editor.apply();
 
-                    getSupportActionBar().setTitle("");
+                    Objects.requireNonNull(getSupportActionBar()).setTitle("");
                 } catch (IOException e)
                 {
                     if (MyDebug.LOG)

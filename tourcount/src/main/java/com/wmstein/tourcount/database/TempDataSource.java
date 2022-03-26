@@ -1,14 +1,16 @@
 package com.wmstein.tourcount.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-/***********************************
+/******************************************************
+ * Class TempDataSource provides methods for table Temp
  * Created by wmstein on 2016-05-15,
- * last edited on 2019-01-27
+ * last edited on 2022-03-23
  */
 public class TempDataSource
 {
@@ -76,6 +78,7 @@ public class TempDataSource
         return temp;
     }
 
+    @SuppressLint("Range")
     private Temp cursorToTemp(Cursor cursor)
     {
         Temp temp = new Temp();

@@ -19,11 +19,11 @@ import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
-/**************************************************************************
- * Get, parse and store address info from Reverse Geocoder of OpenStreetMap
+/************************************************************************************
+ * Get, parse and store address info from Nominatim Reverse Geocoder of OpenStreetMap
  *
- * Copyright 2018 wmstein, created on 2018-03-10.
- * last modification on 2020-10-17
+ * Copyright 2018-2022 wmstein
+ * created on 2018-03-10, last modification on 2022-03-24
  */
 public class RetrieveAddr extends AsyncTask<URL, Void, String>
 {
@@ -66,7 +66,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
         } catch (IOException e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Problem with address handling: " + e.toString());
+                Log.e(TAG, "Problem with address handling: " + e);
             xmlString = "";
             return xmlString;
         }
@@ -97,7 +97,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             StringBuilder place = new StringBuilder();
             StringBuilder country = new StringBuilder();
 
-            // 1. locality with road, street and suburb
+            // 1. Get locality with road, street and suburb
             if (xmlString.contains("<road>"))
             {
                 sstart = xmlString.indexOf("<road>") + 6;
@@ -125,7 +125,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             }
             sLocality = locality.toString();
 
-            // 2. place with city_district and village
+            // 2. Get place with city_district and village
             if (xmlString.contains("<city_district>"))
             {
                 sstart = xmlString.indexOf("<city_district>") + 15;
@@ -146,7 +146,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             }
             sPlace = place.toString();
 
-            // 3. plz
+            // 3.  Get plz (postcode)
             if (xmlString.contains("<postcode>"))
             {
                 sstart = xmlString.indexOf("<postcode>") + 10;
@@ -156,7 +156,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             }
             sPlz = plz.toString();
 
-            // 4. city with city and town or county
+            // 4. Get city with city and town or county
             if (xmlString.contains("<city>"))
             {
                 sstart = xmlString.indexOf("<city>") + 6;
@@ -189,7 +189,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             }
             sCity = city.toString();
 
-            // 5. country 
+            // 5. Get country 
             if (xmlString.contains("<country>"))
             {
                 sstart = xmlString.indexOf("<country>") + 9;
@@ -208,25 +208,45 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             if (sCountry.length() > 0)
             {
                 section.country = sCountry;
-                sectionDataSource.updateEmptyCountry(section.id, section.country);
             }
+            else
+            {
+                section.country = "";
+            }
+            sectionDataSource.updateEmptyCountry(section.id, section.country);
+
             if (sPlz.length() > 0)
             {
                 section.plz = sPlz;
-                sectionDataSource.updateEmptyPlz(section.id, section.plz);
             }
+            else
+            {
+                section.plz = "";
+            }
+            sectionDataSource.updateEmptyPlz(section.id, section.plz);
+
             if (sCity.length() > 0)
             {
                 section.city = sCity;
-                sectionDataSource.updateEmptyCity(section.id, section.city);
             }
+            else
+            {   section.city = "";
+            }
+            sectionDataSource.updateEmptyCity(section.id, section.city);
+
+
             if (sPlace.length() > 0)
             {
                 section.place = sPlace;
-                sectionDataSource.updateEmptyPlace(section.id, section.place);
             }
+            else
+            {
+                section.place = "";
+            }
+            sectionDataSource.updateEmptyPlace(section.id, section.place);
 
-            // Save sLocality to DB Temp
+
+            // Save sLocality to DB table Temp
             Temp temp;
             tempDataSource = new TempDataSource(aContext);
             tempDataSource.open();
@@ -235,12 +255,17 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             if (sLocality.length() > 0)
             {
                 temp.temp_loc = sLocality;
-                tempDataSource.saveTempLoc(temp);
             }
+            else
+            {
+                temp.temp_loc = "";
+            }
+            tempDataSource.saveTempLoc(temp);
 
             sectionDataSource.close();
             tempDataSource.close();
         }
+        
     }
 
     private String convertStreamToString(InputStream is)
@@ -258,7 +283,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
         } catch (IOException e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Problem converting Stream to String: " + e.toString());
+                Log.e(TAG, "Problem converting Stream to String: " + e);
         } finally
         {
             try
@@ -267,7 +292,7 @@ public class RetrieveAddr extends AsyncTask<URL, Void, String>
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "Problem closing InputStream: " + e.toString());
+                    Log.e(TAG, "Problem closing InputStream: " + e);
             }
         }
         return sb.toString();

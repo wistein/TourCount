@@ -1,13 +1,16 @@
 package com.wmstein.tourcount.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-/**********************************
- * Created by wmstein on 18.04.2016
+/************************************************************
+ * Class SectionDataSource provides methods for table Section
+ * Created by wmstein on 2016-04-18,
+ * last modified on 2022-03-23
  */
 public class SectionDataSource
 {
@@ -45,6 +48,7 @@ public class SectionDataSource
         dbHandler.close();
     }
 
+    @SuppressLint("Range")
     private Section cursorToSection(Cursor cursor)
     {
         Section section = new Section();
