@@ -1,0 +1,5 @@
+Version 3.2.8 (2022-04-17)
+- Some more species with pictures added
+- Documents and example-DBs updated
+- Copyright and license texts updated
+- Location background permission removed

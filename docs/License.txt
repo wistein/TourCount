@@ -1,16 +1,9 @@
 /*
- * *************************************************************************
+ * **************************************************************************
  *  TourCount
  * **************************************************************************
- *  Copyright (c) 2020 Wilhelm Stein
+ *  Copyright (c) 2016-2022 Wilhelm Stein
  *  Author: Wilhelm Stein
- *
- *  Based on BeeCount, author: knirrirr 
- *  Modified AutoFitText.java, original code from author: pheuschk
- *  Modified ChangeLog.java original code from author: Karsten Priegnitz
- *  Modified CSVWriter.java original code copyright 2015 Bytecode Pty Ltd.
- *  filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,5 +16,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * 
+ * Integrated code from external references:
+ *  - Counting functions based on BeeCount, (C) 2016 Milo Thurston (knirirr), 
+ *    Apache License, Version 2.0, https://github.com/knirirr/BeeCount
+ *  - AutoFitText.java, modified, original code from author: pheuschk, 18.04.2013, 
+ *    Open Source, https://pastebin.com/raw/e6WyrwSN
+ *  - ChangeLog.java, modified, original code (C) 2011-2013, Karsten Priegnitz, 
+ *    Other Open Source, https://github.com/koem/android-change-log/
+ *  - CSVWriter.java, modified, original code (C) 2015 Bytecode Pty Ltd., 
+ *    Apache License, Version 2.0
+ *  - filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
+ *  - egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, 
+ *    https://geotools.org/
  *
+ * Butterfly pictures: 
+ *  - Carcharodus lavatherae, Autor Dumi, GNU Free Documentation License, version 1.2, 
+ *    derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
+ *  - Hyles gallii (A.R. Pittaway, non-commercial use allowed), derived from 
+ *    https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
+ *  - Hyles hippophaes (A.R. Pittaway, non-commercial use allowed), derived from
+ *    https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
+ *  - Hypolimnas misippus (Public Domain), derived from
+ *    https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+ *  - Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from
+ *    https://tpittaway.tripod.com/sphinx/m_que_a4.jpg 
+ *  - All other pictures, app icon and background (C) Wilhelm Stein. 
+ * 
+ * Pictures of this work by Wilhelm Stein may be used for research or other 
+ * non-commercial purposes without prior permission. 
+ * Please note that illustrations provided by other authors remain the copyright 
+ * of those authors and should not be reproduced other than with their permission.
  */

@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 /******************************************************************
@@ -74,8 +75,8 @@ public class LocationService extends Service implements LocationListener
             // if GPS is enabled get position using GPS Service
             if (checkGPS && canGetLocation)
             {
-                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+//                    || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
                 {
                     locationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
@@ -104,8 +105,8 @@ public class LocationService extends Service implements LocationListener
                 // if Network is enabled and still no GPS fix achieved
                 if (checkNetwork && canGetLocation)
                 {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+//                        || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
                     {
                         locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
@@ -154,7 +155,7 @@ public class LocationService extends Service implements LocationListener
             }
         } catch (Exception e)
         {
-            Log.e(TAG, "StopListener: " + e.toString());
+            Log.e(TAG, "StopListener: " + e);
         }
     }
 
@@ -206,7 +207,7 @@ public class LocationService extends Service implements LocationListener
     }
 
     @Override
-    public void onLocationChanged(Location location)
+    public void onLocationChanged(@NonNull Location location)
     {
         // do nothing
     }
@@ -218,13 +219,13 @@ public class LocationService extends Service implements LocationListener
     }
 
     @Override
-    public void onProviderEnabled(String s)
+    public void onProviderEnabled(@NonNull String s)
     {
         // do nothing
     }
 
     @Override
-    public void onProviderDisabled(String s)
+    public void onProviderDisabled(@NonNull String s)
     {
         // do nothing
     }

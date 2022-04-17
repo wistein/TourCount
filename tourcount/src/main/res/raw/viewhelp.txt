@@ -83,13 +83,11 @@ $ 8
   ! The Pencil-Button on top of the counting field opens the species editing page that lets you add a remark for each species that will be shown aside of it. 
   _ 
   ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by clicking the Save-Button. 
-  ! You should leave TourCount always from its starting page, as in this state the database is safely closed.
+  ! Before leaving TourCount after a tour you should complete the meta data and save the current countings by exporting the internal DB (->tourcount_yyyy-mm-dd_hhmmss.db).
   _ 
-  ! Some app pages have a specific context menu. You can activate it with the 3-point-symbol in the upper right corner.
+  ! When you have a large list or have collected big amounts of data the start of the results page may be delayed, as this needs heavy calculations.
   _ 
-  ! When you have a large list or have collected big amounts of data the start of pages may be delayed, especially when entering the the results page, as those need heavy calculations.
-  _ 
-  ! On the Starting page you can open the results page with SHOW RESULTS. It shows all the registered data orderly arranged. Beneath the meta data it shows the totals followed by a list of all counted species with their individual records.
+  ! The results page can be opened with SHOW RESULTS. It shows all the registered data orderly arranged. Beneath the meta data it shows the totals followed by a list of all counted species with their individual records.
 
 $ 7
   % 4. Further functions
@@ -100,11 +98,11 @@ $ 7
   _ 
   ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
   _ 
-  ! Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location into the individual data.
+  ! Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location data into the individual's record.
   ! For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nomination from OpenStreetMap is used. A valid own email address is necessary for durably reliable queries of address data and to exclude abuse. The mail address will be treated confidentially and will only be used to contact you in case of service problems. 
   ! For more info see <a href="https://wiki.openstreetmap.org/wiki/Nominatim" target="_blank">https://wiki.openstreetmap.org/wiki/Nominatim</a>.
   _ 
-  ! For preparing a new tour you may use “Reset Data” to reset the tour-specific meta data and all count data. Alternatively you may import the Basic DB "tourcount0.db". 
+  ! For preparing a new tour you may use "Reset Data" to reset the tour-specific meta data and all count data. Alternatively you may import the Basic DB "tourcount0.db". 
   _ 
   ! Internally, TourCount stores the data always in a single, equally named DB-file in the app's own storage area that is not accessible by the user. Therefore, exporting the data to files in a user reachable storage area is necessary.
   _ 
@@ -116,10 +114,11 @@ $ 7
   _ 
   ! The function “Export Data -> CSV File” writes the counting results into a pre-formatted MS Excel readable .csv-file to /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_YYYY-MM-DD_hhmmss.csv.
   _ 
-  ! Under "App Info" you find the email address of the author, the history of the app and the license note.
+  ! Under "App Info" you find the email address of the author, the history of the app and the license notes.
+  _ 
+  ! The menu of the counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
   _ 
   ! From Android 5.0.1 on, the counting page is temporarily switched off by means of the proximity sensor when the phone is put into a pocket or held closed to the body. This saves energy, prohibits unwanted input and recalls the app into its current state immediately when used again.
-  ! The menu of the counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
   _ 
   ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" or "-.csv"-files from /storage/emulated/0/Android/data/com.wmstein.tourcount/files to a PC. 
   ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine the .db-files.

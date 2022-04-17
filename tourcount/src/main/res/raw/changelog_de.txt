@@ -1,4 +1,15 @@
 <html>
+
+<!--
+Formatting commands:
+% Title
+& bold red
+_ Subtitle
+! free text
+# numbered list item
+* bullet list item
+-->
+
   <head>
     <style type='text/css'>
       a            { color:#a0a0e0 }
@@ -46,12 +57,40 @@
   _
     ! Geeignet für Android 4.4 (KitKat) oder neuer
   _ 
-  _ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+    ! Lizenz
   _ 
-  _ <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
+  _ Der Quellcode ist lizenziert unter Apache Licence Version 2.0 (die „Lizenz“). Nutzung dieser Dateien ist nur in Übereinstimmung mit der Lizenz erlaubt. Eine Kopie der Lizenz erhalten Sie auf
   _ 
-  _ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+  _ <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">https://www.apache.org/licenses/LICENSE-2.0</a>
+  _ 
+  _ Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart, wird die Software unter der Lizenz so wie sie ist ("AS IS") OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNGSANSPRÜCHE übertragen. Siehe in Bezug auf die einzelnen Rechte und Einschränkungen die Bestimmungen des Lizenztexts.
+  _ 
+    ! Integrierter Code von externen Quellen:
+    * Grundlegende Zählerfunktionen basieren auf BeeCount, (C) 2016 Milo Thurston (knirirr ), Apache License, Version 2.0, https://github.com/knirirr/BeeCount
+    * AutoFitText.java, modifiziert, original code from author: pheuschk, 18.04.2013, Open Source, https://pastebin.com/raw/e6WyrwSN
+    * ChangeLog.java, modifiziert, Original-Code (C) 2011-2013, Karsten Priegnitz, Other Open Source, https://github.com/koem/android-change-log/
+    * CSVWriter.java, modifiziert, Original-Code (C) 2015 Bytecode Pty Ltd., Apache License, Version 2.0
+    * filechooser basiert auf android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
+    * egm, basiert auf Code von GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
+  _ 
+    ! Schmetterlings-Abbildungen: 
+    * Carcharodus lavatherae, Autor Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
+    * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
+    * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
+    * Hypolimnas misippus (Public Domain), erstellt aus https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+    * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
   _
+    ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
+	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
+  _ 
+  
+$ 3.2.8
+  % Version 3.2.8
+  _ 17.04.2022
+		* Weitere Falterarten mit Abbildungen hinzugefügt
+		* Update von Dokumenten und Beispiel-DBs
+		* Update der Copyright und Lizenztexte
+		* Location background permission entfernt
 
 $ 3.2.7
   % Version 3.2.7

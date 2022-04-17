@@ -1,0 +1,5 @@
+Version 3.2.8 (17.04.2022)
+- Einige weitere Falterarten mit Abbildungen hinzugefügt
+- Update von Dokumenten und Beispiel-DBs
+- Update der Copyright und Lizenztexte
+- Location background permission entfernt

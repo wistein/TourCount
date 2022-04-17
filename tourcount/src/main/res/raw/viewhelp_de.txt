@@ -83,14 +83,12 @@ $ 8
   _ 
   ! Der Bleistift-Button oberhalb des Zählerfeldes ruft die Art-editieren-Seite auf. Hier kann eine Art-spezifische Bemerkung hinzugefügt werden, die neben dem Button angezeigt wird. 
   _ 
-  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil in der oberen linken Ecke. Um sicher geänderten Inhalt zu übernehmen, sollte der Speichern-Button benutzt werden. 
-  ! TourCount sollte immer über seine Startseite verlassen werden, damit die Datenbank sicher geschlossen ist.
-  _ 
-  ! Einige App-Seiten haben ein spezifisches Kontext-Menü, das jeweils mit dem 3-Punkt-Symbol oben rechts aufgerufen werden kann.
+  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil oben links. Um geänderten Inhalt sicher zu übernehmen, sollte der Speichern-Button benutzt werden. 
+  ! Bevor TourCount nach einer Tour beendet wird, sollten immer die Metadaten ergänzt und über das Menü der Startseite mittels Export die aktuelle Zählung gesichert werden (-> tourcount_yyyy-mm-dd_hhmmss.db). 
   _ 
   ! Bei großen Datenmengen kann sich die Reaktion der App, insbesondere beim Aufruf der Ergebnisseite etwas verlangsamen, da hier im Hintergrund umfangreiche Berechnungen laufen.
   _ 
-  ! Mit ERGEBNIS ANZEIGEN auf der Startseite wird die Ergebnisseite aufgerufen. Diese zeigt die Meta-Daten der Tour und die Liste der gezählten Falter. 
+  ! Die Ergebnisseite wird mit ERGEBNIS ANZEIGEN aufgerufen und zeigt alle registrierten Daten geordnet an. Unterhalb der Meta-Daten werden die Summen gefolgt von der Liste aller gezählten Falter mit individuellen Daten anzeigt.
 
 $ 7
   % 4. Weitere Funktionen
@@ -112,9 +110,9 @@ $ 7
   _ 
   ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw. (Merke: Der Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden). 
   _ 
-  ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach „/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.db". 
+  ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach "/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.db". 
   _ 
-  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach „/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.csv".
+  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach "/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.csv".
   _ 
   ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweis ist unter "App-Info" abrufbar.
   _ 
@@ -129,7 +127,7 @@ $ 7
   ! - Komma als Trennzeichen,
   ! - Anführungszeichen zur Texterkennung, 
   ! - Dateiursprung im Format "Unicode UTF-8" und
-	! - alle Daten als Text
+  ! - alle Daten als Text
   ! zu achten.
 	_ 
 	  
