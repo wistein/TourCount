@@ -41,6 +41,10 @@
  *    https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
  *  - Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from
  *    https://tpittaway.tripod.com/sphinx/m_que_a4.jpg 
+ *  - Crambus pascuella, Olaf Leillinger, GNU Free Documentation License, derived from 
+ *    https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+ *  - Evergestis extimalis, Adam Furlepa, CC BY-SA 3.0, derived from
+ *    https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
  *  - All other pictures, app icon and background (C) Wilhelm Stein. 
  * 
  * Pictures of this work by Wilhelm Stein may be used for research or other 
