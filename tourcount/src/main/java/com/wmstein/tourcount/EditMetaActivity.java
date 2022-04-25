@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
@@ -45,7 +46,7 @@ import androidx.core.content.ContextCompat;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2021-01-26
+ * last edit on 2022-04-25
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -99,7 +100,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         setContentView(R.layout.activity_edit_head);
-
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
 
         if (screenOrientL)
@@ -125,7 +125,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
         head_area = findViewById(R.id.edit_head);
 
-        getSupportActionBar().setTitle(getString(R.string.editHeadTitle));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.editHeadTitle));
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -139,14 +139,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         // Get location with permissions check
         modePerm = 1;

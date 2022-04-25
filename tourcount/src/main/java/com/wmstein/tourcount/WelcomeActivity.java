@@ -58,12 +58,12 @@ import static java.lang.Math.sqrt;
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and lets you call 
- * EditMetaActivity, Counting(L)Activity and ListSpeciesActivity.
+ * EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * It uses further LocationService and PermissionDialogFragment.
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2022-03-26
+ * last modification on 2022-04-25
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -132,8 +132,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
-        setContentView(R.layout.activity_welcome);
-
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -142,6 +140,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        setContentView(R.layout.activity_welcome);
 
         ScrollView baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.getBackground());
@@ -212,6 +212,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onResume();
 
+        prefs = getPrefs();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+
+        ScrollView baseLayout = findViewById(R.id.baseLayout);
+        baseLayout.setBackground(null);
+        baseLayout.setBackground(tourCount.setBackground());
+
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -221,8 +229,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        prefs = getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
         permLocGiven = prefs.getBoolean("permLoc_Given", false);
         if (MyDebug.LOG)
             Toast.makeText(this, "onResume permLocGiven = " + permLocGiven, Toast.LENGTH_SHORT).show();
@@ -478,14 +484,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         else if (id == R.id.viewCounts)
         {
             Intent intent;
-            if (screenOrientL)
-            {
-                intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
-            }
-            else
-            {
-                intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-            }
+            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             intent.putExtra("Latitude", latitude);
             intent.putExtra("Longitude", longitude);
             intent.putExtra("Height", height);
@@ -513,14 +512,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void viewCounts(View view)
     {
         Intent intent;
-        if (screenOrientL)
-        {
-            intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
-        }
-        else
-        {
-            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-        }
+        intent = new Intent(WelcomeActivity.this, CountingActivity.class);
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
@@ -1395,9 +1387,29 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         intent.putStringArrayListExtra("filterFileExtension", extensions);
         intent.putExtra("filterFileName", filterFileName);
         startActivityForResult(intent, FILE_CHOOSER);
+//        getResult.launch(intent);
     }
 
-    @SuppressLint("LongLogTag")
+/*  Trial to substitue deprecated startActivityForResult
+    // Caller for AdvFileChooser
+    ActivityResultLauncher<Intent> getResult = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() 
+        {
+            @Override
+            public void onActivityResult(ActivityResult result) 
+            {
+
+             if (result.getResultCode() == Activity.RESULT_OK) 
+                {
+                    // Here, no request code
+                    Intent data = result.getData();
+                    doSomeOperations();
+                }
+            }
+        });            
+*/
+                
     @Override
     // onActivityResult is part of loadFile() and processes the result of AdvFileChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data)

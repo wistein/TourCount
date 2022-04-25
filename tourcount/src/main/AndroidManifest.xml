@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Last edited on 2022-04-25 -->
+
 <manifest package="com.wmstein.tourcount"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
@@ -8,9 +10,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
-    <!-- Permission needed for GPS location provider -->
+    <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- Permission needed for network location provider -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <!-- Permission needed for screen set on/off -->
@@ -34,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:resizeableActivity="false"
-        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute,LockedOrientationActivity">
 
         <activity
             android:name="com.wmstein.tourcount.WelcomeActivity"
@@ -92,22 +93,7 @@
             android:label="@string/title_activity_counting"
             android:launchMode="singleTop"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat"
-            tools:ignore="LockedOrientationActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="WelcomeActivity"/>
-        </activity>
-
-        <activity
-            android:name="com.wmstein.tourcount.CountingLActivity"
-            android:label="@string/title_activity_counting"
-            android:launchMode="singleTop"
-            android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat"
-            tools:ignore="LockedOrientationActivity">
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="WelcomeActivity"/>

@@ -19,7 +19,7 @@ import java.util.Objects;
 
 /**********************************
  * Interface for widget_counting_lhi.xml
- * used by Counting(L)Activity
+ * used by CountingActivity
  * Created by wmstein 2016-12-18
  * modified for TourCount on 2018-03-31
  * last edited on 2021-01-26

@@ -25,6 +25,7 @@ import com.wmstein.tourcount.widgets.EditNotesWidget;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
@@ -34,7 +35,7 @@ import androidx.core.content.ContextCompat;
  * CountOptionsActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2021-01-26
+ * last edited on 2022-04-25
  */
 public class CountOptionsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -78,10 +79,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
-        setContentView(R.layout.activity_count_options);
-
-        LinearLayout counting_screen = findViewById(R.id.count_options);
-
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -89,6 +86,10 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        setContentView(R.layout.activity_count_options);
+
+        LinearLayout counting_screen = findViewById(R.id.count_options);
 
         // Set full brightness of screen
         if (brightPref)
@@ -129,7 +130,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         countDataSource.open();
 
         count = countDataSource.getCountById(count_id);
-        getSupportActionBar().setTitle(count.name);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(count.name);
 
         enw = new EditNotesWidget(this, null);
         enw.setNotesName(count.notes);

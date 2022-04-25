@@ -19,9 +19,9 @@ import androidx.annotation.NonNull;
 
 /****************************************************
  * Interface for widget_counting_head1.xml
- * used by Counting(L)Activity
+ * used by CountingActivity
  * Created by wmstein 2016-12-18
- * Last edited on 2021-01-26
+ * Last edited on 2022-04-25
  */
 public class CountingWidget_head1 extends ArrayAdapter<String>
 {

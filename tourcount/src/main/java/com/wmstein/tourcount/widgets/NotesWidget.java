@@ -13,11 +13,11 @@ import com.wmstein.tourcount.R;
 import java.util.Objects;
 
 /**********************************
- * NotesWidget used by Counting(L)Activity
+ * NotesWidget used by CountingActivity
  * shows scalable notes line
  * Created by milo on 26/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
- * last edited on 2020-04-17
+ * last edited on 2022-04-25
  */
 public class NotesWidget extends LinearLayout
 {

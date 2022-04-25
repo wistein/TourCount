@@ -1,2 +1,3 @@
-Version 3.2.9 (21.04.2022)
+Version 3.2.9 (25.04.2022)
 - Einige weitere Falterarten mit Abbildungen hinzugefügt
+- Code-Verbesserungen

@@ -54,7 +54,7 @@ import androidx.core.content.ContextCompat;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2021-01-26
+ * last edited on 2022-04-25
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -112,9 +112,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         brightPref = prefs.getBoolean("pref_bright", true);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
-        setContentView(R.layout.activity_edit_section);
-        LinearLayout counting_screen = findViewById(R.id.editSect);
-
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -123,6 +120,9 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        setContentView(R.layout.activity_edit_section);
+        LinearLayout counting_screen = findViewById(R.id.editSect);
 
         // Set full brightness of screen
         if (brightPref)

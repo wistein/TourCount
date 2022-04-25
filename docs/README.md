@@ -85,11 +85,15 @@ Integrated code from external references:
   https://geotools.org/
 
 Butterfly pictures: 
-- p06884.png derived from https://en.wikipedia.org/wiki/Carcharodus_lavatherae, Autor Dumi, GNU Free Documentation License, version 1.2
-- p07292.png, Public Domain, derived from https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+- p06243.png derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg, Olaf Leillinger, GNU Free Documentation License
+- p06364.png derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg, Ben Sale, Creative Commons Attribution 2.0 Generic License
+- p06499.png derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG, Adam Furlepa, CC BY-SA 3.0
 - p06817.png derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg (non-commercial use allowed)
 - p06855.png derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg (non-commercial use allowed)
 - p06859.png derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg (non-commercial use allowed)
+- p06884.png derived from https://en.wikipedia.org/wiki/Carcharodus_lavatherae, Dumi, GNU Free Documentation License, version 1.2
+- p07292.png, Public Domain, derived from https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+
 - all other pictures, app icon and background (C) Wilhelm Stein. 
 
 Pictures of this work may be used for research or other non-commercial purposes without prior permission. Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.

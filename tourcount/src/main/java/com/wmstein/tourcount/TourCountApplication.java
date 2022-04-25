@@ -13,12 +13,14 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.util.Objects;
+
 import androidx.preference.PreferenceManager;
 
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2021-01-26
+ * last change on 2022-04-25
  */
 public class TourCountApplication extends Application
 {
@@ -84,7 +86,7 @@ public class TourCountApplication extends Application
         if (MyDebug.LOG)
             Log.i(TAG, "Width: " + width + "Height: " + height);
 
-        switch (backgroundPref)
+        switch (Objects.requireNonNull(backgroundPref))
         {
         case "none":
             // boring black screen

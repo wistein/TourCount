@@ -7,7 +7,7 @@ android {
         applicationId "com.wmstein.tourcount"
         minSdkVersion 19
         // Compile with SDK Ver. 31 but for targetSdkVersion 29!
-        // targetSdkVersion >= 30 prevents installation from "unknown sources" 
+        // targetSdkVersion > 29 prevents installation from "unknown sources" 
         //  and so inhibits me from installing and testing my own compilation under Android 11 
         targetSdkVersion 29
         versionCode 329

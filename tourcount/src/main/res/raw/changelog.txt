@@ -86,8 +86,9 @@ _ Subtitle
 
 $ 3.2.9
   % Version 3.2.9
-  _ 2022-04-21
+  _ 2022-04-25
 		* More species with pictures added
+		* Code improvements
 
 $ 3.2.8
   % Version 3.2.8

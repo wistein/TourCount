@@ -44,7 +44,7 @@ import androidx.core.content.ContextCompat;
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2022 wmstein
- * created on 2016-05-15, last modification an 2022-03-26
+ * created on 2016-05-15, last modification an 2022-04-25
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -99,10 +99,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
 
-        setContentView(R.layout.activity_edit_individual);
-
-        ScrollView individ_screen = findViewById(R.id.editIndividualScreen);
-
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -120,6 +116,10 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
+
+        setContentView(R.layout.activity_edit_individual);
+
+        ScrollView individ_screen = findViewById(R.id.editIndividualScreen);
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);

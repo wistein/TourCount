@@ -20,9 +20,9 @@ import java.util.Objects;
 
 /****************************************************
  * Interface for widget_counting_head2.xml
- * used by Counting(L)Activity
+ * used by CountingActivity
  * Created by wmstein 2016-12-18
- * Last edited on 2021-01-26
+ * Last edited on 2022-04-25
  */
 public class CountingWidget_head2 extends RelativeLayout
 {

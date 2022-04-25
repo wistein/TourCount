@@ -30,6 +30,7 @@ import com.wmstein.tourcount.widgets.ListSumWidget;
 import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
@@ -39,7 +40,7 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2021-01-26
+ * last edited on 2022-04-25
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -93,7 +94,7 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         ScrollView listSpec_screen = findViewById(R.id.listSpecScreen);
         listSpec_screen.setBackground(tourCount.getBackground());
 
-        getSupportActionBar().setTitle(getString(R.string.viewSpecTitle));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.viewSpecTitle));
 
         spec_area = findViewById(R.id.listSpecLayout);
 

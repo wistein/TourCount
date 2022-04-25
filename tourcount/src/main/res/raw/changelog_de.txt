@@ -86,8 +86,9 @@ _ Subtitle
   
 $ 3.2.9
   % Version 3.2.9
-  _ 21.04.2022
+  _ 25.04.2022
 		* Weitere Falterarten mit Abbildungen hinzugefügt
+		* Code-Verbesserungen
 
 $ 3.2.8
   % Version 3.2.8
