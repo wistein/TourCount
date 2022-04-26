@@ -85,6 +85,7 @@ $ 3.2.9
   _ 26.04.2022
 		* Weitere Falterarten mit Abbildungen hinzugefügt
 		* Code-Verbesserungen
+		* Update von Doks.
 
 $ 3.2.8
   % Version 3.2.8

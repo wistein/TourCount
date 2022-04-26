@@ -1,3 +1,4 @@
 Version 3.2.8 (2022-04-26)
 - Some more species with pictures added
 - Code improvements
+- Docs updated

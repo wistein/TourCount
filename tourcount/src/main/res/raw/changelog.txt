@@ -85,6 +85,7 @@ $ 3.2.9
   _ 2022-04-26
 		* More species with pictures added
 		* Code improvements
+		* Docs updated
 
 $ 3.2.8
   % Version 3.2.8

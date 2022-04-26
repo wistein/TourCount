@@ -1,3 +1,4 @@
 Version 3.2.9 (26.04.2022)
 - Einige weitere Falterarten mit Abbildungen hinzugefügt
 - Code-Verbesserungen
+- Update von Doks.
