@@ -179,6 +179,17 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             // nothing
         }
 
+        // if API level > 23 permission request is necessary
+        int REQUEST_CODE_STORAGE = 123; // Identifier for permission request Android 6.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            int hasWriteExtStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteExtStoragePermission != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+            }
+        }
+
         cl = new ChangeLog(this);
         vh = new ViewHelp(this);
         // Show changelog for new version
@@ -216,10 +227,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         prefs.registerOnSharedPreferenceChangeListener(this);
         screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
-        ScrollView baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(null);
-        baseLayout.setBackground(tourCount.setBackground());
-
         if (screenOrientL)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -228,6 +235,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        ScrollView baseLayout = findViewById(R.id.baseLayout);
+        baseLayout.setBackground(null);
+        baseLayout.setBackground(tourCount.setBackground());
 
         permLocGiven = prefs.getBoolean("permLoc_Given", false);
         if (MyDebug.LOG)
@@ -1387,29 +1398,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         intent.putStringArrayListExtra("filterFileExtension", extensions);
         intent.putExtra("filterFileName", filterFileName);
         startActivityForResult(intent, FILE_CHOOSER);
-//        getResult.launch(intent);
     }
 
-/*  Trial to substitue deprecated startActivityForResult
-    // Caller for AdvFileChooser
-    ActivityResultLauncher<Intent> getResult = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>() 
-        {
-            @Override
-            public void onActivityResult(ActivityResult result) 
-            {
-
-             if (result.getResultCode() == Activity.RESULT_OK) 
-                {
-                    // Here, no request code
-                    Intent data = result.getData();
-                    doSomeOperations();
-                }
-            }
-        });            
-*/
-                
     @Override
     // onActivityResult is part of loadFile() and processes the result of AdvFileChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data)

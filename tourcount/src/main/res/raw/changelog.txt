@@ -43,10 +43,6 @@ _ Subtitle
   _
   _ email: stein.wm@web.de
   _
-  & Attention: Since version 3.2.0 modified file directory! 
-  	! For compatibility reasons with Android 10 file access had to be changed to an app-specific directoy. Now database files (.db) are stored in /storage/emulated/0/Android/data/com.wmstein.tourcount/files/. For further info see Help.
-  & ------------------------------
-  _
   	! TourCount supports species-specific and individually GPS-localized registering of butterflies. 
   _ 
   	! TourCount is one of two apps for European butterfly monitoring.
@@ -86,7 +82,7 @@ _ Subtitle
 
 $ 3.2.9
   % Version 3.2.9
-  _ 2022-04-25
+  _ 2022-04-26
 		* More species with pictures added
 		* Code improvements
 

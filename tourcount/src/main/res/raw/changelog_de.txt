@@ -43,10 +43,6 @@ _ Subtitle
   _
   _ email: stein.wm@web.de
   _
-  & Achtung: Seit Version 3.2.0 Geändertes Dateiverzeichnis!
-    ! Wegen der Kompatibilität mit Android 10 musste der Dateizugriff auf ein App-spezifisches Verzeichnis geändert werden. Datenbank-Dateien (.db) liegen nun in /storage/emulated/0/Android/data/com.wmstein.tourcount/files/. Weitere Infos in der Hilfe.
-  & --------------------------------
-  _
   	! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
   _ 
   	! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
@@ -86,7 +82,7 @@ _ Subtitle
   
 $ 3.2.9
   % Version 3.2.9
-  _ 25.04.2022
+  _ 26.04.2022
 		* Weitere Falterarten mit Abbildungen hinzugefügt
 		* Code-Verbesserungen
 
