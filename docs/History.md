@@ -2,7 +2,9 @@
 
 #### TourCount Copyright (C) 2016-2022, Wilhelm Stein
 
-#### Version 3.2.9 (2022-04-26)
+#### Version 3.2.9 (2022-05-21)
+- Project adaption for Android Studio 2021.2.1 and Gradle 7.3.3
+- Portrait/landscape handling improved 
 - Some more species with pictures added
 - Code improvements
 - Docs updated

@@ -3,7 +3,6 @@ package com.wmstein.tourcount;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -69,7 +68,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
     private boolean buttonSoundPref;
     private String buttonAlertSound;
     private boolean brightPref;    // option for full bright screen
-    private boolean screenOrientL; // option for screen orientation
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
@@ -98,15 +96,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         // Set full brightness of screen
         if (brightPref)
@@ -150,7 +139,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         buttonAlertSound = prefs.getString("alert_button_sound", null);
         brightPref = prefs.getBoolean("pref_bright", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
     }
@@ -317,9 +305,7 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             }
             else
             {
-//            Toast.makeText(this, getString(R.string.valState), Toast.LENGTH_SHORT).show();
                 showSnackbarRed(getString(R.string.valState));
-
                 return false;
             }
         }
@@ -393,7 +379,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         else // newcount is <= 1
         {
             
-//            Toast.makeText(this, getString(R.string.warnCount), Toast.LENGTH_SHORT).show();
             showSnackbarRed(getString(R.string.warnCount));
             return false; // forces input newcount > 0
         }
@@ -472,14 +457,6 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
         ScrollView individ_screen = findViewById(R.id.editIndividualScreen);
         individ_screen.setBackground(null);
         getPrefs();
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(individ_screen.getResources(), bMap);

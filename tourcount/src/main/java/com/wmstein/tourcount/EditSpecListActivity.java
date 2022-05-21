@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -54,7 +53,7 @@ import androidx.core.content.ContextCompat;
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2022-04-25
+ * last edited on 2022-05-21
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -91,7 +90,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     // Preferences
     private boolean dupPref;
     private String sortPref;
-    private boolean screenOrientL; // option for landscape screen orientation
     private boolean brightPref;
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
@@ -110,16 +108,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         dupPref = prefs.getBoolean("pref_duplicate", true);
         sortPref = prefs.getString("pref_sort_sp", "none");
         brightPref = prefs.getBoolean("pref_bright", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         setContentView(R.layout.activity_edit_section);
         LinearLayout counting_screen = findViewById(R.id.editSect);
@@ -175,7 +163,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         dupPref = prefs.getBoolean("pref_duplicate", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         brightPref = prefs.getBoolean("pref_bright", true);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
@@ -371,13 +358,11 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
                         
                         //updates species name and code
                         countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
-                        retValue = true;
                     }
                 }
             }
             else
             {
-//                Toast.makeText(this, isDbl + " " + getString(R.string.isdouble), Toast.LENGTH_SHORT).show();
                 showSnackbarRed(isDbl + " " + getString(R.string.isdouble) + " "
                     + getString(R.string.duplicate));
                 retValue = false;
@@ -535,15 +520,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     {
         LinearLayout counting_screen = findViewById(R.id.editSect);
         dupPref = prefs.getBoolean("pref_duplicate", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         counting_screen.setBackground(null);

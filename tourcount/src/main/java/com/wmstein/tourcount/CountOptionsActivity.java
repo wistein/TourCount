@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -50,7 +49,6 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
 
     // Preferences
     private boolean brightPref;
-    private boolean screenOrientL; // option for screen orientation
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
@@ -75,17 +73,8 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         brightPref = prefs.getBoolean("pref_bright", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         setContentView(R.layout.activity_count_options);
 
@@ -217,14 +206,7 @@ public class CountOptionsActivity extends AppCompatActivity implements SharedPre
         LinearLayout counting_screen = findViewById(R.id.count_options);
         counting_screen.setBackground(null);
         brightPref = prefs.getBoolean("pref_bright", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         bg = new BitmapDrawable(counting_screen.getResources(), bMap);
         counting_screen.setBackground(bg);

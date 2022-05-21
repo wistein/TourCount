@@ -2,7 +2,6 @@ package com.wmstein.tourcount;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -40,7 +39,7 @@ import static java.lang.Math.sqrt;
 /****************************************************
  * ListSpeciesActivity shows list of counting results
  * Created by wmstein on 2016-03-15,
- * last edited on 2022-04-25
+ * last edited on 2022-05-21
  */
 public class ListSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -54,7 +53,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     // preferences
     private boolean awakePref;
     private String sortPref;
-    private boolean screenOrientL; // option for screen orientation
 
     // the actual data
     private CountDataSource countDataSource;
@@ -74,15 +72,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         setContentView(R.layout.activity_list_species);
 
@@ -109,7 +98,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     {
         awakePref = prefs.getBoolean("pref_awake", true);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sorted species list
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
     }
 
     @Override
@@ -356,16 +344,6 @@ public class ListSpeciesActivity extends AppCompatActivity implements SharedPref
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView listSpec_screen = findViewById(R.id.listSpecScreen);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
         listSpec_screen.setBackground(null);
         listSpec_screen.setBackground(tourCount.setBackground());
         getPrefs();

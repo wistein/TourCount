@@ -579,6 +579,7 @@
 		<item comment="07348">Maniola nurag</item>
 		<item comment="07350">Maniola jurtina</item>
 		<item comment="07353">Hyponephele lycaon</item>
+		<item comment="07354">Hyponephele lupinus</item>
 		<item comment="07360">Erebia ligea</item>
 		<item comment="07361">Erebia euryale</item>
 		<item comment="07362">Erebia eriphyle</item>
@@ -593,6 +594,7 @@
 		<item comment="07384">Erebia gorge</item>
 		<item comment="07391">Erebia tyndarus</item>
 		<item comment="07394">Erebia cassioides</item>
+		<item comment="07394a">Erebia arvernensis</item>
 		<item comment="07396">Erebia pronoe</item>
 		<item comment="07399">Erebia stirius</item>
 		<item comment="07401">Erebia montanus</item>
@@ -602,6 +604,7 @@
 		<item comment="07410">Erebia pandrose</item>
 		<item comment="07414">Melanargia russiae</item>
 		<item comment="07415">Melanargia galathea</item>
+		<item comment="07418">Melanargia arge</item>
 		<item comment="07419">Melanargia occitanica</item>
 		<item comment="07424">Satyrus ferula</item>
 		<item comment="07427">Minois dryas</item>
@@ -1029,6 +1032,7 @@
 		<item comment="07348">Sardinian meadow brown</item>
 		<item comment="07350">Meadow brown</item>
 		<item comment="07353">Dusky meadow brown</item>
+		<item comment="07354">Branded meadow brown</item>
 		<item comment="07360">Arran brown</item>
 		<item comment="07361">Large ringlet</item>
 		<item comment="07362">Eriphyle ringlet</item>
@@ -1052,6 +1056,7 @@
 		<item comment="07410">Dewy ringlet</item>
 		<item comment="07414">Esper\'s marbled white</item>
 		<item comment="07415">Marbled white</item>
+		<item comment="07418">Italian marbled white</item>
 		<item comment="07419">Western marbled white</item>
 		<item comment="07424">Great sooty satyr</item>
 		<item comment="07427">Dryad</item>
@@ -1479,6 +1484,7 @@
 		<item>07348</item>
 		<item>07350</item>
 		<item>07353</item>
+		<item>07354</item>
 		<item>07360</item>
 		<item>07361</item>
 		<item>07362</item>
@@ -1502,6 +1508,7 @@
 		<item>07410</item>
 		<item>07414</item>
 		<item>07415</item>
+		<item>07418</item>
 		<item>07419</item>
 		<item>07424</item>
 		<item>07427</item>

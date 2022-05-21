@@ -7,7 +7,6 @@ package com.wmstein.tourcount;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -39,7 +38,7 @@ import androidx.core.app.NavUtils;
  * by 3 interdependent and correlated arrays in arrays.xml
  *
  * Created for TourCount by wmstein on 2019-04-12,
- * last edited on 2022-04-25
+ * last edited on 2022-05-21
  */
 public class AddSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -58,7 +57,6 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
     private Bitmap bMap;
     private BitmapDrawable bg;
 
-    private boolean screenOrientL; // option for landscape screen orientation
     private boolean brightPref;
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -71,16 +69,6 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         brightPref = prefs.getBoolean("pref_bright", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         setContentView(R.layout.activity_add_species);
         ScrollView add_screen = findViewById(R.id.addScreen);
@@ -113,7 +101,6 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
 
         SharedPreferences prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
@@ -277,15 +264,6 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView add_screen = findViewById(R.id.addScreen);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         bMap = tourCount.decodeBitmap(R.drawable.abackground, tourCount.width, tourCount.height);
         add_screen.setBackground(null);

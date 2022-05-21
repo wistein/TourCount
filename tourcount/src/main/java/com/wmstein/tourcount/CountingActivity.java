@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.CursorIndexOutOfBoundsException;
@@ -68,7 +67,7 @@ import androidx.core.content.ContextCompat;
  *
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2022-04-25
+ * last modification on 2022-05-21
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -112,7 +111,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private String buttonAlertSound;
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
-    private boolean screenOrientL; // option for screen orientation
 
     // data sources
     private SectionDataSource sectionDataSource;
@@ -138,16 +136,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
-
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         if (lhandPref) // if left-handed counting page
         {

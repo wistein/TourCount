@@ -53,7 +53,7 @@ _ Subtitle
   _
     ! Geeignet für Android 4.4 (KitKat) oder neuer
   _ 
-    ! Lizenz
+    ! Lizenzen
   _ 
   _ Der Quellcode ist lizenziert unter Apache Licence Version 2.0 (die „Lizenz“). Nutzung dieser Dateien ist nur in Übereinstimmung mit der Lizenz erlaubt. Eine Kopie der Lizenz erhalten Sie auf
   _ 
@@ -71,10 +71,15 @@ _ Subtitle
   _ 
     ! Schmetterlings-Abbildungen: 
     * Carcharodus lavatherae, Autor Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
+    * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+    * Evergestis extimalis, Autor Adam Furlepa, CC BY-SA 3.0, erstellt aus https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
     * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
     * Hypolimnas misippus (Public Domain), erstellt aus https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+	* Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
     * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
+	* Melanargia arge, Autor Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
   _
     ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
 	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
@@ -82,10 +87,12 @@ _ Subtitle
   
 $ 3.2.9
   % Version 3.2.9
-  _ 26.04.2022
+  _ 21.05.2022
+		* Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
+		* Portrait/Landscape-Funktion verbessert
 		* Weitere Falterarten mit Abbildungen hinzugefügt
 		* Code-Verbesserungen
-		* Update von Doks.
+		* Update der Doku
 
 $ 3.2.8
   % Version 3.2.8

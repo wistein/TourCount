@@ -55,7 +55,7 @@ https://github.com/wistein/TourCount/tree/master/apk.
 Please note that both versions are compiled from the same sources but signed differently and so 
 cannot be mutually updated.
 
-### License
+### Licenses
 
 Copyright 2016-2022 Wilhelm Stein (wistein)
 

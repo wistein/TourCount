@@ -53,7 +53,7 @@ _ Subtitle
   _
     ! Suitable for Android 4.4 (KitKat) or newer
   _ 
-    ! License
+    ! Licenses
   _ 
   _ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
   _ 
@@ -70,11 +70,16 @@ _ Subtitle
     * egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
   _ 
     ! Butterfly pictures: 
-    * Carcharodus lavatherae, Autor Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
+    * Carcharodus lavatherae, Author Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
+    * Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+    * Evergestis extimalis, Author Adam Furlepa, CC BY-SA 3.0, derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
     * Hyles hippophaes (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
     * Hypolimnas misippus (Public Domain), derived from https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+	* Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
     * Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
+	* Melanargia arge, Author Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Pediasia contaminella, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
   _
     ! All other pictures, app icon and background (C) Wilhelm Stein. 
 	! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission. Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
@@ -82,7 +87,9 @@ _ Subtitle
 
 $ 3.2.9
   % Version 3.2.9
-  _ 2022-04-26
+  _ 2022-05-21
+		* Project adaption for Android Studio 2021.2.1 and Gradle 7.3.3
+		* Portrait/landscape handling improved 
 		* More species with pictures added
 		* Code improvements
 		* Docs updated

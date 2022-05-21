@@ -3,14 +3,11 @@ package com.wmstein.filechooser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ListView;
 
 import com.wmstein.tourcount.R;
-import com.wmstein.tourcount.TourCountApplication;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -25,35 +22,21 @@ import java.util.Objects;
  * AdvFileChooser lets you select files from sdcard directory.
  * It will be called within WelcomeActivity and uses FileArrayAdapter and Option.
  * Based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- * Adopted by wmstein on 2016-06-18, last change on 2020-04-17
+ * Adopted by wmstein on 2016-06-18, last change on 2022-05-21
  */
-public class AdvFileChooser extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class AdvFileChooser extends Activity
 {
     private File currentDir;
     private FileArrayAdapter adapter;
     private FileFilter fileFilter;
     private ArrayList<String> extensions;
     private String filterFileName;
-    private boolean screenOrientL; // option for screen orientation
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
         setContentView(R.layout.list_view);
 
         Bundle extras = getIntent().getExtras();
@@ -161,9 +144,9 @@ public class AdvFileChooser extends Activity implements SharedPreferences.OnShar
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
+    protected void onDestroy()
     {
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
+        super.onDestroy();
     }
-
+    
 }

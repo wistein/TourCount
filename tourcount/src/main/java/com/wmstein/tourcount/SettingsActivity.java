@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,13 +19,12 @@ import androidx.preference.PreferenceManager;
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2016-05-15,
- * last edited on 2020-04-20
+ * last edited on 2022-05-21
  */
-public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
+public class SettingsActivity extends AppCompatActivity
 {
     SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private boolean screenOrientL; // option for screen orientation
     
     final private static int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -46,17 +44,6 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
             .commit();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
         editor = prefs.edit(); // will be committed on pause
 
         // permission to read db
@@ -107,11 +94,5 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         }
         return true;
     }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
-    {
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-    }
-
+    
 }

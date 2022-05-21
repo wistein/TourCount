@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -46,7 +45,7 @@ import androidx.core.content.ContextCompat;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2022-04-25
+ * last edit on 2022-05-21
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -55,7 +54,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
     SharedPreferences prefs;
     private boolean brightPref;    // option for full bright screen
-    private boolean screenOrientL; // option for screen orientation
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
     
@@ -97,18 +95,9 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         brightPref = prefs.getBoolean("pref_bright", true);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         setContentView(R.layout.activity_edit_head);
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
-
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         // Set full brightness of screen
         if (brightPref)
@@ -136,7 +125,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
@@ -408,14 +396,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         editHead_screen.setBackground(null);
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);

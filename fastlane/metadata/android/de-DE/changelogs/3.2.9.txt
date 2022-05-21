@@ -1,4 +1,6 @@
-Version 3.2.9 (26.04.2022)
+Version 3.2.9 (21.05.2022)
+- Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
+- Portrait/Landscape-Funktion verbessert
 - Einige weitere Falterarten mit Abbildungen hinzugefügt
 - Code-Verbesserungen
-- Update von Doks.
+- Update der Doku

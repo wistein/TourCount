@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
+import com.wmstein.filechooser.AdvFileChooserL;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
@@ -63,7 +64,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2022-04-25
+ * last modification on 2022-05-21
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -449,7 +450,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            if (screenOrientL)
+            {
+                startActivity(new Intent(this, SettingsLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+            else
+            {
+                startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
             return true;
         }
         else if (id == R.id.exportMenu)
@@ -495,7 +503,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         else if (id == R.id.viewCounts)
         {
             Intent intent;
-            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+            if (screenOrientL)
+            {
+                intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
+            }
+            else
+            {
+                intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+            }
             intent.putExtra("Latitude", latitude);
             intent.putExtra("Longitude", longitude);
             intent.putExtra("Height", height);
@@ -504,16 +519,31 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.editMeta)
         {
-            startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            if (screenOrientL)
+            {
+                startActivity(new Intent(this, EditMetaLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+            else
+            {
+                startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
             return true;
         }
         else if (id == R.id.viewSpecies)
         {
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
-            // pause for 100 msec to show toast
-            mHandler.postDelayed(() -> 
-                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+            // Trick: Pause for 100 msec to show toast
+            if (screenOrientL)
+            {
+                mHandler.postDelayed(() ->
+                    startActivity(new Intent(getApplicationContext(), ListSpeciesLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+            }
+            else
+            {
+                mHandler.postDelayed(() ->
+                    startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -523,7 +553,15 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     public void viewCounts(View view)
     {
         Intent intent;
-        intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+
+        if (screenOrientL)
+        {
+            intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
+        }
+        else
+        {
+            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
+        }
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
@@ -534,7 +572,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Handle button click "Prepare Inspection" here 
     public void editMeta(View view)
     {
-        startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        if (screenOrientL)
+        {
+            startActivity(new Intent(this, EditMetaLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
+        else
+        {
+            startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
     }
 
     // Handle button click "Show Results" here 
@@ -542,9 +587,17 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
-        // pause for 100 msec to show toast
-        mHandler.postDelayed(() -> 
-            startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+        // Trick: Pause for 100 msec to show toast
+        if (screenOrientL)
+        {
+            mHandler.postDelayed(() ->
+                startActivity(new Intent(getApplicationContext(), ListSpeciesLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+        }
+        else
+        {
+            mHandler.postDelayed(() ->
+                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+        }
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
@@ -597,7 +650,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     /*************************************************************************
-     * The six activities below are for exporting and importing the database.
+     * The six functions below are for exporting and importing the database.
      * They've been put here because no database should be open at this point.
      *************************************************************************/
     // Exports DB to SdCard/tourcount_yyyy-MM-dd_HHmmss.db
@@ -1391,13 +1444,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     
     private void doImportDB()
     {
-        Intent intent = new Intent(this, AdvFileChooser.class);
         ArrayList<String> extensions = new ArrayList<>();
         extensions.add(".db");
         String filterFileName = "tourcount";
-        intent.putStringArrayListExtra("filterFileExtension", extensions);
-        intent.putExtra("filterFileName", filterFileName);
-        startActivityForResult(intent, FILE_CHOOSER);
+
+        if (screenOrientL)
+        {
+            Intent intent = new Intent(this, AdvFileChooserL.class);
+            intent.putStringArrayListExtra("filterFileExtension", extensions);
+            intent.putExtra("filterFileName", filterFileName);
+            startActivityForResult(intent, FILE_CHOOSER);
+        }
+        else
+        {
+            Intent intent = new Intent(this, AdvFileChooser.class);
+            intent.putStringArrayListExtra("filterFileExtension", extensions);
+            intent.putExtra("filterFileName", filterFileName);
+            startActivityForResult(intent, FILE_CHOOSER);
+        }
     }
 
     @Override
