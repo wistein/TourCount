@@ -64,7 +64,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2022-05-21
+ * last modification on 2022-05-26
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -1448,20 +1448,18 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         extensions.add(".db");
         String filterFileName = "tourcount";
 
+        Intent intent;
         if (screenOrientL)
         {
-            Intent intent = new Intent(this, AdvFileChooserL.class);
-            intent.putStringArrayListExtra("filterFileExtension", extensions);
-            intent.putExtra("filterFileName", filterFileName);
-            startActivityForResult(intent, FILE_CHOOSER);
+            intent = new Intent(this, AdvFileChooserL.class);
         }
         else
         {
-            Intent intent = new Intent(this, AdvFileChooser.class);
-            intent.putStringArrayListExtra("filterFileExtension", extensions);
-            intent.putExtra("filterFileName", filterFileName);
-            startActivityForResult(intent, FILE_CHOOSER);
+            intent = new Intent(this, AdvFileChooser.class);
         }
+        intent.putStringArrayListExtra("filterFileExtension", extensions);
+        intent.putExtra("filterFileName", filterFileName);
+        startActivityForResult(intent, FILE_CHOOSER);
     }
 
     @Override
