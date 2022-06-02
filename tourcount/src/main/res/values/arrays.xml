@@ -623,6 +623,7 @@
 		<item comment="07503">Watsonalla binaria</item>
 		<item comment="07508">Drepana falcataria</item>
 		<item comment="07522">Abraxas grossulariata</item>
+		<item comment="07530">Ligdia adustata</item>
 		<item comment="07537">Heliomata glarearia</item>
 		<item comment="07547">Chiasmia clathrata</item>
 		<item comment="07561">Isturgia limbaria</item>
@@ -1047,6 +1048,7 @@
 		<item comment="07384">Silky ringlet</item>
 		<item comment="07391">Swiss brassy ringlet</item>
 		<item comment="07394">Common brassy ringlet</item>
+		<item comment="07394a">Common brassy ringlet</item>
 		<item comment="07396">Water ringlet</item>
 		<item comment="07399">Styrian ringlet</item>
 		<item comment="07401">Marbled ringlet</item>
@@ -1075,6 +1077,7 @@
 		<item comment="07503">Oak hook-tip</item>
 		<item comment="07508">Pebble hook-tip</item>
 		<item comment="07522">Magpie moth</item>
+		<item comment="07530">Scorched carpet</item>
 		<item comment="07537">-</item>
 		<item comment="07547">Latticed heath</item>
 		<item comment="07561">Frosted yellow</item>
@@ -1527,6 +1530,7 @@
 		<item>07503</item>
 		<item>07508</item>
 		<item>07522</item>
+		<item>07530</item>
 		<item>07537</item>
 		<item>07547</item>
 		<item>07561</item>

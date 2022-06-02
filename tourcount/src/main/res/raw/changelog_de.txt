@@ -85,6 +85,12 @@ _ Subtitle
 	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
   _ 
   
+$ 3.3.0
+  % Version 3.3.0
+  _ 02.06.2022
+		* Weitere Falterarten mit Abbildungen hinzugefügt
+		* Bugfix in arrays.xml
+
 $ 3.2.9
   % Version 3.2.9
   _ 21.05.2022
