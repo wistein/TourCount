@@ -88,7 +88,7 @@ _ Subtitle
 $ 3.3.0
   % Version 3.3.0
   _ 02.06.2022
-		* Weitere Falterarten mit Abbildungen hinzugefügt
+		* Weitere Falterart mit Abbildung hinzugefügt
 		* Bugfix in arrays.xml
 
 $ 3.2.9
