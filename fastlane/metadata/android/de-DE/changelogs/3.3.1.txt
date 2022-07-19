@@ -1,0 +1,4 @@
+Version 3.3.1 (19.07.2022)
+- Einige Falterabbildungen verbessert
+- Eine weitere Falterart mit Abbildung hinzugefügt
+- 2. Bugfix in arrays.xml

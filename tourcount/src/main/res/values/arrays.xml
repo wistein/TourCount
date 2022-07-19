@@ -545,6 +545,7 @@
 		<item comment="07275">Melitaea didyma</item>
 		<item comment="07276">Melitaea diamina</item>
 		<item comment="07277">Melitaea deione</item>
+		<item comment="07278">Melitaea varia</item>
 		<item comment="07280">Melitaea aurelia</item>
 		<item comment="07281">Melitaea britomartis</item>
 		<item comment="07283">Melitaea athalia</item>
@@ -999,6 +1000,7 @@
 		<item comment="07275">Spotted fritillary</item>
 		<item comment="07276">False heath fritillary</item>
 		<item comment="07277">Provencal fritillary</item>
+		<item comment="07278">Grisons fritillary</item>
 		<item comment="07280">Nickerl\'s fritillary</item>
 		<item comment="07281">Assmann\'s fritillary</item>
 		<item comment="07283">Heath fritillary</item>
@@ -1453,6 +1455,7 @@
 		<item>07275</item>
 		<item>07276</item>
 		<item>07277</item>
+		<item>07278</item>
 		<item>07280</item>
 		<item>07281</item>
 		<item>07283</item>

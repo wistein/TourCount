@@ -1,0 +1,4 @@
+Version 3.3.1 (2022-07-19)
+- Some pictures of species improved
+- One species with picture added
+- 2nd Bugfix in arrays.xml

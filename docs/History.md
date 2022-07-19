@@ -2,6 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2022, Wilhelm Stein
 
+#### Version 3.3.1 (2022-07-19)
+- Some pictures of species improved
+- One species with picture added
+- 2nd Bugfix in arrays.xml
+
 #### Version 3.3.0 (2022-06-02)
 - Some more species with pictures added
 - Bugfix in arrays.xml
