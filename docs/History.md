@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2022, Wilhelm Stein
 
+#### Version 3.3.2 (2022-10-17)
+- Many pictures of species improved to show recto and verso sides
+- Some more species with pictures added
+
 #### Version 3.3.1 (2022-07-19)
 - Some pictures of species improved
 - One species with picture added
@@ -278,7 +282,7 @@
     
 #### Version 1.0.0 (2016-04-18)
 ##### 1. Release.
-TourCount derived from TransektCount which originally derives partly from BeeCount by knirirr
+TourCount derived from TransektCount whose basic program structure and counting functionality originally derives partly from BeeCount by knirirr
 (https://github.com/knirirr/BeeCount.git)
 
 Main features of 1. release comprise

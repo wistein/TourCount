@@ -1,17 +1,24 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    // Compiled with SDK Ver. 32 but for targetSdkVersion 29!
+    //  targetSdkVersion > 29 prevents installation from "unknown sources",
+    //  and so inhibits me from installing and testing my own compilation under Android 11.
+    //  androidx.appcompat:appcompat > 1.4.2 also demands for a higher API-level.
+    //  Compiling with a higher API-level is only required for Google Play which I don't use.
+    //  Related compiling errors can be ignored and don't affect functionality!
+    //
+    // 'com.google.android.material:material:1.6.1' is still used as version 1.7.0 produces 
+    //  a duplicate class error
+    //
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.wmstein.tourcount"
         minSdkVersion 19
-        // Compile with SDK Ver. 31 but for targetSdkVersion 29!
-        // targetSdkVersion > 29 prevents installation from "unknown sources" 
-        //  and so inhibits me from installing and testing my own compilation under Android 11 
         targetSdkVersion 29
-        versionCode 331
-        versionName="3.3.1"
+        versionCode 332
+        versionName="3.3.2"
     }
 
     buildTypes {
@@ -24,7 +31,6 @@ android {
                     'proguard-rules.pro'
         }
     }
-
 
     compileOptions {
         sourceCompatibility = 11

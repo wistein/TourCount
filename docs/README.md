@@ -92,7 +92,6 @@ Butterfly pictures:
 - p06855.png derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg (non-commercial use allowed)
 - p06859.png derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg (non-commercial use allowed)
 - p06884.png derived from https://en.wikipedia.org/wiki/Carcharodus_lavatherae, Dumi, GNU Free Documentation License, version 1.2
-- p07292.png, Public Domain, derived from https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
 
 - all other pictures, app icon and background (C) Wilhelm Stein. 
 

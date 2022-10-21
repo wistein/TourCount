@@ -31,7 +31,8 @@
  *    https://geotools.org/
  *
  * Butterfly pictures: 
- *  - Carcharodus lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, 
+ *  - Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
+ *  - Carcharodus lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2,
  *    derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
  *  - Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from 
  *    https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
@@ -41,8 +42,8 @@
  *    https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
  *  - Hyles hippophaes (A.R. Pittaway, non-commercial use allowed), derived from
  *    https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
- *  - Hypolimnas misippus (Public Domain), derived from
- *    https://commons.wikimedia.org/wiki/File:Hypolimnas_misippus_(ento-csiro-au).jpg
+ *  - Hyponephele lupinus (Public Domain), derived from
+ *    https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
  *  - Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from
  *    https://tpittaway.tripod.com/sphinx/m_que_a4.jpg 
  *  - Pediasia contaminella, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from

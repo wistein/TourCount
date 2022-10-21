@@ -398,8 +398,8 @@
 		<item comment="06973">Anthocharis cardamines</item>
 		<item comment="06974">Anthocharis euphenoides</item>
 		<item comment="06975">Anthocharis damone</item>
+		<item comment="06976">Anthocharis gruneri</item>
 		<item comment="06982">Euchloe belemia</item>
-		<item comment="06982a">Euchloe eversi</item>
 		<item comment="06983">Euchloe crameri</item>
 		<item comment="06985">Euchloe ausonia</item>
 		<item comment="06986">Iberochloe tagis</item>
@@ -556,6 +556,7 @@
 		<item comment="07294">Charaxes jasius</item>
 		<item comment="07298">Apatura ilia</item>
 		<item comment="07299">Apatura iris</item>
+		<item comment="07303">Kirinia roxelana</item>
 		<item comment="07307">Pararge aegeria</item>
 		<item comment="07307a">Pararge xiphia</item>
 		<item comment="07307b">Pararge xiphioides</item>
@@ -587,17 +588,20 @@
 		<item comment="07363">Erebia manto</item>
 		<item comment="07366">Erebia epiphron</item>
 		<item comment="07369">Erebia pharte</item>
+		<item comment="07370">Erebia melampus</item>
 		<item comment="07372">Erebia aethiops</item>
 		<item comment="07373">Erebia triarius</item>
 		<item comment="07379">Erebia medusa</item>
 		<item comment="07382">Erebia alberganus</item>
 		<item comment="07383">Erebia pluto</item>
 		<item comment="07384">Erebia gorge</item>
+		<item comment="07387">Erebia mnestra</item>
 		<item comment="07391">Erebia tyndarus</item>
 		<item comment="07394">Erebia cassioides</item>
 		<item comment="07394a">Erebia arvernensis</item>
 		<item comment="07396">Erebia pronoe</item>
 		<item comment="07399">Erebia stirius</item>
+		<item comment="07400">Erebia styx</item>
 		<item comment="07401">Erebia montanus</item>
 		<item comment="07403">Erebia neoridas</item>
 		<item comment="07405">Erebia oeme</item>
@@ -605,16 +609,22 @@
 		<item comment="07410">Erebia pandrose</item>
 		<item comment="07414">Melanargia russiae</item>
 		<item comment="07415">Melanargia galathea</item>
+		<item comment="07416">Melanargia lachesis</item>
+		<item comment="07417">Melanargia larissa</item>
 		<item comment="07418">Melanargia arge</item>
 		<item comment="07419">Melanargia occitanica</item>
+		<item comment="07421">Melanargia ines</item>
 		<item comment="07424">Satyrus ferula</item>
 		<item comment="07427">Minois dryas</item>
 		<item comment="07429">Hipparchia fagi</item>
 		<item comment="07430">Hipparchia alcyone</item>
 		<item comment="07436">Hipparchia semele</item>
 		<item comment="07436a">Hipparchia maderensis</item>
+		<item comment="07440a">Hipparchia senthes</item>
 		<item comment="07441">Hipparchia statilinus</item>
 		<item comment="07441a">Hipparchia wyssii</item>
+		<item comment="07442">Hipparchia fatua</item>
+		<item comment="07443">Hipparchia fidia</item>
 		<item comment="07445">Arethusana arethusa</item>
 		<item comment="07447">Brintesia circe</item>
 		<item comment="07449">Chazara briseis</item>
@@ -849,12 +859,12 @@
 		<item comment="06966">Wood white</item>
 		<item comment="06967">Real\'s wood white</item>
 		<item comment="06968">Eastern wood white</item>
-		<item comment="06969">Fenton’s wood white</item>
+		<item comment="06969">Fenton\'s wood white</item>
 		<item comment="06973">Orange tip</item>
 		<item comment="06974">Provence orange tip</item>
 		<item comment="06975">Eastern orange tip</item>
+		<item comment="06976">Gruner\'s orange tip</item>
 		<item comment="06982">Green-striped white</item>
-		<item comment="06982a">Tenerife green striped white</item>
 		<item comment="06983">Western dappled white</item>
 		<item comment="06985">Eastern dappled white</item>
 		<item comment="06986">Portuguese dappled white</item>
@@ -1011,6 +1021,7 @@
 		<item comment="07294">Two-tailed pasha</item>
 		<item comment="07298">Lesser purple emperor</item>
 		<item comment="07299">Purple emperor</item>
+		<item comment="07303">Lattice brown</item>
 		<item comment="07307">Speckled wood</item>
 		<item comment="07307a">Madeira speckled wood</item>
 		<item comment="07307b">Canary speckled wood</item>
@@ -1042,17 +1053,20 @@
 		<item comment="07363">Yellow-spotted ringlet</item>
 		<item comment="07366">Small mountain ringlet</item>
 		<item comment="07369">Blind ringlet</item>
+		<item comment="07370">Lesser mountain ringlet</item>
 		<item comment="07372">Scotch argus</item>
-		<item comment="07373">Prunner\'s Ringlet</item>
+		<item comment="07373">Prunner\'s ringlet</item>
 		<item comment="07379">Woodland ringlet</item>
 		<item comment="07382">Almond-eyed ringlet</item>
 		<item comment="07383">Sooty ringlet</item>
 		<item comment="07384">Silky ringlet</item>
+		<item comment="07387">Mnestra\'s ringlet</item>
 		<item comment="07391">Swiss brassy ringlet</item>
 		<item comment="07394">Common brassy ringlet</item>
 		<item comment="07394a">Common brassy ringlet</item>
 		<item comment="07396">Water ringlet</item>
 		<item comment="07399">Styrian ringlet</item>
+		<item comment="07400">Stygian ringlet</item>
 		<item comment="07401">Marbled ringlet</item>
 		<item comment="07403">Autumn ringlet</item>
 		<item comment="07405">Bright-eyed ringlet</item>
@@ -1060,16 +1074,22 @@
 		<item comment="07410">Dewy ringlet</item>
 		<item comment="07414">Esper\'s marbled white</item>
 		<item comment="07415">Marbled white</item>
+		<item comment="07416">Iberian marbled white</item>
+		<item comment="07417">Balkan marbled white</item>
 		<item comment="07418">Italian marbled white</item>
 		<item comment="07419">Western marbled white</item>
+		<item comment="07421">Spanish marbled white</item>
 		<item comment="07424">Great sooty satyr</item>
 		<item comment="07427">Dryad</item>
 		<item comment="07429">Woodland grayling</item>
 		<item comment="07430">Rock grayling</item>
 		<item comment="07436">Grayling</item>
 		<item comment="07436a">Madeiran grayling</item>
+		<item comment="07440a">Balkan grayling</item>
 		<item comment="07441">Tree grayling</item>
 		<item comment="07441a">Canary grayling</item>
+		<item comment="07442">Freyer\'s grayling</item>
+		<item comment="07443">Striped grayling</item>
 		<item comment="07445">False grayling</item>
 		<item comment="07447">Great banded grayling</item>
 		<item comment="07449">Hermit</item>
@@ -1308,8 +1328,8 @@
 		<item>06973</item>
 		<item>06974</item>
 		<item>06975</item>
+		<item>06976</item>
 		<item>06982</item>
-		<item>06982a</item>
 		<item>06983</item>
 		<item>06985</item>
 		<item>06986</item>
@@ -1466,6 +1486,7 @@
 		<item>07294</item>
 		<item>07298</item>
 		<item>07299</item>
+		<item>07303</item>
 		<item>07307</item>
 		<item>07307a</item>
 		<item>07307b</item>
@@ -1497,17 +1518,20 @@
 		<item>07363</item>
 		<item>07366</item>
 		<item>07369</item>
+		<item>07370</item>
 		<item>07372</item>
 		<item>07373</item>
 		<item>07379</item>
 		<item>07382</item>
 		<item>07383</item>
 		<item>07384</item>
+		<item>07387</item>
 		<item>07391</item>
 		<item>07394</item>
 		<item>07394a</item>
 		<item>07396</item>
 		<item>07399</item>
+		<item>07400</item>
 		<item>07401</item>
 		<item>07403</item>
 		<item>07405</item>
@@ -1515,16 +1539,22 @@
 		<item>07410</item>
 		<item>07414</item>
 		<item>07415</item>
+		<item>07416</item>
+		<item>07417</item>
 		<item>07418</item>
 		<item>07419</item>
+		<item>07421</item>
 		<item>07424</item>
 		<item>07427</item>
 		<item>07429</item>
 		<item>07430</item>
 		<item>07436</item>
 		<item>07436a</item>
+		<item>07440a</item>
 		<item>07441</item>
 		<item>07441a</item>
+		<item>07442</item>
+		<item>07443</item>
 		<item>07445</item>
 		<item>07447</item>
 		<item>07449</item>
