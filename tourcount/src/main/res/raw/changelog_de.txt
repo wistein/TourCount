@@ -71,135 +71,143 @@ _ Subtitle
   _ 
     ! Schmetterlings-Abbildungen: 
     * Jordanita globulariae, Autor: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
-    * Carcharodus lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
+    * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
     * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
     * Evergestis extimalis, Autor: Adam Furlepa, CC BY-SA 3.0, erstellt aus https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
     * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-	* Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+	  * Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
     * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-	* Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+	  * Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
     * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
   _
     ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
 	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
   _ 
   
+$ 3.3.3
+  % Version 3.3.3
+  _ 25.10.2022
+  	* Gradle Plugin Upgrade -> 7.3.1
+  	* Gradle Upgrade -> 7.4
+  	* Kompiliert mit SDK Ver. 32 für targetSdkVersion 31, resultierender "duplicate library"-Konflikt gelöst
+	* Weitere Falterarten mit Abbildungen hinzugefügt
+
 $ 3.3.2
   % Version 3.3.2
   _ 17.10.2022
-		* Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
-		* Weitere Falterarten mit Abbildungen hinzugefügt
+	* Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
+	* Weitere Falterarten mit Abbildungen hinzugefügt
 
 $ 3.3.1
   % Version 3.3.1
   _ 19.07.2022
-		* Einige Falterabbildungen überarbeitet
-		* Eine weitere Falterart mit Abbildung hinzugefügt
-		* 2. Bugfix in arrays.xml 
+	* Einige Falterabbildungen überarbeitet
+	* Eine weitere Falterart mit Abbildung hinzugefügt
+	* 2. Bugfix in arrays.xml
 
 $ 3.3.0
   % Version 3.3.0
   _ 02.06.2022
-		* Weitere Falterart mit Abbildung hinzugefügt
-		* Bugfix in arrays.xml
+	* Weitere Falterart mit Abbildung hinzugefügt
+	* Bugfix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9
   _ 21.05.2022
-		* Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
-		* Portrait/Landscape-Funktion verbessert
-		* Weitere Falterarten mit Abbildungen hinzugefügt
-		* Code-Verbesserungen
-		* Update der Doku
+	* Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
+	* Portrait/Landscape-Funktion verbessert
+	* Weitere Falterarten mit Abbildungen hinzugefügt
+	* Code-Verbesserungen
+	* Update der Doku
 
 $ 3.2.8
   % Version 3.2.8
   _ 17.04.2022
-		* Weitere Falterarten mit Abbildungen hinzugefügt
-		* Update von Dokumenten und Beispiel-DBs
-		* Update der Copyright und Lizenztexte
-		* Location background permission entfernt
+	* Weitere Falterarten mit Abbildungen hinzugefügt
+	* Update von Dokumenten und Beispiel-DBs
+	* Update der Copyright und Lizenztexte
+	* Location background permission entfernt
 
 $ 3.2.7
   % Version 3.2.7
   _ 26.03.2022
-		* Projekt Anpassung für Android Studio 2021.1.1 und Gradle 7.2
-		* Kompiliert für SDK-Version 31 (benötigt für aktuelle Bibliotheken)
-		* Einige weitere Nachtfalterarten mit Abbildungen hinzugefügt
-		* Zustandsinfo für Puppe, Raupe oder Ei wird nicht mehr erfasst
+	* Projekt Anpassung für Android Studio 2021.1.1 und Gradle 7.2
+	* Kompiliert für SDK-Version 31 (benötigt für aktuelle Bibliotheken)
+	* Einige weitere Nachtfalterarten mit Abbildungen hinzugefügt
+	* Zustandsinfo für Puppe, Raupe oder Ei wird nicht mehr erfasst
     * Kleinere Code-Korrekturen 
 
 $ 3.2.6
   % Version 3.2.6
   _ 22.08.2021
-		* Projekt Anpassung für Android Studio 2020.3.1 und Gradle 7.0.1
-		* Einige veraltete Schmetterlingsnamen angepasst (innerhalb App und Beispiel-DBs)
-		* Einige fehlende Schmetterlingsabbildungen hinzugefügt
+	* Projekt Anpassung für Android Studio 2020.3.1 und Gradle 7.0.1
+	* Einige veraltete Schmetterlingsnamen angepasst (innerhalb App und Beispiel-DBs)
+	* Einige fehlende Schmetterlingsabbildungen hinzugefügt
 		
 $ 3.2.5
   % Version 3.2.5
   _ 05.06.2021
-		* Projekt Anpassung für Android Studio 4.2.1 und Gradle 6.7.1
-		* Kompiliert mit SDK Ver. 30 targetSdkVersion 29 (targetSdkVersion 30 blockiert die Installation von "Unbekannter Quelle" und verhindert das Testen des eigenen Kompilats unter Android 11!)
+	* Projekt Anpassung für Android Studio 4.2.1 und Gradle 6.7.1
+	* Kompiliert mit SDK Ver. 30 targetSdkVersion 29 (targetSdkVersion 30 blockiert die Installation von "Unbekannter Quelle" und verhindert das Testen des eigenen Kompilats unter Android 11!)
 
 $ 3.2.4
   % Version 3.2.4
   _ 11.04.2021
-		* Verbesserung von Layout und Funktion des Spezieslisten-Editors
-		* Veraltete Code-Bezeichnungen aktualisiert
-		* Berechtigungsabfrage für Standortabfrage im Hintergrund
-		* Projekt-Anpassung für Android Studio 4.1.3 und Gradle 6.5
-		* Code-Anpassung für Fehlfunktion der Bilderanzeige unter Gradle 6.5
-		* Einige Abbildungen überarbeitet
-		* Geänderte Familiennamen angepasst
+	* Verbesserung von Layout und Funktion des Spezieslisten-Editors
+	* Veraltete Code-Bezeichnungen aktualisiert
+	* Berechtigungsabfrage für Standortabfrage im Hintergrund
+	* Projekt-Anpassung für Android Studio 4.1.3 und Gradle 6.5
+	* Code-Anpassung für Fehlfunktion der Bilderanzeige unter Gradle 6.5
+	* Einige Abbildungen überarbeitet
+	* Geänderte Familiennamen angepasst
 
 $ 3.2.3
   % Version 3.2.3
   _ 09.09.2020
-		* Bug in Location-Dienst behoben
-		* Projekt-Anpassung für Android Studio 4.0.1 und Gradle 6.1.1
+	* Bug in Location-Dienst behoben
+	* Projekt-Anpassung für Android Studio 4.0.1 und Gradle 6.1.1
 
 $ 3.2.2
   % Version 3.2.2
   _ 05.05.2020
-		* Location-Dienst in den Hauptfunktionen
-		* Fehler in Einstellung für Button-Sound behoben
-		* Weitere Schmetterlingsabbildungen integriert
-		* Integrierte Auswahlliste der Arten vergrößert
+	* Location-Dienst in den Hauptfunktionen
+	* Fehler in Einstellung für Button-Sound behoben
+	* Weitere Schmetterlingsabbildungen integriert
+	* Integrierte Auswahlliste der Arten vergrößert
 
 $ 3.2.1
   % Version 3.2.1
   _ 23.04.2020
-		* Hintergrundbild besser skaliert für längere Displays
-		* Meldungen bereinigt
+	* Hintergrundbild besser skaliert für längere Displays
+	* Meldungen bereinigt
 
 $ 3.2.0
   % Version 3.2.0
   _ 20.04.2020
-		* Code für eingeschränkten Speicher-Zugriff angepasst für Android 10
-		* Datendateien nun in App-spezifischem Verzeichnis
-		* Code für Einstellungen angepasst für Android 10
-		* Verwendung von AndroidX-Bibliotheken
-		* Hilfetext angepasst
-		* Einige kleine Code-Verbesserungen
-		* Projekt-Anpassung für Android Studio 3.6.3
-		* Doku angepasst
+	* Code für eingeschränkten Speicher-Zugriff angepasst für Android 10
+	* Datendateien nun in App-spezifischem Verzeichnis
+	* Code für Einstellungen angepasst für Android 10
+	* Verwendung von AndroidX-Bibliotheken
+	* Hilfetext angepasst
+	* Einige kleine Code-Verbesserungen
+	* Projekt-Anpassung für Android Studio 3.6.3
+	* Doku angepasst
 
 $ 3.1.5
   % Version 3.1.5
   _ 26.02.2020
-		* Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
-		* App-Icon angepasst für bessere Darstellung auf Android 9
-		* Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
+	* Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
+	* App-Icon angepasst für bessere Darstellung auf Android 9
+	* Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
 
 $ 3.1.4
   % Version 3.1.4
   _ 08.12.2019
-		* Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
-		* Kleinere Text-Verbesserungen
+	* Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
+	* Kleinere Text-Verbesserungen
   	* Projekt-Anpassung für Android Studio 3.5.3 und Gradle 5.4.1
-		* Änderungen in AndroidManifest.xml und build.gradle
+	* Änderungen in AndroidManifest.xml und build.gradle
 
 $ 3.1.2
   % Version 3.1.2
@@ -219,7 +227,7 @@ $ 3.1.0
   % Version 3.1.0
   _ 16.04.2019
   	* Integrierte Auswahlliste mit vielen Europäischen Spezies
-		* Hinzufügen neuer Spezies mittels Scroll-Down-Auswahl aus einer umfassenden Liste, die nur nicht vorhandene Spezies anzeigt   
+	* Hinzufügen neuer Spezies mittels Scroll-Down-Auswahl aus einer umfassenden Liste, die nur nicht vorhandene Spezies anzeigt
 
 $ 3.0.8
   % Version 3.0.8
@@ -267,34 +275,34 @@ $ 3.0.2
   % Version 3.0.2
   _ 17.04.2018
   	* Code-Verbesserungen
-		* Fehler behoben
+	* Fehler behoben
 
 $ 3.0.1
   % Version 3.0.1
   _ 04.04.2018
-		* Unnötige Berechtigung WRITE_SETTINGS entfernt 
+	* Unnötige Berechtigung WRITE_SETTINGS entfernt
   	* Multi-Window-Modus (Android 7+) gesperrt wegen inkompatiblem Pull-Down-Menü (Spinner)
   	* Kleine Änderungen in Ergebnisseite
 
 $ 3.0.0
   % Version 3.0.0
   _ 03.04.2018
-		* Neues Zählseiten-Layout mit Scroll-Menü zur Art-Auswahl 
-		* Separate Zähler für ♂♀, ♂, ♀, Puppe, Raupe, Ei
-		* Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
+	* Neues Zählseiten-Layout mit Scroll-Menü zur Art-Auswahl
+	* Separate Zähler für ♂♀, ♂, ♀, Puppe, Raupe, Ei
+	* Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
   	* Erstmaliger Start erzeugt nun direkt nutzbare interne DB mit verbreiteten europäischen Arten 
-		* Korrekte Subtraktion bei Kategorien der Arten und der Individual-Einträge
-		* Layout der Ergebnisseite angepasst 
-		* Layout der Startseite geändert 
-		* Weitere Schmetterlingsabbildungen integriert 
-		* Dokumentation überarbeitet für Ver. 3.0
-		* Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
+	* Korrekte Subtraktion bei Kategorien der Arten und der Individual-Einträge
+	* Layout der Ergebnisseite angepasst
+	* Layout der Startseite geändert
+	* Weitere Schmetterlingsabbildungen integriert
+	* Dokumentation überarbeitet für Ver. 3.0
+	* Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
   	* Fehler behoben
 
 $ 2.4.6
   % Version 2.4.6
   _ 19.03.2018
-		* Code Optimierung bezüglich Reverse Geocoding
+	* Code Optimierung bezüglich Reverse Geocoding
   	* Kamera-Button in Menüleiste der Zählseite hinzugefügt
   	* Quellcode-Projekt restrukturiert
   	* Fehler behoben
@@ -302,17 +310,17 @@ $ 2.4.6
 $ 2.4.2
   % Version 2.4.2
   _ 28.02.2018
-		* Inverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
-		* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
-		* Verschiedene Detail-Verbesserungen
-		* Funktionsrelikte entfernt und Fehler behoben
-		* Aktualisierung der Doku
+	* Inverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
+	* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
+	* Verschiedene Detail-Verbesserungen
+	* Funktionsrelikte entfernt und Fehler behoben
+	* Aktualisierung der Doku
 
 $ 2.3.2
   % Version 2.3.2
   _ 01.01.2018
-		* Abbildungen der Spezies von den Kanaren und Madeira ergänzt
-		* Weitere vorbereitete Datenbanken für Kanaren und Madeira unter <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
+	* Abbildungen der Spezies von den Kanaren und Madeira ergänzt
+	* Weitere vorbereitete Datenbanken für Kanaren und Madeira unter <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
   	* Code für Entwicklungsumgebung Android Studio 3.0 angepasst
   	* Docs: Einführende Prasentation hinzugefügt
   	* Fehler behoben

@@ -71,7 +71,7 @@ _ Subtitle
   _ 
     ! Butterfly pictures:
     * Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
-    * Carcharodus lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
+    * Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
     * Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
     * Evergestis extimalis, Author: Adam Furlepa, CC BY-SA 3.0, derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
@@ -85,121 +85,129 @@ _ Subtitle
 	! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission. Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
+$ 3.3.3
+  % Version 3.3.3
+  _ 2022-10-25
+	* Gradle Plugin upgraded -> 7.3.1
+	* Gradle upgraded -> 7.4
+    * Compiled with SDK Ver. 32 for targetSdkVersion 31, resulting "duplicate library" conflict solved
+	* Some more species with pictures added
+
 $ 3.3.2
   % Version 3.3.2
   _ 2022-10-17
-		* Many pictures of species improved to show recto and verso sides
-		* Some more species with pictures added
+	* Many pictures of species improved to show recto and verso sides
+	* Some more species with pictures added
 
 $ 3.3.1
   % Version 3.3.1
   _ 2022-07-19
-		* Some pictures of species improved
-		* One species with picture added
-		* 2nd Bugfix in arrays.xml
+	* Some pictures of species improved
+	* One species with picture added
+	* 2nd Bugfix in arrays.xml
 
 $ 3.3.0
   % Version 3.3.0
   _ 2022-06-02
-		* More species with pictures added
-		* Bugfix in arrays.xml
+	* More species with pictures added
+	* Bugfix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9
   _ 2022-05-21
-		* Project adaption for Android Studio 2021.2.1 and Gradle 7.3.3
-		* Portrait/landscape handling improved 
-		* More species with pictures added
-		* Code improvements
-		* Docs updated
+	* Project adaption for Android Studio 2021.2.1 and Gradle 7.3.3
+	* Portrait/landscape handling improved
+	* More species with pictures added
+	* Code improvements
+	* Docs updated
 
 $ 3.2.8
   % Version 3.2.8
   _ 2022-04-17
-		* More species with pictures added
-		* Documents and example-DBs updated
-		* Copyright and license texts updated
-		* Location background permission removed
+	* More species with pictures added
+	* Documents and example-DBs updated
+	* Copyright and license texts updated
+	* Location background permission removed
 
 $ 3.2.7
   % Version 3.2.7
   _ 2022-03-26
-		* Project adaption for Android Studio 2021.1.1 and Gradle 7.2
-		* Compiled for SDK version 31 (needed for current libs)
-		* Some more moths species with pictures added
-		* State info for pupa, caterpillar or egg omitted
+	* Project adaption for Android Studio 2021.1.1 and Gradle 7.2
+	* Compiled for SDK version 31 (needed for current libs)
+	* Some more moths species with pictures added
+	* State info for pupa, caterpillar or egg omitted
     * Minor code corrections 
 
 $ 3.2.6
   % Version 3.2.6
   _ 2021-08-22
-		* Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
-		* Some outdated butterfly names updated (within app and example DBs)
-		* Some missing butterfly pictures added
+	* Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
+	* Some outdated butterfly names updated (within app and example DBs)
+	* Some missing butterfly pictures added
 		
 $ 3.2.5
   % Version 3.2.5
   _ 2021-06-05
-		* Project adaption for Android Studio 4.2.1 and Gradle 6.7.1
-		* Compiled with SDK Ver. 30 for targetSdkVersion 29 (targetSdkVersion 30 prevents installation from "unknown sources" and so inhibits testing of the own compilation under Android 11!)
+	* Project adaption for Android Studio 4.2.1 and Gradle 6.7.1
+	* Compiled with SDK Ver. 30 for targetSdkVersion 29 (targetSdkVersion 30 prevents installation from "unknown sources" and so inhibits testing of the own compilation under Android 11!)
 
 $ 3.2.4
   % Version 3.2.4
   _ 2021-04-11
-		* Layout and function of Edit species list improved
-		* Outdated code names updated
-		* Permission handling for Access Background Location
-		* Project adaption for Android Studio 4.1.3 and Gradle 6.5
-		* Fix for broken loading picture function since Gradle 6.5
-		* Some pictures improved
-		* Species family names updated where appropriate
+	* Layout and function of Edit species list improved
+	* Outdated code names updated
+	* Permission handling for Access Background Location
+	* Project adaption for Android Studio 4.1.3 and Gradle 6.5
+	* Fix for broken loading picture function since Gradle 6.5
+	* Some pictures improved
+	* Species family names updated where appropriate
 		
 $ 3.2.3
   % Version 3.2.3
   _ 2020-09-09
-		* Location service fix for coarse location
-		* Project adaption for Android Studio 4.0.1 and Gradle 6.1.1
+	* Location service fix for coarse location
+	* Project adaption for Android Studio 4.0.1 and Gradle 6.1.1
 
 $ 3.2.2
   % Version 3.2.2
   _ 2020-05-05
-		* Location service active in major activities
-		* Bug fix in button sound
-		* More butterfly pictures integrated
-		* Initial integrated list of species enlarged
+	* Location service active in major activities
+	* Bug fix in button sound
+	* More butterfly pictures integrated
+	* Initial integrated list of species enlarged
 
 $ 3.2.1
   % Version 3.2.1
   _ 2020-04-23
-		* Background picture better scaled for long displays
-		* Strings cleared up
+	* Background picture better scaled for long displays
+	* Strings cleared up
 
 $ 3.2.0
   % Version 3.2.0
   _ 2020-04-20
-		* Code for restricted Storage Access adapted for Android 10
-		* Data files now in app specific directory 
-		* Code for Preferences adapted for Android 10
-		* Use of AndroidX libraries
-		* Help text updated
-		* Many minor code refinements
-		* Project adaption for Android Studio 3.6.3
-		* Docs updated
+	* Code for restricted Storage Access adapted for Android 10
+	* Data files now in app specific directory
+	* Code for Preferences adapted for Android 10
+	* Use of AndroidX libraries
+	* Help text updated
+	* Many minor code refinements
+	* Project adaption for Android Studio 3.6.3
+	* Docs updated
 
 $ 3.1.5
   % Version 3.1.5
   _ 2020-02-26
-		* Code optimized for storage and power efficiency
-		* App icon adapted to better match Android 9 screen
-		* Project adaption for Android Studio 3.6 and Gradle 5.6.4
+	* Code optimized for storage and power efficiency
+	* App icon adapted to better match Android 9 screen
+	* Project adaption for Android Studio 3.6 and Gradle 5.6.4
 
 $ 3.1.4
   % Version 3.1.4
   _ 2019-12-08
-		* Undercutting of species names in results page corrected
-		* Minor text improvements
+	* Undercutting of species names in results page corrected
+	* Minor text improvements
   	* Project adaption for Android Studio 3.5.3 and Gradle 5.4.1
-		* Changes in AndroidManifest.xml and build.gradle 
+	* Changes in AndroidManifest.xml and build.gradle
 
 $ 3.1.2
   % Version 3.1.2
@@ -219,14 +227,14 @@ $ 3.1.0
   % Version 3.1.0
   _ 2019-04-16
   	* Integrated list of many European species
-		* Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
+	* Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
 
 $ 3.0.8
   % Version 3.0.8
   _ 2019-03-25
-		* Database structure supplemented for local butterfly names
-		* Example databases adapted fot local butterfly names)
-		* Exported results include local butterfly names
+	* Database structure supplemented for local butterfly names
+	* Example databases adapted fot local butterfly names)
+	* Exported results include local butterfly names
   	* Additional butterfly pictures
     * Some minor screen design changes
     * Some code cleaning
@@ -252,7 +260,7 @@ $ 3.0.4
   _ 2018-08-03
   	* Location retrieval function more reliable, changed to service
   	* Additional butterfly pictures
-		* Where applicable toasts replaced with snackbars
+	* Where applicable toasts replaced with snackbars
   	* Some code cleaning
   	* Fix for crash in permission handling of Android >= Marshmallow
   	* Fix for crash in "Edit Species list" functionality
@@ -266,35 +274,35 @@ $ 3.0.3
 $ 3.0.2
   % Version 3.0.2
   _ 2018-04-17
-		* Code improvements
-		* Bug fixes
+	* Code improvements
+	* Bug fixes
 
 $ 3.0.1
   % Version 3.0.1
   _ 2018-04-04
-		* Unnecessary permission WRITE_SETTINGS removed
+	* Unnecessary permission WRITE_SETTINGS removed
   	* Disabled multi-window-mode (Android 7+) for incompatible pull-down-menu (Spinner)
   	* Minor changes in results page
 
 $ 3.0.0
   % Version 3.0.0
   _ 2018-04-03
-		* Redesign of counting page layout with scroll-down selection of species
-		* Separate counters for ♂♀, ♂, ♀, pupa, larva, egg
-		* Database version change 2 to 3 (takes care of additional counters)
+	* Redesign of counting page layout with scroll-down selection of species
+	* Separate counters for ♂♀, ♂, ♀, pupa, larva, egg
+	* Database version change 2 to 3 (takes care of additional counters)
   	* First use now creates a direct usable internal DB with common european species
-		* Correct handling of subtraction for categories of species and individual records
-		* Adapted results page layout 
-		* Layout of starting page updated
-		* More butterfly pictures added 
-		* Documentation updated for ver. 3.0
-		* Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
-		* Bug fixes
+	* Correct handling of subtraction for categories of species and individual records
+	* Adapted results page layout
+	* Layout of starting page updated
+	* More butterfly pictures added
+	* Documentation updated for ver. 3.0
+	* Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
+	* Bug fixes
 
 $ 2.4.6
   % Version 2.4.6
   _ 2018-03-19
-		* Code optimization for Reverse Geocoding
+	* Code optimization for Reverse Geocoding
   	* Added a camera button in counting menu
   	* Source Project restructured
   	* Bud fixes
@@ -302,37 +310,37 @@ $ 2.4.6
 $ 2.4.2
   % Version 2.4.2
   _ 2018-02-28
-		* Reverse Geocoding from GPS coordinates for meta data and individual location
-		* Results page improved (average coordinates, listing of individual counts with data)
-		* Diverse improvements of details
-		* Obsolete functions eliminated and bug fixes
-		* Documents updated
+	* Reverse Geocoding from GPS coordinates for meta data and individual location
+	* Results page improved (average coordinates, listing of individual counts with data)
+	* Diverse improvements of details
+	* Obsolete functions eliminated and bug fixes
+	* Documents updated
 
 $ 2.3.2
   % Version 2.3.2
   _ 2018-01-01
-		* Added pictures of species for Canaries and Madeira
-		* Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
-		* Dev. environment adapted for Android Studio 3.0
+	* Added pictures of species for Canaries and Madeira
+	* Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
+	* Dev. environment adapted for Android Studio 3.0
   	* Docs: German Introductary presentation added
-		* Bug fix
+	* Bug fix
 
 $ 2.3.0
   % Version 2.3.0
   _ 2017-09-27
-		* Code adapted and compiled for Android 7.1
-		* Minor code improvements
-		* Bug fixes
+	* Code adapted and compiled for Android 7.1
+	* Minor code improvements
+	* Bug fixes
 
 $ 2.2.0
   % Version 2.2.0
   _ 2017-09-11
-		* Write system log only in debug version
+	* Write system log only in debug version
 
 $ 2.1.9
   % Version 2.1.9
   _ 2017-09-10
-		* Added links in App Info and Help pages
+	* Added links in App Info and Help pages
   	* Improved layout of results page
   	* Added database version control to be compatible with old database structure prior version 2.1.4
   	* Fix crash when counting using a database of old structure prior version 2.1.4

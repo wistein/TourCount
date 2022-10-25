@@ -85,13 +85,14 @@ Integrated code from external references:
   https://geotools.org/
 
 Butterfly pictures: 
-- p06243.png derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg, Olaf Leillinger, GNU Free Documentation License
-- p06364.png derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg, Ben Sale, Creative Commons Attribution 2.0 Generic License
-- p06499.png derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG, Adam Furlepa, CC BY-SA 3.0
-- p06817.png derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg (non-commercial use allowed)
-- p06855.png derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg (non-commercial use allowed)
-- p06859.png derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg (non-commercial use allowed)
-- p06884.png derived from https://en.wikipedia.org/wiki/Carcharodus_lavatherae, Dumi, GNU Free Documentation License, version 1.2
+- Jordanita globulariae derived from https://commons.wikimedia.org, Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0)
+- Crambus pascuella derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg, Olaf Leillinger, GNU Free Documentation License
+- Pediasia contaminella derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg, Ben Sale, Creative Commons Attribution 2.0 Generic License
+- Evergestis extimalis derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG, Adam Furlepa, CC BY-SA 3.0
+- Hyles gallii derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg (non-commercial use allowed)
+- Marumba quercus derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg (non-commercial use allowed)
+- Hyles hippophaes derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg (non-commercial use allowed)
+- Muschampia lavatherae derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae, Dumi, GNU Free Documentation License, version 1.2
 
 - all other pictures, app icon and background (C) Wilhelm Stein. 
 

@@ -32,7 +32,7 @@
  *
  * Butterfly pictures: 
  *  - Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
- *  - Carcharodus lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2,
+ *  - Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2,
  *    derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
  *  - Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from 
  *    https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
@@ -51,7 +51,7 @@
  * 
  *  - All other pictures, app icon and background (C) Wilhelm Stein. 
  * 
- * Pictures of this work by Wilhelm Stein may be used for research or other 
+ * Pictures of this work by Wilhelm Stein may be used for scientific or other 
  * non-commercial purposes without prior permission. 
  * Please note that illustrations provided by other authors remain the copyright 
  * of those authors and should not be reproduced other than with their permission.

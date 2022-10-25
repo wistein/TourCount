@@ -1,24 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    // Compiled with SDK Ver. 32 but for targetSdkVersion 29!
-    //  targetSdkVersion > 29 prevents installation from "unknown sources",
-    //  and so inhibits me from installing and testing my own compilation under Android 11.
-    //  androidx.appcompat:appcompat > 1.4.2 also demands for a higher API-level.
-    //  Compiling with a higher API-level is only required for Google Play which I don't use.
-    //  Related compiling errors can be ignored and don't affect functionality!
-    //
-    // 'com.google.android.material:material:1.6.1' is still used as version 1.7.0 produces 
-    //  a duplicate class error
+    // Compiled with SDK Ver. 32 for targetSdkVersion 31.
+    // Adding the following line under dependencies resolved the duplicate class error
+    //   introduced with the library upgrades to appcompat:1.5.1 and material:1.7.0 libraries:
+    //   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     //
     compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.wmstein.tourcount"
         minSdkVersion 19
-        targetSdkVersion 29
-        versionCode 332
-        versionName="3.3.2"
+        targetSdkVersion 31
+        versionCode 333
+        versionName="3.3.3"
     }
 
     buildTypes {
@@ -52,8 +47,10 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+//    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'  // not necessary
 }

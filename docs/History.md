@@ -2,6 +2,12 @@
 
 #### TourCount Copyright (C) 2016-2022, Wilhelm Stein
 
+#### Version 3.3.3 (2022-10-25)
+- Gradle Plugin upgraded -> 7.3.1
+- Gradle upgraded -> 7.4
+- Compiled with SDK Ver. 32 for targetSdkVersion 31, resulting "duplicate library" conflict solved
+- Some more species with pictures added
+
 #### Version 3.3.2 (2022-10-17)
 - Many pictures of species improved to show recto and verso sides
 - Some more species with pictures added
@@ -215,7 +221,7 @@
 
 #### Version 2.1.4 (2016-12-01)
 - Small bug fix
-- Pictures of species on counting and results page
+- Added pictures of species on counting and results page
 - Default background picture different from that of TransektCount app
     
 #### Version 2.1.3 (2016-10-31)
@@ -282,7 +288,7 @@
     
 #### Version 1.0.0 (2016-04-18)
 ##### 1. Release.
-TourCount derived from TransektCount whose basic program structure and counting functionality originally derives partly from BeeCount by knirirr
+TourCount derived from TransektCount whose basic program structure and counting functionality originally derived partly from BeeCount by knirirr
 (https://github.com/knirirr/BeeCount.git)
 
 Main features of 1. release comprise

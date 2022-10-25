@@ -1,0 +1,5 @@
+Version 3.3.3 (2022-10-25)
+- Gradle Plugin upgraded -> 7.3.1
+- Gradle upgraded -> 7.4
+- Compiled with SDK Ver. 32 for targetSdkVersion 31, resulting "duplicate library" conflict solved
+- Some more species with pictures added
