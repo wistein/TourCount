@@ -57,7 +57,7 @@ cannot be mutually updated.
 
 ### Licenses
 
-Copyright 2016-2022 Wilhelm Stein (wistein)
+Copyright 2016-2023 Wilhelm Stein (wistein)
 
 TourCount is licensed under the Apache License, Version 2.0 (the "License");
 you may not use any of its files except in compliance with the License.

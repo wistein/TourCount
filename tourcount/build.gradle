@@ -1,19 +1,16 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    // Compiled with SDK Ver. 32 for targetSdkVersion 31.
-    // Adding the following line under dependencies resolved the duplicate class error
-    //   introduced with the library upgrades to appcompat:1.5.1 and material:1.7.0 libraries:
-    //   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    //
-    compileSdkVersion 32
+    // Compiled with SDK Ver. 33 for targetSdkVersion 33.
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.wmstein.tourcount"
         minSdkVersion 19
-        targetSdkVersion 31
-        versionCode 333
-        versionName="3.3.3"
+        targetSdkVersion 33
+        versionCode 334
+        versionName="3.3.4"
     }
 
     buildTypes {
@@ -47,10 +44,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-//    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'  // not necessary
+    implementation 'com.google.android.material:material:1.8.0'
 }
