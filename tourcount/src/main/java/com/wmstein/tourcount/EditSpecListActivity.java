@@ -485,7 +485,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             return true;
 
         int id = item.getItemId();
-        if (id == R.id.home)
+        if (id == android.R.id.home)
         {
             savedCounts.clear();
             Intent intent = NavUtils.getParentActivityIntent(this);

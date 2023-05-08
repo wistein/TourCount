@@ -2,6 +2,7 @@ package com.wmstein.tourcount;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +49,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import sheetrock.panda.changelog.ChangeLog;
@@ -64,7 +69,7 @@ import static java.lang.Math.sqrt;
  *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2022-05-26
+ * last modification on 2023-05-06
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -91,14 +96,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Don't stop listener if permission was allowed later and listener has not been started
     private boolean permLocGiven;
      
-    private ChangeLog cl;
-    private ViewHelp vh;
+    ChangeLog cl;
+    ViewHelp vh;
     public boolean doubleBackToExitPressedOnce;
 
     // Location info handling
     private double latitude, longitude, height, uncertainty;
 
-    // import/export stuff
     private File infile;
     private File outfile;
     private boolean mExternalStorageAvailable = false;
@@ -387,8 +391,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 {
                     url = new URL(urlString);
                     RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.execute(url);
-                } catch (IOException e)
+                    // getXML.execute(url); // execute(url) is deprecated
+                    getXML.doInBackground(url);
+                } catch (Exception e)
                 {
                     // do nothing
                 }
@@ -1459,37 +1464,17 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         intent.putStringArrayListExtra("filterFileExtension", extensions);
         intent.putExtra("filterFileName", filterFileName);
-        startActivityForResult(intent, FILE_CHOOSER);
-    }
+        myActivityResultLauncher.launch(intent);
 
-    @Override
-    // onActivityResult is part of loadFile() and processes the result of AdvFileChooser
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        String fileSelected = "";
-        if ((requestCode == FILE_CHOOSER) && (resultCode == -1))
-        {
-            fileSelected = data.getStringExtra("fileSelected");
-            //Toast.makeText(this, fileSelected, Toast.LENGTH_SHORT).show();
-        }
+        // outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
+        String destPath = this.getFilesDir().getPath();
+        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
+        outfile = new File(destPath);
 
-        //infile = selected File
-        assert fileSelected != null;
-        if (!fileSelected.equals(""))
-        {
-            infile = new File(fileSelected);
-
-            // outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
-            String destPath = this.getFilesDir().getPath();
-            destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
-            outfile = new File(destPath);
-
-            // confirm dialogue before anything else takes place
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.setMessage(R.string.confirmDBImport)
+        // confirm dialogue before anything else takes place
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setMessage(R.string.confirmDBImport)
                 .setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) -> {
                     // START
                     // replace this with another function rather than this lazy c&p
@@ -1523,7 +1508,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         {
                             copy(infile, outfile);
                             showSnackbar(getString(R.string.importWin));
-                            // save values for initial count-id and itemposition 
+                            // save values for initial count-id and itemposition
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putInt("count_id", 1);
                             editor.putInt("item_Position", 0);
@@ -1552,10 +1537,35 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                     }
                     // END
                 }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-            alert = builder.create();
-            alert.show();
-        }
+        alert = builder.create();
+        alert.show();
     }
+
+    // Function is part of loadFile() and processes the result of AdvFileChooser
+    ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>()
+            {
+                @Override
+                public void onActivityResult(ActivityResult result)
+                {
+                    // import/export stuff
+                    String selectedFile = "";
+                    if (result.getResultCode() == Activity.RESULT_OK)
+                    {
+                        Intent data = result.getData();
+                        // Following the operation
+                        assert data != null;
+                        selectedFile = data.getStringExtra("fileSelected");
+                        if (MyDebug.LOG)
+                        {
+                            Log.e(TAG, "File selected: " + selectedFile);
+                            showSnackbarRed("Selected file: " + selectedFile);
+                        }
+                        infile = new File(selectedFile);
+                    }
+                }
+            });
 
     /**************************************************************************************************/
     @SuppressLint({"SdCardPath", "LongLogTag"})

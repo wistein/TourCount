@@ -33,12 +33,12 @@ import androidx.core.app.NavUtils;
  * AddSpeciesActivity lets you insert a new species into the species list
  * AddSpeciesActivity is called from EditSpecListActivity
  * Uses SpeciesAddWidget.java, widget_add_spec.xml.
- *
+ * <p>
  * The sorting order of the species to add cannot be changed, as it is determined 
  * by 3 interdependent and correlated arrays in arrays.xml
- *
+ * <p>
  * Created for TourCount by wmstein on 2019-04-12,
- * last edited on 2022-05-21
+ * last edited on 2023-05-06
  */
 public class AddSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -50,8 +50,11 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
     // the actual data
     private CountDataSource countDataSource;
 
-    private String[] idArray; // Id list of missing species
-    ArrayList<String> namesCompleteArrayList, namesGCompleteArrayList, codesCompleteArrayList; // complete ArrayLists of species
+    // Id list of missing species
+    private String[] idArray;
+
+    // complete ArrayLists of species
+    ArrayList<String> namesCompleteArrayList, namesGCompleteArrayList, codesCompleteArrayList;
     String specName, specCode, specNameG; // selected species
 
     private Bitmap bMap;
@@ -123,9 +126,12 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
 
         // get the list of only new species not already contained in the species counting list
         List<Count> counts;
-        ArrayList<String> specCodesContainedList = new ArrayList<>(); // code list of contained species
 
-        counts = countDataSource.getAllSpeciesSrtCode(); // get species of the counting list
+        // code list of contained species
+        ArrayList<String> specCodesContainedList = new ArrayList<>();
+
+        // get species of the counting list
+        counts = countDataSource.getAllSpeciesSrtCode();
 
         // build code ArrayList of already contained species
         for (Count count : counts)
@@ -250,7 +256,7 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.home)
+        if (id == android.R.id.home)
         {
             Intent intent = NavUtils.getParentActivityIntent(this);
             assert intent != null;

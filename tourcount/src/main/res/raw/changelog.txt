@@ -85,6 +85,15 @@ _ Subtitle
 	! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission. Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
+$ 3.3.5
+  % Version 3.3.5
+  _ 2023-05-08
+    * Gradle Plugin upgraded -> 8.0.0
+    * Gradle upgraded -> 8.0
+    * Deprecated startActivityForResult() replaced by ActivityResultLauncher
+    * Deprecated execute(URL) replaced by onPostExecute(URL)
+		* Some code improvements
+
 $ 3.3.4
   % Version 3.3.4
   _ 2023-03-26

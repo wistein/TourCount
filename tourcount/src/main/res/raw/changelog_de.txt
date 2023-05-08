@@ -85,6 +85,15 @@ _ Subtitle
 	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
   _ 
   
+$ 3.3.5
+  % Version 3.3.5
+  _ 08.05.2023
+    * Gradle Plugin upgraded -> 8.0.0
+    * Gradle upgraded -> 8.0
+    * Deprecated startActivityForResult() ersetzt durch ActivityResultLauncher
+    * Deprecated execute(URL) ersetzt durch onPostExecute(URL)
+		* Einige code Verbesserungen
+
 $ 3.3.4
   % Version 3.3.4
   _ 26.03.2023

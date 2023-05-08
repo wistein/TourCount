@@ -485,7 +485,7 @@ public class EditSpecListLActivity extends AppCompatActivity implements SharedPr
             return true;
 
         int id = item.getItemId();
-        if (id == R.id.home)
+        if (id == android.R.id.home)
         {
             savedCounts.clear();
             Intent intent = NavUtils.getParentActivityIntent(this);
@@ -591,7 +591,7 @@ public class EditSpecListLActivity extends AppCompatActivity implements SharedPr
                 {
                     url = new URL(urlString);
                     RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.execute(url);
+                    getXML.doInBackground(url);
                 } catch (IOException e)
                 {
                     // do nothing
