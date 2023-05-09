@@ -29,8 +29,6 @@ import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
-import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,7 +43,7 @@ import androidx.core.content.ContextCompat;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2012-05-21,
- * last edit on 2022-05-21
+ * last edit on 2023-05-09
  */
 public class EditMetaLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -459,15 +457,13 @@ public class EditMetaLActivity extends AppCompatActivity implements SharedPrefer
             StrictMode.setThreadPolicy(policy);
 
             runOnUiThread(() -> {
-                URL url;
                 String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
                     + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    url = new URL(urlString);
                     RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.execute(url);
-                } catch (IOException e)
+                    getXML.onPostExecute(urlString);
+                } catch (Exception e)
                 {
                     // do nothing
                 }

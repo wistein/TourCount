@@ -1,5 +1,8 @@
 package com.wmstein.tourcount;
 
+import static com.wmstein.tourcount.TourCountApplication.getPrefs;
+import static java.lang.Math.sqrt;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,6 +28,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
@@ -42,34 +52,24 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
-
-import static com.wmstein.tourcount.TourCountApplication.getPrefs;
-import static java.lang.Math.sqrt;
 
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and lets you call 
  * EditMetaActivity, CountingActivity and ListSpeciesActivity.
  * It uses further LocationService and PermissionDialogFragment.
- *
+ * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-05-06
+ * last modification on 2023-05-08
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -77,17 +77,11 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
-    private static final int FILE_CHOOSER = 11;
     LocationService locationService;
     
     // Permission dispatcher mode modePerm: 
     //  1 = use location service
     //  2 = end location service
-    //  3 = export DB
-    //  4 = export DB -> CSV
-    //  5 = export basic DB
-    //  6 = import DB
-    //  7 = import basic DB
     private int modePerm;
     
     // permLocGiven contains initial location permission state that
@@ -182,17 +176,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         } catch (NullPointerException e)
         {
             // nothing
-        }
-
-        // if API level > 23 permission request is necessary
-        int REQUEST_CODE_STORAGE = 123; // Identifier for permission request Android 6.0
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            int hasWriteExtStoragePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (hasWriteExtStoragePermission != PackageManager.PERMISSION_GRANTED)
-            {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
-            }
         }
 
         cl = new ChangeLog(this);
@@ -307,37 +290,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             if (modePerm == 1)
                 PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
         }
-
-        if (isStoPermissionGranted()) // current storage permission state granted
-        {
-            switch (modePerm)
-            {
-            case 3: // write DB
-                doExportDB();
-                break;
-
-            case 4: // write DB2CSV
-                doExportDb2CSV();
-                break;
-
-            case 5: // write basic DB
-                doExportBasisDb();
-                break;
-
-            case 6: // read DB
-                doImportDB();
-                break;
-
-            case 7: // read basic DB
-                doImportBasisDB();
-                break;
-            }
-        }
-        else
-        {
-            if (modePerm != 2)
-                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
-        }
     }
 
     // if API level > 23 test for permissions granted
@@ -350,16 +302,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else
             return true;
-    }
-
-    // if API level > 23 test for permissions granted
-    private boolean isStoPermissionGranted()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-        }
-        return true;
     }
 
     // get the location data
@@ -384,15 +326,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             StrictMode.setThreadPolicy(policy);
 
             runOnUiThread(() -> {
-                URL url;
                 String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
                     + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    url = new URL(urlString);
                     RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
                     // getXML.execute(url); // execute(url) is deprecated
-                    getXML.doInBackground(url);
+                    getXML.onPostExecute(urlString);
                 } catch (Exception e)
                 {
                     // do nothing
@@ -485,9 +425,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             importBasisDb();
             return true;
         }
-        else if (id == R.id.loadFileMenu)
+        else if (id == R.id.importFileMenu)
         {
-            loadFile();
+            importFile();
             return true;
         }
         else if (id == R.id.resetDBMenu)
@@ -663,13 +603,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportDb()
     {
-        // Export DB with permission check
-        modePerm = 3;
-        permissionCaptureFragment(); // calls doExportDB()
-    }
-
-    private void doExportDB()
-    {
         // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_yyyy-MM-dd_HHmmss.db
         outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount_" + getcurDate() + ".db");
         
@@ -726,13 +659,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // 15.05.2016, wm.stein
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportDb2CSV()
-    {
-        // Export DB -> CSV with permission check
-        modePerm = 4;
-        permissionCaptureFragment(); // calls doExportDb2CSV()
-    }
-
-    private void doExportDb2CSV()
     {
         // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_yyyy-MM-dd_HHmmss.csv
         outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount_" + getcurDate() + ".csv");
@@ -1269,13 +1195,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // modified by wmstein
     private void exportBasisDb()
     {
-        // Export Basic DB with permission check
-        modePerm = 5;
-        permissionCaptureFragment(); // calls doExportBasisDb()
-    }
-
-    private void doExportBasisDb()
-    {
         // tmpfile -> /data/data/com.wmstein.tourcount/files/tourcount_tmp.db
         String tmpPath = getApplicationContext().getFilesDir().getPath();
         tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db";
@@ -1440,14 +1359,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Choose a file to load and set it to tourcount.db
     // based on android-file-chooser from Google Code Archive
     // Created by wmstein
-    private void loadFile()
-    {
-        // Import DB with permission check
-        modePerm = 6;
-        permissionCaptureFragment(); // calls doImportDB()
-    }
-    
-    private void doImportDB()
+    private void importFile()
     {
         ArrayList<String> extensions = new ArrayList<>();
         extensions.add(".db");
@@ -1477,33 +1389,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         builder.setMessage(R.string.confirmDBImport)
                 .setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) -> {
                     // START
-                    // replace this with another function rather than this lazy c&p
-                    if (Environment.MEDIA_MOUNTED.equals(state))
-                    {
-                        // We can read and write the media
-                        mExternalStorageAvailable = mExternalStorageWriteable = true;
-                    }
-                    else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-                    {
-                        // We can only read the media
-                        mExternalStorageAvailable = true;
-                        mExternalStorageWriteable = false;
-                    }
-                    else
-                    {
-                        // Something else is wrong. It may be one of many other states, but all we need
-                        //  to know is we can neither read nor write
-                        mExternalStorageAvailable = mExternalStorageWriteable = false;
-                    }
-
-                    if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
-                    {
-                        if (MyDebug.LOG)
-                            Log.d(TAG, "No sdcard access");
-                        showSnackbarRed(getString(R.string.noCard));
-                    }
-                    else
-                    {
                         try
                         {
                             copy(infile, outfile);
@@ -1534,14 +1419,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                                 Log.e(TAG, "Failed to import database");
                             showSnackbarRed(getString(R.string.importFail));
                         }
-                    }
                     // END
                 }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
         alert = builder.create();
         alert.show();
     }
 
-    // Function is part of loadFile() and processes the result of AdvFileChooser
+    // Function is part of importFile() and processes the result of AdvFileChooser
     ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>()
@@ -1549,8 +1433,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 @Override
                 public void onActivityResult(ActivityResult result)
                 {
-                    // import/export stuff
-                    String selectedFile = "";
+                    String selectedFile;
                     if (result.getResultCode() == Activity.RESULT_OK)
                     {
                         Intent data = result.getData();
@@ -1572,13 +1455,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // modified by wmstein
     private void importBasisDb()
     {
-        // Import basic DB with permission check
-        modePerm = 7;
-        permissionCaptureFragment(); // calls doImportBasisDB()
-    }
-    
-    private void doImportBasisDB()
-    {
         // infile <- /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
         infile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
         
@@ -1597,33 +1473,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setMessage(R.string.confirmBasisImport).setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) -> {
             // START
-            // replace this with another function rather than this lazy c&p
-            if (Environment.MEDIA_MOUNTED.equals(state))
-            {
-                // We can read and write the media
-                mExternalStorageAvailable = mExternalStorageWriteable = true;
-            }
-            else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-            {
-                // We can only read the media
-                mExternalStorageAvailable = true;
-                mExternalStorageWriteable = false;
-            }
-            else
-            {
-                // Something else is wrong. It may be one of many other states, but all we need
-                //  to know is we can neither read nor write
-                mExternalStorageAvailable = mExternalStorageWriteable = false;
-            }
-
-            if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
-            {
-                if (MyDebug.LOG)
-                    Log.d(TAG, "No sdcard access");
-                showSnackbarRed(getString(R.string.noCard));
-            }
-            else
-            {
                 try
                 {
                     copy(infile, outfile);
@@ -1642,7 +1491,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         Log.e(TAG, "Failed to import database");
                     showSnackbarRed(getString(R.string.importFail));
                 }
-            }
             // END
         }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
         alert = builder.create();

@@ -30,7 +30,7 @@
     <string name="exportBasisMenu">Export Basis-DB</string>
     <string name="exportCSVMenu">Export Daten -> CSV-Datei</string>
     <string name="resetDBMenu">Reset Daten</string>
-    <string name="loadFileMenu">Import DB</string>
+    <string name="importFileMenu">Import DB</string>
     <string name="importBasisMenu">Import Basis-DB</string>
     <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
     <string name="importWin">Die Datenbank wurde importiert.</string>
@@ -222,8 +222,8 @@
 
     <!-- Permissions -->
     <string name="perm_required">Berechtigungen benötigt</string>
-    <string name="perm_hint">Um Schmetterlinge mit Ortsangaben zu registrieren und Datendateien zu im- und exportieren, sind in TourCount Standort- und Speicherzugriffsberechtigungen erforderlich. </string>
-    <string name="perm_hint1">Bitte erteile die fehlenden Berechtigungen für die App in den Smartphone-Einstellungen.</string>
+    <string name="perm_hint">Um Schmetterlinge mit Ortsangaben zu registrieren, sind in TourCount Standortberechtigungen erforderlich. </string>
+    <string name="perm_hint1">Bitte erteile die fehlende Berechtigung für die App in den Smartphone-Einstellungen.</string>
     <string name="app_settings">App-Einstellungen</string>
     <string name="cancel">Abbrechen</string>
     <string name="perm_declined">Berechtigungen abgelehnt</string>

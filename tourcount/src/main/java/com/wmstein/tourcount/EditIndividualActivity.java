@@ -33,7 +33,6 @@ import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +42,7 @@ import androidx.core.content.ContextCompat;
  * EditIndividualActivity is called from CountingActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2022 wmstein
- * created on 2016-05-15, last modification an 2022-04-25
+ * created on 2016-05-15, last modification an 2023-05-09
  */
 public class EditIndividualActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -526,15 +525,13 @@ public class EditIndividualActivity extends AppCompatActivity implements SharedP
             StrictMode.setThreadPolicy(policy);
 
             runOnUiThread(() -> {
-                URL url;
                 String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
                     + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    url = new URL(urlString);
                     RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.execute(url);
-                } catch (IOException e)
+                    getXML.onPostExecute(urlString);
+                } catch (Exception e)
                 {
                     // do nothing
                 }

@@ -5,10 +5,6 @@
           xmlns:tools="http://schemas.android.com/tools"
           android:largeHeap="true">
 
-    <!-- Permission needed to import/export database files -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
     <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -28,7 +24,6 @@
     <application
         android:name=".TourCountApplication"
         android:requestLegacyExternalStorage="true"
-        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"

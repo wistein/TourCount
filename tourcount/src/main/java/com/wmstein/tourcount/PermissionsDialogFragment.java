@@ -15,12 +15,12 @@ import androidx.fragment.app.DialogFragment;
 /**
  * PermissionsDialogFragment provides the permission handling, which is
  * necessary since Android Marshmallow (M)
- * 
+ * <p>
  * Original version from RuntimePermissionsExample-master created by tylerjroach on 8/31/16,
  * licensed under the MIT License.
- * 
+ * <p>
  * Adopted for TourCount by wistein on 2018-06-20,
- * last edited on 2020-04-17.
+ * last edited on 2023-05-08.
  */
 public class PermissionsDialogFragment extends DialogFragment
 {
@@ -126,8 +126,7 @@ public class PermissionsDialogFragment extends DialogFragment
     {
         requestPermissions(new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 
+            Manifest.permission.ACCESS_FINE_LOCATION},
             PERMISSION_REQUEST_CODE);
     }
 

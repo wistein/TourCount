@@ -59,9 +59,9 @@
                 app:showAsAction="never">
             </item>
             <item
-                android:id="@+id/loadFileMenu"
+                android:id="@+id/importFileMenu"
                 android:icon="@drawable/importr"
-                android:title="@string/loadFileMenu"
+                android:title="@string/importFileMenu"
                 app:showAsAction="never">
             </item>
             <item

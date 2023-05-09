@@ -7,7 +7,8 @@
 - Gradle upgraded -> 8.0
 - Deprecated startActivityForResult() replaced by ActivityResultLauncher
 - Deprecated execute(URL) replaced by onPostExecute(URL)
-- Some code improvements
+- Permissions handling minimized
+- Some more code improvements
 
 #### Version 3.3.4 (2023-03-26)
 - Gradle Plugin upgraded -> 7.4.2

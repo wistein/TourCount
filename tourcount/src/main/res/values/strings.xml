@@ -26,7 +26,7 @@
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveWin">Your database has been exported to TourCount files Directory.</string>
     <string name="reset2basic">Your database has been resetted.</string>
-    <string name="loadFileMenu">Import DB</string>
+    <string name="importFileMenu">Import DB</string>
     <string name="exportMenu">Export current DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
     <string name="exportCSVMenu">Export Data -> CSV File</string>
@@ -223,8 +223,8 @@
     <!-- Permissions -->
     <string name="perm_required">Permissions Required</string>
     <string name="app_settings">App Settings</string>
-    <string name="perm_hint">In order to register butterflies with location data and to import and export database files, access to location and storage is necessary.</string>
-    <string name="perm_hint1">Please enable missing permissions for the app in the phone settings.</string>
+    <string name="perm_hint">In order to register butterflies with location data, access to location data is necessary.</string>
+    <string name="perm_hint1">Please enable the missing permission for the app in the phone settings.</string>
     <string name="cancel">Cancel</string>
     <string name="perm_declined">Permissions declined</string>
     <string name="retry">Retry</string>

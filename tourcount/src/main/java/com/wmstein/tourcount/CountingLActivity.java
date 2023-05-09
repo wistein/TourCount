@@ -29,6 +29,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
@@ -43,7 +47,6 @@ import com.wmstein.tourcount.widgets.CountingWidget_head2;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,10 +55,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
 /****************************************************************************************
  * The 2. counting activity 'CountingLActivity' is necessary for overcoming some limitations of Android spinner.
  * It is the central activity of TourCount for landscape mode. 
@@ -63,13 +62,13 @@ import androidx.core.content.ContextCompat;
  * starts GPS-location polling, starts EditIndividualActivity, 
  * starts EditSpecListActivity, switches screen off when pocketed and 
  * allows taking pictures and sending notes.
- *
+ * <p>
  * CountingLActivity uses CountingWidget.java, CountingWidgetLH.java, NotesWidget.java, 
  * activity_counting.xml and activity_counting_lh.xml
- *
+ * <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2022-05-21
+ * last modification on 2023-05-08
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -423,15 +422,13 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             StrictMode.setThreadPolicy(policy);
 
             runOnUiThread(() -> {
-                URL url;
                 String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
                     + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    url = new URL(urlString);
                     RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.execute(url);
-                } catch (IOException e)
+                    getXML.onPostExecute(urlString);
+                } catch (Exception e)
                 {
                     // do nothing
                 }
