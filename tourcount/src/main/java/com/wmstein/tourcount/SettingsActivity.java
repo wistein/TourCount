@@ -22,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity
 {
     SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    
+
     @Override
     @SuppressLint({"CommitPrefEdits", "SourceLockedOrientationActivity"})
     public void onCreate(Bundle savedInstanceState)
@@ -40,6 +40,7 @@ public class SettingsActivity extends AppCompatActivity
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit(); // will be committed on pause
+
     }
 
     @Override
@@ -79,5 +80,5 @@ public class SettingsActivity extends AppCompatActivity
         }
         return true;
     }
-    
+
 }

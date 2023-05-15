@@ -129,7 +129,8 @@
     <string name="deleteCount">Delete Item</string>
     <string name="reallyDeleteCount">Are you sure? This item will be deleted immediately.</string>
     <string name="isdouble"> is double!</string>
-    
+    <string name="presentSpecs">Present species:</string>
+
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
 

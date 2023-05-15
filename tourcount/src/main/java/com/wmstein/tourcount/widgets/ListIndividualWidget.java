@@ -49,10 +49,10 @@ public class ListIndividualWidget extends RelativeLayout
     {
         // Locality
         txtIndLoc.setText(individual.locality);
-        
+
         // Sexus
         txtIndSex.setText(individual.sex);
-        
+
         // Stadium
         if (individual.stadium.length() > 0)
         {
@@ -81,7 +81,7 @@ public class ListIndividualWidget extends RelativeLayout
                 txtIndLa.setText(String.valueOf(individual.coord_x));
             }
         }
-        
+
         // Longitude
         if (individual.coord_y == 0)
         {
@@ -99,7 +99,7 @@ public class ListIndividualWidget extends RelativeLayout
                 txtIndLo.setText(String.valueOf(individual.coord_y));
             }
         }
-        
+
         // Height
         if (individual.coord_z == 0)
         {
@@ -115,7 +115,7 @@ public class ListIndividualWidget extends RelativeLayout
         if (phase123)
         {
             if (indStat.equals("0"))
-                txtIndStat.setText("-");   
+                txtIndStat.setText("-");
             else
                 txtIndStat.setText(String.valueOf(individual.state_1_6));
         }

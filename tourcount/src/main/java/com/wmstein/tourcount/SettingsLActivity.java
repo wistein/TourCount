@@ -7,22 +7,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import java.util.Objects;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
+
+import java.util.Objects;
 
 /**********************************************************
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2022-05-21,
- * last edited on 2023-05-08
+ * last edited on 2023-05-13
  */
 public class SettingsLActivity extends AppCompatActivity
 {
     SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    
+
     @Override
     @SuppressLint({"CommitPrefEdits", "SourceLockedOrientationActivity"})
     public void onCreate(Bundle savedInstanceState)
@@ -40,12 +40,6 @@ public class SettingsLActivity extends AppCompatActivity
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit(); // will be committed on pause
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
     }
 
     @Override
@@ -79,5 +73,5 @@ public class SettingsLActivity extends AppCompatActivity
         }
         return true;
     }
-    
+
 }

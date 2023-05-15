@@ -18,6 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
@@ -26,15 +30,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
 /**********************************
  * CountOptionsLActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2022-05-21
+ * last edited on 2023-05-13
  */
 public class CountOptionsLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -137,7 +137,7 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
 
         // finally, close the database
         countDataSource.close();
-        
+
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (imm != null)
         {
@@ -220,12 +220,12 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
             {
                 switch (modePerm)
                 {
-                case 1: // get location
-                    getLoc();
-                    break;
-                case 2: // stop location service
-                    locationService.stopListener();
-                    break;
+                    case 1: // get location
+                        getLoc();
+                        break;
+                    case 2: // stop location service
+                        locationService.stopListener();
+                        break;
                 }
             }
             else
@@ -268,15 +268,15 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(() -> {
+            runOnUiThread(() ->
+            {
                 URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
                     url = new URL(urlString);
-                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.doInBackground(url);
+                    RetrieveAddr.run(url);
                 } catch (IOException e)
                 {
                     // do nothing
@@ -284,5 +284,5 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
             });
         }
     }
-    
+
 }

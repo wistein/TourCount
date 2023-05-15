@@ -1,5 +1,7 @@
 package com.wmstein.tourcount;
 
+import static java.lang.Math.sqrt;
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,6 +11,9 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -30,11 +35,6 @@ import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
 import java.util.Objects;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-
-import static java.lang.Math.sqrt;
 
 /****************************************************
  * ListSpeciesActivity shows list of counting results
@@ -109,7 +109,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-        
+
         // clear existing views
         spec_area.removeAllViews();
 
@@ -215,15 +215,15 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         List<Count> specs; //List of species
         switch (sortPref)
         {
-        case "names_alpha":
-            specs = countDataSource.getCntSpeciesSrtName();
-            break;
-        case "codes":
-            specs = countDataSource.getCntSpeciesSrtCode();
-            break;
-        default:
-            specs = countDataSource.getCntSpecies();
-            break;
+            case "names_alpha":
+                specs = countDataSource.getCntSpeciesSrtName();
+                break;
+            case "codes":
+                specs = countDataSource.getCntSpeciesSrtCode();
+                break;
+            default:
+                specs = countDataSource.getCntSpecies();
+                break;
         }
 
         // calculate the totals
@@ -233,7 +233,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         int spec_countpi;
         int spec_countli;
         int spec_countei;
-        
+
         for (Count spec : specs)
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
@@ -261,7 +261,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         lsw = new ListSumWidget(this, null);
         lsw.setSum(sumsp, sumind);
         spec_area.addView(lsw);
-        
+
         int spec_count;
         List<Individuals> indivs; // List of individuals
         // display all the counts by adding them to listSpecies layout
@@ -269,18 +269,18 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         {
             ListSpeciesWidget widget = new ListSpeciesWidget(this, null);
             widget.setCount(spec);
-            
+
             spec_countf1i = widget.getSpec_countf1i(spec);
             spec_countf2i = widget.getSpec_countf2i(spec);
             spec_countf3i = widget.getSpec_countf3i(spec);
             spec_countpi = widget.getSpec_countpi(spec);
             spec_countli = widget.getSpec_countli(spec);
             spec_countei = widget.getSpec_countei(spec);
-            
-            spec_count = spec_countf1i + spec_countf2i + spec_countf3i 
+
+            spec_count = spec_countf1i + spec_countf2i + spec_countf3i
                 + spec_countpi + spec_countli + spec_countei;
-            
-            
+
+
             // fill widget only for counted species
             if (spec_count > 0)
             {
@@ -308,7 +308,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
                         rwidget.setRem(indiv);
                         spec_area.addView(rwidget);
                     }
-                    
+
                 }
             }
         }
@@ -331,7 +331,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
-    
+
     // puts up function to back button
     @Override
     public void onBackPressed()
@@ -339,7 +339,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         NavUtils.navigateUpFromSameTask(this);
         super.onBackPressed();
     }
-    
+
     @SuppressLint("SourceLockedOrientationActivity")
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {

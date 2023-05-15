@@ -7,5 +7,6 @@ package com.wmstein.tourcount;
  */
 public class MyDebug
 {
-    public static final boolean LOG = false;
+    public static final boolean LOG = false; // for Release mode
+//    public static final boolean LOG = true; // for Debug mode
 }

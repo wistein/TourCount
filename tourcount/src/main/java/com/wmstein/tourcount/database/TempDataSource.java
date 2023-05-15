@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 /******************************************************
  * Class TempDataSource provides methods for table Temp
  * Created by wmstein on 2016-05-15,
- * last edited on 2022-03-23
+ * last edited on 2023-05-13
  */
 public class TempDataSource
 {
@@ -47,7 +47,7 @@ public class TempDataSource
     }
 
     /* 
-    //for future use
+    // possibly for future use
     public void saveTempCnt(int tmpcnt)
     {
         ContentValues dataToInsert = new ContentValues();
@@ -56,7 +56,7 @@ public class TempDataSource
         database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
     }
 
-    // for future use
+    // possibly for future use
     public int getTempCnt()
     {
         Temp temp;

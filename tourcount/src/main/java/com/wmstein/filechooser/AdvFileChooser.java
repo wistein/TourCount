@@ -83,7 +83,7 @@ public class AdvFileChooser extends Activity
 
         this.setTitle(getString(R.string.currentDir) + ": " + f.getName());
         List<Option> fls = new ArrayList<>();
-        @SuppressLint("SimpleDateFormat") 
+        @SuppressLint("SimpleDateFormat")
         DateFormat dform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try
         {
@@ -107,15 +107,16 @@ public class AdvFileChooser extends Activity
 
         adapter = new FileArrayAdapter(listView.getContext(), R.layout.file_view, fls);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener((l, v, position, id) -> {
+        listView.setOnItemClickListener((l, v, position, id) ->
+        {
             Option o = adapter.getItem(position);
-                assert o != null;
-                if (!o.isBack())
-                    doSelect(o);
-                else
-                {
-                    currentDir = new File(o.getPath());
-                    fill(currentDir);
+            assert o != null;
+            if (!o.isBack())
+                doSelect(o);
+            else
+            {
+                currentDir = new File(o.getPath());
+                fill(currentDir);
             }
 
         });
@@ -132,21 +133,9 @@ public class AdvFileChooser extends Activity
     }
 
     @Override
-    protected void onPause()
-    {
-        super.onPause();
-    }
-
-    @Override
     public void onStop()
     {
         super.onStop();
     }
 
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-    }
-    
 }

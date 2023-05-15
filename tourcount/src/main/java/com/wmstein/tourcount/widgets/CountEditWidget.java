@@ -36,7 +36,7 @@ public class CountEditWidget extends LinearLayout implements Serializable
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_count, this, true);
-        
+
         countName = findViewById(R.id.countName);
         countNameG = findViewById(R.id.countNameG);
         countCode = findViewById(R.id.countCode);
@@ -74,7 +74,7 @@ public class CountEditWidget extends LinearLayout implements Serializable
     {
         countCode.setText(name);
     }
-    
+
     public void setPSpec(Count spec)
     {
         String rname = "p" + spec.code; // species picture resource name

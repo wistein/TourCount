@@ -17,6 +17,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.SpeciesAddWidget;
@@ -26,19 +29,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-
 /************************************************************************
  * AddSpeciesLActivity lets you insert a new species into the species list
  * AddSpeciesLActivity is called from EditSpecListLActivity
  * Uses SpeciesAddWidget.java, widget_add_spec.xml.
- *
+ <p>
  * The sorting order of the species to add cannot be changed, as it is determined 
  * by 3 interdependent and correlated arrays in arrays.xml
- *
+ * <p>
  * Created for TourCount by wmstein on 2022-05-21,
- * last edited on 2022-05-21
+ * last edited on 2023-05-13
  */
 public class AddSpeciesLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -87,7 +87,7 @@ public class AddSpeciesLActivity extends AppCompatActivity implements SharedPref
         add_screen.setBackground(bg);
 
         add_area = findViewById(R.id.addSpecLayout);
-        
+
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
         namesCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selSpecs)));
         namesGCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selSpecs_g)));
@@ -132,11 +132,11 @@ public class AddSpeciesLActivity extends AppCompatActivity implements SharedPref
         {
             specCodesContainedList.add(count.code);
         }
-        
+
         // build lists of missing species
         int specCodesContainedListSize = specCodesContainedList.size();
         int posSpec;
-        
+
         // for already contained species reduce complete arraylists
         for (int i = 0; i < specCodesContainedListSize; i++)
         {

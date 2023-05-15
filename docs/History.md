@@ -2,13 +2,13 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
-#### Version 3.3.5 (2023-05-08)
+#### Version 3.3.5 (2023-05-15)
 - Gradle Plugin upgraded -> 8.0.0
 - Gradle upgraded -> 8.0
-- Deprecated startActivityForResult() replaced by ActivityResultLauncher
-- Deprecated execute(URL) replaced by onPostExecute(URL)
-- Permissions handling minimized
+- Some deprecated functions replaced
+- Permissions handling belittled
 - Some more code improvements
+- Minimal Android Version 5 (Lollipop)
 
 #### Version 3.3.4 (2023-03-26)
 - Gradle Plugin upgraded -> 7.4.2

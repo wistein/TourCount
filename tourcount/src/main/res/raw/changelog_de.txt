@@ -51,7 +51,7 @@ _ Subtitle
     ! Quellcode und Dokumentation veröffentlicht unter:
     ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
-    ! Geeignet für Android 4.4 (KitKat) oder neuer
+    ! Geeignet für Android 5 (Lollipop) oder neuer
   _ 
     ! Lizenzen
   _ 
@@ -87,13 +87,13 @@ _ Subtitle
   
 $ 3.3.5
   % Version 3.3.5
-  _ 08.05.2023
+  _ 15.05.2023
   * Gradle Plugin upgraded -> 8.0.0
   * Gradle upgraded -> 8.0
-  * Deprecated startActivityForResult() ersetzt durch ActivityResultLauncher
-  * Deprecated execute(URL) ersetzt durch onPostExecute(urlString)
-  * Berechtigungsfunktionen minimiert
-	* Weitere Code-Verbesserungen
+  * Einige deprecated functions ersetzt
+  * Berechtigungsfunktionen verkleinert
+  * Weitere Code-Verbesserungen
+  * Android-Mindest-Version 5 (Lollipop)
 
 $ 3.3.4
   % Version 3.3.4
@@ -109,13 +109,13 @@ $ 3.3.3
   * Gradle Plugin Upgrade -> 7.3.1
   * Gradle Upgrade -> 7.4
   * Kompiliert mit SDK Ver. 32 für targetSdkVersion 31, resultierender "duplicate library"-Konflikt gelöst
-	* Weitere Falterarten mit Abbildungen hinzugefügt
+  * Weitere Falterarten mit Abbildungen hinzugefügt
 
 $ 3.3.2
   % Version 3.3.2
   _ 17.10.2022
-	* Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
-	* Weitere Falterarten mit Abbildungen hinzugefügt
+  * Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
+  * Weitere Falterarten mit Abbildungen hinzugefügt
 
 $ 3.3.1
   % Version 3.3.1

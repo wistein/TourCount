@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.webkit.WebView;
 
+import androidx.preference.PreferenceManager;
+
 import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
 
@@ -18,8 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
-
-import androidx.preference.PreferenceManager;
 
 /************************************************************************
  * Copyright (C) 2011-2013, Karsten Priegnitz
@@ -64,7 +64,8 @@ public class ChangeLog
     /**
      * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
-     * @param sp      the shared preferences to store the last version name into
+     *
+     * @param sp the shared preferences to store the last version name into
      */
     private ChangeLog(Context context, SharedPreferences sp)
     {
@@ -90,7 +91,7 @@ public class ChangeLog
 
     /**
      * @return <code>true</code> if this version of your app is started the
-     *         first time
+     * first time
      */
     public boolean firstRun()
     {
@@ -99,8 +100,8 @@ public class ChangeLog
 
     /**
      * @return <code>true</code> if your app including ChangeLog is started the
-     *         first time ever. Also <code>true</code> if your app was
-     *         deinstalled and installed again.
+     * first time ever. Also <code>true</code> if your app was
+     * deinstalled and installed again.
      */
     private boolean firstRunEver()
     {
@@ -109,9 +110,9 @@ public class ChangeLog
 
     /**
      * @return An AlertDialog displaying the changes since the previous
-     *         installed version of your app (what's new). But when this is the
-     *         first run of your app including ChangeLog then the full log
-     *         dialog is show.
+     * installed version of your app (what's new). But when this is the
+     * first run of your app including ChangeLog then the full log
+     * dialog is show.
      */
     public AlertDialog getLogDialog()
     {
@@ -138,9 +139,9 @@ public class ChangeLog
             new ContextThemeWrapper(
                 this.context, android.R.style.Theme_Holo_Dialog));
         builder.setTitle(
-            context.getResources().getString(
-                full ? R.string.changelog_full_title
-                    : R.string.changelog_title))
+                context.getResources().getString(
+                    full ? R.string.changelog_full_title
+                        : R.string.changelog_title))
             .setView(wv)
             .setCancelable(false)
             // OK button
@@ -224,42 +225,42 @@ public class ChangeLog
                 {
                     switch (marker)
                     {
-                    case '%':
-                        // line contains version title
-                        this.closeList();
-                        sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case '&':
-                        // line contains bold red text
-                        this.closeList();
-                        sb.append("<div class='boldredtext'>");
-                        sb.append(line.substring(1).trim());
-                        sb.append("</div>\n");
-                        break;
-                    case '_':
-                        // line contains version title
-                        this.closeList();
-                        sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case '!':
-                        // line contains free text
-                        this.closeList();
-                        sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case '#':
-                        // line contains numbered list item
-                        this.openList(Listmode.ORDERED);
-                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                        break;
-                    case '*':
-                        // line contains bullet list item
-                        this.openList(Listmode.UNORDERED);
-                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                        break;
-                    default:
-                        // no special character: just use line as is
-                        this.closeList();
-                        sb.append(line).append("\n");
+                        case '%':
+                            // line contains version title
+                            this.closeList();
+                            sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                            break;
+                        case '&':
+                            // line contains bold red text
+                            this.closeList();
+                            sb.append("<div class='boldredtext'>");
+                            sb.append(line.substring(1).trim());
+                            sb.append("</div>\n");
+                            break;
+                        case '_':
+                            // line contains version title
+                            this.closeList();
+                            sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
+                            break;
+                        case '!':
+                            // line contains free text
+                            this.closeList();
+                            sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                            break;
+                        case '#':
+                            // line contains numbered list item
+                            this.openList(Listmode.ORDERED);
+                            sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                            break;
+                        case '*':
+                            // line contains bullet list item
+                            this.openList(Listmode.UNORDERED);
+                            sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                            break;
+                        default:
+                            // no special character: just use line as is
+                            this.closeList();
+                            sb.append(line).append("\n");
                     }
                 }
             }

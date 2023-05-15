@@ -47,7 +47,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static final String S_START_TM = "start_tm";
     public static final String S_END_TM = "end_tm";
     public static final String S_NOTES = "notes";
-    
+
     static final String C_ID = "_id";
     public static final String C_COUNT_F1I = "count_f1i";
     public static final String C_COUNT_F2I = "count_f2i";
@@ -323,12 +323,12 @@ public class DbHelper extends SQLiteOpenHelper
         // add I_CATEGORY to INDIVIDUALS table
         try
         {
-            sql = "alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY 
+            sql = "alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                 + " int default 1";
             db.execSQL(sql);
             if (MyDebug.LOG)
                 Log.d(TAG, "Missing icategory column added to individuals!");
-        }  catch (Exception e)
+        } catch (Exception e)
         {
             if (MyDebug.LOG)
                 Log.e(TAG, "Column I_CATEGORY already present: " + e);
@@ -349,7 +349,7 @@ public class DbHelper extends SQLiteOpenHelper
                 //
             }
         }
-        
+
         // copy old data into new structure
         if (!colExist)
         {

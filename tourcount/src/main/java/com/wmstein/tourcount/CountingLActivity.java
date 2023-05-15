@@ -47,6 +47,7 @@ import com.wmstein.tourcount.widgets.CountingWidget_head2;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,13 +63,13 @@ import java.util.Objects;
  * starts GPS-location polling, starts EditIndividualActivity, 
  * starts EditSpecListActivity, switches screen off when pocketed and 
  * allows taking pictures and sending notes.
- * <p>
+ <p>
  * CountingLActivity uses CountingWidget.java, CountingWidgetLH.java, NotesWidget.java, 
  * activity_counting.xml and activity_counting_lh.xml
- * <p>
+ <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-05-08
+ * last modification on 2023-05-13
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -177,22 +178,18 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        // check for API-Level >= 21 for proximity wakelock support
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        try
         {
-            PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            try
+            assert mPowerManager != null;
+            if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
             {
-                assert mPowerManager != null;
-                if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
-                {
-                    mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "TourCount:WAKELOCK");
-                }
-                enableProximitySensor();
-            } catch (NullPointerException e)
-            {
-                // do nothing
+                mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "TourCount:WAKELOCK");
             }
+            enableProximitySensor();
+        } catch (NullPointerException e)
+        {
+            // do nothing
         }
 
     } // End of onCreate
@@ -229,7 +226,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             latitude = extras.getDouble("Latitude");
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
-            uncertainty = extras.getDouble("Uncert");
+            uncertainty = extras.getDouble("Uncertain");
         }
 
         // Set full brightness of screen
@@ -241,11 +238,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             getWindow().setAttributes(params);
         }
 
-        // check for API-Level >= 21 for proximity wakelock support
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            enableProximitySensor();
-        }
+        enableProximitySensor();
 
         // Get location with permissions check
         modePerm = 1;
@@ -285,27 +278,27 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
         switch (sortPref)
         {
-        case "names_alpha":
-            idArray = countDataSource.getAllIdsSrtName();
-            nameArray = countDataSource.getAllStringsSrtName("name");
-            codeArray = countDataSource.getAllStringsSrtName("code");
-            nameArrayG = countDataSource.getAllStringsSrtName("name_g");
-            imageArray = countDataSource.getAllImagesSrtName();
-            break;
-        case "codes":
-            idArray = countDataSource.getAllIdsSrtCode();
-            nameArray = countDataSource.getAllStringsSrtCode("name");
-            codeArray = countDataSource.getAllStringsSrtCode("code");
-            nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
-            imageArray = countDataSource.getAllImagesSrtCode();
-            break;
-        default:
-            idArray = countDataSource.getAllIds();
-            nameArray = countDataSource.getAllStrings("name");
-            codeArray = countDataSource.getAllStrings("code");
-            nameArrayG = countDataSource.getAllStrings("name_g");
-            imageArray = countDataSource.getAllImages();
-            break;
+            case "names_alpha":
+                idArray = countDataSource.getAllIdsSrtName();
+                nameArray = countDataSource.getAllStringsSrtName("name");
+                codeArray = countDataSource.getAllStringsSrtName("code");
+                nameArrayG = countDataSource.getAllStringsSrtName("name_g");
+                imageArray = countDataSource.getAllImagesSrtName();
+                break;
+            case "codes":
+                idArray = countDataSource.getAllIdsSrtCode();
+                nameArray = countDataSource.getAllStringsSrtCode("name");
+                codeArray = countDataSource.getAllStringsSrtCode("code");
+                nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
+                imageArray = countDataSource.getAllImagesSrtCode();
+                break;
+            default:
+                idArray = countDataSource.getAllIds();
+                nameArray = countDataSource.getAllStrings("name");
+                codeArray = countDataSource.getAllStrings("code");
+                nameArrayG = countDataSource.getAllStrings("name_g");
+                imageArray = countDataSource.getAllImages();
+                break;
         }
 
         countingWidgets = new ArrayList<>();
@@ -370,12 +363,12 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         {
             switch (modePerm)
             {
-            case 1: // get location
-                getLoc();
-                break;
-            case 2: // stop location service
-                locationService.stopListener();
-                break;
+                case 1: // get location
+                    getLoc();
+                    break;
+                case 2: // stop location service
+                    locationService.stopListener();
+                    break;
             }
         }
         else
@@ -421,14 +414,16 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(() -> {
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+            runOnUiThread(() ->
+            {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.onPostExecute(urlString);
-                } catch (Exception e)
+                    url = new URL(urlString);
+                    RetrieveAddr.run(url);
+                } catch (IOException e)
                 {
                     // do nothing
                 }
@@ -532,11 +527,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     {
         super.onPause();
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // save current count id in case it is lost on pause
         SharedPreferences.Editor editor = prefs.edit();
@@ -576,11 +567,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpf1i();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -630,11 +617,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpLHf1i();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -760,11 +743,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpf2i();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -814,11 +793,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpLHf2i();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -940,11 +915,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpf3i();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -994,11 +965,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpLHf3i();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1120,11 +1087,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUppi();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1174,11 +1137,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpLHpi();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1300,11 +1259,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpli();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1354,11 +1309,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpLHli();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1480,11 +1431,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpei();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1534,11 +1481,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             widget.countUpLHei();
         }
 
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         // append individual with its Id, coords, date and time
         String uncert; // uncertainty about position (m)
@@ -1717,11 +1660,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // Edit count options
     public void edit(View view)
     {
-        // check for API-Level >= 21
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            disableProximitySensor();
-        }
+        disableProximitySensor();
 
         Intent intent = new Intent(CountingLActivity.this, CountOptionsLActivity.class);
         intent.putExtra("count_id", iid);
@@ -1772,16 +1711,13 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
         if (id == R.id.menuEditSection)
         {
-            // check for API-Level >= 21
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
-                disableProximitySensor();
-            }
+            disableProximitySensor();
 
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
             // pause for 100 msec to show toast
-            mHandler.postDelayed(() -> {
+            mHandler.postDelayed(() ->
+            {
                 Intent intent = new Intent(CountingLActivity.this, EditSpecListLActivity.class);
                 startActivity(intent);
             }, 100);
@@ -1836,7 +1772,7 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
 
         if (!mProximityWakeLock.isHeld())
         {
-            mProximityWakeLock.acquire(30*60*1000L /*30 minutes*/);
+            mProximityWakeLock.acquire(30 * 60 * 1000L /*30 minutes*/);
         }
     }
 

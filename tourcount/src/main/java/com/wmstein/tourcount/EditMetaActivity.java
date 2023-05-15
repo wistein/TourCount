@@ -20,6 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
@@ -29,6 +33,8 @@ import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,14 +42,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2023-05-09
+ * last edit on 2023-05-13
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -54,7 +56,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private boolean brightPref;    // option for full bright screen
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
-    
+
     private Head head;
     private Section section;
     private HeadDataSource headDataSource;
@@ -194,13 +196,15 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         eTime = this.findViewById(R.id.widgetEndTm2);
 
         // get current date by click
-        sDate.setOnClickListener(v -> {
+        sDate.setOnClickListener(v ->
+        {
             Date date = new Date();
             sDate.setText(getformDate(date));
         });
 
         // get date picker result
-        final DatePickerDialog.OnDateSetListener dpd = (view, year, monthOfYear, dayOfMonth) -> {
+        final DatePickerDialog.OnDateSetListener dpd = (view, year, monthOfYear, dayOfMonth) ->
+        {
             pdate.set(Calendar.YEAR, year);
             pdate.set(Calendar.MONTH, monthOfYear);
             pdate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -209,7 +213,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         };
 
         // select date by long click
-        sDate.setOnLongClickListener(v -> {
+        sDate.setOnLongClickListener(v ->
+        {
             new DatePickerDialog(EditMetaActivity.this, dpd,
                 pdate.get(Calendar.YEAR),
                 pdate.get(Calendar.MONTH),
@@ -218,13 +223,15 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         });
 
         // get current start time
-        sTime.setOnClickListener(v -> {
+        sTime.setOnClickListener(v ->
+        {
             Date date = new Date();
             sTime.setText(getformTime(date));
         });
 
         // get start time picker result
-        final TimePickerDialog.OnTimeSetListener stpd = (view, hourOfDay, minute) -> {
+        final TimePickerDialog.OnTimeSetListener stpd = (view, hourOfDay, minute) ->
+        {
             ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             ptime.set(Calendar.MINUTE, minute);
             Date date = ptime.getTime();
@@ -232,7 +239,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         };
 
         // select start time
-        sTime.setOnLongClickListener(v -> {
+        sTime.setOnLongClickListener(v ->
+        {
             new TimePickerDialog(EditMetaActivity.this, stpd,
                 ptime.get(Calendar.HOUR_OF_DAY),
                 ptime.get(Calendar.MINUTE),
@@ -241,13 +249,15 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         });
 
         // get current end time
-        eTime.setOnClickListener(v -> {
+        eTime.setOnClickListener(v ->
+        {
             Date date = new Date();
             eTime.setText(getformTime(date));
         });
 
         // get start time picker result
-        final TimePickerDialog.OnTimeSetListener etpd = (view, hourOfDay, minute) -> {
+        final TimePickerDialog.OnTimeSetListener etpd = (view, hourOfDay, minute) ->
+        {
             ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             ptime.set(Calendar.MINUTE, minute);
             Date date = ptime.getTime();
@@ -255,7 +265,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         };
 
         // select end time
-        eTime.setOnLongClickListener(v -> {
+        eTime.setOnLongClickListener(v ->
+        {
             new TimePickerDialog(EditMetaActivity.this, etpd,
                 ptime.get(Calendar.HOUR_OF_DAY),
                 ptime.get(Calendar.MINUTE),
@@ -287,7 +298,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         DateFormat dform = new SimpleDateFormat("HH:mm", Locale.US);
         return dform.format(date);
     }
-    
+
     @Override
     protected void onPause()
     {
@@ -324,7 +335,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         section.temp = etw.getWidgetTemp2();
         if (section.temp > 50 || section.temp < 0)
         {
-            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" +  getString(R.string.valTemp) + "</font></b>"), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" + getString(R.string.valTemp) + "</font></b>"), Snackbar.LENGTH_LONG);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             sB.show();
@@ -333,7 +344,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         section.wind = etw.getWidgetWind2();
         if (section.wind > 4 || section.wind < 0)
         {
-            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" +  getString(R.string.valWind) + "</font></b>"), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" + getString(R.string.valWind) + "</font></b>"), Snackbar.LENGTH_LONG);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             sB.show();
@@ -342,7 +353,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         section.clouds = etw.getWidgetClouds2();
         if (section.clouds > 100 || section.clouds < 0)
         {
-            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" +  getString(R.string.valClouds) + "</font></b>"), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" + getString(R.string.valClouds) + "</font></b>"), Snackbar.LENGTH_LONG);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
             sB.show();
@@ -408,12 +419,12 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             {
                 switch (modePerm)
                 {
-                case 1: // get location
-                    getLoc();
-                    break;
-                case 2: // stop location service
-                    locationService.stopListener();
-                    break;
+                    case 1: // get location
+                        getLoc();
+                        break;
+                    case 2: // stop location service
+                        locationService.stopListener();
+                        break;
                 }
             }
             else
@@ -456,14 +467,16 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(() -> {
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+            runOnUiThread(() ->
+            {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.onPostExecute(urlString);
-                } catch (Exception e)
+                    url = new URL(urlString);
+                    RetrieveAddr.run(url);
+                } catch (IOException e)
                 {
                     // do nothing
                 }

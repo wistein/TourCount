@@ -93,7 +93,8 @@ public class ViewHelp
             .setPositiveButton(
                 context.getResources().getString(
                     R.string.ok_button),
-                (dialog, which) -> {
+                (dialog, which) ->
+                {
                 });
 
         return builder.create();
@@ -128,40 +129,40 @@ public class ViewHelp
                 }
                 switch (marker)
                 {
-                case '%':
-                    // line contains version title
-                    this.closeList();
-                    sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
-                    break;
-                case '_':
-                    // line contains version title
-                    this.closeList();
-                    sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
-                    break;
-                case '!':
-                    // line contains free text
-                    this.closeList();
-                    sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
-                    break;
-                case ')':
-                    // line contains small text
-                    this.closeList();
-                    sb.append("<div class='smalltext'>").append(line.substring(1).trim()).append("</div>\n");
-                    break;
-                case '#':
-                    // line contains numbered list item
-                    this.openList(Listmode.ORDERED);
-                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                    break;
-                case '*':
-                    // line contains bullet list item
-                    this.openList(Listmode.UNORDERED);
-                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                    break;
-                default:
-                    // no special character: just use line as is
-                    this.closeList();
-                    sb.append(line).append(" \n");
+                    case '%':
+                        // line contains version title
+                        this.closeList();
+                        sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                        break;
+                    case '_':
+                        // line contains version title
+                        this.closeList();
+                        sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
+                        break;
+                    case '!':
+                        // line contains free text
+                        this.closeList();
+                        sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                        break;
+                    case ')':
+                        // line contains small text
+                        this.closeList();
+                        sb.append("<div class='smalltext'>").append(line.substring(1).trim()).append("</div>\n");
+                        break;
+                    case '#':
+                        // line contains numbered list item
+                        this.openList(Listmode.ORDERED);
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                        break;
+                    case '*':
+                        // line contains bullet list item
+                        this.openList(Listmode.UNORDERED);
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                        break;
+                    default:
+                        // no special character: just use line as is
+                        this.closeList();
+                        sb.append(line).append(" \n");
                 }
             }
             this.closeList();

@@ -35,11 +35,11 @@ import java.util.StringTokenizer;
  * Transforms vertical coordinates using coefficients from the
  * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
  * Earth Gravitational Model.
- * 
+ * <p>
  * Aknowledgement
  * This class is an adaption of Fortran code
- * http://earth-info.nga.mil/GandG/wgs84/gravitymod/wgs84_180/clenqt.for 
- * from the National Geospatial-Intelligence Agency and available in public domain. 
+ * http://earth-info.nga.mil/GandG/wgs84/gravitymod/wgs84_180/clenqt.for
+ * from the National Geospatial-Intelligence Agency and available in public domain.
  * The normalized geopotential coefficients file bundled in this module is an adaptation of
  * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/egm180.nor
  * file, with some spaces trimmed.
@@ -48,20 +48,20 @@ import java.util.StringTokenizer;
  * @author Martin Desruisseaux
  * @version $Id$
  * @since 2.3
- * 
+ * <p>
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
  * Last edit on 2020-04-17
  */
-public final class EarthGravitationalModel extends VerticalTransform 
+public final class EarthGravitationalModel extends VerticalTransform
 {
     /**
      * Pre-computed values of some square roots.
      */
     private static final double SQRT_03 = 1.7320508075688772935274463415059,
-            SQRT_05 = 2.2360679774997896964091736687313,
-            SQRT_13 = 3.6055512754639892931192212674705,
-            SQRT_17 = 4.1231056256176605498214098559741,
-            SQRT_21 = 4.5825756949558400065880471937280;
+        SQRT_05 = 2.2360679774997896964091736687313,
+        SQRT_13 = 3.6055512754639892931192212674705,
+        SQRT_17 = 4.1231056256176605498214098559741,
+        SQRT_21 = 4.5825756949558400065880471937280;
 
     /**
      * The default value for #nmax.
@@ -127,16 +127,16 @@ public final class EarthGravitationalModel extends VerticalTransform
     /**
      * Creates a model with the default maximum degree and order.
      */
-    public EarthGravitationalModel() 
-	{
+    public EarthGravitationalModel()
+    {
         this(DEFAULT_ORDER);
     }
 
     /**
      * Creates a model with the specified maximum degree and order.
      */
-    public EarthGravitationalModel(final int nmax) 
-	{
+    public EarthGravitationalModel(final int nmax)
+    {
         this.nmax = nmax;
         /*
          * WGS84 model values.
@@ -156,7 +156,7 @@ public final class EarthGravitationalModel extends VerticalTransform
         rkm = 3.986004418e+14;
         grava = 9.7803267714;
         star = 0.001931851386;
-		final int cleanshawLength = locatingArray(nmax + 3);
+        final int cleanshawLength = locatingArray(nmax + 3);
         final int geopCoefLength = locatingArray(nmax + 1);
         aClenshaw = new double[cleanshawLength];
         bClenshaw = new double[cleanshawLength];
@@ -172,19 +172,19 @@ public final class EarthGravitationalModel extends VerticalTransform
     /**
      * Computes the index as it would be returned by the locating array iv
      * (from the Fortran code).
-     * 
+     * <p>
      * Tip (used in some place in this class):
      * locatingArray(n+1) == locatingArray(n) + n + 1.
      */
-    private static int locatingArray(final int n) 
-	{
+    private static int locatingArray(final int n)
+    {
         return ((n + 1) * n) >> 1;
     }
 
     /**
      * Loads the coefficients from the specified ASCII file and initialize the internal
      * clenshaw arrays.
-     * 
+     * <p>
      * Note: ASCII may looks like an unefficient format for binary distribution.
      * A binary file with coefficient values read by java.io.DataInput readDouble would
      * be more compact than an uncompressed ASCII file. However, binary files are hard to
@@ -194,17 +194,17 @@ public final class EarthGravitationalModel extends VerticalTransform
      * the binary file after compression. Since it is the primary format provided by the
      * Earth-Info web site, we use it directly in order to avoid a multiplication of formats.
      */
-    public void load(Context context) throws IOException 
-	{
+    public void load(Context context) throws IOException
+    {
         final InputStream EGM = context.getResources().openRawResource(R.raw.egm180);
         final LineNumberReader in;
         in = new LineNumberReader(new InputStreamReader(EGM, StandardCharsets.ISO_8859_1));
         String line;
-        while ((line = in.readLine()) != null) 
-		{
+        while ((line = in.readLine()) != null)
+        {
             final StringTokenizer tokens = new StringTokenizer(line);
-            try 
-			{
+            try
+            {
                 /*
                  * Note: we use 'parseShort' instead of 'parseInt' as an easy way to ensure that
                  *       the values are in some reasonable range. The range is typically [0..180].
@@ -216,14 +216,14 @@ public final class EarthGravitationalModel extends VerticalTransform
                 final int m = Short.parseShort(tokens.nextToken());
                 final double cbar = Double.parseDouble(tokens.nextToken());
                 final double sbar = Double.parseDouble(tokens.nextToken());
-                if (n <= nmax) 
-				{
+                if (n <= nmax)
+                {
                     final int ll = locatingArray(n) + m;
                     cnmGeopCoef[ll] = cbar;
                     snmGeopCoef[ll] = sbar;
                 }
-            } catch (RuntimeException cause) 
-			{
+            } catch (RuntimeException cause)
+            {
                 /*
                  * Catch the following exceptions:
                  *   - NoSuchElementException      if a line has too few numbers.
@@ -243,8 +243,8 @@ public final class EarthGravitationalModel extends VerticalTransform
      * to read the coefficient from an other source than an ASCII file in some future
      * version.
      */
-    private void initialize() 
-	{
+    private void initialize()
+    {
         /*
          * MODIFY CNM EVEN ZONAL COEFFICIENTS.
          */
@@ -252,8 +252,8 @@ public final class EarthGravitationalModel extends VerticalTransform
         c2n[1] = c2;
         int sign = 1;
         double esqi = esq;
-        for (int i = 2; i < c2n.length; i++) 
-		{
+        for (int i = 2; i < c2n.length; i++)
+        {
             sign *= -1;
             esqi *= esq;
             c2n[i] = sign * (3 * esqi) / ((2 * i + 1) * (2 * i + 3)) * (1 - i + (5 * i * c2 / esq));
@@ -267,17 +267,17 @@ public final class EarthGravitationalModel extends VerticalTransform
         if (nmax > 6) cnmGeopCoef[36] += c2n[4] / SQRT_17;
         if (nmax > 9) cnmGeopCoef[55] += c2n[5] / SQRT_21;
 
-		/*
+        /*
          * BUILD ALL CLENSHAW COEFFICIENT ARRAYS.
          */
-        for (int i = 0; i <= nmax; i++) 
-		{
+        for (int i = 0; i <= nmax; i++)
+        {
             as[i] = -Math.sqrt(1.0 + 1.0 / (2 * (i + 1)));
         }
-        for (int i = 0; i <= nmax; i++) 
-		{
-            for (int j = i + 1; j <= nmax; j++) 
-			{
+        for (int i = 0; i <= nmax; i++)
+        {
+            for (int j = i + 1; j <= nmax; j++)
+            {
                 final int ll = locatingArray(j) + i;
                 final int n = 2 * j + 1;
                 final int ji = (j - i) * (j + i);
@@ -324,16 +324,16 @@ public final class EarthGravitationalModel extends VerticalTransform
         sr[1] = Math.sin(rlam);
         cr[0] = 1;
         cr[1] = Math.cos(rlam);
-        for (int j = 2; j <= nmax; j++) 
-		{
+        for (int j = 2; j <= nmax; j++)
+        {
             sr[j] = (2.0 * cr[1] * sr[j - 1]) - sr[j - 2];
             cr[j] = (2.0 * cr[1] * cr[j - 1]) - cr[j - 2];
         }
         double sht = 0, previousSht = 0;
-        for (int i = nmax; i >= 0; i--) 
-		{
-            for (int j = nmax; j >= i; j--) 
-			{
+        for (int i = nmax; i >= 0; i--)
+        {
+            for (int j = nmax; j >= i; j--)
+            {
                 final int ll = locatingArray(j) + i;
                 final int ll2 = ll + j + 1;
                 final int ll3 = ll2 + j + 2;
@@ -346,7 +346,7 @@ public final class EarthGravitationalModel extends VerticalTransform
             sht = (-as[i] * y * f1 * sht) + (s11[i] * cr[i]) + (s12[i] * sr[i]);
         }
         return ((s11[0] + s12[0]) * f1 + (previousSht * SQRT_03 * y * f2)) * rkm /
-                (semiMajor * (gravn - (height * 0.3086e-5)));
+            (semiMajor * (gravn - (height * 0.3086e-5)));
     }
 
 }

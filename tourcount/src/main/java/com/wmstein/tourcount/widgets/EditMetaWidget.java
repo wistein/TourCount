@@ -149,7 +149,7 @@ public class EditMetaWidget extends LinearLayout
         {
             try
             {
-                return Integer.parseInt(text.replaceAll("[\\D]",""));
+                return Integer.parseInt(text.replaceAll("\\D", ""));
             } catch (NumberFormatException nfe)
             {
                 return 100;
@@ -174,7 +174,7 @@ public class EditMetaWidget extends LinearLayout
         {
             try
             {
-                return Integer.parseInt(text.replaceAll("[\\D]",""));
+                return Integer.parseInt(text.replaceAll("\\D", ""));
             } catch (NumberFormatException nfe)
             {
                 return 100;
@@ -199,7 +199,7 @@ public class EditMetaWidget extends LinearLayout
         {
             try
             {
-                return Integer.parseInt(text.replaceAll("[\\D]",""));
+                return Integer.parseInt(text.replaceAll("\\D", ""));
             } catch (NumberFormatException nfe)
             {
                 return 100;

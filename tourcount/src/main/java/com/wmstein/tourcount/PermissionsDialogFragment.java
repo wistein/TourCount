@@ -11,6 +11,7 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * PermissionsDialogFragment provides the permission handling, which is
@@ -20,7 +21,7 @@ import androidx.fragment.app.DialogFragment;
  * licensed under the MIT License.
  * <p>
  * Adopted for TourCount by wistein on 2018-06-20,
- * last edited on 2023-05-08.
+ * last edited on 2023-05-13
  */
 public class PermissionsDialogFragment extends DialogFragment
 {
@@ -77,7 +78,7 @@ public class PermissionsDialogFragment extends DialogFragment
             {
                 showRetryDialog();
             }
-           
+
             else
             {
                 //permissions have been accepted
@@ -125,8 +126,8 @@ public class PermissionsDialogFragment extends DialogFragment
     private void requestNecessaryPermissions()
     {
         requestPermissions(new String[]{
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION},
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION},
             PERMISSION_REQUEST_CODE);
     }
 
@@ -135,7 +136,8 @@ public class PermissionsDialogFragment extends DialogFragment
         new AlertDialog.Builder(context)
             .setTitle(getString(R.string.perm_required))
             .setMessage(getString(R.string.perm_hint) + " " + getString(R.string.perm_hint1))
-            .setPositiveButton(getString(R.string.app_settings), (dialogInterface, i) -> {
+            .setPositiveButton(getString(R.string.app_settings), (dialogInterface, i) ->
+            {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", context.getApplicationContext().getPackageName(), null);
@@ -159,5 +161,5 @@ public class PermissionsDialogFragment extends DialogFragment
     {
         void permissionCaptureFragment();
     }
-    
+
 }

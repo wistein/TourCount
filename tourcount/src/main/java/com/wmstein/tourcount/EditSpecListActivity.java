@@ -24,6 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -32,6 +37,7 @@ import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountEditWidget;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
+import com.wmstein.tourcount.widgets.NotesWidget;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,21 +45,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
 /***************************************************************
  * EditSpecListActivity lets you edit the species list (change, delete, select 
  * and insert new species)
  * EditSpecListActivity is called from CountingActivity
  * Uses CountEditWidget.java, activity_edit_section.xml, widget_edit_count.xml.
  * Calls AddSpeciesActivity.java for adding a new species to the species list.
- *
+ <p>
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2022-05-21
+ * last edited on 2023-05-13
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -63,9 +64,11 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
 
     private ArrayList<CountEditWidget> savedCounts;
     private LinearLayout counts_area;
+    private LinearLayout notes_area1;
     private LinearLayout notes_area2;
     private EditTitleWidget etw;
     private EditNotesWidget enw;
+    private NotesWidget nw;
     private final Handler mHandler = new Handler();
 
     // the actual data
@@ -126,7 +129,8 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         counting_screen.setBackground(bg);
 
         savedCounts = new ArrayList<>();
-        notes_area2 = findViewById(R.id.editingNotesLayout);
+        notes_area1 = findViewById(R.id.editingNotes1Layout);
+        notes_area2 = findViewById(R.id.editingNotes2Layout);
         counts_area = findViewById(R.id.editingCountsLayout);
 
         // Restore any edit widgets the user has added previously
@@ -182,6 +186,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
 
         // clear any existing views
         counts_area.removeAllViews();
+        notes_area1.removeAllViews();
         notes_area2.removeAllViews();
 
         // setup the data sources
@@ -207,28 +212,33 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         etw = new EditTitleWidget(this, null);
         etw.setSectionName(oldname);
         etw.setWidgetTitle(getString(R.string.titleEdit));
-        notes_area2.addView(etw);
+        notes_area1.addView(etw);
 
         // display editable section notes; the same class
         enw = new EditNotesWidget(this, null);
         enw.setNotesName(section.notes);
         enw.setWidgetTitle(getString(R.string.notesHere));
         enw.setHint(getString(R.string.notesHint));
-        notes_area2.addView(enw);
+        notes_area1.addView(enw);
+
+        // display text current species list:
+        nw = new NotesWidget(this, null);
+        nw.setNotes(getString((R.string.presentSpecs)));
+        notes_area2.addView(nw);
 
         // load the sorted species data
         List<Count> counts;
         switch (sortPref)
         {
-        case "names_alpha":
-            counts = countDataSource.getAllSpeciesSrtName();
-            break;
-        case "codes":
-            counts = countDataSource.getAllSpeciesSrtCode();
-            break;
-        default:
-            counts = countDataSource.getAllSpecies();
-            break;
+            case "names_alpha":
+                counts = countDataSource.getAllSpeciesSrtName();
+                break;
+            case "codes":
+                counts = countDataSource.getAllSpeciesSrtCode();
+                break;
+            default:
+                counts = countDataSource.getAllSpecies();
+                break;
         }
 
         // display all the counts by adding them to CountEditWidget
@@ -318,7 +328,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
                 section.name = section_name;
             }
         }
-        
+
         // add notes if the user has written some...
         String section_notes = enw.getNotesName();
         if (isNotEmpty(section_notes))
@@ -334,7 +344,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             }
         }
         sectionDataSource.saveSection(section);
-        
+
         String isDbl;
         int childcount; //No. of species in list
         childcount = counts_area.getChildCount();
@@ -355,7 +365,7 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
                     {
                         if (MyDebug.LOG)
                             Log.d(TAG, "cew: " + cew.countId + ", " + cew.getCountName());
-                        
+
                         //updates species name and code
                         countDataSource.updateCountName(cew.countId, cew.getCountName(), cew.getCountCode(), cew.getCountNameG());
                     }
@@ -414,7 +424,8 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
         // pause for 100 msec to show toast
-        mHandler.postDelayed(() -> {
+        mHandler.postDelayed(() ->
+        {
             Intent intent = new Intent(EditSpecListActivity.this, AddSpeciesActivity.class);
             startActivity(intent);
         }, 100);
@@ -435,12 +446,14 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             AlertDialog.Builder areYouSure = new AlertDialog.Builder(this);
             areYouSure.setTitle(getString(R.string.deleteCount));
             areYouSure.setMessage(getString(R.string.reallyDeleteCount));
-            areYouSure.setPositiveButton(R.string.yesDeleteIt, (dialog, whichButton) -> {
+            areYouSure.setPositiveButton(R.string.yesDeleteIt, (dialog, whichButton) ->
+            {
                 // go ahead for the delete
                 countDataSource.deleteCountById(idToDelete);
                 counts_area.removeView((CountEditWidget) viewMarkedForDelete.getParent().getParent().getParent());
             });
-            areYouSure.setNegativeButton(R.string.noCancel, (dialog, whichButton) -> {
+            areYouSure.setNegativeButton(R.string.noCancel, (dialog, whichButton) ->
+            {
                 // Cancelled.
             });
             areYouSure.show();
@@ -506,7 +519,8 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
             // pause for 100 msec to show toast
-            mHandler.postDelayed(() -> {
+            mHandler.postDelayed(() ->
+            {
                 Intent intent = new Intent(EditSpecListActivity.this, AddSpeciesActivity.class);
                 startActivity(intent);
             }, 100);
@@ -535,12 +549,12 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             {
                 switch (modePerm)
                 {
-                case 1: // get location
-                    getLoc();
-                    break;
-                case 2: // stop location service
-                    locationService.stopListener();
-                    break;
+                    case 1: // get location
+                        getLoc();
+                        break;
+                    case 2: // stop location service
+                        locationService.stopListener();
+                        break;
                 }
             }
             else
@@ -583,15 +597,15 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(() -> {
+            runOnUiThread(() ->
+            {
                 URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
                     url = new URL(urlString);
-                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.execute(url);
+                    RetrieveAddr.run(url);
                 } catch (IOException e)
                 {
                     // do nothing

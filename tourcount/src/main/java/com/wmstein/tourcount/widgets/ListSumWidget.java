@@ -20,7 +20,7 @@ public class ListSumWidget extends LinearLayout
 {
     private final TextView sumSpecies;
     private final TextView sumIndividuals;
-    
+
     public ListSumWidget(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -36,5 +36,5 @@ public class ListSumWidget extends LinearLayout
         sumSpecies.setText(String.valueOf(sumsp));
         sumIndividuals.setText(String.valueOf(sumind));
     }
-    
+
 }

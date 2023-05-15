@@ -129,6 +129,7 @@
     <string name="deleteCount">Element löschen</string>
     <string name="reallyDeleteCount">Bist Du sicher? Das Element wird sofort gelöscht.</string>
     <string name="isdouble"> ist doppelt!</string>
+    <string name="presentSpecs">Aktuell vorhandene Arten:</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Art hinzufügen</string>

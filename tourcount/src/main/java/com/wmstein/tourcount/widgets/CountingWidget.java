@@ -104,7 +104,7 @@ public class CountingWidget extends RelativeLayout
         countDownliButton.setTag(count.id);
         countDowneiButton.setTag(count.id);
     }
-        
+
     // Count up/down and set value on screen
     public void countUpf1i()
     {

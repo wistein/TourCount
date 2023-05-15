@@ -24,7 +24,7 @@ public class EditNotesWidget extends LinearLayout
     public EditNotesWidget(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_title, this, true);
         widget_title = findViewById(R.id.widgetTitle);

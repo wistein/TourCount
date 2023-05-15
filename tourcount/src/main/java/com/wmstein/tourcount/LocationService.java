@@ -19,13 +19,13 @@ import androidx.core.app.ActivityCompat;
 /******************************************************************
  * LocationService provides the location data: latitude, longitude, height, uncertainty.
  * Its data may be read by most TourCount activities.
- *
+ <p>
  * Based on LocationSrv created by anupamchugh on 28/11/16, published under
  * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
  * licensed under the MIT License.
- *
+ <p>
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last modification on 2020-10-06
+ * last modification on 2023-05-13
  */
 public class LocationService extends Service implements LocationListener
 {
@@ -48,7 +48,9 @@ public class LocationService extends Service implements LocationListener
     }
 
     // Default constructor demanded for service declaration in AndroidManifest.xml
-    public LocationService () {}
+    public LocationService()
+    {
+    }
 
     private void getLocation()
     {
@@ -99,7 +101,7 @@ public class LocationService extends Service implements LocationListener
                     }
                 }
             }
-            
+
             if (!exactLocation)
             {
                 // if Network is enabled and still no GPS fix achieved
@@ -130,7 +132,7 @@ public class LocationService extends Service implements LocationListener
                     }
                 }
             }
-            
+
         } catch (Exception e)
         {
             e.printStackTrace();

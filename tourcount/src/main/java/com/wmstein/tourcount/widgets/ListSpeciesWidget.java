@@ -68,7 +68,7 @@ public class ListSpeciesWidget extends RelativeLayout
             picSpecies.setImageResource(resId);
         }
 
-        int spCount = spec.count_f1i + spec.count_f2i + spec.count_f3i + spec.count_pi 
+        int spCount = spec.count_f1i + spec.count_f2i + spec.count_f3i + spec.count_pi
             + spec.count_li + spec.count_ei;
         txtSpecName.setText(spec.name);
         if (spec.name_g != null)
@@ -103,7 +103,7 @@ public class ListSpeciesWidget extends RelativeLayout
         {
             txtSpecRem.setVisibility(View.GONE);
             txtSpecRemT.setVisibility(View.GONE);
-        } 
+        }
     }
 
     //Parameter spec_count* for use in ListSpeciesActivity

@@ -17,6 +17,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.SpeciesAddWidget;
@@ -25,9 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 
 /************************************************************************
  * AddSpeciesActivity lets you insert a new species into the species list
@@ -38,7 +38,7 @@ import androidx.core.app.NavUtils;
  * by 3 interdependent and correlated arrays in arrays.xml
  * <p>
  * Created for TourCount by wmstein on 2019-04-12,
- * last edited on 2023-05-06
+ * last edited on 2023-05-13
  */
 public class AddSpeciesActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -90,7 +90,7 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         add_screen.setBackground(bg);
 
         add_area = findViewById(R.id.addSpecLayout);
-        
+
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
         namesCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selSpecs)));
         namesGCompleteArrayList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.selSpecs_g)));
@@ -138,11 +138,11 @@ public class AddSpeciesActivity extends AppCompatActivity implements SharedPrefe
         {
             specCodesContainedList.add(count.code);
         }
-        
+
         // build lists of missing species
         int specCodesContainedListSize = specCodesContainedList.size();
         int posSpec;
-        
+
         // for already contained species reduce complete arraylists
         for (int i = 0; i < specCodesContainedListSize; i++)
         {

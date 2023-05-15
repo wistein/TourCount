@@ -99,23 +99,24 @@ public class ListMetaWidget extends LinearLayout
         widget_dla1.setText(R.string.dLa);
         widget_muncert1.setText(R.string.mUncert);
     }
-    
+
     public void setWidget_dla2(double name)
     {
         int slen = String.valueOf(name).length();
-        if(slen > 8)
+        if (slen > 8)
         {
             widget_dla2.setText(String.valueOf(name).substring(0, 8));
         }
-        else 
+        else
         {
             widget_dla2.setText(String.valueOf(name));
         }
     }
+
     public void setWidget_dlo2(double name)
     {
         int slen = String.valueOf(name).length();
-        if(slen > 8)
+        if (slen > 8)
         {
             widget_dlo2.setText(String.valueOf(name).substring(0, 8));
         }
@@ -124,9 +125,10 @@ public class ListMetaWidget extends LinearLayout
             widget_dlo2.setText(String.valueOf(name));
         }
     }
+
     public void setWidget_muncert2(double name)
     {
         widget_muncert2.setText(String.format("%s m", Math.round(name)));
     }
-    
+
 }

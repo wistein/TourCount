@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
@@ -33,16 +36,15 @@ import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 /*******************************************************************************************
  * EditIndividualLActivity is called from CountingLActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2022 wmstein
- * created on 2016-05-15, last modification an 2023-05-09
+ * created on 2016-05-15, 
+ * last modification an 2022-05-21
  */
 public class EditIndividualLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -62,7 +64,7 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
     private CountDataSource countDataSource;
     private Bitmap bMap;
     private BitmapDrawable bg;
-    
+
     // Preferences
     private boolean buttonSoundPref;
     private String buttonAlertSound;
@@ -125,7 +127,7 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
             latitude = extras.getDouble("Latitude");
             longitude = extras.getDouble("Longitude");
             height = extras.getDouble("Height");
-            uncertainty = extras.getDouble("Uncert");
+            uncertainty = extras.getDouble("Uncertain");
             iAtt = extras.getInt("indivAtt");
         }
 
@@ -193,31 +195,31 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         eiw.setWidgetStadium1(getString(R.string.stadium));
         switch (iAtt)
         {
-        case 1: // ♂♀
-        case 2: // ♂
-        case 3: // ♀
-            eiw.setWidgetStadium2(getString(R.string.stadium_1));
-            phase123 = true;
-            break;
-        case 4: // Pupa
-            eiw.setWidgetStadium2(getString(R.string.stadium_2));
-            phase123 = false;
-            break;
-        case 5: // Larva
-            eiw.setWidgetStadium2(getString(R.string.stadium_3));
-            phase123 = false;
-            break;
-        case 6: // Egg
-            eiw.setWidgetStadium2(getString(R.string.stadium_4));
-            phase123 = false;
-            break;
+            case 1: // ♂♀
+            case 2: // ♂
+            case 3: // ♀
+                eiw.setWidgetStadium2(getString(R.string.stadium_1));
+                phase123 = true;
+                break;
+            case 4: // Pupa
+                eiw.setWidgetStadium2(getString(R.string.stadium_2));
+                phase123 = false;
+                break;
+            case 5: // Larva
+                eiw.setWidgetStadium2(getString(R.string.stadium_3));
+                phase123 = false;
+                break;
+            case 6: // Egg
+                eiw.setWidgetStadium2(getString(R.string.stadium_4));
+                phase123 = false;
+                break;
         }
 
         if (phase123)
         {
             eiw.widgetState1(true); // headline state
             eiw.setWidgetState1(getString(R.string.state));
-            
+
             eiw.widgetState2(true); // state
             String istate = Integer.toString(individuals.state_1_6);
             if (istate.equals("0"))
@@ -228,7 +230,7 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         else
         {
             eiw.widgetState1(false);
-            
+
             eiw.setWidgetState2("-");
             eiw.widgetState2(false);
         }
@@ -292,7 +294,7 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         individuals.stadium = eiw.getWidgetStadium2();
 
         // State_1-6
-        String newstate0  = eiw.getWidgetState2();
+        String newstate0 = eiw.getWidgetState2();
         if (newstate0.equals("-"))
             individuals.state_1_6 = 0;
         else
@@ -308,62 +310,62 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
                 return false;
             }
         }
-        
+
         // number of individuals
         int newcount = eiw.getWidgetCount2();
         if (newcount > 0) // valid newcount
         {
             switch (iAtt)
             {
-            case 1:
-                // ♂ or ♀
-                counts.count_f1i = counts.count_f1i + newcount;
-                individuals.icount = newcount;
-                individuals.sex = "-";
-                individuals.icategory = 1;
-                countDataSource.saveCountf1i(counts);
-                break;
+                case 1:
+                    // ♂ or ♀
+                    counts.count_f1i = counts.count_f1i + newcount;
+                    individuals.icount = newcount;
+                    individuals.sex = "-";
+                    individuals.icategory = 1;
+                    countDataSource.saveCountf1i(counts);
+                    break;
 
-            case 2:
-                // ♂
-                counts.count_f2i = counts.count_f2i + newcount;
-                individuals.icount = newcount;
-                individuals.sex = "m";
-                individuals.icategory = 2;
-                countDataSource.saveCountf2i(counts);
-                break;
-            case 3:
-                // ♀
-                counts.count_f3i = counts.count_f3i + newcount;
-                individuals.icount = newcount;
-                individuals.sex = "f";
-                individuals.icategory = 3;
-                countDataSource.saveCountf3i(counts);
-                break;
-            case 4:
-                // pupa
-                counts.count_pi = counts.count_pi + newcount;
-                individuals.icount = newcount;
-                individuals.sex = "-";
-                individuals.icategory = 4;
-                countDataSource.saveCountpi(counts);
-                break;
-            case 5:
-                // larva
-                counts.count_li = counts.count_li + newcount;
-                individuals.icount = newcount;
-                individuals.sex = "-";
-                individuals.icategory = 5;
-                countDataSource.saveCountli(counts);
-                break;
-            case 6:
-                // eggs
-                counts.count_ei = counts.count_ei + newcount;
-                individuals.icount = newcount;
-                individuals.sex = "-";
-                individuals.icategory = 6;
-                countDataSource.saveCountei(counts);
-                break;
+                case 2:
+                    // ♂
+                    counts.count_f2i = counts.count_f2i + newcount;
+                    individuals.icount = newcount;
+                    individuals.sex = "m";
+                    individuals.icategory = 2;
+                    countDataSource.saveCountf2i(counts);
+                    break;
+                case 3:
+                    // ♀
+                    counts.count_f3i = counts.count_f3i + newcount;
+                    individuals.icount = newcount;
+                    individuals.sex = "f";
+                    individuals.icategory = 3;
+                    countDataSource.saveCountf3i(counts);
+                    break;
+                case 4:
+                    // pupa
+                    counts.count_pi = counts.count_pi + newcount;
+                    individuals.icount = newcount;
+                    individuals.sex = "-";
+                    individuals.icategory = 4;
+                    countDataSource.saveCountpi(counts);
+                    break;
+                case 5:
+                    // larva
+                    counts.count_li = counts.count_li + newcount;
+                    individuals.icount = newcount;
+                    individuals.sex = "-";
+                    individuals.icategory = 5;
+                    countDataSource.saveCountli(counts);
+                    break;
+                case 6:
+                    // eggs
+                    counts.count_ei = counts.count_ei + newcount;
+                    individuals.icount = newcount;
+                    individuals.sex = "-";
+                    individuals.icategory = 6;
+                    countDataSource.saveCountei(counts);
+                    break;
             }
 
             // Notes
@@ -380,7 +382,7 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
             showSnackbarRed(getString(R.string.warnCount));
             return false; // forces input newcount > 0
         }
-        
+
         tempDataSource.saveTempLoc(temp);
         sdata = true;
 
@@ -390,11 +392,12 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
     private void showSnackbarRed(String str)
     {
         View view = findViewById(R.id.editIndividualScreen);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" +  str + "</font></b>"), Snackbar.LENGTH_LONG);
+        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         sB.show();
     }
+
     private void buttonSound()
     {
         if (buttonSoundPref)
@@ -469,12 +472,12 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
             {
                 switch (modePerm)
                 {
-                case 1: // get location
-                    getLoc();
-                    break;
-                case 2: // stop location service
-                    locationService.stopListener();
-                    break;
+                    case 1: // get location
+                        getLoc();
+                        break;
+                    case 2: // stop location service
+                        locationService.stopListener();
+                        break;
                 }
             }
             else
@@ -523,14 +526,16 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            runOnUiThread(() -> {
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString + "&format=xml&lat="
-                    + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+            runOnUiThread(() ->
+            {
+                URL url;
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
                 try
                 {
-                    RetrieveAddr getXML = new RetrieveAddr(getApplicationContext());
-                    getXML.onPostExecute(urlString);
-                } catch (Exception e)
+                    url = new URL(urlString);
+                    RetrieveAddr.run(url);
+                } catch (IOException e)
                 {
                     // do nothing
                 }
@@ -565,7 +570,7 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         nnHeight = gpsHeight + corrHeight;
         return nnHeight;
     }
-    
+
     /**
      * Checks if a CharSequence is whitespace, empty ("") or null
      * <p>

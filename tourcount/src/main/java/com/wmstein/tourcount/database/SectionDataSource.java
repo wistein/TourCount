@@ -88,7 +88,7 @@ public class SectionDataSource
         database.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs);
     }
 
-    // called from CountingActivity and EditSpecListActivity
+    // called from RetrieveAddr, CountingActivity and EditSpecListActivity
     public Section getSection()
     {
         Section section;
@@ -99,7 +99,7 @@ public class SectionDataSource
         cursor.close();
         return section;
     }
-    
+
     // called from CountingActivity
     // store only when field is empty
     public void updateEmptyCountry(int id, String name)

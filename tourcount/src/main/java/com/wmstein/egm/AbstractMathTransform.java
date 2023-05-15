@@ -32,17 +32,17 @@ package com.wmstein.egm;
  * @author Martin Desruisseaux (IRD)
  * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters
  * @since 2.0
- * 
+ *
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
  * Last change on 2020-04-17
  */
-public abstract class AbstractMathTransform 
+public abstract class AbstractMathTransform
 {
     /**
      * Constructs a math transform.
      */
-    AbstractMathTransform() 
-	{
+    AbstractMathTransform()
+    {
     }
 
     /**
@@ -59,8 +59,8 @@ public abstract class AbstractMathTransform
      * Returns a hash value for this transform.
      */
     @Override
-    public int hashCode() 
-	{
+    public int hashCode()
+    {
         return getSourceDimensions() + 37 * getTargetDimensions();
     }
 

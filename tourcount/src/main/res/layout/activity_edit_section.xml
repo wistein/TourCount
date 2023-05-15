@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_edit_section.xml is used by EditSpecListActivity.java -->
+<!-- activity_edit_section.xml is used by EditSpecListActivity.java
+     ScrollView is always at the bottom of the view.
+-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/editSect"
@@ -7,9 +9,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- insert section title and notes -->
+    <!-- insert section title, notes and hint -->
     <LinearLayout
-        android:id="@+id/editingNotesLayout"
+        android:id="@+id/editingNotes1Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_corner"
@@ -17,8 +19,8 @@
     </LinearLayout>
 
     <Space
-        android:layout_width="10dp"
-        android:layout_height="5dp" />
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,14 +51,28 @@
         </Button>
     </LinearLayout>
 
+    <!-- insert section title, notes and hint -->
+    <LinearLayout
+        android:id="@+id/editingNotes2Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical">
+    </LinearLayout>
+
     <Space
-        android:layout_width="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <Space
+        android:layout_width="match_parent"
         android:layout_height="5dp" />
 
     <ScrollView
         android:id="@+id/editingScreen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <!-- insert species as they are created in here -->
         <LinearLayout

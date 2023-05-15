@@ -20,10 +20,10 @@ import java.io.Writer;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ <p>
  * Based on "A very simple CSV writer" by
  * @author Glen Smith
- *
+<p>
  * Reduced to needed functions with modifications for TourCount by wmstein
  * Last edited on 2020-04-17
  */
@@ -51,6 +51,7 @@ class CSVWriter implements Closeable, Flushable
 
     /**
      * Constructs CSVWriter using a comma for the separator.
+     *
      * @param writer the writer to an underlying CSV source.
      */
     CSVWriter(Writer writer)
@@ -60,6 +61,7 @@ class CSVWriter implements Closeable, Flushable
 
     /**
      * Constructs CSVWriter with supplied separator.
+     *
      * @param writer    the writer to an underlying CSV source.
      * @param separator the delimiter to use for separating entries.
      */
@@ -114,8 +116,9 @@ class CSVWriter implements Closeable, Flushable
 
     /**
      * Writes the next line to the file.
-     * @param nextLine         a string array with each comma-separated element as a separate
-     *                         entry.
+     *
+     * @param nextLine a string array with each comma-separated element as a separate
+     *                 entry.
      */
     void writeNext(String[] nextLine)
     {

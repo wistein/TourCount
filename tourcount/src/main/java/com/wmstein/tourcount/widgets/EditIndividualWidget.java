@@ -169,7 +169,7 @@ public class EditIndividualWidget extends LinearLayout
         {
             try
             {
-                return text.replaceAll("[\\D]","");
+                return text.replaceAll("\\D", "");
             } catch (NumberFormatException nfe)
             {
                 return "0";
@@ -199,14 +199,14 @@ public class EditIndividualWidget extends LinearLayout
     public int getWidgetCount2()
     {
         String text = widget_count2.getText().toString();
-            try
-            {
-                // value >= 0
-                return Integer.parseInt(text.replaceAll("[\\D]",""));
-            } catch (NumberFormatException nfe)
-            {
-                return -1; // count < 0 or text has no digit
-            }
+        try
+        {
+            // value >= 0
+            return Integer.parseInt(text.replaceAll("\\D", ""));
+        } catch (NumberFormatException nfe)
+        {
+            return -1; // count < 0 or text has no digit
+        }
     }
 
     public void setWidgetCount2(int name)
