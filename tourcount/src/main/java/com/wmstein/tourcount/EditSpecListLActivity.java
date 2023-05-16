@@ -24,11 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -37,13 +32,18 @@ import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountEditWidget;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
-import com.wmstein.tourcount.widgets.NotesWidget;
+import com.wmstein.tourcount.widgets.HintWidget;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
 /***************************************************************
  * EditSpecListLActivity lets you edit the species list (change, delete, select 
@@ -54,7 +54,7 @@ import java.util.Objects;
  <p>
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2022-05-21,
- * last edited on 2023-05-13
+ * last edited on 2023-05-16
  */
 public class EditSpecListLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -65,10 +65,10 @@ public class EditSpecListLActivity extends AppCompatActivity implements SharedPr
     private ArrayList<CountEditWidget> savedCounts;
     private LinearLayout counts_area;
     private LinearLayout notes_area1;
-    private LinearLayout notes_area2;
+    private LinearLayout hint_area1;
     private EditTitleWidget etw;
     private EditNotesWidget enw;
-    private NotesWidget nw;
+    private HintWidget nw;
     private final Handler mHandler = new Handler();
 
     // the actual data
@@ -130,7 +130,7 @@ public class EditSpecListLActivity extends AppCompatActivity implements SharedPr
 
         savedCounts = new ArrayList<>();
         notes_area1 = findViewById(R.id.editingNotes1Layout);
-        notes_area2 = findViewById(R.id.editingNotes2Layout);
+        hint_area1 = findViewById(R.id.showHintLayout);
         counts_area = findViewById(R.id.editingCountsLayout);
 
         // Restore any edit widgets the user has added previously
@@ -187,7 +187,7 @@ public class EditSpecListLActivity extends AppCompatActivity implements SharedPr
         // clear any existing views
         counts_area.removeAllViews();
         notes_area1.removeAllViews();
-        notes_area2.removeAllViews();
+        hint_area1.removeAllViews();
 
         // setup the data sources
         sectionDataSource = new SectionDataSource(this);
@@ -222,9 +222,9 @@ public class EditSpecListLActivity extends AppCompatActivity implements SharedPr
         notes_area1.addView(enw);
 
         // display text current species list:
-        nw = new NotesWidget(this, null);
-        nw.setNotes(getString((R.string.presentSpecs)));
-        notes_area2.addView(nw);
+        nw = new HintWidget(this, null);
+        nw.setHint1(getString((R.string.presentSpecs)));
+        hint_area1.addView(nw);
 
         // load the sorted species data
         List<Count> counts;

@@ -27,13 +27,10 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="4px"
+            android:layout_marginBottom="5dp"
             android:background="@android:color/white"
             android:paddingTop="2dp"
             tools:ignore="PxUsage"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -123,6 +120,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
             android:orientation="horizontal">
 
             <!-- Remark of species -->
@@ -149,10 +147,6 @@
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"/>
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="7dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -265,6 +259,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
             android:orientation="horizontal">
 
             <Space
@@ -410,11 +405,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"/>
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="7dp"/>
-
 
     </LinearLayout>
 </LinearLayout>

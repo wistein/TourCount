@@ -1,4 +1,4 @@
-Version 3.3.4 (15.05.2023)
+Version 3.3.4 (16.05.2023)
 - Gradle Plugin Upgrade -> 8.0.0
 - Gradle Upgrade -> 8.0
 - Einige deprecated functions ersetzt

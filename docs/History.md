@@ -2,7 +2,7 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
-#### Version 3.3.5 (2023-05-15)
+#### Version 3.3.5 (2023-05-16)
 - Gradle Plugin upgraded -> 8.0.0
 - Gradle upgraded -> 8.0
 - Some deprecated functions replaced

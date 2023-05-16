@@ -87,7 +87,7 @@ _ Subtitle
 
 $ 3.3.5
   % Version 3.3.5
-  _ 2023-05-15
+  _ 2023-05-16
   * Gradle Plugin upgraded -> 8.0.0
   * Gradle upgraded -> 8.0
   * Some deprecated functions replaced

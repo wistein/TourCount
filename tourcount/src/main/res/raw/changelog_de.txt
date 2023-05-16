@@ -87,11 +87,11 @@ _ Subtitle
   
 $ 3.3.5
   % Version 3.3.5
-  _ 15.05.2023
+  _ 16.05.2023
   * Gradle Plugin upgraded -> 8.0.0
   * Gradle upgraded -> 8.0
   * Einige deprecated functions ersetzt
-  * Berechtigungsfunktionen verkleinert
+  * Berechtigungsfunktionen reduziert
   * Weitere Code-Verbesserungen
   * Android-Mindest-Version 5 (Lollipop)
 

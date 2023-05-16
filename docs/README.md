@@ -29,7 +29,7 @@ The app demands for
 - the permit to keep the device awake.
 
 The smartphone screen should have a minimum resolution of 1920 x 1024 pixels.  
-The app is usable with Android Version 4.4 (KitKat) or newer.
+The app is usable with Android Version 5 (Lollipop) or newer.
 
 ### General
 #### Documentation
@@ -57,7 +57,7 @@ cannot be mutually updated.
 
 ### Licenses
 
-Copyright 2016-2023 Wilhelm Stein (wistein)
+Copyright 2016-2022 Wilhelm Stein (wistein)
 
 TourCount is licensed under the Apache License, Version 2.0 (the "License");
 you may not use any of its files except in compliance with the License.
