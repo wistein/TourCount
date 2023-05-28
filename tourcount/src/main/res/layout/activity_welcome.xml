@@ -73,7 +73,7 @@
                 android:gravity="center_vertical"
                 android:onClick="editMeta"
                 android:src="@android:drawable/ic_menu_edit"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription,UsingOnClickInXml"/>
 
             <Space
                 android:layout_width="15dp"
@@ -88,7 +88,8 @@
                 android:onClick="editMeta"
                 android:text="@string/editMetaButton"
                 android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
         <Space
@@ -110,7 +111,7 @@
                 android:gravity="center_vertical"
                 android:onClick="viewCounts"
                 android:src="@drawable/ic_count_white"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription,UsingOnClickInXml"/>
 
             <Space
                 android:layout_width="15dp"
@@ -125,7 +126,8 @@
                 android:backgroundTint="#333333"
                 android:onClick="viewCounts"
                 android:text="@string/counting"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
         <Space
@@ -147,7 +149,7 @@
                 android:gravity="center_vertical"
                 android:onClick="viewSpecies"
                 android:src="@android:drawable/ic_menu_view"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription,UsingOnClickInXml"/>
 
             <Space
                 android:layout_width="15dp"
@@ -162,7 +164,8 @@
                 android:backgroundTint="#333333"
                 android:onClick="viewSpecies"
                 android:text="@string/viewSpeciesButton"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
         <Space

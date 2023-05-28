@@ -14,12 +14,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.os.Build;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,7 +51,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,7 +68,7 @@ import sheetrock.panda.changelog.ViewHelp;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-05-13
+ * last modification on 2023-05-27
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -196,15 +194,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // check initial location permission
     private boolean isPermLocGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        else
-        {
-            return true;
-        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -278,7 +269,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             {
                 case 1: // get location
                     if (permLocGiven) // location permission state after start
+                    {
                         getLoc();
+                    }
                     break;
 
                 case 2: // stop location service
@@ -298,13 +291,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // if API level > 23 test for permissions granted
     private boolean isLocPermissionGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        }
-        else
-            return true;
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
     // get the location data
@@ -325,23 +313,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+            // Trial with IntendService
+            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            runOnUiThread(() ->
-            {
-                URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                try
-                {
-                    url = new URL(urlString);
-                    RetrieveAddr.run(url);
-                } catch (IOException e)
-                {
-                    // do nothing
-                }
-            });
+            Intent rintent = new Intent(this, RetrieveAddrService.class);
+            rintent.putExtra("urlString", urlString);
+            startService(rintent);
         }
     }
 
@@ -665,8 +643,13 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportDb2CSV()
     {
-        // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_yyyy-MM-dd_HHmmss.csv
-        outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount_" + getcurDate() + ".csv");
+        // Store csv-file in /storage/emulated/0/Documents/TourCount/
+        // outfile -> /storage/emulated/0/Documents/tourcount_yyyy-MM-dd_HHmmss.csv
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS); // deprecated in API 29, Todo
+        path = new File(path + "/TourCount");
+        //noinspection ResultOfMethodCallIgnored
+        path.mkdirs();
+        outfile = new File(path, "/tourcount_" + getcurDate() + ".csv");
 
         Section section;
         String sectName;
@@ -1185,7 +1168,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 csvWrite.close();
                 dbHandler.close();
 
-                showSnackbar(getString(R.string.saveWin));
+                showSnackbar(getString(R.string.savecsv));
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
@@ -1301,7 +1284,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         dbHandler = new DbHelper(this);
         database = dbHandler.getWritableDatabase();
 
-//        String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET " + DbHelper.T_TEMP_LOC + " = '';";
+        // String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET " + DbHelper.T_TEMP_LOC + " = '';";
         String sql = "UPDATE temp SET temp_loc = '';";
         database.execSQL(sql);
         dbHandler.close();
@@ -1435,7 +1418,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Function is part of importFile() and processes the result of AdvFileChooser
     final ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>()
+        new ActivityResultCallback<>()
         {
             @Override
             public void onActivityResult(ActivityResult result)
@@ -1526,18 +1509,21 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private void showSnackbar(String str) // green text
     {
         View view = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#00ff00\">" + str + "</font>"), Snackbar.LENGTH_SHORT);
+        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTextColor(Color.GREEN);
         sB.show();
     }
 
     private void showSnackbarRed(String str) // bold red text
     {
         View view = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
+        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setTextColor(Color.RED);
         sB.show();
     }
 

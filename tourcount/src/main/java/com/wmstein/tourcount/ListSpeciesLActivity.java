@@ -1,7 +1,5 @@
 package com.wmstein.tourcount;
 
-import static java.lang.Math.sqrt;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -11,9 +9,6 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -35,6 +30,11 @@ import com.wmstein.tourcount.widgets.ListTitleWidget;
 
 import java.util.List;
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
+import static java.lang.Math.sqrt;
 
 /****************************************************
  * ListSpeciesActivity shows list of counting results
@@ -70,6 +70,7 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
 
         tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
+        assert prefs != null;
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
 
@@ -212,19 +213,12 @@ public class ListSpeciesLActivity extends AppCompatActivity implements SharedPre
         spec_area.addView(etw);
 
         // load the species data
-        List<Count> specs; //List of species
-        switch (sortPref)
-        {
-            case "names_alpha":
-                specs = countDataSource.getCntSpeciesSrtName();
-                break;
-            case "codes":
-                specs = countDataSource.getCntSpeciesSrtCode();
-                break;
-            default:
-                specs = countDataSource.getCntSpecies();
-                break;
-        }
+        List<Count> specs = switch (sortPref)
+            {
+                case "names_alpha" -> countDataSource.getCntSpeciesSrtName();
+                case "codes" -> countDataSource.getCntSpeciesSrtCode();
+                default -> countDataSource.getCntSpecies();
+            }; //List of species
 
         // calculate the totals
         int spec_countf1i;

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    app:useSimpleSummaryProvider="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <PreferenceCategory
         android:title="@string/prefs_appearance">
         android:key="key_prefs_appearance">
-        
+
         <ListPreference
             android:entries="@array/pref_bg_entries"
             android:entryValues="@array/pref_bg_values"

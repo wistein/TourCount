@@ -22,9 +22,10 @@
     <string name="editMetaButton">Erfassung vorbereiten</string>
     <string name="changeLogTitle">App-Info</string>
     <string name="viewHelpTitle">Hilfe</string>
-    <string name="noCard">Das TourCount files-Directory kann nicht verwendet werden!</string>
+    <string name="noCard">Kann nicht ins Documents-Directory schreiben!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveWin">Die Datenbank wurde ins TourCount files-Verzeichnis exportiert.</string>
+    <string name="savecsv">Die Datenbank wurde ins Documents-Verzeichnis exportiert.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
@@ -227,7 +228,5 @@
     <string name="perm_hint1">Bitte erteile die fehlende Berechtigung für die App in den Smartphone-Einstellungen.</string>
     <string name="app_settings">App-Einstellungen</string>
     <string name="cancel">Abbrechen</string>
-    <string name="perm_declined">Berechtigungen abgelehnt</string>
-    <string name="retry">Wiederholen</string>
     
 </resources>

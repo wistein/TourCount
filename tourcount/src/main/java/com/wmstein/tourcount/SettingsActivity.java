@@ -40,13 +40,6 @@ public class SettingsActivity extends AppCompatActivity
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit(); // will be committed on pause
-
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
     }
 
     @Override

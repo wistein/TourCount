@@ -7,9 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,23 +16,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.widgets.EditNotesWidget;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
 /**********************************
  * CountOptionsLActivity
  * Created by milo on 05/05/2014.
  * Adopted by wmstein on 18.02.2016,
- * last edited on 2023-05-13
+ * last edited on 2023-05-27
  */
 public class CountOptionsLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -220,12 +216,10 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
             {
                 switch (modePerm)
                 {
-                    case 1: // get location
-                        getLoc();
-                        break;
-                    case 2: // stop location service
-                        locationService.stopListener();
-                        break;
+                case 1 -> // get location
+                    getLoc();
+                case 2 -> // stop location service
+                    locationService.stopListener();
                 }
             }
             else
@@ -239,16 +233,8 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
     // if API level > 23 test for permissions granted
     private boolean isPermissionGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        else
-        {
-            // handle permissions for Build.VERSION_CODES < M here
-            return true;
-        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     // get the location data
@@ -260,28 +246,6 @@ public class CountOptionsLActivity extends AppCompatActivity implements SharedPr
         {
             longitude = locationService.getLongitude();
             latitude = locationService.getLatitude();
-        }
-
-        // get reverse geocoding
-        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-            runOnUiThread(() ->
-            {
-                URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                try
-                {
-                    url = new URL(urlString);
-                    RetrieveAddr.run(url);
-                } catch (IOException e)
-                {
-                    // do nothing
-                }
-            });
         }
     }
 

@@ -22,9 +22,10 @@
     <string name="editMetaButton">Prepare Recording</string>
     <string name="changeLogTitle">App Info</string>
     <string name="viewHelpTitle">Help</string>
-    <string name="noCard">Cannot access the TourCount files directory!</string>
+    <string name="noCard">Cannot write to the Documents directory!</string>
     <string name="saveFail">Your database could not be exported!</string>
-    <string name="saveWin">Your database has been exported to TourCount files Directory.</string>
+    <string name="saveWin">Your database has been exported to TourCount files directory.</string>
+    <string name="savecsv">Your database has been exported to Documents directory.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
     <string name="exportMenu">Export current DB</string>
@@ -227,7 +228,5 @@
     <string name="perm_hint">In order to register butterflies with location data, access to location data is necessary.</string>
     <string name="perm_hint1">Please enable the missing permission for the app in the phone settings.</string>
     <string name="cancel">Cancel</string>
-    <string name="perm_declined">Permissions declined</string>
-    <string name="retry">Retry</string>
     
 </resources>

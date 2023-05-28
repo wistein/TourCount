@@ -2,17 +2,17 @@ package com.wmstein.tourcount;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +21,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -36,15 +33,17 @@ import com.wmstein.tourcount.database.TempDataSource;
 import com.wmstein.tourcount.widgets.EditIndividualWidget;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 /*******************************************************************************************
  * EditIndividualLActivity is called from CountingLActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2022 wmstein
  * created on 2016-05-15, 
- * last modification an 2022-05-21
+ * last modification an 2023-05-13
  */
 public class EditIndividualLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -194,25 +193,27 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
 
         eiw.setWidgetStadium1(getString(R.string.stadium));
         switch (iAtt)
+        { // sex unknown, ♂ or ♀
+        case 1, 2, 3 ->
         {
-            case 1: // ♂♀
-            case 2: // ♂
-            case 3: // ♀
-                eiw.setWidgetStadium2(getString(R.string.stadium_1));
-                phase123 = true;
-                break;
-            case 4: // Pupa
-                eiw.setWidgetStadium2(getString(R.string.stadium_2));
-                phase123 = false;
-                break;
-            case 5: // Larva
-                eiw.setWidgetStadium2(getString(R.string.stadium_3));
-                phase123 = false;
-                break;
-            case 6: // Egg
-                eiw.setWidgetStadium2(getString(R.string.stadium_4));
-                phase123 = false;
-                break;
+            eiw.setWidgetStadium2(getString(R.string.stadium_1));
+            phase123 = true;
+        }
+        case 4 ->
+        { // Pupa
+            eiw.setWidgetStadium2(getString(R.string.stadium_2));
+            phase123 = false;
+        }
+        case 5 ->
+        { // Larva
+            eiw.setWidgetStadium2(getString(R.string.stadium_3));
+            phase123 = false;
+        }
+        case 6 ->
+        { // Egg
+            eiw.setWidgetStadium2(getString(R.string.stadium_4));
+            phase123 = false;
+        }
         }
 
         if (phase123)
@@ -317,55 +318,60 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         {
             switch (iAtt)
             {
-                case 1:
-                    // ♂ or ♀
-                    counts.count_f1i = counts.count_f1i + newcount;
-                    individuals.icount = newcount;
-                    individuals.sex = "-";
-                    individuals.icategory = 1;
-                    countDataSource.saveCountf1i(counts);
-                    break;
-
-                case 2:
-                    // ♂
-                    counts.count_f2i = counts.count_f2i + newcount;
-                    individuals.icount = newcount;
-                    individuals.sex = "m";
-                    individuals.icategory = 2;
-                    countDataSource.saveCountf2i(counts);
-                    break;
-                case 3:
-                    // ♀
-                    counts.count_f3i = counts.count_f3i + newcount;
-                    individuals.icount = newcount;
-                    individuals.sex = "f";
-                    individuals.icategory = 3;
-                    countDataSource.saveCountf3i(counts);
-                    break;
-                case 4:
-                    // pupa
-                    counts.count_pi = counts.count_pi + newcount;
-                    individuals.icount = newcount;
-                    individuals.sex = "-";
-                    individuals.icategory = 4;
-                    countDataSource.saveCountpi(counts);
-                    break;
-                case 5:
-                    // larva
-                    counts.count_li = counts.count_li + newcount;
-                    individuals.icount = newcount;
-                    individuals.sex = "-";
-                    individuals.icategory = 5;
-                    countDataSource.saveCountli(counts);
-                    break;
-                case 6:
-                    // eggs
-                    counts.count_ei = counts.count_ei + newcount;
-                    individuals.icount = newcount;
-                    individuals.sex = "-";
-                    individuals.icategory = 6;
-                    countDataSource.saveCountei(counts);
-                    break;
+            case 1 ->
+            {
+                // ♂ or ♀
+                counts.count_f1i = counts.count_f1i + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 1;
+                countDataSource.saveCountf1i(counts);
+            }
+            case 2 ->
+            {
+                // ♂
+                counts.count_f2i = counts.count_f2i + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "m";
+                individuals.icategory = 2;
+                countDataSource.saveCountf2i(counts);
+            }
+            case 3 ->
+            {
+                // ♀
+                counts.count_f3i = counts.count_f3i + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "f";
+                individuals.icategory = 3;
+                countDataSource.saveCountf3i(counts);
+            }
+            case 4 ->
+            {
+                // pupa
+                counts.count_pi = counts.count_pi + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 4;
+                countDataSource.saveCountpi(counts);
+            }
+            case 5 ->
+            {
+                // larva
+                counts.count_li = counts.count_li + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 5;
+                countDataSource.saveCountli(counts);
+            }
+            case 6 ->
+            {
+                // eggs
+                counts.count_ei = counts.count_ei + newcount;
+                individuals.icount = newcount;
+                individuals.sex = "-";
+                individuals.icategory = 6;
+                countDataSource.saveCountei(counts);
+            }
             }
 
             // Notes
@@ -392,9 +398,11 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
     private void showSnackbarRed(String str)
     {
         View view = findViewById(R.id.editIndividualScreen);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
+        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
+        sB.setActionTextColor(Color.RED);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         sB.show();
     }
 
@@ -472,12 +480,10 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
             {
                 switch (modePerm)
                 {
-                    case 1: // get location
-                        getLoc();
-                        break;
-                    case 2: // stop location service
-                        locationService.stopListener();
-                        break;
+                case 1 -> // get location
+                    getLoc();
+                case 2 -> // stop location service
+                    locationService.stopListener();
                 }
             }
             else
@@ -491,16 +497,8 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
     // if API level > 23 test for permissions granted
     private boolean isPermissionGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        else
-        {
-            // handle permissions for Build.VERSION_CODES < M here
-            return true;
-        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     // get the location data
@@ -519,27 +517,15 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         }
 
         // get reverse geocoding
-        // lat=0 and lon=0 position is in atlantic ocean with zero chance of meeting a butterfly,
-        // here the criteria makes sure that we actually got a location 
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+            // Trial with IntendService
+            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            runOnUiThread(() ->
-            {
-                URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                try
-                {
-                    url = new URL(urlString);
-                    RetrieveAddr.run(url);
-                } catch (IOException e)
-                {
-                    // do nothing
-                }
-            });
+            Intent rintent = new Intent(this, RetrieveAddrService.class);
+            rintent.putExtra("urlString", urlString);
+            startService(rintent);
         }
     }
 

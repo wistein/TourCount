@@ -7,7 +7,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:baselineAligned="false"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:baselineAligned="false"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -40,7 +41,8 @@
                 android:src="@drawable/plus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.6"/>
+                android:layout_weight="1.6"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonDownLHf1i"
@@ -52,7 +54,8 @@
                 android:src="@drawable/minus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.4"/>
+                android:layout_weight="1.4"
+                tools:ignore="UsingOnClickInXml" />
 
             <Space
                 android:layout_width="0dp"
@@ -125,7 +128,8 @@
                 android:src="@drawable/plus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.6"/>
+                android:layout_weight="1.6"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonDownLHf2i"
@@ -137,7 +141,8 @@
                 android:src="@drawable/minus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.4"/>
+                android:layout_weight="1.4"
+                tools:ignore="UsingOnClickInXml" />
 
             <Space
                 android:layout_width="0dp"
@@ -210,7 +215,8 @@
                 android:src="@drawable/plus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.6"/>
+                android:layout_weight="1.6"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonDownLHf3i"
@@ -222,7 +228,8 @@
                 android:src="@drawable/minus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.4"/>
+                android:layout_weight="1.4"
+                tools:ignore="UsingOnClickInXml" />
 
             <Space
                 android:layout_width="0dp"
@@ -294,7 +301,8 @@
                 android:src="@drawable/plus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.6"/>
+                android:layout_weight="1.6"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonDownLHpi"
@@ -306,7 +314,8 @@
                 android:src="@drawable/minus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.4"/>
+                android:layout_weight="1.4"
+                tools:ignore="UsingOnClickInXml" />
 
             <Space
                 android:layout_width="0dp"
@@ -378,7 +387,8 @@
                 android:src="@drawable/plus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.6"/>
+                android:layout_weight="1.6"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonDownLHli"
@@ -390,7 +400,8 @@
                 android:src="@drawable/minus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.4"/>
+                android:layout_weight="1.4"
+                tools:ignore="UsingOnClickInXml" />
 
             <Space
                 android:layout_width="0dp"
@@ -462,7 +473,8 @@
                 android:src="@drawable/plus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.6"/>
+                android:layout_weight="1.6"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonDownLHei"
@@ -474,7 +486,8 @@
                 android:src="@drawable/minus"
                 android:scaleType="fitCenter"
                 android:textStyle="bold"
-                android:layout_weight="1.4"/>
+                android:layout_weight="1.4"
+                tools:ignore="UsingOnClickInXml" />
 
             <Space
                 android:layout_width="0dp"

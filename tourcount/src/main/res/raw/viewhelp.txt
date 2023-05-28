@@ -96,8 +96,6 @@ $ 7
   _ 
   ! In "Settings" you may adapt the look an feel in some aspects to your wishes, e.g. sounds, sorting order or left-/right-hand counting. Here you should enter a valid email address, if you want a reliable Reverse Geocoding function.
   _ 
-  ! Selecting an own background picture can be achieved by the Gallery App, accessible in the left side menu of the background option (if applicable wipe from left edge).
-  _ 
   ! Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location data into the individual's record.
   ! For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nomination from OpenStreetMap is used. A valid own email address is necessary for durably reliable queries of address data and to exclude abuse. The mail address will be treated confidentially and will only be used to contact you in case of service problems. 
   ! For more info see <a href="https://wiki.openstreetmap.org/wiki/Nominatim" target="_blank">https://wiki.openstreetmap.org/wiki/Nominatim</a>.
@@ -112,25 +110,26 @@ $ 7
   _ 
   ! Exporting the current database (Export DB) writes a copy of the complete DB to /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_YYYY-MM-DD_hhmmss.db.
   _ 
-  ! The function “Export Data -> CSV File” writes the counting results into a pre-formatted MS Excel readable .csv-file to /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_YYYY-MM-DD_hhmmss.csv.
+  ! The function “Export Data -> CSV File” writes the counting results into a pre-formatted spreadsheet readable file "tourcount_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount/".
+  ! This directory allows accessing the files by other office spreadsheet apps, like Collabora (obtainable from F-Droid).
   _ 
+  ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" from /storage/emulated/0/Android/data/com.wmstein.tourcount/files to a PC.
+  ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine and edit the .db-files.
+  _
+  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program
+  ! - as a comma-separated text file with
+  ! - file origin “Unicode UTF-8”,
+  ! - quotations marks for textfield recognition and
+  ! - all data as text
+  ! for further processing.
+  _
   ! Under "App Info" you find the email address of the author, the history of the app and the license notes.
   _ 
   ! The menu of the counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
   _ 
-  ! From Android 5.0.1 on, the counting page is temporarily switched off by means of the proximity sensor when the phone is put into a pocket or held closed to the body. This saves energy, prohibits unwanted input and recalls the app into its current state immediately when used again.
+  ! The counting page is temporarily switched off by means of the proximity sensor when the phone is put into a pocket or held closed to the body. This saves energy, prohibits unwanted input and recalls the app into its current state immediately when used again.
   _ 
-  ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" or "-.csv"-files from /storage/emulated/0/Android/data/com.wmstein.tourcount/files to a PC. 
-  ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine the .db-files.
-  _
-  ! You may import the .csv-file as a
-  ! - comma-delimited text file 
-  ! - with quotations marks for textfield recognition,  
-  ! - file origin “Unicode UTF-8” and
-  ! - all data as text
-  ! into MS Excel (or compatible programs) for further processing. 
-  _
-  
+
 $ END_OF_VIEW_HELP
   </body>
 </html>

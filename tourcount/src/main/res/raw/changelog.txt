@@ -51,7 +51,7 @@ _ Subtitle
     ! Source code and documentation published under:
     ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
-    ! Suitable for Android 5 (Lollipop) or newer
+    ! Suitable for Android 7.1 (Nougat) or newer
   _ 
     ! Licenses
   _ 
@@ -70,15 +70,15 @@ _ Subtitle
     * egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
   _ 
     ! Butterfly pictures:
-    * Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
-    * Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
     * Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
     * Evergestis extimalis, Author: Adam Furlepa, CC BY-SA 3.0, derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
     * Hyles hippophaes (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-	  * Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+	* Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+    * Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
     * Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-	  * Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+	* Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
     * Pediasia contaminella, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
   _
     ! All other pictures, app icon and background (C) Wilhelm Stein. 
@@ -87,13 +87,14 @@ _ Subtitle
 
 $ 3.3.5
   % Version 3.3.5
-  _ 2023-05-16
+  _ 2023-05-28
   * Gradle Plugin upgraded -> 8.0.0
   * Gradle upgraded -> 8.0
   * Some deprecated functions replaced
   * Permissions handling belittled
+  * Export directory for .csv-files: Documents/TourCount/ (allows access by other apps)
   * Some more code improvements
-  * Minimal Android Version 5 (Lollipop)
+  * Minimal Android Version 7.1 (Nougat)
 
 $ 3.3.4
   % Version 3.3.4

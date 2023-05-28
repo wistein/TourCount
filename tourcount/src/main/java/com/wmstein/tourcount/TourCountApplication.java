@@ -25,7 +25,7 @@ import java.util.Objects;
 public class TourCountApplication extends Application
 {
     private static final String TAG = "TourCountAppl";
-    private static SharedPreferences prefs;
+    public static SharedPreferences prefs;
     @SuppressLint("StaticFieldLeak")
     private static Context context;
     private BitmapDrawable bMapDraw;

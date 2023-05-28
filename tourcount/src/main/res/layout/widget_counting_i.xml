@@ -7,7 +7,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:layout_marginLeft="2dp"
@@ -76,7 +77,8 @@
                 android:onClick="countDownf1i"
                 android:scaleType="fitCenter"
                 android:src="@drawable/minus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonUpf1i"
@@ -87,7 +89,8 @@
                 android:onClick="countUpf1i"
                 android:scaleType="fitCenter"
                 android:src="@drawable/plus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
         
     </LinearLayout>
@@ -156,7 +159,8 @@
                 android:onClick="countDownf2i"
                 android:scaleType="fitCenter"
                 android:src="@drawable/minus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonUpf2i"
@@ -167,7 +171,8 @@
                 android:onClick="countUpf2i"
                 android:scaleType="fitCenter"
                 android:src="@drawable/plus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
     </LinearLayout>
@@ -236,7 +241,8 @@
                 android:onClick="countDownf3i"
                 android:scaleType="fitCenter"
                 android:src="@drawable/minus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonUpf3i"
@@ -247,7 +253,8 @@
                 android:onClick="countUpf3i"
                 android:scaleType="fitCenter"
                 android:src="@drawable/plus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
     </LinearLayout>
@@ -316,7 +323,8 @@
                 android:onClick="countDownpi"
                 android:scaleType="fitCenter"
                 android:src="@drawable/minus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonUppi"
@@ -327,7 +335,8 @@
                 android:onClick="countUppi"
                 android:scaleType="fitCenter"
                 android:src="@drawable/plus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
     </LinearLayout>
@@ -396,7 +405,8 @@
                 android:onClick="countDownli"
                 android:scaleType="fitCenter"
                 android:src="@drawable/minus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonUpli"
@@ -407,7 +417,8 @@
                 android:onClick="countUpli"
                 android:scaleType="fitCenter"
                 android:src="@drawable/plus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
     </LinearLayout>
@@ -476,7 +487,8 @@
                 android:onClick="countDownei"
                 android:scaleType="fitCenter"
                 android:src="@drawable/minus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
 
             <ImageButton
                 android:id="@+id/buttonUpei"
@@ -487,7 +499,8 @@
                 android:onClick="countUpei"
                 android:scaleType="fitCenter"
                 android:src="@drawable/plus"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
 
     </LinearLayout>

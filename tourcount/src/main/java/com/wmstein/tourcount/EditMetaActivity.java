@@ -4,14 +4,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +19,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
@@ -33,8 +29,6 @@ import com.wmstein.tourcount.widgets.EditHeadWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
-import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,10 +36,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2023-05-13
+ * last edit on 2023-05-27
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -335,27 +333,33 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         section.temp = etw.getWidgetTemp2();
         if (section.temp > 50 || section.temp < 0)
         {
-            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" + getString(R.string.valTemp) + "</font></b>"), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(etw, getString(R.string.valTemp), Snackbar.LENGTH_LONG);
+            sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
             sB.show();
             return false;
         }
         section.wind = etw.getWidgetWind2();
         if (section.wind > 4 || section.wind < 0)
         {
-            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" + getString(R.string.valWind) + "</font></b>"), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(etw, getString(R.string.valWind), Snackbar.LENGTH_LONG);
+            sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
             sB.show();
             return false;
         }
         section.clouds = etw.getWidgetClouds2();
         if (section.clouds > 100 || section.clouds < 0)
         {
-            Snackbar sB = Snackbar.make(etw, Html.fromHtml("<font color=\"#ff0000\"><b>" + getString(R.string.valClouds) + "</font></b>"), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(etw, getString(R.string.valClouds), Snackbar.LENGTH_LONG);
+            sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
             sB.show();
             return false;
         }
@@ -419,12 +423,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             {
                 switch (modePerm)
                 {
-                    case 1: // get location
-                        getLoc();
-                        break;
-                    case 2: // stop location service
-                        locationService.stopListener();
-                        break;
+                case 1 -> // get location
+                    getLoc();
+                case 2 -> // stop location service
+                    locationService.stopListener();
                 }
             }
             else
@@ -438,16 +440,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     // if API level > 23 test for permissions granted
     private boolean isPermissionGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        else
-        {
-            // handle permissions for Build.VERSION_CODES < M here
-            return true;
-        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     // get the location data
@@ -464,23 +458,13 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+            // Trial with IntendService
+            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            runOnUiThread(() ->
-            {
-                URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                try
-                {
-                    url = new URL(urlString);
-                    RetrieveAddr.run(url);
-                } catch (IOException e)
-                {
-                    // do nothing
-                }
-            });
+            Intent rintent = new Intent(this, RetrieveAddrService.class);
+            rintent.putExtra("urlString", urlString);
+            startService(rintent);
         }
     }
 

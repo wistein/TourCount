@@ -6,7 +6,8 @@
     Last change: 2019-04-03.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_marginLeft="5dp"
               android:layout_marginRight="5dp"
@@ -103,7 +104,8 @@
             android:layout_weight="3"
             android:gravity="center_vertical|end"
             android:onClick="deleteCount"
-            android:src="@android:drawable/ic_menu_delete"/>
+            android:src="@android:drawable/ic_menu_delete"
+            tools:ignore="UsingOnClickInXml" />
     </LinearLayout>
 
 </LinearLayout>

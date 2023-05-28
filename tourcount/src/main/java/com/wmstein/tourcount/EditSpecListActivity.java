@@ -7,12 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -34,8 +33,6 @@ import com.wmstein.tourcount.widgets.EditNotesWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 import com.wmstein.tourcount.widgets.HintWidget;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +52,7 @@ import androidx.core.content.ContextCompat;
  <p>
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited on 2023-05-16
+ * last edited on 2023-05-27
  */
 public class EditSpecListActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -228,19 +225,12 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         hint_area1.addView(nw);
 
         // load the sorted species data
-        List<Count> counts;
-        switch (sortPref)
-        {
-            case "names_alpha":
-                counts = countDataSource.getAllSpeciesSrtName();
-                break;
-            case "codes":
-                counts = countDataSource.getAllSpeciesSrtCode();
-                break;
-            default:
-                counts = countDataSource.getAllSpecies();
-                break;
-        }
+        List<Count> counts = switch (sortPref)
+            {
+                case "names_alpha" -> countDataSource.getAllSpeciesSrtName();
+                case "codes" -> countDataSource.getAllSpeciesSrtCode();
+                default -> countDataSource.getAllSpecies();
+            };
 
         // display all the counts by adding them to CountEditWidget
         for (Count count : counts)
@@ -413,9 +403,11 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     private void showSnackbarRed(String str) // bold red text
     {
         View view = findViewById(R.id.editingScreen);
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
+        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
+        sB.setActionTextColor(Color.RED);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         sB.show();
     }
 
@@ -550,12 +542,10 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
             {
                 switch (modePerm)
                 {
-                    case 1: // get location
-                        getLoc();
-                        break;
-                    case 2: // stop location service
-                        locationService.stopListener();
-                        break;
+                case 1 -> // get location
+                    getLoc();
+                case 2 -> // stop location service
+                    locationService.stopListener();
                 }
             }
             else
@@ -569,16 +559,8 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
     // if API level > 23 test for permissions granted
     private boolean isPermissionGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        else
-        {
-            // handle permissions for Build.VERSION_CODES < M here
-            return true;
-        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     // get the location data
@@ -590,28 +572,6 @@ public class EditSpecListActivity extends AppCompatActivity implements SharedPre
         {
             longitude = locationService.getLongitude();
             latitude = locationService.getLatitude();
-        }
-
-        // get reverse geocoding
-        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-            runOnUiThread(() ->
-            {
-                URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                try
-                {
-                    url = new URL(urlString);
-                    RetrieveAddr.run(url);
-                } catch (IOException e)
-                {
-                    // do nothing
-                }
-            });
         }
     }
 

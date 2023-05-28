@@ -2,13 +2,15 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
-#### Version 3.3.5 (2023-05-16)
+#### Version 3.3.5 (2023-05-27)
 - Gradle Plugin upgraded -> 8.0.0
 - Gradle upgraded -> 8.0
 - Some deprecated functions replaced
 - Permissions handling belittled
+- Export directory for .csv-files: Documents/TourCount/ (allows access by other apps)
 - Some more code improvements
-- Minimal Android Version 5 (Lollipop)
+- Sourcecode partly translated to Kotlin
+- Minimal Android Version 7.1 (Nougat)
 
 #### Version 3.3.4 (2023-03-26)
 - Gradle Plugin upgraded -> 7.4.2

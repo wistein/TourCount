@@ -96,8 +96,7 @@ $ 7
   ! Das Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen. 
   _ 
   ! Unter „Einstellungen“ können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds, Sortierfolge oder Rechts-/Linkshänder-Darstellung der Zählerseite. 
-  ! Die Auswahl eines eigenen Hintergrundbildes klappt dabei mittels Galerie-App, erreichbar über das linke Seitenmenü der Hintergrundbild-Option (ggf. wischen vom linken Rand).
-  _ 
+  _
   ! Mittels inverser Geokodierung lassen sich Ortsangaben (PLZ, Stadt, Ort) in die Metadaten und Lokalität in die Individuen-Daten automatisch einfügen.
   ! Zur inversen Geokodierung (Erzeugung von Adressdaten aus GPS-Koordinaten) wird der kostenlose Nominatim-Dienst von OpenStreetMap verwendet. Für eine auf Dauer zuverlässige Abfrage der Adressdaten und zwecks Ausschluss von Missbrauch ist eine eigene, gültige E-Mail-Adresse erforderlich. Die Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. 
   ! Siehe <a href="https://wiki.openstreetmap.org/wiki/Nominatim" target="_blank">https://wiki.openstreetmap.org/wiki/Nominatim</a>.
@@ -112,25 +111,28 @@ $ 7
   _ 
   ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach "/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.db". 
   _ 
-  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine MS Excel-kompatible Datei nach "/storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_JJJJ-MM-TT_hhmmss.csv".
+  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine Spreadsheet-kompatible Datei "tourcount_YYYY-MM-DD_hhmmss.csv" nach "Documents/TourCount/".
+  ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (erhältlich bei F-Droid).
   _ 
-  ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweis ist unter "App-Info" abrufbar.
-  _ 
-  ! In der Zähler-Ansicht wird die Anzeige temporär per Näherungssensor abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird (ab Android-Version 5.0.1). 
-  ! Das Menü der Zählerseite hat eine Mitteilungsfunktion, um eine Nachricht über eine Standard-App, wie SMS oder E-Mail versenden zu können.
-  _ 
-  ! IT-affine Anwender können die mittels Exportfunktionen erzeugten Dateien "tourcount_JJJJ-MM-TT_hhmmss.db" bzw. "...csv" von /storage/emulated/0/Android/data/com.wmstein.tourcount/files auf einen PC übertragen.
+  ! IT-affine Anwender können die mittels Exportfunktion erzeugte Datei "tourcount_JJJJ-MM-TT_hhmmss.db" von /storage/emulated/0/Android/data/com.wmstein.tourcount/files auf einen PC übertragen.
   ! Dort können mit Hilfe eines kostenlosen Tools wie "SqliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
-  _ 
-  ! Die .csv-Dateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in MS Excel (oder kompatible Software) importiert werden. Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze auf
   _
+  ! Auch die .csv-Dateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in einer Tabellenkalkulation importiert werden.
+  ! Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze auf
   ! - Komma als Trennzeichen,
-  ! - Anführungszeichen zur Texterkennung, 
-  ! - Dateiursprung im Format "Unicode UTF-8" und
+  ! - Dateiursprung im Format "Unicode UTF-8",
+  ! - Anführungszeichen zur Texterkennung und
   ! - alle Daten als Text
   ! zu achten.
-	_ 
-	  
+	_
+  ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweisen sind unter "App-Info" abrufbar.
+  _
+  ! Das Menü der Zählerseite hat eine Mitteilungsfunktion, um eine Nachricht über eine Standard-App, wie SMS oder E-Mail versenden zu können.
+  _
+  ! In der Zähler-Ansicht kann die Anzeige temporär per Näherungssensor abgeschaltet werden, wenn das Handy eingesteckt oder nahe am Körper gehalten wird.
+  ! Das spart Energie, verhindert unerwünschte Eingaben und bringt die App augenblicklich zurück, wenn sie wieder normal genutzt wird.
+  _
+
 $ END_OF_VIEW_HELP
   </body>
 </html>

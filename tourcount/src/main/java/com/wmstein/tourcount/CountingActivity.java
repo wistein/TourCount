@@ -8,16 +8,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.CursorIndexOutOfBoundsException;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,10 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -47,7 +42,6 @@ import com.wmstein.tourcount.widgets.CountingWidget_head2;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +49,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
 /****************************************************************************************
  * CountingActivity is the central activity of TourCount in portrait mode. 
@@ -67,7 +65,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-05-13
+ * last modification on 2023-05-27
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -276,27 +274,30 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         switch (sortPref)
         {
-            case "names_alpha":
-                idArray = countDataSource.getAllIdsSrtName();
-                nameArray = countDataSource.getAllStringsSrtName("name");
-                codeArray = countDataSource.getAllStringsSrtName("code");
-                nameArrayG = countDataSource.getAllStringsSrtName("name_g");
-                imageArray = countDataSource.getAllImagesSrtName();
-                break;
-            case "codes":
-                idArray = countDataSource.getAllIdsSrtCode();
-                nameArray = countDataSource.getAllStringsSrtCode("name");
-                codeArray = countDataSource.getAllStringsSrtCode("code");
-                nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
-                imageArray = countDataSource.getAllImagesSrtCode();
-                break;
-            default:
-                idArray = countDataSource.getAllIds();
-                nameArray = countDataSource.getAllStrings("name");
-                codeArray = countDataSource.getAllStrings("code");
-                nameArrayG = countDataSource.getAllStrings("name_g");
-                imageArray = countDataSource.getAllImages();
-                break;
+        case "names_alpha" ->
+        {
+            idArray = countDataSource.getAllIdsSrtName();
+            nameArray = countDataSource.getAllStringsSrtName("name");
+            codeArray = countDataSource.getAllStringsSrtName("code");
+            nameArrayG = countDataSource.getAllStringsSrtName("name_g");
+            imageArray = countDataSource.getAllImagesSrtName();
+        }
+        case "codes" ->
+        {
+            idArray = countDataSource.getAllIdsSrtCode();
+            nameArray = countDataSource.getAllStringsSrtCode("name");
+            codeArray = countDataSource.getAllStringsSrtCode("code");
+            nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
+            imageArray = countDataSource.getAllImagesSrtCode();
+        }
+        default ->
+        {
+            idArray = countDataSource.getAllIds();
+            nameArray = countDataSource.getAllStrings("name");
+            codeArray = countDataSource.getAllStrings("code");
+            nameArrayG = countDataSource.getAllStrings("name_g");
+            imageArray = countDataSource.getAllImages();
+        }
         }
 
         countingWidgets = new ArrayList<>();
@@ -347,9 +348,11 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             view = findViewById(R.id.countingScreen);
         }
-        Snackbar sB = Snackbar.make(view, Html.fromHtml("<font color=\"#ff0000\"><b>" + str + "</font></b>"), Snackbar.LENGTH_LONG);
+        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
+        sB.setActionTextColor(Color.RED);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         sB.show();
     }
 
@@ -361,12 +364,10 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             switch (modePerm)
             {
-                case 1: // get location
-                    getLoc();
-                    break;
-                case 2: // stop location service
-                    locationService.stopListener();
-                    break;
+            case 1 -> // get location
+                getLoc();
+            case 2 -> // stop location service
+                locationService.stopListener();
             }
         }
         else
@@ -379,16 +380,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // if API level > 23 test for permissions granted
     private boolean isPermissionGranted()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        else
-        {
-            // handle permissions for Build.VERSION_CODES < M here
-            return true;
-        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     // get the location data
@@ -409,23 +402,13 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+            // Trial with IntendService
+            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            runOnUiThread(() ->
-            {
-                URL url;
-                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                try
-                {
-                    url = new URL(urlString);
-                    RetrieveAddr.run(url);
-                } catch (IOException e)
-                {
-                    // do nothing
-                }
-            });
+            Intent rintent = new Intent(this, RetrieveAddrService.class);
+            rintent.putExtra("urlString", urlString);
+            startService(rintent);
         }
     }
 
@@ -1699,6 +1682,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     // Handle menu selections
+    @SuppressLint("QueryPermissionsNeeded")
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -1726,7 +1710,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             Intent camIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
 
             PackageManager packageManager = getPackageManager();
-            List<ResolveInfo> activities = packageManager.queryIntentActivities(camIntent,
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activities = packageManager.queryIntentActivities(camIntent,
                 PackageManager.MATCH_DEFAULT_ONLY);
             boolean isIntentSafe = activities.size() > 0;
 

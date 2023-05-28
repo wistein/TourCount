@@ -25,17 +25,14 @@ import android.widget.TextView;
  * https://stackoverflow.com/questions/16017165/auto-fit-textview-for-android
  *
  * @author pheuschk
- *         createDate: 18.04.2013
+ * createDate: 18.04.2013
 <p>
  * Modified for TourCount by wmstein since 2016-03-18
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
- * last edited by wmstein on 2021-01-26
+ * last edited by wmstein on 2023-05-24
  */
 public class AutoFitText extends androidx.appcompat.widget.AppCompatTextView
 {
-    // provisioned for future debugging 
-    private static final String TAG = "tourcountAutoFitText";
-
     // Global min and max for text size. Remember: values are in pixels!
     final static int MIN_TEXT_SIZE = 8;   // was 10
     final static int MAX_TEXT_SIZE = 100; // was 400, best: 80?
