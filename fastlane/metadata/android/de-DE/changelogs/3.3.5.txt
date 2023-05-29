@@ -1,5 +1,5 @@
 Version 3.3.5 (28.05.2027)
-- Gradle Plugin Upgrade -> 8.0.0
+- Gradle Plugin Upgrade -> 8.0.2
 - Gradle Upgrade -> 8.0
 - Einige deprecated functions ersetzt
 - Berechtigungsfunktionen verkleinert

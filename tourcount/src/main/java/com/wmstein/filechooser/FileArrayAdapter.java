@@ -8,11 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.wmstein.tourcount.R;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * FileArrayAdapter is part of filechooser.

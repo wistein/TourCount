@@ -26,32 +26,32 @@ package com.wmstein.egm;
  * @author Martin Desruisseaux
  * @version $Id$
  * @since 2.3
- * 
+ *
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22
  * Last edited on 2020-04-17
  */
-public abstract class VerticalTransform extends AbstractMathTransform 
+public abstract class VerticalTransform extends AbstractMathTransform
 {
     /**
      * Creates a new instance of VerticalTransform.
      */
-    VerticalTransform() 
-	{
+    VerticalTransform()
+    {
     }
 
     /**
      * Gets the dimension of input points.
      */
-    public final int getSourceDimensions() 
-	{
+    public final int getSourceDimensions()
+    {
         return 3;
     }
 
     /**
      * Gets the dimension of output points.
      */
-    public final int getTargetDimensions() 
-	{
+    public final int getTargetDimensions()
+    {
         return 3;
     }
 
@@ -66,7 +66,7 @@ public abstract class VerticalTransform extends AbstractMathTransform
      * @throws Exception if the offset can't be computed for the specified coordinates.
      */
     protected abstract double heightOffset(double longitude, double latitude, double height)
-            throws Exception;
+        throws Exception;
 
 }
 
