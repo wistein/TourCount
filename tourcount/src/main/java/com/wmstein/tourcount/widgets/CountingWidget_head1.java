@@ -12,10 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.wmstein.tourcount.R;
 import com.wmstein.tourcount.database.Count;
-
-import androidx.annotation.NonNull;
 
 /****************************************************
  * Interface for widget_counting_head1.xml

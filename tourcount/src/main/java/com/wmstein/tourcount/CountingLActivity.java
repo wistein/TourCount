@@ -13,9 +13,12 @@ import android.graphics.Typeface;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -53,6 +56,10 @@ import java.util.Objects;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 /****************************************************************************************
  * The 2. counting activity 'CountingLActivity' is necessary for overcoming some limitations of Android spinner.
@@ -67,7 +74,7 @@ import androidx.core.content.ContextCompat;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-05-27
+ * last modification on 2023-06-10
  */
 public class CountingLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -108,7 +115,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     private boolean fontPref;
     private boolean lhandPref; // true for lefthand mode of counting screen
     private boolean buttonSoundPref;
-    private String buttonAlertSound;
+    private boolean buttonVibPref;
+    private String buttonSound;
+    private String buttonSoundMinus;
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
@@ -137,7 +146,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         prefs.registerOnSharedPreferenceChangeListener(this);
         getPrefs();
 
-        if (lhandPref) // if left-handed counting page
+        // if left-handed counting page
+        if (lhandPref)
         {
             setContentView(R.layout.activity_counting_lh);
             LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
@@ -200,8 +210,10 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         sortPref = prefs.getString("pref_sort_sp", "none");    // sorted species list on counting page
         fontPref = prefs.getBoolean("pref_note_font", false);  // larger font for remarks
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
-        buttonAlertSound = prefs.getString("alert_button_sound", null);
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
+        buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
+        buttonSound = prefs.getString("button_sound", null); // use standard button sound
+        buttonSoundMinus = prefs.getString("button_sound_minus", null); //use deeper button sound
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
         itemPosition = prefs.getInt("item_Position", 0);       // spinner pos.
@@ -404,13 +416,21 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            // Trial with IntendService
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            Intent rintent = new Intent(this, RetrieveAddrService.class);
-            rintent.putExtra("urlString", urlString);
-            startService(rintent);
+            // Trial with WorkManager
+            WorkRequest retrieveAddrWorkRequest =
+                new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
+                    .setInputData(new Data.Builder()
+                            .putString("URL_STRING", urlString)
+                            .build()
+                                 )
+                    .build();
+
+            WorkManager
+                .getInstance(this)
+                .enqueue(retrieveAddrWorkRequest);
         }
     }
 
@@ -540,6 +560,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpf1i(View view)
     {
         buttonSound();
+        buttonVib();
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -592,6 +614,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpLHf1i(View view)
     {
         buttonSound();
+        buttonVib();
+
         int iAtt = 1;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -642,7 +666,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownf1i(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -679,7 +705,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownLHf1i(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -716,6 +744,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpf2i(View view)
     {
         buttonSound();
+        buttonVib();
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -768,6 +798,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpLHf2i(View view)
     {
         buttonSound();
+        buttonVib();
+
         int iAtt = 2;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -818,7 +850,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownf2i(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -854,7 +888,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownLHf2i(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -888,6 +924,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpf3i(View view)
     {
         buttonSound();
+        buttonVib();
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -940,6 +978,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpLHf3i(View view)
     {
         buttonSound();
+        buttonVib();
+
         int iAtt = 3;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -990,7 +1030,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownf3i(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1026,7 +1068,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownLHf3i(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1060,6 +1104,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUppi(View view)
     {
         buttonSound();
+        buttonVib();
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1112,6 +1158,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpLHpi(View view)
     {
         buttonSound();
+        buttonVib();
+
         int iAtt = 4;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1162,7 +1210,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownpi(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1198,7 +1248,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownLHpi(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1232,6 +1284,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpli(View view)
     {
         buttonSound();
+        buttonVib();
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1284,6 +1338,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpLHli(View view)
     {
         buttonSound();
+        buttonVib();
+
         int iAtt = 5;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1334,7 +1390,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownli(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1370,7 +1428,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownLHli(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1404,6 +1464,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpei(View view)
     {
         buttonSound();
+        buttonVib();
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1456,6 +1518,8 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     public void countUpLHei(View view)
     {
         buttonSound();
+        buttonVib();
+
         int iAtt = 6;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1506,7 +1570,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownei(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1542,7 +1608,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
     // deletes last count
     public void countDownLHei(View view)
     {
-        buttonSound();
+        buttonSoundMinus();
+        buttonVibLong();
+
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
@@ -1657,9 +1725,9 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             try
             {
                 Uri notification;
-                if (isNotBlank(buttonAlertSound) && buttonAlertSound != null)
+                if (isNotBlank(buttonSound) && buttonSound != null)
                 {
-                    notification = Uri.parse(buttonAlertSound);
+                    notification = Uri.parse(buttonSound);
                 }
                 else
                 {
@@ -1671,6 +1739,71 @@ public class CountingLActivity extends AppCompatActivity implements SharedPrefer
             {
                 if (MyDebug.LOG)
                     Log.e(TAG, "could not play botton sound.", e);
+            }
+        }
+    }
+
+    private void buttonSoundMinus()
+    {
+        if (buttonSoundPref)
+        {
+            try
+            {
+                Uri notification;
+                if (isNotBlank(buttonSoundMinus) && buttonSoundMinus != null)
+                {
+                    notification = Uri.parse(buttonSoundMinus);
+                }
+                else
+                {
+                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                }
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+            } catch (Exception e)
+            {
+                if (MyDebug.LOG)
+                    Log.e(TAG, "could not play botton sound.", e);
+            }
+        }
+    }
+
+    private void buttonVib()
+    {
+        if (buttonVibPref)
+        {
+            try
+            {
+                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(100);
+                }
+            } catch (Exception e)
+            {
+                if (MyDebug.LOG)
+                    Log.e(TAG, "could not vibrate.", e);
+            }
+        }
+    }
+
+    private void buttonVibLong()
+    {
+        if (buttonVibPref)
+        {
+            try
+            {
+                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(450, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(450);
+                }
+            } catch (Exception e)
+            {
+                if (MyDebug.LOG)
+                    Log.e(TAG, "could not vibrate.", e);
             }
         }
     }

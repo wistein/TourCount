@@ -56,6 +56,13 @@
             android:key="pref_button_sound"
             android:summary="@string/pref_button_sound_summary"
             android:title="@string/pref_button_sound"/>
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_vibration_black_48dp"
+            android:key="pref_button_vib"
+            android:summary="@string/pref_button_vib_summary"
+            android:title="@string/pref_button_vib"/>
     </PreferenceCategory>
 
     <PreferenceCategory

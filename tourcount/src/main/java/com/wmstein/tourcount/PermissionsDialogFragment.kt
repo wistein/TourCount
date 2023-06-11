@@ -63,7 +63,7 @@ class PermissionsDialogFragment : DialogFragment() {
         listener = null
     }
 
-    @Deprecated("Deprecated in Java")
+    @Deprecated("Deprecated in Java") // Todo
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -84,9 +84,9 @@ class PermissionsDialogFragment : DialogFragment() {
     }
 
     // deprecated, Todo
-    private fun requestNecessaryPermissions() {
-        requestPermissions(
-            arrayOf(
+    private fun requestNecessaryPermissions()
+    {
+        requestPermissions(arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -99,7 +99,7 @@ class PermissionsDialogFragment : DialogFragment() {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.perm_required))
             .setMessage(getString(R.string.perm_hint) + " " + getString(R.string.perm_hint1))
-            .setPositiveButton(getString(R.string.app_settings)) { dialogInterface: DialogInterface?, i: Int ->
+            .setPositiveButton(getString(R.string.app_settings)) { _: DialogInterface?, _: Int ->
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri =
@@ -108,7 +108,7 @@ class PermissionsDialogFragment : DialogFragment() {
                 requireContext().startActivity(intent)
                 dismiss()
             }
-            .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface?, i: Int -> dismiss() }
+            .setNegativeButton(getString(R.string.cancel)) { _: DialogInterface?, _: Int -> dismiss() }
             .create().show()
     }
 

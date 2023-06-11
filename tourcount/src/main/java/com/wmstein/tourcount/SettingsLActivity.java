@@ -16,7 +16,7 @@ import java.util.Objects;
  * Set the Settings parameters for TourCount
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2022-05-21,
- * last edited on 2023-05-13
+ * last edited on 2023-06-09
  */
 public class SettingsLActivity extends AppCompatActivity
 {
@@ -49,12 +49,14 @@ public class SettingsLActivity extends AppCompatActivity
 
         String ringtone;
         boolean buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
-
         if (buttonSoundPref)
         {
             Uri button_sound_uri = Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button);
             ringtone = button_sound_uri.toString();
-            editor.putString("alert_button_sound", ringtone);
+            editor.putString("button_sound", ringtone);
+            Uri button_sound_uri_m = Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button_minus);
+            ringtone = button_sound_uri_m.toString();
+            editor.putString("button_sound_minus", ringtone);
         }
 
         editor.commit();

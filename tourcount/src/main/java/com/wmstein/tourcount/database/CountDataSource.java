@@ -1,5 +1,14 @@
 package com.wmstein.tourcount.database;
 
+import static com.wmstein.tourcount.database.DbHelper.COUNT_TABLE;
+import static com.wmstein.tourcount.database.DbHelper.C_CODE;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_EI;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F1I;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F2I;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F3I;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_LI;
+import static com.wmstein.tourcount.database.DbHelper.C_COUNT_PI;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,15 +20,6 @@ import com.wmstein.tourcount.TourCountApplication;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.wmstein.tourcount.database.DbHelper.COUNT_TABLE;
-import static com.wmstein.tourcount.database.DbHelper.C_CODE;
-import static com.wmstein.tourcount.database.DbHelper.C_COUNT_EI;
-import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F1I;
-import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F2I;
-import static com.wmstein.tourcount.database.DbHelper.C_COUNT_F3I;
-import static com.wmstein.tourcount.database.DbHelper.C_COUNT_LI;
-import static com.wmstein.tourcount.database.DbHelper.C_COUNT_PI;
 
 /********************************************************
  * Class CountDataSource provides methods for table Count

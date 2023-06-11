@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
@@ -24,28 +23,28 @@ import androidx.core.app.ActivityCompat
  *
  * Adopted for TourCount by wmstein since 2018-07-26,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2023-05-26
+ * last edited on 2023-05-30
  */
 open class LocationService : Service, LocationListener {
-    var mContext: Context? = null
-    var checkGPS = false
-    var checkNetwork = false
+    private var mContext: Context? = null
+    private var checkGPS = false
+    private var checkNetwork = false
     var canGetLocation = false
     var location: Location? = null
-    var lat = 0.0
-    var lon = 0.0
+    private var lat = 0.0
+    private var lon = 0.0
     var height = 0.0
     var uncertainty = 0.0
     private var locationManager: LocationManager? = null
     private var exactLocation = false
 
+    // Default constructor demanded for service declaration in AndroidManifest.xml
+    constructor()
+
     constructor(mContext: Context?) {
         this.mContext = mContext
         getLocation()
     }
-
-    // Default constructor demanded for service declaration in AndroidManifest.xml
-    constructor() {}
 
     private fun getLocation() {
         try {
@@ -185,11 +184,12 @@ open class LocationService : Service, LocationListener {
         // do nothing
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {
-        // do nothing
-    }
-
+    /*
+        @Deprecated("Deprecated in Java")
+        override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {
+            // do nothing
+        }
+    */
     override fun onProviderEnabled(s: String) {
         // do nothing
     }

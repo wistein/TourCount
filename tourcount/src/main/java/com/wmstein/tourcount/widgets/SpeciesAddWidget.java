@@ -29,8 +29,8 @@ public class SpeciesAddWidget extends LinearLayout implements Serializable
     private final transient ImageView specPic;
     private final ImageButton addButton;
 
-    LayoutInflater inflater;
-    
+    final LayoutInflater inflater;
+
     public SpeciesAddWidget(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -80,7 +80,7 @@ public class SpeciesAddWidget extends LinearLayout implements Serializable
     public void setSpecId(String id)
     {
         specId.setText(id);
-        addButton.setTag(Integer.parseInt(id)-1);
+        addButton.setTag(Integer.parseInt(id) - 1);
     }
 
     public void setPSpec(String ucode)
@@ -96,5 +96,5 @@ public class SpeciesAddWidget extends LinearLayout implements Serializable
             specPic.setImageResource(resId);
         }
     }
-    
+
 }

@@ -2,16 +2,12 @@ package com.wmstein.tourcount;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +17,13 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -35,15 +38,12 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget;
 import java.io.IOException;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 /*******************************************************************************************
  * EditIndividualLActivity is called from CountingLActivity and collects additional info to an 
  * individual's data record
  * Copyright 2016-2022 wmstein
  * created on 2016-05-15, 
- * last modification an 2023-05-13
+ * last modification an 2023-06-09
  */
 public class EditIndividualLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -65,8 +65,6 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
     private BitmapDrawable bg;
 
     // Preferences
-    private boolean buttonSoundPref;
-    private String buttonAlertSound;
     private boolean brightPref;    // option for full bright screen
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
@@ -136,8 +134,6 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
     // Load preferences
     private void getPrefs()
     {
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
-        buttonAlertSound = prefs.getString("alert_button_sound", null);
         brightPref = prefs.getBoolean("pref_bright", true);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
@@ -273,8 +269,6 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
 
     private boolean saveData()
     {
-        buttonSound();
-
         // save individual data
         // Locality (from reverse geocoding in CountingActivity or manual input) 
         individuals.locality = eiw.getWidgetLocality2();
@@ -406,31 +400,6 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         sB.show();
     }
 
-    private void buttonSound()
-    {
-        if (buttonSoundPref)
-        {
-            try
-            {
-                Uri notification;
-                if (isNotBlank(buttonAlertSound) && buttonAlertSound != null)
-                {
-                    notification = Uri.parse(buttonAlertSound);
-                }
-                else
-                {
-                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                }
-                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                r.play();
-            } catch (Exception e)
-            {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "could not play button sound.", e);
-            }
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -519,13 +488,21 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            // Trial with IntendService
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            Intent rintent = new Intent(this, RetrieveAddrService.class);
-            rintent.putExtra("urlString", urlString);
-            startService(rintent);
+            // Trial with WorkManager
+            WorkRequest retrieveAddrWorkRequest =
+                new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
+                    .setInputData(new Data.Builder()
+                            .putString("URL_STRING", urlString)
+                            .build()
+                                 )
+                    .build();
+
+            WorkManager
+                .getInstance(this)
+                .enqueue(retrieveAddrWorkRequest);
         }
     }
 
@@ -555,53 +532,6 @@ public class EditIndividualLActivity extends AppCompatActivity implements Shared
 
         nnHeight = gpsHeight + corrHeight;
         return nnHeight;
-    }
-
-    /**
-     * Checks if a CharSequence is whitespace, empty ("") or null
-     * <p>
-     * isBlank(null)      = true
-     * isBlank("")        = true
-     * isBlank(" ")       = true
-     * isBlank("bob")     = false
-     * isBlank("  bob  ") = false
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is null, empty or whitespace
-     */
-    private static boolean isBlank(final CharSequence cs)
-    {
-        int strLen;
-        if (cs == null || (strLen = cs.length()) == 0)
-        {
-            return true;
-        }
-        for (int i = 0; i < strLen; i++)
-        {
-            if (!Character.isWhitespace(cs.charAt(i)))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
-     * <p>
-     * isNotBlank(null)      = false
-     * isNotBlank("")        = false
-     * isNotBlank(" ")       = false
-     * isNotBlank("bob")     = true
-     * isNotBlank("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is
-     * not empty and not null and not whitespace
-     */
-    private static boolean isNotBlank(final CharSequence cs)
-    {
-        return !isBlank(cs);
     }
 
 }

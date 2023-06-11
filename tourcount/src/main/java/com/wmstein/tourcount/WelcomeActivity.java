@@ -33,6 +33,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -68,7 +72,7 @@ import sheetrock.panda.changelog.ViewHelp;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-05-27
+ * last modification on 2023-06-09
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -187,7 +191,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // test for existence of directory /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
         infile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
         if (!infile.exists())
-            exportBasisDb(); // create directory and initial Basis DB
+            exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
 
     } // end of onCreate
 
@@ -196,6 +200,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    // check initial external storage permission
+    private boolean isStorageGranted()
+    {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -313,13 +323,21 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            // Trial with IntendService
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            Intent rintent = new Intent(this, RetrieveAddrService.class);
-            rintent.putExtra("urlString", urlString);
-            startService(rintent);
+            // Trial with WorkManager
+            WorkRequest retrieveAddrWorkRequest =
+                new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
+                    .setInputData(new Data.Builder()
+                            .putString("URL_STRING", urlString)
+                            .build()
+                                 )
+                    .build();
+
+            WorkManager
+                .getInstance(this)
+                .enqueue(retrieveAddrWorkRequest);
         }
     }
 
@@ -394,8 +412,24 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.exportCSVMenu)
         {
-            exportDb2CSV();
-            return true;
+            if (isStorageGranted())
+            {
+                exportDb2CSV();
+                return true;
+            }
+            else
+            {
+                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+                if (isStorageGranted())
+                {
+                    exportDb2CSV();
+                }
+                else
+                {
+                    showSnackbarRed(getString(R.string.perm_cancel));
+                }
+                return true;
+            }
         }
         else if (id == R.id.exportBasisMenu)
         {
@@ -443,6 +477,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             intent.putExtra("Height", height);
             intent.putExtra("Uncert", uncertainty);
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            return true;
         }
         else if (id == R.id.editMeta)
         {
@@ -575,6 +610,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // Stop location service with permissions check
         modePerm = 2;
         permissionCaptureFragment();
+
+        // Stop RetrieveAddrWorker
+        WorkManager.getInstance(this).cancelAllWork();
     }
 
     /*************************************************************************
@@ -635,17 +673,22 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
     }
 
-    /***********************************************************************/
+    /***********************************************************************
     // Exports DB to tourcount_yyyy-MM-dd_HHmmss.csv
     //   with purged data set
-    // MS Excel or compatble programs can import this csv file with Unicode UTF-8 filter
+    // Spreadsheets programs can import this csv file with
+    //   - Unicode UTF-8 filter,
+    //   - comma delimiter and
+    //   - "" for text recognition.
     // 15.05.2016, wm.stein
-    @SuppressLint({"SdCardPath", "LongLogTag"})
+    */
     private void exportDb2CSV()
     {
         // Store csv-file in /storage/emulated/0/Documents/TourCount/
         // outfile -> /storage/emulated/0/Documents/tourcount_yyyy-MM-dd_HHmmss.csv
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS); // deprecated in API 29, Todo
+        // handled for >= API 30 in res/values(-30)/bools.xml and res/menu/actions.xml
+        File path;
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         path = new File(path + "/TourCount");
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs();

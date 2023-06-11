@@ -39,11 +39,15 @@ import java.util.Objects;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2012-05-21,
- * last edit on 2023-05-27
+ * last edit on 2023-05-30
  */
 public class EditMetaLActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -458,13 +462,21 @@ public class EditMetaLActivity extends AppCompatActivity implements SharedPrefer
         // get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
-            // Trial with IntendService
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            Intent rintent = new Intent(this, RetrieveAddrService.class);
-            rintent.putExtra("urlString", urlString);
-            startService(rintent);
+            // Trial with WorkManager
+            WorkRequest retrieveAddrWorkRequest =
+                new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
+                    .setInputData(new Data.Builder()
+                            .putString("URL_STRING", urlString)
+                            .build()
+                                 )
+                    .build();
+
+            WorkManager
+                .getInstance(this)
+                .enqueue(retrieveAddrWorkRequest);
         }
     }
 

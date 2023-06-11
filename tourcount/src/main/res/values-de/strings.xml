@@ -155,9 +155,11 @@
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
     <string name="screen_orientation">Ausrichtung in Landscape-Modus anstelle von Portrait-Modus.</string>
     <string name="titel_screen_orientation">Landscape statt Portrait</string>
-    <string name="prefs_sound">Sound</string>
+    <string name="prefs_sound">Sound/Vibration</string>
     <string name="pref_button_sound">Button-Sound</string>
-    <string name="pref_button_sound_summary">Erzeuge einen Sound wenn z.B. ein Zähl-Button getippt wird.</string>
+    <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
+    <string name="pref_button_vib">Button-Vibration</string>
+    <string name="pref_button_vib_summary">Erzeuge eine Vibration wenn ein Zähl-Button getippt wird.</string>
     <string name="prefs_counting">Zählen</string>
     <string name="pref_awake">Lass Bildschirm an</string>
     <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
@@ -227,6 +229,7 @@
     <string name="perm_hint">Um Schmetterlinge mit Ortsangaben zu registrieren, sind in TourCount Standortberechtigungen erforderlich. </string>
     <string name="perm_hint1">Bitte erteile die fehlende Berechtigung für die App in den Smartphone-Einstellungen.</string>
     <string name="app_settings">App-Einstellungen</string>
+    <string name="perm_cancel">Export blockiert. Bitte erteile Berechtigung und versuche es erneut.</string>
     <string name="cancel">Abbrechen</string>
     
 </resources>

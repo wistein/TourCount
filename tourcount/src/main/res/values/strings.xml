@@ -155,9 +155,11 @@
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
     <string name="screen_orientation">Show screen in Landscape Mode instead of Portrait Mode.</string>
     <string name="titel_screen_orientation">Landscape instead of Portrait</string>
-    <string name="prefs_sound">Sound</string>
+    <string name="prefs_sound">Sound/Vibration</string>
     <string name="pref_button_sound">Button sounds</string>
-    <string name="pref_button_sound_summary">Make a sound upon pressing e.g. a count button.</string>
+    <string name="pref_button_sound_summary">Make a sound upon pressing a count button.</string>
+    <string name="pref_button_vib">Button vibration</string>
+    <string name="pref_button_vib_summary">Make a vibration upon pressing a count button.</string>
     <string name="prefs_counting">Counting</string>
     <string name="pref_awake">Keep screen on</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
@@ -223,10 +225,11 @@
     <string name="ok_button">OK</string>
     
     <!-- Permissions -->
-    <string name="perm_required">Permissions Required</string>
+    <string name="perm_required">Permissions required</string>
     <string name="app_settings">App Settings</string>
     <string name="perm_hint">In order to register butterflies with location data, access to location data is necessary.</string>
     <string name="perm_hint1">Please enable the missing permission for the app in the phone settings.</string>
+    <string name="perm_cancel">Export denied. Please, accept permission and try again.</string>
     <string name="cancel">Cancel</string>
     
 </resources>

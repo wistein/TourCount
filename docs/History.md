@@ -2,12 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
-#### Version 3.3.5 (2023-05-28)
+#### Version 3.3.5 (2023-06-10)
 - Gradle Plugin upgraded -> 8.0.2
 - Gradle upgraded -> 8.0
 - Some deprecated functions replaced
 - Permissions handling belittled
-- Export directory for .csv-files: Documents/TourCount/ (allows access by other apps)
+- .csv-files exported to Documents/TourCount/ (allows access by other apps)
+- Option to vibrate, short for counting-up and longer for counting-down
+- Counting sound deeper when counting down
 - Some more code improvements
 - Sourcecode partly translated to Kotlin
 - Minimal Android Version 7.1 (Nougat)
