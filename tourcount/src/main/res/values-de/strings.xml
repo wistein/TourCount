@@ -24,8 +24,8 @@
     <string name="viewHelpTitle">Hilfe</string>
     <string name="noCard">Kann nicht ins Documents-Directory schreiben!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
-    <string name="saveWin">Die Datenbank wurde ins TourCount files-Verzeichnis exportiert.</string>
-    <string name="savecsv">Die Datenbank wurde ins Documents-Verzeichnis exportiert.</string>
+    <string name="saveWin">Export nach Android/data/com.wmstein.tourcount/files.</string>
+    <string name="savecsv">Export nach Documents/TourCount.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
@@ -230,6 +230,7 @@
     <string name="perm_hint1">Bitte erteile die fehlende Berechtigung für die App in den Smartphone-Einstellungen.</string>
     <string name="app_settings">App-Einstellungen</string>
     <string name="perm_cancel">Export blockiert. Bitte erteile Berechtigung und versuche es erneut.</string>
+    <string name="perm_denied">Mindestens eine Berechtigung fehlt. Die Funktion ist entsprechend eingeschränkt.</string>
     <string name="cancel">Abbrechen</string>
     
 </resources>

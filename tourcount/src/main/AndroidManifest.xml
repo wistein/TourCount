@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Last edited on 2023-06-02 -->
+<!-- Activities are doubled for portrait and landscape mode as the incorporated Spinner functionality
+     crashes when the device gets rotated. So the rotation is done by the app according to the settings
+     option.
+     Advisable for smartphone is portrait mode, for tablet is landscape mode.
+     Last edited 2023-06-18
+-->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:largeHeap="true">
 
-    <!-- Permissions used for exporting files -->
+    <!-- Permission used for exporting files into public directory -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+        tools:ignore="ScopedStorage" android:maxSdkVersion="29"/>
+
+    <!-- Permission used for exporting files to any directory -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -21,8 +29,6 @@
     <!-- Permission needed for reverse geocoding -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-feature android:name="android.hardware.location.gps" />
 
     <!--VIBRATE permission-->
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -276,12 +282,6 @@
         <service android:name="com.wmstein.tourcount.LocationService"
             android:exported="false">
         </service>
-
-        <!--
-        <service android:name="com.wmstein.tourcount.RetrieveAddrService"
-            android:exported="false">
-        </service>
-        -->
 
         <!-- multiwindow crashes when rotating the screen, reason: spinner in CountingActivity
                 <uses-library

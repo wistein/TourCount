@@ -13,7 +13,7 @@ import java.io.Writer;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
+ * <a href="https://www.apache.org/licenses/LICENSE-2.0">...</a>
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,20 +25,25 @@ import java.io.Writer;
  * @author Glen Smith
 <p>
  * Reduced to needed functions with modifications for TourCount by wmstein
- * Last edited on 2020-04-17
+ * Last edited on 2023-06-17
  */
 class CSVWriter implements Closeable, Flushable
 {
     //The character used for escaping quotes.
     private static final char DEFAULT_ESCAPE_CHARACTER = '"';
+
     //The default separator to use if none is supplied to the constructor.
     private static final char DEFAULT_SEPARATOR = ',';
+
     //The default quote character to use if none is supplied to the constructor.
     private static final char DEFAULT_QUOTE_CHARACTER = '"';
+
     //The quote constant to use when you wish to suppress all quoting.
     private static final char NO_QUOTE_CHARACTER = '\u0000';
+
     //The escape constant to use when you wish to suppress all escaping.
     private static final char NO_ESCAPE_CHARACTER = '\u0000';
+
     //Default line terminator.
     private static final String DEFAULT_LINE_END = "\n";
 

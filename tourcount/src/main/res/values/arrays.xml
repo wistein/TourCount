@@ -256,6 +256,7 @@
 		<item comment="00338">Nemophora degeerella</item>
 		<item comment="01348">Yponomeuta padella</item>
 		<item comment="01350">Yponomeuta cagnagella</item>
+		<item comment="02321">Alabonia geoffrella</item>
 		<item comment="03907">Apoda limacodes</item>
 		<item comment="03922">Theresimima ampellophaga</item>
 		<item comment="03925">Rhagades pruni</item>
@@ -727,6 +728,7 @@
 		<item comment="00338">Yellow-barred long-horn</item>
 		<item comment="01348">Orchard ermine</item>
 		<item comment="01350">Spindle ermine</item>
+		<item comment="02321">-</item>
 		<item comment="03907">Festoon</item>
 		<item comment="03922">-</item>
 		<item comment="03925">Blackthorn aurora moth</item>
@@ -1198,6 +1200,7 @@
 		<item>00338</item>
 		<item>01348</item>
 		<item>01350</item>
+		<item>02321</item>
 		<item>03907</item>
 		<item>03922</item>
 		<item>03925</item>

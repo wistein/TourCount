@@ -1,10 +1,10 @@
-Version 3.3.5 (10.06.2023)
+Version 3.3.5 (19.06.2023)
 - Gradle Plugin Upgrade -> 8.0.2
 - Gradle Upgrade -> 8.0
-- Einige "deprecated functions" ersetzt
-- Berechtigungsfunktionen verkleinert
+- Missbilligte (deprecated) Funktionen ersetzt
 - Export von .csv-Files nach Documents/TourCount/ (erlaubt Bearbeitung mit anderen Apps)
 - Option für kurze Vibration beim Hoch- und etwas längere beim Runterzählen
 - Tieferer Sound beim Runterzählen
 - Weitere Code-Verbesserungen
+- Eine weitere Schmetterlingsart hinzugefügt
 - Android-Mindest-Version 7.1 (Nougat)

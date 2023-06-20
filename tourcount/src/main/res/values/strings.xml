@@ -24,8 +24,8 @@
     <string name="viewHelpTitle">Help</string>
     <string name="noCard">Cannot write to the Documents directory!</string>
     <string name="saveFail">Your database could not be exported!</string>
-    <string name="saveWin">Your database has been exported to TourCount files directory.</string>
-    <string name="savecsv">Your database has been exported to Documents directory.</string>
+    <string name="saveWin">Export to Android/data/com.wmstein.tourcount/files.</string>
+    <string name="savecsv">Export to Documents/TourCount.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
     <string name="exportMenu">Export current DB</string>
@@ -230,6 +230,7 @@
     <string name="perm_hint">In order to register butterflies with location data, access to location data is necessary.</string>
     <string name="perm_hint1">Please enable the missing permission for the app in the phone settings.</string>
     <string name="perm_cancel">Export denied. Please, accept permission and try again.</string>
+    <string name="perm_denied">At least one permission is denied. Functionality is limited.</string>
     <string name="cancel">Cancel</string>
     
 </resources>

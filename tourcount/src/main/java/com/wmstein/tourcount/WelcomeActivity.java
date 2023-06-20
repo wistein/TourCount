@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -72,7 +73,7 @@ import sheetrock.panda.changelog.ViewHelp;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-06-09
+ * last modification on 2023-06-18
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -205,7 +206,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // check initial external storage permission
     private boolean isStorageGranted()
     {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        {
+            return Environment.isExternalStorageManager(); // check permission MANAGE_EXTERNAL_STORAGE for Android 11+
+        }
+        else
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -428,8 +434,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 {
                     showSnackbarRed(getString(R.string.perm_cancel));
                 }
-                return true;
             }
+            return true;
         }
         else if (id == R.id.exportBasisMenu)
         {
@@ -674,24 +680,38 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     }
 
     /***********************************************************************
-    // Exports DB to tourcount_yyyy-MM-dd_HHmmss.csv
-    //   with purged data set
-    // Spreadsheets programs can import this csv file with
-    //   - Unicode UTF-8 filter,
-    //   - comma delimiter and
-    //   - "" for text recognition.
-    // 15.05.2016, wm.stein
-    */
+     // Exports DB to tourcount_yyyy-MM-dd_HHmmss.csv
+     //   with purged data set
+     // Spreadsheet programs can import this csv file with
+     //   - Unicode UTF-8 filter,
+     //   - comma delimiter and
+     //   - "" for text recognition.
+     // created on 2016-05-15, wm.stein
+     // last modified on 2023-06-18
+     */
     private void exportDb2CSV()
     {
-        // Store csv-file in /storage/emulated/0/Documents/TourCount/
-        // outfile -> /storage/emulated/0/Documents/tourcount_yyyy-MM-dd_HHmmss.csv
-        // handled for >= API 30 in res/values(-30)/bools.xml and res/menu/actions.xml
+        // outfile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.csv
+        //
+        // 1. Alternative for Android 11+
+        // outfile = new File(Environment.getExternalStorageDirectory() + "/Documents/TourCount" + "/tourcount_" + getcurDate() + ".csv");
+        //
+        // 2. Alternative for Android 10-
+        // outfile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/TourCount" + "/tourcount_" + getcurDate() + ".csv");
+
+        // use Public Directory (Documents) if possible (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
-        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-        path = new File(path + "/TourCount");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        {
+            path = Environment.getExternalStorageDirectory();
+            path = new File(path + "/Documents/TourCount");
+        } else
+        {
+            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            path = new File(path + "/TourCount");
+        }
         //noinspection ResultOfMethodCallIgnored
-        path.mkdirs();
+        path.mkdirs(); // Verify path
         outfile = new File(path, "/tourcount_" + getcurDate() + ".csv");
 
         Section section;

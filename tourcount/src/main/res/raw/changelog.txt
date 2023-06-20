@@ -87,15 +87,15 @@ _ Subtitle
 
 $ 3.3.5
   % Version 3.3.5
-  _ 2023-06-10
+  _ 2023-06-19
   * Gradle Plugin upgraded -> 8.0.2
   * Gradle upgraded -> 8.0
-  * Some deprecated functions replaced
-  * Permissions handling belittled
+  * Deprecated functions replaced
   * .csv-files exported to Documents/TourCount/ (allows access by other apps)
   * Option to vibrate, short for counting-up and longer for counting-down
   * Counting sound deeper when counting down
   * Some more code improvements
+  * One more species added
   * Minimal Android Version 7.1 (Nougat)
 
 $ 3.3.4
