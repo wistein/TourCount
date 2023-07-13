@@ -20,7 +20,7 @@ import java.util.Objects;
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2022-04-25
+ * last change on 2022-07-06
  */
 public class TourCountApplication extends Application
 {
@@ -74,7 +74,6 @@ public class TourCountApplication extends Application
         bMapDraw = null;
 
         String backgroundPref = prefs.getString("pref_back", "default");
-        boolean screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         assert wm != null;
@@ -95,22 +94,6 @@ public class TourCountApplication extends Application
                 bMap.eraseColor(Color.BLACK);
                 break;
             case "default":
-                if (screenOrientL)
-                {
-                    // landscape
-                    if ((double) width / height < 1.8)
-                    {
-                        // normal screen size
-                        bMap = decodeBitmap(R.drawable.tourcount_picture_ln, width, height);
-                    }
-                    else
-                    {
-                        // long screen
-                        bMap = decodeBitmap(R.drawable.tourcount_picture_ll, width, height);
-                    }
-                }
-                else
-                {
                     // portrait
                     if ((double) height / width < 1.8)
                     {
@@ -122,7 +105,6 @@ public class TourCountApplication extends Application
                         // long screen
                         bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height);
                     }
-                }
                 break;
         }
 
@@ -186,6 +168,7 @@ public class TourCountApplication extends Application
     }
 
     // Get resource ID from resource name
+    @SuppressLint("DiscouragedApi")
     public int getResId(String rName) // non-static method
     {
         try

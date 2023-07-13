@@ -2,6 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
+#### Version 3.4.0 (2023-07-13)
+- Landscape mode removed (as hardly used, even on tablet)
+- Some more modules translated from Java to Kotlin
+- Code adaptations for Kotlin
+- Some code deprecations resolved
+- Code improvements
+- Docs updated
+
 #### Version 3.3.5 (2023-06-19)
 - Gradle Plugin upgraded -> 8.0.2
 - Gradle upgraded -> 8.0

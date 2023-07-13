@@ -22,8 +22,8 @@ import androidx.core.app.ActivityCompat
  * licensed under the MIT License.
  *
  * Adopted for TourCount by wmstein since 2018-07-26,
- * converted to Kotlin on 2023-05-26,
- * last edited on 2023-05-30
+ * last edited on 2023-05-30,
+ * converted to Kotlin on 2023-05-26
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -38,7 +38,7 @@ open class LocationService : Service, LocationListener {
     private var locationManager: LocationManager? = null
     private var exactLocation = false
 
-    // Default constructor demanded for service declaration in AndroidManifest.xml
+    // Default constructor is demanded for service declaration in AndroidManifest.xml
     constructor()
 
     constructor(mContext: Context?) {

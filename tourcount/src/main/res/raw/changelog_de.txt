@@ -84,7 +84,17 @@ _ Subtitle
     ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
 	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
   _ 
-  
+
+$ 3.4.0
+  % Version 3.4.0
+  _ 13.07.2023
+  * Option Landscape-Modus entfernt, da der Portrait-Modus selbst auf Tablets passender ist
+  * Weitere Module von Java nach Kotlin übersetzt
+  * Code-Anpassungen für Kotlin
+  * Einge missbilligte (deprecated) Funktionen ersetzt
+  * Code-Verbesserungen
+  * Docs überarbeitet
+
 $ 3.3.5
   % Version 3.3.5
   _ 19.06.2023

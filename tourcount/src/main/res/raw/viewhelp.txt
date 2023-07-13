@@ -105,7 +105,8 @@ $ 7
   !
   ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
   _ 
-  ! In "Settings" you may adapt the look an feel in some aspects to your wishes, e.g. sounds, sorting order or left-/right-hand counting. Here you should enter a valid email address, if you want a reliable Reverse Geocoding function.
+  ! In "Settings" you may adapt the look an feel in some aspects to your wishes, e.g. sounds, sorting order or left-/right-hand counting.
+  ! Here you should enter a valid email address, if you want a reliable Reverse Geocoding function.
   _ 
   ! Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location data into the individual's record.
   ! For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nominatim from OpenStreetMap is used.
@@ -134,10 +135,12 @@ $ 7
   ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine and edit the .db-files.
   _
   ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program
+  _
   ! - as a comma-separated text file with
   ! - file origin “Unicode UTF-8”,
   ! - quotations marks for textfield recognition and
-  ! - all data as text
+  ! - all columns in text format
+  _
   ! for further processing.
   _
   ! Under "App Info" you find the email address of the author, the history of the app and the license notes.

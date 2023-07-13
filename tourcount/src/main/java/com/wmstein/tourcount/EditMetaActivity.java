@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,6 +18,14 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
@@ -36,25 +43,17 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit on 2023-05-30
+ * last edit in Java on 2023-07-09
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
-    SharedPreferences prefs;
+    private final SharedPreferences prefs = TourCountApplication.getPrefs();
     private boolean brightPref;    // option for full bright screen
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
@@ -94,7 +93,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         super.onCreate(savedInstanceState);
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         brightPref = prefs.getBoolean("pref_bright", true);
 
@@ -125,7 +123,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     {
         super.onResume();
 
-        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service

@@ -26,7 +26,8 @@
 $ 10
   % 1. Einführung
   !
-  ! Diese Zähler-App soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch, getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.
+  ! Diese Zähler-App soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch,
+  ! getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.
   ! Sie ermöglicht dies ohne Feldbuch und Bleistift bei jeglichen Aufenthalten in der Natur, und mit dem Smartphone ist auch eine Kamera für Belegfotos dabei.
   _ 
   ! Die integrierte Datenbank kann individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
@@ -34,21 +35,32 @@ $ 10
   ! oder für weitere Bearbeitung auf den PC übertragen werden.
   _ 
   ! Die App ist Open Source, (veröffentlicht unter <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), 
-  ! enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind (Speicher- und GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung).
+  ! enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind
+  ! (Speicher- und GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung).
 
 $ 9
   % 2. Einrichtung
   !
   ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden. 
   _ 
-  ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite). Hier ggf. weitere Arten per (+)-Button aus der integrierten Liste europäischer Arten hinzufügen. 
+  ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite).
+  ! Hier ggf. weitere Arten per (+)-Button aus der integrierten Liste europäischer Arten hinzufügen.
   _  
-  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>) heruntergeladen, in das App-Datenverzeichnis Android/data/com.wmstein.tourcount/files kopiert und von dort importiert und dann angepasst werden. Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt. Achtung: Bei Deinstallation von TransektCount werden diese Daten gelöscht. Daher empfiehlt es sich, diese Dateien an anderer Stelle zu sichern.
+  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB
+  ! (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>)
+  ! heruntergeladen, in das App-Datenverzeichnis Android/data/com.wmstein.tourcount/files kopiert und von dort importiert und dann angepasst werden.
+  ! Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt. Achtung: Bei Deinstallation von TransektCount werden diese Daten gelöscht.
+  ! Daher empfiehlt es sich, diese Dateien an anderer Stelle zu sichern.
   _ 
-  ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „ERFASSUNG VORBEREITEN“ eingegeben werden. Die ortsbezogenen Meta-Daten werden bei Internetverbindung und Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt. Die editierbaren Metadaten können später jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen. 
+  ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „ERFASSUNG VORBEREITEN“ eingegeben werden.
+  ! Die ortsbezogenen Meta-Daten werden bei Internetverbindung und Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt.
+  ! Die editierbaren Metadaten können später jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen.
   _ 
   ! Dann unter "ZÄHLEN" die Artenliste editieren. Aufruf mittels Bleistift-Button in der Kopfzeile der Zählseite.
-  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag per Scroll-Down-Auswahl. Am Ende der Scroll-Down-Liste kann eine nicht vorhandene Art (NN) hinzugefügt werden, die anschließend editiert wird (Name, 5-stelliger Code mit führenden Nullen und ggf. deutscher Name, siehe "Liste Tagfalter Europas.pdf" oder "Liste Nachtfalter Europas.pdf"<a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
+  ! Die Artenliste erhält per (+)-Button für jede erwartete Art einen Eintrag per Scroll-Down-Auswahl.
+  ! Am Ende der Scroll-Down-Liste kann eine nicht vorhandene Art (NN) hinzugefügt werden, die anschließend editiert wird
+  ! (Name, 5-stelliger Code mit führenden Nullen und ggf. deutscher Name, siehe "Liste Tagfalter Europas.pdf" oder "Liste Nachtfalter Europas.pdf"
+  ! <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
   _ 
   !                   (Ausschnitt der Artenliste)
   ! ---------------------------------------------
@@ -62,15 +74,18 @@ $ 9
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
+  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum
+  ! <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
   _
   ! Das angehängte *-Symbol kennzeichnet eine Gruppe schwer unterscheidbarer Arten. Zwecks Sortierfolge sollte hierzu der größere der Gruppenarten-Codes gewählt werden. 
   ! Mit "Speichern" wird die Liste in die Datenbank übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
   ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als Basis-Datenbank exportiert werden.
-  ! Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite. Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db) im internen Daten-Verzeichnis der App (Android/data/com.wmstein.tourcount/files) abgelegt.
+  ! Das geht mit Hilfe des "Export als Basis-DB"-Befehls im Menü der Startseite. Hierdurch wird eine Kopie der leeren Datenbank als "Basis-Datenbank" (tourcount0.db)
+  ! im internen Daten-Verzeichnis der App (Android/data/com.wmstein.tourcount/files) abgelegt.
   _ 
-  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden. Beim Speichern als Basis-DB werden alle begehungsspezifischen Daten ignoriert). 
+  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden.
+  ! Beim Speichern als Basis-DB werden alle begehungsspezifischen Daten ignoriert).
 
 $ 8
   % 3. Benutzung
@@ -90,7 +105,8 @@ $ 8
   ! Der Bleistift-Button oberhalb des Zählerfeldes ruft die Art-editieren-Seite auf. Hier kann eine Art-spezifische Bemerkung hinzugefügt werden, die neben dem Button angezeigt wird. 
   _ 
   ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil oben links. Um geänderten Inhalt sicher zu übernehmen, sollte der Speichern-Button benutzt werden. 
-  ! Bevor TourCount nach einer Tour beendet wird, sollten immer die Metadaten ergänzt und über das Menü der Startseite mittels Export die aktuelle Zählung gesichert werden (-> tourcount_yyyy-mm-dd_hhmmss.db). 
+  ! Bevor TourCount nach einer Tour beendet wird, sollten immer die Metadaten ergänzt und über das Menü der Startseite mittels Export die aktuelle Zählung gesichert werden
+  ! (-> tourcount_yyyy-mm-dd_hhmmss.db).
   _ 
   ! Bei großen Datenmengen kann sich die Reaktion der App, insbesondere beim Aufruf der Ergebnisseite etwas verlangsamen, da hier im Hintergrund einige Berechnungen laufen.
   ! Das wird durch einen kurzen Hinweis „Liste wird berechnet...“ angezeigt.
@@ -137,10 +153,12 @@ $ 7
   _
   ! Auch die .csv-Dateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in einer Tabellenkalkulation importiert werden.
   ! Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze auf
+  _
   ! - Komma als Trennzeichen,
   ! - Dateiursprung im Format "Unicode UTF-8",
   ! - Anführungszeichen zur Texterkennung und
-  ! - alle Daten als Text
+  ! - alle Spalten in Textformat
+  _
   ! zu achten.
   _
   ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweisen sind unter "App-Info" abrufbar.

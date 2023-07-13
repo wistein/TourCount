@@ -30,7 +30,6 @@ The app demands for
 - minimum Android version 7.1 (Nougat).
 
 The smartphone screen should have a minimum resolution of 1920 x 1024 pixels.  
-The app is usable with Android Version 5 (Lollipop) or newer.
 
 ### General
 #### Documentation

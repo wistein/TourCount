@@ -36,14 +36,6 @@
             android:key="pref_left_hand"
             android:summary="@string/pref_left_hand_summ"
             android:title="@string/pref_left_hand"/>
-        
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:icon="@drawable/ic_rot_portr_landsc_black_48dp"
-            android:key="screen_Orientation"
-            android:summary="@string/screen_orientation"
-            android:title="@string/titel_screen_orientation"
-            />
     </PreferenceCategory>
 
     <PreferenceCategory

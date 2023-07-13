@@ -42,7 +42,6 @@ import androidx.work.WorkRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
-import com.wmstein.filechooser.AdvFileChooserL;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
@@ -73,11 +72,12 @@ import sheetrock.panda.changelog.ViewHelp;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-06-18
+ * last modification on 2023-07-12
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountWelcomeAct";
+
     @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
@@ -113,7 +113,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // preferences
     private SharedPreferences prefs;
     private String sortPref;
-    private boolean screenOrientL; // option for screen orientation
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
@@ -132,18 +131,10 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         prefs = getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setContentView(R.layout.activity_welcome);
 
@@ -222,16 +213,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         prefs = getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
 
-        if (screenOrientL)
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ScrollView baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(null);
@@ -401,14 +384,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            if (screenOrientL)
-            {
-                startActivity(new Intent(this, SettingsLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
-            else
-            {
-                startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
+            startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
         else if (id == R.id.exportMenu)
@@ -470,14 +446,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         else if (id == R.id.viewCounts)
         {
             Intent intent;
-            if (screenOrientL)
-            {
-                intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
-            }
-            else
-            {
-                intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-            }
+            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             intent.putExtra("Latitude", latitude);
             intent.putExtra("Longitude", longitude);
             intent.putExtra("Height", height);
@@ -487,14 +456,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.editMeta)
         {
-            if (screenOrientL)
-            {
-                startActivity(new Intent(this, EditMetaLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
-            else
-            {
-                startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
+            startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
         else if (id == R.id.viewSpecies)
@@ -502,16 +464,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
             // Trick: Pause for 100 msec to show toast
-            if (screenOrientL)
-            {
-                mHandler.postDelayed(() ->
-                    startActivity(new Intent(getApplicationContext(), ListSpeciesLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
-            }
-            else
-            {
-                mHandler.postDelayed(() ->
-                    startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
-            }
+            mHandler.postDelayed(() ->
+            startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -522,14 +476,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         Intent intent;
 
-        if (screenOrientL)
-        {
-            intent = new Intent(WelcomeActivity.this, CountingLActivity.class);
-        }
-        else
-        {
-            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-        }
+        intent = new Intent(WelcomeActivity.this, CountingActivity.class);
         intent.putExtra("Latitude", latitude);
         intent.putExtra("Longitude", longitude);
         intent.putExtra("Height", height);
@@ -540,14 +487,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Handle button click "Prepare Inspection" here 
     public void editMeta(View view)
     {
-        if (screenOrientL)
-        {
-            startActivity(new Intent(this, EditMetaLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        }
-        else
-        {
-            startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        }
+        startActivity(new Intent(this, EditMetaActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     // Handle button click "Show Results" here 
@@ -556,16 +496,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
 
         // Trick: Pause for 100 msec to show toast
-        if (screenOrientL)
-        {
-            mHandler.postDelayed(() ->
-                startActivity(new Intent(getApplicationContext(), ListSpeciesLActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
-        }
-        else
-        {
-            mHandler.postDelayed(() ->
-                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
-        }
+        mHandler.postDelayed(() ->
+        startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
@@ -574,7 +506,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");
-        screenOrientL = prefs.getBoolean("screen_Orientation", false);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
         permLocGiven = prefs.getBoolean("permLoc_Given", false);
@@ -1418,14 +1349,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         String filterFileName = "tourcount";
 
         Intent intent;
-        if (screenOrientL)
-        {
-            intent = new Intent(this, AdvFileChooserL.class);
-        }
-        else
-        {
-            intent = new Intent(this, AdvFileChooser.class);
-        }
+        intent = new Intent(this, AdvFileChooser.class);
         intent.putStringArrayListExtra("filterFileExtension", extensions);
         intent.putExtra("filterFileName", filterFileName);
         myActivityResultLauncher.launch(intent);

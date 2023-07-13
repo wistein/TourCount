@@ -2,7 +2,8 @@
 
 <!--
   ~ used by CountingWidget_head2.java
-  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  ~ shows line (below spinner) with Edit button and species notes on Counting Screen
+  ~ Copyright (c) 2016-2023. Wilhelm Stein, Bonn, Germany.
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

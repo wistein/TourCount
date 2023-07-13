@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.os.VibratorManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -72,13 +73,11 @@ import androidx.work.WorkRequest;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-06-10
+ * last modification in Java on 2023-07-11
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "TourCountCountAct";
-
-    private SharedPreferences prefs;
 
     private int iid = 1;
     private LinearLayout count_area;
@@ -107,6 +106,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     private PowerManager.WakeLock mProximityWakeLock;
 
     // preferences
+    private SharedPreferences prefs;
     private boolean awakePref;
     private boolean brightPref;
     private String sortPref;
@@ -142,7 +142,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        getPrefs();
+        setPrefs();
 
         // if left-handed counting page
         if (lhandPref)
@@ -201,7 +201,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     } // End of onCreate
 
     // Load preferences
-    private void getPrefs()
+    private void setPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
         brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
@@ -225,7 +225,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        getPrefs();
+        setPrefs();
 
         // get parameters from WelcomeActivity
         Bundle extras = getIntent().getExtras();
@@ -348,25 +348,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     } // end of onResume
-
-    private void showSnackbarRed(String str)
-    {
-        View view;
-        if (lhandPref) // if left-handed counting page
-        {
-            view = findViewById(R.id.countingScreenLH);
-        }
-        else
-        {
-            view = findViewById(R.id.countingScreen);
-        }
-        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
-        sB.setActionTextColor(Color.RED);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        sB.show();
-    }
 
     // Part of permission handling
     @Override
@@ -586,7 +567,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -637,7 +620,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -669,7 +654,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f1i;
         if (spec_count > 0)
         {
@@ -708,7 +695,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f1i;
         if (spec_count > 0)
         {
@@ -770,7 +759,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -821,7 +812,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -853,7 +846,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f2i;
         if (spec_count > 0)
         {
@@ -891,7 +886,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f2i;
         if (spec_count > 0)
         {
@@ -950,7 +947,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1001,7 +1000,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1033,7 +1034,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f3i;
         if (spec_count > 0)
         {
@@ -1071,7 +1074,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_f3i;
         if (spec_count > 0)
         {
@@ -1130,7 +1135,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1181,7 +1188,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1213,7 +1222,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_pi;
         if (spec_count > 0)
         {
@@ -1251,7 +1262,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_pi;
         if (spec_count > 0)
         {
@@ -1310,7 +1323,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1361,7 +1376,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1393,7 +1410,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_li;
         if (spec_count > 0)
         {
@@ -1431,7 +1450,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_li;
         if (spec_count > 0)
         {
@@ -1490,7 +1511,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1541,7 +1564,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
 
         String name, datestamp, timestamp;
-        name = Objects.requireNonNull(widget).count.name;
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        name = widget.count.name;
         datestamp = getcurDate();
         timestamp = getcurTime();
 
@@ -1573,7 +1598,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_ei;
         if (spec_count > 0)
         {
@@ -1611,7 +1638,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
-        spec_name = Objects.requireNonNull(widget).count.name; // set spec_name for toast in deleteIndividual
+        assert Objects.requireNonNull(widget).count != null;
+        assert widget.count != null;
+        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         spec_count = widget.count.count_ei;
         if (spec_count > 0)
         {
@@ -1646,6 +1675,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         for (CountingWidget widget : countingWidgets)
         {
+            assert widget.count != null;
             if (widget.count.id == id)
             {
                 return widget;
@@ -1662,6 +1692,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     {
         for (CountingWidgetLH widget : countingWidgetsLH)
         {
+            assert widget.count != null;
             if (widget.count.id == id)
             {
                 return widget;
@@ -1772,11 +1803,24 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             try
             {
-                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                if (Build.VERSION.SDK_INT >= 26) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else {
-                    vibrator.vibrate(100);
+                Vibrator vibrator;
+                VibratorManager vibratorManager;
+                if (Build.VERSION.SDK_INT >= 31)
+                {
+                     vibratorManager = (VibratorManager) getSystemService(VIBRATOR_MANAGER_SERVICE);
+                     vibratorManager.getDefaultVibrator();
+                }
+                else
+                {
+                    vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    if (Build.VERSION.SDK_INT >= 26)
+                    {
+                        vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                    }
+                    else
+                    {
+                        vibrator.vibrate(100);
+                    }
                 }
             } catch (Exception e)
             {
@@ -1792,11 +1836,24 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             try
             {
-                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                if (Build.VERSION.SDK_INT >= 26) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(450, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else {
-                    vibrator.vibrate(450);
+                Vibrator vibrator;
+                VibratorManager vibratorManager;
+                if (Build.VERSION.SDK_INT >= 31)
+                {
+                    vibratorManager = (VibratorManager) getSystemService(VIBRATOR_MANAGER_SERVICE);
+                    vibratorManager.getDefaultVibrator();
+                }
+                else
+                {
+                    vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    if (Build.VERSION.SDK_INT >= 26)
+                    {
+                        vibrator.vibrate(VibrationEffect.createOneShot(450, VibrationEffect.DEFAULT_AMPLITUDE));
+                    }
+                    else
+                    {
+                        vibrator.vibrate(450);
+                    }
                 }
             } catch (Exception e)
             {
@@ -1915,7 +1972,27 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        getPrefs();
+//        prefs.registerOnSharedPreferenceChangeListener(this);
+        setPrefs();
+    }
+
+    private void showSnackbarRed(String str)
+    {
+        View view;
+        if (lhandPref) // if left-handed counting page
+        {
+            view = findViewById(R.id.countingScreenLH);
+        }
+        else
+        {
+            view = findViewById(R.id.countingScreen);
+        }
+        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
+        sB.setActionTextColor(Color.RED);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        sB.show();
     }
 
     /**
