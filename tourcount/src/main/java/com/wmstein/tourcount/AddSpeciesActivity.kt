@@ -28,7 +28,7 @@ import com.wmstein.tourcount.widgets.SpeciesAddWidget
  * by 3 interdependent and correlated arrays in arrays.xml
  *
  * Created for TourCount by wmstein on 2019-04-12,
- * last edited in Java on 2023-05-13
+ * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06
  * last edited on 2023-07-13
  */
@@ -49,7 +49,7 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
     private var codesCompleteArrayList: ArrayList<String?>? = null
     private var specName: String? = null
     private var specCode: String? = null
-    private var specNameG : String? = null // selected species
+    private var specNameG: String? = null // selected species
     private var bMap: Bitmap? = null
     private var bg: BitmapDrawable? = null
 
@@ -112,7 +112,7 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         countDataSource!!.open()
         supportActionBar!!.setTitle(R.string.addTitle)
 
-        // get the list of only new species not already contained in the species counting list
+        // list only new species not already contained in the species counting list
 
         // code list of contained species
         val specCodesContainedList = ArrayList<String?>()

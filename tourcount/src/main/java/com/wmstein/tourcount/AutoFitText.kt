@@ -136,7 +136,6 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
      * []"">&quot;#refitText&quot;(String) from this method! Doing so would result in an endless loop that
      * would ultimately result in a stack overflow and termination of the application
      *
-     *
      * So for the time being this method does absolutely nothing. If you want to notify the view of
      * a changed text call [.setText]
      */
@@ -186,4 +185,5 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
          */
         const val mThreshold = 0.5f // original was 0.5f
     }
+
 }

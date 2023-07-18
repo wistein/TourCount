@@ -46,7 +46,7 @@ import java.util.Objects;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2023-07-09
+ * last edit in Java on 2023-07-13
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -410,6 +410,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
+        brightPref = prefs.getBoolean("pref_bright", true);
         bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
         editHead_screen.setBackground(null);
         bg = new BitmapDrawable(editHead_screen.getResources(), bMap);

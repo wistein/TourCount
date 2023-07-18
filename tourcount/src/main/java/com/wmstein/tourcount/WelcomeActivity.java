@@ -1,6 +1,5 @@
 package com.wmstein.tourcount;
 
-import static com.wmstein.tourcount.TourCountApplication.getPrefs;
 import static java.lang.Math.sqrt;
 
 import android.Manifest;
@@ -72,7 +71,7 @@ import sheetrock.panda.changelog.ViewHelp;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last modification on 2023-07-12
+ * last edited on 2023-07-13
  */
 public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -128,7 +127,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onCreate(savedInstanceState);
 
         tourCount = (TourCountApplication) getApplication();
-        prefs = getPrefs();
+        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
@@ -211,7 +210,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     {
         super.onResume();
 
-        prefs = getPrefs();
+        prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

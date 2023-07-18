@@ -32,6 +32,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
@@ -54,14 +62,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-
 /****************************************************************************************
  * CountingActivity is the central activity of TourCount in portrait mode. 
  * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
@@ -73,7 +73,7 @@ import androidx.work.WorkRequest;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification in Java on 2023-07-11
+ * last modification in Java on 2023-07-13
  */
 public class CountingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -149,10 +149,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             setContentView(R.layout.activity_counting_lh);
             LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
-            if (counting_screen != null)
-            {
-                counting_screen.setBackground(tourCount.getBackground());
-            }
+            counting_screen.setBackground(tourCount.getBackground());
             count_area = findViewById(R.id.countCountiLayoutLH);
             notes_area1 = findViewById(R.id.sectionNotesLayoutLH);
             head_area2 = findViewById(R.id.countHead2LayoutLH);
@@ -161,10 +158,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             setContentView(R.layout.activity_counting);
             LinearLayout counting_screen = findViewById(R.id.countingScreen);
-            if (counting_screen != null)
-            {
-                counting_screen.setBackground(tourCount.getBackground());
-            }
+            counting_screen.setBackground(tourCount.getBackground());
             count_area = findViewById(R.id.countCountiLayout);
             notes_area1 = findViewById(R.id.sectionNotesLayout);
             head_area2 = findViewById(R.id.countHead2Layout);
@@ -197,10 +191,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         {
             // do nothing
         }
-
     } // End of onCreate
 
-    // Load preferences
+    // Load preferences at start, and also when a change is detected
     private void setPrefs()
     {
         awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
@@ -460,7 +453,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    //Toast.makeText(CountingActivity.this, "1. " + count.name, Toast.LENGTH_SHORT).show();
+                    if (MyDebug.LOG)
+                        Toast.makeText(CountingActivity.this, "1. " + count.name, Toast.LENGTH_SHORT).show();
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
@@ -534,11 +528,11 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
     }
 
-    // Triggered by count-up-button
-    // starts EditIndividualActivity
+    // The functions below are triggered by the count buttons
+    // and start EditIndividualActivity
     public void countUpf1i(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
@@ -594,7 +588,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpLHf1i(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         int iAtt = 1;
@@ -649,7 +643,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownf1i(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -690,7 +684,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownLHf1i(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -730,7 +724,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // starts EditIndividualActivity
     public void countUpf2i(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
@@ -786,7 +780,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpLHf2i(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         int iAtt = 2;
@@ -841,7 +835,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownf2i(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -881,7 +875,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownLHf2i(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -918,7 +912,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpf3i(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
@@ -974,7 +968,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpLHf3i(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         int iAtt = 3;
@@ -1029,7 +1023,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownf3i(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1069,7 +1063,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownLHf3i(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1106,7 +1100,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUppi(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
@@ -1162,7 +1156,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpLHpi(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         int iAtt = 4;
@@ -1217,7 +1211,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownpi(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1257,7 +1251,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownLHpi(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1294,7 +1288,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpli(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
@@ -1350,7 +1344,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpLHli(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         int iAtt = 5;
@@ -1405,7 +1399,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownli(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1445,7 +1439,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownLHli(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1482,7 +1476,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpei(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
@@ -1538,7 +1532,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void countUpLHei(View view)
     {
-        buttonSound();
+        soundButtonSound();
         buttonVib();
 
         int iAtt = 6;
@@ -1593,7 +1587,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownei(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1633,7 +1627,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     // deletes last count
     public void countDownLHei(View view)
     {
-        buttonSoundMinus();
+        soundButtonSoundMinus();
         buttonVibLong();
 
         int count_id = Integer.parseInt(view.getTag().toString());
@@ -1747,7 +1741,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         startActivity(intent);
     }
 
-    private void buttonSound()
+    private void soundButtonSound()
     {
         if (buttonSoundPref)
         {
@@ -1772,7 +1766,7 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
         }
     }
 
-    private void buttonSoundMinus()
+    private void soundButtonSoundMinus()
     {
         if (buttonSoundPref)
         {
@@ -1972,7 +1966,6 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-//        prefs.registerOnSharedPreferenceChangeListener(this);
         setPrefs();
     }
 
@@ -1996,6 +1989,9 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
     }
 
     /**
+     * Following functions are taken from the Apache commons-lang3-3.4 library
+     * licensed under Apache License Version 2.0, January 2004
+     * <p>
      * Checks if a CharSequence is whitespace, empty ("") or null
      * <p>
      * isBlank(null)      = true
