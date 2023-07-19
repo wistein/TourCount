@@ -85,9 +85,9 @@ _ Subtitle
 	! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission. Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
-$ 3.4.0
+$ 3.4.1
   % Version 3.4.0
-  _ 2023-07-13
+  _ 2023-07-18
   * Landscape mode removed (as hardly used, even on tablet)
   * Some more modules translated from Java to Kotlin
   * Code adaptations for Kotlin

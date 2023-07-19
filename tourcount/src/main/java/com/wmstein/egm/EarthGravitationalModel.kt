@@ -37,7 +37,6 @@ import kotlin.math.sqrt
  * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
  * Earth Gravitational Model.
  *
- *
  * Aknowledgement
  * This class is an adaption of Fortran code
  * http://earth-info.nga.mil/GandG/wgs84/gravitymod/wgs84_180/clenqt.for
@@ -51,45 +50,31 @@ import kotlin.math.sqrt
  * @version $Id$
  * @since 2.3
  *
- *
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
- * last edit in Java on 2020-04-17
- * converted to Kotlin on 2023-07-05
+ * last edit in Java on 2020-04-17,
+ * converted to Kotlin on 2023-07-05,
+ * last edit on 2023-07-19
  */
+
+// Maximum degree and order attained.
 class EarthGravitationalModel @JvmOverloads constructor(
-    /**
-     * Maximum degree and order attained.
-     */
-    private val nmax: Int = DEFAULT_ORDER
-) : VerticalTransform() {
-    /**
-     * WGS 84 semi-major axis.
-     */
+    private val nmax: Int = DEFAULT_ORDER) : VerticalTransform() {
+    // WGS 84 semi-major axis.
     private val semiMajor = 6378137.0
 
-    /**
-     * The first Eccentricity Squared (e²) for WGS 84 ellipsoid.
-     */
+    // The first Eccentricity Squared (e²) for WGS 84 ellipsoid.
     private val esq = 0.00669437999013
 
-    /**
-     * Even zonal coefficient.
-     */
+    // Even zonal coefficient.
     private val c2 = 108262.9989050e-8
 
-    /**
-     * WGS 84 Earth's Gravitational Constant w/ atmosphere.
-     */
+    // WGS 84 Earth's Gravitational Constant w/ atmosphere.
     private val rkm = 3.986004418e+14
 
-    /**
-     * Theoretical (Normal) Gravity at the Equator (on the Ellipsoid).
-     */
+    // Theoretical (Normal) Gravity at the Equator (on the Ellipsoid).
     private val grava = 9.7803267714
 
-    /**
-     * Theoretical (Normal) Gravity Formula Constant.
-     */
+    // Theoretical (Normal) Gravity Formula Constant.
     private val star = 0.001931851386
 
     /**
@@ -115,13 +100,8 @@ class EarthGravitationalModel @JvmOverloads constructor(
     private val sr: DoubleArray
     private val s11: DoubleArray
     private val s12: DoubleArray
-    /**
-     * Creates a model with the specified maximum degree and order.
-     */
-    //private final Context context;
-    /**
-     * Creates a model with the default maximum degree and order.
-     */
+
+    // Creates a model with the default maximum degree and order.
     init {
         /*
          * WGS84 model values.
@@ -151,7 +131,6 @@ class EarthGravitationalModel @JvmOverloads constructor(
     /**
      * Loads the coefficients from the specified ASCII file and initialize the internal
      * clenshaw arrays.
-     *
      *
      * Note: ASCII may looks like an unefficient format for binary distribution.
      * A binary file with coefficient values read by java.io.DataInput readDouble would
@@ -258,20 +237,20 @@ class EarthGravitationalModel @JvmOverloads constructor(
          * Latitude is used only in trigonometric functions as well.
          */
         val phi = Math.toRadians(latitude)
-        val sin_phi = sin(phi)
-        val sin2_phi = sin_phi * sin_phi
-        val rni = sqrt(1.0 - esq * sin2_phi)
+        val sinPhi = sin(phi)
+        val sin2Phi = sinPhi * sinPhi
+        val rni = sqrt(1.0 - esq * sin2Phi)
         val rn = semiMajor / rni
         val t22 = (rn + height) * cos(phi)
         val x2y2 = t22 * t22
-        val z1 = (rn * (1 - esq) + height) * sin_phi
+        val z1 = (rn * (1 - esq) + height) * sinPhi
         val th = Math.PI / 2.0 - atan(z1 / sqrt(x2y2))
         val y = sin(th)
         val t = cos(th)
         val f1 = semiMajor / sqrt(x2y2 + z1 * z1)
         val f2 = f1 * f1
         val rlam = Math.toRadians(longitude)
-        val gravn: Double = grava * (1.0 + star * sin2_phi) / rni
+        val gravn: Double = grava * (1.0 + star * sin2Phi) / rni
         sr[0] = 0.0
         sr[1] = sin(rlam)
         cr[0] = 1.0
@@ -300,24 +279,19 @@ class EarthGravitationalModel @JvmOverloads constructor(
     }
 
     companion object {
-        /**
-         * Pre-computed values of some square roots.
-         */
-        private const val SQRT_03 = 1.7320508075688772935274463415059
-        private const val SQRT_05 = 2.2360679774997896964091736687313
-        private const val SQRT_13 = 3.6055512754639892931192212674705
-        private const val SQRT_17 = 4.1231056256176605498214098559741
-        private const val SQRT_21 = 4.5825756949558400065880471937280
+        // Pre-computed values of some square roots.
+        private const val SQRT_03 = 1.7320508075688772
+        private const val SQRT_05 = 2.23606797749979
+        private const val SQRT_13 = 3.605551275463989
+        private const val SQRT_17 = 4.123105625617661
+        private const val SQRT_21 = 4.58257569495584
 
-        /**
-         * The default value for #nmax.
-         */
+        // The default value for #nmax.
         private const val DEFAULT_ORDER = 180
 
         /**
          * Computes the index as it would be returned by the locating array iv
          * (from the Fortran code).
-         *
          *
          * Tip (used in some place in this class):
          * locatingArray(n+1) == locatingArray(n) + n + 1.
