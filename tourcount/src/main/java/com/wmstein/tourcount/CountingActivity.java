@@ -2005,8 +2005,8 @@ public class CountingActivity extends AppCompatActivity implements SharedPrefere
      */
     private static boolean isBlank(final CharSequence cs)
     {
-        int strLen;
-        if (cs == null || (strLen = cs.length()) == 0)
+        int strLen = cs.length();
+        if (cs == null || strLen == 0)
         {
             return true;
         }

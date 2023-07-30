@@ -49,8 +49,7 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
     private var brightPref = false
-    private var metaPref // option for reverse geocoding
-            = false
+    private var metaPref = false // option for reverse geocoding
     private var emailString: String? = "" // mail address for OSM query
 
     // Location info handling
@@ -130,7 +129,7 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
 
     private fun saveData() {
         // don't crash if the user hasn't filled things in...
-        // Snackbar doesn't appear so Toast 
+        // Toast here, as snackbar doesn't show up
         Toast.makeText(
             this@CountOptionsActivity,
             getString(R.string.sectSaving) + " " + count!!.name + "!",

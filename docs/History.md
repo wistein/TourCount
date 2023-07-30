@@ -2,7 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
-#### Version 3.4.1 (2023-07-18)
+#### Version 3.4.2 (2023-07-30)
+- More missing species added
+- Docs updated
+
+#### Version 3.4.0 (2023-07-13)
 - Landscape mode removed (as hardly used, even on tablet)
 - Some more modules translated from Java to Kotlin
 - Code adaptations for Kotlin

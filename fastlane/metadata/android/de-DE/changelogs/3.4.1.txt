@@ -1,7 +1,0 @@
-Version 3.4.1 (18.07.2023)
-- Option Landscape-Modus entfernt, da der Portrait-Modus selbst auf Tablets vorteilhafter ist
-- Weitere Module von Java nach Kotlin übersetzt
-- Code-Anpassungen für Kotlin
-- Einge missbilligte (deprecated) Funktionen ersetzt
-- Code-Verbesserungen
-- Docs überarbeitet

@@ -108,6 +108,7 @@
 		<item comment="03907">Großer Schneckenspinner</item>
 		<item comment="03922">Wein-Grünwidderchen</item>
 		<item comment="03925">Heide-Grünwidderchen</item>
+		<item comment="03933">Skabiosen-Grünwidderchen</item>
 		<item comment="03938">Dickfühler-Grünwidderchen</item>
 		<item comment="03941">Kupferglanz-Grünwidderchen</item>
 		<item comment="03943">Flockenblumen-Grünwidderchen</item>
@@ -360,16 +361,17 @@
 		<item comment="07204">Großer Perlmuttfalter</item>
 		<item comment="07205">Feuriger Perlmuttfalter</item>
 		<item comment="07206">Mittlerer Perlmuttfalter</item>
+		<item comment="07208">Östlicher Perlmuttfalter</item>
 		<item comment="07210">Kleiner Perlmuttfalter</item>
 		<item comment="07213">Mädesüß-Perlmuttfalter</item>
 		<item comment="07214">Brombeer-Perlmuttfalter</item>
 		<item comment="07218">Randring-Perlmuttfalter</item>
 		<item comment="07220">Silberfleck-Perlmuttfalter</item>
-		<item comment="07221">Natterwurz-Perlmutterfalter</item>
+		<item comment="07221">Natterwurz-Perlmuttfalter</item>
 		<item comment="07222">Braunfleckiger Perlmuttfalter</item>
 		<item comment="07228">Magerrasen-Perlmuttfalter</item>
-		<item comment="07230">Bergwald-Perlmutterfalter</item>
-		<item comment="07235">Hochalpen-Perlmutterfalter</item>
+		<item comment="07230">Bergwald-Perlmuttfalter</item>
+		<item comment="07235">Hochalpen-Perlmuttfalter</item>
 		<item comment="07236">Ähnlicher Perlmuttfalter</item>
 		<item comment="07237">Hochmoor-Perlmuttfalter</item>
 		<item comment="07243">Admiral</item>
@@ -485,6 +487,7 @@
 		<item comment="07476">Kleiner Monarch</item>
 		<item comment="07503">Zweipunkt-Sichelflügler</item>
 		<item comment="07508">Heller Sichelflügler</item>
+		<item comment="07517">Birken-Jungfernkind</item>
 		<item comment="07522">Stachelbeer-Harlekin</item>
 		<item comment="07530">Pfaffenhütchen-Harlekin</item>
 		<item comment="07537">Steppenheiden Gitterspanner</item>
@@ -502,6 +505,8 @@
 		<item comment="07836">Perlglanzspanner</item>
 		<item comment="07902">Gelbgeränderter Flachstirnspanner</item>
 		<item comment="07916">Hartheuspanner</item>
+		<item comment="07922">Einstreifiger Trockenrasenspanner</item>
+		<item comment="07961">Hauhechelspanner</item>
 		<item comment="08000">Waldreben-Grünspanner</item>
 		<item comment="08028">Ampferspanner</item>
 		<item comment="08045">Schmuck-Kleinspanner</item>
@@ -511,6 +516,7 @@
 		<item comment="08184">Dunkelbindiger Doppellinien-Zwergspanner</item>
 		<item comment="08221">Knöterich-Purpurspanner</item>
 		<item comment="08222">Ampfer-Purpurspanner</item>
+		<item comment="08227">Streifenspanner</item>
 		<item comment="08239">Braunbinden-Wellenstriemenspanner</item>
 		<item comment="08248">Springkraut-Blattspanner</item>
 		<item comment="08253">Dunkler Rostfarben-Blattspanner</item>
@@ -521,6 +527,8 @@
 		<item comment="08289">Ockergelber Blattspanner</item>
 		<item comment="08304">Malven-Blattspanner</item>
 		<item comment="08330">Dunkelbrauner Haarbüschelspanner</item>
+		<item comment="08332">Veränderlicher Haarbüschelspanner</item>
+		<item comment="08385">Prachtgrüner Bindenspanner</item>
 		<item comment="08411">Waldreben-Blattspanner</item>
 		<item comment="08447">Kleiner Frostspanner</item>
 		<item comment="08620">Großer Johanniskrautspanner</item>
@@ -542,8 +550,10 @@
 		<item comment="09116">Buschrasen-Grasmotteneulchen</item>
 		<item comment="09338">Hornkraut-Tageulchen</item>
 		<item comment="09364">Karden-Sonneneule</item>
+		<item comment="09365">Warneckes Heidemoor-Sonneneule</item>
 		<item comment="09417">Morpheus-Staubeule</item>
 		<item comment="09771">Ackerrand-Grasbüscheleule</item>
+		<item comment="09907">Heidekraut-Bunteule</item>
 		<item comment="09917">Gemüseeule</item>
 		<item comment="10000">Weißfleck-Graseule</item>
 		<item comment="10001">Kapuzen-Graseule</item>
