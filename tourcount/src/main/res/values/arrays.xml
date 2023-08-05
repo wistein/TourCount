@@ -661,6 +661,7 @@
 		<item comment="07961">Aplasta ononaria</item>
 		<item comment="08000">Hemistola chrysoprasaria</item>
 		<item comment="08028">Timandra comae</item>
+		<item comment="08036">Scopula immorata</item>
 		<item comment="08045">Scopula ornata</item>
 		<item comment="08060">Scopula incanata</item>
 		<item comment="08099">Idaea ochrata</item>
@@ -1143,6 +1144,7 @@
 		<item comment="07961">Rest harrow</item>
 		<item comment="08000">Small emerald</item>
 		<item comment="08028">Blood-vein</item>
+		<item comment="08036">Lewes wave</item>
 		<item comment="08045">Lace border</item>
 		<item comment="08060">-</item>
 		<item comment="08099">Bright wave</item>
@@ -1625,6 +1627,7 @@
 		<item>07961</item>
 		<item>08000</item>
 		<item>08028</item>
+		<item>08036</item>
 		<item>08045</item>
 		<item>08060</item>
 		<item>08099</item>
