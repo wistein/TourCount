@@ -559,6 +559,7 @@
 		<item comment="07288">Limenitis reducta</item>
 		<item comment="07292">Hypolimnas misippus</item>
 		<item comment="07294">Charaxes jasius</item>
+		<item comment="07297">Apatura metis</item>
 		<item comment="07298">Apatura ilia</item>
 		<item comment="07299">Apatura iris</item>
 		<item comment="07303">Kirinia roxelana</item>
@@ -1042,6 +1043,7 @@
 		<item comment="07288">Southern white admiral</item>
 		<item comment="07292">Danaid eggfly</item>
 		<item comment="07294">Two-tailed pasha</item>
+		<item comment="07297">Freyer\'s purple emperor</item>
 		<item comment="07298">Lesser purple emperor</item>
 		<item comment="07299">Purple emperor</item>
 		<item comment="07303">Lattice brown</item>
@@ -1525,6 +1527,7 @@
 		<item>07288</item>
 		<item>07292</item>
 		<item>07294</item>
+		<item>07297</item>
 		<item>07298</item>
 		<item>07299</item>
 		<item>07303</item>

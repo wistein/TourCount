@@ -85,6 +85,13 @@ _ Subtitle
 	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
   _ 
 
+$ 3.4.3
+  % Version 3.4.3
+  _ 09.08.2023
+  * Gradle Plugin Upgrade -> 8.1.0
+  * Einge noch fehlende Abbildungen ergänzt
+  * Docs überarbeitet
+
 $ 3.4.2
   % Version 3.4.2
   _ 30.07.2023

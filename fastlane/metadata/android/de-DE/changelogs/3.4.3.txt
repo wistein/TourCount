@@ -1,0 +1,4 @@
+Version 3.4.3 (09.08.2023)
+- Gradle Plugin Upgrade -> 8.1.0
+- Einge noch fehlende Abbildungen ergänzt
+- Docs überarbeitet
