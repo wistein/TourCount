@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!-- widget_list_line.xml
  used by ListSpeciesActivity.java.
  Shows a white line -->
@@ -32,4 +31,5 @@
             tools:ignore="PxUsage"/>
 
     </LinearLayout>
+
 </LinearLayout>

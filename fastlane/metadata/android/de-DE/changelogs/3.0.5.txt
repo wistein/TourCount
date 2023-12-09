@@ -1,2 +1,11 @@
 Version 3.0.5 (20.09.2018)
-- Fehler bei GPS-Höhenkorrektur behoben
+- Projekt-Anpassungen für Android Studio 3.1.2 und Gradle 3.1.2
+- Positionsabfragefunktion zuverlässiger, nun als Service
+- Zusätzliche manuelle Eingabe für Datum, Start- und Stopzeit per langem Drücken
+- Zusätzliche Schmetterlingsabbildungen
+- Wo sinnvoll, Toasts gegen Snackbars getauscht
+- Code-Verbesserungen
+- Fehler bei Höhenkorrektur behoben
+- Absturz-Fehler im Permission-Handling von Android >= Marshmallow behoben
+- Absturz-Fehler im Modul "Edit Speziesliste" behoben
+- Weitere Fehler behoben

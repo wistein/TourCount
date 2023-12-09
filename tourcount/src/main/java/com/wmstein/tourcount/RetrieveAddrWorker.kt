@@ -21,7 +21,8 @@ import java.net.URL
  * Copyright 2018-2023 wmstein
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
- * converted to Kotlin on 2023-07-09
+ * converted to Kotlin on 2023-07-09,
+ * last edited on 2023-11-29
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -116,8 +117,8 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 if (xmlString.contains("<city_district>")) {
                     sstart = xmlString.indexOf("<city_district>") + 15
                     send = xmlString.indexOf("</city_district>")
-                    val city_district = xmlString.substring(sstart, send)
-                    place.append(city_district)
+                    val cityDistrict = xmlString.substring(sstart, send)
+                    place.append(cityDistrict)
                 }
                 if (place.toString() != "" && xmlString.contains("<village>")) place.append(", ")
                 if (xmlString.contains("<village>")) {
@@ -175,25 +176,25 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 val section: Section = sectionDataSource.section
 
                 // Save sCountry, sPlz, sCity, sPlace to DB Section
-                if (sCountry.length > 0) {
+                if (sCountry.isNotEmpty()) {
                     section.country = sCountry
                 } else {
                     section.country = ""
                 }
                 sectionDataSource.updateEmptyCountry(section.id, section.country)
-                if (sPlz.length > 0) {
+                if (sPlz.isNotEmpty()) {
                     section.plz = sPlz
                 } else {
                     section.plz = ""
                 }
                 sectionDataSource.updateEmptyPlz(section.id, section.plz)
-                if (sCity.length > 0) {
+                if (sCity.isNotEmpty()) {
                     section.city = sCity
                 } else {
                     section.city = ""
                 }
                 sectionDataSource.updateEmptyCity(section.id, section.city)
-                if (sPlace.length > 0) {
+                if (sPlace.isNotEmpty()) {
                     section.place = sPlace
                 } else {
                     section.place = ""
@@ -205,7 +206,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 tempDataSource = TempDataSource(TourCountApplication.getAppContext())
                 tempDataSource.open()
                 val temp: Temp = tempDataSource.temp
-                if (sLocality.length > 0) {
+                if (sLocality.isNotEmpty()) {
                     temp.temp_loc = sLocality
                 } else {
                     temp.temp_loc = ""

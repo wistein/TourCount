@@ -1,10 +1,13 @@
 Version 3.3.5 (2023-06-19)
+- Compiled with SDK Ver. 33 for targetSdkVersion 33
 - Gradle Plugin upgraded -> 8.0.2
 - Gradle upgraded -> 8.0
-- Deprecated functions replaced
+- Most deprecated functions replaced
 - .csv-files exported to Documents/TourCount/ (allows access by other apps)
-- Option to shortly vibrate for counting-up and longer for down
+- Option to vibrate, short for counting-up and longer for counting-down
 - Counting sound deeper when counting down
 - Some more code improvements
+- Sourcecode partly translated to Kotlin
 - One more species added
 - Minimal Android Version 7.1 (Nougat)
+- Copyright texts updated

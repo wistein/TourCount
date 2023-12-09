@@ -56,7 +56,7 @@ class PermissionsDialogFragment : DialogFragment() {
             } else {
                 //permissions have been accepted
                 if (listener != null) {
-                    listener!!.permissionCaptureFragment()
+                    listener!!.locationCaptureFragment()
                     dismiss()
                 }
             }
@@ -160,7 +160,7 @@ class PermissionsDialogFragment : DialogFragment() {
     }
 
     interface PermissionsGrantedCallback {
-        fun permissionCaptureFragment()
+        fun locationCaptureFragment()
     }
 
     companion object {

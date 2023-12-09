@@ -19,14 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
@@ -42,6 +34,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
@@ -78,10 +78,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private double longitude;
     LocationService locationService;
 
-    // Permission dispatcher mode modePerm: 
+    // Permission dispatcher mode locationPermissionDispatcherMode: 
     //  1 = use location service
     //  2 = end location service
-    int modePerm;
+    int locationPermissionDispatcherMode;
 
     private Bitmap bMap;
     private BitmapDrawable bg;
@@ -128,8 +128,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
         // Get location with permissions check
-        modePerm = 1;
-        permissionCaptureFragment();
+        locationPermissionDispatcherMode = 1;
+        locationCaptureFragment();
 
         //clear existing view
         head_area.removeAllViews();
@@ -308,8 +308,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         sectionDataSource.close();
 
         // Stop location service with permissions check
-        modePerm = 2;
-        permissionCaptureFragment();
+        locationPermissionDispatcherMode = 2;
+        locationCaptureFragment();
     }
 
     // triggered by save button in actionbar
@@ -418,12 +418,12 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     }
 
     @Override
-    public void permissionCaptureFragment()
+    public void locationCaptureFragment()
     {
         {
             if (isPermissionGranted())
             {
-                switch (modePerm)
+                switch (locationPermissionDispatcherMode)
                 {
                 case 1 -> // get location
                     getLoc();
@@ -433,7 +433,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             }
             else
             {
-                if (modePerm == 1)
+                if (locationPermissionDispatcherMode == 1)
                     PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
             }
         }

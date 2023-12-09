@@ -1,5 +1,7 @@
 Version 3.3.3 (25.10.2022)
 - Gradle Plugin Upgrade -> 7.3.1
 - Gradle Upgrade -> 7.4
-- Kompiliert mit SDK Ver. 32 für targetSdkVersion 31, resultierender "duplicate library"-Konflikt gelöst
+- Kompiliert mit SDK Ver. 32 für targetSdkVersion 31
+- Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
 - Weitere Falterarten mit Abbildung hinzugefügt
+- Bugfix in arrays.xml

@@ -17,24 +17,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
-/**
+/************************************************************************
  * Based on ChangeLog.java
  * Copyright (C) 2011-2013, Karsten Priegnitz
- * <p/>
+ * <p>
  * Permission to use, copy, modify, and distribute this piece of software
  * for any purpose with or without fee is hereby granted, provided that
  * the above copyright notice and this permission notice appear in the
  * source code of all copies.
- * <p/>
+ * <p>
  * It would be appreciated if you mention the author in your change log,
  * contributors list or the like.
- *
+ * <p>
  * @author: Karsten Priegnitz
- * @see: http://code.google.com/p/android-change-log/
- * <p/>
+ * @see: <a href="http://code.google.com/p/android-change-log/">...</a>
+ * <p>
  * Adaptation for ViewHelp:
  * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
- * last edited on 2020-04-17
+ * last edited on 2023-12-08
  */
 public class ViewHelp
 {
@@ -54,7 +54,7 @@ public class ViewHelp
     {
         this.context = context;
 
-        // get version numbers
+        // get version number
         try
         {
             thisVersion = context.getPackageManager().getPackageInfo(
@@ -63,7 +63,7 @@ public class ViewHelp
         {
             thisVersion = NO_VERSION;
             if (MyDebug.LOG)
-                Log.e(TAG, "could not get version name from manifest!", e);
+                Log.e(TAG, "Could not get version name from manifest!", e);
         }
     }
 
@@ -129,40 +129,48 @@ public class ViewHelp
                 }
                 switch (marker)
                 {
-                    case '%':
-                        // line contains version title
-                        this.closeList();
-                        sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case '_':
-                        // line contains version title
-                        this.closeList();
-                        sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case '!':
-                        // line contains free text
-                        this.closeList();
-                        sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case ')':
-                        // line contains small text
-                        this.closeList();
-                        sb.append("<div class='smalltext'>").append(line.substring(1).trim()).append("</div>\n");
-                        break;
-                    case '#':
-                        // line contains numbered list item
-                        this.openList(Listmode.ORDERED);
-                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                        break;
-                    case '*':
-                        // line contains bullet list item
-                        this.openList(Listmode.UNORDERED);
-                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                        break;
-                    default:
-                        // no special character: just use line as is
-                        this.closeList();
-                        sb.append(line).append(" \n");
+                case '%' ->
+                {
+                    // line contains version title
+                    this.closeList();
+                    sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                }
+                case '_' ->
+                {
+                    // line contains version title
+                    this.closeList();
+                    sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
+                }
+                case '!' ->
+                {
+                    // line contains free text
+                    this.closeList();
+                    sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                }
+                case ')' ->
+                {
+                    // line contains small text
+                    this.closeList();
+                    sb.append("<div class='smalltext'>").append(line.substring(1).trim()).append("</div>\n");
+                }
+                case '#' ->
+                {
+                    // line contains numbered list item
+                    this.openList(Listmode.ORDERED);
+                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                }
+                case '*' ->
+                {
+                    // line contains bullet list item
+                    this.openList(Listmode.UNORDERED);
+                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                }
+                default ->
+                {
+                    // no special character: just use line as is
+                    this.closeList();
+                    sb.append(line).append(" \n");
+                }
                 }
             }
             this.closeList();

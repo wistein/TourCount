@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
    welcome.xml is used by WelcomeActivity.java
-   Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+   Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
 -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
@@ -12,11 +13,12 @@
         android:id="@+id/editMeta"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/editMetaButton"
-        app:showAsAction="always">
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction">
     </item>
     <item
         android:id="@+id/viewCounts"
-        android:icon="@drawable/count_white"
+        android:icon="@drawable/ic_count_white"
         android:title="@string/counting"
         app:showAsAction="always">
     </item>
@@ -29,14 +31,14 @@
 
     <item
         android:id="@+id/menu_list_item"
-        android:icon="@drawable/ic_core_overflow"
+        android:icon="@drawable/baseline_more_vert_24"
         android:title=""
         app:showAsAction="always">
 
         <menu>
             <item
                 android:id="@+id/action_settings"
-                android:icon="@drawable/preferences"
+                android:icon="@drawable/baseline_settings_24"
                 android:title="@string/action_settings"
                 app:showAsAction="never"/>
 
@@ -78,13 +80,13 @@
             </item>
             <item
                 android:id="@+id/changeLog"
-                android:icon="@drawable/logs"
+                android:icon="@drawable/outline_format_align_left_24"
                 android:title="@string/changeLogTitle"
                 app:showAsAction="never">
             </item>
             <item
                 android:id="@+id/viewHelp"
-                android:icon="@drawable/help"
+                android:icon="@drawable/outline_help_outline_24"
                 android:title="@string/viewHelpTitle"
                 app:showAsAction="never">
             </item>

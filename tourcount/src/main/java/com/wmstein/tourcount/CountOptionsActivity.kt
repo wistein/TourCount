@@ -32,16 +32,16 @@ import com.wmstein.tourcount.widgets.EditNotesWidget
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2023-07-13
+ * last edited on 2023-11-29
  */
 class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
     private var tourCount: TourCountApplication? = null
 
-    private var static_widget_area: LinearLayout? = null
+    private var staticWidgetArea: LinearLayout? = null
     private var enw: EditNotesWidget? = null
     private var count: Count? = null
-    private var count_id = 0
+    private var countId = 0
     private var countDataSource: CountDataSource? = null
     private var bMap: Bitmap? = null
     private var bg: BitmapDrawable? = null
@@ -57,10 +57,10 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
     private var longitude = 0.0
     private var locationService: LocationService? = null
 
-    // Permission dispatcher mode modePerm: 
+    // Permission dispatcher mode locationPermissionDispatcherMode: 
     //  1 = use location service
     //  2 = end location service
-    private var modePerm = 0
+    private var locationPermissionDispatcherMode = 0
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,7 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
 
         setContentView(R.layout.activity_count_options)
-        val counting_screen = findViewById<LinearLayout>(R.id.count_options)
+        val countingScreen = findViewById<LinearLayout>(R.id.count_options)
 
         // Set full brightness of screen
         if (brightPref) {
@@ -83,12 +83,12 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             window.attributes = params
         }
         bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(counting_screen.resources, bMap)
-        counting_screen.background = bg
-        static_widget_area = findViewById(R.id.static_widget_area)
+        bg = BitmapDrawable(countingScreen.resources, bMap)
+        countingScreen.background = bg
+        staticWidgetArea = findViewById(R.id.static_widget_area)
         val extras = intent.extras
         if (extras != null) {
-            count_id = extras.getInt("count_id")
+            countId = extras.getInt("count_id")
         }
     }
 
@@ -96,22 +96,22 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         super.onResume()
 
         // clear any existing views
-        static_widget_area!!.removeAllViews()
+        staticWidgetArea!!.removeAllViews()
 
         // Get location with permissions check
-        modePerm = 1
-        permissionCaptureFragment()
+        locationPermissionDispatcherMode = 1
+        locationCaptureFragment()
 
         // get the data sources
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
-        count = countDataSource!!.getCountById(count_id)
+        count = countDataSource!!.getCountById(countId)
         supportActionBar!!.title = count!!.name
         enw = EditNotesWidget(this, null)
         enw!!.notesName = count!!.notes
         enw!!.setWidgetTitle(getString(R.string.notesSpecies))
         enw!!.setHint(getString(R.string.notesHint))
-        static_widget_area!!.addView(enw)
+        staticWidgetArea!!.addView(enw)
     }
 
     override fun onPause() {
@@ -123,8 +123,8 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         imm.hideSoftInputFromWindow(enw!!.windowToken, 0)
 
         // Stop location service with permissions check
-        modePerm = 2
-        permissionCaptureFragment()
+        locationPermissionDispatcherMode = 2
+        locationCaptureFragment()
     }
 
     private fun saveData() {
@@ -165,22 +165,22 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-        val counting_screen = findViewById<LinearLayout>(R.id.count_options)
-        counting_screen.background = null
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        brightPref = prefs.getBoolean("pref_bright", true)
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
+        val countingScreen = findViewById<LinearLayout>(R.id.count_options)
+        countingScreen.background = null
+        prefs?.registerOnSharedPreferenceChangeListener(this)
+        brightPref = prefs!!.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
+        emailString = prefs.getString("email_String", "")   // for reliable query of Nominatim service
         bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(counting_screen.resources, bMap)
-        counting_screen.background = bg
+        bg = BitmapDrawable(countingScreen.resources, bMap)
+        countingScreen.background = bg
     }
 
-    override fun permissionCaptureFragment() {
+    override fun locationCaptureFragment() {
         run {
             if (this.isPermissionGranted) {
-                when (modePerm) {
+                when (locationPermissionDispatcherMode) {
                     1 ->  // get location
                         this.loc
 
@@ -188,7 +188,7 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
                         locationService!!.stopListener()
                 }
             } else {
-                if (modePerm == 1) newInstance().show(
+                if (locationPermissionDispatcherMode == 1) newInstance().show(
                     supportFragmentManager,
                     PermissionsDialogFragment::class.java.name
                 )

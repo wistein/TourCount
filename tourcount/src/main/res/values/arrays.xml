@@ -357,7 +357,7 @@
 		<item comment="06883">Carcharodus tripolina</item>
 		<item comment="06884">Muschampia lavatherae</item>
 		<item comment="06885">Muschampia floccifera</item>
-		<item comment="06887">Carcharodus baeticus</item>
+		<item comment="06887">Muschampia baeticus</item>
 		<item comment="06891">Spialia sertorius</item>
 		<item comment="06895">Muschampia proto</item>
 		<item comment="06899">Pyrgus carthami</item>
@@ -551,6 +551,7 @@
 		<item comment="07276">Melitaea diamina</item>
 		<item comment="07277">Melitaea deione</item>
 		<item comment="07278">Melitaea varia</item>
+		<item comment="07279">Melitaea parthenoides</item>
 		<item comment="07280">Melitaea aurelia</item>
 		<item comment="07281">Melitaea britomartis</item>
 		<item comment="07283">Melitaea athalia</item>
@@ -641,6 +642,7 @@
 		<item comment="07503">Watsonalla binaria</item>
 		<item comment="07508">Drepana falcataria</item>
 		<item comment="07517">Archiearis parthenias</item>
+		<item comment="07519">Boudinotiana puella</item>
 		<item comment="07522">Abraxas grossulariata</item>
 		<item comment="07530">Ligdia adustata</item>
 		<item comment="07537">Heliomata glarearia</item>
@@ -663,11 +665,16 @@
 		<item comment="08000">Hemistola chrysoprasaria</item>
 		<item comment="08028">Timandra comae</item>
 		<item comment="08036">Scopula immorata</item>
+		<item comment="08043">Scopula virgulata</item>
 		<item comment="08045">Scopula ornata</item>
+		<item comment="08054">Scopula rubiginata</item>
 		<item comment="08060">Scopula incanata</item>
 		<item comment="08099">Idaea ochrata</item>
 		<item comment="08104">Idaea muricata</item>
+		<item comment="08155">Idaea seriata</item>
 		<item comment="08184">Idea aversata</item>
+		<item comment="08186">Idaea degeneraria</item>
+		<item comment="08205">Rhodostrophia vibicaria</item>
 		<item comment="08221">Lythria purpuraria</item>
 		<item comment="08222">Lythria cruentaria</item>
 		<item comment="08227">Phibalapteryx virgata</item>
@@ -702,10 +709,13 @@
 		<item comment="09097">Acontia trabealis</item>
 		<item comment="09114">Deltote pygarga</item>
 		<item comment="09116">Deltote deceptoria</item>
+		<item comment="09118">Deltote bankiana</item>
+		<item comment="09233">Cucullia verbasci</item>
 		<item comment="09338">Panemeria tenebrata</item>
 		<item comment="09364">Heliothis viriplaca</item>
 		<item comment="09365">Heliothis maritima</item>
 		<item comment="09417">Caradrina morpheus</item>
+		<item comment="09557">Tiliacea aurago</item>
 		<item comment="09771">Apamea sordens</item>
 		<item comment="09907">Anarta myrtilli</item>
 		<item comment="09917">Lacanobia oleracea</item>
@@ -740,7 +750,7 @@
 		<item comment="00338">Yellow-barred long-horn</item>
 		<item comment="01348">Orchard ermine</item>
 		<item comment="01350">Spindle ermine</item>
-		<item comment="02321">-</item>
+		<item comment="02321">Hedge Beauty</item>
 		<item comment="03907">Festoon</item>
 		<item comment="03922">-</item>
 		<item comment="03925">Blackthorn aurora moth</item>
@@ -756,15 +766,15 @@
 		<item comment="03963">-</item>
 		<item comment="03965">-</item>
 		<item comment="03967">Calcareous burnet</item>
-		<item comment="03971">-</item>
-		<item comment="03972">-</item>
+		<item comment="03971">Fulvous burnet</item>
+		<item comment="03972">Sluggish burnet</item>
 		<item comment="03973">-</item>
 		<item comment="03974">Transparent burnet</item>
 		<item comment="03977">Maghreb burnet</item>
 		<item comment="03978">-</item>
 		<item comment="03979">-</item>
 		<item comment="03980">Crepuscular burnet</item>
-		<item comment="03981">-</item>
+		<item comment="03981">Provence burnet</item>
 		<item comment="03983">Slender burnet</item>
 		<item comment="03986">-</item>
 		<item comment="03987">Algarve burnet</item>
@@ -775,7 +785,7 @@
 		<item comment="03993">-</item>
 		<item comment="03995">Billowing burnet</item>
 		<item comment="03996">Southerly burnet</item>
-		<item comment="03997">-</item>
+		<item comment="03997">Slender Scotch burnet</item>
 		<item comment="03998">Six-spot burnet</item>
 		<item comment="03999">Narrow-bordered five-spot burnet</item>
 		<item comment="04000">Five-spot burnet</item>
@@ -795,12 +805,12 @@
 		<item comment="06364">Waste grass-veneer</item>
 		<item comment="06416">Brown china-mark</item>
 		<item comment="06499">Marbled yellow pearl</item>
-		<item comment="06601">-</item>
+		<item comment="06601">Straw-barred Pearl</item>
 		<item comment="06604">Mint moth</item>
-		<item comment="06605">-</item>
-		<item comment="06623">-</item>
+		<item comment="06605">Common purple &amp; gold</item>
+		<item comment="06623">Sulphur Pearl</item>
 		<item comment="06658">Small magpie</item>
-		<item comment="06667">Mother of pearl moth</item>
+		<item comment="06667">Mother of pearl</item>
 		<item comment="06720a">Box tree moth</item>
 		<item comment="06752">Oak eggar</item>
 		<item comment="06755">Fox moth</item>
@@ -871,7 +881,7 @@
 		<item comment="06947">Eastern festoon</item>
 		<item comment="06948">Cretan festoon</item>
 		<item comment="06951">False apollo</item>
-		<item comment="06953">Clouded Apollo</item>
+		<item comment="06953">Clouded apollo</item>
 		<item comment="06954">Small apollo</item>
 		<item comment="06955">Apollo</item>
 		<item comment="06958">Scarce swallowtail</item>
@@ -965,7 +975,7 @@
 		<item comment="07113">Scarce large blue</item>
 		<item comment="07114">Dusky large blue</item>
 		<item comment="07115">Alcon blue</item>
-		<item comment="07116">Mountain Alcon blue</item>
+		<item comment="07116">Mountain alcon blue</item>
 		<item comment="07120">Grass jewel</item>
 		<item comment="07127">Silver-studded blue</item>
 		<item comment="07128">Idas blue</item>
@@ -1035,6 +1045,7 @@
 		<item comment="07276">False heath fritillary</item>
 		<item comment="07277">Provencal fritillary</item>
 		<item comment="07278">Grisons fritillary</item>
+		<item comment="07279">Meadow fritillary</item>
 		<item comment="07280">Nickerl\'s fritillary</item>
 		<item comment="07281">Assmann\'s fritillary</item>
 		<item comment="07283">Heath fritillary</item>
@@ -1125,6 +1136,7 @@
 		<item comment="07503">Oak hook-tip</item>
 		<item comment="07508">Pebble hook-tip</item>
 		<item comment="07517">Orange underwing</item>
+		<item comment="07519">Pale orange underwing</item>
 		<item comment="07522">Magpie moth</item>
 		<item comment="07530">Scorched carpet</item>
 		<item comment="07537">-</item>
@@ -1147,11 +1159,16 @@
 		<item comment="08000">Small emerald</item>
 		<item comment="08028">Blood-vein</item>
 		<item comment="08036">Lewes wave</item>
+		<item comment="08043">Streaked wave</item>
 		<item comment="08045">Lace border</item>
+		<item comment="08054">Tawny wave</item>
 		<item comment="08060">-</item>
 		<item comment="08099">Bright wave</item>
 		<item comment="08104">Purple-bordered gold</item>
+		<item comment="08155">Small dusty wave</item>
 		<item comment="08184">Riband wave</item>
+		<item comment="08186">Portland Ribbon wave</item>
+		<item comment="08205">Common pink-barred</item>
 		<item comment="08221">Purple-barred yellow</item>
 		<item comment="08222">-</item>
 		<item comment="08227">Oblique striped</item>
@@ -1186,10 +1203,13 @@
 		<item comment="09097">Spotted sulphur</item>
 		<item comment="09114">Marbled white spot</item>
 		<item comment="09116">Pretty marbled</item>
+		<item comment="09118">Silver barred</item>
+		<item comment="09233">Mullein</item>
 		<item comment="09338">Small yellow underwing</item>
 		<item comment="09364">Marbled clover</item>
 		<item comment="09365">Shoulder-striped clover</item>
 		<item comment="09417">Mottled rustic</item>
+		<item comment="09557">Barred sallow</item>
 		<item comment="09771">Rustic shoulder-knot</item>
 		<item comment="09907">Beautiful yellow underwing</item>
 		<item comment="09917">Bright-line brown-eye</item>
@@ -1519,6 +1539,7 @@
 		<item>07276</item>
 		<item>07277</item>
 		<item>07278</item>
+		<item>07279</item>
 		<item>07280</item>
 		<item>07281</item>
 		<item>07283</item>
@@ -1609,6 +1630,7 @@
 		<item>07503</item>
 		<item>07508</item>
 		<item>07517</item>
+		<item>07519</item>
 		<item>07522</item>
 		<item>07530</item>
 		<item>07537</item>
@@ -1631,11 +1653,16 @@
 		<item>08000</item>
 		<item>08028</item>
 		<item>08036</item>
+		<item>08043</item>
 		<item>08045</item>
+		<item>08054</item>
 		<item>08060</item>
 		<item>08099</item>
 		<item>08104</item>
+		<item>08155</item>
 		<item>08184</item>
+		<item>08186</item>
+		<item>08205</item>
 		<item>08221</item>
 		<item>08222</item>
 		<item>08227</item>
@@ -1670,10 +1697,13 @@
 		<item>09097</item>
 		<item>09114</item>
 		<item>09116</item>
+		<item>09118</item>
+		<item>09233</item>
 		<item>09338</item>
 		<item>09364</item>
 		<item>09365</item>
 		<item>09417</item>
+		<item>09557</item>
 		<item>09771</item>
 		<item>09907</item>
 		<item>09917</item>

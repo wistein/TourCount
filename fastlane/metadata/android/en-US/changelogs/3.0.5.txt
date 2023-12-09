@@ -1,2 +1,11 @@
 Version 3.0.5 (2018-09-20)
+- Project changes for Android Studio 3.1.2 and Gradle 3.1.2
+- Location retrieval function more reliable, changed to service
+- Additional manual input for date, start-time and stop-time with long press
+- Additional butterfly pictures
+- Where applicable toasts replaced with snackbars
+- Code improvements
 - Fixed GPS height correction not working
+- Fix for crash in permission handling of Android >= Marshmallow
+- Fix for crash in "Edit Species list" functionality
+- Other bug fixes

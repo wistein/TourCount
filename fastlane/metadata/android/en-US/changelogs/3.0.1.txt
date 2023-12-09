@@ -1,4 +1,15 @@
 Version 3.0.1 (2018-04-03)
+- Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
 - Unnecessary permission WRITE_SETTINGS removed
+- Redesign of counting page layout with scroll-down selection od species
+- Separate counters for ♂ or ♀, ♂, ♀, pupa, larva, egg
 - Disabled multi-window-mode (Android 7+) for incompatible pull-down-menu (Spinner)
-- Minor changes in results page
+- Correct handling of subtraction for categories of species and individuals
+- Database version change 2 to 3 (takes care of additional counters)
+- Automatic conversion of existing databases to new version while loading
+- First use now creates a direct usable internal DB with common european species
+- Layout of starting page updated
+- Adapted results page layout
+- More butterfly pictures added
+- Documentation adapted for Ver. 3.0
+- Bug fixes

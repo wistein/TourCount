@@ -1,7 +1,0 @@
-Version 3.0.4 (2018-08-03)
-- Location retrieval function more reliable, changed to service
-- Additional butterfly pictures
-- Where applicable toasts replaced with snackbars
-- Some code cleaning
-- Fix for crash in permission handling of Android >= Marshmallow
-- Fix for crash in "Edit Species list" functionality

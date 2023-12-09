@@ -1,6 +1,5 @@
 package sheetrock.panda.changelog;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,29 +22,30 @@ import androidx.preference.PreferenceManager;
 
 /************************************************************************
  * Copyright (C) 2011-2013, Karsten Priegnitz
- * <p/>
+ * <p>
  * Permission to use, copy, modify, and distribute this piece of software
  * for any purpose with or without fee is hereby granted, provided that
  * the above copyright notice and this permission notice appear in the
  * source code of all copies.
- * <p/>
+ * <p>
  * It would be appreciated if you mention the author in your change log,
  * contributors list or the like.
- *
- * @author: Karsten Priegnitz
- * @see: http://code.google.com/p/android-change-log/
- * <p/>
- * Adaptation for ViewHelp:
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
- * last edited on 2020-04-17
+ * <p>
+ * Author: Karsten Priegnitz
+ * See: <a href="https://code.google.com/p/android-change-log/">...</a>
+ * <p>
+ * Adaptation for TourCount by wm.stein on 2016-04-18,
+ * last edited on 2023-12-07
  */
 public class ChangeLog
 {
     private static final String TAG = "ChangeLog";
+
     // key for storing the version name in SharedPreferences
     private static final String VERSION_KEY = "PREFS_VERSION_KEY";
     private static final String NO_VERSION = "";
     private static final String EOCL = "END_OF_CHANGE_LOG";
+
     private final Context context;
     private final String lastVersion;
     private String thisVersion;
@@ -65,14 +65,14 @@ public class ChangeLog
      * Constructor <p/>
      * Retrieves the version names and stores the new version name in SharedPreferences
      *
-     * @param sp the shared preferences to store the last version name into
+     * @param prefs the shared preferences to store the last version name into
      */
-    private ChangeLog(Context context, SharedPreferences sp)
+    private ChangeLog(Context context, SharedPreferences prefs)
     {
         this.context = context;
 
         // get version numbers
-        this.lastVersion = sp.getString(VERSION_KEY, NO_VERSION);
+        this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (MyDebug.LOG)
             Log.d(TAG, "lastVersion: " + lastVersion);
         try
@@ -86,7 +86,7 @@ public class ChangeLog
                 Log.e(TAG, "could not get version name from manifest!", e);
         }
         if (MyDebug.LOG)
-            Log.d(TAG, "appVersion: " + this.thisVersion);
+            Log.d(TAG, "appVersion: " + thisVersion);
     }
 
     /**
@@ -138,10 +138,12 @@ public class ChangeLog
         AlertDialog.Builder builder = new AlertDialog.Builder(
             new ContextThemeWrapper(
                 this.context, android.R.style.Theme_Holo_Dialog));
-        builder.setTitle(
-                context.getResources().getString(
-                    full ? R.string.changelog_full_title
-                        : R.string.changelog_title))
+        String fullTitle = context.getResources().getString(R.string.changelog_full_title)
+            + " Ver. " + thisVersion;
+        String changeTitle = "Ver. " + thisVersion + ": "
+            + context.getResources().getString(R.string.changelog_title)
+            + " " + thisVersion;
+        builder.setTitle(full ? fullTitle : changeTitle)
             .setView(wv)
             .setCancelable(false)
             // OK button
@@ -160,13 +162,11 @@ public class ChangeLog
         return builder.create();
     }
 
-    @SuppressLint("CommitPrefEdits")
     private void updateVersionInPreferences()
     {
         // save new version number to preferences
-        SharedPreferences sp = PreferenceManager
-            .getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putString(VERSION_KEY, thisVersion);
         editor.apply();
     }
@@ -212,55 +212,59 @@ public class ChangeLog
                     if (!full)
                     {
                         if (this.lastVersion.equals(version))
-                        {
                             advanceToEOVS = true;
-                        }
                         else if (version.equals(EOCL))
-                        {
                             advanceToEOVS = false;
-                        }
                     }
                 }
                 else if (!advanceToEOVS)
                 {
                     switch (marker)
                     {
-                        case '%':
-                            // line contains version title
-                            this.closeList();
-                            sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
-                            break;
-                        case '&':
-                            // line contains bold red text
-                            this.closeList();
-                            sb.append("<div class='boldredtext'>");
-                            sb.append(line.substring(1).trim());
-                            sb.append("</div>\n");
-                            break;
-                        case '_':
-                            // line contains version subtitle
-                            this.closeList();
-                            sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
-                            break;
-                        case '!':
-                            // line contains free text
-                            this.closeList();
-                            sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
-                            break;
-                        case '#':
-                            // line contains numbered list item
-                            this.openList(Listmode.ORDERED);
-                            sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                            break;
-                        case '*':
-                            // line contains bullet list item
-                            this.openList(Listmode.UNORDERED);
-                            sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                            break;
-                        default:
-                            // no special character: just use line as is
-                            this.closeList();
-                            sb.append(line).append("\n");
+                    case '%' ->
+                    {
+                        // line contains version title
+                        this.closeList();
+                        sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                    }
+                    case '&' ->
+                    {
+                        // line contains bold red text
+                        this.closeList();
+                        sb.append("<div class='boldredtext'>");
+                        sb.append(line.substring(1).trim());
+                        sb.append("</div>\n");
+                    }
+                    case '_' ->
+                    {
+                        // line contains version title
+                        this.closeList();
+                        sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
+                    }
+                    case '!' ->
+                    {
+                        // line contains free text
+                        this.closeList();
+                        sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                    }
+                    case '#' ->
+                    {
+                        // line contains numbered list item
+                        this.openList(Listmode.ORDERED);
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                    }
+                    case '*' ->
+                    {
+                        // line contains bullet list item
+                        this.openList(Listmode.UNORDERED);
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                    }
+                    default ->
+                    {
+                        // no special character: just use line as is
+                        this.closeList();
+                        sb.append(line).append("\n");
+                    }
                     }
                 }
             }
@@ -281,13 +285,9 @@ public class ChangeLog
         {
             closeList();
             if (listMode == Listmode.ORDERED)
-            {
                 sb.append("<div class='list'><ol>\n");
-            }
             else if (listMode == Listmode.UNORDERED)
-            {
                 sb.append("<div class='list'><ul>\n");
-            }
             this.listMode = listMode;
         }
     }
@@ -295,13 +295,9 @@ public class ChangeLog
     private void closeList()
     {
         if (this.listMode == Listmode.ORDERED)
-        {
             sb.append("</ol></div>\n");
-        }
         else if (this.listMode == Listmode.UNORDERED)
-        {
             sb.append("</ul></div>\n");
-        }
         this.listMode = Listmode.NONE;
     }
 

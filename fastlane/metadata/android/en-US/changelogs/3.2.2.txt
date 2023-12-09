@@ -1,5 +1,0 @@
-Version 3.2.2 (2020-05-05)
-- Location service in major activities
-- Bug fix in button sound
-- More butterfly pictures integrated
-- Initial list of species enlarged

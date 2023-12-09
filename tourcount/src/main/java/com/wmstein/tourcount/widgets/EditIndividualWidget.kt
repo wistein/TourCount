@@ -13,138 +13,139 @@ import java.util.Objects
  * EditIndividualWidget.java used by EditIndividualActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
  * Last edited in Java on 2022-03-26,
- * converted to Kotlin on 2023-07-09
+ * converted to Kotlin on 2023-07-09,
+ * last edited on 2023-12-07
  */
 class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // locality
-    private val widget_locality1: TextView
-    private val widget_locality2: EditText
+    private val widgetLoc1: TextView
+    private val widgetLoc2: EditText
 
     //height
-    private val widget_zcoord1: TextView
-    private val widget_zcoord2: TextView
+    private val widgetZcoord1: TextView
+    private val widgetZoord2: TextView
 
     // stadium
-    private val widget_stadium1: TextView
-    private val widget_stadium2: TextView
+    private val widgetStad1: TextView
+    private val widgetStad2: TextView
 
     // state_1-6
-    private val widget_state1: TextView
-    private val widget_state2: EditText
+    private val widgetStat1: TextView
+    private val widgetStat2: EditText
 
     // number of individuals
-    private val widget_count1: TextView
-    private val widget_count2: EditText
+    private val widgetCnt1: TextView
+    private val widgetCnt2: EditText
 
     // note
-    private val widget_indivnote1: TextView
-    private val widget_indivnote2: EditText
+    private val widgetIndNote1: TextView
+    private val widgetIndNote2: EditText
 
     // x-coord
-    private val widget_xcoord1: TextView
-    private val widget_xcoord2: TextView
+    private val widgetXcoord1: TextView
+    private val widgetXcoord2: TextView
 
     // y-coord
-    private val widget_ycoord1: TextView
-    private val widget_ycoord2: TextView
+    private val widgetYcoord1: TextView
+    private val widgetYcoord2: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_individual, this, true)
-        widget_locality1 = findViewById(R.id.widgetLocality1) // Locality
-        widget_locality2 = findViewById(R.id.widgetLocality2)
-        widget_zcoord1 = findViewById(R.id.widgetZCoord1) // Height
-        widget_zcoord2 = findViewById(R.id.widgetZCoord2)
-        widget_stadium1 = findViewById(R.id.widgetStadium1) // Stadium
-        widget_stadium2 = findViewById(R.id.widgetStadium2)
-        widget_state1 = findViewById(R.id.widgetState1) // State_1-6
-        widget_state2 = findViewById(R.id.widgetState2)
-        widget_count1 = findViewById(R.id.widgetCount1) // number of individuals
-        widget_count2 = findViewById(R.id.widgetCount2)
-        widget_indivnote1 = findViewById(R.id.widgetIndivNote1) // Note
-        widget_indivnote2 = findViewById(R.id.widgetIndivNote2)
-        widget_xcoord1 = findViewById(R.id.widgetXCoord1) // X-Coord
-        widget_xcoord2 = findViewById(R.id.widgetXCoord2)
-        widget_ycoord1 = findViewById(R.id.widgetYCoord1) // Y-Coord
-        widget_ycoord2 = findViewById(R.id.widgetYCoord2)
+        widgetLoc1 = findViewById(R.id.widget_Locality1) // Locality
+        widgetLoc2 = findViewById(R.id.widget_Locality2)
+        widgetZcoord1 = findViewById(R.id.widget_ZCoord1) // Height
+        widgetZoord2 = findViewById(R.id.widget_ZCoord2)
+        widgetStad1 = findViewById(R.id.widget_Stadium1) // Stadium
+        widgetStad2 = findViewById(R.id.widget_Stadium2)
+        widgetStat1 = findViewById(R.id.widget_State1) // State_1-6
+        widgetStat2 = findViewById(R.id.widget_State2)
+        widgetCnt1 = findViewById(R.id.widget_Count1) // number of individuals
+        widgetCnt2 = findViewById(R.id.widget_Count2)
+        widgetIndNote1 = findViewById(R.id.widget_IndivNote1) // Note
+        widgetIndNote2 = findViewById(R.id.widget_IndivNote2)
+        widgetXcoord1 = findViewById(R.id.widget_XCoord1) // X-Coord
+        widgetXcoord2 = findViewById(R.id.widget_XCoord2)
+        widgetYcoord1 = findViewById(R.id.widget_YCoord1) // Y-Coord
+        widgetYcoord2 = findViewById(R.id.widget_YCoord2)
     }
 
     // Following the SETS
     // locality
     fun setWidgetLocality1(title: String?) {
-        widget_locality1.text = title
+        widgetLoc1.text = title
     }
 
     // stadium
     fun setWidgetStadium1(title: String?) {
-        widget_stadium1.text = title
+        widgetStad1.text = title
     }
 
     // state
     fun setWidgetState1(title: String?) {
-        widget_state1.text = title
+        widgetStat1.text = title
     }
 
     // number of individuals
     fun setWidgetCount1(title: String?) {
-        widget_count1.text = title
+        widgetCnt1.text = title
     }
 
     // note
     fun setWidgetIndivNote1(title: String?) {
-        widget_indivnote1.text = title
+        widgetIndNote1.text = title
     }
 
     // x-coord
     fun setWidgetXCoord1(title: String?) {
-        widget_xcoord1.text = title
+        widgetXcoord1.text = title
     }
 
     fun setWidgetXCoord2(name: String?) {
-        widget_xcoord2.text = name
+        widgetXcoord2.text = name
     }
 
     // y-coord
     fun setWidgetYCoord1(title: String?) {
-        widget_ycoord1.text = title
+        widgetYcoord1.text = title
     }
 
     fun setWidgetYCoord2(name: String?) {
-        widget_ycoord2.text = name
+        widgetYcoord2.text = name
     }
 
     // z-coord
     fun setWidgetZCoord1(title: String?) {
-        widget_zcoord1.text = title
+        widgetZcoord1.text = title
     }
 
     fun setWidgetZCoord2(name: String?) {
-        widget_zcoord2.text = name
+        widgetZoord2.text = name
     }
 
     // following the GETS
     // get locality
     var widgetLocality2: String
-        get() = widget_locality2.text.toString()
+        get() = widgetLoc2.text.toString()
         set(name) {
-            widget_locality2.setText(name)
+            widgetLoc2.setText(name)
         }
 
     // get stadium with plausi
     var widgetStadium2: String?
-        get() = widget_stadium2.text.toString()
+        get() = widgetStad2.text.toString()
         set(name) {
-            widget_stadium2.text = name
+            widgetStad2.text = name
         }
 
     fun widgetState1(enabled: Boolean) {
-        if (enabled) widget_state1.visibility = VISIBLE else widget_state1.visibility = INVISIBLE
+        if (enabled) widgetStat1.visibility = VISIBLE else widgetStat1.visibility = INVISIBLE
     }
 
     // get state number with plausi
     val widgetState2: String
         get() {
-            var text = widget_state2.text.toString()
+            var text = widgetStat2.text.toString()
             if (text == "-") text = "0"
             val regEx = Regex("^[0-9]*$")
             return if (text == "") "0" else if (!text.trim { it <= ' ' }
@@ -158,21 +159,17 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         }
 
     fun widgetState2(enabled: Boolean) {
-        if (enabled) widget_state2.visibility = VISIBLE else widget_state2.visibility = INVISIBLE
-    }
-
-    fun setWidgetState2(name: Int) {
-        widget_state2.setText(name.toString())
+        if (enabled) widgetStat2.visibility = VISIBLE else widgetStat2.visibility = INVISIBLE
     }
 
     fun setWidgetState2(name: String?) {
-        widget_state2.setText(name)
-    }// count < 0 or text has no digit// value >= 0
+        widgetStat2.setText(name)
+    }
 
     // get number of individuals
     var widgetCount2: Int
         get() {
-            val text = widget_count2.text.toString()
+            val text = widgetCnt2.text.toString()
             return try {
                 // value >= 0
                 text.replace("\\D".toRegex(), "").toInt()
@@ -181,13 +178,13 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
             }
         }
         set(name) {
-            widget_count2.setText(name.toString())
+            widgetCnt2.setText(name.toString())
         }
 
     // get note of individual
     var widgetIndivNote2: String?
-        get() = widget_indivnote2.text.toString()
+        get() = widgetIndNote2.text.toString()
         set(name) {
-            widget_indivnote2.setText(name)
+            widgetIndNote2.setText(name)
         }
 }

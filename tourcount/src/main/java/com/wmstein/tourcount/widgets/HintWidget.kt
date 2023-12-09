@@ -13,7 +13,7 @@ import java.util.Objects
  * shows single Hint line
  * Created for TourCount by wmstein on 2023-05-16,
  * last edited in java on 2023-05-16,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2023-12-07
  */
 class HintWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val textView: TextView
@@ -28,7 +28,4 @@ class HintWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context,
         textView.text = notes
     }
 
-    companion object {
-        private const val TAG = "TourCountHintWidget"
-    }
 }

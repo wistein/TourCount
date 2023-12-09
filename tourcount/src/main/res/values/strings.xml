@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml English strings -->
+<!-- strings.xml English strings
+     last edited on 2023-12-05 -->
+
 <resources>
 
     <!-- generic -->
@@ -24,8 +26,8 @@
     <string name="viewHelpTitle">Help</string>
     <string name="noCard">Cannot write to the Documents directory!</string>
     <string name="saveFail">Your database could not be exported!</string>
-    <string name="saveWin">Export to Android/data/com.wmstein.tourcount/files.</string>
-    <string name="savecsv">Export to Documents/TourCount.</string>
+    <string name="saveDB">Export internal DB to Documents/TourCount</string>
+    <string name="savecsv">Export CSV-file to Documents/TourCount</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
     <string name="exportMenu">Export current DB</string>
@@ -37,7 +39,7 @@
     <string name="importWin">Your database has been imported.</string>
     <string name="errorDb">DB Error!</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
-    <string name="noDb">Please provide \'tourcount0.db\' into the directory Android/data/com.wmstein.tourcount/files.</string>
+    <string name="noDb">Please provide \'tourcount0.db\' in the directory \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
     <string name="individuals">Individuals</string>
     <string name="cancelButton">Cancel</string>
@@ -62,6 +64,7 @@
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>
     <string name="fileSize">Size</string>
+    <string name="noBack">Please select a file, you may cancel afterwards.</string>
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Count List Notes</string>
@@ -188,7 +191,7 @@
     <string name="dLa">Ø-Latitude</string>
     <string name="dLo">Ø-Longitude</string>
     <string name="mUncert">Max. Deviation</string>
-    <string name="txtSpecies">Sum of counted species: </string>
+    <string name="txtSpecies">Different counted species: </string>
     <string name="txtIndividuals">Sum of counted individuals: </string>
     <string name="txtSx">Sex.:</string>
     <string name="txtSt">Stad.:</string>
@@ -220,7 +223,7 @@
     <string name="countPupaHint">Pupa</string>
     <string name="countLarvaHint">Larva</string>
     <string name="countOvoHint">Egg</string>
-    <string name="warnCount">Only values bigger than zero possible!</string>
+    <string name="warnCount">Only values between 1 … 999999 allowed!</string>
     <string name="no_provider">No Service Provider available!</string>
     <string name="ok_button">OK</string>
     

@@ -41,7 +41,7 @@ internal class FileArrayAdapter(
         val t2 = v.findViewById<TextView>(R.id.TextView02)
         val name = o.name?.lowercase(Locale.getDefault())
         if (name != null) {
-            if (name.endsWith(".db")) im.setImageResource(R.drawable.db) else im.setImageResource(R.drawable.whitepage)
+            if (name.endsWith(".db")) im.setImageResource(R.drawable.db) else im.setImageResource(R.drawable.baseline_insert_drive_file_24)
         }
         if (t1 != null) t1.text = o.name
         if (t2 != null) t2.text = o.data

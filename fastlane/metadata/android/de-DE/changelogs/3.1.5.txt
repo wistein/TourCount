@@ -1,4 +1,7 @@
 Version 3.1.5 (26.02.2020)
+- Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
 - Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
 - App-Icon angepasst für bessere Darstellung auf Android 9
-- Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
+- Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
+- Kleinere Text-Verbesserungen
+- Änderungen in AndroidManifest.xml und build.gradle

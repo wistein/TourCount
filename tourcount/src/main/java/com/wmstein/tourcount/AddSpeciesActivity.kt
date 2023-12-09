@@ -30,12 +30,12 @@ import com.wmstein.tourcount.widgets.SpeciesAddWidget
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06
- * last edited on 2023-07-13
+ * last edited on 2023-11-29
  */
 class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var tourCount: TourCountApplication? = null
 
-    private var add_area: LinearLayout? = null
+    private var addArea: LinearLayout? = null
 
     // the actual count data
     private var countDataSource: CountDataSource? = null
@@ -66,7 +66,7 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         brightPref = prefs.getBoolean("pref_bright", true)
 
         setContentView(R.layout.activity_add_species)
-        val add_screen = findViewById<ScrollView>(R.id.addScreen)
+        val addScreen = findViewById<ScrollView>(R.id.add_screen)
 
         // Set full brightness of screen
         if (brightPref) {
@@ -75,19 +75,22 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
             params.screenBrightness = 1.0f
             window.attributes = params
         }
-        bMap = tourCount!!.decodeBitmap(R.drawable.abackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(add_screen.resources, bMap)
-        add_screen.background = bg
-        add_area = findViewById(R.id.addSpecLayout)
+        bMap = tourCount!!.decodeBitmap(
+            R.drawable.abackground,
+            tourCount!!.width,
+            tourCount!!.height
+        )
+
+        bg = BitmapDrawable(addScreen.resources, bMap)
+        addScreen.background = bg
+        addArea = findViewById(R.id.addSpecLayout)
 
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
-        namesCompleteArrayList =
-            ArrayList(listOf(*resources.getStringArray(R.array.selSpecs)))
-        namesGCompleteArrayList =
-            ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_g)))
-        codesCompleteArrayList =
-            ArrayList(listOf(*resources.getStringArray(R.array.selCodes)))
-    }
+        namesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs)))
+        namesGCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_g)))
+        codesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selCodes)))
+
+    } // end of onCreate()
 
     override fun onResume() {
         super.onResume()
@@ -105,7 +108,7 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         }
 
         // clear any existing views
-        add_area!!.removeAllViews()
+        addArea!!.removeAllViews()
 
         // setup the data sources
         countDataSource = CountDataSource(this)
@@ -153,10 +156,10 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
             saw.setSpecCode(codesCompleteArrayList!![i])
             saw.setPSpec(codesCompleteArrayList!![i]!!)
             saw.setSpecId(idArray[i]!!)
-            add_area!!.addView(saw)
+            addArea!!.addView(saw)
             i++
         }
-    } // end of Resume
+    } // end of Resume()
 
     // create idArray from codeArray
     private fun setIdsSelSpecs(speccodesm: ArrayList<String?>?): Array<String?> {
@@ -185,7 +188,7 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         // save added species to species list
         var retValue = true
         val idToAdd = view.tag as Int
-        val saw1 = add_area!!.getChildAt(idToAdd) as SpeciesAddWidget
+        val saw1 = addArea!!.getChildAt(idToAdd) as SpeciesAddWidget
         specName = saw1.getSpecName()
         specCode = saw1.getSpecCode()
         specNameG = saw1.getSpecNameG()
@@ -226,14 +229,14 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-        val add_screen = findViewById<ScrollView>(R.id.addScreen)
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        brightPref = prefs.getBoolean("pref_bright", true)
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
+        val addScreen = findViewById<ScrollView>(R.id.add_screen)
+        prefs?.registerOnSharedPreferenceChangeListener(this)
+        brightPref = prefs!!.getBoolean("pref_bright", true)
         bMap = tourCount!!.decodeBitmap(R.drawable.abackground, tourCount!!.width, tourCount!!.height)
-        add_screen.background = null
-        bg = BitmapDrawable(add_screen.resources, bMap)
-        add_screen.background = bg
+        addScreen.background = null
+        bg = BitmapDrawable(addScreen.resources, bMap)
+        addScreen.background = bg
     }
 
 }

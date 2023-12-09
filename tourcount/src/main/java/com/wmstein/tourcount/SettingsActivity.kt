@@ -14,12 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2023-07-13
+ * last edited on 2023-12-07
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
     private var prefs = TourCountApplication.getPrefs()
-    private var buttonSoundPref = false
 
     @SuppressLint("CommitPrefEdits", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,17 +39,16 @@ class SettingsActivity : AppCompatActivity() {
         super.onPause()
 
         var ringtone: String
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
-        if (buttonSoundPref) {
-            val button_sound_uri =
-                Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button)
-            ringtone = button_sound_uri.toString()
-            editor?.putString("button_sound", ringtone)
-            val button_sound_uri_m =
-                Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button_minus)
-            ringtone = button_sound_uri_m.toString()
-            editor?.putString("button_sound_minus", ringtone)
-        }
+
+        val buttonSoundUri =
+            Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button)
+        ringtone = buttonSoundUri.toString()
+        editor?.putString("button_sound", ringtone)
+
+        val buttonSoundUriM =
+            Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button_minus)
+        ringtone = buttonSoundUriM.toString()
+        editor?.putString("button_sound_minus", ringtone)
         editor?.commit()
     }
 

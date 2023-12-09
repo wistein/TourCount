@@ -1,0 +1,11 @@
+Version 3.4.4 (05.12.2023)
+- Kompiliert mit SDK Ver. 34 für targetSdkVersion 33
+- Gradle Plugin Upgrade -> 8.1.1
+- Import von DB-Dateien aus dem Verzeichnis "Documents/TourCount/"
+- Export von DB- und CSV-Dateien ins Verzeichnis "Documents/TourCount/"
+- Ergebnisseite verbessert
+- Einge Arten hinzugefügt
+- Fehlende Abbildungen ergänzt
+- Doku überarbeitet
+- Code-Verbesserungen
+- Bug-Fixes

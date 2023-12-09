@@ -1,3 +1,0 @@
-Version 3.3.0 (02.06.2022)
-- Weitere Falterart mit Abbildung hinzugefügt
-- Bugfix in arrays.xml

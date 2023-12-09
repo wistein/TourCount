@@ -1,6 +1,0 @@
-Version 3.2.7 (26.03.2022)
-- Projekt Anpassung für Android Studio 2021.1.1 und Gradle 7.2
-- Kompiliert für SDK-Version 31 (benötigt für aktuelle Bibliotheken)
-- Einige weitere Nachtfalterarten mit Abbildungen hinzugefügt
-- Zustandsinfo für Puppe, Raupe oder Ei wird nicht mehr erfasst
-- Kleinere Code-Korrekturen 

@@ -1,3 +1,0 @@
-Version 3.0.3 (01.05.2018)
-- Zusätzliche manuelle Eingabe für Datum, Start- und Stopzeit per langem Drücken
-- Projekt-Anpassungen für Android Studio 3.1.2 und Gradle 3.1.2

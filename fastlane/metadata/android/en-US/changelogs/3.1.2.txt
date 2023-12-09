@@ -1,4 +1,8 @@
 Version 3.1.2 (2019-08-04)
+- Project adaption for Android Studio 3.4.1 and Gradle 5.1.1
 - Added/changed butterfly pictures
 - Exported csv-file with total of different species counted
+- Minimal changes to starting page
+- Integrated list of many European species
+- Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
 - Bugfix in database handling

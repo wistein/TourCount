@@ -16,7 +16,8 @@ import java.util.Objects
  * ListSpeciesActivity shows the result page
  * Created for TourCount by wmstein on 15.03.2016
  * Last edited in Java on 2020-10-18,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2023-11-24.
  */
 class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtSpecName: TextView
@@ -69,12 +70,12 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
             }
         }
         specCount.text = spCount.toString()
-        specCountf1i.text = spec.count_f1i.toString()
-        specCountf2i.text = spec.count_f2i.toString()
-        specCountf3i.text = spec.count_f3i.toString()
-        specCountpi.text = spec.count_pi.toString()
-        specCountli.text = spec.count_li.toString()
-        specCountei.text = spec.count_ei.toString()
+        if (spec.count_f1i > 0) specCountf1i.text = spec.count_f1i.toString()
+        if (spec.count_f2i > 0) specCountf2i.text = spec.count_f2i.toString()
+        if (spec.count_f3i > 0) specCountf3i.text = spec.count_f3i.toString()
+        if (spec.count_pi > 0) specCountpi.text = spec.count_pi.toString()
+        if (spec.count_li > 0) specCountli.text = spec.count_li.toString()
+        if (spec.count_ei > 0) specCountei.text = spec.count_ei.toString()
         if (spec.notes != null) {
             if (spec.notes!!.isNotEmpty()) {
                 txtSpecRem.text = spec.notes
@@ -87,7 +88,7 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
         }
     }
 
-    //Parameter spec_count* for use in ListSpeciesActivity
+    //Parameter specCnt* for use in ListSpeciesActivity
     fun getSpec_countf1i(spec: Count): Int {
         return spec.count_f1i
     }

@@ -34,12 +34,12 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-07-13
+ * last edited on 2023-11-24
  */
 class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var tourCount: TourCountApplication? = null
 
-    private var spec_area: LinearLayout? = null
+    private var specArea: LinearLayout? = null
 
     // preferences
     private var prefs = TourCountApplication.getPrefs()
@@ -67,10 +67,10 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         sectionDataSource = SectionDataSource(this)
         headDataSource = HeadDataSource(this)
         individualsDataSource = IndividualsDataSource(this)
-        val listSpec_screen = findViewById<ScrollView>(R.id.listSpecScreen)
-        listSpec_screen.background = tourCount!!.background
+        val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
+        resultsScreen.background = tourCount!!.background
         supportActionBar!!.title = getString(R.string.viewSpecTitle)
-        spec_area = findViewById(R.id.listSpecLayout)
+        specArea = findViewById(R.id.listSpecLayout)
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
@@ -83,7 +83,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         }
 
         // clear existing views
-        spec_area!!.removeAllViews()
+        specArea!!.removeAllViews()
         loadData()
     }
 
@@ -120,13 +120,13 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         val elw = ListTitleWidget(this, null)
         elw.setListTitle(getString(R.string.titleEdit))
         elw.setListName(section.name)
-        spec_area!!.addView(elw)
+        specArea!!.addView(elw)
 
         // display the list remark
         val erw = ListTitleWidget(this, null)
         erw.setListTitle(getString(R.string.notesHere))
         erw.setListName(section.notes)
-        spec_area!!.addView(erw)
+        specArea!!.addView(erw)
 
         // display the head data
         val ehw = ListHeadWidget(this, null)
@@ -134,7 +134,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         ehw.setWidgetLCo1(section.country)
         ehw.setWidgetLName(getString(R.string.inspector))
         ehw.setWidgetLName1(head.observer)
-        spec_area!!.addView(ehw)
+        specArea!!.addView(ehw)
 
         // setup the data sources
         countDataSource!!.open()
@@ -186,7 +186,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         etw.setWidget_dla2(la)
         etw.setWidget_dlo2(lo)
         etw.setWidget_muncert2(uc)
-        spec_area!!.addView(etw)
+        specArea!!.addView(etw)
 
         // load the species data
         val specs = when (sortPref) {
@@ -196,75 +196,75 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         } //List of species
 
         // calculate the totals
-        var spec_countf1i: Int
-        var spec_countf2i: Int
-        var spec_countf3i: Int
-        var spec_countpi: Int
-        var spec_countli: Int
-        var spec_countei: Int
+        var specCntf1i: Int
+        var specCntf2i: Int
+        var specCntf3i: Int
+        var specCntpi: Int
+        var specCntli: Int
+        var specCntei: Int
         for (spec in specs) {
             val widget = ListSpeciesWidget(this, null)
             widget.setCount(spec)
-            spec_countf1i = widget.getSpec_countf1i(spec)
-            spec_countf2i = widget.getSpec_countf2i(spec)
-            spec_countf3i = widget.getSpec_countf3i(spec)
-            spec_countpi = widget.getSpec_countpi(spec)
-            spec_countli = widget.getSpec_countli(spec)
-            spec_countei = widget.getSpec_countei(spec)
-            summf += spec_countf1i
-            summ += spec_countf2i
-            sumf += spec_countf3i
-            sump += spec_countpi
-            suml += spec_countli
-            sumo += spec_countei
-            sumind = (sumind + spec_countf1i + spec_countf2i + spec_countf3i + spec_countpi
-                    + spec_countli + spec_countei) // sum of counted individuals
+            specCntf1i = widget.getSpec_countf1i(spec)
+            specCntf2i = widget.getSpec_countf2i(spec)
+            specCntf3i = widget.getSpec_countf3i(spec)
+            specCntpi = widget.getSpec_countpi(spec)
+            specCntli = widget.getSpec_countli(spec)
+            specCntei = widget.getSpec_countei(spec)
+            summf += specCntf1i
+            summ += specCntf2i
+            sumf += specCntf3i
+            sump += specCntpi
+            suml += specCntli
+            sumo += specCntei
+            sumind = (sumind + specCntf1i + specCntf2i + specCntf3i + specCntpi
+                    + specCntli + specCntei) // sum of counted individuals
             sumsp += 1 // sum of counted species
         }
 
         // display the totals
         lsw = ListSumWidget(this, null)
         lsw!!.setSum(sumsp, sumind)
-        spec_area!!.addView(lsw)
-        var spec_count: Int
+        specArea!!.addView(lsw)
+        var specCnt: Int
         var indivs: List<Individuals> // List of individuals
         // display all the counts by adding them to listSpecies layout
         for (spec in specs) {
             val widget = ListSpeciesWidget(this, null)
             widget.setCount(spec)
-            spec_countf1i = widget.getSpec_countf1i(spec)
-            spec_countf2i = widget.getSpec_countf2i(spec)
-            spec_countf3i = widget.getSpec_countf3i(spec)
-            spec_countpi = widget.getSpec_countpi(spec)
-            spec_countli = widget.getSpec_countli(spec)
-            spec_countei = widget.getSpec_countei(spec)
-            spec_count = (spec_countf1i + spec_countf2i + spec_countf3i
-                    + spec_countpi + spec_countli + spec_countei)
+            specCntf1i = widget.getSpec_countf1i(spec)
+            specCntf2i = widget.getSpec_countf2i(spec)
+            specCntf3i = widget.getSpec_countf3i(spec)
+            specCntpi = widget.getSpec_countpi(spec)
+            specCntli = widget.getSpec_countli(spec)
+            specCntei = widget.getSpec_countei(spec)
+            specCnt = (specCntf1i + specCntf2i + specCntf3i
+                    + specCntpi + specCntli + specCntei)
 
 
             // fill widget only for counted species
-            if (spec_count > 0) {
-                spec_area!!.addView(widget)
+            if (specCnt > 0) {
+                specArea!!.addView(widget)
                 val iName = widget.getSpec_name(spec)
                 indivs = individualsDataSource!!.getIndividualsByName(iName!!)
                 for (indiv in indivs) {
                     val iwidget = ListIndividualWidget(this, null)
                     //load the individuals data
                     iwidget.setIndividual(indiv)
-                    spec_area!!.addView(iwidget)
+                    specArea!!.addView(iwidget)
 
                     // show individual notes only when provided
                     val rwidget = ListIndivRemWidget(this, null)
                     val tRem: String? = if (iwidget.getIndNotes(indiv) == null) "" else iwidget.getIndNotes(indiv)
-                    if (tRem!!.length > 0) {
+                    if (tRem!!.isNotEmpty()) {
                         rwidget.setRem(indiv)
-                        spec_area!!.addView(rwidget)
+                        specArea!!.addView(rwidget)
                     }
                 }
             }
         }
         val lwidget = ListLineWidget(this, null)
-        spec_area!!.addView(lwidget)
+        specArea!!.addView(lwidget)
     }
 
     override fun onPause() {
@@ -288,12 +288,12 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-        val listSpec_screen = findViewById<ScrollView>(R.id.listSpecScreen)
-        listSpec_screen.background = null
-        listSpec_screen.background = tourCount!!.setBackground()
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        awakePref = prefs.getBoolean("pref_awake", true)
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
+        val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
+        resultsScreen.background = null
+        resultsScreen.background = tourCount!!.setBackground()
+        prefs?.registerOnSharedPreferenceChangeListener(this)
+        awakePref = prefs!!.getBoolean("pref_awake", true)
         sortPref = prefs.getString("pref_sort_sp", "none") // sorted species list
     }
 

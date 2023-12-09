@@ -1,3 +1,16 @@
 Version 3.2.3 (09.09.2020)
-- Bug in Location-Dienst behoben
 - Projekt-Anpassung für Android Studio 4.0.1 und Gradle 6.1.1
+- Location-Dienst in den Hauptfunktionen
+- Weitere Schmetterlingsabbildungen integriert
+- Integrierte Auswahlliste der Arten vergrößert
+- Hintergrundbild besser skaliert für längere Displays
+- Code für eingeschränkten Speicher-Zugriff angepasst für Android 10
+- Datendateien nun in App-spezifischem Verzeichnis
+- Code für Einstellungen angepasst für Android 10
+- Verwendung von AndroidX-Bibliotheken
+- Meldungen bereinigt
+- Hilfetext angepasst
+- Doku angepasst
+- Einige kleine Code-Verbesserungen
+- Bug in Location-Dienst behoben
+- Fehler in Einstellung für Button-Sound behoben

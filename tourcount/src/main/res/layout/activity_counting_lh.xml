@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018. Wilhelm Stein, Bonn, Germany.
+  ~ Copyright (c) 2018-2023, Wilhelm Stein, Bonn, Germany.
     activity_counting_lh.xml is used by CountingActivity.java
 -->
+
 <LinearLayout android:id="@+id/countingScreenLH"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+              android:layout_height="match_parent"
+			  android:orientation="vertical">
 
         <!-- insert the section notes in here -->
         <LinearLayout
@@ -90,5 +87,4 @@
 
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
 </LinearLayout>

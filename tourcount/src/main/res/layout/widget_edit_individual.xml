@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   - widget_edit_individual.xml used by EditIndividualActivity.java  
-  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  ~ Copyright (c) 2016-2023. Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -11,15 +11,10 @@
               android:layout_marginRight="5dp"
               android:layout_marginTop="5dp"
               android:background="@drawable/rounded_corner"
-              android:orientation="horizontal"
+              android:orientation="vertical"
               android:paddingBottom="5dp"
               android:paddingEnd="5dp"
               android:paddingStart="5dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +33,8 @@
                 android:paddingTop="0dp">
 
                 <TextView
-                    android:id="@+id/widgetLocality1"
+                    android:id="@+id/widget_Locality1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -46,12 +42,11 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
-                    android:id="@+id/widgetLocality2"
+                    android:id="@+id/widget_Locality2"
+                    style="@style/LineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -60,9 +55,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:ignore="LabelFor"/>
+                    tools:ignore="Autofill,LabelFor"/>
             </LinearLayout>
 
             <LinearLayout
@@ -75,7 +68,8 @@
                 tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:id="@+id/widgetZCoord1"
+                    android:id="@+id/widget_ZCoord1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -83,12 +77,10 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <TextView
-                    android:id="@+id/widgetZCoord2"
+                    android:id="@+id/widget_ZCoord2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -119,7 +111,8 @@
                 android:paddingTop="0dp">
 
                 <TextView
-                    android:id="@+id/widgetXCoord1"
+                    android:id="@+id/widget_XCoord1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -127,12 +120,10 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <TextView
-                    android:id="@+id/widgetXCoord2"
+                    android:id="@+id/widget_XCoord2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -154,7 +145,8 @@
                 tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:id="@+id/widgetYCoord1"
+                    android:id="@+id/widget_YCoord1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -162,12 +154,10 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <TextView
-                    android:id="@+id/widgetYCoord2"
+                    android:id="@+id/widget_YCoord2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -200,7 +190,8 @@
                 tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:id="@+id/widgetStadium1"
+                    android:id="@+id/widget_Stadium1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -208,12 +199,10 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <TextView
-                    android:id="@+id/widgetStadium2"
+                    android:id="@+id/widget_Stadium2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -223,6 +212,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     tools:ignore="LabelFor"/>
             </LinearLayout>
 
@@ -237,7 +227,8 @@
                 tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:id="@+id/widgetState1"
+                    android:id="@+id/widget_State1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -245,12 +236,11 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
-                    android:id="@+id/widgetState2"
+                    android:id="@+id/widget_State2"
+                    style="@style/LineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -259,8 +249,8 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textSize="16sp"
-                    tools:ignore="LabelFor"/>
+                    tools:ignore="Autofill,HardcodedText,LabelFor"
+                    android:hint="0" />
             </LinearLayout>
 
             <LinearLayout
@@ -271,7 +261,8 @@
                 android:paddingTop="0dp">
 
                 <TextView
-                    android:id="@+id/widgetCount1"
+                    android:id="@+id/widget_Count1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -279,21 +270,23 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-                <EditText
-                    android:id="@+id/widgetCount2"
+                <com.wmstein.tourcount.AutoFitEditText
+                    android:id="@+id/widget_Count2"
+                    style="@style/LineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:inputType="phone"
+                    android:maxLength="6"
                     android:paddingBottom="5dp"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textSize="16sp"
                     tools:ignore="LabelFor"/>
             </LinearLayout>
 
@@ -303,21 +296,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:paddingTop="0dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingTop="0dp"
-                tools:ignore="RtlSymmetry">
-
                 <TextView
-                    android:id="@+id/widgetIndivNote1"
+                    android:id="@+id/widget_IndivNote1"
+                    style="@style/HeadlineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
@@ -325,12 +311,11 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
-                    android:id="@+id/widgetIndivNote2"
+                    android:id="@+id/widget_IndivNote2"
+                    style="@style/LineText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -341,13 +326,8 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:ignore="LabelFor" />
+                    tools:ignore="Autofill,LabelFor"
+                    android:hint="@string/bemi" />
             </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </LinearLayout>

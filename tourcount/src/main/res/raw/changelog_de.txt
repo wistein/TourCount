@@ -71,62 +71,67 @@ _ Subtitle
   _ 
     ! Schmetterlings-Abbildungen: 
     * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+    * Deltote bankiana, Autor: Andre den Ouden, lizensiert von www.saxifraga.nl, nicht-kommerzielle Verwendung erlaubt, erstellt aus http://freenatureimages.eu/Animals/Microlepidoptera-Heterocera%2C%20Nachtvlinders%2C%20Moths/index.html
     * Evergestis extimalis, Autor: Adam Furlepa, CC BY-SA 3.0, erstellt aus https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
     * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-	* Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+    * Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
     * Jordanita globulariae, Autor: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
     * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-	* Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Melitaea parthenoides, Autor: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license, derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides
     * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
     * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
   _
     ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
-	! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden. Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren. 
+    ! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden.
+    ! Aber es ist nicht erlaubt, Abbildungen auf Meta Platforms (Facebook) hochzuladen, da die meisten der genannten Lizenzen mit den Lizenzen von Meta Platforms kollidieren.
+    ! Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren.
   _ 
 
-$ 3.4.3
-  % Version 3.4.3
-  _ 09.08.2023
-  * Gradle Plugin Upgrade -> 8.1.0
-  * Einge noch fehlende Abbildungen ergänzt
-  * Docs überarbeitet
+$ 3.4.4
+  % Version 3.4.4
+  _ 05.12.2023
+  * Kompiliert mit SDK Ver. 34 für targetSdkVersion 33
+  * Gradle Plugin Upgrade -> 8.1.1
+  * Import von DB-Dateien aus dem Verzeichnis "Documents/TourCount/"
+  * Export von DB- und CSV-Dateien ins Verzeichnis "Documents/TourCount/"
+  * Ergebnisseite verbessert
+  * Einge Arten hinzugefügt
+  * Fehlende Abbildungen ergänzt
+  * Doku überarbeitet
+  * Code-Verbesserungen
+  * Bug-Fixes
 
 $ 3.4.2
   % Version 3.4.2
   _ 30.07.2023
   * Einge noch fehlende Abbildungen ergänzt
-  * Docs überarbeitet
+  * Doku überarbeitet
 
 $ 3.4.0
   % Version 3.4.0
   _ 13.07.2023
-  * Option Landscape-Modus entfernt, da der Portrait-Modus selbst auf Tablets passender ist
+  * Option Landscape-Modus entfernt, da der Portrait-Modus selbst auf Tablets vorteilhafter ist
   * Weitere Module von Java nach Kotlin übersetzt
   * Code-Anpassungen für Kotlin
-  * Einge missbilligte (deprecated) Funktionen ersetzt
+  * Einge veraltete (deprecated) Funktionen ersetzt
   * Code-Verbesserungen
-  * Docs überarbeitet
+  * Doku überarbeitet
 
 $ 3.3.5
   % Version 3.3.5
   _ 19.06.2023
-  * Gradle Plugin upgraded -> 8.0.2
-  * Gradle upgraded -> 8.0
-  * Missbilligte (deprecated) Funktionen ersetzt
+  * Kompiliert mit SDK Ver. 33 für targetSdkVersion 33
+  * Gradle Plugin Upgrade -> 8.0.2
+  * Gradle Upgrade -> 8.0
+  * Veraltete (deprecated) Funktionen ersetzt
   * Export von .csv-Files nach Documents/TourCount/ (erlaubt Bearbeitung mit anderen Apps)
   * Option für Vibration, kurz beim Hoch- und länger beim Runterzählen
-  * Tieferer Sound beim Runterzählen
+  * Tieferer Ton beim Runterzählen
   * Weitere Code-Verbesserungen
   * Eine weitere Schmetterlingsart hinzugefügt
   * Android-Mindest-Version 7.1 (Nougat)
-
-$ 3.3.4
-  % Version 3.3.4
-  _ 26.03.2023
-  * Gradle Plugin Upgrade -> 7.4.2
-  * Gradle Upgrade -> 7.5
-  * Kompiliert mit SDK Ver. 33 für targetSdkVersion 33 
   * Update der Copyright-Texte
 
 $ 3.3.3
@@ -134,408 +139,224 @@ $ 3.3.3
   _ 25.10.2022
   * Gradle Plugin Upgrade -> 7.3.1
   * Gradle Upgrade -> 7.4
-  * Kompiliert mit SDK Ver. 32 für targetSdkVersion 31, resultierender "duplicate library"-Konflikt gelöst
-  * Weitere Falterarten mit Abbildungen hinzugefügt
-
-$ 3.3.2
-  % Version 3.3.2
-  _ 17.10.2022
+  * Kompiliert mit SDK Ver. 32 für targetSdkVersion 31
   * Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
   * Weitere Falterarten mit Abbildungen hinzugefügt
-
-$ 3.3.1
-  % Version 3.3.1
-  _ 19.07.2022
-	* Einige Falterabbildungen überarbeitet
-	* Eine weitere Falterart mit Abbildung hinzugefügt
-	* 2. Bugfix in arrays.xml
-
-$ 3.3.0
-  % Version 3.3.0
-  _ 02.06.2022
-	* Weitere Falterart mit Abbildung hinzugefügt
 	* Bugfix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9
   _ 21.05.2022
 	* Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
-	* Portrait/Landscape-Funktion verbessert
-	* Weitere Falterarten mit Abbildungen hinzugefügt
-	* Code-Verbesserungen
-	* Update der Doku
-
-$ 3.2.8
-  % Version 3.2.8
-  _ 17.04.2022
-	* Weitere Falterarten mit Abbildungen hinzugefügt
-	* Update von Dokumenten und Beispiel-DBs
-	* Update der Copyright und Lizenztexte
-	* Location background permission entfernt
-
-$ 3.2.7
-  % Version 3.2.7
-  _ 26.03.2022
-	* Projekt Anpassung für Android Studio 2021.1.1 und Gradle 7.2
 	* Kompiliert für SDK-Version 31 (benötigt für aktuelle Bibliotheken)
+	* Portrait/Landscape-Funktion verbessert
+	* Location background permission entfernt
+	* Update der Doku und Beispiel-Datenbanken
+	* Update der Copyright und Lizenztexte
 	* Einige weitere Nachtfalterarten mit Abbildungen hinzugefügt
 	* Zustandsinfo für Puppe, Raupe oder Ei wird nicht mehr erfasst
-    * Kleinere Code-Korrekturen 
+	* Code-Verbesserungen
 
 $ 3.2.6
   % Version 3.2.6
   _ 22.08.2021
 	* Projekt Anpassung für Android Studio 2020.3.1 und Gradle 7.0.1
-	* Einige veraltete Schmetterlingsnamen angepasst (innerhalb App und Beispiel-DBs)
-	* Einige fehlende Schmetterlingsabbildungen hinzugefügt
-		
-$ 3.2.5
-  % Version 3.2.5
-  _ 05.06.2021
-	* Projekt Anpassung für Android Studio 4.2.1 und Gradle 6.7.1
-	* Kompiliert mit SDK Ver. 30 targetSdkVersion 29 (targetSdkVersion 30 blockiert die Installation von "Unbekannter Quelle" und verhindert das Testen des eigenen Kompilats unter Android 11!)
-
-$ 3.2.4
-  % Version 3.2.4
-  _ 11.04.2021
 	* Verbesserung von Layout und Funktion des Spezieslisten-Editors
+	* Einige veraltete Spezies-Familiennamen angepasst (innerhalb App und Beispiel-DBs)
 	* Veraltete Code-Bezeichnungen aktualisiert
 	* Berechtigungsabfrage für Standortabfrage im Hintergrund
-	* Projekt-Anpassung für Android Studio 4.1.3 und Gradle 6.5
 	* Code-Anpassung für Fehlfunktion der Bilderanzeige unter Gradle 6.5
+	* Einige fehlende Schmetterlingsabbildungen hinzugefügt
 	* Einige Abbildungen überarbeitet
-	* Geänderte Familiennamen angepasst
 
 $ 3.2.3
   % Version 3.2.3
   _ 09.09.2020
-	* Bug in Location-Dienst behoben
 	* Projekt-Anpassung für Android Studio 4.0.1 und Gradle 6.1.1
-
-$ 3.2.2
-  % Version 3.2.2
-  _ 05.05.2020
 	* Location-Dienst in den Hauptfunktionen
-	* Fehler in Einstellung für Button-Sound behoben
 	* Weitere Schmetterlingsabbildungen integriert
 	* Integrierte Auswahlliste der Arten vergrößert
-
-$ 3.2.1
-  % Version 3.2.1
-  _ 23.04.2020
 	* Hintergrundbild besser skaliert für längere Displays
-	* Meldungen bereinigt
-
-$ 3.2.0
-  % Version 3.2.0
-  _ 20.04.2020
 	* Code für eingeschränkten Speicher-Zugriff angepasst für Android 10
 	* Datendateien nun in App-spezifischem Verzeichnis
 	* Code für Einstellungen angepasst für Android 10
 	* Verwendung von AndroidX-Bibliotheken
+	* Meldungen bereinigt
 	* Hilfetext angepasst
-	* Einige kleine Code-Verbesserungen
-	* Projekt-Anpassung für Android Studio 3.6.3
 	* Doku angepasst
+	* Einige kleine Code-Verbesserungen
+	* Bug in Location-Dienst behoben
+	* Fehler in Einstellung für Button-Sound behoben
 
 $ 3.1.5
   % Version 3.1.5
   _ 26.02.2020
+	* Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
 	* Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
 	* App-Icon angepasst für bessere Darstellung auf Android 9
-	* Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
-
-$ 3.1.4
-  % Version 3.1.4
-  _ 08.12.2019
 	* Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
 	* Kleinere Text-Verbesserungen
-  	* Projekt-Anpassung für Android Studio 3.5.3 und Gradle 5.4.1
 	* Änderungen in AndroidManifest.xml und build.gradle
 
 $ 3.1.2
   % Version 3.1.2
   _ 04.08.2019
-  	* Schmetterlingsbilder geändert/ergänzt
-  	* Exportierte csv-Datei mit Summe der gezählten Arten
-  	* Fehler in Datenbanknutzung behoben
-
-$ 3.1.1
-  % Version 3.1.1
-  _ 12.06.2019
-  	* Projekt-Anpassung für Android Studio 3.4.1 und Gradle 5.1.1
-  	* Kleinere Designänderungen der Startseite
-  	* Fehler behoben
-
-$ 3.1.0
-  % Version 3.1.0
-  _ 16.04.2019
-  	* Integrierte Auswahlliste mit vielen Europäischen Spezies
-	* Hinzufügen neuer Spezies mittels Scroll-Down-Auswahl aus einer umfassenden Liste, die nur nicht vorhandene Spezies anzeigt
+ 	* Projekt-Anpassung für Android Studio 3.4.1 und Gradle 5.1.1
+ 	* Schmetterlingsbilder geändert/ergänzt
+ 	* Exportierte csv-Datei mit Summe der gezählten Arten
+ 	* Kleinere Designänderungen der Startseite
+ 	* Integrierte Auswahlliste mit vielen Europäischen Spezies
+ 	* Hinzufügen neuer Spezies mittels Scroll-Down-Auswahl aus einer umfassenden Liste, die nur nicht vorhandene Spezies anzeigt
+ 	* Fehler in Datenbanknutzung behoben
 
 $ 3.0.8
   % Version 3.0.8
   _ 25.03.2019
-  	* DB-Struktur ergänzt für lokale Schmetterlingsnamen
-  	* Beispiel-Datenbanken mit lokalen Schmetterlingsnamen
-  	* Ergebnisdarstellung mit lokalen Schmetterlingsnamen
-  	* Zusätzliche Schmetterlingsabbildungen
-    * Kleinere Design-Änderungen
-    * Code-Bereinigungen
-  	* Projekt-Anpassung für Android Studio 3.3.2 und Gradle 4.10.1
-  	* Minimale Android-Version geändert in 4.4 (KitKat)
-
-$ 3.0.7
-  % Version 3.0.7
-  _ 16.12.2018
-  	* Zusätzliche Schmetterlingsabbildungen
-  	* Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
-  	* Kleinere Designänderungen in einigen App-Seiten
-  	* Absturzfehler bei schnell wiederholtem Klicken der Art-Auswahl behoben
-  	* Doku. teilweise überarbeitet
+ 	* Projekt-Anpassung für Android Studio 3.3.2 und Gradle 4.10.1
+ 	* Minimale Android-Version geändert in 4.4 (KitKat)
+ 	* DB-Struktur ergänzt für lokale Schmetterlingsnamen
+ 	* Beispiel-Datenbanken mit lokalen Schmetterlingsnamen
+ 	* Ergebnisdarstellung mit lokalen Schmetterlingsnamen
+ 	* Zusätzliche Schmetterlingsabbildungen
+ 	* Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
+ 	* Kleinere Designänderungen in einigen App-Seiten
+ 	* Doku. teilweise überarbeitet
+  * Code-Bereinigungen
+ 	* Absturzfehler bei schnell wiederholtem Klicken der Art-Auswahl behoben
 
 $ 3.0.5
   % Version 3.0.5
   _ 20.09.2018
-  	* Fehler bei Höhenkorrektur behoben 
-
-$ 3.0.4
-  % Version 3.0.4
-  _ 03.08.2018
-  	* Positionsabfragefunktion zuverlässiger, nun als Service 
-  	* Zusätzliche Schmetterlingsabbildungen
-  	* Wo sinnvoll, Toasts gegen Snackbars getauscht
-  	* Kleinere Code-Bereinigungen
-  	* Absturz-Fehler im Permission-Handling von Android >= Marshmallow behoben
-  	* Absturz-Fehler im Modul "Edit Speziesliste" behoben
-
-$ 3.0.3
-  % Version 3.0.3
-  _ 04.05.2018
-  	* Zusätzliche manuelle Eingabe für Datum, Start- und Stopzeit per langem Drücken
-  	* Projekt-Anpassungen für Android Studio 3.1.2 und Gradle 3.1.2
-
-$ 3.0.2
-  % Version 3.0.2
-  _ 17.04.2018
-  	* Code-Verbesserungen
-	* Fehler behoben
+ 	* Projekt-Anpassungen für Android Studio 3.1.2 und Gradle 3.1.2
+ 	* Positionsabfragefunktion zuverlässiger, nun als Service
+ 	* Zusätzliche manuelle Eingabe für Datum, Start- und Stopzeit per langem Drücken
+ 	* Zusätzliche Schmetterlingsabbildungen
+ 	* Wo sinnvoll, Toasts gegen Snackbars getauscht
+ 	* Code-Verbesserungen
+ 	* Fehler bei Höhenkorrektur behoben
+ 	* Absturz-Fehler im Permission-Handling von Android >= Marshmallow behoben
+ 	* Absturz-Fehler im Modul "Edit Speziesliste" behoben
+	* Weitere Fehler behoben
 
 $ 3.0.1
   % Version 3.0.1
   _ 04.04.2018
+	* Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
 	* Unnötige Berechtigung WRITE_SETTINGS entfernt
-  	* Multi-Window-Modus (Android 7+) gesperrt wegen inkompatiblem Pull-Down-Menü (Spinner)
-  	* Kleine Änderungen in Ergebnisseite
-
-$ 3.0.0
-  % Version 3.0.0
-  _ 03.04.2018
 	* Neues Zählseiten-Layout mit Scroll-Menü zur Art-Auswahl
 	* Separate Zähler für ♂♀, ♂, ♀, Puppe, Raupe, Ei
-	* Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
-  	* Erstmaliger Start erzeugt nun direkt nutzbare interne DB mit verbreiteten europäischen Arten 
+ 	* Multi-Window-Modus (Android 7+) gesperrt wegen inkompatiblem Pull-Down-Menü (Spinner)
 	* Korrekte Subtraktion bei Kategorien der Arten und der Individual-Einträge
-	* Layout der Ergebnisseite angepasst
+	* Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
+  * Automatische Konvertierung beim Laden von existierenden Datenbanken in neue Version
+ 	* Erstmaliger Start erzeugt nun direkt nutzbare interne DB mit verbreiteten europäischen Arten
 	* Layout der Startseite geändert
+	* Layout der Ergebnisseite angepasst
 	* Weitere Schmetterlingsabbildungen integriert
 	* Dokumentation überarbeitet für Ver. 3.0
-	* Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
-  	* Fehler behoben
+ 	* Fehler behoben
 
 $ 2.4.6
   % Version 2.4.6
   _ 19.03.2018
-	* Code Optimierung bezüglich Reverse Geocoding
-  	* Kamera-Button in Menüleiste der Zählseite hinzugefügt
-  	* Quellcode-Projekt restrukturiert
-  	* Fehler behoben
-
-$ 2.4.2
-  % Version 2.4.2
-  _ 28.02.2018
-	* Inverse Geocoding aus GPS-Koordinaten für Meta-Daten und individueller Lokalität
+ 	* Quellcode-Projekt restrukturiert
+	* OSM Inverse Geocoding aus GPS-Koordinaten für Meta-Daten und individuellem Fundort
+ 	* Kamera-Button in Menüleiste der Zählseite hinzugefügt
 	* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
 	* Verschiedene Detail-Verbesserungen
-	* Funktionsrelikte entfernt und Fehler behoben
-	* Aktualisierung der Doku
-
-$ 2.3.2
-  % Version 2.3.2
-  _ 01.01.2018
+	* Funktionsrelikte entfernt
 	* Abbildungen der Spezies von den Kanaren und Madeira ergänzt
 	* Weitere vorbereitete Datenbanken für Kanaren und Madeira unter <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
-  	* Code für Entwicklungsumgebung Android Studio 3.0 angepasst
-  	* Docs: Einführende Prasentation hinzugefügt
-  	* Fehler behoben
+ 	* Doku: Einführende Prasentation hinzugefügt
+	* Aktualisierung der Doku
+ 	* Fehler behoben
 
 $ 2.3.0
   % Version 2.3.0
   _ 27.09.2017
-  	* Code für Android 7.1 angepasst und kompiliert
-  	* Kleinere Code-Verbesserungen
-  	* Fehler behoben
-
-$ 2.2.0
-  % Version 2.2.0
-  _ 11.09.2017
-  	* Systemlog-Meldungen nur noch im Debug-Modus
-
-$ 2.1.9
-  % Version 2.1.9
-  _ 10.09.2017
-  	* Layout-Verbesserung der Ergebnisseite
-    * Versionskontrolle für Datenbank hinzugefügt, um mit alter Datenbankstruktur (vor Version 2.1.4) kompatibel zu sein
-    * Fix gegen Absturz beim Zählen mit einer Datenbank in alter Struktur (vor 2.1.4)
-    * Fehlerbehebung
-
-$ 2.1.8
-  % Version 2.1.8
-  _ 30.08.2017
-    * Option zum Umschalten zwischen Portrait- und Landscape-Modus
-    * Zeige richtige Überschrift direkt nach Laden oder Zurücksetzen einer DB
-    * Fehlerbehebung und kleinere Code-Verbesserungen
-
-$ 2.1.7
-  % Version 2.1.7
-  _ 22.08.2017
-    * Höhenkorrektur mittels Geoid-Differenzwerte gemäß EarthGravitationalModel EGM96
-  
-$ 2.1.6
-  % Version 2.1.6
-  _ 14.07.2017
-    * CSV-Export weist nun die Anzahl der Spezies nach Geschlecht und Stadium aus
-    * CSV-Export unterdrückt Nullwerte für bessere Übersicht
-    * Beenden der Individuuen-Dateneingabe mit Button-Sound
-    * Datenbankstruktur angepasst an Erfordernisse des erweiterten Datenexports
-  	* Zum Beenden Back-Button zweimal drücken
-  	* Kleinere Verbesserungen an Textdarstellung
-
-$ 2.1.5
-  % Version 2.1.5
-  _ 27.05.2017
-    * Unterstüzung auch für grobe Koordinatenbestimmung per Wifi und Funknetz
-    * GPS-Höhenkorrektur
-    * Ergebnisseite mit Summen
-    * Weitere Falter-Abbildungen
+ 	* Code für Android 7.1 angepasst und kompiliert
+  * Höhenkorrektur mittels Geoid-Differenzwerte gemäß EarthGravitationalModel EGM96
+ 	* Systemlog-Meldungen nur noch im MyDebug-Modus
+	* Links in App-Info und Hilfe hinzugefügt
+ 	* Layout-Verbesserung der Ergebnisseite
+  * Versionskontrolle für Datenbank hinzugefügt, um mit alter Datenbankstruktur (vor Version 2.1.4) kompatibel zu sein
+  * Option zum Umschalten zwischen Portrait- und Landscape-Modus
+  * Zeige richtige Überschrift direkt nach Laden oder Zurücksetzen einer DB
+  * CSV-Export weist nun die Anzahl der Spezies nach Geschlecht und Stadium aus
+  * CSV-Export unterdrückt Nullwerte für bessere Übersicht
+  * Beenden der Individuuen-Dateneingabe mit Button-Sound
+  * Datenbankstruktur angepasst an Erfordernisse des erweiterten Datenexports
+ 	* Zum Beenden Back-Button zweimal drücken
+  * Unterstüzung auch für grobe Koordinatenbestimmung per Wifi und Funknetz
+  * Ergebnisseite mit Summen
+  * Weitere Falter-Abbildungen
+ 	* Kleinere Verbesserungen an Textdarstellung
+  * Fix gegen Absturz beim Zählen mit einer Datenbank in alter Struktur (vor 2.1.4)
+  * Fehlerbehebung und kleinere Code-Verbesserungen
 
 $ 2.1.4
   % Version 2.1.4
   _ 01.12.2016
-    * Fehlerbehebung
-  	* Abbilder der Arten auf Zählseite
-    * Anderes Standard-Hintergrundbild (verschieden von dem der TransektCount-App)
-    
-$ 2.1.3
-  % Version 2.1.3
-  _ 31.10.2016
-    * Code-Verbesserung
-    * Icons auf der Seite "Einstellungen"
-    * Icons für die Menüeinträge
-    * Benutzung von Arten-Codes
-    * Option: Sortierung der Artenliste nach Artnamen oder Arten-Codes
-
-$ 2.1.2
-  % Version 2.1.2
-  _ 03.10.2016
-    * Layout der Ergebnisseite verbessert 
-
-$ 2.1.1
-  % Version 2.1.1
-  _ 30.09.2016
-    * Mehrfachzählung auf Individuen-Seite
-
-$ 2.1.0
-  % Version 2.1.0
-  _ 29.08.2016
-    * Option Zählseitendarstellung für Linkshänder
-
-$ 2.0.9
-  % Version 2.0.9
-  _ 29.08.2016
-    * Exportierbare csv-Tabelle verbessert
-    * Interne DB-Struktur angepasst
-
-$ 2.0.7
-  % Version 2.0.7
-  _ 04.08.2016
-    * Fehlerbehebung
-    * Code Optimierung
-
-$ 2.0.6
-  % Version 2.0.6
-  _ 24.07.2016
-    * Schalte Anzeige der Zählseite ab, wenn Handy eingesteckt wird
-    
-$ 2.0.5
-  % Version 2.0.5
-  _ 22.06.2016
-    * Option "Bildschirm hell" in Einstellungen
-    * Import Dialog für existierende DB
-    
-$ 2.0.4
-  % Version 2.0.4
-  _ 20.06.2016
-    * Ungenutzte Funktion (alert) entfernt
-    * Erlaubnisprüfung für Android-M
-    * Aufzeichnung der geogr. Höhe
-    * DB Struktur angepasst
-    * Fehlerbehebung
-
-$ 2.0.3
-  % Version 2.0.3
-  _ 06.06.2016
-    * DB-Struktur verbessert
-    * Resultatansicht verbessert
-    * Eingabemasken verbessert
-    * Fehlerbehebung
+ 	* Abbilder der Arten auf Zähl- und Ergebnisseite
+  * Anderes Standard-Hintergrundbild (verschieden von dem der TransektCount-App)
+  * Icons auf der Seite "Einstellungen"
+  * Icons für die Menüeinträge
+  * Verwendung von Arten-Codes
+  * Option: Sortierung der Artenliste nach Artnamen oder Arten-Codes
+  * Layout der Ergebnisseite verbessert
+  * Mehrfachzählung auf Individuen-Seite
+  * Option Zählseitendarstellung für Linkshänder
+  * Exportierbare csv-Tabelle verbessert
+  * Interne DB-Struktur angepasst
+  * Schalte Anzeige der Zählseite ab, solange Handy eingesteckt wird
+  * Option "Bildschirm hell" in Einstellungen
+  * Import Dialog für existierende DB
+  * Erlaubnisprüfung für Android-M
+  * Aufzeichnung der geogr. Höhe
+  * DB Struktur angepasst und verbessert
+  * Eingabemasken verbessert
+  * Code-Verbesserung
+  * Fehlerbehebung
 
 $ 2.0.2
   % Version 2.0.2
   _ 27.05.2016
-    * Sortierter csv-Export
-    * Nur noch 1 Zählliste
-    * Code bereinigt
-
-$ 2.0.1
-  % Version 2.0.1
-  _ 19.05.2016
-    * Individuen-Datenerfassung komplettiert
-    * Ergebnisseite und Export nach CSV komplettiert
+  * Sortierter csv-Export
+  * Nur noch 1 Zählliste
+  * Code bereinigt
+  * Individuen-Datenerfassung komplettiert
+  * Ergebnisseite und Export nach CSV komplettiert
 
 $ 1.0.2
   % Version 1.0.2
   _ 18.05.2016
-    * Zähl Button aktiviert Edit-Seite für Individuum-Daten
-    * Neue Tabelle "individuals" mit Zeit, Koordinaten, Geschlecht, Stadium, Zustand
-
-$ 1.0.1
-  % Version 1.0.1
-  _ 14.05.2016
-    * Meta-Daten (Datum, Zeit) ergänzt
-    * Plausi-Kontrolle für Meta-Daten
-    * Vorbereitet für GPS-Rekording
+  * Zähl Button aktiviert Edit-Seite für Individuum-Daten
+  * Neue Tabelle "individuals" mit Zeit, Koordinaten, Geschlecht, Stadium, Zustand
+  * Meta-Daten (Datum, Zeit) ergänzt
+  * Plausi-Kontrolle für Meta-Daten
+  * Vorbereitet für GPS-Rekording
 
 $ 1.0.0
   % Version 1.0.0
   _ 18.04.2016
   ! 1. Release.
-    * Funktion "Reset Daten"
-    * App läuft immer im Portraitmodus
-    * Exportiert Ergebnisse in csv-Format
-    * Ergebnisseite mit Stammdaten
-    * Eingabeseite für Stammdaten
-    * Ausführliche Hilfe-Seite
-    * Basis-DB-Import/Export: Leere Datenbank 'tourcount0.db'
-    * DB-Export: Datenbank 'tourcount_jjjjmmtt-hhmmss.db'
-    * Zählergebnis-Export: Excel-Datei 'tourcount_yyyymmdd-hhmmss.csv'
-    * Deutsche und englische Texte
-    * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
-    * TourCount basiert ursprünglich auf Teilen von BeeCount von knirirr
-    * https://github.com/knirirr/BeeCount.git
-    * Modifizierte AutoFitText.java, original Code von Autor: pheuschk
-    * Modifizierte ChangeLog.java original Code von Autor: Karsten Priegnitz
-    * Modifizierte CSVWriter.java original Code Copyright 2015 Bytecode Pty Ltd.
+  * Funktion "Reset Daten"
+  * App läuft immer im Portraitmodus
+  * Exportiert Ergebnisse in csv-Format
+  * Eingabeseite für Meta-Daten
+  * Ergebnisseite mit Stammdaten
+  * Ausführliche Hilfe-Seite
+  * Basis-DB-Import/Export: Leere Datenbank 'tourcount0.db'
+  * DB-Export: Datenbank 'tourcount_jjjjmmtt-hhmmss.db'
+  * Zählergebnis-Export: Excel-Datei 'tourcount_yyyymmdd-hhmmss.csv'
+  * Deutsche und englische Texte
+  * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
+  * TourCount basiert auf TransektCount, dessen Programmstruktur und Zählfunktionalität ursprünglich auf Teilen von BeeCount von knirirr basiert
+  * (https://github.com/knirirr/BeeCount.git)
+  * Modifizierte AutoFitText.java, original Code von Autor: pheuschk
+  * Modifizierte ChangeLog.java original Code von Autor: Karsten Priegnitz
+  * Modifizierte CSVWriter.java original Code Copyright 2015 Bytecode Pty Ltd.
+  * Modifizierter Datei-Auswahl-Dialog basiert auf android-file-chooser, 2011, Google Code Archive, GNU GPL v3
   _
 $ END_OF_CHANGE_LOG
   </body>

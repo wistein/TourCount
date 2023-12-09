@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml German strings -->
+<!-- strings.xml German strings,
+     last edited on 2023-12-05 -->
+
 <resources>
 
     <!-- generic -->
@@ -24,8 +26,8 @@
     <string name="viewHelpTitle">Hilfe</string>
     <string name="noCard">Kann nicht ins Documents-Directory schreiben!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
-    <string name="saveWin">Export nach Android/data/com.wmstein.tourcount/files.</string>
-    <string name="savecsv">Export nach Documents/TourCount.</string>
+    <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
+    <string name="savecsv">Export der CSV-Datei nach Documents/TourCount</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
@@ -37,7 +39,7 @@
     <string name="importWin">Die Datenbank wurde importiert.</string>
     <string name="errorDb">DB-Fehler!</string>
     <string name="corruptDb">Datenbankfehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
-    <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis Android/data/com.wmstein.tourcount/files.</string>
+    <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="individuals">Individuen</string>
@@ -62,6 +64,7 @@
     <!-- FileChooser -->
     <string name="currentDir">Aktuelles Verz.</string>
     <string name="fileSize">Größe</string>
+    <string name="noBack">Bitte Datei wählen, Abbruch ist danach möglich.</string>
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Bem. zur Liste</string>
@@ -188,7 +191,7 @@
     <string name="dLa">Ø-Breitengr.</string>
     <string name="dLo">Ø-Längengr.</string>
     <string name="mUncert">Max. Abweichung</string>
-    <string name="txtSpecies">Summe der gezählten Arten: </string>
+    <string name="txtSpecies">Verschiedene gezählte Arten: </string>
     <string name="txtIndividuals">Summe der gezählten Individuen: </string>
     <string name="txtSx">Sex.:</string>
     <string name="txtSt">Stad.:</string>
@@ -220,7 +223,7 @@
     <string name="countPupaHint">Puppe</string>
     <string name="countLarvaHint">Raupe</string>
     <string name="countOvoHint">Ei</string>
-    <string name="warnCount">Nur Werte größer Null möglich!</string>
+    <string name="warnCount">Nur Werte zwischen 1 … 999999 erlaubt!</string>
     <string name="no_provider">Kein Service-Provider verfügbar!</string>
     <string name="ok_button">OK</string>
 

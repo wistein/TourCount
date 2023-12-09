@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   - widget_list_head.xml used by ListSpeciesActivity.java  
-  ~ Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
+  ~ Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
@@ -32,18 +32,18 @@
 
             <TextView
                 android:id="@+id/widgetLCo"
+                style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:paddingBottom="5dp"
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
-                android:paddingTop="5dp"
-                android:textSize="17sp"
-                android:textStyle="bold"/>
+                android:paddingTop="5dp"/>
 
             <TextView
                 android:id="@+id/widgetLCo1"
+                style="@style/LineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -51,9 +51,7 @@
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 android:paddingTop="5dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -66,18 +64,18 @@
 
             <TextView
                 android:id="@+id/widgetLName"
+                style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:paddingBottom="5dp"
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
-                android:paddingTop="5dp"
-                android:textSize="17sp"
-                android:textStyle="bold"/>
+                android:paddingTop="5dp"/>
 
             <TextView
                 android:id="@+id/widgetLName1"
+                style="@style/LineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -85,9 +83,7 @@
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 android:paddingTop="5dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         </LinearLayout>
 

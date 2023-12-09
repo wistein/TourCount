@@ -13,14 +13,14 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import androidx.preference.PreferenceManager;
-
 import java.util.Objects;
+
+import androidx.preference.PreferenceManager;
 
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2022-07-06
+ * last change on 2023-12-07
  */
 public class TourCountApplication extends Application
 {
@@ -38,6 +38,7 @@ public class TourCountApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+
         TourCountApplication.context = getApplicationContext();
         bMapDraw = null;
         bMap = null;
@@ -87,25 +88,27 @@ public class TourCountApplication extends Application
 
         switch (Objects.requireNonNull(backgroundPref))
         {
-            case "none":
-                // boring black screen
-                bMap = null;
-                bMap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                bMap.eraseColor(Color.BLACK);
-                break;
-            case "default":
-                    // portrait
-                    if ((double) height / width < 1.8)
-                    {
-                        // normal screen
-                        bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height);
-                    }
-                    else
-                    {
-                        // long screen
-                        bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height);
-                    }
-                break;
+        case "none" ->
+        {
+            // boring black screen
+            bMap = null;
+            bMap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            bMap.eraseColor(Color.BLACK);
+        }
+        case "default" ->
+        {
+            // portrait
+            if ((double) height / width < 1.8)
+            {
+                // normal screen
+                bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height);
+            }
+            else
+            {
+                // long screen
+                bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height);
+            }
+        }
         }
 
         bMapDraw = new BitmapDrawable(this.getResources(), bMap);

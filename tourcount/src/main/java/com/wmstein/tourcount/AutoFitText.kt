@@ -20,11 +20,6 @@ import androidx.appcompat.widget.AppCompatTextView
  * This version upgrades the original "AutoFitTextView" to now also be adaptable to height and to
  * accept the different TextView types (Button, TextClock etc.)
  *
- * This code derived from:
- * http://pastebin.com/raw.php?i=e6WyrwSN
- * As mentioned in this thread:
- * https://stackoverflow.com/questions/16017165/auto-fit-textview-for-android
- *
  * @author pheuschk
  * createDate: 18.04.2013
  *
@@ -59,7 +54,7 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
     constructor(context: Context) : this(context, null)
 
     init {
-        mScaledDensityFactor = context.resources.displayMetrics.scaledDensity
+        mScaledDensityFactor = context.resources.displayMetrics.density
         mTestView = TextView(context)
         mTestPaint = Paint()
         mTestPaint.set(this.paint)

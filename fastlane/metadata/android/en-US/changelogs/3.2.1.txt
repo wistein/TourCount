@@ -1,3 +1,0 @@
-Version 3.2.1 (2020-04-23)
-- Background picture better scaled for long displays
-- Strings cleared up

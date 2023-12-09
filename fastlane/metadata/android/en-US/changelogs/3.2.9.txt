@@ -1,6 +1,10 @@
 Version 3.2.9 (2022-05-21)
 - Project adaption for Android Studio 2021.2.1 and Gradle 7.3.3
-- Portrait/landscape handling improved 
-- Some more species with pictures added
+- Compiled for SDK version 31 (needed for current libs)
+- Portrait/landscape handling improved
+- Location background permission removed
+- Documents and example-DBs updated
+- Copyright and license texts updated
+- Some more moths species with pictures added
+- State info for pupa, caterpillar or egg removed
 - Code improvements
-- Docs updated

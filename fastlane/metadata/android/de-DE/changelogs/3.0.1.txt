@@ -1,4 +1,15 @@
 Version 3.0.1 (03.04.2018)
-- Unnötige Berechtigung WRITE_SETTINGS entfernt 
+- Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
+- Unnötige Berechtigung WRITE_SETTINGS entfernt
+- Neues Zählseiten-Layout mit Scroll-Menü zur Art-Auswahl
+- Separate Zähler für ♂♀, ♂, ♀, Puppe, Raupe, Ei
 - Multi-Window-Modus (Android 7+) gesperrt wegen inkompatiblem Pull-Down-Menü (Spinner)
-- Kleine Änderungen in Ergebnisseite
+- Korrekte Subtraktion bei Kategorien der Arten und der Individual-Einträge
+- Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
+- Automatische Konvertierung beim Laden von existierenden Datenbanken in neue Version
+- Erstmaliger Start erzeugt nun direkt nutzbare interne DB mit verbreiteten europäischen Arten
+- Layout der Startseite geändert
+- Layout der Ergebnisseite angepasst
+- Weitere Schmetterlingsabbildungen integriert
+- Dokumentation überarbeitet für Ver. 3.0
+- Fehler behoben

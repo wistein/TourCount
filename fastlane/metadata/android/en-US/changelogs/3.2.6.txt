@@ -1,4 +1,9 @@
 Version 3.2.6 (2021-08-22)
 - Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
+- Layout and function of Edit species list improved
 - Some outdated butterfly names updated (within app and example DBs)
+- Outdated code names updated
+- Permission handling for Access Background Location
+- Fix for broken loading picture function since Gradle 6.5
 - Some missing butterfly pictures added
+- Some pictures improved

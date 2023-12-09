@@ -1,3 +1,16 @@
 Version 3.2.3 (2020-09-09)
-- Location service fix for coarse location
 - Project adaption for Android Studio 4.0.1 and Gradle 6.1.1
+- Location service active in major activities
+- More butterfly pictures integrated
+- Integrated initial list of species enlarged
+- Background picture better scaled for long displays
+- Code for restricted Storage Access adapted for Android 10
+- Data files now in app specific directory
+- Code for Preferences adapted for Android 10
+- Use of AndroidX libraries
+- Strings cleared up
+- Help text updated
+- Many minor code refinements
+- Docs updated
+- Location service fix for coarse location
+- Bug fix in button sound

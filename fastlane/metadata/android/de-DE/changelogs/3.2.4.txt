@@ -1,8 +1,0 @@
-Version 3.2.4 (11.04.2021)
-- Verbesserung von Layout und Funktion des Spezieslisten-Editors
-- Veraltete Code-Bezeichnungen aktualisiert
-- Berechtigungsabfrage für Standortabfrage im Hintergrund
-- Projekt-Anpassung für Android Studio 4.1.3 und Gradle 6.5
-- Code-Anpassung für Fehlfunktion der Bilderanzeige unter Gradle 6.5
-- Einige Abbildungen überarbeitet
-- Geänderte Familiennamen angepasst

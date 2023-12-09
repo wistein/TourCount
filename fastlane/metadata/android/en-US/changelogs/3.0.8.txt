@@ -1,9 +1,12 @@
 Version 3.0.8 (2019-03-25)
+- Project adaption for Android Studio 3.3.2 and Gradle 4.10.1
+- Minimum Android version changed to 4.4 KitKat
 - Database structure supplemented for local butterfly names
-- Example databases adapted fot local butterfly names)
+- Example databases adapted for local butterfly names
 - Exported results include local butterfly names
 - Additional butterfly pictures
-- Some minor screen design changes
+- Some pictures edited to show both sides of wings
+- Cosmetic changes to several app pages
+- Docs updated
 - Some code cleaning
-- Project adaption for Android Studio 3.3.2 and Gradle 4.10.1
-- Minimum Android version changed to 4.4 KitKat 
+- Fix for crash when species selector is rapidly repeatedly pressed

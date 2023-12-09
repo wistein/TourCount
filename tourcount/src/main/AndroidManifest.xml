@@ -7,11 +7,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permission used for exporting files into public directory -->
+    <!-- Permissions used for exporting files to the public directory Documents/TransektCount
+         which are then readable by an external app (until Android SDK-version 29) -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" android:maxSdkVersion="29"/>
 
-    <!-- Permission used for exporting files to any directory -->
+    <!-- Permission used for exporting files to the public directory Documents/TransektCount
+         which are then readable by an external app (since Android SDK-version 30) -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
@@ -31,19 +33,21 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- multiwindow crashes when rotating the screen, 
-         reason: spinner in Counting(L)Activity, 
+         reason: spinner in CountingActivity, 
          solution: application attribute
 		   android:resizeableActivity="false" 
 		 prohibits multi-window-mode
 	-->
+
+    <!-- android:largeHeap="true" (doesn't make a difference)
+    -->
     <application
         android:name=".TourCountApplication"
-        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:icon="@drawable/ic_launcher"
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:label="@string/app_name"
+        android:label="TourCount"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:resizeableActivity="false"
@@ -178,27 +182,6 @@
             android:exported="false">
         </service>
 
-        <!-- multiwindow crashes when rotating the screen, reason: spinner in CountingActivity
-                <uses-library
-                    android:name="com.sec.android.app.multiwindow"
-                    android:required="false"/>
-
-                <meta-data
-                    android:name="com.sec.android.support.multiwindow"
-                    android:value="true"/>
-                <meta-data
-                    android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
-                    android:resource="@dimen/app_defaultsize_w"/>
-                <meta-data
-                    android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
-                    android:resource="@dimen/app_defaultsize_h"/>
-                <meta-data
-                    android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
-                    android:resource="@dimen/app_minimumsize_w"/>
-                <meta-data
-                    android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
-                    android:resource="@dimen/app_minimumsize_h"/>
-        -->
     </application>
 
 </manifest>

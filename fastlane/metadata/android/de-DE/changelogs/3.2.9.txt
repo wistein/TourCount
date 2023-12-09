@@ -1,6 +1,10 @@
 Version 3.2.9 (21.05.2022)
 - Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
+- Kompiliert für SDK-Version 31 (benötigt für aktuelle Bibliotheken)
 - Portrait/Landscape-Funktion verbessert
-- Einige weitere Falterarten mit Abbildungen hinzugefügt
+- Location background permission entfernt
+- Update der Doku und Beispiel-Datenbanken
+- Update der Copyright und Lizenztexte
+- Einige weitere Nachtfalterarten mit Abbildungen hinzugefügt
+- Zustandsinfo für Puppe, Raupe oder Ei wird nicht mehr erfasst
 - Code-Verbesserungen
-- Update der Doku

@@ -132,7 +132,7 @@
 		<item comment="03983">Beilfleck-Widderchen</item>
 		<item comment="03986">-</item>
 		<item comment="03987">-</item>
-		<item comment="03988">Hochalpenwidderchen </item>
+		<item comment="03988">Hochalpenwidderchen</item>
 		<item comment="03990">Südliches Platterbsen-Widderchen</item>
 		<item comment="03991">Platterbsen-Widderchen</item>
 		<item comment="03992">Kleines Fünffleck-Widderchen</item>
@@ -338,7 +338,7 @@
 		<item comment="07139">Dunkler Alpenbläuling</item>
 		<item comment="07141">Heller Alpenbläuling</item>
 		<item comment="07143">Storchschnabel-Bläuling</item>
-		<item comment="07144">Südlicher Sonnenröschen- Bläuling</item>
+		<item comment="07144">Südlicher Sonnenröschen-Bläuling</item>
 		<item comment="07145">Kleiner Sonnenröschen-Bläuling</item>
 		<item comment="07146">Großer Sonnenröschen-Bläuling</item>
 		<item comment="07152">Rotklee-Bläuling</item>
@@ -386,7 +386,7 @@
 		<item comment="07255">Landkärtchen</item>
 		<item comment="07257">Trauermantel</item>
 		<item comment="07258">Großer Fuchs</item>
-		<item comment="07259">Östlicher Großer Fuchs</item>
+		<item comment="07259">Östlicher großer Fuchs</item>
 		<item comment="07265">Alpen-Maivogel</item>
 		<item comment="07266">Maivogel</item>
 		<item comment="07267">Spanischer Scheckenfalter</item>
@@ -399,7 +399,8 @@
 		<item comment="07276">Baldrian-Scheckenfalter </item>
 		<item comment="07277">Leinkraut-Scheckenfalter</item>
 		<item comment="07278">Westalpiner Scheckenfalter</item>
-		<item comment="07280">Ehrenpreis-Scheckenfalter </item>
+		<item comment="07279">Westlicher Scheckenfalter</item>
+		<item comment="07280">Ehrenpreis-Scheckenfalter</item>
 		<item comment="07281">Östlicher Scheckenfalter</item>
 		<item comment="07283">Wachtelweizen-Scheckenfalter</item>
 		<item comment="07286">Großer Eisvogel</item>
@@ -489,6 +490,7 @@
 		<item comment="07503">Zweipunkt-Sichelflügler</item>
 		<item comment="07508">Heller Sichelflügler</item>
 		<item comment="07517">Birken-Jungfernkind</item>
+		<item comment="07519">Kleines Jungfernkind</item>
 		<item comment="07522">Stachelbeer-Harlekin</item>
 		<item comment="07530">Pfaffenhütchen-Harlekin</item>
 		<item comment="07537">Steppenheiden Gitterspanner</item>
@@ -511,11 +513,16 @@
 		<item comment="08000">Waldreben-Grünspanner</item>
 		<item comment="08028">Ampferspanner</item>
 		<item comment="08036">Marmorierter Kleinspanner</item>
+		<item comment="08043">Braungestreifter Kleinspanner</item>
 		<item comment="08045">Schmuck-Kleinspanner</item>
+		<item comment="08054">Violettroter Kleinspanner</item>
 		<item comment="08060">Weißgrauer Kleinspanner</item>
 		<item comment="08099">Ockerfarbiger Steppenheiden-Zwergspanner</item>
 		<item comment="08104">Purpurstreifen-Zwergspanner</item>
+		<item comment="08155">Grauer Zwergspanner</item>
 		<item comment="08184">Dunkelbindiger Doppellinien-Zwergspanner</item>
+		<item comment="08186">Zweifarbiger Doppellinien-Zwergspanner</item>
+		<item comment="08205">Rotbandspanner</item>
 		<item comment="08221">Knöterich-Purpurspanner</item>
 		<item comment="08222">Ampfer-Purpurspanner</item>
 		<item comment="08227">Streifenspanner</item>
@@ -550,10 +557,13 @@
 		<item comment="09097">Ackerwinden-Bunteulchen</item>
 		<item comment="09114">Waldrasen-Grasmotteneulchen</item>
 		<item comment="09116">Buschrasen-Grasmotteneulchen</item>
+		<item comment="09118">Silbereulchen</item>
+		<item comment="09233">Königskerzen-Mönch</item>
 		<item comment="09338">Hornkraut-Tageulchen</item>
 		<item comment="09364">Karden-Sonneneule</item>
 		<item comment="09365">Warneckes Heidemoor-Sonneneule</item>
 		<item comment="09417">Morpheus-Staubeule</item>
+		<item comment="09557">Rotbuchen-Gelbeule</item>
 		<item comment="09771">Ackerrand-Grasbüscheleule</item>
 		<item comment="09907">Heidekraut-Bunteule</item>
 		<item comment="09917">Gemüseeule</item>

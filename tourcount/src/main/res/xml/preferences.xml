@@ -10,7 +10,7 @@
         <ListPreference
             android:entries="@array/pref_bg_entries"
             android:entryValues="@array/pref_bg_values"
-            android:icon="@drawable/ic_wallpaper_black_48dp"
+            android:icon="@drawable/baseline_wallpaper_48"
             android:key="pref_back"
             android:summary="@string/pref_bg_summ"
             android:title="@string/pref_bg"/>
@@ -18,21 +18,21 @@
         <ListPreference
             android:entries="@array/pref_sort_sp_entries"
             android:entryValues="@array/pref_sort_sp_values"
-            android:icon="@drawable/ic_sort_black_48dp"
+            android:icon="@drawable/baseline_sort_48"
             android:key="pref_sort_sp"
             android:summary="@string/pref_sort_order_sp_summ"
             android:title="@string/pref_sort_order"/>
         
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/ic_format_size_black_48dp"
+            android:icon="@drawable/baseline_format_size_48"
             android:key="pref_note_font"
             android:summary="@string/pref_note_font_summ"
             android:title="@string/pref_note_font"/>
         
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/ic_panl_tool_black_48dp"
+            android:icon="@drawable/outline_back_hand_48"
             android:key="pref_left_hand"
             android:summary="@string/pref_left_hand_summ"
             android:title="@string/pref_left_hand"/>
@@ -44,14 +44,14 @@
         
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/ic_music_video_black_48dp"
+            android:icon="@drawable/outline_music_video_48"
             android:key="pref_button_sound"
             android:summary="@string/pref_button_sound_summary"
             android:title="@string/pref_button_sound"/>
 
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/ic_vibration_black_48dp"
+            android:icon="@drawable/outline_vibration_48"
             android:key="pref_button_vib"
             android:summary="@string/pref_button_vib_summary"
             android:title="@string/pref_button_vib"/>
@@ -77,7 +77,7 @@
         
         <SwitchPreferenceCompat
             android:defaultValue="true"
-            android:icon="@drawable/ic_playlist_add_check_black_48dp"
+            android:icon="@drawable/baseline_playlist_add_check_48"
             android:key="pref_duplicate"
             android:summary="@string/pref_duplicate_summary"
             android:title="@string/pref_duplicate"/>
@@ -89,7 +89,7 @@
         
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/ic_room_black_48dp"
+            android:icon="@drawable/baseline_room_48"
             android:key="pref_metadata"
             android:summary="@string/pref_metadata_summ"
             android:title="@string/pref_metadata"/>
@@ -97,7 +97,7 @@
 
     <EditTextPreference
         android:hint="@string/email_hint"
-        android:icon="@drawable/ic_email_black_48dp"
+        android:icon="@drawable/outline_email_48"
         android:key="email_String"
         android:summary="@string/pref_email_string_summ"
         android:title="@string/pref_email_string"/>

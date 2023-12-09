@@ -1,7 +1,5 @@
 package com.wmstein.tourcount;
 
-import static java.lang.Math.sqrt;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,20 +21,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -60,8 +46,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
+
+import static java.lang.Math.sqrt;
 
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
@@ -71,21 +69,24 @@ import sheetrock.panda.changelog.ViewHelp;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2023-07-13
+ * last edited on 2023-12-09
  */
-public class WelcomeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
+public class WelcomeActivity
+    extends AppCompatActivity
+    implements SharedPreferences.OnSharedPreferenceChangeListener,
+    PermissionsDialogFragment.PermissionsGrantedCallback
 {
-    private static final String TAG = "TourCountWelcomeAct";
+    private static final String TAG = "WelcomeAct";
 
     @SuppressLint("StaticFieldLeak")
     private static TourCountApplication tourCount;
 
     LocationService locationService;
 
-    // Permission dispatcher mode modePerm: 
+    // Permission dispatcher mode locationPermissionDispatcherMode: 
     //  1 = use location service
     //  2 = end location service
-    private int modePerm;
+    private int locationPermissionDispatcherMode;
 
     // permLocGiven contains initial location permission state that
     // controls if location listener has to be stopped after permission changed: 
@@ -119,6 +120,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     private SQLiteDatabase database;
     private DbHelper dbHandler;
     private SectionDataSource sectionDataSource;
+    private Section section;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -127,18 +129,27 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onCreate(savedInstanceState);
 
         tourCount = (TourCountApplication) getApplication();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        setContentView(R.layout.activity_welcome);
+        View baseLayout = findViewById(R.id.baseLayout);
+        baseLayout.setBackground(tourCount.getBackground());
+
+        if (!isStorageGranted())
+        {
+            PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
+            if (!isStorageGranted())
+            {
+                showSnackbarRed(getString(R.string.perm_cancel));
+            }
+        }
+
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        setContentView(R.layout.activity_welcome);
-
-        ScrollView baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(tourCount.getBackground());
 
         // check initial location permission state
         permLocGiven = isPermLocGranted();
@@ -149,7 +160,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         editor.apply();
 
         // List tour name as title
-        Section section;
         String sname;
         try
         {
@@ -215,7 +225,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        ScrollView baseLayout = findViewById(R.id.baseLayout);
+        View baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
 
@@ -224,7 +234,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             Toast.makeText(this, "onResume permLocGiven = " + permLocGiven, Toast.LENGTH_SHORT).show();
 
         // List tour name as title
-        Section section;
         String sname;
         try
         {
@@ -248,14 +257,14 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
 
         // Get location with permissions check
-        modePerm = 1; // get location
-        permissionCaptureFragment();
+        locationPermissionDispatcherMode = 1; // get location
+        locationCaptureFragment();
 
     } // end of onResume
 
     // Part of permission handling
     @Override
-    public void permissionCaptureFragment()
+    public void locationCaptureFragment()
     {
         if (isLocPermissionGranted()) // current location permission state granted
         {
@@ -263,24 +272,25 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             if (MyDebug.LOG)
                 Toast.makeText(this, "Fragment permLocGiven = " + permLocGiven, Toast.LENGTH_SHORT).show();
 
-            switch (modePerm)
+            switch (locationPermissionDispatcherMode)
             {
-                case 1: // get location
-                    if (permLocGiven) // location permission state after start
-                    {
-                        getLoc();
-                    }
-                    break;
-
-                case 2: // stop location service
-                    if (permLocGiven)
-                        locationService.stopListener();
-                    break;
+            case 1 ->
+            { // get location
+                if (permLocGiven) // location permission state after start
+                {
+                    getLoc();
+                }
+            }
+            case 2 ->
+            { // stop location service
+                if (permLocGiven)
+                    locationService.stopListener();
+            }
             }
         }
         else
         {
-            if (modePerm == 1)
+            if (locationPermissionDispatcherMode == 1)
                 PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
         }
 
@@ -318,9 +328,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             WorkRequest retrieveAddrWorkRequest =
                 new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
                     .setInputData(new Data.Builder()
-                            .putString("URL_STRING", urlString)
-                            .build()
-                                 )
+                        .putString("URL_STRING", urlString)
+                        .build()
+                    )
                     .build();
 
             WorkManager
@@ -424,7 +434,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         }
         else if (id == R.id.importFileMenu)
         {
-            importFile();
+            importDBFile();
             return true;
         }
         else if (id == R.id.resetDBMenu)
@@ -464,7 +474,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
             // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
-            startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -496,12 +506,12 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
         // Trick: Pause for 100 msec to show toast
         mHandler.postDelayed(() ->
-        startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
+            startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
-        ScrollView baseLayout = findViewById(R.id.baseLayout);
+        View baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
         sortPref = prefs.getString("pref_sort_sp", "none");
@@ -544,8 +554,8 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         super.onStop();
 
         // Stop location service with permissions check
-        modePerm = 2;
-        permissionCaptureFragment();
+        locationPermissionDispatcherMode = 2;
+        locationCaptureFragment();
 
         // Stop RetrieveAddrWorker
         WorkManager.getInstance(this).cancelAllWork();
@@ -555,13 +565,29 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
      * The six functions below are for exporting and importing the database.
      * They've been put here because no database should be open at this point.
      *************************************************************************/
-    // Exports DB to SdCard/tourcount_yyyy-MM-dd_HHmmss.db
-    // supplemented with date and time in filename by wmstein
+
+    // Exports DB to Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.db
+    // supplemented with date and time in filename
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportDb()
     {
-        // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_yyyy-MM-dd_HHmmss.db
-        outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount_" + getcurDate() + ".db");
+        // new
+        // outfile -> Public Directory Documents/TourCount/
+        // and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
+        File path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
+        {
+            path = Environment.getExternalStorageDirectory();
+            path = new File(path + "/Documents/TourCount");
+        }
+        else
+        {
+            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            path = new File(path + "/TourCount");
+        }
+
+        path.mkdirs(); // just verify path, result ignored
+        outfile = new File(path, "/tourcount_" + getcurDate() + ".db");
 
         // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
         String inPath = getApplicationContext().getFilesDir().getPath();
@@ -599,7 +625,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
             {
                 // export db
                 copy(infile, outfile);
-                showSnackbar(getString(R.string.saveWin));
+                showSnackbar(getString(R.string.saveDB));
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
@@ -617,34 +643,27 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
      //   - comma delimiter and
      //   - "" for text recognition.
      // created on 2016-05-15, wm.stein
-     // last modified on 2023-06-18
+     // last modified on 2023-11-25
      */
     private void exportDb2CSV()
     {
         // outfile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.csv
-        //
-        // 1. Alternative for Android 11+
-        // outfile = new File(Environment.getExternalStorageDirectory() + "/Documents/TourCount" + "/tourcount_" + getcurDate() + ".csv");
-        //
-        // 2. Alternative for Android 10-
-        // outfile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/TourCount" + "/tourcount_" + getcurDate() + ".csv");
-
-        // use Public Directory (Documents) if possible (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
+        //   and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
-        } else
+        }
+        else
         {
             path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             path = new File(path + "/TourCount");
         }
-        //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // Verify path
+
+        path.mkdirs(); // just verify path, result ignored
         outfile = new File(path, "/tourcount_" + getcurDate() + ".csv");
 
-        Section section;
         String sectName;
         String sectNotes;
 
@@ -1173,21 +1192,35 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
 
     /**************************************************************************************************/
     @SuppressLint({"SdCardPath", "LongLogTag"})
-    // modified by wmstein
     private void exportBasisDb()
     {
+        // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
+        String inPath = getApplicationContext().getFilesDir().getPath();
+        inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db";
+        infile = new File(inPath);
+
         // tmpfile -> /data/data/com.wmstein.tourcount/files/tourcount_tmp.db
         String tmpPath = getApplicationContext().getFilesDir().getPath();
         tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db";
         File tmpfile = new File(tmpPath);
 
-        // outfile -> /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
-        outfile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
+        // new
+        // outfile in Public Directory Documents/TourCount/
+        // and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
+        File path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
+        {
+            path = Environment.getExternalStorageDirectory();
+            path = new File(path + "/Documents/TourCount");
+        }
+        else
+        {
+            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            path = new File(path + "/TourCount");
+        }
 
-        // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
-        String inPath = getApplicationContext().getFilesDir().getPath();
-        inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db";
-        infile = new File(inPath);
+        path.mkdirs(); // just verify path, result ignored
+        outfile = new File(path, "/tourcount0.db");
 
         if (Environment.MEDIA_MOUNTED.equals(state))
         {
@@ -1234,7 +1267,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                 boolean d0 = tmpfile.delete();
                 if (d0)
                 {
-                    showSnackbar(getString(R.string.saveWin));
+                    showSnackbar(getString(R.string.saveDB));
                 }
             } catch (IOException e)
             {
@@ -1255,7 +1288,6 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setMessage(R.string.confirmResetDB);
         builder.setCancelable(false);
-
         builder.setPositiveButton(R.string.deleteButton, (dialog, id) ->
         {
             boolean r_ok = clearDBValues();
@@ -1278,7 +1310,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         database = dbHandler.getWritableDatabase();
 
         // String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET " + DbHelper.T_TEMP_LOC + " = '';";
-        String sql = "UPDATE temp SET temp_loc = '';";
+        String sql = "UPDATE temp SET temp_loc = '';";  // temp is a table name!
         database.execSQL(sql);
         dbHandler.close();
     }
@@ -1341,7 +1373,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
     // Choose a file to load and set it to tourcount.db
     // based on android-file-chooser from Google Code Archive
     // Created by wmstein
-    private void importFile()
+    private void importDBFile()
     {
         ArrayList<String> extensions = new ArrayList<>();
         extensions.add(".db");
@@ -1358,50 +1390,54 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
         outfile = new File(destPath);
 
-        // confirm dialogue before anything else takes place
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setMessage(R.string.confirmDBImport)
-            .setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) ->
-            {
-                // START
-                try
+        // confirm dialogue before importing
+        // with short delay to get the file name before the dialog appears
+        mHandler.postDelayed(() ->
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setMessage(R.string.confirmDBImport);
+            builder.setCancelable(false);
+            builder.setPositiveButton(R.string.importButton, (dialog, id) ->
                 {
-                    copy(infile, outfile);
-                    showSnackbar(getString(R.string.importWin));
-                    // save values for initial count-id and itemposition
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("count_id", 1);
-                    editor.putInt("item_Position", 0);
-                    editor.apply();
-
-                    Section section;
-                    sectionDataSource = new SectionDataSource(getApplicationContext());
-                    sectionDataSource.open();
-                    section = sectionDataSource.getSection();
-                    sectionDataSource.close();
-
-                    // List tour name as title
+                    // START
                     try
                     {
-                        Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
-                    } catch (NullPointerException e)
+                        copy(infile, outfile);
+                        showSnackbar(getString(R.string.importWin));
+                        // save values for initial count-id and itemposition
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("count_id", 1);
+                        editor.putInt("item_Position", 0);
+                        editor.apply();
+
+                        sectionDataSource = new SectionDataSource(getApplicationContext());
+                        sectionDataSource.open();
+                        section = sectionDataSource.getSection();
+                        sectionDataSource.close();
+
+                        // List tour name as title
+                        try
+                        {
+                            Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
+                        } catch (NullPointerException e)
+                        {
+                            // nothing
+                        }
+                    } catch (IOException e)
                     {
-                        // nothing
+                        if (MyDebug.LOG)
+                            Log.e(TAG, "Failed to import database");
+                        showSnackbarRed(getString(R.string.importFail));
                     }
-                } catch (IOException e)
-                {
-                    if (MyDebug.LOG)
-                        Log.e(TAG, "Failed to import database");
-                    showSnackbarRed(getString(R.string.importFail));
-                }
-                // END
-            }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-        alert = builder.create();
-        alert.show();
+                    // END
+                }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+            alert = builder.create();
+            alert.show();
+        }, 100);
     }
 
-    // Function is part of importFile() and processes the result of AdvFileChooser
+    // Function is part of importDBFile() and processes the result of AdvFileChooser
     final ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<>()
@@ -1421,6 +1457,7 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
                         Log.e(TAG, "File selected: " + selectedFile);
                         showSnackbarRed("Selected file: " + selectedFile);
                     }
+                    assert selectedFile != null;
                     infile = new File(selectedFile);
                 }
             }
@@ -1447,7 +1484,9 @@ public class WelcomeActivity extends AppCompatActivity implements SharedPreferen
         // confirm dialogue before anything else takes place
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setMessage(R.string.confirmBasisImport).setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) ->
+        builder.setMessage(R.string.confirmBasisImport);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.importButton, (dialog, id) ->
         {
             // START
             try

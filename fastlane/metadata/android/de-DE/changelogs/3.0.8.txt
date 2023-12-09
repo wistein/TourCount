@@ -1,9 +1,12 @@
 Version 3.0.8 (25.03.2019)
+- Projekt-Anpassung für Android Studio 3.3.2 und Gradle 4.10.1
+- Minimale Android-Version geändert in 4.4 (KitKat)
 - DB-Struktur ergänzt für lokale Schmetterlingsnamen
 - Beispiel-Datenbanken mit lokalen Schmetterlingsnamen
 - Ergebnisdarstellung mit lokalen Schmetterlingsnamen
 - Zusätzliche Schmetterlingsabbildungen
-- Kleinere Design-Änderungen
+- Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
+- Kleinere Designänderungen in einigen App-Seiten
+- Doku. teilweise überarbeitet
 - Code-Bereinigungen
-- Projekt-Anpassung für Android Studio 3.3.2 und Gradle 4.10.1
-- Minimale Android-Version geändert in 4.4 (KitKat)
+- Absturzfehler bei schnell wiederholtem Klicken der Art-Auswahl behoben

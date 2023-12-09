@@ -23,18 +23,19 @@ import androidx.core.app.ActivityCompat
  *
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last edited on 2023-05-30,
- * converted to Kotlin on 2023-05-26
+ * converted to Kotlin on 2023-05-26,
+ * last edited on 2023-11-29
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
     private var checkGPS = false
     private var checkNetwork = false
-    var canGetLocation = false
-    var location: Location? = null
+    private var canGetLocation = false
+    private var location: Location? = null
     private var lat = 0.0
     private var lon = 0.0
     var height = 0.0
-    var uncertainty = 0.0
+    private var uncertainty = 0.0
     private var locationManager: LocationManager? = null
     private var exactLocation = false
 

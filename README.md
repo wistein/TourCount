@@ -12,7 +12,7 @@ TourCount is an Android app that supports species-specific and individually loca
 - an editor to prepare the meta data for a tour,
 - an editor for individual species data of a count (e.g. state, remark or bulk count entry).
 - Counting page with scroll-down-menu to select a species by picture and name.
-- Separate counters for ♂ or ♀, ♂, ♀, pupa, larva or egg.
+- Separate counters for ♂♀, ♂, ♀, pupa, larva or egg.
 - The app automaticaly inserts date, time, coordinates and height as well as
   location data by reverse OSM-geocoding when GPS and internet are accessible.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
@@ -90,22 +90,28 @@ Integrated code from external references:
   https://geotools.org/
 
 Butterfly pictures: 
-- Jordanita globulariae derived from https://commons.wikimedia.org, Reza Zahiri et al, 
-  Creative Commons Attribution License (CC BY 4.0)
-- Crambus pascuella derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg, 
-  Olaf Leillinger, GNU Free Documentation License
-- Pediasia contaminella derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg,
-  Ben Sale, Creative Commons Attribution 2.0 Generic License
-- Evergestis extimalis derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG, 
-  Adam Furlepa, CC BY-SA 3.0
+- Crambus pascuella derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg,
+  Author: Olaf Leillinger, GNU Free Documentation License
+- Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth, Author: Dumi, GNU Free Documentation License, version 1.2
+- Deltote bankiana derived from http://www.freenatureimages.eu/Animals/index.html, Author: Andre den Ouden, licensed by www.saxifraga.nl free for non-commercial use
+- Evergestis extimalis derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG,
+  Author: Adam Furlepa, CC BY-SA 3.0
 - Hyles gallii derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg (non-commercial use allowed)
-- Marumba quercus derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg (non-commercial use allowed)
 - Hyles hippophaes derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg (non-commercial use allowed)
+- Jordanita globulariae derived from https://commons.wikimedia.org, Author: Reza Zahiri et al, 
+  Creative Commons Attribution License (CC BY 4.0)
+- Marumba quercus derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg (non-commercial use allowed)
+- Melitaea parthenoides derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides, Author: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license
 - Muschampia lavatherae derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae, 
-  Dumi, GNU Free Documentation License, version 1.2
+  Author: Dumi, GNU Free Documentation License, version 1.2
+- Pediasia contaminella derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg,
+  Author: Ben Sale, Creative Commons Attribution 2.0 Generic License
+- Scopula rubiginata derived from http://www.freenatureimages.eu/Animals/index.html, Author: Rob Felix, licensed by www.saxifraga.nl free for non-commercial use
+- Scopula virgulata derived from http://www.freenatureimages.eu/Animals/index.html, Author: Zoran Bozovic, licensed by www.saxifraga.nl free for non-commercial use
+- Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Author: Peter Gergely, licensed by www.saxifraga.nl free for non-commercial use
 
-- all other pictures, app icon and background (C) Wilhelm Stein. 
+- All other pictures, app icon and background (C) Wilhelm Stein. 
 
-Pictures of this work may be used for research or other non-commercial purposes without prior permission. 
-Please note that illustrations provided by other authors remain the copyright of those authors and 
-should not be reproduced other than with their permission.
+Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission.
+But it is not permitted to upload pictures to Meta Platforms (Facebook), as most of the mentioned licenses do not comply with and I do not agree with the licensing terms of Meta Platforms.
+Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced or distributed other than with their permission.

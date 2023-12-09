@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2017. Wilhelm Stein, Bonn, Germany.
-  -->
-
 <!-- widget_sum_species.xmls used by ListSpeciesWidget.java and ListSpeciesActivity.java.
-     Shows totals of species counts -->
+     Shows totals of species counts
+     Copyright (c) 2017-2023, Wilhelm Stein, Bonn, Germany.
+-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +26,7 @@
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginBottom="10dp"
             android:paddingTop="2dp"
             android:background="@android:color/white"/>
@@ -41,31 +39,30 @@
 
             <TextView
                 android:id="@+id/txtSpecies"
+                style="@style/HeadlineText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
                 android:gravity="start|top"
                 android:padding="2sp"
-                android:text="@string/txtSpecies"
-                android:textColor="#BFFFFF"
-                android:textStyle="bold"
-                android:textSize="17sp"/>
+                android:text="@string/txtSpecies"/>
 
             <TextView
                 android:id="@+id/sumSpecies"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="bottom|end|top"
                 android:layout_marginBottom="0dp"
                 android:layout_weight="1.6"
                 android:background="@drawable/count_background"
-                android:gravity="center|center_vertical|center_horizontal"
+                android:gravity="center_vertical|center_horizontal"
                 android:hint="@string/charZero"
+                android:maxLines="1"
                 android:padding="0dp"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:maxLines="1"/>
+                android:textStyle="bold"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
@@ -77,31 +74,34 @@
 
             <TextView
                 android:id="@+id/txtIndividuals"
+                style="@style/HeadlineText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
                 android:gravity="start|top"
                 android:padding="2sp"
-                android:text="@string/txtIndividuals"
-                android:textColor="#BFFFFF"
-                android:textStyle="bold"
-                android:textSize="17sp"/>
+                android:text="@string/txtIndividuals"/>
 
-				<TextView
+				<com.wmstein.tourcount.AutoFitText
                 android:id="@+id/sumIndividuals"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="bottom|end|top"
                 android:layout_marginBottom="0dp"
                 android:layout_weight="1.6"
                 android:background="@drawable/count_background"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:hint="@string/charZero"
-                android:padding="0dp"
+                android:maxLines="1"
+                android:inputType="number"
+                android:paddingBottom="1dp"
+                android:paddingEnd="1dp"
+                android:paddingStart="1dp"
+                android:paddingTop="1dp"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:maxLines="1"/>
+                android:textStyle="bold"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 

@@ -1,3 +1,0 @@
-Version 3.2.1 (23.04.2020)
-- Hintergrundbild besser skaliert für längere Displays
-- Meldungen bereinigt

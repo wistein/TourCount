@@ -71,26 +71,37 @@ _ Subtitle
   _ 
     ! Butterfly pictures:
     * Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+    * Deltote bankiana, Author: Andre den Ouden, licensed by www.saxifraga.nl, free for non-commercial use, derived from freenatureimages.eu
     * Evergestis extimalis, Author: Adam Furlepa, CC BY-SA 3.0, derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
     * Hyles gallii (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
     * Hyles hippophaes (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-	* Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+    * Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
     * Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
     * Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-	* Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+    * Melitaea parthenoides derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides, Author: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license
     * Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
     * Pediasia contaminella, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
   _
     ! All other pictures, app icon and background (C) Wilhelm Stein. 
-	! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission. Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
+    ! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission.
+    ! But it is not permitted to upload pictures to Meta Platforms (Facebook), as most of the mentioned licenses do not comply with and I do not agree with the licensing terms of Meta Platforms.
+    ! Illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
-$ 3.4.3
-  % Version 3.4.3
-  _ 2023-08-09
-  * Gradle Plugin upgraded -> 8.1.0
-  * More missing species added
+$ 3.4.4
+  % Version 3.4.4
+  _ 2023-12-05
+  * Compiled with SDK Ver. 34 for targetSdkVersion 33
+  * Gradle Plugin upgraded -> 8.1.1
+  * Import of DB files from Documents/TourCount folder
+  * Export of DB and CSV files into Documents/TourCount folder
+  * Results page improved
+  * More species added
+  * Missing pictures supplemented
   * Docs updated
+  * Code improvements
+  * Bugs fixed
 
 $ 3.4.2
   % Version 3.4.2
@@ -111,22 +122,16 @@ $ 3.4.0
 $ 3.3.5
   % Version 3.3.5
   _ 2023-06-19
+  * Compiled with SDK Ver. 33 for targetSdkVersion 33
   * Gradle Plugin upgraded -> 8.0.2
   * Gradle upgraded -> 8.0
-  * Deprecated functions replaced
+  * Most deprecated functions replaced
   * .csv-files exported to Documents/TourCount/ (allows access by other apps)
   * Option to vibrate, short for counting-up and longer for counting-down
   * Counting sound deeper when counting down
   * Some more code improvements
   * One more species added
   * Minimal Android Version 7.1 (Nougat)
-
-$ 3.3.4
-  % Version 3.3.4
-  _ 2023-03-26
-  * Gradle Plugin upgraded -> 7.4.2
-  * Gradle upgraded -> 7.5
-  * Compiled with SDK Ver. 33 for targetSdkVersion 33
   * Copyright texts updated
 
 $ 3.3.3
@@ -134,385 +139,199 @@ $ 3.3.3
   _ 2022-10-25
   * Gradle Plugin upgraded -> 7.3.1
   * Gradle upgraded -> 7.4
-  * Compiled with SDK Ver. 32 for targetSdkVersion 31, resulting "duplicate library" conflict solved
-  * Some more species with pictures added
-
-$ 3.3.2
-  % Version 3.3.2
-  _ 2022-10-17
+  * Compiled with SDK Ver. 32 for targetSdkVersion 31
 	* Many pictures of species improved to show recto and verso sides
 	* Some more species with pictures added
-
-$ 3.3.1
-  % Version 3.3.1
-  _ 2022-07-19
-	* Some pictures of species improved
-	* One species with picture added
-	* 2nd Bugfix in arrays.xml
-
-$ 3.3.0
-  % Version 3.3.0
-  _ 2022-06-02
-	* More species with pictures added
 	* Bugfix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9
   _ 2022-05-21
 	* Project adaption for Android Studio 2021.2.1 and Gradle 7.3.3
+	* Compiled for SDK version 31 (needed for current libs)
 	* Portrait/landscape handling improved
-	* More species with pictures added
-	* Code improvements
-	* Docs updated
-
-$ 3.2.8
-  % Version 3.2.8
-  _ 2022-04-17
-	* More species with pictures added
+	* Location background permission removed
 	* Documents and example-DBs updated
 	* Copyright and license texts updated
-	* Location background permission removed
-
-$ 3.2.7
-  % Version 3.2.7
-  _ 2022-03-26
-	* Project adaption for Android Studio 2021.1.1 and Gradle 7.2
-	* Compiled for SDK version 31 (needed for current libs)
 	* Some more moths species with pictures added
 	* State info for pupa, caterpillar or egg omitted
-    * Minor code corrections 
+	* Code improvements
 
 $ 3.2.6
   % Version 3.2.6
   _ 2021-08-22
 	* Project adaption for Android Studio 2020.3.1 and Gradle 7.0.1
-	* Some outdated butterfly names updated (within app and example DBs)
-	* Some missing butterfly pictures added
-		
-$ 3.2.5
-  % Version 3.2.5
-  _ 2021-06-05
-	* Project adaption for Android Studio 4.2.1 and Gradle 6.7.1
-	* Compiled with SDK Ver. 30 for targetSdkVersion 29 (targetSdkVersion 30 prevents installation from "unknown sources" and so inhibits testing of the own compilation under Android 11!)
-
-$ 3.2.4
-  % Version 3.2.4
-  _ 2021-04-11
 	* Layout and function of Edit species list improved
-	* Outdated code names updated
+	* Some outdated butterfly family names updated (within app and example DBs)
+	* Outdated butterfly codes updated
 	* Permission handling for Access Background Location
-	* Project adaption for Android Studio 4.1.3 and Gradle 6.5
 	* Fix for broken loading picture function since Gradle 6.5
+	* Some missing butterfly pictures added
 	* Some pictures improved
-	* Species family names updated where appropriate
-		
+
 $ 3.2.3
   % Version 3.2.3
   _ 2020-09-09
-	* Location service fix for coarse location
 	* Project adaption for Android Studio 4.0.1 and Gradle 6.1.1
-
-$ 3.2.2
-  % Version 3.2.2
-  _ 2020-05-05
 	* Location service active in major activities
-	* Bug fix in button sound
 	* More butterfly pictures integrated
-	* Initial integrated list of species enlarged
-
-$ 3.2.1
-  % Version 3.2.1
-  _ 2020-04-23
+	* Integrated initial list of species enlarged
 	* Background picture better scaled for long displays
-	* Strings cleared up
-
-$ 3.2.0
-  % Version 3.2.0
-  _ 2020-04-20
 	* Code for restricted Storage Access adapted for Android 10
-	* Data files now in app specific directory
+	* Data files now in app-specific directory
 	* Code for Preferences adapted for Android 10
 	* Use of AndroidX libraries
+	* Strings cleared up
 	* Help text updated
-	* Many minor code refinements
-	* Project adaption for Android Studio 3.6.3
 	* Docs updated
+	* Many minor code refinements
+	* Location service fix for coarse location
+	* Bug fix in button sound
 
 $ 3.1.5
   % Version 3.1.5
   _ 2020-02-26
+	* Project adaption for Android Studio 3.6 and Gradle 5.6.4
 	* Code optimized for storage and power efficiency
 	* App icon adapted to better match Android 9 screen
-	* Project adaption for Android Studio 3.6 and Gradle 5.6.4
-
-$ 3.1.4
-  % Version 3.1.4
-  _ 2019-12-08
 	* Undercutting of species names in results page corrected
 	* Minor text improvements
-  	* Project adaption for Android Studio 3.5.3 and Gradle 5.4.1
 	* Changes in AndroidManifest.xml and build.gradle
 
 $ 3.1.2
   % Version 3.1.2
   _ 2019-08-04
-  	* Added/changed butterfly pictures
-  	* Exported csv-file with total of different species counted
-  	* Bugfix in database handling
-
-$ 3.1.1
-  % Version 3.1.1
-  _ 2019-06-12
-  	* Project adaption for Android Studio 3.4.1 and Gradle 5.1.1
-  	* Minimal changes to starting page
-  	* Bugfix
-
-$ 3.1.0
-  % Version 3.1.0
-  _ 2019-04-16
-  	* Integrated list of many European species
+ 	* Project adaption for Android Studio 3.4.1 and Gradle 5.1.1
+ 	* Added/changed butterfly pictures
+ 	* Exported csv-file with total of different species counted
+ 	* Minimal changes to starting page
+ 	* Integrated list of many European species
 	* Instead of manual input, add further species to your species list by scroll-down selection from a comprehensive list that contains only species not contained yet
+ 	* Bugfix in database handling
 
 $ 3.0.8
   % Version 3.0.8
   _ 2019-03-25
+ 	* Project adaption for Android Studio 3.3.2 and Gradle 4.10.1
+ 	* Minimum Android version changed to 4.4 KitKat
 	* Database structure supplemented for local butterfly names
-	* Example databases adapted fot local butterfly names)
+	* Example databases adapted fot local butterfly names
 	* Exported results include local butterfly names
-  	* Additional butterfly pictures
-    * Some minor screen design changes
-    * Some code cleaning
-  	* Project adaption for Android Studio 3.3.2 and Gradle 4.10.1
-  	* Minimum Android version changed to 4.4 KitKat
-
-$ 3.0.7
-  % Version 3.0.7
-  _ 2018-12-16
-  	* Additional butterfly pictures
-    * Some pictures edited to show both sides of wings
-    * Cosmetic changes to several app pages
-    * Fix for crash when species selector is rapidly repeatedly pressed
-    * Docs updated
+ 	* Additional butterfly pictures
+  * Some pictures edited to show both sides of wings
+  * Cosmetic changes to several app pages
+  * Docs updated
+  * Some code cleaning
+  * Fix for crash when species selector is rapidly repeatedly pressed
 
 $ 3.0.5
   % Version 3.0.5
   _ 2018-09-20
-  	* Fixed not working GPS height correction
-
-$ 3.0.4
-  % Version 3.0.4
-  _ 2018-08-03
-  	* Location retrieval function more reliable, changed to service
-  	* Additional butterfly pictures
+ 	* Project changes for Android Studio 3.1.2 and Gradle 3.1.2
+ 	* Location retrieval function more reliable, changed to service
+ 	* Additional manual input for date, start-time and stop-time with long press
+ 	* Additional butterfly pictures
 	* Where applicable toasts replaced with snackbars
-  	* Some code cleaning
-  	* Fix for crash in permission handling of Android >= Marshmallow
-  	* Fix for crash in "Edit Species list" functionality
-
-$ 3.0.3
-  % Version 3.0.3
-  _ 2018-05-04
-  	* Additional manual input for date, start-time and stop-time with long press
-  	* Project changes for Android Studio 3.1.2 and Gradle 3.1.2
-
-$ 3.0.2
-  % Version 3.0.2
-  _ 2018-04-17
 	* Code improvements
-	* Bug fixes
+ 	* Fixed GPS height correction not working
+ 	* Fixed crash in permission handling of Android >= Marshmallow
+ 	* Fixed crash in "Edit Species list" functionality
+	* Other bug fixes
 
 $ 3.0.1
   % Version 3.0.1
   _ 2018-04-04
+	* Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
 	* Unnecessary permission WRITE_SETTINGS removed
-  	* Disabled multi-window-mode (Android 7+) for incompatible pull-down-menu (Spinner)
-  	* Minor changes in results page
-
-$ 3.0.0
-  % Version 3.0.0
-  _ 2018-04-03
 	* Redesign of counting page layout with scroll-down selection of species
 	* Separate counters for ♂♀, ♂, ♀, pupa, larva, egg
+ 	* Disabled multi-window-mode (Android 7+) for incompatible pull-down-menu (Spinner)
+	* Correct handling of subtraction for categories of species and individuals
 	* Database version change 2 to 3 (takes care of additional counters)
-  	* First use now creates a direct usable internal DB with common european species
-	* Correct handling of subtraction for categories of species and individual records
-	* Adapted results page layout
+  * Automatic conversion of existing databases to new version while loading
+ 	* First use now creates a direct usable internal DB with common european species
 	* Layout of starting page updated
+	* Adapted results page layout
 	* More butterfly pictures added
-	* Documentation updated for ver. 3.0
-	* Project changes for Android Studio 3.1, Gradle 3.1.0 and SDK 27 (Android 8.1)
+	* Documentation updated for Ver. 3.0
 	* Bug fixes
 
 $ 2.4.6
   % Version 2.4.6
   _ 2018-03-19
-	* Code optimization for Reverse Geocoding
-  	* Added a camera button in counting menu
-  	* Source Project restructured
-  	* Bud fixes
-
-$ 2.4.2
-  % Version 2.4.2
-  _ 2018-02-28
-	* Reverse Geocoding from GPS coordinates for meta data and individual location
+ 	* Source Project restructured
+	* OSM Reverse Geocoding by Nominatim Service of OpenStreetMap for meta data and individual location
+ 	* Added a camera button in counting menu
 	* Results page improved (average coordinates, listing of individual counts with data)
 	* Diverse improvements of details
-	* Obsolete functions eliminated and bug fixes
-	* Documents updated
-
-$ 2.3.2
-  % Version 2.3.2
-  _ 2018-01-01
+	* Obsolete functions eliminated
 	* Added pictures of species for Canaries and Madeira
 	* Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
-	* Dev. environment adapted for Android Studio 3.0
-  	* Docs: German Introductary presentation added
-	* Bug fix
+ 	* Documents: German Introductary presentation added
+	* Documents updated
+ 	* Bud fixes
 
 $ 2.3.0
   % Version 2.3.0
   _ 2017-09-27
 	* Code adapted and compiled for Android 7.1
-	* Minor code improvements
-	* Bug fixes
-
-$ 2.2.0
-  % Version 2.2.0
-  _ 2017-09-11
-	* Write system log only in debug version
-
-$ 2.1.9
-  % Version 2.1.9
-  _ 2017-09-10
+  * Correct height with geoid offset from EarthGravitationalModel EGM96
+	* Write system log only in MyDebug mode
 	* Added links in App Info and Help pages
-  	* Improved layout of results page
-  	* Added database version control to be compatible with old database structure prior version 2.1.4
-  	* Fix crash when counting using a database of old structure prior version 2.1.4
-  	* Bug fixes
-
-$ 2.1.8
-  % Version 2.1.8
-  _ 2017-08-30
-    * Added Option to switch between portrait and landscape mode
-    * Show correct headline immediately after loading/resetting DB
-    * Bug fixes and minor code improvements
-
-$ 2.1.7
-  % Version 2.1.7
-  _ 2017-08-22
-    * Correct height with geoid offset from EarthGravitationalModel EGM96
-
-$ 2.1.6
-  % Version 2.1.6
-  _ 2017-07-14
-    * CSV export now shows No. of species according to recorded sex and stadium
-    * CSV export now suppresses zeros for empty counts
-    * Finishing individual input now has button sound
-    * Database structure adapted to enhanced individuals data export 
-  	* Press back button twice to exit
-  	* minor string improvements
-
-$ 2.1.5
-  % Version 2.1.5
-  _ 2017-05-27
-    * Additional support for coarse location from Wifi and Network
-    * GPS height correction
-    * Results page with totals
-    * Additional butterfly pictures
+ 	* Improved layout of results page
+ 	* Added database version control to be compatible with old database structure prior version 2.1.4
+  * Added Option to switch between portrait and landscape mode
+  * Show correct headline immediately after loading/resetting DB
+  * CSV export now shows No. of species according to recorded sex and stadium
+  * CSV export now suppresses zeros for empty counts
+  * Finishing individual input now has button sound
+  * Database structure adapted to enhanced individuals data export
+ 	* Press back button twice to exit
+  * Additional support for coarse location from Wifi and Network
+  * Results page with totals
+  * Additional butterfly pictures
+ 	* Minor string improvements
+ 	* Fix crash when counting using a database of old structure prior version 2.1.4
+ 	* Bug fixes and minor code improvements
 
 $ 2.1.4
   % Version 2.1.4
   _ 2016-12-01
-    * Small bug fix
-  	* Pictures of species on counting and results page
-    * Default background picture different from that of TransektCount app
-    
-$ 2.1.3
-  % Version 2.1.3
-  _ 2016-10-31
-    * Code improvement
-    * Icons on settings page
-    * Icons in menus
-    * Codes for species added
-    * Option added: Sorting of species by names or codes
-
-$ 2.1.2
-  % Version 2.1.2
-  _ 2016-10-03
-    * Results screen layout improved
-
-$ 2.1.1
-  % Version 2.1.1
-  _ 2016-09-30
-    * Multiple counts on individuals page
-
-	$ 2.1.0
-  % Version 2.1.0
-  _ 2016-09-09
-    * Option counting screen for lefties
-
-$ 2.0.9
-  % Version 2.0.9
-  _ 2016-08-29
-    * Exportable csv-table improved
-    * Internal DB structure adapted
-
-$ 2.0.7
-  % Version 2.0.7
-  _ 2016-08-04
-    * Bug fix
-    * Code optimized
-    
-$ 2.0.6
-  % Version 2.0.6
-  _ 2016-07-24
-    * Switch screen off on counting page when in pocket
-    
-$ 2.0.5
-  % Version 2.0.5
-  _ 2016-06-22
-    * Option "Screen bright" in Preferences
-    * File import dialog for existing DB
-    
-$ 2.0.4
-  % Version 2.0.4
-  _ 2016-06-20
-    * Unused functions (alert) removed
-    * Permission handling for Android M
-    * Records geogr. altitude 
-    * DB structure adapted
-    * Bug fix
-
-$ 2.0.3
-  % Version 2.0.3
-  _ 2016-06-06
-    * DB structure improved
-    * Results view improved
-    * Input masks improved
-    * Bug fixes
+ 	* Added pictures of species on counting and results page
+  * Default background picture different from that of TransektCount app
+  * Icons on settings page
+  * Icons in menus
+  * Codes for species added
+  * Option added: Sorting of species by names or codes
+  * Results screen layout improved
+  * Multiple counts on individuals page
+  * Option counting screen for lefties
+  * Exportable csv-table improved
+  * Internal DB structure adapted
+  * Switch screen off on counting page as long as phone gets pocketed
+  * Option "Screen bright" in Preferences
+  * File import dialog for existing DB
+  * Permission handling for Android M
+  * Records geogr. altitude
+  * DB structure adapted and improved
+  * Input masks improved
+  * Code improvement
+  * Bug fixes
 
 $ 2.0.2
   % Version 2.0.2
   _ 2016-05-27
-    * Sorted csv export
-    * Limited to 1 counting list
-    * Code improved
-
-$ 2.0.1
-  % Version 2.0.1
-  _ 2016-05-19
-    * Functionality of individual data handling completed
-    * Results pages and export to CSV adapted and completed
+  * Sorted csv export
+  * Limited to 1 counting list
+  * Code improved
+  * Functionality of individual data handling completed
+  * Results pages and export to CSV adapted and completed
 
 $ 1.0.2
   % Version 1.0.2
   _ 2016-05-18
     * Count buttons activate an individuals page to get data per individual count
     * Table "individuals" with time, coordinates, sex, stadium, remarks added to DB
-
-$ 1.0.1
-  % Version 1.0.1
-  _ 2016-05-14
     * Meta data (date, time) added
     * Plausi control for meta data
     * Prepared for GPS recording
@@ -521,22 +340,23 @@ $ 1.0.0
   % Version 1.0.0
   _ 2016-04-18
   ! 1. Release.
-    * "Reset Data" function
-    * App runs always in portrait mode
-    * Exports results in csv-format 
-    * View for counting results
-    * Input page for meta data
-    * Detailed Help page
-    * Base-DB-Import/Export: Raw Database 'tourcount0.db'
-    * DB-Export: Database 'tourcount_yyyymmdd-hhmmss.db'
-    * DB-Results export: Excel file 'tourcount_yyyymmdd-hhmmss.csv'
-    * German and English text 
-  	* Text and structure adaptation for butterfly registration in the field
-    * TourCount originally derives partly from BeeCount by knirirr
-    * https://github.com/knirirr/BeeCount.git
-    * Modified AutoFitText.java, original code from author: pheuschk
-    * Modified ChangeLog.java original code from author: Karsten Priegnitz
-    * Modified CSVWriter.java original code copyright 2015 Bytecode Pty Ltd.
+  * "Reset Data" function
+  * App runs always in portrait mode
+  * Exports results in csv-format
+  * Input page for meta data
+  * View for counting results with meta data
+  * Detailed Help page
+  * Base-DB-Import/Export: Raw Database 'tourcount0.db'
+  * DB-Export: Database 'tourcount_yyyymmdd-hhmmss.db'
+  * DB-Results export: Excel file 'tourcount_yyyymmdd-hhmmss.csv'
+  * In German and English language
+  * Text and structure adaptation for butterfly registration in the field
+  * TourCount derived from TransektCount whose basic program structure and counting functionality originally derived partly from BeeCount by knirirr
+  * (https://github.com/knirirr/BeeCount.git)
+  * Modified AutoFitText.java, original code from author: pheuschk
+  * Modified ChangeLog.java original code from author: Karsten Priegnitz
+  * Modified CSVWriter.java original code copyright 2015 Bytecode Pty Ltd.
+  * Modified File Chooser dialog based on android-file-chooser, 2011, Google Code Archive, GNU GPL v3
   _
 $ END_OF_CHANGE_LOG
   </body>

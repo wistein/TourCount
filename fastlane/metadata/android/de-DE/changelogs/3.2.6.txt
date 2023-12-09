@@ -1,4 +1,9 @@
 Version 3.2.6 (22.08.2021)
 - Projekt Anpassung für Android Studio 2020.3.1 und Gradle 7.0.1
-- Einige veraltete Schmetterlingsnamen angepasst (innerhalb App und Beispiel-DBs)
+- Verbesserung von Layout und Funktion des Spezieslisten-Editors
+- Einige veraltete Spezies-Familiennamen angepasst (innerhalb App und Beispiel-DBs)
+- Veraltete Code-Bezeichnungen aktualisiert
+- Berechtigungsabfrage für Standortabfrage im Hintergrund
+- Code-Anpassung für Fehlfunktion der Bilderanzeige unter Gradle 6.5
 - Einige fehlende Schmetterlingsabbildungen hinzugefügt
+- Einige Abbildungen überarbeitet
