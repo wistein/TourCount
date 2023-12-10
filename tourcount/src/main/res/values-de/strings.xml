@@ -38,7 +38,7 @@
     <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
     <string name="importWin">Die Datenbank wurde importiert.</string>
     <string name="errorDb">DB-Fehler!</string>
-    <string name="corruptDb">Datenbankfehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
+    <string name="corruptDb">DB-Fehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
     <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
     <string name="cancelButton">Abbrechen</string>
@@ -104,8 +104,8 @@
     <string name="stadium_2">Puppe</string>
     <string name="stadium_3">Raupe</string>
     <string name="stadium_4">Ei</string>
-    <string name="state">Zust. (1–6)</string>
-    <string name="state1">Zust. (1–6)</string>
+    <string name="state">Zust. (0–6)</string>
+    <string name="state1">Zust. (0–6)</string>
     <string name="count1">Anz.</string>
     <string name="valState">Zustand überprüfen!</string>
     <string name="note">Bemerkung zum Individuum</string>

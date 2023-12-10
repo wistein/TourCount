@@ -104,8 +104,8 @@
     <string name="stadium_2">Pupa</string>
     <string name="stadium_3">Caterpillar</string>
     <string name="stadium_4">Egg</string>
-    <string name="state">State (1–6)</string>
-    <string name="state1">State (1–6)</string>
+    <string name="state">State (0–6)</string>
+    <string name="state1">State (0–6)</string>
     <string name="count1">No.</string>
     <string name="valState">State out of range!</string>
     <string name="note">Individual Notes</string>

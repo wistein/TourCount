@@ -85,7 +85,7 @@ $ 8
   ! Start with COUNTING. Select the species by clicking the species line to scroll down the species list.
   ! To count just tip on the (+)-Button of the corresponding category (♂ od. ♀, ♂, ♀, pupa, larva, egg) of the species.
   ! The counter will increment and a page opens to enter individual data. Location info, latitude, longitude, height as well as date and time will be added automatically.
-  ! Location may be edited and state info as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
+  ! Location may be edited and condition rating (state 0-6 with 0 = undefined, 1 = very good) as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
   ! The (-)-Buttons allow for corrections. Mind that the (-)-Buttons reduce the individuals list in a last-in-first-out-mode for the corresponding species category. 
   _ 
   ! The Pencil-Button in the action bar of the counting page opens the counting list editing page for editing the list of species.
