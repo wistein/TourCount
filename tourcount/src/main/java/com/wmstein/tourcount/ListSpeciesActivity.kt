@@ -34,7 +34,7 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-11-24
+ * last edited on 2023-12-15
  */
 class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var tourCount: TourCountApplication? = null
@@ -151,7 +151,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
             if (longi != 0.0) // has coordinates
             {
                 //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
-                if (MyDebug.LOG) Log.d(TAG, "longi $longi")
+                if (MyDebug.LOG) Log.d(TAG, "154, longitude: $longi")
                 if (frst == 0) {
                     loMin = longi
                     loMax = longi

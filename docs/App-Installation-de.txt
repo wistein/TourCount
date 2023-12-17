@@ -1,0 +1,73 @@
+Installation von TransektCount und TourCount
+
+
+Zwei Optionen:  
+
+
+1. Von F-Droid (freigegebene Versionen)
+
+   Apps, ohne Doku und Basis-Datenbank (Basis-DB) aber mit Updates über F-Droid-App-Store:
+ 
+     https://f-droid.org/de/packages/com.wmstein.transektcount/
+     https://f-droid.org/de/packages/com.wmstein.tourcount
+ 
+   Nach der Installation per F-Droid-Store sollten noch Doku und Basis-DB (und ggf. regionale oder 
+   saisonale Bespiel-DBs von den GitHub-Seiten des Autors (s.u.) geladen werden. 
+   Diese in das Verzeichnis Documents/TransektCount bzw Documents/TourCount kopieren, welches beim 
+   1. Start jeder App angelegt wird. 
+
+   Da bei F-Droid veröffentlichte Apps mit deren Signatur durch F-Droid kompiliert werden, 
+   sind diese nicht gegenseitig updatebar von oder mit den entsprechenden Entwickler-Versionen .
+
+
+2. Von den GitHub-Projektseiten des Autors (aktueller Bearbeitungsstand)
+
+   App, Quellcode, Doku mit Basis- und Beispiel-DBs:
+   
+   - TransektCount-App, apk-Datei:
+	   https://github.com/wistein/TransektCount/tree/master/apk
+
+     Doku und DBs:
+       https://github.com/wistein/TransektCount/tree/master/docs
+
+
+   - TourCount-App, apk-Datei: 
+       https://github.com/wistein/TourCount/tree/master/apk
+
+     Doku und DBs:
+       https://github.com/wistein/TourCount/tree/master/docs
+
+   Im Smartphone die Android-Option "Unbekannte Herkunft" unter "Einstellungen -> Sicherheit" vor 
+   der Installation aktivieren.
+
+   Nach Download die App mittels Klick auf die apk-Datei im Download-Verzeichnis installieren.
+   Basis-DB und relevante Beispiel-DBs aus dem Download-Verzeichnis ins APP-Datenverzeichnis 
+   (Documents/TransektCount bzw. Documents/TourCount) kopieren.
+
+   Wichtig: Die Option "Unbekannte Herkunft" wieder deaktivieren!
+
+
+Anmerkung zu F-Droid:
+
+   Der Bezug von Apps aus F-Droid ist mindestens so sicher wie der Bezug durch den Google Play Store.
+   Alle Apps werden im Gegensatz zum Play Store auch datenschutzmäßig überprüft und durch F-Droid 
+   selbst kompiliert. 
+
+   Falls eine App nicht alle Anforderungen von F-Droid hinsichtlich unerwünschter Merkmale erfüllt, 
+   ist es vermerkt.
+
+   Die Quellcodes der F-Droid-Apps sind veröffentlicht und als Open Source lizenziert.
+
+
+Anmerkung zu Updates:
+
+   Bei größeren Versionssprüngen mit funktionalen Ergänzungen können Strukturänderungen in der 
+   internen Datenbank einer App vorgenommen worden sein. Nach einer solchen Änderung wird die 
+   Datenbank-Version inkrementiert. Das wird von der App erkannt und die aktuell genutzte DB 
+   intern strukturell angepasst.
+   
+   Eine Nutzung der aktuell angepassten DB ist aber nach einem Down-Grade zu einer Vorgänger-
+   App-Version nicht mehr verwendbar.
+   
+   Die Beispiel-DBs sind in der aktuellen Struktur verfasst und veröffentlicht. 
+   

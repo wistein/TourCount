@@ -29,12 +29,12 @@ import java.util.Locale;
  * It would be appreciated if you mention the author in your change log,
  * contributors list or the like.
  * <p>
- * @author: Karsten Priegnitz
- * @see: <a href="http://code.google.com/p/android-change-log/">...</a>
+ * author: Karsten Priegnitz
+ * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for ViewHelp:
  * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
- * last edited on 2023-12-08
+ * last edited on 2023-12-15
  */
 public class ViewHelp
 {
@@ -63,7 +63,7 @@ public class ViewHelp
         {
             thisVersion = NO_VERSION;
             if (MyDebug.LOG)
-                Log.e(TAG, "Could not get version name from manifest!", e);
+                Log.e(TAG, "66, Could not get version name from manifest!", e);
         }
     }
 
@@ -178,7 +178,7 @@ public class ViewHelp
         } catch (IOException e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "could not read help text.", e);
+                Log.e(TAG, "181, could not read help text.", e);
         }
 
         return sb.toString();

@@ -1,0 +1,4 @@
+Version 3.4.5 (15.12.2023)
+- SQlite DB: Table- und column-Namen 'temp' wg. reserviertem Term-Konflikt geändert
+- Code-Anpassungen für Android 13
+- Code-Verbesserungen

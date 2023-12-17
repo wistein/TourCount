@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -69,7 +70,7 @@ import static java.lang.Math.sqrt;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2023-12-09
+ * last edited on 2023-12-15
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -96,7 +97,7 @@ public class WelcomeActivity
 
     private ChangeLog cl;
     private ViewHelp vh;
-    public boolean doubleBackToExitPressedOnce;
+    public boolean doubleBackToExitPressedTwice;
 
     // Location info handling
     private double latitude, longitude, height, uncertainty;
@@ -260,6 +261,38 @@ public class WelcomeActivity
         locationPermissionDispatcherMode = 1; // get location
         locationCaptureFragment();
 
+        // new onBackPressed logic TODO
+        if (Build.VERSION.SDK_INT >= 33)
+        {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                () ->
+                {
+                    /**
+                     * onBackPressed logic goes here - For instance:
+                     * Prevents closing the app to go home screen when in the
+                     * middle of entering data to a form
+                     * or from accidentally leaving a fragment with a WebView in it
+                     *
+                     * Unregistering the callback to stop intercepting the back gesture:
+                     * When the user transitions to the topmost screen (activity, fragment)
+                     * in the BackStack, unregister the callback by using
+                     * OnBackInvokeDispatcher.unregisterOnBackInvokedCallback
+                     */
+                    if (doubleBackToExitPressedTwice)
+                    {
+                        clear_loc(); // Clear last locality in tmp
+                        finish();
+                    }
+
+                    this.doubleBackToExitPressedTwice = true;
+                    Toast.makeText(this, R.string.back_twice, Toast.LENGTH_SHORT).show();
+
+                    mHandler.postDelayed(() ->
+                        doubleBackToExitPressedTwice = false, 1500);
+                }
+            );
+        }
     } // end of onResume
 
     // Part of permission handling
@@ -529,24 +562,22 @@ public class WelcomeActivity
         editor.apply();
     }
 
+    /** @noinspection deprecation*/
+    // press Back twice to end the app
     @Override
     public void onBackPressed()
     {
-        if (doubleBackToExitPressedOnce)
+        if (doubleBackToExitPressedTwice)
         {
             super.onBackPressed(); // stops app
+            clear_loc(); // clear last locality in table 'tmp'
             return;
         }
 
-        this.doubleBackToExitPressedOnce = true;
+        this.doubleBackToExitPressedTwice = true;
         Toast.makeText(this, R.string.back_twice, Toast.LENGTH_SHORT).show();
 
-        new Handler().postDelayed(() ->
-        {
-            doubleBackToExitPressedOnce = false;
-            // Clear last locality in temp
-            clear_loc();
-        }, 1000);
+        mHandler.postDelayed(() -> doubleBackToExitPressedTwice = false, 1500);
     }
 
     public void onStop()
@@ -615,7 +646,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "No sdcard access");
+                Log.e(TAG, "649, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -629,7 +660,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "Failed to copy database");
+                    Log.e(TAG, "663, Failed to copy database");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -700,7 +731,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "No sdcard access");
+                Log.d(TAG, "734, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -784,7 +815,7 @@ public class WelcomeActivity
                 csvWrite.writeNext(arrEnvHead);
 
                 // set environment data
-                temp = section.temp;
+                temp = section.tmp;
                 wind = section.wind;
                 clouds = section.clouds;
                 date = section.date;
@@ -1100,7 +1131,7 @@ public class WelcomeActivity
                     {
                         //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
                         if (MyDebug.LOG)
-                            Log.d(TAG, "longi " + longi);
+                            Log.d(TAG, "1134, longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1184,7 +1215,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "Failed to export csv file");
+                    Log.e(TAG, "1218, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1243,7 +1274,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "No sdcard access");
+                Log.d(TAG, "1277, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1272,7 +1303,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "Failed to export Basic DB");
+                    Log.e(TAG, "1306, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1303,14 +1334,14 @@ public class WelcomeActivity
         alert.show();
     }
 
-    // Clear temp_loc in temp (name temp works, but is misinterpreted) 
+    // Clear temp_loc in tmp
     private void clear_loc()
     {
         dbHandler = new DbHelper(this);
         database = dbHandler.getWritableDatabase();
 
         // String sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET " + DbHelper.T_TEMP_LOC + " = '';";
-        String sql = "UPDATE temp SET temp_loc = '';";  // temp is a table name!
+        String sql = "UPDATE tmp SET temp_loc = '';";  // tmp is a table name!
         database.execSQL(sql);
         dbHandler.close();
     }
@@ -1340,7 +1371,7 @@ public class WelcomeActivity
                 + DbHelper.S_PLZ + " = '', "
                 + DbHelper.S_CITY + " = '', "
                 + DbHelper.S_PLACE + " = '', "
-                + DbHelper.S_TEMP + " = 0, "
+                + DbHelper.S_TEMPE + " = 0, "
                 + DbHelper.S_WIND + " = 0, "
                 + DbHelper.S_CLOUDS + " = 0, "
                 + DbHelper.S_DATE + " = '', "
@@ -1361,7 +1392,7 @@ public class WelcomeActivity
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Failed to reset DB");
+                Log.e(TAG, "1395, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             r_ok = false;
         }
@@ -1427,7 +1458,7 @@ public class WelcomeActivity
                     } catch (IOException e)
                     {
                         if (MyDebug.LOG)
-                            Log.e(TAG, "Failed to import database");
+                            Log.e(TAG, "1461, Failed to import database");
                         showSnackbarRed(getString(R.string.importFail));
                     }
                     // END
@@ -1454,8 +1485,8 @@ public class WelcomeActivity
                     selectedFile = data.getStringExtra("fileSelected");
                     if (MyDebug.LOG)
                     {
-                        Log.e(TAG, "File selected: " + selectedFile);
-                        showSnackbarRed("Selected file: " + selectedFile);
+                        Log.i(TAG, "1488, File selected: " + selectedFile);
+                        showSnackbar("Selected file: " + selectedFile);
                     }
                     assert selectedFile != null;
                     infile = new File(selectedFile);
@@ -1504,7 +1535,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "Failed to import database");
+                    Log.e(TAG, "1538, Failed to import database");
                 showSnackbarRed(getString(R.string.importFail));
             }
             // END

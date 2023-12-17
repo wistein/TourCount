@@ -2,7 +2,7 @@
 <!-- activity_welcome.xml is used by WelcomeActivity.java
   ~ Shows starting page
   ~ Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
-  ~ Last edited on 2023-12-09.
+  ~ Last edited on 2023-12-14.
   -->
 
 <LinearLayout
@@ -15,26 +15,27 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
+            android:layout_weight="4"
             android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="50dp"
+                android:layout_width="50sp"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_launcher"
                 tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/welcomeTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="10sp"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"/>
@@ -43,37 +44,43 @@
         <TextView
             android:id="@+id/welcomeWaffle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="10dp"
-            android:gravity="center"
+            android:layout_weight="5"
+            android:gravity="center_horizontal"
             android:padding="10dp"
             android:text="@string/hello"
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        />
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginTop="330dp"
+            android:layout_weight="3"
             android:layout_marginBottom="9dp"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/editMetaButton"
-                android:layout_width="50dp"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:gravity="center_vertical"
+                android:layout_gravity="center"
                 android:onClick="editMeta"
                 android:src="@android:drawable/ic_menu_edit"
                 tools:ignore="ContentDescription,UsingOnClickInXml"/>
 
             <TextView
                 android:id="@+id/editMetaButtonText"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_width="200sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:backgroundTint="#333333"
                 android:onClick="editMeta"
@@ -85,26 +92,26 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
+            android:layout_weight="3"
             android:layout_marginBottom="9dp"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/viewCountButton"
-                android:layout_width="50dp"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:gravity="center_vertical"
+                android:layout_gravity="center"
                 android:onClick="viewCounts"
                 android:src="@drawable/ic_count_white"
                 tools:ignore="ContentDescription,UsingOnClickInXml"/>
 
             <TextView
                 android:id="@+id/viewCountButtonText"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_width="200sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:textStyle="bold"
                 android:backgroundTint="#333333"
@@ -116,26 +123,26 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="30sp"
+            android:layout_weight="3"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/viewSpeciesButton"
-                android:layout_width="50dp"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:gravity="center_vertical"
+                android:layout_gravity="center"
                 android:onClick="viewSpecies"
                 android:src="@android:drawable/ic_menu_view"
                 tools:ignore="ContentDescription,UsingOnClickInXml"/>
 
             <TextView
                 android:id="@+id/viewSpeciesButtonText"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_width="200sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="15dp"
                 android:textStyle="bold"
                 android:backgroundTint="#333333"

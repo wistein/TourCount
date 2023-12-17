@@ -20,7 +20,7 @@ import androidx.fragment.app.DialogFragment
  * necessary since Android Marshmallow (M)
  *
  * Created in Kotlin on 2023-05-26,
- * last edited on 2023-06-15
+ * last edited on 2023-12-15
  */
 class PermissionsDialogFragment : DialogFragment() {
     private var context: Context? = null
@@ -98,7 +98,7 @@ class PermissionsDialogFragment : DialogFragment() {
         var allAreGranted = true
         shouldResolve = true
         for (isGranted in result.values) {
-            Log.d(TAG, "onActivityResult: isGranted: $isGranted")
+            Log.d(TAG, "101, onActivityResult: isGranted: $isGranted")
             allAreGranted = allAreGranted && isGranted
         }
 
@@ -108,7 +108,7 @@ class PermissionsDialogFragment : DialogFragment() {
         } else {
             //All or some Permissions were denied so can't do the task that requires that permission
             externalGrantNeeded = true
-            Log.d(TAG, "onActivityResult: All or some permissions denied...")
+            Log.d(TAG, "111, onActivityResult: All or some permissions denied...")
             Toast.makeText(this.context, R.string.perm_denied, Toast.LENGTH_SHORT).show()
         }
     }
@@ -118,13 +118,13 @@ class PermissionsDialogFragment : DialogFragment() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         shouldResolve = true
-        Log.d(TAG, "onActivityResult: isGranted: $isGranted")
+        Log.d(TAG, "121, onActivityResult: isGranted: $isGranted")
 
         if (isGranted) {
             externalGrant30Needed = false
         } else {
             externalGrant30Needed = true
-            Log.d(TAG, "onActivityResult: Permission denied...")
+            Log.d(TAG, "127, onActivityResult: Permission denied...")
             Toast.makeText(this.context, R.string.perm_denied, Toast.LENGTH_SHORT).show()
         }
     }

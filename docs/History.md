@@ -2,6 +2,11 @@
 
 #### TourCount Copyright (C) 2016-2023, Wilhelm Stein
 
+#### Version 3.4.5 (2023-12-15)
+- SQlite DB: Table and column names 'temp' changed for reserved term conflict
+- Code adaptations for Android 13
+- Code improvements
+
 #### Version 3.4.4 (2023-12-05)
 - Compiled with SDK Ver. 34 for targetSdkVersion 33
 - Gradle Plugin upgraded -> 8.1.1

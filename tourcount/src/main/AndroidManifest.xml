@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Rotation is set to portrait mode as the incorporated Spinner functionality
      crashes when the device gets rotated and landscape mode is even on tablets less useful.
-     Last edited 2023-07-06
+
+     Multiwindow crashes when rotating the screen,
+     reason: Spinner in CountingActivity.
+     Solution: application attribute android:resizeableActivity="false"
+     prohibits multi-window-mode.
+     Last edited 2023-12-12
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,7 +20,7 @@
     <!-- Permission used for exporting files to the public directory Documents/TransektCount
          which are then readable by an external app (since Android SDK-version 30) -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+        tools:ignore="ScopedStorage" android:minSdkVersion="30" />
 
     <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -32,23 +37,16 @@
     <!--VIBRATE permission-->
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- multiwindow crashes when rotating the screen, 
-         reason: spinner in CountingActivity, 
-         solution: application attribute
-		   android:resizeableActivity="false" 
-		 prohibits multi-window-mode
-	-->
-
-    <!-- android:largeHeap="true" (doesn't make a difference)
-    -->
+    <!-- android:largeHeap="true" (doesn't make a difference for ListSection problem) -->
     <application
         android:name=".TourCountApplication"
         android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@drawable/ic_launcher"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:label="TourCount"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:resizeableActivity="false"
         tools:ignore="DataExtractionRules,GoogleAppIndexingWarning,UnusedAttribute">

@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -73,7 +74,7 @@ import androidx.work.WorkRequest;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification in Java on 2023-12-07
+ * last modification in Java on 2023-12-16
  */
 public class CountingActivity
     extends AppCompatActivity
@@ -267,7 +268,7 @@ public class CountingActivity
         } catch (CursorIndexOutOfBoundsException e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "Problem loading section: " + e);
+                Log.e(TAG, "270, Problem loading section: " + e);
             showSnackbarRed(getString(R.string.getHelp));
             finish();
         }
@@ -343,6 +344,17 @@ public class CountingActivity
         if (awakePref)
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
+        // new onBackPressed logic TODO
+        if (Build.VERSION.SDK_INT >= 33)
+        {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                () ->
+                {
+                    NavUtils.navigateUpFromSameTask(this);
+                });
         }
     } // end of onResume
 
@@ -428,7 +440,7 @@ public class CountingActivity
         startActivity(intent);
     }
 
-    // puts up function to back button
+    /** @noinspection deprecation*/ // puts up function to back button
     @Override
     public void onBackPressed()
     {
@@ -600,7 +612,7 @@ public class CountingActivity
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (MyDebug.LOG)
-                        Log.e(TAG, "SpinnerListener: " + e);
+                        Log.e(TAG, "603, SpinnerListener: " + e);
                 }
             }
 
@@ -1514,7 +1526,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "could not play botton sound.", e);
+                    Log.e(TAG, "1517, could not play button sound.", e);
             }
         }
     }
@@ -1536,7 +1548,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "could not play botton sound.", e);
+                    Log.e(TAG, "1539, could not play button sound.", e);
             }
         }
     }
@@ -1563,7 +1575,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "could not vibrate.", e);
+                    Log.e(TAG, "1566, could not vibrate.", e);
             }
         }
     }
@@ -1590,7 +1602,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "could not vibrate.", e);
+                    Log.e(TAG, "1593, could not vibrate.", e);
             }
         }
     }

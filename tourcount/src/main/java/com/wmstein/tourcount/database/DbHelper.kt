@@ -12,10 +12,11 @@ import com.wmstein.tourcount.R
  * Basic structure by milo on 05/05/2014.
  * Created by wmstein on 2016-04-19,
  * updated to version 2 on 2017-09-09,
- * updated to version 3 on 2018-03-31
- * updated to version 4 on 2019-03-25
- * last edited in Java on 2022-03-24
- * converted to Kotlin on 2023-07-06
+ * updated to version 3 on 2018-03-31,
+ * updated to version 4 on 2019-03-25,
+ * last edited in Java on 2022-03-24,
+ * converted to Kotlin on 2023-07-06,
+ * last edited on 2023-12-15.
  */
 class DbHelper    // constructor
     (private val mContext: Context?) :
@@ -30,7 +31,7 @@ class DbHelper    // constructor
                 + S_PLZ + " text, "
                 + S_CITY + " text, "
                 + S_PLACE + " text, "
-                + S_TEMP + " int, "
+                + S_TEMPE + " int, "
                 + S_WIND + " int, "
                 + S_CLOUDS + " int, "
                 + S_DATE + " text, "
@@ -129,21 +130,29 @@ class DbHelper    // constructor
     // called if newVersion != oldVersion
     // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 4) {
+            version5(db)
+        }
         if (oldVersion == 3) {
-            version_4(db)
+            version4(db)
+            version5(db)
         }
         if (oldVersion == 2) {
-            version_3(db)
-            version_4(db)
+            version3(db)
+            version4(db)
+            version5(db)
         }
         if (oldVersion == 1) {
-            version_2(db)
-            version_3(db)
-            version_4(db)
+            version2(db)
+            version3(db)
+            version4(db)
+            version5(db)
         }
     }
 
-    private fun version_2(db: SQLiteDatabase) {
+    /*** V2 ***/
+    // Version 2: New extra column icount added to INDIVIDUALS_TABLE
+    private fun version2(db: SQLiteDatabase) {
         val sql: String
 
         // add new extra column icount to table individuals
@@ -157,7 +166,9 @@ class DbHelper    // constructor
         if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 2")
     }
 
-    private fun version_3(db: SQLiteDatabase) {
+    /*** V3 ***/
+    // Version 3: New extra columns for sexes and stadiums added to COUNT_TABLE
+    private fun version3(db: SQLiteDatabase) {
         var sql: String
         var colExist = false
         var colCatExist = false
@@ -177,28 +188,28 @@ class DbHelper    // constructor
             db.execSQL(sql)
             if (MyDebug.LOG) Log.d(TAG, "Missing count_f3i column added to counts!")
         } catch (e: Exception) {
-            //
+            // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_PI int"
             db.execSQL(sql)
             if (MyDebug.LOG) Log.d(TAG, "Missing count_pi column added to counts!")
         } catch (e: Exception) {
-            //
+            // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_LI int"
             db.execSQL(sql)
             if (MyDebug.LOG) Log.d(TAG, "Missing count_li column added to counts!")
         } catch (e: Exception) {
-            //
+            // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
             db.execSQL(sql)
             if (MyDebug.LOG) Log.d(TAG, "Missing count_ei column added to counts!")
         } catch (e: Exception) {
-            //
+            // do nothing
         }
 
         // add I_CATEGORY to INDIVIDUALS table
@@ -219,7 +230,7 @@ class DbHelper    // constructor
                 db.execSQL(sql)
                 if (MyDebug.LOG) Log.d(TAG, "I_SEX filled with '-'")
             } catch (e: Exception) {
-                //
+                // do nothing
             }
         }
 
@@ -262,11 +273,64 @@ class DbHelper    // constructor
         }
     }
 
-    // Add column C_NAME_G
-    private fun version_4(db: SQLiteDatabase) {
+    /*** V4 ***/
+    // Version 4: Add column C_NAME_G
+    private fun version4(db: SQLiteDatabase) {
         val sql = "alter table $COUNT_TABLE add column $C_NAME_G text"
         db.execSQL(sql)
         if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 4")
+    }
+
+    /*** V5 ***/
+    // Version 5: Change TEMP_TABLE name to 'tmp' and SECTION_TABLE column S_TEMP to S_TEMPE and 'tmp'
+    private fun version5(db: SQLiteDatabase) {
+        // rename table temp to tmp
+        var sql = "alter table 'temp' rename to 'tmp'"
+        db.execSQL(sql)
+
+        // in SECTION_TABLE rename column 'temp' to 'tmp'
+        sql = "alter table $SECTION_TABLE rename to 'section_backup'"
+        db.execSQL(sql)
+
+        // create new sections table
+        sql = ("create table " + SECTION_TABLE + " ("
+                + S_ID + " integer primary key, "
+                + S_NAME + " text, "
+                + S_COUNTRY + " text, "
+                + S_PLZ + " text, "
+                + S_CITY + " text, "
+                + S_PLACE + " text, "
+                + S_TEMPE + " int, "
+                + S_WIND + " int, "
+                + S_CLOUDS + " int, "
+                + S_DATE + " text, "
+                + S_START_TM + " text, "
+                + S_END_TM + " text, "
+                + S_NOTES + " text)")
+        db.execSQL(sql)
+
+        // insert the old data into sections
+        sql = ("INSERT INTO " + SECTION_TABLE + " SELECT "
+                + S_ID + ", "
+                + S_NAME + ", "
+                + S_COUNTRY + ", "
+                + S_PLZ + ", "
+                + S_CITY + ", "
+                + S_PLACE + ", "
+                + S_TEMP + ", "
+                + S_WIND + ", "
+                + S_CLOUDS + ", "
+                + S_DATE + ", "
+                + S_START_TM + ", "
+                + S_END_TM + ", "
+                + S_NOTES + " FROM section_backup")
+        db.execSQL(sql)
+
+        // delete section_backup
+        sql = "DROP TABLE section_backup"
+        db.execSQL(sql)
+
+        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 5")
     }
 
     companion object {
@@ -274,31 +338,35 @@ class DbHelper    // constructor
         private const val DATABASE_NAME = "tourcount.db"
 
         //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
-        //DATABASE_VERSION 3: New extra columns for sexus and stadiums added to COUNT_TABLE
+        //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
         //DATABASE_VERSION 4: Column C_NAME_G added to COUNT_TABLE for local butterfly names 
-        private const val DATABASE_VERSION = 4
+        //DATABASE_VERSION 5: Rename table 'temp' to 'tmp' and SECTION_TABLE column 'temp' to 'tmp'
+        private const val DATABASE_VERSION = 5
 
         // tables
         const val SECTION_TABLE = "sections"
         const val COUNT_TABLE = "counts"
         const val HEAD_TABLE = "head"
         const val INDIVIDUALS_TABLE = "individuals"
-        const val TEMP_TABLE = "temp"
+        const val TEMP_TABLE = "tmp"
 
-        // fields
+        // fields of table sections
         const val S_ID = "_id"
         const val S_NAME = "name"
         const val S_COUNTRY = "country"
         const val S_PLZ = "plz"
         const val S_CITY = "city"
         const val S_PLACE = "place"
-        const val S_TEMP = "temp"
+        const val S_TEMPE = "tmp"
         const val S_WIND = "wind"
         const val S_CLOUDS = "clouds"
         const val S_DATE = "date"
         const val S_START_TM = "start_tm"
         const val S_END_TM = "end_tm"
         const val S_NOTES = "notes"
+        private const val S_TEMP = "temp" // reserved term conflict
+
+        // fields of table counts
         const val C_ID = "_id"
         const val C_COUNT_F1I = "count_f1i"
         const val C_COUNT_F2I = "count_f2i"
@@ -310,9 +378,13 @@ class DbHelper    // constructor
         const val C_CODE = "code"
         const val C_NOTES = "notes"
         const val C_NAME_G = "name_g"
-        private const val C_COUNT = "count" //deprecated
+        private const val C_COUNT = "count" // deprecated
+
+        // fields of table head
         const val H_ID = "_id"
         const val H_OBSERVER = "observer"
+
+        // fields of table individuals
         const val I_ID = "_id"
         const val I_COUNT_ID = "count_id"
         const val I_NAME = "name"

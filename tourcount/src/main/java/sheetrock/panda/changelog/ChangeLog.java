@@ -35,7 +35,7 @@ import androidx.preference.PreferenceManager;
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2023-12-07
+ * last edited on 2023-12-15
  */
 public class ChangeLog
 {
@@ -74,7 +74,7 @@ public class ChangeLog
         // get version numbers
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (MyDebug.LOG)
-            Log.d(TAG, "lastVersion: " + lastVersion);
+            Log.d(TAG, "77, lastVersion: " + lastVersion);
         try
         {
             this.thisVersion = context.getPackageManager().getPackageInfo(
@@ -83,10 +83,10 @@ public class ChangeLog
         {
             this.thisVersion = NO_VERSION;
             if (MyDebug.LOG)
-                Log.e(TAG, "could not get version name from manifest!", e);
+                Log.e(TAG, "86, could not get version name from manifest!", e);
         }
         if (MyDebug.LOG)
-            Log.d(TAG, "appVersion: " + thisVersion);
+            Log.d(TAG, "89, appVersion: " + thisVersion);
     }
 
     /**
@@ -273,7 +273,7 @@ public class ChangeLog
         } catch (IOException e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "could not read changelog.", e);
+                Log.e(TAG, "276, could not read changelog.", e);
         }
 
         return sb.toString();

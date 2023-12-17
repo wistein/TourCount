@@ -24,7 +24,7 @@ import androidx.core.app.ActivityCompat
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last edited on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2023-11-29
+ * last edited on 2023-12-15
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -140,7 +140,7 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "StopListener: $e")
+            Log.e(TAG, "143, StopListener: $e")
         }
     }
 

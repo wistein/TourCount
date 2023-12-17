@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
@@ -46,7 +48,7 @@ import androidx.work.WorkRequest;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2023-07-13
+ * last edit in Java on 2023-12-16
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -168,7 +170,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         // display the editable meta data
         etw = new EditMetaWidget(this, null);
         etw.setWidgetTemp1(getString(R.string.temperature));
-        etw.setWidgetTemp2(section.temp);
+        etw.setWidgetTemp2(section.tmp);
         etw.setWidgetWind1(getString(R.string.wind));
         etw.setWidgetWind2(section.wind);
         etw.setWidgetClouds1(getString(R.string.clouds));
@@ -272,7 +274,18 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
                 true).show();
             return true;
         });
-    }
+
+        // new onBackPressed logic TODO
+        if (Build.VERSION.SDK_INT >= 33)
+        {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                () ->
+            {
+                NavUtils.navigateUpFromSameTask(this);
+            });
+        }
+    } // end of onResume
 
     // formatted date
     public static String getformDate(Date date)
@@ -331,8 +344,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         section.notes = enw.getSectionName();
 
         section.country = ehw.setWidgetCo2();
-        section.temp = etw.getWidgetTemp2();
-        if (section.temp > 50 || section.temp < 0)
+        section.tmp = etw.getWidgetTemp2();
+        if (section.tmp > 50 || section.tmp < 0)
         {
             Snackbar sB = Snackbar.make(etw, getString(R.string.valTemp), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
@@ -398,7 +411,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         return super.onOptionsItemSelected(item);
     }
 
-    // puts up function to back button
+    /** @noinspection deprecation*/ // puts up function to back button
     @Override
     public void onBackPressed()
     {

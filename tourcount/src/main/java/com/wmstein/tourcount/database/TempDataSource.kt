@@ -11,7 +11,8 @@ import android.database.sqlite.SQLiteDatabase
  * Class TempDataSource provides methods for table Temp
  * Created by wmstein on 2016-05-15,
  * last edited in Java on 2023-05-13,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2023-12-15.
  */
 class TempDataSource(context: Context?) {
     // Database fields
@@ -36,10 +37,10 @@ class TempDataSource(context: Context?) {
         dbHandler.close()
     }
 
-    fun saveTempLoc(temp: Temp) {
+    fun saveTempLoc(tmp: Temp) {
         val dataToInsert = ContentValues()
-        dataToInsert.put(DbHelper.T_ID, temp.id)
-        dataToInsert.put(DbHelper.T_TEMP_LOC, temp.temp_loc)
+        dataToInsert.put(DbHelper.T_ID, tmp.id)
+        dataToInsert.put(DbHelper.T_TEMP_LOC, tmp.temp_loc)
         database!!.update(DbHelper.TEMP_TABLE, dataToInsert, null, null)
     }
 
@@ -56,17 +57,17 @@ class TempDataSource(context: Context?) {
     // possibly for future use
     public int getTempCnt()
     {
-        Temp temp;
+        Tmp tmp;
         Cursor cursor = database.query(DbHelper.TEMP_TABLE, allColumns, String.valueOf(1), null, null, null, null);
         cursor.moveToFirst();
         temp = cursorToTemp(cursor);
         cursor.close();
-        return temp.temp_cnt;
+        return tmp.temp_cnt;
     }
     */
-    val temp: Temp
+    val tmp: Temp
         get() {
-            val temp: Temp
+            val tmp: Temp
             val cursor = database!!.query(
                 DbHelper.TEMP_TABLE,
                 allColumns,
@@ -77,17 +78,17 @@ class TempDataSource(context: Context?) {
                 null
             )
             cursor.moveToFirst()
-            temp = cursorToTemp(cursor)
+            tmp = cursorToTemp(cursor)
             cursor.close()
-            return temp
+            return tmp
         }
 
     @SuppressLint("Range")
     private fun cursorToTemp(cursor: Cursor): Temp {
-        val temp = Temp()
-        temp.id = cursor.getInt(cursor.getColumnIndex(DbHelper.T_ID))
-        temp.temp_loc = cursor.getString(cursor.getColumnIndex(DbHelper.T_TEMP_LOC))
-        temp.temp_cnt = cursor.getInt(cursor.getColumnIndex(DbHelper.T_TEMP_CNT))
-        return temp
+        val tmp = Temp()
+        tmp.id = cursor.getInt(cursor.getColumnIndex(DbHelper.T_ID))
+        tmp.temp_loc = cursor.getString(cursor.getColumnIndex(DbHelper.T_TEMP_LOC))
+        tmp.temp_cnt = cursor.getInt(cursor.getColumnIndex(DbHelper.T_TEMP_CNT))
+        return tmp
     }
 }

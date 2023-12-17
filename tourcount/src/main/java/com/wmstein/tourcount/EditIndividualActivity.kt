@@ -45,14 +45,14 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2023-12-07
+ * last edited on 2023-12-15
  */
 class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
     private var tourCount: TourCountApplication? = null
 
     private var individuals: Individuals? = null
-    private var temp: Temp? = null
+    private var tmp: Temp? = null
     private var counts: Count? = null
     private var indivArea: LinearLayout? = null
     private var eiw: EditIndividualWidget? = null
@@ -142,11 +142,11 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         individualsDataSource = IndividualsDataSource(this)
         individualsDataSource!!.open()
 
-        // get last found locality from temp
+        // get last found locality from tmp
         tempDataSource = TempDataSource(this)
         tempDataSource!!.open()
-        temp = tempDataSource!!.temp
-        sLocality = if (temp!!.temp_loc != null) temp!!.temp_loc else ""
+        tmp = tempDataSource!!.tmp
+        sLocality = if (tmp!!.temp_loc != null) tmp!!.temp_loc else ""
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
 
@@ -154,7 +154,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         try {
             supportActionBar!!.title = specName
         } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "NullPointerException: No species name!")
+            if (MyDebug.LOG) Log.e(TAG, "157, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
@@ -249,7 +249,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         } else {
             individuals!!.uncert = "0"
         }
-        temp!!.temp_loc = eiw!!.widgetLocality2
+        tmp!!.temp_loc = eiw!!.widgetLocality2
 
         // Stadium
         individuals!!.stadium = eiw!!.widgetStadium2
@@ -339,7 +339,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             showSnackbarRed(getString(R.string.warnCount))
             return false // forces input newcount > 0
         }
-        tempDataSource!!.saveTempLoc(temp!!)
+        tempDataSource!!.saveTempLoc(tmp!!)
         sdata = true
         return true
     }

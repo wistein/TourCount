@@ -27,6 +27,7 @@ import androidx.appcompat.widget.AppCompatTextView
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
  * last edited in Java on 2023-05-24,
  * converted to Kotlin on 2023-07-06
+ * last edited on 2023-12-15,
  */
 class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: AttributeSet?) :
     AppCompatTextView(context, attrs) {
@@ -160,8 +161,8 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
         val targetFieldHeight = this.height
         if (targetFieldWidth <= 0 || targetFieldHeight <= 0 || text == "") {
             if (MyDebug.LOG) Log.d(
-                "tag",
-                "Some values are empty, AutoFitText was not able to construct properly"
+                "AutoFitText",
+                "164, Some values are empty, AutoFitText was not able to construct properly"
             )
         } else {
             refitText(text.toString(), targetFieldWidth, targetFieldHeight)

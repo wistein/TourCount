@@ -20,7 +20,7 @@ import androidx.preference.PreferenceManager;
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2023-12-07
+ * last change on 2023-12-15
  */
 public class TourCountApplication extends Application
 {
@@ -48,7 +48,7 @@ public class TourCountApplication extends Application
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, e.toString());
+                Log.e(TAG,"51, " + e);
         }
     }
 
@@ -84,7 +84,7 @@ public class TourCountApplication extends Application
         width = size.x;
         height = size.y;
         if (MyDebug.LOG)
-            Log.i(TAG, "Width: " + width + "Height: " + height);
+            Log.i(TAG, "87, Width: " + width + "Height: " + height);
 
         switch (Objects.requireNonNull(backgroundPref))
         {

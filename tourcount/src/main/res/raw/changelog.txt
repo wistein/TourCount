@@ -89,6 +89,13 @@ _ Subtitle
     ! Illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
+$ 3.4.5
+  % Version 3.4.5
+  _ 2023-12-15
+  * SQlite DB: Table and column names 'temp' changed for reserved term conflict
+  * Code adaptations for Android 13
+  * Code improvements
+
 $ 3.4.4
   % Version 3.4.4
   _ 2023-12-05

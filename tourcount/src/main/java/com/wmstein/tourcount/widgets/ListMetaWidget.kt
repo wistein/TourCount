@@ -86,7 +86,7 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     // Following the SETS
     fun setMetaWidget(section: Section) {
         widget_lmeta1.setText(R.string.temperature)
-        widget_litem1.text = section.temp.toString()
+        widget_litem1.text = section.tmp.toString()
         widget_lmeta2.setText(R.string.wind)
         widget_litem2.text = section.wind.toString()
         widget_lmeta3.setText(R.string.clouds)

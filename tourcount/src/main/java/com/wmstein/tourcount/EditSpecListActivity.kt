@@ -53,7 +53,7 @@ import com.wmstein.tourcount.widgets.HintWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-11-29
+ * last edited on 2023-12-15
  */
 class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
@@ -178,7 +178,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             supportActionBar!!.title = oldname
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "NullPointerException: No section name!")
+            if (MyDebug.LOG) Log.e(TAG, "181, NullPointerException: No section name!")
         }
 
         // display the section title
@@ -258,7 +258,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             name = cew.getCountName()
             if (cmpCountNames.contains(name)) {
                 isDbl = name
-                if (MyDebug.LOG) Log.d(TAG, "Double name = $isDbl")
+                if (MyDebug.LOG) Log.d(TAG, "261, Double name = $isDbl")
                 break
             }
             cmpCountNames.add(name)
@@ -300,7 +300,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
 
         val isDbl: String
         val childcount: Int = countsArea!!.childCount //No. of species in list
-        if (MyDebug.LOG) Log.d(TAG, "childcount: $childcount")
+        if (MyDebug.LOG) Log.d(TAG, "303, childcount: $childcount")
 
         // check for unique species names
         if (dupPref) {
@@ -312,7 +312,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
                     if (isNotEmpty(cew.getCountName())) {
                         if (MyDebug.LOG) Log.d(
                             TAG,
-                            "cew: " + cew.countId + ", " + cew.getCountName()
+                            "315, cew: " + cew.countId + ", " + cew.getCountName()
                         )
 
                         //updates species name and code

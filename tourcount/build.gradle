@@ -10,9 +10,10 @@ android {
     defaultConfig {
         applicationId "com.wmstein.tourcount"
         minSdk 25
-        targetSdk 33
-        versionCode 344
-        versionName "3.4.4"
+        //noinspection EditedTargetSdkVersion
+        targetSdk 34
+        versionCode 345
+        versionName "3.4.5"
     }
 
     buildTypes {
@@ -52,7 +53,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.work:work-runtime:2.8.1'
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.work:work-runtime:2.9.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
 }

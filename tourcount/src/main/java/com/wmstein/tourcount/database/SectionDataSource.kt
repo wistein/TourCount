@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-04-18,
  * last modified in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05
+ * last modified on 2023-12-15,
  */
 class SectionDataSource(context: Context?) {
     // Database fields
@@ -24,7 +25,7 @@ class SectionDataSource(context: Context?) {
         DbHelper.S_PLZ,
         DbHelper.S_CITY,
         DbHelper.S_PLACE,
-        DbHelper.S_TEMP,
+        DbHelper.S_TEMPE,
         DbHelper.S_WIND,
         DbHelper.S_CLOUDS,
         DbHelper.S_DATE,
@@ -55,7 +56,7 @@ class SectionDataSource(context: Context?) {
         section.plz = cursor.getString(cursor.getColumnIndex(DbHelper.S_PLZ))
         section.city = cursor.getString(cursor.getColumnIndex(DbHelper.S_CITY))
         section.place = cursor.getString(cursor.getColumnIndex(DbHelper.S_PLACE))
-        section.temp = cursor.getInt(cursor.getColumnIndex(DbHelper.S_TEMP))
+        section.tmp = cursor.getInt(cursor.getColumnIndex(DbHelper.S_TEMPE))
         section.wind = cursor.getInt(cursor.getColumnIndex(DbHelper.S_WIND))
         section.clouds = cursor.getInt(cursor.getColumnIndex(DbHelper.S_CLOUDS))
         section.date = cursor.getString(cursor.getColumnIndex(DbHelper.S_DATE))
@@ -72,7 +73,7 @@ class SectionDataSource(context: Context?) {
         dataToInsert.put(DbHelper.S_PLZ, section.plz)
         dataToInsert.put(DbHelper.S_CITY, section.city)
         dataToInsert.put(DbHelper.S_PLACE, section.place)
-        dataToInsert.put(DbHelper.S_TEMP, section.temp)
+        dataToInsert.put(DbHelper.S_TEMPE, section.tmp)
         dataToInsert.put(DbHelper.S_WIND, section.wind)
         dataToInsert.put(DbHelper.S_CLOUDS, section.clouds)
         dataToInsert.put(DbHelper.S_DATE, section.date)
