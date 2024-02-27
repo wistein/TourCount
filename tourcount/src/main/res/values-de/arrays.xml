@@ -94,6 +94,7 @@
 		<item comment="10603">Schönbär</item>
 		<item comment="10605">Spanische Flagge</item>
 		<item comment="10607">Blutbär</item>
+		<item comment="20000">Neue Art</item>
 	</string-array>
 
 	<string-array name="selSpecs_g">
@@ -102,6 +103,8 @@
 		<item comment="00069">Adlerfarn-Wurzelbohrer</item>
 		<item comment="00080">Großer Hopfen-Wurzelbohrer</item>
 		<item comment="00338">De Geers Langhornfalter</item>
+		<item comment="00354">-</item>
+		<item comment="00363">-</item>
 		<item comment="01348">Pflaumen-Gespinstmotte</item>
 		<item comment="01350">Pfaffenhütchen-Gespinstmotte</item>
 		<item comment="02321">-</item>
@@ -119,6 +122,7 @@
 		<item comment="03959">Trauerwidderchen</item>
 		<item comment="03963">-</item>
 		<item comment="03965">-</item>
+		<item comment="03966">-</item>
 		<item comment="03967">Haarstrang-Widderchen</item>
 		<item comment="03971">-</item>
 		<item comment="03972">-</item>
@@ -144,8 +148,11 @@
 		<item comment="03999">Großes Fünffleck-Widderchen</item>
 		<item comment="04000">Sumpfhornklee-Widderchen</item>
 		<item comment="04013b">Palmenmotte</item>
+		<item comment="04030">Hornissen-Glasflügler</item>
 		<item comment="04044">Großer Birken-Glasflügler</item>
 		<item comment="04151">Weidenbohrer</item>
+		<item comment="04176">Blausieb</item>
+		<item comment="04178">Rohrbohrer</item>
 		<item comment="04731">-</item>
 		<item comment="05562">Waldreben-Fensterfleckchen</item>
 		<item comment="05751">Rhabarberzünsler</item>
@@ -207,6 +214,7 @@
 		<item comment="06885">Heilziest-Dickkopffalter</item>
 		<item comment="06887">Andorn-Dickkopffalter</item>
 		<item comment="06891">Roter Würfeldickkopffalter</item>
+		<item comment="06893">Korsischer roter Würfeldickkopffalter</item>
 		<item comment="06895">-</item>
 		<item comment="06899">Steppenheiden-Würfeldickkopffalter</item>
 		<item comment="06902">Fahlfleckiger Alpen-Würfeldickkopffalter</item>
@@ -255,6 +263,7 @@
 		<item comment="06983">Westlicher Gesprenkelter Weißling</item>
 		<item comment="06985">Östlicher Gesprenkelter Weißling</item>
 		<item comment="06986">Portugiesischer Gesprenkelter Weißling</item>
+		<item comment="06987">-</item>
 		<item comment="06989">-</item>
 		<item comment="06990">-</item>
 		<item comment="06993">Baumweißling</item>
@@ -321,6 +330,7 @@
 		<item comment="07099">Westlicher Quendelbläuling</item>
 		<item comment="07100">Östlicher Quendelbläuling</item>
 		<item comment="07101">-</item>
+		<item comment="07102">Sardischer Bläuling</item>
 		<item comment="07103a">Panoptes-Bläuling</item>
 		<item comment="07105">Fetthennenbläuling</item>
 		<item comment="07107">Alexis-Bläuling</item>
@@ -334,6 +344,7 @@
 		<item comment="07127">Argus-Bläuling</item>
 		<item comment="07128">Idas-Bläuling</item>
 		<item comment="07129">Kronwicken-Bläuling</item>
+		<item comment="07129a">-</item>
 		<item comment="07131">Hochmoor-Bläuling</item>
 		<item comment="07139">Dunkler Alpenbläuling</item>
 		<item comment="07141">Heller Alpenbläuling</item>
@@ -361,6 +372,7 @@
 		<item comment="07204">Großer Perlmuttfalter</item>
 		<item comment="07205">Feuriger Perlmuttfalter</item>
 		<item comment="07206">Mittlerer Perlmuttfalter</item>
+		<item comment="07207">Korsischer Perlmutterfalter</item>
 		<item comment="07208">Östlicher Perlmuttfalter</item>
 		<item comment="07210">Kleiner Perlmuttfalter</item>
 		<item comment="07213">Mädesüß-Perlmuttfalter</item>
@@ -474,6 +486,8 @@
 		<item comment="07427">Blauäugiger Waldportier</item>
 		<item comment="07429">Großer Waldportier</item>
 		<item comment="07430">Kleiner Waldportier</item>
+		<item comment="07433">-</item>
+		<item comment="07434">Korsische Rostbinde</item>
 		<item comment="07436">Rostbinde</item>
 		<item comment="07436a">Madeira-Rostbinde</item>
 		<item comment="07440a">-</item>
@@ -578,6 +592,7 @@
 		<item comment="10509">Trockenrasen-Flechtenbärchen</item>
 		<item comment="10514">Felshalden-Flechtenbär</item>
 		<item comment="10517">Weißfleck-Widderchen</item>
+		<item comment="10519">Ähnliches Weißfleck-Widderchen</item>
 		<item comment="10521">Braunfleck-Widderchen</item>
 		<item comment="10526">Gestreifter Grasbär</item>
 		<item comment="10535">Punktbär</item>

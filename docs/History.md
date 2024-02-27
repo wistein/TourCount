@@ -1,13 +1,16 @@
 # History
 
-#### TourCount Copyright (C) 2016-2023, Wilhelm Stein
+#### TourCount Copyright (C) 2016-2024, Wilhelm Stein
+
+#### Version 3.4.6 (2024-02-26)
+- Code adaptations for Android 14
+- More pictures of (Sardinian) species added
+- Some local species names added
+- Bugs fixed
+- Docs updated
 
 #### Version 3.4.5 (2023-12-15)
 - SQlite DB: Table and column names 'temp' changed for reserved term conflict
-- Code adaptations for Android 13
-- Code improvements
-
-#### Version 3.4.4 (2023-12-05)
 - Compiled with SDK Ver. 34 for targetSdkVersion 33
 - Gradle Plugin upgraded -> 8.1.1
 - Import of DB files from Documents/TourCount folder
@@ -18,6 +21,7 @@
 - Docs updated
 - Code improvements
 - Bugs fixed
+- Code adaptations for Android 13
 
 #### Version 3.4.2 (2023-07-30)
 - More missing species added

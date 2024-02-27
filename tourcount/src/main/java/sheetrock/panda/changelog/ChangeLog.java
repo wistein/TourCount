@@ -35,7 +35,7 @@ import androidx.preference.PreferenceManager;
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2023-12-15
+ * last edited on 2024-02-25
  */
 public class ChangeLog
 {
@@ -141,8 +141,7 @@ public class ChangeLog
         String fullTitle = context.getResources().getString(R.string.changelog_full_title)
             + " Ver. " + thisVersion;
         String changeTitle = "Ver. " + thisVersion + ": "
-            + context.getResources().getString(R.string.changelog_title)
-            + " " + thisVersion;
+            + context.getResources().getString(R.string.changelog_title);
         builder.setTitle(full ? fullTitle : changeTitle)
             .setView(wv)
             .setCancelable(false)
@@ -189,13 +188,9 @@ public class ChangeLog
             String language = Locale.getDefault().toString().substring(0, 2);
             InputStream ins;
             if (language.equals("de"))
-            {
                 ins = context.getResources().openRawResource(R.raw.changelog_de);
-            }
             else
-            {
                 ins = context.getResources().openRawResource(R.raw.changelog);
-            }
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
             boolean advanceToEOVS = false; // if true: ignore further version sections
             String line;
@@ -231,9 +226,7 @@ public class ChangeLog
                     {
                         // line contains bold red text
                         this.closeList();
-                        sb.append("<div class='boldredtext'>");
-                        sb.append(line.substring(1).trim());
-                        sb.append("</div>\n");
+                        sb.append("<div class='boldredtext'>").append(line.substring(1).trim()).append("</div>\n");
                     }
                     case '_' ->
                     {

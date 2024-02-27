@@ -39,7 +39,7 @@ _ Subtitle
   <body>
 
   % TourCount
-  _ Copyright (C) 2016-2023, Wilhelm Stein
+  _ Copyright (C) 2016-2024, Wilhelm Stein
   _
   _ email: stein.wm@web.de
   _
@@ -70,18 +70,26 @@ _ Subtitle
     * egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
   _ 
     ! Butterfly pictures:
-    * Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
-    * Deltote bankiana, Author: Andre den Ouden, licensed by www.saxifraga.nl, free for non-commercial use, derived from freenatureimages.eu
-    * Evergestis extimalis, Author: Adam Furlepa, CC BY-SA 3.0, derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
-    * Hyles gallii (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
-    * Hyles hippophaes (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-    * Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
-    * Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
-    * Marumba quercus (A.R. Pittaway, non-commercial use allowed), derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-    * Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
-    * Melitaea parthenoides derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides, Author: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license
-    * Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
-    * Pediasia contaminella, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
+	* Adela paludicolella, created from picture in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
+	* Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+	* Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth,	Author: Dumi, GNU Free Documentation License, version 1.2
+	* Deltote bankiana, Author: Andre den Ouden, licensed by www.saxifraga.nl, free for non-commercial use,	derived from freenatureimages.eu
+	* Evergestis extimalis, Author: Adam Furlepa, CC BY-SA 3.0, derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
+	* Hipparchia neomiris, created from pictures of "Die Groß-Schmetterlinge der Erde",	Author: Adalbert Seitz, 1909, Public Domain
+	* Hyles gallii, A.R. Pittaway, non-commercial use allowed, derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
+	* Hyles hippophaes, A.R. Pittaway, non-commercial use allowed, derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
+	* Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+	* Jordanita globulariae, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
+	* Marumba quercus, A.R. Pittaway, non-commercial use allowed, derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
+	* Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+	* Melitaea parthenoides, derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides,	Author: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license
+	* Muschampia lavatherae, Author: Dumi, GNU Free Documentation License, version 1.2, derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae
+	* Nemaphora barbatellus, created from picture in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
+	* Pediasia contaminella, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
+	* Scopula rubiginata, derived from http://www.freenatureimages.eu/Animals/index.html, Author: Rob Felix, licensed by www.saxifraga.nl free for non-commercial use
+	* Scopula virgulata, derived from http://www.freenatureimages.eu/Animals/index.html,	Author: Zoran Bozovic, licensed by www.saxifraga.nl free for non-commercial use
+	* Sesia apiformis, derived from picture on https://en.wikipedia.org/wiki/Hornet_moth	Author: Jyrki Lehto, free use
+	* Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Author: Peter Gergely, licensed by www.saxifraga.nl free for non-commercial use
   _
     ! All other pictures, app icon and background (C) Wilhelm Stein. 
     ! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission.
@@ -89,16 +97,19 @@ _ Subtitle
     ! Illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
+$ 3.4.6
+  % Version 3.4.6
+  _ 2024-02-26
+  * Code adaptations for Android 14
+  * More pictures of (Sardinian) species added
+  * Some local species names added
+  * Bug fixed
+  * Docs updated
+
 $ 3.4.5
   % Version 3.4.5
   _ 2023-12-15
   * SQlite DB: Table and column names 'temp' changed for reserved term conflict
-  * Code adaptations for Android 13
-  * Code improvements
-
-$ 3.4.4
-  % Version 3.4.4
-  _ 2023-12-05
   * Compiled with SDK Ver. 34 for targetSdkVersion 33
   * Gradle Plugin upgraded -> 8.1.1
   * Import of DB files from Documents/TourCount folder
@@ -109,6 +120,7 @@ $ 3.4.4
   * Docs updated
   * Code improvements
   * Bugs fixed
+  * Code adaptations for Android 13
 
 $ 3.4.2
   % Version 3.4.2

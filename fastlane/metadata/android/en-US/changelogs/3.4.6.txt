@@ -1,0 +1,6 @@
+Version 3.4.6 (2024-02-26)
+- Code adaptations for Android 13
+- More pictures of (Sardinian) species added
+- Some local species names added
+- Bug fixed
+- Docs updated

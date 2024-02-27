@@ -1,0 +1,6 @@
+Version 3.4.6 (26.02.2024)
+- Code-Anpassungen für Android 14
+- Weitere Abbildungen von (sardischen) Arten
+- Einige lokale Artnamen ergänzt
+- Bug-Fix
+- Doku-Update

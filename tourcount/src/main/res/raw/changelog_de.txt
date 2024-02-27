@@ -39,7 +39,7 @@ _ Subtitle
   <body>
 
   % TourCount 
-  _ Copyright (C) 2016-2023, Wilhelm Stein
+  _ Copyright (C) 2016-2024, Wilhelm Stein
   _
   _ email: stein.wm@web.de
   _
@@ -70,35 +70,46 @@ _ Subtitle
     * egm, basiert auf Code von GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
   _ 
     ! Schmetterlings-Abbildungen: 
-    * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
-    * Deltote bankiana, Autor: Andre den Ouden, lizensiert von www.saxifraga.nl, nicht-kommerzielle Verwendung erlaubt, erstellt aus http://freenatureimages.eu/Animals/Microlepidoptera-Heterocera%2C%20Nachtvlinders%2C%20Moths/index.html
-    * Evergestis extimalis, Autor: Adam Furlepa, CC BY-SA 3.0, erstellt aus https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
-    * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
-    * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-    * Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
-    * Jordanita globulariae, Autor: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
-    * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-    * Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
-    * Melitaea parthenoides, Autor: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license, derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides
-    * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
-    * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
+	* Adela paludicolella, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
+  * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+	* Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth,	Autor: Dumi, GNU Free Documentation License, version 1.2
+  * Deltote bankiana, Autor: Andre den Ouden, lizensiert von www.saxifraga.nl, nicht-kommerzielle Verwendung erlaubt, erstellt aus http://freenatureimages.eu
+  * Evergestis extimalis, Autor: Adam Furlepa, CC BY-SA 3.0, erstellt aus https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
+	* Hipparchia neomiris, erstellt aus Abbildungen aus "Die Groß-Schmetterlinge der Erde",	Autor: Adalbert Seitz, 1909, Public Domain
+  * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
+  * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
+  * Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+  * Jordanita globulariae, Autor: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
+  * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
+  * Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+  * Melitaea parthenoides, Autor: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license, erstellt aus https://en.wikipedia.org/wiki/Melitaea_parthenoides
+  * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
+	* Nemaphora barbatellus, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",	Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
+  * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
+	* Scopula rubiginata, erstellt aus Abbildungen in http://www.freenatureimages.eu/Animals/index.html, Autor: Rob Felix, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
+	* Scopula virgulata derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Zoran Bozovic, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
+	* Sesia apiformis derived from picture on https://en.wikipedia.org/wiki/Hornet_moth	Autor: Jyrki Lehto, freie Verwendung
+	* Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Peter Gergely, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
   _
     ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
     ! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden.
     ! Aber es ist nicht erlaubt, Abbildungen auf Meta Platforms (Facebook) hochzuladen, da die meisten der genannten Lizenzen mit den Lizenzen von Meta Platforms kollidieren.
-    ! Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren die jeweiligen Copyright-Bedingungen der anderen Autoren.
+    ! Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren deren jeweilige Copyright-Bedingungen.
   _ 
+
+$ 3.4.6
+  % Version 3.4.6
+  _ 26.02.2024
+  * Code-Anpassungen für Android 14
+  * Weitere Abbildungen von (sardischen) Arten
+  * Einige lokale Artnamen ergänzt
+  * Bug-Fix
+  * Doku-Update
 
 $ 3.4.5
   % Version 3.4.5
   _ 15.12.2023
   * SQlite DB: Table- und column-Namen 'temp' wg. reserviertem Term-Konflikt geändert
-  * Code-Anpassungen für Android 13
-  * Code-Verbesserungen
-
-$ 3.4.4
-  % Version 3.4.4
-  _ 05.12.2023
   * Kompiliert mit SDK Ver. 34 für targetSdkVersion 33
   * Gradle Plugin Upgrade -> 8.1.1
   * Import von DB-Dateien aus dem Verzeichnis "Documents/TourCount/"
@@ -109,6 +120,7 @@ $ 3.4.4
   * Doku überarbeitet
   * Code-Verbesserungen
   * Bug-Fixes
+  * Code-Anpassungen für Android 13
 
 $ 3.4.2
   % Version 3.4.2

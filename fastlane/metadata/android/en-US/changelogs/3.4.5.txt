@@ -1,4 +1,13 @@
 Version 3.4.5 (2023-12-15)
 - SQlite DB: Table and column names 'temp' changed for reserved term conflict
-- Code adaptations for Android 13
+- Compiled with SDK Ver. 34 for targetSdkVersion 33
+- Gradle Plugin upgraded -> 8.1.1
+- Import of DB files from Documents/TourCount folder
+- Export of DB and CSV files into Documents/TourCount folder
+- Results page improved
+- More species added
+- Missing pictures supplemented
+- Docs updated
 - Code improvements
+- Bugs fixed
+- Code adaptations for Android 13
