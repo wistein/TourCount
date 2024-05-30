@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   edit_individual.xml is used by EditIndividualActivity.java
+   edit_individual.xml is used by EditIndividualActivity.kt
    Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,13 +1,9 @@
 package com.wmstein.tourcount
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
@@ -29,42 +25,36 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
-import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.wmstein.tourcount.PermissionsDialogFragment.Companion.newInstance
-import com.wmstein.tourcount.PermissionsDialogFragment.PermissionsGrantedCallback
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
 import com.wmstein.tourcount.widgets.CountEditWidget
-import com.wmstein.tourcount.widgets.EditNotesWidget
-import com.wmstein.tourcount.widgets.EditTitleWidget
+import com.wmstein.tourcount.widgets.EditHeadWidget
 import com.wmstein.tourcount.widgets.HintWidget
 
 /***************************************************************
- * EditSpecListActivity lets you edit the species list (change, delete, select
+ * EditSpecListActivity lets you edit the species list (change, delete
  * and insert new species)
  * EditSpecListActivity is called from CountingActivity
- * Uses CountEditWidget.java, HintWidget.java,
- * activity_edit_section.xml, widget_edit_count.xml.
- * Calls AddSpeciesActivity.java for adding a new species to the species list.
+ * Uses EditHeadWidget.kt, CountEditWidget.kt, HintWidget.kt,
+ * activity_edit_section.xml, widget_edit_head.xml, widget_edit_count.xml.
+ * Calls AddSpeciesActivity.kt for adding a new species to the species list.
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-12-15
+ * last edited on 2024-05-14
  */
-class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
-    PermissionsGrantedCallback {
+class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
     private var savedCounts: ArrayList<CountEditWidget>? = null
     private var countsArea: LinearLayout? = null
     private var notesArea1: LinearLayout? = null
     private var hintArea1: LinearLayout? = null
-    private var etw: EditTitleWidget? = null
-    private var enw: EditNotesWidget? = null
+    private var ehw: EditHeadWidget? = null
 
     // the actual data
     private var section: Section? = null
@@ -74,20 +64,11 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
     private var idToDelete = 0
     private var bMap: Bitmap? = null
     private var bg: BitmapDrawable? = null
-
-    // Location info handling
-    var latitude = 0.0
-    var longitude = 0.0
-    private var locationService: LocationService? = null
-
-    // Permission dispatcher mode locationPermissionDispatcherMode: 
-    //  1 = use location service
-    //  2 = end location service
-    private var locationPermissionDispatcherMode = 0
+    private var cmpCountNames: ArrayList<String>? = null
+    private var cmpCountCodes: ArrayList<String>? = null
 
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
-    private var dupPref = false
     private var sortPref: String? = null
     private var brightPref = false
 
@@ -98,13 +79,11 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         super.onCreate(savedInstanceState)
 
         tourCount = application as TourCountApplication
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        dupPref = prefs.getBoolean("pref_duplicate", true)
+
         sortPref = prefs.getString("pref_sort_sp", "none")
         brightPref = prefs.getBoolean("pref_bright", true)
 
         setContentView(R.layout.activity_edit_section)
-        val countingScreen = findViewById<LinearLayout>(R.id.editSect)
 
         // Set full brightness of screen
         if (brightPref) {
@@ -113,10 +92,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             params.screenBrightness = 1.0f
             window.attributes = params
         }
-        bMap =
-            tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(countingScreen.resources, bMap)
-        countingScreen.background = bg
+
         savedCounts = ArrayList()
         notesArea1 = findViewById(R.id.editingNotes1Layout)
         hintArea1 = findViewById(R.id.showHintLayout)
@@ -127,25 +103,38 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             if (Build.VERSION.SDK_INT < 33) {
                 @Suppress("DEPRECATION")
                 if (savedInstanceState.getSerializable("savedCounts") != null) {
-                    savedCounts =
-                        savedInstanceState.getSerializable("savedCounts") as ArrayList<CountEditWidget>?
+                    @Suppress("UNCHECKED_CAST")
+                    savedCounts = savedInstanceState.getSerializable("savedCounts")
+                            as ArrayList<CountEditWidget>?
                 }
-            }
-            else {
+            } else {
                 if (savedInstanceState.getSerializable("savedCounts", T::class.java) != null) {
+                    @Suppress("UNCHECKED_CAST")
                     savedCounts =
-                        savedInstanceState.getSerializable("savedCounts", T::class.java) as ArrayList<CountEditWidget>?
+                        savedInstanceState.getSerializable("savedCounts", T::class.java)
+                                as ArrayList<CountEditWidget>?
                 }
             }
         }
+
+        val countingScreen = findViewById<LinearLayout>(R.id.editSect)
+        bMap = tourCount!!.decodeBitmap(
+            R.drawable.kbackground,
+            tourCount!!.width, tourCount!!.height
+        )
+        bg = BitmapDrawable(countingScreen.resources, bMap)
+        countingScreen.background = bg
+
+        // setup the data sources
+        sectionDataSource = SectionDataSource(this)
+        countDataSource = CountDataSource(this)
     }
+    // end of onCreate
 
     override fun onResume() {
         super.onResume()
 
         prefs = TourCountApplication.getPrefs()
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        dupPref = prefs.getBoolean("pref_duplicate", true)
         brightPref = prefs.getBoolean("pref_bright", true)
 
         // Set full brightness of screen
@@ -156,19 +145,12 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             window.attributes = params
         }
 
-        // Get location with permissions check
-        locationPermissionDispatcherMode = 1
-        locationCaptureFragment()
-
         // clear any existing views
         countsArea!!.removeAllViews()
         notesArea1!!.removeAllViews()
         hintArea1!!.removeAllViews()
 
-        // setup the data sources
-        sectionDataSource = SectionDataSource(this)
         sectionDataSource!!.open()
-        countDataSource = CountDataSource(this)
         countDataSource!!.open()
 
         // load the sections data
@@ -178,21 +160,19 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             supportActionBar!!.title = oldname
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "181, NullPointerException: No section name!")
+            if (MyDebug.LOG) Log.e(TAG, "163, NullPointerException: No section name!")
         }
 
         // display the section title
-        etw = EditTitleWidget(this, null)
-        etw!!.sectionName = oldname
-        etw!!.setWidgetTitle(getString(R.string.titleEdit))
-        notesArea1!!.addView(etw)
+        ehw = EditHeadWidget(this, null)
 
-        // display editable section notes; the same class
-        enw = EditNotesWidget(this, null)
-        enw!!.notesName = section!!.notes
-        enw!!.setWidgetTitle(getString(R.string.notesHere))
-        enw!!.setHint(getString(R.string.notesHint))
-        notesArea1!!.addView(enw)
+        ehw!!.setSpListTitle(getString(R.string.titleEdit))
+        ehw!!.spListName = oldname
+
+        // display the section notes title
+        ehw!!.setNotesTitle(getString(R.string.notesHere))
+        ehw!!.notesName = section!!.notes
+        notesArea1!!.addView(ehw)
 
         // display hint current species list:
         val nw = HintWidget(this, null)
@@ -220,7 +200,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         for (cew in savedCounts!!) {
             countsArea!!.addView(cew)
         }
-    } // end of Resume
+    } // end of onResume
 
     override fun onPause() {
         super.onPause()
@@ -228,57 +208,105 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         // close the data sources
         sectionDataSource!!.close()
         countDataSource!!.close()
-
-        // Stop location service with permissions check
-        locationPermissionDispatcherMode = 2
-        locationCaptureFragment()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        /*
-         * Before these widgets can be serialised they must be removed from their parent, or else
-         * trying to add them to a new parent causes a crash because they've already got one.
-         */
         super.onSaveInstanceState(outState)
+
+        // Widgets must be removed from their parent before they can be serialised.
         for (cew in savedCounts!!) {
             (cew.parent as ViewGroup).removeView(cew)
         }
         outState.putSerializable("savedCounts", savedCounts)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.edit_section, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        if (!testData()) return true
+
+        val id = item.itemId
+        if (id == android.R.id.home) {
+            savedCounts!!.clear()
+            val intent = NavUtils.getParentActivityIntent(this)!!
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            NavUtils.navigateUpTo(this, intent)
+        } else if (id == R.id.menuSaveExit) {
+            if (saveData()) {
+                savedCounts!!.clear()
+                super.finish()
+            }
+        } else if (id == R.id.newCount) {
+            newCount(view = null)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     // Compare count names for duplicates and returns name of 1. duplicate found
     private fun compCountNames(): String {
         var name: String
-        var isDbl = ""
-        val cmpCountNames = ArrayList<String>()
+        var isDblName = ""
+        cmpCountNames = ArrayList()
         val childcount = countsArea!!.childCount
+
         // for all CountEditWidgets
         for (i in 0 until childcount) {
             val cew = countsArea!!.getChildAt(i) as CountEditWidget
             name = cew.getCountName()
-            if (cmpCountNames.contains(name)) {
-                isDbl = name
-                if (MyDebug.LOG) Log.d(TAG, "261, Double name = $isDbl")
+            if (cmpCountNames!!.contains(name)) {
+                isDblName = name
+                if (MyDebug.LOG) Log.d(TAG, "266, Double name = $isDblName")
                 break
             }
-            cmpCountNames.add(name)
+            cmpCountNames!!.add(name)
         }
-        return isDbl
+        return isDblName
     }
 
-    fun saveAndExit(view: View?) {
+    // Compare count codes for duplicates and returns name of 1. duplicate found
+    private fun compCountCodes(): String {
+        var code: String
+        var isDblCode = ""
+        cmpCountCodes = ArrayList()
+        val childcount = countsArea!!.childCount
+
+        // for all CountEditWidgets
+        for (i in 0 until childcount) {
+            val cew = countsArea!!.getChildAt(i) as CountEditWidget
+            code = cew.getCountCode()
+            if (cmpCountCodes!!.contains(code)) {
+                isDblCode = code
+                if (MyDebug.LOG) Log.d(TAG, "287, Double name = $isDblCode")
+                break
+            }
+            cmpCountCodes!!.add(code)
+        }
+        return isDblCode
+    }
+
+    fun saveAndExit(view: View) {
         if (saveData()) {
             savedCounts!!.clear()
             super.finish()
         }
     }
 
+    // test for double entries and save species list
     private fun saveData(): Boolean {
         // test for double entries and save species list
         var retValue = true
 
         // add title if the user has written one...
-        val sectName = etw!!.sectionName
+        val sectName = ehw!!.spListName
+        if (MyDebug.LOG) Log.d(TAG, "309, newName: $sectName")
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
         } else {
@@ -288,7 +316,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         }
 
         // add notes if the user has written some...
-        val sectNotes = enw!!.notesName
+        val sectNotes = ehw!!.notesName
         if (isNotEmpty(sectNotes)) {
             section!!.notes = sectNotes
         } else {
@@ -296,24 +324,25 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
                 section!!.notes = sectNotes
             }
         }
+
         sectionDataSource!!.saveSection(section!!)
 
-        val isDbl: String
+        val isDblName: String
+        val isDblCode: String
         val childcount: Int = countsArea!!.childCount //No. of species in list
-        if (MyDebug.LOG) Log.d(TAG, "303, childcount: $childcount")
+        if (MyDebug.LOG) Log.d(TAG, "333, childcount: $childcount")
 
-        // check for unique species names
-        if (dupPref) {
-            isDbl = compCountNames()
-            if (isDbl == "") {
-                // do for all species 
-                for (i in 0 until childcount) {
-                    val cew = countsArea!!.getChildAt(i) as CountEditWidget
-                    if (isNotEmpty(cew.getCountName())) {
-                        if (MyDebug.LOG) Log.d(
-                            TAG,
-                            "315, cew: " + cew.countId + ", " + cew.getCountName()
-                        )
+        // check for unique species names and codes
+        isDblName = compCountNames()
+        isDblCode = compCountCodes()
+        if (isDblName == "" && isDblCode == "") {
+            // do for all species
+            for (i in 0 until childcount) {
+                val cew = countsArea!!.getChildAt(i) as CountEditWidget
+                retValue =
+                    if (isNotEmpty(cew.getCountName()) && isNotEmpty(cew.getCountCode())) {
+                        if (MyDebug.LOG) Log.d(TAG, "344, cew: "
+                                    + cew.countId + ", " + cew.getCountName())
 
                         //updates species name and code
                         countDataSource!!.updateCountName(
@@ -322,16 +351,20 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
                             cew.getCountCode(),
                             cew.getCountNameG()
                         )
+                        true
+                    } else {
+                        showSnackbarRed(getString(R.string.isempt))
+                        false
                     }
-                }
-            } else {
-                showSnackbarRed(
-                    isDbl + " " + getString(R.string.isdouble) + " "
-                            + getString(R.string.duplicate)
-                )
-                retValue = false
             }
+        } else {
+            showSnackbarRed(
+                getString(R.string.spname) + " " + isDblName + " " + getString(R.string.orcode) + " " + isDblCode + " "
+                        + getString(R.string.isdouble)
+            )
+                retValue = false
         }
+
         if (retValue) {
             // Snackbar doesn't appear, so Toast is used
             Toast.makeText(
@@ -349,28 +382,14 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         val isDbl: String
 
         // check for unique species names
-        if (dupPref) {
-            isDbl = compCountNames()
-            if (isDbl != "") {
-                showSnackbarRed(
-                    isDbl + " " + getString(R.string.isdouble) + " "
-                            + getString(R.string.duplicate)
-                )
-                retValue = false
-            }
+        isDbl = compCountNames()
+        if (isDbl != "") {
+            showSnackbarRed(
+                isDbl + " " + getString(R.string.isdouble) + " " + getString(R.string.duplicate)
+            )
+            retValue = false
         }
         return retValue
-    }
-
-    private fun showSnackbarRed(str: String) // bold red text
-    {
-        val view = findViewById<View>(R.id.editingScreen)
-        val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
-        sB.setActionTextColor(Color.RED)
-        val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        tv.setTypeface(tv.typeface, Typeface.BOLD)
-        sB.show()
     }
 
     // Start AddSpeciesActivity to add a new species to the species list
@@ -380,9 +399,8 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
 
         // pause for 100 msec to show toast
         Handler(Looper.getMainLooper()).postDelayed({
-
             // add title if the user has written one...
-            val sectName = etw!!.sectionName
+            val sectName = ehw!!.spListName
             if (isNotEmpty(sectName)) {
                 section!!.name = sectName
             } else {
@@ -392,7 +410,7 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             }
 
             // add notes if the user has written some...
-            val sectNotes = enw!!.notesName
+            val sectNotes = ehw!!.notesName
             if (isNotEmpty(sectNotes)) {
                 section!!.notes = sectNotes
             } else {
@@ -400,9 +418,11 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
                     section!!.notes = sectNotes
                 }
             }
-            sectionDataSource!!.saveSection(section!!)
-            sectionDataSource!!.close()
 
+            sectionDataSource!!.saveSection(section!!)
+
+            // startActivity(intent) in activity A calls onPause() before starting activity B
+            //   and so closes DataSources.
             val intent = Intent(this@EditSpecListActivity, AddSpeciesActivity::class.java)
             startActivity(intent)
         }, 100)
@@ -429,12 +449,6 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.edit_section, menu)
-        return true
-    }
-
     // catch back button for plausi test
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -448,83 +462,16 @@ class EditSpecListActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         return super.onKeyDown(keyCode, event)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        if (!testData()) return true
-        val id = item.itemId
-        if (id == android.R.id.home) {
-            savedCounts!!.clear()
-            sectionDataSource!!.close()
-            val intent = NavUtils.getParentActivityIntent(this)!!
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            NavUtils.navigateUpTo(this, intent)
-        } else if (id == R.id.menuSaveExit) {
-            if (saveData()) {
-                savedCounts!!.clear()
-                sectionDataSource!!.close()
-                super.finish()
-            }
-        } else if (id == R.id.newCount) {
-            newCount(view = null)
-            return true
-        }
-        return super.onOptionsItemSelected(item)
+    private fun showSnackbarRed(str: String) // bold red text
+    {
+        val view = findViewById<View>(R.id.editingScreen)
+        val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
+        sB.setActionTextColor(Color.RED)
+        val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
+        tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        tv.setTypeface(tv.typeface, Typeface.BOLD)
+        sB.show()
     }
-
-    @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        val countingScreen = findViewById<LinearLayout>(R.id.editSect)
-        prefs?.registerOnSharedPreferenceChangeListener(this)
-        dupPref = prefs!!.getBoolean("pref_duplicate", true)
-        sortPref = prefs.getString("pref_sort_sp", "none")
-        brightPref = prefs.getBoolean("pref_bright", true)
-        bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
-        countingScreen.background = null
-        bg = BitmapDrawable(countingScreen.resources, bMap)
-        countingScreen.background = bg
-    }
-
-    override fun locationCaptureFragment() {
-        run {
-            if (this.isPermissionGranted) {
-                when (locationPermissionDispatcherMode) {
-                    1 ->  // get location
-                        this.loc
-
-                    2 ->  // stop location service
-                        locationService!!.stopListener()
-                }
-            } else {
-                if (locationPermissionDispatcherMode == 1) newInstance().show(
-                    supportFragmentManager,
-                    PermissionsDialogFragment::class.java.name
-                )
-            }
-        }
-    }
-
-    // if API level > 23 test for permissions granted
-    private val isPermissionGranted: Boolean
-        get() = (ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED)
-
-    // get the location data
-    private val loc: Unit
-        get() {
-            locationService = LocationService(this)
-            if (locationService!!.canGetLocation()) {
-                longitude = locationService!!.getLongitude()
-                latitude = locationService!!.getLatitude()
-            }
-        }
 
     companion object {
         private const val TAG = "TourCountEditSecAct"

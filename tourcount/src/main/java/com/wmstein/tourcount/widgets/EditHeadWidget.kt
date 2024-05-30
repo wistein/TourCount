@@ -9,58 +9,45 @@ import android.widget.TextView
 import com.wmstein.tourcount.R
 import java.util.Objects
 
-/***************************************************
- * EditHeadWidget.java used by EditMetaActivity.java
- * Created by wmstein for com.wmstein.tourcount on 2016-03-31,
- * last edited in Java on 2019-02-12,
- * converted to Kotlin on 2023-07-05
+/**********************************
+ * EditHeadWidget used by CountOptionsActivity
+ * Created by wmstein on 2016-02-18,
+ * last edited in Java on 2020-09-19,
+ * converted to Kotlin on 2024-05-11
  */
 class EditHeadWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
-    private val widget_co1 // used for country title
-            : TextView
-    private val widget_co2 // used for country
-            : EditText
-    private val widget_name1 // used for observer title
-            : TextView
-    private val widget_name2 // used for observer
-            : EditText
+    private val sp_list_title: TextView
+    private val sp_list_name: EditText
+    private val notes_title: TextView
+    private val notes_name: EditText
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_head, this, true)
-        widget_co1 = findViewById(R.id.widgetCo1)
-        widget_co2 = findViewById(R.id.widgetCo2)
-        widget_name1 = findViewById(R.id.widgetName1)
-        widget_name2 = findViewById(R.id.widgetName2)
+        sp_list_title = findViewById(R.id.spListTitle)
+        sp_list_name = findViewById(R.id.spListName)
+        notes_title = findViewById(R.id.notesTitle)
+        notes_name = findViewById(R.id.notesName)
     }
 
-    // Following the SETS
-    // country
-    fun setWidgetCo1(title: String?) {
-        widget_co1.text = title
+    fun setSpListTitle(title: String?) {
+        sp_list_title.text = title
     }
 
-    fun setWidgetCo2(name: String?) {
-        widget_co2.setText(name)
+    var spListName: String?
+        get() = sp_list_name.text.toString()
+        set(name) {
+            sp_list_name.setText(name)
+        }
+
+    fun setNotesTitle(title: String?) {
+        notes_title.text = title
     }
 
-    // name
-    fun setWidgetName1(title: String?) {
-        widget_name1.text = title
-    }
+    var notesName: String?
+        get() = notes_name.text.toString()
+        set(name) {
+            notes_name.setText(name)
+        }
 
-    fun setWidgetName2(name: String?) {
-        widget_name2.setText(name)
-    }
-
-    // Following the GETS
-    // country
-    fun setWidgetCo2(): String {
-        return widget_co2.text.toString()
-    }
-
-    // name
-    fun setWidgetName2(): String {
-        return widget_name2.text.toString()
-    }
 }

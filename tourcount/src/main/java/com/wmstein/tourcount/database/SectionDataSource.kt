@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteDatabase
  * Class SectionDataSource provides methods for table Section
  * Created by wmstein on 2016-04-18,
  * last modified in Java on 2022-03-23,
- * converted to Kotlin on 2023-07-05
- * last modified on 2023-12-15,
+ * converted to Kotlin on 2023-07-05,
+ * last modified on 2024-05-14
  */
 class SectionDataSource(context: Context?) {
     // Database fields
@@ -28,6 +28,9 @@ class SectionDataSource(context: Context?) {
         DbHelper.S_TEMPE,
         DbHelper.S_WIND,
         DbHelper.S_CLOUDS,
+        DbHelper.S_TEMPE_END,
+        DbHelper.S_WIND_END,
+        DbHelper.S_CLOUDS_END,
         DbHelper.S_DATE,
         DbHelper.S_START_TM,
         DbHelper.S_END_TM,
@@ -59,6 +62,9 @@ class SectionDataSource(context: Context?) {
         section.tmp = cursor.getInt(cursor.getColumnIndex(DbHelper.S_TEMPE))
         section.wind = cursor.getInt(cursor.getColumnIndex(DbHelper.S_WIND))
         section.clouds = cursor.getInt(cursor.getColumnIndex(DbHelper.S_CLOUDS))
+        section.tmp_end = cursor.getInt(cursor.getColumnIndex(DbHelper.S_TEMPE_END))
+        section.wind_end = cursor.getInt(cursor.getColumnIndex(DbHelper.S_WIND_END))
+        section.clouds_end = cursor.getInt(cursor.getColumnIndex(DbHelper.S_CLOUDS_END))
         section.date = cursor.getString(cursor.getColumnIndex(DbHelper.S_DATE))
         section.start_tm = cursor.getString(cursor.getColumnIndex(DbHelper.S_START_TM))
         section.end_tm = cursor.getString(cursor.getColumnIndex(DbHelper.S_END_TM))
@@ -76,6 +82,9 @@ class SectionDataSource(context: Context?) {
         dataToInsert.put(DbHelper.S_TEMPE, section.tmp)
         dataToInsert.put(DbHelper.S_WIND, section.wind)
         dataToInsert.put(DbHelper.S_CLOUDS, section.clouds)
+        dataToInsert.put(DbHelper.S_TEMPE_END, section.tmp_end)
+        dataToInsert.put(DbHelper.S_WIND_END, section.wind_end)
+        dataToInsert.put(DbHelper.S_CLOUDS_END, section.clouds_end)
         dataToInsert.put(DbHelper.S_DATE, section.date)
         dataToInsert.put(DbHelper.S_START_TM, section.start_tm)
         dataToInsert.put(DbHelper.S_END_TM, section.end_tm)
@@ -83,7 +92,7 @@ class SectionDataSource(context: Context?) {
         val where = DbHelper.S_ID + " = ?"
         val whereArgs = arrayOf(section.id.toString())
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
-    }// Make sure to close the cursor
+    }
 
     // called from RetrieveAddr, CountingActivity and EditSpecListActivity
     val section: Section
@@ -100,7 +109,6 @@ class SectionDataSource(context: Context?) {
             )
             cursor.moveToFirst()
             section = cursorToSection(cursor)
-            // Make sure to close the cursor
             cursor.close()
             return section
         }
@@ -142,4 +150,5 @@ class SectionDataSource(context: Context?) {
         val whereArgs = arrayOf(id.toString())
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
+
 }

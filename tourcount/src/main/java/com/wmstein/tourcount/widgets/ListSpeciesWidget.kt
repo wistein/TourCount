@@ -117,4 +117,5 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
     fun getSpec_name(newcount: Count): String? {
         return newcount.name
     }
+
 }

@@ -24,7 +24,7 @@ import kotlin.math.roundToInt
  * Modified for TransektCount by wm.stein on 2023-09-18,
  * last edited in Java on 2023-09-18
  * converted to Kotlin on 2023-09-19
- * last edited on 2023-09-19.
+ * last edited on 2024-05-14.
  */
 class AutoFitEditText @JvmOverloads constructor(
     context: Context?, attrs: AttributeSet? = null,
@@ -182,8 +182,6 @@ class AutoFitEditText @JvmOverloads constructor(
                 lastBest = hi
             } else return mid
         }
-        // make sure to return last best
-        // this is what should always be returned
         return lastBest
     }
 

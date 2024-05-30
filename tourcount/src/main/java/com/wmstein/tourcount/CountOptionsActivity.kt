@@ -1,11 +1,7 @@
 package com.wmstein.tourcount
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -17,29 +13,25 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
-import androidx.core.content.ContextCompat
-import com.wmstein.tourcount.PermissionsDialogFragment.Companion.newInstance
-import com.wmstein.tourcount.PermissionsDialogFragment.PermissionsGrantedCallback
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
-import com.wmstein.tourcount.widgets.EditNotesWidget
+import com.wmstein.tourcount.widgets.EditSpNotesWidget
 
 /**********************************
  * CountOptionsActivity
- * Edit notes for counting species
- * uses EditNotesWidget.java and activity_count_options.xml
- * Based on CountOptionsActivity.java by milo on 05/05/2014.
+ * Edit notes for a counted species
+ * uses EditSpNotesWidget.kt and activity_count_options.xml
+ * Based on CountOptionsActivity.kt by milo on 05/05/2014.
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2023-11-29
+ * last edited on 2024-05-11
  */
-class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
-    PermissionsGrantedCallback {
+class CountOptionsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
     private var staticWidgetArea: LinearLayout? = null
-    private var enw: EditNotesWidget? = null
+    private var esw: EditSpNotesWidget? = null
     private var count: Count? = null
     private var countId = 0
     private var countDataSource: CountDataSource? = null
@@ -49,28 +41,13 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
     private var brightPref = false
-    private var metaPref = false // option for reverse geocoding
-    private var emailString: String? = "" // mail address for OSM query
-
-    // Location info handling
-    private var latitude = 0.0
-    private var longitude = 0.0
-    private var locationService: LocationService? = null
-
-    // Permission dispatcher mode locationPermissionDispatcherMode: 
-    //  1 = use location service
-    //  2 = end location service
-    private var locationPermissionDispatcherMode = 0
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tourCount = application as TourCountApplication
-        prefs.registerOnSharedPreferenceChangeListener(this)
         brightPref = prefs.getBoolean("pref_bright", true)
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
 
         setContentView(R.layout.activity_count_options)
         val countingScreen = findViewById<LinearLayout>(R.id.count_options)
@@ -98,20 +75,16 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         // clear any existing views
         staticWidgetArea!!.removeAllViews()
 
-        // Get location with permissions check
-        locationPermissionDispatcherMode = 1
-        locationCaptureFragment()
-
         // get the data sources
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
         count = countDataSource!!.getCountById(countId)
         supportActionBar!!.title = count!!.name
-        enw = EditNotesWidget(this, null)
-        enw!!.notesName = count!!.notes
-        enw!!.setWidgetTitle(getString(R.string.notesSpecies))
-        enw!!.setHint(getString(R.string.notesHint))
-        staticWidgetArea!!.addView(enw)
+        esw = EditSpNotesWidget(this, null)
+        esw!!.spNotesName = count!!.notes
+        esw!!.setSpNotesTitle(getString(R.string.notesSpecies))
+        esw!!.setHint(getString(R.string.notesHint))
+        staticWidgetArea!!.addView(esw)
     }
 
     override fun onPause() {
@@ -120,11 +93,7 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         // finally, close the database
         countDataSource!!.close()
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(enw!!.windowToken, 0)
-
-        // Stop location service with permissions check
-        locationPermissionDispatcherMode = 2
-        locationCaptureFragment()
+        imm.hideSoftInputFromWindow(esw!!.windowToken, 0)
     }
 
     private fun saveData() {
@@ -135,10 +104,10 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
             getString(R.string.sectSaving) + " " + count!!.name + "!",
             Toast.LENGTH_SHORT
         ).show()
-        count!!.notes = enw!!.notesName
+        count!!.notes = esw!!.spNotesName
         // hide keyboard
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(enw!!.windowToken, 0)
+        imm.hideSoftInputFromWindow(esw!!.windowToken, 0)
         countDataSource!!.saveCount(count!!)
     }
 
@@ -164,56 +133,4 @@ class CountOptionsActivity : AppCompatActivity(), OnSharedPreferenceChangeListen
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        val countingScreen = findViewById<LinearLayout>(R.id.count_options)
-        countingScreen.background = null
-        prefs?.registerOnSharedPreferenceChangeListener(this)
-        brightPref = prefs!!.getBoolean("pref_bright", true)
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "")   // for reliable query of Nominatim service
-        bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(countingScreen.resources, bMap)
-        countingScreen.background = bg
-    }
-
-    override fun locationCaptureFragment() {
-        run {
-            if (this.isPermissionGranted) {
-                when (locationPermissionDispatcherMode) {
-                    1 ->  // get location
-                        this.loc
-
-                    2 ->  // stop location service
-                        locationService!!.stopListener()
-                }
-            } else {
-                if (locationPermissionDispatcherMode == 1) newInstance().show(
-                    supportFragmentManager,
-                    PermissionsDialogFragment::class.java.name
-                )
-            }
-        }
-    }
-
-    // if API level > 23 test for permissions granted
-    private val isPermissionGranted: Boolean
-        get() = (ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED)
-
-    // get the location data
-    private val loc: Unit
-        get() {
-            locationService = LocationService(this)
-            if (locationService!!.canGetLocation()) {
-                longitude = locationService!!.getLongitude()
-                latitude = locationService!!.getLatitude()
-            }
-        }
 }

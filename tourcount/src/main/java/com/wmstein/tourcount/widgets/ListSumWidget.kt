@@ -30,4 +30,5 @@ class ListSumWidget(context: Context, attrs: AttributeSet?) : LinearLayout(conte
         sumSpecies.text = sumsp.toString()
         sumIndividuals.text = sumind.toString()
     }
+
 }

@@ -63,9 +63,9 @@ _ Subtitle
   _ 
     ! Integrated code from external references:
     * Counting functions based on BeeCount, (C) 2016 Milo Thurston (knirirr ), Apache License, Version 2.0, https://github.com/knirirr/BeeCount
-    * AutoFitText.java, modified, original code from author: pheuschk, 18.04.2013, Open Source, https://pastebin.com/raw/e6WyrwSN
-    * ChangeLog.java, modified, original code (C) 2011-2013, Karsten Priegnitz, Other Open Source, https://github.com/koem/android-change-log/
-    * CSVWriter.java, modified, original code (C) 2015 Bytecode Pty Ltd., Apache License, Version 2.0
+    * AutoFitText.kt, modified from AutoFitText.java, author: pheuschk, 18.04.2013, Open Source, https://pastebin.com/raw/e6WyrwSN
+    * ChangeLog.kt, modified from ChangeLog.java, (C) 2011-2013, Karsten Priegnitz, Other Open Source, https://github.com/koem/android-change-log/
+    * CSVWriter.kt, modified from CSVWriter.java, (C) 2015 Bytecode Pty Ltd., Apache License, Version 2.0
     * filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
     * egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
   _ 
@@ -90,12 +90,27 @@ _ Subtitle
 	* Scopula virgulata, derived from http://www.freenatureimages.eu/Animals/index.html,	Author: Zoran Bozovic, licensed by www.saxifraga.nl free for non-commercial use
 	* Sesia apiformis, derived from picture on https://en.wikipedia.org/wiki/Hornet_moth	Author: Jyrki Lehto, free use
 	* Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Author: Peter Gergely, licensed by www.saxifraga.nl free for non-commercial use
-  _
+  _ 
     ! All other pictures, app icon and background (C) Wilhelm Stein. 
+  _ 
     ! Pictures of this work by Wilhelm Stein may be used for research or other non-commercial purposes without prior permission.
-    ! But it is not permitted to upload pictures to Meta Platforms (Facebook), as most of the mentioned licenses do not comply with and I do not agree with the licensing terms of Meta Platforms.
+    ! But it is not permitted to upload pictures to social media platforms, as most of the mentioned licenses do not comply with and I do not agree with the licensing terms of these platforms.
+  _ 
     ! Illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
+
+$ 3.4.7
+  % Version 3.4.7
+  _ 2024-05-28
+  * Headline for File Selection screen added
+  * Preferences view enhanced with headline
+  * Preferences show their states in menu
+  * Menu option 'Check duplicates' eliminated (checks always)
+  * Additional fields for registration of temperature, wind and clouds at end of a tour
+  * CSV-export layout adopted for new registered values
+  * Some code and layout improvements
+  * Bugs fixed
+  * Docs updated
 
 $ 3.4.6
   % Version 3.4.6

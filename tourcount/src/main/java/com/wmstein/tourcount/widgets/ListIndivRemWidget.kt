@@ -27,4 +27,5 @@ class ListIndivRemWidget(context: Context, attrs: AttributeSet?) : RelativeLayou
     fun setRem(individuals: Individuals) {
         txtBemInd.text = individuals.notes
     }
+
 }

@@ -6,7 +6,8 @@
      reason: Spinner in CountingActivity.
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
-     Last edited 2023-12-12
+
+     Last edited 2024-05-06
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,7 +50,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:resizeableActivity="false"
-        tools:ignore="DataExtractionRules,GoogleAppIndexingWarning,UnusedAttribute">
+        tools:ignore="DataExtractionRules,DiscouragedApi,GoogleAppIndexingWarning,UnusedAttribute">
 
         <activity
             android:name="com.wmstein.tourcount.WelcomeActivity"

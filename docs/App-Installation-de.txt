@@ -25,7 +25,7 @@ Zwei Optionen:
    App, Quellcode, Doku mit Basis- und Beispiel-DBs:
    
    - TransektCount-App, apk-Datei:
-	   https://github.com/wistein/TransektCount/tree/master/apk
+	     https://github.com/wistein/TransektCount/tree/master/apk
 
      Doku und DBs:
        https://github.com/wistein/TransektCount/tree/master/docs

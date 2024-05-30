@@ -4,8 +4,9 @@ package com.wmstein.tourcount.database
  * Definitions and basic functions for table Count
  * Basic structure by milo on 05/05/2014.
  * Created by wmstein on 2016-02-18,
- * last change in Java on 2022-03-23
- * converted to Kotlin on 2023-07-05
+ * last change in Java on 2022-03-23,
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-04-14
  */
 class Count {
     @JvmField
@@ -30,6 +31,7 @@ class Count {
     var notes: String? = null
     @JvmField
     var name_g: String? = null
+
     fun increase_f1i(): Int {
         count_f1i = count_f1i + 1
         return count_f1i
@@ -102,4 +104,5 @@ class Count {
         }
         return count_ei
     }
+
 }

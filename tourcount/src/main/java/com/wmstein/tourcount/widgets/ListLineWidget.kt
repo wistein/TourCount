@@ -18,4 +18,5 @@ class ListLineWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(co
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_line, this, true)
     }
+
 }

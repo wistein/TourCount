@@ -4,7 +4,8 @@ package com.wmstein.tourcount.database
  * Definitions for table Individuals
  * Created by wmstein for TourCount on 2016-04-20
  * Last edited in Java on 2022-03-25,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-05-14
  */
 class Individuals {
     @JvmField
@@ -14,11 +15,9 @@ class Individuals {
     @JvmField
     var name: String? = null
     @JvmField
-    var coord_x // latitude
-            = 0.0
+    var coord_x = 0.0 // latitude
     @JvmField
-    var coord_y // longitude
-            = 0.0
+    var coord_y = 0.0 // longitude
     @JvmField
     var coord_z = 0.0
     @JvmField
@@ -34,13 +33,11 @@ class Individuals {
     @JvmField
     var stadium: String? = null
     @JvmField
-    var state_1_6 // takes numbers 0-6 with 0 translated to "-"
-            = 0
+    var state_1_6 = 0 // takes numbers 0-6 with 0 translated to "-"
     @JvmField
     var notes: String? = null
     @JvmField
     var icount = 0
     @JvmField
-    var icategory // 1=♂♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg
-            = 0
+    var icategory = 0 // 1=♂♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg
 }

@@ -92,10 +92,24 @@ _ Subtitle
 	* Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Peter Gergely, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
   _
     ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
+  _
     ! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden.
-    ! Aber es ist nicht erlaubt, Abbildungen auf Meta Platforms (Facebook) hochzuladen, da die meisten der genannten Lizenzen mit den Lizenzen von Meta Platforms kollidieren.
+    ! Aber es ist nicht erlaubt, Abbildungen auf Social-Media-Plattformen hochzuladen, da die meisten der oben genannten Lizenzen mit den Lizenzen dieser Plattformen kollidieren und ich nicht mit den Lizenzbedingungen dieser Plattformen einverstanden bin.
     ! Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren deren jeweilige Copyright-Bedingungen.
   _ 
+
+$ 3.4.7
+  % Version 3.4.7
+  _ 28.05.2024
+  * Überschrift für Dateiauswahlseite hinzugefügt
+  * Überschrift für Einstellungsmenü hinzugefügt
+  * Einstellungsmenü zeigt den Status der Optionen an
+  * Menü-Option 'Verhindere doppelte Einträge' entfernt (ist Standardfunktion)
+  * Zusätzliche Erfassung von Temperatur, Wind und Wolken am Ende der Tour
+  * Layout beim CSV-Export für die neu erfassten Werte ergänzt
+  * Verbesserungen bei Code und Bildschirm-Layout
+  * Bug-Fixes
+  * Doku-Update
 
 $ 3.4.6
   % Version 3.4.6

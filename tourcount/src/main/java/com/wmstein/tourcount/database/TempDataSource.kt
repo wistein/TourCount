@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-05-15,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2023-12-15.
+ * last edited on 2024-05-14.
  */
 class TempDataSource(context: Context?) {
     // Database fields
@@ -44,27 +44,6 @@ class TempDataSource(context: Context?) {
         database!!.update(DbHelper.TEMP_TABLE, dataToInsert, null, null)
     }
 
-    /* 
-    // possibly for future use
-    public void saveTempCnt(int tmpcnt)
-    {
-        ContentValues dataToInsert = new ContentValues();
-        dataToInsert.put(DbHelper.T_ID, 1);
-        dataToInsert.put(DbHelper.T_TEMP_CNT, tmpcnt);
-        database.update(DbHelper.TEMP_TABLE, dataToInsert, null, null);
-    }
-
-    // possibly for future use
-    public int getTempCnt()
-    {
-        Tmp tmp;
-        Cursor cursor = database.query(DbHelper.TEMP_TABLE, allColumns, String.valueOf(1), null, null, null, null);
-        cursor.moveToFirst();
-        temp = cursorToTemp(cursor);
-        cursor.close();
-        return tmp.temp_cnt;
-    }
-    */
     val tmp: Temp
         get() {
             val tmp: Temp
@@ -91,4 +70,5 @@ class TempDataSource(context: Context?) {
         tmp.temp_cnt = cursor.getInt(cursor.getColumnIndex(DbHelper.T_TEMP_CNT))
         return tmp
     }
+
 }

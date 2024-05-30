@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -27,7 +26,7 @@ import androidx.appcompat.widget.AppCompatTextView
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
  * last edited in Java on 2023-05-24,
  * converted to Kotlin on 2023-07-06
- * last edited on 2023-12-15,
+ * last edited on 2024-05-07,
  */
 class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: AttributeSet?) :
     AppCompatTextView(context, attrs) {
@@ -122,8 +121,6 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
             }
         }
         this.setTextSize(TypedValue.COMPLEX_UNIT_SP, lowerTextSize / mScaledDensityFactor)
-        //next unnecessary line of void method skipped by wmstein
-        //return;
     }
 
     /**
@@ -149,25 +146,6 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
         if (width != oldWidth && height != oldHeight) {
             refitText(this.text.toString(), width, height)
         }
-    }
-
-    /**
-     * This method is guaranteed to be called by [TextView.setText] immediately.
-     * Therefore we can safely add our modifications here and then have the parent class resume its
-     * work. So if text has changed you should always call [TextView.setText].
-     */
-    override fun setText(text: CharSequence, type: BufferType) {
-        val targetFieldWidth = this.width
-        val targetFieldHeight = this.height
-        if (targetFieldWidth <= 0 || targetFieldHeight <= 0 || text == "") {
-            if (MyDebug.LOG) Log.d(
-                "AutoFitText",
-                "164, Some values are empty, AutoFitText was not able to construct properly"
-            )
-        } else {
-            refitText(text.toString(), targetFieldWidth, targetFieldHeight)
-        }
-        super.setText(text, type)
     }
 
     companion object {

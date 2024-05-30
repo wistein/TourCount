@@ -16,14 +16,16 @@ import com.wmstein.tourcount.R
  * updated to version 4 on 2019-03-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2023-12-15.
+ * last edited on 2024-05-14
  */
 class DbHelper    // constructor
     (private val mContext: Context?) :
     SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
+
     // called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
         if (MyDebug.LOG) Log.i(TAG, "Creating database: $DATABASE_NAME")
+
         var sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
                 + S_NAME + " text, "
@@ -34,11 +36,15 @@ class DbHelper    // constructor
                 + S_TEMPE + " int, "
                 + S_WIND + " int, "
                 + S_CLOUDS + " int, "
+                + S_TEMPE_END + " int, "
+                + S_WIND_END + " int, "
+                + S_CLOUDS_END + " int, "
                 + S_DATE + " text, "
                 + S_START_TM + " text, "
                 + S_END_TM + " text, "
                 + S_NOTES + " text)")
         db.execSQL(sql)
+
         sql = ("create table " + COUNT_TABLE + " ("
                 + C_ID + " integer primary key, "
                 + C_COUNT_F1I + " int, "
@@ -52,15 +58,18 @@ class DbHelper    // constructor
                 + C_NOTES + " text, "
                 + C_NAME_G + " text)")
         db.execSQL(sql)
+
         sql = ("create table " + HEAD_TABLE + " ("
                 + H_ID + " integer primary key, "
                 + H_OBSERVER + " text)")
         db.execSQL(sql)
+
         sql = ("create table " + TEMP_TABLE + " ("
                 + T_ID + " integer primary key, "
                 + T_TEMP_LOC + " text, "
                 + T_TEMP_CNT + " int)")
         db.execSQL(sql)
+
         sql = ("create table " + INDIVIDUALS_TABLE + " ("
                 + I_ID + " integer primary key, "
                 + I_COUNT_ID + " int, "
@@ -108,7 +117,7 @@ class DbHelper    // constructor
     private fun initialCounts(db: SQLiteDatabase) {
         val specs: Array<String> = mContext?.resources!!.getStringArray(R.array.initSpecs)
         val codes: Array<String> = mContext.resources.getStringArray(R.array.initCodes)
-        val specs_g: Array<String> = mContext.resources.getStringArray(R.array.initSpecs_g)
+        val specsG: Array<String> = mContext.resources.getStringArray(R.array.initSpecs_g)
         for (i in 1 until specs.size) {
             val values4 = ContentValues()
             values4.put(C_ID, i)
@@ -121,7 +130,7 @@ class DbHelper    // constructor
             values4.put(C_COUNT_LI, 0)
             values4.put(C_COUNT_EI, 0)
             values4.put(C_NOTES, "")
-            values4.put(C_NAME_G, specs_g[i])
+            values4.put(C_NAME_G, specsG[i])
             db.insert(COUNT_TABLE, null, values4)
         }
     }
@@ -130,23 +139,30 @@ class DbHelper    // constructor
     // called if newVersion != oldVersion
     // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 5) {
+            version6(db)
+        }
         if (oldVersion == 4) {
             version5(db)
+            version6(db)
         }
         if (oldVersion == 3) {
             version4(db)
             version5(db)
+            version6(db)
         }
         if (oldVersion == 2) {
             version3(db)
             version4(db)
             version5(db)
+            version6(db)
         }
         if (oldVersion == 1) {
             version2(db)
             version3(db)
             version4(db)
             version5(db)
+            version6(db)
         }
     }
 
@@ -333,6 +349,60 @@ class DbHelper    // constructor
         if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 5")
     }
 
+    /*** V6 ***/
+    // Version 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
+    private fun version6(db: SQLiteDatabase) {
+        // in SECTION_TABLE rename column 'temp' to 'tmp'
+        var sql = "alter table $SECTION_TABLE rename to 'section_backup'"
+        db.execSQL(sql)
+
+        // create new sections table
+        sql = ("create table " + SECTION_TABLE + " ("
+                + S_ID + " integer primary key, "
+                + S_NAME + " text, "
+                + S_COUNTRY + " text, "
+                + S_PLZ + " text, "
+                + S_CITY + " text, "
+                + S_PLACE + " text, "
+                + S_TEMPE + " int, "
+                + S_WIND + " int, "
+                + S_CLOUDS + " int, "
+                + S_TEMPE_END + " int, "
+                + S_WIND_END + " int, "
+                + S_CLOUDS_END + " int, "
+                + S_DATE + " text, "
+                + S_START_TM + " text, "
+                + S_END_TM + " text, "
+                + S_NOTES + " text)")
+        db.execSQL(sql)
+
+        // insert the old data into sections
+        sql = ("INSERT INTO " + SECTION_TABLE + " SELECT "
+                + S_ID + ", "
+                + S_NAME + ", "
+                + S_COUNTRY + ", "
+                + S_PLZ + ", "
+                + S_CITY + ", "
+                + S_PLACE + ", "
+                + S_TEMPE + ", "
+                + S_WIND + ", "
+                + S_CLOUDS + ", "
+                + "0, "
+                + "0, "
+                + "0, "
+                + S_DATE + ", "
+                + S_START_TM + ", "
+                + S_END_TM + ", "
+                + S_NOTES + " FROM section_backup")
+        db.execSQL(sql)
+
+        // delete section_backup
+        sql = "DROP TABLE section_backup"
+        db.execSQL(sql)
+
+        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 6")
+    }
+
     companion object {
         private const val TAG = "TourCount DBHelper"
         private const val DATABASE_NAME = "tourcount.db"
@@ -341,7 +411,8 @@ class DbHelper    // constructor
         //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
         //DATABASE_VERSION 4: Column C_NAME_G added to COUNT_TABLE for local butterfly names 
         //DATABASE_VERSION 5: Rename table 'temp' to 'tmp' and SECTION_TABLE column 'temp' to 'tmp'
-        private const val DATABASE_VERSION = 5
+        //DATABASE_VERSION 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
+        private const val DATABASE_VERSION = 6
 
         // tables
         const val SECTION_TABLE = "sections"
@@ -360,11 +431,15 @@ class DbHelper    // constructor
         const val S_TEMPE = "tmp"
         const val S_WIND = "wind"
         const val S_CLOUDS = "clouds"
+        const val S_TEMPE_END = "tmp_end"
+        const val S_WIND_END = "wind_end"
+        const val S_CLOUDS_END = "clouds_end"
         const val S_DATE = "date"
         const val S_START_TM = "start_tm"
         const val S_END_TM = "end_tm"
         const val S_NOTES = "notes"
-        private const val S_TEMP = "temp" // reserved term conflict
+
+        private const val S_TEMP = "temp" // deprecated for reserved term conflict
 
         // fields of table counts
         const val C_ID = "_id"
@@ -378,7 +453,7 @@ class DbHelper    // constructor
         const val C_CODE = "code"
         const val C_NOTES = "notes"
         const val C_NAME_G = "name_g"
-        private const val C_COUNT = "count" // deprecated
+        private const val C_COUNT = "count" // eliminated in Version 3
 
         // fields of table head
         const val H_ID = "_id"
@@ -405,4 +480,5 @@ class DbHelper    // constructor
         const val T_TEMP_LOC = "temp_loc"
         const val T_TEMP_CNT = "temp_cnt"
     }
+
 }

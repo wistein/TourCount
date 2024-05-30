@@ -13,7 +13,8 @@ import com.wmstein.tourcount.TourCountApplication
  * Basic structure by milo on 05/05/2014.
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
- * converted to Kotlin on 2023-07-06
+ * converted to Kotlin on 2023-07-06,
+ * last edited on 2024-05-14
  */
 class CountDataSource(context: Context?) {
     // Database fields
@@ -184,7 +185,7 @@ class CountDataSource(context: Context?) {
         val count = cursorToCount(cursor)
         cursor.close()
         return count
-    }// Make sure to close the cursor
+    }
 
     // Used by CountingActivity
     val allIds: Array<String?>
@@ -202,10 +203,9 @@ class CountDataSource(context: Context?) {
                 i++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return idArray
-        }// Make sure to close the cursor
+        }
 
     // Used by CountingActivity
     val allIdsSrtName: Array<String?>
@@ -223,10 +223,9 @@ class CountDataSource(context: Context?) {
                 i++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return idArray
-        }// Make sure to close the cursor
+        }
 
     // Used by CountingActivity
     val allIdsSrtCode: Array<String?>
@@ -244,7 +243,6 @@ class CountDataSource(context: Context?) {
                 i++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return idArray
         }
@@ -264,7 +262,6 @@ class CountDataSource(context: Context?) {
             i++
             cursor.moveToNext()
         }
-        // Make sure to close the cursor
         cursor.close()
         return uArray
     }
@@ -284,7 +281,6 @@ class CountDataSource(context: Context?) {
             i++
             cursor.moveToNext()
         }
-        // Make sure to close the cursor
         cursor.close()
         return uArray
     }
@@ -304,12 +300,10 @@ class CountDataSource(context: Context?) {
             i++
             cursor.moveToNext()
         }
-        // Make sure to close the cursor
         cursor.close()
         return uArray
-    }// species picture resource name
+    }
 
-    // Make sure to close the cursor
     // Used by CountingActivity
     val allImages: Array<Int?>
         get() {
@@ -333,12 +327,10 @@ class CountDataSource(context: Context?) {
                 i++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return imageArray
-        }// species picture resource name
+        }
 
-    // Make sure to close the cursor
     // Used by CountingActivity
     val allImagesSrtName: Array<Int?>
         get() {
@@ -362,12 +354,10 @@ class CountDataSource(context: Context?) {
                 i++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return imageArray
-        }// species picture resource name
+        }
 
-    // Make sure to close the cursor
     // Used by CountingActivity
     val allImagesSrtCode: Array<Int?>
         get() {
@@ -391,10 +381,9 @@ class CountDataSource(context: Context?) {
                 i++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return imageArray
-        }// Make sure to close the cursor
+        }
 
     // Used by EditSpecListActivity
     val allSpecies: List<Count>
@@ -410,10 +399,9 @@ class CountDataSource(context: Context?) {
                 speci.add(count)
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return speci
-        }// Make sure to close the cursor
+        }
 
     // Used by WelcomeActivity
     val diffSpec: Int
@@ -431,10 +419,9 @@ class CountDataSource(context: Context?) {
                 cntSpec++
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return cntSpec
-        }// Make sure to close the cursor
+        }
 
     // Used by EditSpecListActivity
     val allSpeciesSrtName: List<Count>
@@ -450,10 +437,9 @@ class CountDataSource(context: Context?) {
                 speci.add(count)
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return speci
-        }// Make sure to close the cursor
+        }
 
     // Used by EditSpecListActivity and AddSpeciesActivity
     val allSpeciesSrtCode: List<Count>
@@ -469,10 +455,9 @@ class CountDataSource(context: Context?) {
                 speci.add(count)
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return speci
-        }// Make sure to close the cursor
+        }
 
     // Used by ListSpeciesActivity
     val cntSpecies: List<Count>
@@ -492,10 +477,9 @@ class CountDataSource(context: Context?) {
                 speci.add(count)
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return speci
-        }// Make sure to close the cursor
+        }
 
     // Used by ListSpeciesActivity
     val cntSpeciesSrtName: List<Count>
@@ -515,10 +499,9 @@ class CountDataSource(context: Context?) {
                 counts.add(count)
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return counts
-        }// Make sure to close the cursor
+        }
 
     // Used by ListSpeciesActivity
     val cntSpeciesSrtCode: List<Count>
@@ -538,8 +521,8 @@ class CountDataSource(context: Context?) {
                 counts.add(count)
                 cursor.moveToNext()
             }
-            // Make sure to close the cursor
             cursor.close()
             return counts
         }
+
 }

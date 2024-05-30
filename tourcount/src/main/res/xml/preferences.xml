@@ -9,18 +9,22 @@
 
         <ListPreference
             android:entries="@array/pref_bg_entries"
+            android:defaultValue="default"
             android:entryValues="@array/pref_bg_values"
             android:icon="@drawable/baseline_wallpaper_48"
             android:key="pref_back"
-            android:summary="@string/pref_bg_summ"
+            app:useSimpleSummaryProvider="true"
+            android:dialogTitle="@string/pref_bg_summ"
             android:title="@string/pref_bg"/>
         
         <ListPreference
             android:entries="@array/pref_sort_sp_entries"
+            android:defaultValue="codes"
             android:entryValues="@array/pref_sort_sp_values"
             android:icon="@drawable/baseline_sort_48"
             android:key="pref_sort_sp"
-            android:summary="@string/pref_sort_order_sp_summ"
+            app:useSimpleSummaryProvider="true"
+            android:dialogTitle="@string/pref_sort_order_sp_summ"
             android:title="@string/pref_sort_order"/>
         
         <SwitchPreferenceCompat
@@ -74,13 +78,6 @@
             android:key="pref_bright"
             android:summary="@string/pref_bright_summ"
             android:title="@string/pref_bright"/>
-        
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:icon="@drawable/baseline_playlist_add_check_48"
-            android:key="pref_duplicate"
-            android:summary="@string/pref_duplicate_summary"
-            android:title="@string/pref_duplicate"/>
     </PreferenceCategory>
 
     <PreferenceCategory

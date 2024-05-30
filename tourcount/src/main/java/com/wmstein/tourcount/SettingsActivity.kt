@@ -22,10 +22,11 @@ class SettingsActivity : AppCompatActivity() {
 
     @SuppressLint("CommitPrefEdits", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
-        supportActionBar!!.hide()
         setContentView(R.layout.settings)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         //add Preferences From Resource (R.xml.preferences)
         supportFragmentManager

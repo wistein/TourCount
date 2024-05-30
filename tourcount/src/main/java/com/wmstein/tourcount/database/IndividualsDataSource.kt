@@ -13,8 +13,8 @@ import com.wmstein.tourcount.MyDebug
  * Class IndividualsDataSource provides methods for table Individuals
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
- * converted to Kotlin on 2023-07-05
- * last edited on 2023-12-15,
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-05-14
  */
 class IndividualsDataSource(context: Context?) {
     // Database fields
@@ -239,4 +239,5 @@ class IndividualsDataSource(context: Context?) {
             cursor.close()
             return individs
         }
+
 }

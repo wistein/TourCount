@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2023-12-05 -->
+     last edited on 2024-05-11 -->
 
 <resources>
 
@@ -46,8 +46,8 @@
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
-    <string name="name_spec">Species Name</string>
-    <string name="name_spec_g">English Name</string>
+    <string name="name_spec">Species Name:</string>
+    <string name="name_spec_g">English Name:</string>
     <string name="cntsmf">Counts ♂ ♀</string>
     <string name="cntsm">Counts ♂</string>
     <string name="cntsf">Counts ♀</string>
@@ -65,37 +65,39 @@
     <string name="currentDir">Current Dir</string>
     <string name="fileSize">Size</string>
     <string name="noBack">Please select a file, you may cancel afterwards.</string>
+    <string name="fileHeadlineDB">List of selectable DB files</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlnotes">Count List Notes</string>
-    <string name="speccode">Spec. Code</string>
+    <string name="zlnotes">Count List Notes:</string>
+    <string name="speccode">Spec. Code:</string>
     <string name="cnts">Counts</string>
-    <string name="bema">Spec. Notes</string>
+    <string name="bema">Spec. Notes:</string>
     <string name="bemi">Indiv. Notes</string>
     <string name="editHeadTitle">Meta Data</string>
-    <string name="country">Country</string>
-    <string name="inspector">Observer Name</string>
-    <string name="temperature">Temp. (°C)</string>
-    <string name="wind">Wind (0–4)</string>
-    <string name="clouds">Clouds (%)</string>
+    <string name="country">Country:</string>
+    <string name="inspector">Observer Name:</string>
+    <string name="temperature">Temp. (°C):</string>
+    <string name="wind">Wind (0–4):</string>
+    <string name="clouds">Clouds (%):</string>
     <string name="hinttap">Click here</string>
     <string name="valTemp">Unrealistic temperature!</string>
     <string name="valWind">Wind out of range!</string>
     <string name="valClouds">Clouds out of range!</string>
-    <string name="date">Date</string>
-    <string name="plz">Po. Code</string>
-    <string name="city">City</string>
-    <string name="place">Place</string>
-    <string name="starttm">Time from</string>
-    <string name="endtm">until</string>
+    <string name="date">Date:</string>
+    <string name="plz">P. Code:</string>
+    <string name="city">City:</string>
+    <string name="place">Place:</string>
+    <string name="tm">Time:</string>
+    <string name="starttm">from:</string>
+    <string name="endtm">until:</string>
 
     <!-- EditIndividualActivity -->
     <string name="saveIndividualButton">Save</string>
     <string name="indivdel">Deleted: Individual with ID:</string>
-    <string name="xcoord">Latitude</string>
-    <string name="ycoord">Longitude</string>
-    <string name="zcoord">Height (m)</string>
-    <string name="uncerti">Uncertainty (m)</string>
+    <string name="xcoord">Latitude:</string>
+    <string name="ycoord">Longitude:</string>
+    <string name="zcoord">Height (m):</string>
+    <string name="uncerti">Uncertainty (m):</string>
     <string name="time">Time</string>
     <string name="locality">Locality</string>
     <string name="sex">Sexus</string>
@@ -127,13 +129,16 @@
 	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSpecListActivity -->
-    <string name="titleEdit">List Name</string>
-    <string name="notesHere">List Notes</string>
+    <string name="titleEdit">List Name:</string>
+    <string name="titleHint">Insert list name here&#8230;</string>
     <string name="notesHint">Type notes here&#8230;</string>
     <string name="deleteCount">Delete Item</string>
     <string name="reallyDeleteCount">Are you sure? This item will be deleted immediately.</string>
     <string name="isdouble"> is double!</string>
     <string name="presentSpecs">Present species:</string>
+    <string name="isempt">Name or Code is empty!</string>
+    <string name="spname">Name</string>
+    <string name="orcode"> or code</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
@@ -150,14 +155,12 @@
     <string name="prefs_appearance">Appearance</string>
     <string name="pref_bg">Background</string>
     <string name="pref_bg_summ">Choose default or no background image.</string>
-    <string name="pref_sort_order">Sorting</string>
+    <string name="pref_sort_order">Sorting of species</string>
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
     <string name="pref_note_font">Note font</string>
     <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
-    <string name="screen_orientation">Show screen in Landscape Mode instead of Portrait Mode.</string>
-    <string name="titel_screen_orientation">Landscape instead of Portrait</string>
     <string name="prefs_sound">Sound/Vibration</string>
     <string name="pref_button_sound">Button sounds</string>
     <string name="pref_button_sound_summary">Make a sound upon pressing a count button.</string>
@@ -168,8 +171,6 @@
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
     <string name="pref_bright">Screen bright</string>
     <string name="pref_bright_summ">Sets the TourCount screens for counting and editing bright.</string>
-    <string name="pref_duplicate">Prevent duplicate species</string>
-    <string name="pref_duplicate_summary">When selected, the names in the species list must be unique.</string>
     <string name="prefs_metadata">Meta data</string>
     <string name="pref_metadata">GPS Reverse Geocoding</string>
     <string name="pref_metadata_summ">When selected, tries to substitute the location meta data you entered by Reverse Geocoding</string>
@@ -181,16 +182,16 @@
     <string name="countName">New Species</string>
     <string name="countNameG">New Species (English name)</string>
     <string name="countCode">Code</string>
-    <string name="notesSpecies">Species Notes</string>
+    <string name="notesSpecies">Species Notes:</string>
     <string name="yesDeleteIt">Delete</string>
     <string name="noCancel">Cancel</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Counting Results</string>
     <string name="wait">View gets calculated&#8230;</string>
-    <string name="dLa">Ø-Latitude</string>
-    <string name="dLo">Ø-Longitude</string>
-    <string name="mUncert">Max. Deviation</string>
+    <string name="dLa">Ø-Latitude:</string>
+    <string name="dLo">Ø-Longitude:</string>
+    <string name="mUncert">Deviation:</string>
     <string name="txtSpecies">Different counted species: </string>
     <string name="txtIndividuals">Sum of counted individuals: </string>
     <string name="txtSx">Sex.:</string>
@@ -212,9 +213,10 @@
     <string name="charZero">0</string>
     <string name="countNameHint">Name of Species</string>
     <string name="countNameHintG">Name of Species (English)</string>
-    <string name="hintTitle">Title</string>
+    <string name="hintTitle">Title:</string>
     <string name="hintName">Name</string>
-    <string name="hintSectionNotes">List notes.</string>
+    <string name="notesHere">List Notes:</string>
+    <string name="hintListNotes">List notes:</string>
     <string name="getHelp">Database problem! Please mail your exported \'tourcount_yyyy-mm-dd_hhmmss.db\' if you need assistance.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂, ♀</string>

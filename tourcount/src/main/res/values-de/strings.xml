@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2023-12-05 -->
+     last edited on 2024-05-11 -->
 
 <resources>
 
@@ -46,8 +46,8 @@
     <string name="confirmBasisImport">Willst Du wirklich die leere Basis-Datenbank \"tourcount0.db\" importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
-    <string name="name_spec">Spezies-Name</string>
-    <string name="name_spec_g">Deutscher Name</string>
+    <string name="name_spec">Spezies-Name:</string>
+    <string name="name_spec_g">Deutscher Name:</string>
     <string name="cntsmf">Anzahl ♂ ♀</string>
     <string name="cntsm">Anzahl ♂</string>
     <string name="cntsf">Anzahl ♀</string>
@@ -65,37 +65,39 @@
     <string name="currentDir">Aktuelles Verz.</string>
     <string name="fileSize">Größe</string>
     <string name="noBack">Bitte Datei wählen, Abbruch ist danach möglich.</string>
+    <string name="fileHeadlineDB">Liste der DB-Dateien</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlnotes">Bem. zur Liste</string>
-    <string name="speccode">Spez.-Code</string>
+    <string name="zlnotes">Bem. zur Liste:</string>
+    <string name="speccode">Spez.-Code:</string>
     <string name="cnts">Anzahl</string>
-    <string name="bema">Art-Bemerkung</string>
+    <string name="bema">Art-Bemerkung:</string>
     <string name="bemi">Indiv.-Bemerkung</string>
     <string name="editHeadTitle">Meta-Daten</string>
-    <string name="country">Land</string>
-    <string name="inspector">Melder(in)</string>
-    <string name="temperature">Temp. (°C)</string>
-    <string name="wind">Wind (0–4)</string>
-    <string name="clouds">Wolken (%)</string>
+    <string name="country">Land:</string>
+    <string name="inspector">Melder(in):</string>
+    <string name="temperature">Temp. (°C):</string>
+    <string name="wind">Wind (0–4):</string>
+    <string name="clouds">Wolken (%):</string>
     <string name="hinttap">Tippe hier</string>
     <string name="valTemp">Unrealistische Temperatur!</string>
     <string name="valWind">Wind überprüfen!</string>
     <string name="valClouds">Wolken überprüfen!</string>
-    <string name="date">Datum</string>
-    <string name="plz">PLZ</string>
-    <string name="city">Stadt</string>
-    <string name="place">Ort</string>
-    <string name="starttm">Zeit von</string>
-    <string name="endtm">bis</string>
+    <string name="date">Datum:</string>
+    <string name="plz">PLZ:</string>
+    <string name="city">Stadt:</string>
+    <string name="place">Ort:</string>
+    <string name="tm">Zeit:</string>
+    <string name="starttm">von:</string>
+    <string name="endtm">bis:</string>
 
     <!-- EditIndividualActivity -->
     <string name="saveIndividualButton">Speichern</string>
     <string name="indivdel">Gelöscht: Individuum mit ID:</string>
-    <string name="xcoord">Breitengrad</string>
-    <string name="ycoord">Längengrad</string>
-    <string name="zcoord">Höhe (m)</string>
-    <string name="uncerti">Unsicherheit (m)</string>
+    <string name="xcoord">Breitengrad:</string>
+    <string name="ycoord">Längengrad:</string>
+    <string name="zcoord">Höhe (m):</string>
+    <string name="uncerti">Unsicherheit (m):</string>
     <string name="time">Zeit</string>
     <string name="locality">Lokalität</string>
     <string name="sex">Geschlecht</string>
@@ -127,13 +129,16 @@
 	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSpecListActivity -->
-    <string name="titleEdit">Listenname</string>
-    <string name="notesHere">Bemerkung zur Liste</string>
+    <string name="titleEdit">Listenname:</string>
+    <string name="titleHint">Listenname hier einfügen&#8230;</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
     <string name="deleteCount">Element löschen</string>
     <string name="reallyDeleteCount">Bist Du sicher? Das Element wird sofort gelöscht.</string>
     <string name="isdouble"> ist doppelt!</string>
     <string name="presentSpecs">Aktuell vorhandene Arten:</string>
+    <string name="isempt">Name oder Code ist leer!</string>
+    <string name="spname">Name</string>
+    <string name="orcode"> oder Code</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Art hinzufügen</string>
@@ -150,14 +155,12 @@
     <string name="prefs_appearance">Aussehen</string>
     <string name="pref_bg">Hintergrund</string>
     <string name="pref_bg_summ">Wähle Standard- oder kein Hintergrundbild.</string>
-    <string name="pref_sort_order">Sortierung</string>
+    <string name="pref_sort_order">Sortierung der Arten</string>
     <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
     <string name="pref_note_font">Anmerkungs-Font</string>
     <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
     <string name="pref_left_hand">Linkshänder</string>
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
-    <string name="screen_orientation">Ausrichtung in Landscape-Modus anstelle von Portrait-Modus.</string>
-    <string name="titel_screen_orientation">Landscape statt Portrait</string>
     <string name="prefs_sound">Sound/Vibration</string>
     <string name="pref_button_sound">Button-Sound</string>
     <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
@@ -168,8 +171,6 @@
     <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
     <string name="pref_bright">Bildschirm hell</string>
     <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
-    <string name="pref_duplicate">Verhindere gleiche Listeneinträge</string>
-    <string name="pref_duplicate_summary">Wähle diese Option, wenn Listeneinträge (Artnamen) eindeutig sein sollen.</string>
     <string name="prefs_metadata">Meta-Daten</string>
     <string name="pref_metadata">GPS Reverse-Geocoding</string>
     <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Reverse-Geocoding ermittelt und überschrieben werden sollen</string>
@@ -178,19 +179,19 @@
     <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
 
     <!-- CountOptionsActivity -->
-    <string name="notesSpecies">Bemerkung zur Art</string>
     <string name="countName">Neue Art</string>
     <string name="countNameG">Neue Art (deutscher Name)</string>
     <string name="countCode">Code</string>
+    <string name="notesSpecies">Bemerkung zur Art:</string>
     <string name="yesDeleteIt">Löschen</string>
     <string name="noCancel">Abbrechen</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Zählergebnis</string>
     <string name="wait">Liste wird berechnet&#8230;</string>
-    <string name="dLa">Ø-Breitengr.</string>
-    <string name="dLo">Ø-Längengr.</string>
-    <string name="mUncert">Max. Abweichung</string>
+    <string name="dLa">Ø-Breitengr.:</string>
+    <string name="dLo">Ø-Längengr.:</string>
+    <string name="mUncert">Abweichung:</string>
     <string name="txtSpecies">Verschiedene gezählte Arten: </string>
     <string name="txtIndividuals">Summe der gezählten Individuen: </string>
     <string name="txtSx">Sex.:</string>
@@ -212,9 +213,10 @@
     <string name="charZero">0</string>
     <string name="countNameHint">Art-Name</string>
     <string name="countNameHintG">Art-Name (deutsch)</string>
-    <string name="hintTitle">Titel</string>
+    <string name="hintTitle">Titel:</string>
     <string name="hintName">Name</string>
-    <string name="hintSectionNotes">Bemerkung zur Liste</string>
+    <string name="notesHere">Bemerkung zur Liste:</string>
+    <string name="hintListNotes">Bemerkung zur Liste:</string>
     <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount_yyyy-mm-dd_hhmmss.db\" per E-Mail, falls Du Hilfe brauchst.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂, ♀</string>

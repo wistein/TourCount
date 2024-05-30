@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     widget_hint.xml
-    used by HintWidget.java
+    used by HintWidget.kt
     Copyright (c) 2023, Wilhelm Stein, Bonn, Germany.
     Last edited on 2023-11-30
   -->
@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom|start|end|top"
         android:gravity="center_vertical|start"
-        android:hint="@string/hintSectionNotes"
+        android:hint="@string/hintListNotes"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#BFFFFF"
         android:textSize="17sp"/>

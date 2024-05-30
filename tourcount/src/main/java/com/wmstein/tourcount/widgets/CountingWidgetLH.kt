@@ -20,7 +20,8 @@ import java.util.Objects
  * Created by wmstein 2016-12-18,
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
- * converted to Kotlin on 2023-07-11
+ * converted to Kotlin on 2023-07-11,
+ * last edited on 2024-05-14
  */
 class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val namef1i: TextView
@@ -29,6 +30,7 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
     private val namepi: TextView
     private val nameli: TextView
     private val nameei: TextView
+
     // section internal counters
     private val countCountf1i: AutoFitText
     private val countCountf2i: AutoFitText
@@ -36,6 +38,7 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
     private val countCountpi: AutoFitText
     private val countCountli: AutoFitText
     private val countCountei: AutoFitText
+
     @JvmField
     var count: Count? = null
 
@@ -48,6 +51,7 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
         namepi = findViewById(R.id.piNameLH)
         nameli = findViewById(R.id.liNameLH)
         nameei = findViewById(R.id.eiNameLH)
+
         countCountf1i = findViewById(R.id.countCountLHf1i)
         countCountf2i = findViewById(R.id.countCountLHf2i)
         countCountf3i = findViewById(R.id.countCountLHf3i)
@@ -64,12 +68,14 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
         namepi.text = context.getString(R.string.countPupaHint)
         nameli.text = context.getString(R.string.countLarvaHint)
         nameei.text = context.getString(R.string.countOvoHint)
+
         countCountf1i.text = count!!.count_f1i.toString()
         countCountf2i.text = count!!.count_f2i.toString()
         countCountf3i.text = count!!.count_f3i.toString()
         countCountpi.text = count!!.count_pi.toString()
         countCountli.text = count!!.count_li.toString()
         countCountei.text = count!!.count_ei.toString()
+
         val countUpf1iButton = findViewById<ImageButton>(R.id.buttonUpLHf1i)
         countUpf1iButton.tag = count!!.id
         val countUpf2iButton = findViewById<ImageButton>(R.id.buttonUpLHf2i)
@@ -82,17 +88,18 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
         countUpliButton.tag = count!!.id
         val countUpeiButton = findViewById<ImageButton>(R.id.buttonUpLHei)
         countUpeiButton.tag = count!!.id
+
         val countDownf1iButton = findViewById<ImageButton>(R.id.buttonDownLHf1i)
-        val countDownf2iButton = findViewById<ImageButton>(R.id.buttonDownLHf2i)
-        val countDownf3iButton = findViewById<ImageButton>(R.id.buttonDownLHf3i)
-        val countDownpiButton = findViewById<ImageButton>(R.id.buttonDownLHpi)
-        val countDownliButton = findViewById<ImageButton>(R.id.buttonDownLHli)
-        val countDowneiButton = findViewById<ImageButton>(R.id.buttonDownLHei)
         countDownf1iButton.tag = count!!.id
+        val countDownf2iButton = findViewById<ImageButton>(R.id.buttonDownLHf2i)
         countDownf2iButton.tag = count!!.id
+        val countDownf3iButton = findViewById<ImageButton>(R.id.buttonDownLHf3i)
         countDownf3iButton.tag = count!!.id
+        val countDownpiButton = findViewById<ImageButton>(R.id.buttonDownLHpi)
         countDownpiButton.tag = count!!.id
+        val countDownliButton = findViewById<ImageButton>(R.id.buttonDownLHli)
         countDownliButton.tag = count!!.id
+        val countDowneiButton = findViewById<ImageButton>(R.id.buttonDownLHei)
         countDowneiButton.tag = count!!.id
     }
 
@@ -145,4 +152,5 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
     fun countDownLHei() {
         countCountei.text = count!!.safe_decrease_ei().toString()
     }
+
 }

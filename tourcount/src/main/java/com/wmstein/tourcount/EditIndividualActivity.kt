@@ -45,7 +45,7 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2023-12-15
+ * last edited on 2024-05-14
  */
 class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
@@ -160,11 +160,11 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
 
         // display the editable data
         eiw = EditIndividualWidget(this, null)
-        eiw!!.setWidgetLocality1(getString(R.string.locality))
+        eiw!!.setWidgetLocality1(getString(R.string.locality)+":")
         eiw!!.widgetLocality2 = sLocality!!
-        eiw!!.setWidgetZCoord1(getString(R.string.zcoord))
-        eiw!!.setWidgetZCoord2(String.format("%.1f", height))
-        eiw!!.setWidgetStadium1(getString(R.string.stadium))
+        eiw!!.setWidgetZCoord1(getString(R.string.zcoord)+":")
+        eiw!!.setWidgetZCoord2(String.format("%.1f", height)+":")
+        eiw!!.setWidgetStadium1(getString(R.string.stadium)+":")
         when (indivAttr) {
             1, 2, 3 -> {
                 eiw!!.widgetStadium2 = getString(R.string.stadium_1)
@@ -188,7 +188,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         }
         if (phase123!!) {
             eiw!!.widgetState1(true) // headline state
-            eiw!!.setWidgetState1(getString(R.string.state))
+            eiw!!.setWidgetState1(getString(R.string.state)+":")
             eiw!!.widgetState2(true) // state
             eiw!!.setWidgetState2("")
         } else {
@@ -196,9 +196,9 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             eiw!!.setWidgetState2("-")
             eiw!!.widgetState2(false)
         }
-        eiw!!.setWidgetCount1(getString(R.string.count1)) // icount
+        eiw!!.setWidgetCount1(getString(R.string.count1)+":") // icount
         eiw!!.widgetCount2 = 1
-        eiw!!.setWidgetIndivNote1(getString(R.string.note))
+        eiw!!.setWidgetIndivNote1(getString(R.string.note)+":")
         eiw!!.widgetIndivNote2 = ""
         eiw!!.setWidgetXCoord1(getString(R.string.xcoord))
         eiw!!.setWidgetXCoord2(String.format("%.6f", latitude))
@@ -210,9 +210,6 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
 
     override fun onPause() {
         super.onPause()
-//        if (!sdata!!) {
-//            saveData()
-//        }
 
         // close the data sources
         individualsDataSource!!.close()
@@ -388,7 +385,6 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
         val indivScreen = findViewById<ScrollView>(R.id.editIndividualScreen)
         indivScreen.background = null
-        prefs?.registerOnSharedPreferenceChangeListener(this)
         brightPref = prefs!!.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
         emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
@@ -480,4 +476,5 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     companion object {
         private const val TAG = "EditIndivAct"
     }
+
 }

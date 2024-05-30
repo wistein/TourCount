@@ -26,7 +26,7 @@ import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
-import com.wmstein.tourcount.widgets.EditHeadWidget;
+import com.wmstein.tourcount.widgets.EditLocationWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
 import com.wmstein.tourcount.widgets.EditTitleWidget;
 
@@ -48,7 +48,7 @@ import androidx.work.WorkRequest;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2023-12-16
+ * last edit in Java on 2024-05-28
  */
 public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
 {
@@ -71,11 +71,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private TextView sDate, sTime, eTime;
 
     private EditTitleWidget ett;
-    private EditTitleWidget enw;
-    private EditHeadWidget ehw;
-    private EditMetaWidget etw;
+    private EditLocationWidget elw;
+    private EditMetaWidget emw;
 
-    // Location info handling
+    // Location info handling in the first activity to support a quicker 1. GPS fix
     private double latitude;
     private double longitude;
     LocationService locationService;
@@ -146,48 +145,50 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         head = headDataSource.getHead();
         section = sectionDataSource.getSection();
 
-        // display an editable list title
+        // display editable list title, observer name and notes
         ett = new EditTitleWidget(this, null);
-        ett.setSectionName(section.name);
         ett.setWidgetTitle(getString(R.string.titleEdit));
+        ett.setWidgetName(section.name);
+        ett.setWidgetOName1(getString(R.string.inspector));
+        ett.setWidgetOName2(head.observer);
+        ett.setWidgetONotes1(getString(R.string.notesHere));
+        ett.setWidgetONotes2(section.notes);
+        ett.setHintN(getString(R.string.notesHint));
         head_area.addView(ett);
 
-        // display editable section notes; the same class
-        enw = new EditTitleWidget(this, null);
-        enw.setSectionName(section.notes);
-        enw.setWidgetTitle(getString(R.string.notesHere));
-        enw.setHint(getString(R.string.notesHint));
-        head_area.addView(enw);
+        // display the editable location data
+        elw = new EditLocationWidget(this, null);
+        elw.setWidgetCo1(getString(R.string.country));
+        elw.setWidgetCo2(section.country);
+        elw.setWidgetPlz1(getString(R.string.plz));
+        elw.setWidgetPlz2(section.plz);
+        elw.setWidgetCity1(getString(R.string.city));
+        elw.setWidgetCity2(section.city);
+        elw.setWidgetPlace1(getString(R.string.place));
+        elw.setWidgetPlace2(section.place);
 
-        // display the editable head data
-        ehw = new EditHeadWidget(this, null);
-        ehw.setWidgetCo1(getString(R.string.country));
-        ehw.setWidgetCo2(section.country);
-        ehw.setWidgetName1(getString(R.string.inspector));
-        ehw.setWidgetName2(head.observer);
-        head_area.addView(ehw);
+        head_area.addView(elw);
 
         // display the editable meta data
-        etw = new EditMetaWidget(this, null);
-        etw.setWidgetTemp1(getString(R.string.temperature));
-        etw.setWidgetTemp2(section.tmp);
-        etw.setWidgetWind1(getString(R.string.wind));
-        etw.setWidgetWind2(section.wind);
-        etw.setWidgetClouds1(getString(R.string.clouds));
-        etw.setWidgetClouds2(section.clouds);
-        etw.setWidgetPlz1(getString(R.string.plz));
-        etw.setWidgetPlz2(section.plz);
-        etw.setWidgetCity1(getString(R.string.city));
-        etw.setWidgetCity2(section.city);
-        etw.setWidgetPlace1(getString(R.string.place));
-        etw.setWidgetPlace2(section.place);
-        etw.setWidgetDate1(getString(R.string.date));
-        etw.setWidgetDate2(section.date);
-        etw.setWidgetStartTm1(getString(R.string.starttm));
-        etw.setWidgetStartTm2(section.start_tm);
-        etw.setWidgetEndTm1(getString(R.string.endtm));
-        etw.setWidgetEndTm2(section.end_tm);
-        head_area.addView(etw);
+        emw = new EditMetaWidget(this, null);
+        emw.setWidgetDate1(getString(R.string.date));
+        emw.setWidgetDate2(section.date);
+        emw.setWidgetStartTm1(getString(R.string.starttm));
+        emw.setWidgetStartTm2(section.start_tm);
+        emw.setWidgetEndTm1(getString(R.string.endtm));
+        emw.setWidgetEndTm2(section.end_tm);
+
+        emw.setWidgetTemp1(getString(R.string.temperature));
+        emw.setWidgetWind1(getString(R.string.wind));
+        emw.setWidgetClouds1(getString(R.string.clouds));
+
+        emw.setWidgetTemp2(section.tmp);
+        emw.setWidgetTemp3(section.tmp_end);
+        emw.setWidgetWind2(section.wind);
+        emw.setWidgetWind3(section.wind_end);
+        emw.setWidgetClouds2(section.clouds);
+        emw.setWidgetClouds3(section.clouds_end);
+        head_area.addView(emw);
 
         pdate = Calendar.getInstance();
         ptime = Calendar.getInstance();
@@ -285,7 +286,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
                 NavUtils.navigateUpFromSameTask(this);
             });
         }
-    } // end of onResume
+    }
+    // end of onResume
 
     // formatted date
     public static String getformDate(Date date)
@@ -335,19 +337,19 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     private boolean saveData()
     {
         // Save head data
-        head.observer = ehw.setWidgetName2();
-
+        head.observer = ett.getWidgetOName2();
         headDataSource.saveHead(head);
 
         // Save meta data
-        section.name = ett.getSectionName();
-        section.notes = enw.getSectionName();
+        section.name = ett.getWidgetName();
+        section.notes = ett.getWidgetONotes2();
 
-        section.country = ehw.setWidgetCo2();
-        section.tmp = etw.getWidgetTemp2();
+        section.country = elw.setWidgetCo2();
+        section.tmp = emw.getWidgetTemp2();
+        section.tmp_end = emw.getWidgetTemp3();
         if (section.tmp > 50 || section.tmp < 0)
         {
-            Snackbar sB = Snackbar.make(etw, getString(R.string.valTemp), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(emw, getString(R.string.valTemp), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
@@ -355,10 +357,11 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             sB.show();
             return false;
         }
-        section.wind = etw.getWidgetWind2();
+        section.wind = emw.getWidgetWind2();
+        section.wind_end = emw.getWidgetWind3();
         if (section.wind > 4 || section.wind < 0)
         {
-            Snackbar sB = Snackbar.make(etw, getString(R.string.valWind), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(emw, getString(R.string.valWind), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -366,10 +369,11 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             sB.show();
             return false;
         }
-        section.clouds = etw.getWidgetClouds2();
+        section.clouds = emw.getWidgetClouds2();
+        section.clouds_end = emw.getWidgetClouds3();
         if (section.clouds > 100 || section.clouds < 0)
         {
-            Snackbar sB = Snackbar.make(etw, getString(R.string.valClouds), Snackbar.LENGTH_LONG);
+            Snackbar sB = Snackbar.make(emw, getString(R.string.valClouds), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
@@ -377,12 +381,12 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             sB.show();
             return false;
         }
-        section.plz = etw.getWidgetPlz2();
-        section.city = etw.getWidgetCity2();
-        section.place = etw.getWidgetPlace2();
-        section.date = etw.getWidgetDate2();
-        section.start_tm = etw.getWidgetStartTm2();
-        section.end_tm = etw.getWidgetEndTm2();
+        section.plz = elw.getWidgetPlz2();
+        section.city = elw.getWidgetCity2();
+        section.place = elw.getWidgetPlace2();
+        section.date = emw.getWidgetDate2();
+        section.start_tm = emw.getWidgetStartTm2();
+        section.end_tm = emw.getWidgetEndTm2();
 
         sectionDataSource.saveSection(section);
         return true;

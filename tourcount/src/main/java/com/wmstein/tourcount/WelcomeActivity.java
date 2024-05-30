@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +44,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -70,7 +70,7 @@ import static java.lang.Math.sqrt;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2023-12-15
+ * last edited on 2024-05-28
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -128,6 +128,13 @@ public class WelcomeActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if (MyDebug.LOG)
+        {
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
+                .detectLeakedClosableObjects()
+                .build());
+        }
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -190,30 +197,24 @@ public class WelcomeActivity
         if (cl.firstRun())
             cl.getLogDialog().show();
 
-        // test for existence of directory /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount0.db
-        infile = new File(getApplicationContext().getExternalFilesDir(null) + "/tourcount0.db");
-        if (!infile.exists())
-            exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
-
-    } // end of onCreate
-
-    // check initial location permission
-    private boolean isPermLocGranted()
-    {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    // check initial external storage permission
-    private boolean isStorageGranted()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        // test for existence of file /storage/emulated/0/Documents/TourCount/tourcount0.db
+        File path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
-            return Environment.isExternalStorageManager(); // check permission MANAGE_EXTERNAL_STORAGE for Android 11+
+            path = Environment.getExternalStorageDirectory();
+            path = new File(path + "/Documents/TourCount");
         }
         else
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        {
+            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            path = new File(path + "/TourCount");
+        }
+
+        infile = new File(path, "/tourcount0.db");
+        if (!infile.exists())
+            exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
     }
+    // end of onCreate
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -222,7 +223,6 @@ public class WelcomeActivity
         super.onResume();
 
         prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -293,7 +293,26 @@ public class WelcomeActivity
                 }
             );
         }
-    } // end of onResume
+    }
+    // end of onResume
+
+    // check initial location permission
+    private boolean isPermLocGranted()
+    {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    // check initial external storage permission
+    private boolean isStorageGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        {
+            return Environment.isExternalStorageManager(); // check permission MANAGE_EXTERNAL_STORAGE for Android 11+
+        }
+        else
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
 
     // Part of permission handling
     @Override
@@ -592,6 +611,14 @@ public class WelcomeActivity
         WorkManager.getInstance(this).cancelAllWork();
     }
 
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
     /*************************************************************************
      * The six functions below are for exporting and importing the database.
      * They've been put here because no database should be open at this point.
@@ -646,7 +673,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "649, No sdcard access");
+                Log.e(TAG, "663, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -660,13 +687,13 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "663, Failed to copy database");
+                    Log.e(TAG, "677, Failed to copy database");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
     }
 
-    /***********************************************************************
+    /*****************************************************
      // Exports DB to tourcount_yyyy-MM-dd_HHmmss.csv
      //   with purged data set
      // Spreadsheet programs can import this csv file with
@@ -700,7 +727,7 @@ public class WelcomeActivity
 
         Head head;
         String country, inspecName;
-        int temp, wind, clouds;
+        int temps, winds, clouds, tempe, winde, cloude;
         String plz, city, place;
         String date, start_tm, end_tm;
         int spstate;
@@ -731,7 +758,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "734, No sdcard access");
+                Log.d(TAG, "748, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -768,7 +795,7 @@ public class WelcomeActivity
                         sectName,                        //section name
                         "",
                         "",
-                        getString(R.string.inspector) + ":",           //Inspector:
+                        getString(R.string.inspector),   //Inspector:
                         inspecName                       //inspector name
                     };
                 csvWrite.writeNext(arrHead);
@@ -805,19 +832,22 @@ public class WelcomeActivity
                 // set environment headline
                 String[] arrEnvHead =
                     {
+                        getString(R.string.date),
+                        "",
+                        getString(R.string.tm),
                         getString(R.string.temperature),
                         getString(R.string.wind),
-                        getString(R.string.clouds),
-                        getString(R.string.date),
-                        getString(R.string.starttm),
-                        getString(R.string.endtm)
+                        getString(R.string.clouds)
                     };
                 csvWrite.writeNext(arrEnvHead);
 
                 // set environment data
-                temp = section.tmp;
-                wind = section.wind;
+                temps = section.tmp;
+                tempe = section.tmp_end;
+                winds = section.wind;
+                winde = section.wind_end;
                 clouds = section.clouds;
+                cloude = section.clouds_end;
                 date = section.date;
                 start_tm = section.start_tm;
                 end_tm = section.end_tm;
@@ -825,14 +855,26 @@ public class WelcomeActivity
                 // write environment data
                 String[] arrEnvironment =
                     {
-                        String.valueOf(temp),
-                        String.valueOf(wind),
-                        String.valueOf(clouds),
                         date,
+                        getString(R.string.starttm),
                         start_tm,
-                        end_tm
+                        String.valueOf(temps),
+                        String.valueOf(winds),
+                        String.valueOf(clouds)
                     };
                 csvWrite.writeNext(arrEnvironment);
+
+                // write environment data
+                String[] arrEnvironment2 =
+                    {
+                        "",
+                        getString(R.string.endtm),
+                        end_tm,
+                        String.valueOf(tempe),
+                        String.valueOf(winde),
+                        String.valueOf(cloude)
+                    };
+                csvWrite.writeNext(arrEnvironment2);
 
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
@@ -1054,19 +1096,19 @@ public class WelcomeActivity
                 //    Date, Time, Sexus, Phase, State, Indiv.-Notes 
                 String[] arrIndHead =
                     {
-                        getString(R.string.individuals),
-                        getString(R.string.cnts),
-                        getString(R.string.locality),
+                        getString(R.string.individuals)+":",
+                        getString(R.string.cnts)+":",
+                        getString(R.string.locality)+":",
                         getString(R.string.ycoord),
                         getString(R.string.xcoord),
                         getString(R.string.uncerti),
                         getString(R.string.zcoord),
                         getString(R.string.date),
-                        getString(R.string.time),
-                        getString(R.string.sex),
-                        getString(R.string.stadium),
-                        getString(R.string.state1),
-                        getString(R.string.bemi)
+                        getString(R.string.time)+":",
+                        getString(R.string.sex)+":",
+                        getString(R.string.stadium)+":",
+                        getString(R.string.state1)+":",
+                        getString(R.string.bemi)+":"
                     };
                 csvWrite.writeNext(arrIndHead);
 
@@ -1131,7 +1173,7 @@ public class WelcomeActivity
                     {
                         //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
                         if (MyDebug.LOG)
-                            Log.d(TAG, "1134, longi " + longi);
+                            Log.d(TAG, "1148, longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1215,13 +1257,14 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1218, Failed to export csv file");
+                    Log.e(TAG, "1232, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
     }
+    // end of exportDb2CSV()
 
-    /**************************************************************************************************/
+    /******************************************/
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportBasisDb()
     {
@@ -1274,7 +1317,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "1277, No sdcard access");
+                Log.d(TAG, "1291, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1303,13 +1346,14 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1306, Failed to export Basic DB");
+                    Log.e(TAG, "1320, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
     }
+    // end of exportBasisDb()
 
-    /**************************************************************************************************/
+    /*************************************************/
     // Clear all relevant DB values, reset to basic DB 
     // created by wmstein
     private void resetToBasisDb()
@@ -1374,6 +1418,9 @@ public class WelcomeActivity
                 + DbHelper.S_TEMPE + " = 0, "
                 + DbHelper.S_WIND + " = 0, "
                 + DbHelper.S_CLOUDS + " = 0, "
+                + DbHelper.S_TEMPE_END + " = 0, "
+                + DbHelper.S_WIND_END + " = 0, "
+                + DbHelper.S_CLOUDS_END + " = 0, "
                 + DbHelper.S_DATE + " = '', "
                 + DbHelper.S_START_TM + " = '', "
                 + DbHelper.S_END_TM + " = '', "
@@ -1392,27 +1439,26 @@ public class WelcomeActivity
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "1395, Failed to reset DB");
+                Log.e(TAG, "1409, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             r_ok = false;
         }
         return r_ok;
     }
 
-    /**************************************************************************************************/
+    /************************************************************/
     @SuppressLint("SdCardPath")
     // Choose a file to load and set it to tourcount.db
     // based on android-file-chooser from Google Code Archive
     // Created by wmstein
     private void importDBFile()
     {
-        ArrayList<String> extensions = new ArrayList<>();
-        extensions.add(".db");
+        String extension = ".db";
         String filterFileName = "tourcount";
 
         Intent intent;
         intent = new Intent(this, AdvFileChooser.class);
-        intent.putStringArrayListExtra("filterFileExtension", extensions);
+        intent.putExtra("filterFileExtension", extension);
         intent.putExtra("filterFileName", filterFileName);
         myActivityResultLauncher.launch(intent);
 
@@ -1431,12 +1477,11 @@ public class WelcomeActivity
             builder.setCancelable(false);
             builder.setPositiveButton(R.string.importButton, (dialog, id) ->
                 {
-                    // START
                     try
                     {
                         copy(infile, outfile);
-                        showSnackbar(getString(R.string.importWin));
-                        // save values for initial count-id and itemposition
+
+                        // save values for initial countId and itemposition
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt("count_id", 1);
                         editor.putInt("item_Position", 0);
@@ -1446,6 +1491,7 @@ public class WelcomeActivity
                         sectionDataSource.open();
                         section = sectionDataSource.getSection();
                         sectionDataSource.close();
+                        showSnackbar(getString(R.string.importWin));
 
                         // List tour name as title
                         try
@@ -1458,7 +1504,7 @@ public class WelcomeActivity
                     } catch (IOException e)
                     {
                         if (MyDebug.LOG)
-                            Log.e(TAG, "1461, Failed to import database");
+                            Log.e(TAG, "1474, Failed to import database");
                         showSnackbarRed(getString(R.string.importFail));
                     }
                     // END
@@ -1485,7 +1531,7 @@ public class WelcomeActivity
                     selectedFile = data.getStringExtra("fileSelected");
                     if (MyDebug.LOG)
                     {
-                        Log.i(TAG, "1488, File selected: " + selectedFile);
+                        Log.i(TAG, "1501, File selected: " + selectedFile);
                         showSnackbar("Selected file: " + selectedFile);
                     }
                     assert selectedFile != null;
@@ -1535,7 +1581,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1538, Failed to import database");
+                    Log.e(TAG, "1551, Failed to import database");
                 showSnackbarRed(getString(R.string.importFail));
             }
             // END

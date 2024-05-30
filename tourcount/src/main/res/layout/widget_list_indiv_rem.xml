@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- widget_list_indiv_rem.xml
- used by ListIndividualWidget.java and ListSpeciesActivity.java.
+ used by ListIndividualWidget.kt and ListSpeciesActivity.kt.
  Shows individual line of remark -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

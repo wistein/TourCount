@@ -1,26 +1,25 @@
 package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.database.Cursor
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.DbHelper
+import com.wmstein.tourcount.database.Head
 import com.wmstein.tourcount.database.HeadDataSource
 import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.SectionDataSource
-import com.wmstein.tourcount.widgets.ListHeadWidget
 import com.wmstein.tourcount.widgets.ListIndivRemWidget
 import com.wmstein.tourcount.widgets.ListIndividualWidget
 import com.wmstein.tourcount.widgets.ListLineWidget
+import com.wmstein.tourcount.widgets.ListLocationWidget
 import com.wmstein.tourcount.widgets.ListMetaWidget
 import com.wmstein.tourcount.widgets.ListSpeciesWidget
 import com.wmstein.tourcount.widgets.ListSumWidget
@@ -34,12 +33,13 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-12-15
+ * last edited on 2024-05-14
  */
-class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
+class ListSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
     private var specArea: LinearLayout? = null
+    var head: Head? = null
 
     // preferences
     private var prefs = TourCountApplication.getPrefs()
@@ -58,7 +58,6 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         super.onCreate(savedInstanceState)
 
         tourCount = application as TourCountApplication
-        prefs.registerOnSharedPreferenceChangeListener(this)
         awakePref = prefs.getBoolean("pref_awake", true)
         sortPref = prefs.getString("pref_sort_sp", "none") // sorted species list
 
@@ -67,6 +66,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         sectionDataSource = SectionDataSource(this)
         headDataSource = HeadDataSource(this)
         individualsDataSource = IndividualsDataSource(this)
+
         val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
         resultsScreen.background = tourCount!!.background
         supportActionBar!!.title = getString(R.string.viewSpecTitle)
@@ -82,7 +82,13 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
-        // clear existing views
+        // setup the data sources
+        countDataSource!!.open()
+        individualsDataSource!!.open()
+        headDataSource!!.open()
+        sectionDataSource!!.open()
+
+        // build Show Results screen
         specArea!!.removeAllViews()
         loadData()
     }
@@ -109,36 +115,23 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         var laMax = 0.0
         var uc: Double
         var uncer1 = 0.0
-        headDataSource!!.open()
-        sectionDataSource!!.open()
 
-        //load head and meta data
-        val head = headDataSource!!.head
+        //load head and meta data from DB
+        head = headDataSource!!.head
         val section = sectionDataSource!!.section
 
-        // display the list name
-        val elw = ListTitleWidget(this, null)
-        elw.setListTitle(getString(R.string.titleEdit))
-        elw.setListName(section.name)
-        specArea!!.addView(elw)
+        // Build the screen
+        // 1. Display list name, observer name and remark by ListTitleWidget
+        val ltw = ListTitleWidget(this, null)
+        ltw.setListTitle(getString(R.string.titleEdit))
+        ltw.setListName(section.name)
 
-        // display the list remark
-        val erw = ListTitleWidget(this, null)
-        erw.setListTitle(getString(R.string.notesHere))
-        erw.setListName(section.notes)
-        specArea!!.addView(erw)
+        ltw.setWidgetName1(getString(R.string.inspector))
+        ltw.setWidgetName2(head!!.observer)
 
-        // display the head data
-        val ehw = ListHeadWidget(this, null)
-        ehw.setWidgetLCo(getString(R.string.country))
-        ehw.setWidgetLCo1(section.country)
-        ehw.setWidgetLName(getString(R.string.inspector))
-        ehw.setWidgetLName1(head.observer)
-        specArea!!.addView(ehw)
-
-        // setup the data sources
-        countDataSource!!.open()
-        individualsDataSource!!.open()
+        ltw.setWidgetNotes1(getString(R.string.notesHere))
+        ltw.setWidgetNotes2(section.notes)
+        specArea!!.addView(ltw)
 
         // Calculate mean average values for coords and uncertainty
         val dbHandler = DbHelper(this)
@@ -150,8 +143,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
             uncer = round(curAInd.getDouble(6))
             if (longi != 0.0) // has coordinates
             {
-                //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
-                if (MyDebug.LOG) Log.d(TAG, "154, longitude: $longi")
+                if (MyDebug.LOG) Log.d(TAG, "146, longitude: $longi")
                 if (frst == 0) {
                     loMin = longi
                     loMax = longi
@@ -180,13 +172,18 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         uc = round(uc / 2) + 20 // average uncertainty radius + default gps uncertainty
         if (uc <= uncer1) uc = uncer1
 
-        // display the meta data
-        val etw = ListMetaWidget(this, null)
-        etw.setMetaWidget(section)
-        etw.setWidget_dla2(la)
-        etw.setWidget_dlo2(lo)
-        etw.setWidget_muncert2(uc)
-        specArea!!.addView(etw)
+        // 2. Display the location data
+        val llw = ListLocationWidget(this, null)
+        llw.setLocationWidget(section)
+        llw.setWidgetDla2(la)
+        llw.setWidgetDlo2(lo)
+        llw.setWidgetMuncert2(uc)
+        specArea!!.addView(llw)
+
+        // 3. Display the date, time and environment data
+        val lmw = ListMetaWidget(this, null)
+        lmw.setListMetaWidget(section)
+        specArea!!.addView(lmw)
 
         // load the species data
         val specs = when (sortPref) {
@@ -222,13 +219,15 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
             sumsp += 1 // sum of counted species
         }
 
-        // display the totals
+        // display line and the totals
         lsw = ListSumWidget(this, null)
         lsw!!.setSum(sumsp, sumind)
         specArea!!.addView(lsw)
+
+        // display all the counts by adding them to listSpecies layout
         var specCnt: Int
         var indivs: List<Individuals> // List of individuals
-        // display all the counts by adding them to listSpecies layout
+
         for (spec in specs) {
             val widget = ListSpeciesWidget(this, null)
             widget.setCount(spec)
@@ -266,6 +265,7 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         val lwidget = ListLineWidget(this, null)
         specArea!!.addView(lwidget)
     }
+    // end of loadData()
 
     override fun onPause() {
         super.onPause()
@@ -274,27 +274,15 @@ class ListSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListene
         headDataSource!!.close()
         countDataSource!!.close()
         sectionDataSource!!.close()
+        individualsDataSource!!.close()
+
         if (awakePref) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
 
-    // puts up function to back button
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        NavUtils.navigateUpFromSameTask(this)
-        @Suppress("DEPRECATION")
-        super.onBackPressed()
-    }
-
-    @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
-        resultsScreen.background = null
-        resultsScreen.background = tourCount!!.setBackground()
-        prefs?.registerOnSharedPreferenceChangeListener(this)
-        awakePref = prefs!!.getBoolean("pref_awake", true)
-        sortPref = prefs.getString("pref_sort_sp", "none") // sorted species list
+    fun saveAndExit(view: View?) {
+        super.finish()
     }
 
     companion object {

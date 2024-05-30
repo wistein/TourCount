@@ -2,6 +2,17 @@
 
 #### TourCount Copyright (C) 2016-2024, Wilhelm Stein
 
+#### Version 3.4.7 (2024-05-28)
+- Headline for File Selection screen added
+- Preferences view enhanced with headline
+- Preferences show their states in menu
+- Menu option 'Check duplicates' eliminated (checks always)
+- Additional fields for registration of temperature, wind and clouds at end of a tour
+- CSV-export layout adopted for new registered values
+- Some code and layout improvements
+- Bugs fixed
+- Docs updated
+
 #### Version 3.4.6 (2024-02-26)
 - Code adaptations for Android 14
 - More pictures of (Sardinian) species added
@@ -10,7 +21,7 @@
 - Docs updated
 
 #### Version 3.4.5 (2023-12-15)
-- SQlite DB: Table and column names 'temp' changed for reserved term conflict
+- SQLite DB: Table and column names 'temp' changed for reserved term conflict
 - Compiled with SDK Ver. 34 for targetSdkVersion 33
 - Gradle Plugin upgraded -> 8.1.1
 - Import of DB files from Documents/TourCount folder

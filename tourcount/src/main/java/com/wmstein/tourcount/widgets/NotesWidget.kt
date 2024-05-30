@@ -16,7 +16,7 @@ import java.util.Objects
  * Created by milo on 26/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2022-04-25,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2024-07-11
  */
 class NotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val textView: TextView
@@ -42,6 +42,7 @@ class NotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     companion object {
-        private const val TAG = "TourCountNotesWidget"
+        private const val TAG = "TourCntNotesWidget"
     }
+
 }

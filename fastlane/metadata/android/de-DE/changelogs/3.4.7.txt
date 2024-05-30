@@ -1,0 +1,10 @@
+Version 3.4.7 (28.05.2024)
+- Überschrift für Dateiauswahlseite hinzugefügt
+- Überschrift für Einstellungsmenü hinzugefügt
+- Einstellungsmenü zeigt den Status der Optionen an
+- Menü-Option 'Verhindere doppelte Einträge' entfernt (ist Standardfunktion)
+- Zusätzliche Erfassung von Temperatur, Wind und Wolken am Ende der Tour
+- Layout beim CSV-Export für die neu erfassten Werte ergänzt
+- Verbesserungen bei Code und Bildschirm-Layout
+- Bug-Fixes
+- Doku-Update

@@ -89,4 +89,5 @@ class SpeciesAddWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
             specPic.setImageResource(resId)
         }
     }
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     widget_notes.xml
-    used by NotesWidget.java
+    used by NotesWidget.kt
     Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom|start|end|top"
         android:gravity="center_vertical|start"
-        android:hint="@string/hintSectionNotes"
+        android:hint="@string/hintListNotes"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
         android:textSize="12sp"/>

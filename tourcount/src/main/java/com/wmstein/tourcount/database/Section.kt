@@ -5,7 +5,7 @@ package com.wmstein.tourcount.database
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2023-12-15.
+ * last edited on 2024-05-08
  */
 class Section {
     @JvmField
@@ -26,6 +26,12 @@ class Section {
     var wind = 0
     @JvmField
     var clouds = 0
+    @JvmField
+    var tmp_end = 0
+    @JvmField
+    var wind_end = 0
+    @JvmField
+    var clouds_end = 0
     @JvmField
     var date: String? = null
     @JvmField

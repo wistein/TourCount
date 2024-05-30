@@ -100,4 +100,5 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     fun getIndNotes(individual: Individuals): String? {
         return individual.notes
     }
+
 }

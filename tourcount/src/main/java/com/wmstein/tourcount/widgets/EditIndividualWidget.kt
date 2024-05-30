@@ -10,7 +10,7 @@ import com.wmstein.tourcount.R
 import java.util.Objects
 
 /***************************************************************
- * EditIndividualWidget.java used by EditIndividualActivity.java
+ * EditIndividualWidget.kt used by EditIndividualActivity.kt
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-09,
@@ -187,4 +187,5 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         set(name) {
             widgetIndNote2.setText(name)
         }
+
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_edit_section.xml is used by EditSpecListActivity.java
+<!-- activity_edit_section.xml is used by EditSpecListActivity.kt
      ScrollView is always at the bottom of the view.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

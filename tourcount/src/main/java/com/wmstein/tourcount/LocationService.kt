@@ -24,7 +24,7 @@ import androidx.core.app.ActivityCompat
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last edited on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2023-12-15
+ * last edited on 2024-05-14
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -67,7 +67,7 @@ open class LocationService : Service, LocationListener {
                         mContext!!,
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
-                ) //                    || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                )
                 {
                     locationManager!!.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
@@ -87,6 +87,7 @@ open class LocationService : Service, LocationListener {
                     }
                 }
             }
+
             if (!exactLocation) {
                 // if Network is enabled and still no GPS fix achieved
                 if (checkNetwork && canGetLocation) {
@@ -94,7 +95,7 @@ open class LocationService : Service, LocationListener {
                             mContext!!,
                             Manifest.permission.ACCESS_COARSE_LOCATION
                         ) == PackageManager.PERMISSION_GRANTED
-                    ) //                        || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    )
                     {
                         locationManager!!.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
@@ -140,7 +141,7 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "143, StopListener: $e")
+            Log.e(TAG, "144, StopListener: $e")
         }
     }
 
@@ -185,12 +186,6 @@ open class LocationService : Service, LocationListener {
         // do nothing
     }
 
-    /*
-        @Deprecated("Deprecated in Java")
-        override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {
-            // do nothing
-        }
-    */
     override fun onProviderEnabled(s: String) {
         // do nothing
     }
@@ -204,4 +199,5 @@ open class LocationService : Service, LocationListener {
         private const val MIN_DISTANCE_FOR_UPDATES: Long = 10 // (m)
         private const val MIN_TIME_BW_UPDATES: Long = 10000 // (msec)
     }
+
 }

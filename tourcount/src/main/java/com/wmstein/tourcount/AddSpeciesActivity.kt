@@ -2,11 +2,10 @@ package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -22,7 +21,7 @@ import com.wmstein.tourcount.widgets.SpeciesAddWidget
 /************************************************************************
  * AddSpeciesActivity lets you insert a new species into the species list
  * AddSpeciesActivity is called from EditSpecListActivity
- * Uses SpeciesAddWidget.java, widget_add_spec.xml.
+ * Uses SpeciesAddWidget.kt, widget_add_spec.xml.
  *
  * The sorting order of the species to add cannot be changed, as it is determined
  * by 3 interdependent and correlated arrays in arrays.xml
@@ -30,9 +29,9 @@ import com.wmstein.tourcount.widgets.SpeciesAddWidget
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06
- * last edited on 2023-11-29
+ * last edited on 2024-05-15
  */
-class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
+class AddSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
     private var addArea: LinearLayout? = null
@@ -62,8 +61,11 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         super.onCreate(savedInstanceState)
 
         tourCount = application as TourCountApplication
-        prefs.registerOnSharedPreferenceChangeListener(this)
+
+        // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
+
+        if (MyDebug.LOG) Log.d(TAG, "68, onCreate")
 
         setContentView(R.layout.activity_add_species)
         val addScreen = findViewById<ScrollView>(R.id.add_screen)
@@ -75,37 +77,26 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
             params.screenBrightness = 1.0f
             window.attributes = params
         }
+
         bMap = tourCount!!.decodeBitmap(
             R.drawable.abackground,
             tourCount!!.width,
             tourCount!!.height
         )
-
         bg = BitmapDrawable(addScreen.resources, bMap)
         addScreen.background = bg
+
         addArea = findViewById(R.id.addSpecLayout)
 
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
         namesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs)))
         namesGCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_g)))
         codesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selCodes)))
-
-    } // end of onCreate()
+    }
+    // end of onCreate()
 
     override fun onResume() {
         super.onResume()
-
-        prefs = TourCountApplication.getPrefs()
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        brightPref = prefs.getBoolean("pref_bright", true)
-
-        // Set full brightness of screen
-        if (brightPref) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            val params = window.attributes
-            params.screenBrightness = 1.0f
-            window.attributes = params
-        }
 
         // clear any existing views
         addArea!!.removeAllViews()
@@ -113,11 +104,12 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         // setup the data sources
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
+
         supportActionBar!!.setTitle(R.string.addTitle)
 
         // list only new species not already contained in the species counting list
 
-        // code list of contained species
+        // 1. code list of contained species
         val specCodesContainedList = ArrayList<String?>()
 
         // get species of the counting list
@@ -128,7 +120,7 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
             specCodesContainedList.add(count.code)
         }
 
-        // build lists of missing species
+        // 2. build lists of missing species
         val specCodesContainedListSize = specCodesContainedList.size
         var posSpec: Int
 
@@ -172,6 +164,17 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         return idArray
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("new_spec_code", specCode)
+        super.onSaveInstanceState(outState)
+    }
+
+    public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        if (savedInstanceState.getString("new_spec_code")!!.isNotBlank())
+            specCode = savedInstanceState.getString("new_spec_code")
+        super.onRestoreInstanceState(savedInstanceState)
+    }
+
     override fun onPause() {
         super.onPause()
 
@@ -188,17 +191,23 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         // save added species to species list
         var retValue = true
         val idToAdd = view.tag as Int
+
         val saw1 = addArea!!.getChildAt(idToAdd) as SpeciesAddWidget
         specName = saw1.getSpecName()
         specCode = saw1.getSpecCode()
         specNameG = saw1.getSpecNameG()
+
         try {
             countDataSource!!.createCount(specName, specCode, specNameG)
         } catch (e: Exception) {
-
             retValue = false
         }
-        countDataSource!!.close()
+
+        // store code of new species in sharedPreferences for Spinner in CountingActivity(A)
+        val editor = prefs.edit()
+        editor.putString("new_spec_code", specCode)
+        editor.commit()
+
         return retValue
     }
 
@@ -228,15 +237,18 @@ class AddSpeciesActivity : AppCompatActivity(), OnSharedPreferenceChangeListener
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        val addScreen = findViewById<ScrollView>(R.id.add_screen)
-        prefs?.registerOnSharedPreferenceChangeListener(this)
-        brightPref = prefs!!.getBoolean("pref_bright", true)
-        bMap = tourCount!!.decodeBitmap(R.drawable.abackground, tourCount!!.width, tourCount!!.height)
-        addScreen.background = null
-        bg = BitmapDrawable(addScreen.resources, bMap)
-        addScreen.background = bg
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("ApplySharedPref", "MissingSuperCall")
+    override fun onBackPressed() {
+        countDataSource!!.close()
+        finish()
+//        NavUtils.navigateUpFromSameTask(this)
+//        @Suppress("DEPRECATION")
+//        super.onBackPressed()
+    }
+
+    companion object {
+        private const val TAG = "AddSpecAct"
     }
 
 }

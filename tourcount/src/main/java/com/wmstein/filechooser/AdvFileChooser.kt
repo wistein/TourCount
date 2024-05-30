@@ -27,28 +27,30 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-12-05.
+ * last edited on 2024-05-06.
  */
 class AdvFileChooser : Activity() {
     private var currentDir: File? = null
     private var adapter: FileArrayAdapter? = null
     private var fileFilter: FileFilter? = null
-    private var extensions: ArrayList<String>? = null
+    private var extension: String = ""
     private var filterFileName: String? = null
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.list_view)
+
         val extras = intent.extras
         if (extras != null) {
-            if (extras.getStringArrayList("filterFileExtension") != null) {
-                extensions = extras.getStringArrayList("filterFileExtension")
+            if (extras.getString("filterFileExtension") != null) {
+                extension = extras.getString("filterFileExtension")!!
                 filterFileName = extras.getString("filterFileName")
                 fileFilter = FileFilter { pathname: File ->
                     pathname.name.contains(".") &&
                             pathname.name.contains(filterFileName!!) &&
-                            extensions!!.contains(
+                            extension.contains(
                                 pathname.name.substring(
                                     pathname.name.lastIndexOf(
                                         "."
@@ -58,6 +60,11 @@ class AdvFileChooser : Activity() {
                 }
             }
         }
+
+        // set FileChooser Headline
+        val fileHd = getString(R.string.fileHeadlineDB)
+        val fileHead: TextView = findViewById(R.id.fileHead)
+        fileHead.text = fileHd
 
         // currentDir = /storage/emulated/0/Documents/TransektCount/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+

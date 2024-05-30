@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- widget_list_individual.xml
- used by ListIndividualWidget.java and ListSpeciesActivity.java.
+ used by ListIndividualWidget.kt and ListSpeciesActivity.kt.
  Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
  Shows individuals line of species -->
 

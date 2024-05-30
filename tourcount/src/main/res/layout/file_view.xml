@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
     file_view.xml
-    used by AdvFileChooser.java
+    used by AdvFileChooser.kt
     Copyright (c) 2016. Wilhelm Stein, Bonn, Germany.
  -->
 <LinearLayout

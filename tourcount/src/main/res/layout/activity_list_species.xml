@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_list_species.xml is used by ListSpeciesActivity.java -->
+<!-- activity_list_species.xml is used by ListSpeciesActivity.kt -->
 
 <ScrollView android:id="@+id/listSpecScreen"
             xmlns:android="http://schemas.android.com/apk/res/android"
