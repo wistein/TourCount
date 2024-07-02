@@ -1,0 +1,8 @@
+Version 3.4.8 (08.06.2024)
+- Ansichten der Seiten 'Speziesliste editieren' und 'Spezies hinzufügen' überarbeitet
+- Auswahl-Begrenzer für 'Speziesliste editieren' und 'Spezies hinzufügen'
+- Merk-Button in 'Spezies hinzufügen' ergänzt
+- Code-Verbesserungen
+- Veraltete (deprecated) Funktion ersetzt
+- Bug-Fixes
+- Doku-Update

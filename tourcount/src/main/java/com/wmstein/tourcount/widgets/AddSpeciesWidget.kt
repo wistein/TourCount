@@ -19,7 +19,7 @@ import java.util.Objects
  * last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-07-05
  */
-class SpeciesAddWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
+class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
     @Transient
     private val specName: TextView
@@ -36,6 +36,7 @@ class SpeciesAddWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
     @Transient
     private val specPic: ImageView
     private val addButton: ImageButton
+    private val markButton: ImageButton
     val inflater: LayoutInflater
 
     init {
@@ -47,6 +48,7 @@ class SpeciesAddWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         specId = findViewById(R.id.specId)
         specPic = findViewById(R.id.specPic)
         addButton = findViewById(R.id.addCount)
+        markButton = findViewById(R.id.markCount)
         addButton.tag = 0
     }
 
@@ -72,6 +74,11 @@ class SpeciesAddWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
 
     fun setSpecCode(code: String?) {
         specCode.text = code
+    }
+
+    fun marSpecId(id: String) {
+        specId.text = id
+        markButton.tag = id.toInt() - 1
     }
 
     fun setSpecId(id: String) {
