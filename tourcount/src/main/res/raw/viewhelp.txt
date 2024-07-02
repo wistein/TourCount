@@ -26,14 +26,14 @@
 $ 10
   % 1. Introduction
   !
-  ! This counting app should support you when recording butterflies. It allows to register individuals species-specific,
-  ! separated by sexus and metamorphic stages as well as individually localized in the field. It facilitates this comfortably without field book and pencil on every stay in nature.
+  ! This counting app should support you when recording butterflies. It allows to register individuals species-specific, separated by sexus and metamorphic stages as well as individually localized in the field.
+  ! It facilitates this comfortably without field book and pencil on every stay in nature.
   _ 
   ! The integrated database can be individually created and adapted regarding expected butterfly species.
   ! The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into the butterfly registration system (e.g. on www.science4you.org) or transferred to a PC for your own processing.
   _ 
   ! The app is open source (published under <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>),
-  ! has no tracking or advertising functions, demands only for permissions which are needed for recording the counting data (access rights for storage, internet for reverse geocoding and GPS.)
+  ! has no tracking or advertising functions, demands only for permissions which are needed for recording the counting data (access rights for storage and GPS as well as internet for reverse geocoding.)
 
 $ 9
   % 2. Setting up
@@ -41,48 +41,50 @@ $ 9
   ! Before initial use you should adapt the settings to your liking. 
   _ 
   ! Then you should edit the preliminary species list. (On the counting page use the Pencil-Button in the action bar for this).
-  ! Here you may add more species per (+)-Button from an integrated list of european species.
+  ! Here you may add more species per Checkboxes from an integrated list of european species.
   _ 
   ! Alternatively, you could download a more comprehensive or special example Basic DB
   ! (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
-  ! Copy it to the app's directory /storage/emulated/0/Android/data/com.wmstein.tourcount/files which is created during the first start of the app.
-  ! Now import and edit it suitably. When de-installing TourCount this directory will be deleted. So it is recommended to backup these .db-files to a safe place.
+  ! Copy it to the app's data directory "Documents/TourCount" which is created during the first start of the app.
+  ! Now import and edit it suitably.
   _ 
-  ! Then you may enter general parts of the master data under “PREPARE RECORDING” and finish this by clicking the saving symbol.
+  ! Then you may enter general parts of the master data under “Edit meta data” and finish this by clicking the saving symbol.
   ! Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”.
   ! The editable meta data may be modified anytime later.
-  _ 
-  ! Then edit the species list on "COUNTING". Use the Pencil-Button in the action bar for that. 
-  ! Add an entry by the (+)-Button and select the species from the scroll-down list. At the end of this list you may select a non-existing species (NN).
-  ! This could then be edited by entering its scientific name, common name and code (five-digit with leading zeros, see Liste Tagfalter Europas.pdf (butterflies)
-  ! or Liste Nachtfalter Europas.pdf (moth)<a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>), e.g.:
   _
+  ! Tip: Date and time can be entered by tapping the relevant field. If a different date or time is to be entered, these fields can be pressed longer and the input dialog that then opens can be used.
+  _ 
+  ! Then edit the counting species list on "Counting". Open the "Edit species list" page by the Pencil-Button in the action bar of the counting page.
+  ! The (+)-button opens the blue "Add species" page, where you can select further species to be added to the counting list. At the end of this list you may select a place holder for a not yet known species (NN), which could be edited afterwards by entering its scientific name, common name and code (five-digit with leading zeros, see List of coded Butterflies.pdf <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>), e.g.:
+  _
+  !               TourCount species list (partly)
   ! ---------------------------------------------
   ! ...
   ! Pieris rapae .............. 06998
   ) Small white
   ! Pieris napi ................ 07000
   ) Green-veined white
-  ! Pieris na./ra.-compl.	07000*
-  ) Small whites complex
+  ! Pontia daplidice ....... 07005
+  ) Bath white
   ! ...
   _ 
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
   ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
   _
-  ! An appended *-symbol marks a group of similar species. Practically choose the biggest code of a species of this group for sorting.
-  ! Click "Save List" to store the input into the database. This list can be changed or supplemented anytime afterwards.
+  ! Click "SAVE" to store the changes into the current counting list. This list can be changed or supplemented anytime afterwards.
   _ 
   ! When you have entered the meta data and created the counting list for all expected species, the database is ready for export as a "Basic Database".
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page. 
-  ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) in the app's files directory (/storage/emulated/0/Android/data/com.wmstein.tourcount/files).
+  ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) in the app's data directory (Documents/TourCount).
   _ 
-  ! The Basic DB may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. 
+  ! The Basic DB may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. Saving as a Basic DB ignores all inspection-specific counting data.
 	
 $ 8
   % 3. Usage
   !
-  ! Start with COUNTING. Select the species by clicking the species line to scroll down the species list.
+  ! Start with "Edit meta data". Enter the relevant meta date of the tour.
+  _
+  ! Continue with "Counting". Select the species by clicking the species line to scroll down the species list.
   ! To count just tip on the (+)-Button of the corresponding category (♂ od. ♀, ♂, ♀, pupa, larva, egg) of the species.
   ! The counter will increment and a page opens to enter individual data. Location info, latitude, longitude, height as well as date and time will be added automatically.
   ! Location may be edited and condition rating (state 0-6 with 0 = undefined, 1 = very good) as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
@@ -124,24 +126,23 @@ $ 7
   ! You may import any previously exported TourCount-DB. This supports monitoring on different tours.
   ! To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc. (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
   _ 
-  ! Exporting the current database (Export DB) writes a copy of the complete DB to /storage/emulated/0/Android/data/com.wmstein.tourcount/files/tourcount_YYYY-MM-DD_hhmmss.db.
+  ! Exporting the current database (Export DB) writes a copy of the complete DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".
   ! For your own purpose you can rename the exported DB-files by a file manager into e.g. tourcount1.db, tourcount_home.db, etc.
   ! (Mind: The db file name must always start with the string “tourcount”, otherwise it cannot be imported).
   _
   ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable .csv-file "tourcount_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
   ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid).
   _ 
-  ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" from /storage/emulated/0/Android/data/com.wmstein.tourcount/files to a PC.
+  ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" from "Documents/TourCount" to a PC.
   ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine and edit the .db-files.
   _
-  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program
+  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program for further processing (under Android also into a free app like Collabora).
+  ! In order to display the formats and character sets correctly, please import it
   _
   ! - as a comma-separated text file with
   ! - file origin “Unicode UTF-8”,
   ! - quotations marks for textfield recognition and
-  ! - all columns in text format
-  _
-  ! for further processing.
+  ! - all columns in text format.
   _
   ! Under "App Info" you find the email address of the author, the history of the app and the license notes.
   _ 
@@ -149,7 +150,14 @@ $ 7
   _ 
   ! The counting page is temporarily switched off by means of the proximity sensor when the phone is put into a pocket or held closed to the body.
   ! This saves energy, prohibits unwanted input and recalls the app into its current state immediately when used again.
-  _ 
+
+$ 6
+  % 5. Sources
+  ! Source code: <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
+  ! Docs: <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
+  ! License: <a href="https://github.com/wistein/TourCount/blob/master/docs/Apache%20License-2.0.txt" target="_blank">https://github.com/wistein/TourCount/blob/master/docs/Apache%20License-2.0.txt</a>
+  ! App: <a href="https://f-droid.org/en/packages/com.wmstein.tourcount/" target="_blank">https://f-droid.org/en/packages/com.wmstein.tourcount/</a>
+  _
 
 $ END_OF_VIEW_HELP
   </body>

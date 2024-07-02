@@ -92,11 +92,11 @@
             android:inputType="textCapSentences|textNoSuggestions"
             android:padding="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
+            android:textColor="#AEAEAE"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="13sp"
             tools:ignore="Autofill" />
 
         <ImageButton

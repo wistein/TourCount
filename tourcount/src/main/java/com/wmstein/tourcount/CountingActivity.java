@@ -31,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -41,9 +40,9 @@ import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
-import com.wmstein.tourcount.widgets.CountingWidgetLH;
 import com.wmstein.tourcount.widgets.CountingWidgetHead1;
 import com.wmstein.tourcount.widgets.CountingWidgetHead2;
+import com.wmstein.tourcount.widgets.CountingWidgetLH;
 import com.wmstein.tourcount.widgets.NotesWidget;
 
 import java.io.IOException;
@@ -55,6 +54,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
@@ -74,7 +74,7 @@ import androidx.work.WorkRequest;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification in Java on 2024-05-14
+ * last modification in Java on 2024-06-04
  */
 public class CountingActivity
     extends AppCompatActivity
@@ -196,6 +196,20 @@ public class CountingActivity
         {
             // do nothing
         }
+
+        // new onBackPressed logic
+        if (Build.VERSION.SDK_INT >= 33)
+        {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true)
+                {
+                    @Override
+                    public void handleOnBackPressed()
+                    {
+                        NavUtils.navigateUpFromSameTask(CountingActivity.this);
+                    }
+                }
+            );
+        }
     }
     // End of onCreate
 
@@ -209,12 +223,12 @@ public class CountingActivity
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
-        buttonSound = prefs.getString("button_sound", null); // use standard button sound
+        buttonSound = prefs.getString("button_sound", null);   // use standard button sound
         buttonSoundMinus = prefs.getString("button_sound_minus", null); //use deeper button sound
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-        itemPosition = prefs.getInt("item_Position", 0);       // spinner pos.
-        iid = prefs.getInt("count_id", 1);                     // species id
+        itemPosition = prefs.getInt("item_Position", 0);        // spinner pos.
+        iid = prefs.getInt("count_id", 1);                      // species id
     }
 
     @Override
@@ -369,18 +383,8 @@ public class CountingActivity
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-
-        // new onBackPressed logic TODO
-        if (Build.VERSION.SDK_INT >= 33)
-        {
-            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-                () ->
-                {
-                    NavUtils.navigateUpFromSameTask(this);
-                });
-        }
-    } // end of onResume
+    }
+    // end of onResume
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -467,7 +471,9 @@ public class CountingActivity
         startActivity(intent);
     }
 
-    /** @noinspection deprecation*/ // puts up function to back button
+    /**
+     * @noinspection deprecation
+     */ // puts up function to back button
     @Override
     public void onBackPressed()
     {

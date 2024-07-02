@@ -1,7 +1,6 @@
-Version 3.4.8 (2024-06-08)
+Version 3.4.8 (2024-07-02)
 - Views of 'Edit Species List' and 'Add Species' improved
-- Added selection limiter for 'Edit Species List' and 'Add Species'
-- Added Memorize button for 'Add Species'
+- Checkboxes for bulk appending of further species to the counting list in 'Add Species'
 - Some code improvements
 - Deprecated function replaced
 - Bugs fixed

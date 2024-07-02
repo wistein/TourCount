@@ -99,6 +99,16 @@ _ Subtitle
     ! Illustrations provided by other authors remain the copyright of those authors and should not be reproduced other than with their permission.
   _ 
 
+$ 3.4.8
+  % Version 3.4.8
+  _ 2024-07-02
+  * Views of 'Edit Species List' and 'Add Species' improved
+  * Checkboxes for bulk appending of further species to the counting list in 'Add Species'
+  * Some code improvements
+  * Deprecated function replaced
+  * Bugs fixed
+  * Docs updated
+
 $ 3.4.7
   % Version 3.4.7
   _ 2024-05-28

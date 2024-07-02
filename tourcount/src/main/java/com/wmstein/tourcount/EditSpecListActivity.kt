@@ -23,6 +23,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.google.android.material.snackbar.Snackbar
@@ -45,7 +46,7 @@ import com.wmstein.tourcount.widgets.HintWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-14
+ * last edited on 2024-07-02
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -128,6 +129,20 @@ class EditSpecListActivity : AppCompatActivity() {
         // setup the data sources
         sectionDataSource = SectionDataSource(this)
         countDataSource = CountDataSource(this)
+
+        // new onBackPressed logic
+        if (Build.VERSION.SDK_INT >= 33) {
+            onBackPressedDispatcher.addCallback(object :
+                OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (testData()) {
+                        savedCounts!!.clear()
+
+                        NavUtils.navigateUpFromSameTask(this@EditSpecListActivity)
+                    } else return
+                }
+            })
+        }
     }
     // end of onCreate
 
@@ -160,7 +175,7 @@ class EditSpecListActivity : AppCompatActivity() {
             supportActionBar!!.title = oldname
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "163, NullPointerException: No section name!")
+            if (MyDebug.LOG) Log.e(TAG, "178, NullPointerException: No section name!")
         }
 
         // display the section title
@@ -263,7 +278,7 @@ class EditSpecListActivity : AppCompatActivity() {
             name = cew.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.LOG) Log.d(TAG, "266, Double name = $isDblName")
+                if (MyDebug.LOG) Log.d(TAG, "281, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -284,7 +299,7 @@ class EditSpecListActivity : AppCompatActivity() {
             code = cew.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.LOG) Log.d(TAG, "287, Double name = $isDblCode")
+                if (MyDebug.LOG) Log.d(TAG, "302, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)
@@ -306,7 +321,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // add title if the user has written one...
         val sectName = ehw!!.spListName
-        if (MyDebug.LOG) Log.d(TAG, "309, newName: $sectName")
+        if (MyDebug.LOG) Log.d(TAG, "324, newName: $sectName")
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
         } else {
@@ -330,7 +345,7 @@ class EditSpecListActivity : AppCompatActivity() {
         val isDblName: String
         val isDblCode: String
         val childcount: Int = countsArea!!.childCount //No. of species in list
-        if (MyDebug.LOG) Log.d(TAG, "333, childcount: $childcount")
+        if (MyDebug.LOG) Log.d(TAG, "348, childcount: $childcount")
 
         // check for unique species names and codes
         isDblName = compCountNames()
@@ -341,7 +356,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 val cew = countsArea!!.getChildAt(i) as CountEditWidget
                 retValue =
                     if (isNotEmpty(cew.getCountName()) && isNotEmpty(cew.getCountCode())) {
-                        if (MyDebug.LOG) Log.d(TAG, "344, cew: "
+                        if (MyDebug.LOG) Log.d(TAG, "359, cew: "
                                     + cew.countId + ", " + cew.getCountName())
 
                         //updates species name and code
@@ -392,7 +407,7 @@ class EditSpecListActivity : AppCompatActivity() {
         return retValue
     }
 
-    // Start AddSpeciesActivity to add a new species to the species list
+    // Start AddSpeciesActivity to add new species to the species list
     fun newCount(view: View?) {
         Toast.makeText(applicationContext, getString(R.string.wait), Toast.LENGTH_SHORT)
             .show() // a Snackbar here comes incomplete
@@ -421,8 +436,11 @@ class EditSpecListActivity : AppCompatActivity() {
 
             sectionDataSource!!.saveSection(section!!)
 
-            // startActivity(intent) in activity A calls onPause() before starting activity B
-            //   and so closes DataSources.
+            // save changes so far
+            if (saveData()) {
+                savedCounts!!.clear()
+            }
+
             val intent = Intent(this@EditSpecListActivity, AddSpeciesActivity::class.java)
             startActivity(intent)
         }, 100)
@@ -450,16 +468,18 @@ class EditSpecListActivity : AppCompatActivity() {
     }
 
     // catch back button for plausi test
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (testData()) {
-                savedCounts!!.clear()
-                val intent = NavUtils.getParentActivityIntent(this)!!
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                NavUtils.navigateUpTo(this, intent)
-            } else return true
-        }
-        return super.onKeyDown(keyCode, event)
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("ApplySharedPref", "MissingSuperCall")
+    override fun onBackPressed() {
+        if (testData()) {
+            savedCounts!!.clear()
+            countDataSource!!.close()
+            sectionDataSource!!.close()
+
+            NavUtils.navigateUpFromSameTask(this)
+        } else return
+        @Suppress("DEPRECATION")
+        super.onBackPressed()
     }
 
     private fun showSnackbarRed(str: String) // bold red text
@@ -474,7 +494,7 @@ class EditSpecListActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "TourCountEditSecAct"
+        private const val TAG = "EditSpecListAct"
 
         /**
          * Checks if a CharSequence is empty ("") or null.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2024-05-11 -->
+     last edited on 2024-07-02 -->
 
 <resources>
 
@@ -21,7 +21,7 @@
     <string name="zlist">Counting List</string>
     <string name="counting">Counting</string>
     <string name="viewSpeciesButton">Show Results</string>
-    <string name="editMetaButton">Prepare Recording</string>
+    <string name="editMetaButton">Edit Meta Data</string>
     <string name="changeLogTitle">App Info</string>
     <string name="viewHelpTitle">Help</string>
     <string name="noCard">Cannot write to the Documents directory!</string>
@@ -217,6 +217,7 @@
     <string name="hintName">Name</string>
     <string name="notesHere">List Notes:</string>
     <string name="hintListNotes">List notes:</string>
+
     <string name="getHelp">Database problem! Please mail your exported \'tourcount_yyyy-mm-dd_hhmmss.db\' if you need assistance.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂, ♀</string>

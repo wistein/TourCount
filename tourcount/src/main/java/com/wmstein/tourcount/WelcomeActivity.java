@@ -19,12 +19,13 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -47,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -70,7 +72,7 @@ import static java.lang.Math.sqrt;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2024-05-28
+ * last edited on 2024-06-04
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -97,7 +99,7 @@ public class WelcomeActivity
 
     private ChangeLog cl;
     private ViewHelp vh;
-    public boolean doubleBackToExitPressedTwice;
+    public boolean doubleBackToExitPressedTwice = false;
 
     // Location info handling
     private double latitude, longitude, height, uncertainty;
@@ -213,8 +215,44 @@ public class WelcomeActivity
         infile = new File(path, "/tourcount0.db");
         if (!infile.exists())
             exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
+
+        // new onBackPressed logic
+        if (Build.VERSION.SDK_INT >= 33)
+        {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true)
+                {
+                    @Override
+                    public void handleOnBackPressed()
+                    {
+                        if (doubleBackToExitPressedTwice)
+                        {
+                            clear_loc(); // Clear last locality in tmp
+                            finish();
+                        }
+
+                        doubleBackToExitPressedTwice = true;
+
+                        Toast t = new Toast(getApplicationContext());
+                        LayoutInflater inflater = getLayoutInflater();
+
+                        @SuppressLint("InflateParams")
+                        View toastView = inflater.inflate(R.layout.toast_view, null);
+                        TextView textView = toastView.findViewById(R.id.toast);
+                        textView.setText(R.string.back_twice);
+
+                        t.setView(toastView);
+                        t.setDuration(Toast.LENGTH_SHORT);
+                        t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 0);
+                        t.show();
+
+                        mHandler.postDelayed(() ->
+                            doubleBackToExitPressedTwice = false, 1500);
+                    }
+                }
+            );
+        }
     }
-    // end of onCreate
+    // end of onCreate()
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -260,41 +298,8 @@ public class WelcomeActivity
         // Get location with permissions check
         locationPermissionDispatcherMode = 1; // get location
         locationCaptureFragment();
-
-        // new onBackPressed logic TODO
-        if (Build.VERSION.SDK_INT >= 33)
-        {
-            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-                () ->
-                {
-                    /**
-                     * onBackPressed logic goes here - For instance:
-                     * Prevents closing the app to go home screen when in the
-                     * middle of entering data to a form
-                     * or from accidentally leaving a fragment with a WebView in it
-                     *
-                     * Unregistering the callback to stop intercepting the back gesture:
-                     * When the user transitions to the topmost screen (activity, fragment)
-                     * in the BackStack, unregister the callback by using
-                     * OnBackInvokeDispatcher.unregisterOnBackInvokedCallback
-                     */
-                    if (doubleBackToExitPressedTwice)
-                    {
-                        clear_loc(); // Clear last locality in tmp
-                        finish();
-                    }
-
-                    this.doubleBackToExitPressedTwice = true;
-                    Toast.makeText(this, R.string.back_twice, Toast.LENGTH_SHORT).show();
-
-                    mHandler.postDelayed(() ->
-                        doubleBackToExitPressedTwice = false, 1500);
-                }
-            );
-        }
     }
-    // end of onResume
+    // end of onResume()
 
     // check initial location permission
     private boolean isPermLocGranted()
@@ -581,7 +586,9 @@ public class WelcomeActivity
         editor.apply();
     }
 
-    /** @noinspection deprecation*/
+    /**
+     * @noinspection deprecation
+     */
     // press Back twice to end the app
     @Override
     public void onBackPressed()
@@ -594,7 +601,19 @@ public class WelcomeActivity
         }
 
         this.doubleBackToExitPressedTwice = true;
-        Toast.makeText(this, R.string.back_twice, Toast.LENGTH_SHORT).show();
+
+        Toast t = new Toast(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        @SuppressLint("InflateParams")
+        View toastView = inflater.inflate(R.layout.toast_view, null);
+        TextView textView = toastView.findViewById(R.id.toast);
+        textView.setText(R.string.back_twice);
+
+        t.setView(toastView);
+        t.setDuration(Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 0);
+        t.show();
 
         mHandler.postDelayed(() -> doubleBackToExitPressedTwice = false, 1500);
     }
@@ -1096,19 +1115,19 @@ public class WelcomeActivity
                 //    Date, Time, Sexus, Phase, State, Indiv.-Notes 
                 String[] arrIndHead =
                     {
-                        getString(R.string.individuals)+":",
-                        getString(R.string.cnts)+":",
-                        getString(R.string.locality)+":",
+                        getString(R.string.individuals) + ":",
+                        getString(R.string.cnts) + ":",
+                        getString(R.string.locality) + ":",
                         getString(R.string.ycoord),
                         getString(R.string.xcoord),
                         getString(R.string.uncerti),
                         getString(R.string.zcoord),
                         getString(R.string.date),
-                        getString(R.string.time)+":",
-                        getString(R.string.sex)+":",
-                        getString(R.string.stadium)+":",
-                        getString(R.string.state1)+":",
-                        getString(R.string.bemi)+":"
+                        getString(R.string.time) + ":",
+                        getString(R.string.sex) + ":",
+                        getString(R.string.stadium) + ":",
+                        getString(R.string.state1) + ":",
+                        getString(R.string.bemi) + ":"
                     };
                 csvWrite.writeNext(arrIndHead);
 
@@ -1476,39 +1495,39 @@ public class WelcomeActivity
             builder.setMessage(R.string.confirmDBImport);
             builder.setCancelable(false);
             builder.setPositiveButton(R.string.importButton, (dialog, id) ->
+            {
+                try
                 {
+                    copy(infile, outfile);
+
+                    // save values for initial countId and itemposition
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("count_id", 1);
+                    editor.putInt("item_Position", 0);
+                    editor.apply();
+
+                    sectionDataSource = new SectionDataSource(getApplicationContext());
+                    sectionDataSource.open();
+                    section = sectionDataSource.getSection();
+                    sectionDataSource.close();
+                    showSnackbar(getString(R.string.importWin));
+
+                    // List tour name as title
                     try
                     {
-                        copy(infile, outfile);
-
-                        // save values for initial countId and itemposition
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("count_id", 1);
-                        editor.putInt("item_Position", 0);
-                        editor.apply();
-
-                        sectionDataSource = new SectionDataSource(getApplicationContext());
-                        sectionDataSource.open();
-                        section = sectionDataSource.getSection();
-                        sectionDataSource.close();
-                        showSnackbar(getString(R.string.importWin));
-
-                        // List tour name as title
-                        try
-                        {
-                            Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
-                        } catch (NullPointerException e)
-                        {
-                            // nothing
-                        }
-                    } catch (IOException e)
+                        Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
+                    } catch (NullPointerException e)
                     {
-                        if (MyDebug.LOG)
-                            Log.e(TAG, "1474, Failed to import database");
-                        showSnackbarRed(getString(R.string.importFail));
+                        // nothing
                     }
-                    // END
-                }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+                } catch (IOException e)
+                {
+                    if (MyDebug.LOG)
+                        Log.e(TAG, "1474, Failed to import database");
+                    showSnackbarRed(getString(R.string.importFail));
+                }
+                // END
+            }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
             alert = builder.create();
             alert.show();
         }, 100);
@@ -1613,7 +1632,7 @@ public class WelcomeActivity
         View view = findViewById(R.id.baseLayout);
         Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
         tv.setTextColor(Color.GREEN);
         sB.show();
     }
@@ -1623,7 +1642,7 @@ public class WelcomeActivity
         View view = findViewById(R.id.baseLayout);
         Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
         tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         tv.setTextColor(Color.RED);
         sB.show();

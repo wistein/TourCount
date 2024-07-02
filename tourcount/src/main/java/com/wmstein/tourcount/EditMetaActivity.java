@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
@@ -37,6 +36,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
@@ -48,15 +48,13 @@ import androidx.work.WorkRequest;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2024-05-28
+ * last edit in Java on 2024-06-30
  */
-public class EditMetaActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
+public class EditMetaActivity extends AppCompatActivity
+    implements PermissionsDialogFragment.PermissionsGrantedCallback
 {
-    @SuppressLint("StaticFieldLeak")
-    private static TourCountApplication tourCount;
 
     private final SharedPreferences prefs = TourCountApplication.getPrefs();
-    private boolean brightPref;    // option for full bright screen
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
@@ -84,18 +82,15 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     //  2 = end location service
     int locationPermissionDispatcherMode;
 
-    private Bitmap bMap;
-    private BitmapDrawable bg;
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        tourCount = (TourCountApplication) getApplication();
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        brightPref = prefs.getBoolean("pref_bright", true);
+        TourCountApplication tourCount = (TourCountApplication) getApplication();
+        // option for full bright screen
+        boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         setContentView(R.layout.activity_edit_head);
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
@@ -109,14 +104,29 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             getWindow().setAttributes(params);
         }
 
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
+        Bitmap bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        BitmapDrawable bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);
 
         head_area = findViewById(R.id.edit_head);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.editHeadTitle));
+
+        // new onBackPressed logic
+        if (Build.VERSION.SDK_INT >= 33)
+        {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true)
+                {
+                    @Override
+                    public void handleOnBackPressed()
+                    {
+                        NavUtils.navigateUpFromSameTask(EditMetaActivity.this);
+                    }
+                }
+            );
+        }
     }
+    // end of onCreate()
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -124,7 +134,6 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
     {
         super.onResume();
 
-        prefs.registerOnSharedPreferenceChangeListener(this);
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
@@ -275,19 +284,8 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
                 true).show();
             return true;
         });
-
-        // new onBackPressed logic TODO
-        if (Build.VERSION.SDK_INT >= 33)
-        {
-            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                OnBackInvokedDispatcher.PRIORITY_DEFAULT,
-                () ->
-            {
-                NavUtils.navigateUpFromSameTask(this);
-            });
-        }
     }
-    // end of onResume
+    // end of onResume()
 
     // formatted date
     public static String getformDate(Date date)
@@ -340,14 +338,14 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         head.observer = ett.getWidgetOName2();
         headDataSource.saveHead(head);
 
-        // Save meta data
+        // Save section data
         section.name = ett.getWidgetName();
         section.notes = ett.getWidgetONotes2();
 
         section.country = elw.setWidgetCo2();
         section.tmp = emw.getWidgetTemp2();
         section.tmp_end = emw.getWidgetTemp3();
-        if (section.tmp > 50 || section.tmp < 0)
+        if (section.tmp > 50 || section.tmp_end > 50 || section.tmp < 0 || section.tmp_end < 0)
         {
             Snackbar sB = Snackbar.make(emw, getString(R.string.valTemp), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
@@ -357,9 +355,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             sB.show();
             return false;
         }
+
         section.wind = emw.getWidgetWind2();
         section.wind_end = emw.getWidgetWind3();
-        if (section.wind > 4 || section.wind < 0)
+        if (section.wind > 4 || section.wind_end > 4 || section.wind < 0 || section.wind_end < 0)
         {
             Snackbar sB = Snackbar.make(emw, getString(R.string.valWind), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
@@ -369,9 +368,10 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             sB.show();
             return false;
         }
+
         section.clouds = emw.getWidgetClouds2();
         section.clouds_end = emw.getWidgetClouds3();
-        if (section.clouds > 100 || section.clouds < 0)
+        if (section.clouds > 100 || section.clouds_end > 100 || section.clouds < 0 || section.clouds_end < 0)
         {
             Snackbar sB = Snackbar.make(emw, getString(R.string.valClouds), Snackbar.LENGTH_LONG);
             sB.setActionTextColor(Color.RED);
@@ -381,6 +381,7 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
             sB.show();
             return false;
         }
+
         section.plz = elw.getWidgetPlz2();
         section.city = elw.getWidgetCity2();
         section.place = elw.getWidgetPlace2();
@@ -415,23 +416,13 @@ public class EditMetaActivity extends AppCompatActivity implements SharedPrefere
         return super.onOptionsItemSelected(item);
     }
 
-    /** @noinspection deprecation*/ // puts up function to back button
+    /** @noinspection deprecation*/
+    // puts up function to back button
     @Override
     public void onBackPressed()
     {
         NavUtils.navigateUpFromSameTask(this);
         super.onBackPressed();
-    }
-
-    @SuppressLint("SourceLockedOrientationActivity")
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
-    {
-        ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
-        brightPref = prefs.getBoolean("pref_bright", true);
-        bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
-        editHead_screen.setBackground(null);
-        bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
-        editHead_screen.setBackground(bg);
     }
 
     @Override

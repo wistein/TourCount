@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2024-05-11 -->
+     last edited on 2024-07-02 -->
 
 <resources>
 
@@ -21,7 +21,7 @@
     <string name="zlist">Zählliste</string>
     <string name="counting">Zählen</string>
     <string name="viewSpeciesButton">Ergebnis anzeigen</string>
-    <string name="editMetaButton">Erfassung vorbereiten</string>
+    <string name="editMetaButton">Meta-Daten editieren</string>
     <string name="changeLogTitle">App-Info</string>
     <string name="viewHelpTitle">Hilfe</string>
     <string name="noCard">Kann nicht ins Documents-Directory schreiben!</string>
@@ -114,7 +114,7 @@
 
     <!-- NewSectionActivity -->
     <string name="labelNewsectSaveButton">Speichern</string>
-    <string name="labelNewCountButton">Art hinzuf.</string>
+    <string name="labelNewCountButton">Arten hinzuf.</string>
     <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
 
     <!-- CountingActivity -->
@@ -141,7 +141,7 @@
     <string name="orcode"> oder Code</string>
 
     <!-- AddSpeciesActivity -->
-    <string name="addTitle">Art hinzufügen</string>
+    <string name="addTitle">Arten hinzufügen</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App-Info</string>

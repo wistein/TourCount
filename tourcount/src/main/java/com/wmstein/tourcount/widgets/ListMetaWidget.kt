@@ -14,7 +14,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-30
+ * last edited on 2024-07-01
  */
 class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -57,15 +57,15 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         widget_lendTm2 = findViewById(R.id.widgetLEndTm2)
 
         widget_ltemp1 = findViewById(R.id.widgetLTemp1)
-        widget_lwind1 = findViewById(R.id.widgetLWind1)
-        widget_lclouds1 = findViewById(R.id.widgetLClouds1)
-
         widget_lstarttemp2 = findViewById(R.id.widgetLStartTemp2)
-        widget_lstartwind2 = findViewById(R.id.widgetLStartWind2)
-        widget_lstartclouds2 = findViewById(R.id.widgetLStartClouds2)
-
         widget_lendtemp2 = findViewById(R.id.widgetLEndTemp2)
+
+        widget_lwind1 = findViewById(R.id.widgetLWind1)
+        widget_lstartwind2 = findViewById(R.id.widgetLStartWind2)
         widget_lendwind2 = findViewById(R.id.widgetLEndWind2)
+
+        widget_lclouds1 = findViewById(R.id.widgetLClouds1)
+        widget_lstartclouds2 = findViewById(R.id.widgetLStartClouds2)
         widget_lendclouds2 = findViewById(R.id.widgetLEndClouds2)
     }
 
@@ -80,35 +80,20 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         widget_lendTm1.setText(R.string.endtm)
         widget_lendTm2.text = section.end_tm
 
+        // temperature
         widget_ltemp1.setText(R.string.temperature)
+        widget_lstarttemp2.text = section.tmp.toString()
+        widget_lendtemp2.text = section.tmp_end.toString()
+
+        // wind
         widget_lwind1.setText(R.string.wind)
+        widget_lstartwind2.text = section.wind.toString()
+        widget_lendwind2.text = section.wind_end.toString()
+
+        // clouds
         widget_lclouds1.setText(R.string.clouds)
-
-        if (section.tmp.toString() == "0")
-            widget_lstarttemp2.text = ""
-        else
-            widget_lstarttemp2.text = section.tmp.toString()
-        if (section.wind.toString() == "0")
-            widget_lstartwind2.text = ""
-        else
-            widget_lstartwind2.text = section.wind.toString()
-        if (section.clouds.toString() == "0")
-            widget_lstartclouds2.text = ""
-        else
-            widget_lstartclouds2.text = section.clouds.toString()
-
-        if (section.tmp_end.toString() == "0")
-            widget_lendtemp2.text = ""
-        else
-            widget_lendtemp2.text = section.tmp_end.toString()
-        if (section.wind_end.toString() == "0")
-            widget_lendwind2.text = ""
-        else
-            widget_lendwind2.text = section.wind_end.toString()
-        if (section.clouds_end.toString() == "0")
-            widget_lendclouds2.text = ""
-        else
-            widget_lendclouds2.text = section.clouds_end.toString()
+        widget_lstartclouds2.text = section.clouds.toString()
+        widget_lendclouds2.text = section.clouds_end.toString()
     }
 
 }

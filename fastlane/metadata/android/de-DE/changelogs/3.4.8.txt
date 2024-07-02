@@ -1,7 +1,6 @@
-Version 3.4.8 (08.06.2024)
+Version 3.4.8 (02.07.2024)
 - Ansichten der Seiten 'Speziesliste editieren' und 'Spezies hinzufügen' überarbeitet
-- Auswahl-Begrenzer für 'Speziesliste editieren' und 'Spezies hinzufügen'
-- Merk-Button in 'Spezies hinzufügen' ergänzt
+- Checkboxen zum mehrfachen Hinzufügen weiterer Arten zur Zählliste bei 'Arten hinzufügen'
 - Code-Verbesserungen
 - Veraltete (deprecated) Funktion ersetzt
 - Bug-Fixes

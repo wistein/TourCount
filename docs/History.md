@@ -2,6 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2024, Wilhelm Stein
 
+#### Version 3.4.8 (2024-07-02)
+- Views of 'Edit Species List' and 'Add Species' improved
+- Checkboxes for bulk appending of further species to the counting list in 'Add Species'
+- Some code improvements
+- Deprecated function replaced
+- Bugs fixed
+- Docs updated
+
 #### Version 3.4.7 (2024-05-28)
 - Headline for File Selection screen added
 - Preferences view enhanced with headline
@@ -173,7 +181,7 @@
 - Obsolete functions eliminated
 - Added pictures of species for Canaries and Madeira
 - Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
-- Documents: German Introductary presentation added
+- Documents: German Introductory presentation added
 - Documents updated
 - Bug fixes
 
@@ -215,7 +223,7 @@
 - File import dialog for existing DB
 - Code cleaned, unused functions removed
 - Permission handling for Android M
-- Records geogr. altitude 
+- Records geographic altitude
 - DB structure adapted and improved
 - Input masks improved
 - Code improvement

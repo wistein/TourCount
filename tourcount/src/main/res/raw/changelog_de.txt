@@ -98,6 +98,16 @@ _ Subtitle
     ! Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren deren jeweilige Copyright-Bedingungen.
   _ 
 
+$ 3.4.8
+  % Version 3.4.8
+  _ 02.07.2024
+  * Ansichten der Seiten 'Speziesliste editieren' und 'Spezies hinzufügen' überarbeitet
+  * Checkboxen zum mehrfachen Hinzufügen weiterer Arten zur Zählliste bei 'Arten hinzufügen'
+  * Code-Verbesserungen
+  * Veraltete (deprecated) Funktion ersetzt
+  * Bug-Fixes
+  * Doku-Update
+
 $ 3.4.7
   % Version 3.4.7
   _ 28.05.2024

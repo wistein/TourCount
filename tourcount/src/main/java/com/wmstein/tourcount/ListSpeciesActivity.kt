@@ -101,8 +101,8 @@ class ListSpeciesActivity : AppCompatActivity() {
         var sump = 0
         var suml = 0
         var sumo = 0
-        var sumsp = 0
-        var sumind = 0 // sum of counted species, sum of counted individuals
+        var sumsp = 0  // sum of counted species
+        var sumind = 0 // sum of counted individuals
         var longi: Double
         var lati: Double
         var uncer: Double
@@ -161,6 +161,8 @@ class ListSpeciesActivity : AppCompatActivity() {
             }
         }
         curAInd.close()
+        dbHandler.close()
+
         lo = (loMax + loMin) / 2 // average longitude
         la = (laMax + laMin) / 2 // average latitude
 
@@ -180,7 +182,7 @@ class ListSpeciesActivity : AppCompatActivity() {
         llw.setWidgetMuncert2(uc)
         specArea!!.addView(llw)
 
-        // 3. Display the date, time and environment data
+        // 3. Display the date, time, temperature, wind and clouds data
         val lmw = ListMetaWidget(this, null)
         lmw.setListMetaWidget(section)
         specArea!!.addView(lmw)
@@ -190,7 +192,7 @@ class ListSpeciesActivity : AppCompatActivity() {
             "names_alpha" -> countDataSource!!.cntSpeciesSrtName
             "codes" -> countDataSource!!.cntSpeciesSrtCode
             else -> countDataSource!!.cntSpecies
-        } //List of species
+        }
 
         // calculate the totals
         var specCntf1i: Int
@@ -286,7 +288,7 @@ class ListSpeciesActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "tourcountListSpeciesAct"
+        private const val TAG = "ListSpeciesAct"
     }
 
 }

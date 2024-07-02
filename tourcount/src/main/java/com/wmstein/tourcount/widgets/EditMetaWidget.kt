@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-28
+ * last edited on 2024-07-02
  */
 class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -65,7 +66,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         widget_clouds3 = findViewById(R.id.widgetEndClouds)
     }
 
-    // Following the SETS
+    // Following the SETS of heads
     // temperature
     fun setWidgetTemp1(title: String?) {
         widget_temp1.text = title
@@ -97,16 +98,16 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     }
 
     // plausi for numeric input
-    private val pattern = Regex("^[0-9]*$")
+    private val regEx = "^[0-9]*$"
 
-    // following the GETS
+    // following the GETS and SETS
     // get temperature with plausi
     var widgetTemp2: Int
         get() {
             val text = widget_temp2.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
-                    .matches(pattern)) 100
+                    .matches(regEx.toRegex())) 100
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
@@ -115,11 +116,9 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
                 }
             }
         }
+        @SuppressLint("SetTextI18n")
         set(name) {
-            if (name == 0)
-                widget_temp2.setText("")
-            else
-                widget_temp2.setText(name.toString())
+            widget_temp2.setText(name.toString())
         }
 
     var widgetTemp3: Int
@@ -127,7 +126,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             val text = widget_temp3.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
-                    .matches(pattern)) 100
+                    .matches(regEx.toRegex())) 100
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
@@ -136,11 +135,9 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
                 }
             }
         }
+        @SuppressLint("SetTextI18n")
         set(name) {
-            if (name == 0)
-                widget_temp3.setText("")
-            else
-                widget_temp3.setText(name.toString())
+            widget_temp3.setText(name.toString())
         }
 
     // get wind with plausi
@@ -149,7 +146,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             val text = widget_wind2.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
-                    .matches(pattern)) 100
+                    .matches(regEx.toRegex())) 100
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
@@ -158,11 +155,9 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
                 }
             }
         }
+        @SuppressLint("SetTextI18n")
         set(name) {
-            if (name == 0)
-                widget_wind2.setText("")
-            else
-                widget_wind2.setText(name.toString())
+            widget_wind2.setText(name.toString())
         }
 
     var widgetWind3: Int
@@ -170,7 +165,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             val text = widget_wind3.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
-                    .matches(pattern)) 100
+                    .matches(regEx.toRegex())) 100
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
@@ -179,11 +174,9 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
                 }
             }
         }
+        @SuppressLint("SetTextI18n")
         set(name) {
-            if (name == 0)
-                widget_wind3.setText("")
-            else
-                widget_wind3.setText(name.toString())
+            widget_wind3.setText(name.toString())
         }
 
     // get clouds with plausi
@@ -192,20 +185,18 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             val text = widget_clouds2.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
-                    .matches(pattern)) 200
+                    .matches(regEx.toRegex())) 200
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
                 } catch (nfe: NumberFormatException) {
-                    100
+                    200
                 }
             }
         }
+        @SuppressLint("SetTextI18n")
         set(name) {
-            if (name == 0)
-                widget_clouds2.setText("")
-            else
-                widget_clouds2.setText(name.toString())
+            widget_clouds2.setText(name.toString())
         }
 
     var widgetClouds3: Int
@@ -213,20 +204,18 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             val text = widget_clouds3.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
-                    .matches(pattern)) 200
+                    .matches(regEx.toRegex())) 200
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
                 } catch (nfe: NumberFormatException) {
-                    100
+                    200
                 }
             }
         }
+        @SuppressLint("SetTextI18n")
         set(name) {
-            if (name == 0)
-                widget_clouds3.setText("")
-            else
-                widget_clouds3.setText(name.toString())
+            widget_clouds3.setText(name.toString())
         }
 
     var widgetDate2: String?

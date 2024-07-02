@@ -19,7 +19,6 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
 
-
         <TextView
             android:id="@+id/specName"
             android:layout_width="0dp"
@@ -54,6 +53,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
             android:textSize="14sp"/>
+
         <ImageView
             android:id="@+id/specPic"
             android:layout_width="0dp"
@@ -64,7 +64,8 @@
             android:layout_marginTop="10dp"
             android:layout_weight="3.4"
             android:scaleType="fitCenter"
-            android:src="@drawable/p00000" />
+            android:src="@drawable/p00000"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,16 +81,16 @@
             android:gravity="start|center"
             android:layout_marginEnd="5dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="10"
+            android:layout_weight="12"
             android:background="@drawable/edit_background"
             android:hint="@string/countNameG"
             android:padding="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
+            android:textColor="#AEAEAE"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
-            android:textSize="14sp"/>
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/specId"
@@ -98,17 +99,15 @@
             android:layout_height="match_parent"
             android:visibility="invisible"/>
 
-        <ImageButton
-            android:id="@+id/addCount"
+        <CheckBox
+            android:id="@+id/checkBoxAdd"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_marginStart="30dp"
             android:layout_gravity="bottom|start|end|top"
-            android:gravity="center"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="3"
-            android:onClick="addCount"
-            android:src="@android:drawable/ic_menu_add"
-            tools:ignore="UsingOnClickInXml" />
+            android:onClick="checkBoxAdd"
+            android:layout_weight="2.5"/>
+
     </LinearLayout>
 
 </LinearLayout>

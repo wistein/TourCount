@@ -4,7 +4,7 @@
 Windows 64-bit with adb driver or
 Linux 64-bit
 
-Android Smartphone with high resolution screen
+Smartphone with high resolution screen (Android 7.1 or higher)
 
 ## Dependencies
 - Android Studio (current version)
@@ -19,8 +19,8 @@ Android SDK with
 
 ### build.gradle (TourCount)
 - buildscript:
-  kotlin_version = '1.9.22'
-  classpath 'com.android.tools.build:gradle:8.2.2'
+  kotlin_version = '1.9.22' (or higher)
+  classpath 'com.android.tools.build:gradle:8.2.2' (or higher)
   classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 ### build.gradle (tourcount)

@@ -9,5 +9,4 @@ package com.wmstein.tourcount
 object MyDebug {
     const val LOG = false // for Release mode
 //    const val LOG = true // for Debug mode
-
 }
