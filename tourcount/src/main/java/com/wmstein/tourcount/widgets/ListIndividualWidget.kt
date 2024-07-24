@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
  * used by ListSpeciesActivity
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-07-23
+ * last edited on 2024-07-24
  */
 class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {

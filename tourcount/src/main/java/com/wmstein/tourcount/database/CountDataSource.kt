@@ -462,28 +462,6 @@ class CountDataSource(context: Context?) {
         }
 
     // Used by ListSpeciesActivity
-    val cntSpecies: List<Count>
-        get() {
-            val speci: MutableList<Count> = ArrayList()
-            val cursor = database!!.rawQuery(
-                "select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE ("
-                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-                        + " order by " + DbHelper.C_ID, null, null
-            )
-            cursor.moveToFirst()
-            while (!cursor.isAfterLast) {
-                val count = cursorToCount(cursor)
-                speci.add(count)
-                cursor.moveToNext()
-            }
-            cursor.close()
-            return speci
-        }
-
-    // Used by ListSpeciesActivity
     val cntSpeciesSrtName: List<Count>
         get() {
             val counts: MutableList<Count> = ArrayList()

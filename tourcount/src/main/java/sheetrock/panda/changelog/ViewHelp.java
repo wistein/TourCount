@@ -33,7 +33,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2023-12-15
+ * last edited on 2024-07-24
  */
 public class ViewHelp
 {
@@ -120,7 +120,7 @@ public class ViewHelp
             while ((line = br.readLine()) != null)
             {
                 line = line.trim();
-                char marker = line.length() > 0 ? line.charAt(0) : 0;
+                char marker = !line.isEmpty() ? line.charAt(0) : 0;
                 if (marker == '$')
                 {
                     // begin of a version section

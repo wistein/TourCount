@@ -995,9 +995,9 @@ public class WelcomeActivity
                 String stadium3 = getString(R.string.stadium_3);
                 String stadium4 = getString(R.string.stadium_4);
 
-                String spname = "";
-                String spcode = "";
-                String slct = ""; // recording time to sort individuals
+                String spname;
+                String spcode;
+                String slct; // recording time to sort individuals
 
                 Cursor curCSVInd; // cursor for Individuals table
 

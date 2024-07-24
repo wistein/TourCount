@@ -1,7 +1,6 @@
 package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
@@ -38,7 +37,7 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-07-23
+ * last edited on 2024-07-24
  */
 class ListSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
