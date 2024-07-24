@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.wmstein.tourcount.AutoFitText
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Individuals
 import java.util.Objects
@@ -14,7 +15,8 @@ import kotlin.math.roundToInt
  * Created by wmstein on 2018-02-22
  * used by ListSpeciesActivity
  * Last edited in Java on 2022-03-26,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-07-23
  */
 class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -25,7 +27,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     private val txtIndLo: TextView
     private val txtIndHt: TextView
     private val txtIndStat: TextView
-    private val txtIndCnt: TextView
+    val txtIndCnt: AutoFitText
     private var phase123: Boolean = false // butterfly ♂♀, ♂ or ♀
 
     init {
@@ -94,7 +96,10 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
             if (indStat == "0") txtIndStat.text = "-" else txtIndStat.text =
                 individual.state_1_6.toString()
         } else txtIndStat.text = "-"
-        txtIndCnt.text = individual.icount.toString()
+
+        // Individual count
+        val text = individual.icount.toString()
+        txtIndCnt.setText(text) // In Kotlin EditText requires text as Editable?, not as String
     }
 
     fun getIndNotes(individual: Individuals): String? {

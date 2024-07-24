@@ -42,6 +42,20 @@
             android:title="@string/pref_left_hand"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/prefs_csv_output_title">
+        android:key="key_prefs_csv_output_title">
+
+        <ListPreference
+            android:defaultValue="names"
+            android:dialogTitle="@string/pref_csv_output_dialog"
+            android:entries="@array/pref_sort_output_entries"
+            android:entryValues="@array/pref_sort_output_values"
+            android:icon="@drawable/baseline_sort_48"
+            android:key="pref_sort_output"
+            android:title="@string/pref_csv_output_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
     <PreferenceCategory
         android:title="@string/prefs_sound">
         android:key="key_prefs_sound">

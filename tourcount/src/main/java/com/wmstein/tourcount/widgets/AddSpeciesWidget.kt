@@ -17,7 +17,8 @@ import java.util.Objects
  * shows list of selectable species with name, code, picture and add button
  * Created for TourCount by wmstein on 2019-04-03,
  * last edited in Java on 2020-10-18,
- * converted to Kotlin on 2024-07-02
+ * converted to Kotlin on 2023-05-02
+ * last edited in Kotlin on 2023-07-02
  */
 class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {

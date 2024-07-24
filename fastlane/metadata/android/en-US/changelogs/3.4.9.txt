@@ -1,0 +1,7 @@
+Version 3.4.9 (2024-07-23)
+- Obsolete 'Save' button removed from View of 'Edit Species List'
+- Extra sort option for results and csv-output (names or codes)
+- In csv-export individuals sorted by recorded time
+- Licenses text separated with its own menu entry
+- Bug fixed: 'Delete species' deletes related individual counts also
+- Docs updated

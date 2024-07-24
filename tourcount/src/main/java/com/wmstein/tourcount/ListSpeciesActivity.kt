@@ -1,14 +1,19 @@
 package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.database.Cursor
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
+import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.DbHelper
 import com.wmstein.tourcount.database.Head
@@ -16,7 +21,7 @@ import com.wmstein.tourcount.database.HeadDataSource
 import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.SectionDataSource
-import com.wmstein.tourcount.widgets.ListIndivRemWidget
+import com.wmstein.tourcount.widgets.ListIndivNoteWidget
 import com.wmstein.tourcount.widgets.ListIndividualWidget
 import com.wmstein.tourcount.widgets.ListLineWidget
 import com.wmstein.tourcount.widgets.ListLocationWidget
@@ -33,7 +38,7 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-14
+ * last edited on 2024-07-23
  */
 class ListSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -44,7 +49,7 @@ class ListSpeciesActivity : AppCompatActivity() {
     // preferences
     private var prefs = TourCountApplication.getPrefs()
     private var awakePref = false
-    private var sortPref: String? = null
+    private var outPref: String? = null
 
     // the actual data
     private var countDataSource: CountDataSource? = null
@@ -59,7 +64,7 @@ class ListSpeciesActivity : AppCompatActivity() {
 
         tourCount = application as TourCountApplication
         awakePref = prefs.getBoolean("pref_awake", true)
-        sortPref = prefs.getString("pref_sort_sp", "none") // sorted species list
+        outPref = prefs.getString("pref_sort_output", "names") // sort mode output
 
         setContentView(R.layout.activity_list_species)
         countDataSource = CountDataSource(this)
@@ -74,6 +79,21 @@ class ListSpeciesActivity : AppCompatActivity() {
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
+
+        // new onBackPressed logic
+        if (Build.VERSION.SDK_INT >= 33) {
+            onBackPressedDispatcher.addCallback(object :
+                OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    headDataSource!!.close()
+                    sectionDataSource!!.close()
+                    countDataSource!!.close()
+                    individualsDataSource!!.close()
+
+                    NavUtils.navigateUpFromSameTask(this@ListSpeciesActivity)
+                }
+            })
+        }
     }
 
     override fun onResume() {
@@ -83,10 +103,10 @@ class ListSpeciesActivity : AppCompatActivity() {
         }
 
         // setup the data sources
-        countDataSource!!.open()
-        individualsDataSource!!.open()
         headDataSource!!.open()
         sectionDataSource!!.open()
+        countDataSource!!.open()
+        individualsDataSource!!.open()
 
         // build Show Results screen
         specArea!!.removeAllViews()
@@ -101,7 +121,7 @@ class ListSpeciesActivity : AppCompatActivity() {
         var sump = 0
         var suml = 0
         var sumo = 0
-        var sumsp = 0  // sum of counted species
+        var sumsp = 0  // sum of different species
         var sumind = 0 // sum of counted individuals
         var longi: Double
         var lati: Double
@@ -143,7 +163,7 @@ class ListSpeciesActivity : AppCompatActivity() {
             uncer = round(curAInd.getDouble(6))
             if (longi != 0.0) // has coordinates
             {
-                if (MyDebug.LOG) Log.d(TAG, "146, longitude: $longi")
+                if (MyDebug.LOG) Log.d(TAG, "166, longitude: $longi")
                 if (frst == 0) {
                     loMin = longi
                     loMax = longi
@@ -188,10 +208,13 @@ class ListSpeciesActivity : AppCompatActivity() {
         specArea!!.addView(lmw)
 
         // load the species data
-        val specs = when (sortPref) {
-            "names_alpha" -> countDataSource!!.cntSpeciesSrtName
-            "codes" -> countDataSource!!.cntSpeciesSrtCode
-            else -> countDataSource!!.cntSpecies
+        val specs: List<Count> // List of sorted species
+        if (outPref.equals("names")) {
+            // sort criteria are name and code
+            specs = countDataSource!!.cntSpeciesSrtName
+        } else {
+            // sort criteria are name and section
+            specs = countDataSource!!.cntSpeciesSrtCode
         }
 
         // calculate the totals
@@ -226,9 +249,10 @@ class ListSpeciesActivity : AppCompatActivity() {
         lsw!!.setSum(sumsp, sumind)
         specArea!!.addView(lsw)
 
-        // display all the counts by adding them to listSpecies layout
+        // display all individuals by adding them to listSpecies layout
         var specCnt: Int
         var indivs: List<Individuals> // List of individuals
+        var iwidget: ListIndividualWidget
 
         for (spec in specs) {
             val widget = ListSpeciesWidget(this, null)
@@ -239,9 +263,7 @@ class ListSpeciesActivity : AppCompatActivity() {
             specCntpi = widget.getSpec_countpi(spec)
             specCntli = widget.getSpec_countli(spec)
             specCntei = widget.getSpec_countei(spec)
-            specCnt = (specCntf1i + specCntf2i + specCntf3i
-                    + specCntpi + specCntli + specCntei)
-
+            specCnt = (specCntf1i + specCntf2i + specCntf3i + specCntpi + specCntli + specCntei)
 
             // fill widget only for counted species
             if (specCnt > 0) {
@@ -249,14 +271,17 @@ class ListSpeciesActivity : AppCompatActivity() {
                 val iName = widget.getSpec_name(spec)
                 indivs = individualsDataSource!!.getIndividualsByName(iName!!)
                 for (indiv in indivs) {
-                    val iwidget = ListIndividualWidget(this, null)
-                    //load the individuals data
+                    iwidget = ListIndividualWidget(this, null)
+
+                    // load the individuals data
                     iwidget.setIndividual(indiv)
                     specArea!!.addView(iwidget)
 
                     // show individual notes only when provided
-                    val rwidget = ListIndivRemWidget(this, null)
-                    val tRem: String? = if (iwidget.getIndNotes(indiv) == null) "" else iwidget.getIndNotes(indiv)
+                    val rwidget = ListIndivNoteWidget(this, null)
+                    val tRem: String? =
+                        if (iwidget.getIndNotes(indiv) == null) ""
+                        else iwidget.getIndNotes(indiv)
                     if (tRem!!.isNotEmpty()) {
                         rwidget.setRem(indiv)
                         specArea!!.addView(rwidget)
@@ -264,18 +289,28 @@ class ListSpeciesActivity : AppCompatActivity() {
                 }
             }
         }
+
         val lwidget = ListLineWidget(this, null)
         specArea!!.addView(lwidget)
     }
     // end of loadData()
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. 
+        if (item.itemId == android.R.id.home) {
+            super.finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onPause() {
         super.onPause()
 
         // close the data sources
         headDataSource!!.close()
-        countDataSource!!.close()
         sectionDataSource!!.close()
+        countDataSource!!.close()
         individualsDataSource!!.close()
 
         if (awakePref) {
@@ -283,8 +318,17 @@ class ListSpeciesActivity : AppCompatActivity() {
         }
     }
 
-    fun saveAndExit(view: View?) {
-        super.finish()
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("ApplySharedPref", "MissingSuperCall")
+    override fun onBackPressed() {
+        headDataSource!!.close()
+        sectionDataSource!!.close()
+        countDataSource!!.close()
+        individualsDataSource!!.close()
+
+        NavUtils.navigateUpFromSameTask(this)
+        @Suppress("DEPRECATION")
+        super.onBackPressed()
     }
 
     companion object {

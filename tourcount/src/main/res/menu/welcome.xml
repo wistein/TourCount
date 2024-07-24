@@ -79,15 +79,21 @@
                 app:showAsAction="never">
             </item>
             <item
+                android:id="@+id/viewHelp"
+                android:icon="@drawable/outline_help_outline_24"
+                android:title="@string/viewHelpTitle"
+                app:showAsAction="never">
+            </item>
+            <item
                 android:id="@+id/changeLog"
                 android:icon="@drawable/outline_format_align_left_24"
                 android:title="@string/changeLogTitle"
                 app:showAsAction="never">
             </item>
             <item
-                android:id="@+id/viewHelp"
-                android:icon="@drawable/outline_help_outline_24"
-                android:title="@string/viewHelpTitle"
+                android:id="@+id/viewLicense"
+                android:icon="@drawable/outline_format_align_left_24"
+                android:title="@string/viewLicenseTitle"
                 app:showAsAction="never">
             </item>
 

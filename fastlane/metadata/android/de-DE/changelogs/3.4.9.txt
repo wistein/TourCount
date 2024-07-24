@@ -1,0 +1,7 @@
+Version 3.4.9 (23.07.2024)
+- Überflüssiger 'Speichern'-Button aus der Seite 'Speziesliste editieren' entfernt
+- Zusätzliche Sortier-Option für die Ergebnisseite und den csv-Export (Namen oder Codes)
+- Beim csv-Export Individuen nach Erfassungszeit sortiert
+- Lizenzentext separiert und unter eigenem Menüpunkt aufrufbar
+- Bug-Fix: Löschen einer Art löscht auch zugehörige Individuen-Einträge
+- Doku-Update

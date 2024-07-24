@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.wmstein.tourcount.AutoFitEditText
 import com.wmstein.tourcount.R
 import java.util.Objects
 
@@ -21,10 +22,6 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
     private val widgetLoc1: TextView
     private val widgetLoc2: EditText
 
-    //height
-    private val widgetZcoord1: TextView
-    private val widgetZoord2: TextView
-
     // stadium
     private val widgetStad1: TextView
     private val widgetStad2: TextView
@@ -35,7 +32,7 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
 
     // number of individuals
     private val widgetCnt1: TextView
-    private val widgetCnt2: EditText
+    private val widgetCnt2: AutoFitEditText
 
     // note
     private val widgetIndNote1: TextView
@@ -49,13 +46,15 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
     private val widgetYcoord1: TextView
     private val widgetYcoord2: TextView
 
+    // height
+    private val widgetZcoord1: TextView
+    private val widgetZcoord2: TextView
+
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_individual, this, true)
         widgetLoc1 = findViewById(R.id.widget_Locality1) // Locality
         widgetLoc2 = findViewById(R.id.widget_Locality2)
-        widgetZcoord1 = findViewById(R.id.widget_ZCoord1) // Height
-        widgetZoord2 = findViewById(R.id.widget_ZCoord2)
         widgetStad1 = findViewById(R.id.widget_Stadium1) // Stadium
         widgetStad2 = findViewById(R.id.widget_Stadium2)
         widgetStat1 = findViewById(R.id.widget_State1) // State_1-6
@@ -64,10 +63,12 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         widgetCnt2 = findViewById(R.id.widget_Count2)
         widgetIndNote1 = findViewById(R.id.widget_IndivNote1) // Note
         widgetIndNote2 = findViewById(R.id.widget_IndivNote2)
-        widgetXcoord1 = findViewById(R.id.widget_XCoord1) // X-Coord
+        widgetXcoord1 = findViewById(R.id.widget_XCoord1) // X-Coord (lat)
         widgetXcoord2 = findViewById(R.id.widget_XCoord2)
-        widgetYcoord1 = findViewById(R.id.widget_YCoord1) // Y-Coord
+        widgetYcoord1 = findViewById(R.id.widget_YCoord1) // Y-Coord (lon)
         widgetYcoord2 = findViewById(R.id.widget_YCoord2)
+        widgetZcoord1 = findViewById(R.id.widget_ZCoord1) // Height
+        widgetZcoord2 = findViewById(R.id.widget_ZCoord2)
     }
 
     // Following the SETS
@@ -120,7 +121,7 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
     }
 
     fun setWidgetZCoord2(name: String?) {
-        widgetZoord2.text = name
+        widgetZcoord2.text = name
     }
 
     // following the GETS

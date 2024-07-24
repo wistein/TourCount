@@ -14,7 +14,7 @@ import com.wmstein.tourcount.TourCountApplication
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-05-14
+ * last edited on 2024-07-23
  */
 class CountDataSource(context: Context?) {
     // Database fields
@@ -48,6 +48,8 @@ class CountDataSource(context: Context?) {
         dbHandler.close()
     }
 
+    // Used by AddSpeciesActivity
+    //   test: orderBy code has no effect
     fun createCount(name: String?, code: String?, name_g: String?) {
         if (database!!.isOpen) {
             val values = ContentValues()

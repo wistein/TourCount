@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2024-07-02 -->
+     last edited on 2024-07-18 -->
 
 <resources>
 
@@ -24,6 +24,7 @@
     <string name="editMetaButton">Edit Meta Data</string>
     <string name="changeLogTitle">App Info</string>
     <string name="viewHelpTitle">Help</string>
+    <string name="viewLicenseTitle">Licenses</string>
     <string name="noCard">Cannot write to the Documents directory!</string>
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveDB">Export internal DB to Documents/TourCount</string>
@@ -60,6 +61,9 @@
     <string name="avCoords">Average Coordinates:</string>
     <string name="back_twice">Press again to exit</string>
     <string name="resetFail">Your database could not be resetted!</string>
+    <string name="sort_names">Species sorted by species names</string>
+    <string name="sort_codes">Species sorted by species codes</string>
+    <string name="sort_time">Individuals sorted by registered time</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>
@@ -135,7 +139,7 @@
     <string name="deleteCount">Delete Item</string>
     <string name="reallyDeleteCount">Are you sure? This item will be deleted immediately.</string>
     <string name="isdouble"> is double!</string>
-    <string name="presentSpecs">Present species:</string>
+    <string name="presentSpecs">Species in counting list:</string>
     <string name="isempt">Name or Code is empty!</string>
     <string name="spname">Name</string>
     <string name="orcode"> or code</string>
@@ -151,6 +155,9 @@
     <!-- ViewHelp -->
     <string name="viewhelp_full_title">Help (TourCount Ver.</string>
 
+    <!-- ViewLicense -->
+    <string name="viewlicense_full_title">Licenses</string>
+
     <!-- Preferences -->
     <string name="prefs_appearance">Appearance</string>
     <string name="pref_bg">Background</string>
@@ -161,6 +168,11 @@
     <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
+
+    <string name="prefs_csv_output_title">Output</string>
+    <string name="pref_csv_output_title">Sorting the results</string>
+    <string name="pref_csv_output_dialog">Sort order of the results and exported csv-table</string>
+
     <string name="prefs_sound">Sound/Vibration</string>
     <string name="pref_button_sound">Button sounds</string>
     <string name="pref_button_sound_summary">Make a sound upon pressing a count button.</string>

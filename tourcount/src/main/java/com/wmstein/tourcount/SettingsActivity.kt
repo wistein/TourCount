@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 
 /**********************************************************
  * Set the Settings parameters for TourCount
@@ -14,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2023-12-07
+ * last edited on 2024-07-23
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -34,6 +37,16 @@ class SettingsActivity : AppCompatActivity() {
             .replace(R.id.settings_container, SettingsFragment())
             .commit()
         editor = prefs.edit() // will be committed on pause
+
+        // new onBackPressed logic
+        if (Build.VERSION.SDK_INT >= 33) {
+            onBackPressedDispatcher.addCallback(object :
+                OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    NavUtils.navigateUpFromSameTask(this@SettingsActivity)
+                }
+            })
+        }
     }
 
     override fun onPause() {
@@ -54,17 +67,20 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here.
         if (item.itemId == android.R.id.home) {
-            startActivity(
-                Intent(
-                    this,
-                    WelcomeActivity::class.java
-                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            )
-        } else {
-            return super.onOptionsItemSelected(item)
+            super.finish()
+            return true
         }
-        return true
+        return super.onOptionsItemSelected(item)
+    }
+
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("ApplySharedPref", "MissingSuperCall")
+    override fun onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this)
+        @Suppress("DEPRECATION")
+        super.onBackPressed()
     }
 
 }

@@ -35,7 +35,7 @@ import androidx.preference.PreferenceManager;
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-02-25
+ * last edited on 2024-07-16
  */
 public class ChangeLog
 {
@@ -71,7 +71,7 @@ public class ChangeLog
     {
         this.context = context;
 
-        // get version numbers
+        // get version numbers of lastVersion and thisVersion to compare
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (MyDebug.LOG)
             Log.d(TAG, "77, lastVersion: " + lastVersion);
@@ -130,6 +130,11 @@ public class ChangeLog
     private AlertDialog getDialog(boolean full)
     {
         WebView wv = new WebView(this.context);
+
+// try to fit text in screen width -> no effect
+//        wv.getSettings().setUseWideViewPort(false);
+//        wv.setPadding(0,0,30,0);
+// also eliminating leading blanks in text to show -> no effect
 
         wv.setBackgroundColor(Color.BLACK);
         wv.loadDataWithBaseURL(null, this.getLog(full), "text/html", "UTF-8",
@@ -197,7 +202,7 @@ public class ChangeLog
             while ((line = br.readLine()) != null)
             {
                 line = line.trim();
-                char marker = line.length() > 0 ? line.charAt(0) : 0;
+                char marker = !line.isEmpty() ? line.charAt(0) : 0;
                 if (marker == '$')
                 {
                     // begin of a version section
@@ -226,7 +231,7 @@ public class ChangeLog
                     {
                         // line contains bold red text
                         this.closeList();
-                        sb.append("<div class='boldredtext'>").append(line.substring(1).trim()).append("</div>\n");
+                        sb.append("<div class='boldtext'>").append(line.substring(1).trim()).append("</div>\n");
                     }
                     case '_' ->
                     {

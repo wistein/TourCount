@@ -74,7 +74,7 @@ import androidx.work.WorkRequest;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification in Java on 2024-06-04
+ * last modification in Java on 2024-07-23
  */
 public class CountingActivity
     extends AppCompatActivity
@@ -282,7 +282,7 @@ public class CountingActivity
             section = sectionDataSource.getSection();
         } catch (CursorIndexOutOfBoundsException e)
         {
-            if (MyDebug.LOG) Log.e(TAG, "271, Problem loading section: " + e);
+            if (MyDebug.LOG) Log.e(TAG, "285, Problem loading section: " + e);
             showSnackbarRed(getString(R.string.getHelp));
             finish();
         }
@@ -639,13 +639,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (MyDebug.LOG)
-                        Log.d(TAG, "636, SpinnerListener, count id: " + count.id
+                        Log.d(TAG, "642, SpinnerListener, count id: " + count.id
                             + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.LOG) Log.e(TAG, "642, SpinnerListener: " + e);
+                    if (MyDebug.LOG) Log.e(TAG, "648, SpinnerListener: " + e);
                 }
             }
 
@@ -707,6 +707,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -733,6 +734,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -842,6 +844,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -868,6 +871,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -974,6 +978,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1000,6 +1005,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1106,6 +1112,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1132,6 +1139,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1238,6 +1246,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1264,6 +1273,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1370,6 +1380,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1398,6 +1409,7 @@ public class CountingActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", count_id);
         intent.putExtra("SName", widget.count.name);
+        intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
@@ -1533,7 +1545,7 @@ public class CountingActivity
     {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat")
-        DateFormat dform = new SimpleDateFormat("HH:mm");
+        DateFormat dform = new SimpleDateFormat("HH:mm:ss");
         return dform.format(date);
     }
 
@@ -1554,7 +1566,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1551, could not play button sound.", e);
+                    Log.e(TAG, "1569, could not play button sound.", e);
             }
         }
     }
@@ -1576,7 +1588,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1573, could not play button sound.", e);
+                    Log.e(TAG, "1591, could not play button sound.", e);
             }
         }
     }
@@ -1603,7 +1615,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1600, could not vibrate.", e);
+                    Log.e(TAG, "1618, could not vibrate.", e);
             }
         }
     }
@@ -1630,7 +1642,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1627, could not vibrate.", e);
+                    Log.e(TAG, "1645, could not vibrate.", e);
             }
         }
     }

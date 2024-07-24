@@ -12,11 +12,11 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/labelNewCountButton"
         app:showAsAction="ifRoom"/>
-
+<!--
     <item
         android:id="@+id/menuSaveExit"
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/saveCountsButton"
         app:showAsAction="ifRoom"/>
-
+-->
 </menu>

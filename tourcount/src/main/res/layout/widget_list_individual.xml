@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- widget_list_individual.xml
- used by ListIndividualWidget.kt and ListSpeciesActivity.kt.
- Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
+<!-- widget_list_individual.xml used by ListIndividualWidget.kt.
+ Copyright (c) 2016-2024, Wilhelm Stein, Bonn, Germany.
  Shows individuals line of species -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -185,26 +184,26 @@
             android:textColor="#FFFFFF"
             android:textSize="14sp" />
 
-        <!-- count of individual-->
-        <com.wmstein.tourcount.AutoFitEditText
+        <!-- count of individual -->
+        <com.wmstein.tourcount.AutoFitText
             android:id="@+id/txtIndCnt"
+            style="@style/LineText"
             android:layout_width="0dp"
-            android:layout_height="26dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center|top"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="8dp"
             android:layout_weight="0.6"
             android:background="@drawable/count_background"
-            android:gravity="center|center_vertical|center_horizontal"
-            android:hint="@string/charZero"
+            android:gravity="center_vertical|center_horizontal"
+            android:inputType="number"
             android:maxLines="1"
             android:paddingStart="1dp"
             android:paddingTop="1dp"
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textColor="#FFFFFF"/>
     </LinearLayout>
 
 </LinearLayout>

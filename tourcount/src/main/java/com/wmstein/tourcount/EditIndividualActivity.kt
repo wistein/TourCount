@@ -45,7 +45,7 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-05-14
+ * last edited on 2024-07-17
  */
 class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
@@ -267,7 +267,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
 
         // number of individuals
         val newcount = eiw!!.widgetCount2
-        if (newcount > 0) // valid newcount
+        if (newcount > 0) // valid positive newcount
         {
             when (indivAttr) {
                 1 -> {
@@ -336,6 +336,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             showSnackbarRed(getString(R.string.warnCount))
             return false // forces input newcount > 0
         }
+
         tempDataSource!!.saveTempLoc(tmp!!)
         sdata = true
         return true

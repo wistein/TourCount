@@ -15,7 +15,7 @@ import java.util.Objects
  * Last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05
  */
-class ListIndivRemWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
+class ListIndivNoteWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtBemInd: TextView
 
     init {

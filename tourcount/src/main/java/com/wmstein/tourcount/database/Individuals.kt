@@ -5,7 +5,7 @@ package com.wmstein.tourcount.database
  * Created by wmstein for TourCount on 2016-04-20
  * Last edited in Java on 2022-03-25,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-14
+ * last edited on 2024-07-17
  */
 class Individuals {
     @JvmField

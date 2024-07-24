@@ -20,8 +20,8 @@ _ Subtitle
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
-      div.boldredtext { 
-          color:#FF0000; 
+      div.boldtext {
+          color:#F0F0F0;
           font-size:1.2em; 
           font-weight:bold; 
           margin-top:1em; 
@@ -38,74 +38,38 @@ _ Subtitle
   </head>
   <body>
 
-  % TourCount 
-  _ Copyright (C) 2016-2024, Wilhelm Stein
-  _
-  _ email: stein.wm@web.de
-  _
-  	! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
-  _ 
-  	! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
-  	! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
-  _ 
-    ! Quellcode und Dokumentation veröffentlicht unter:
-    ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
-  _
-    ! Geeignet für Android 7.1 (Nougat) oder neuer
-  _ 
-    ! Lizenzen
-  _ 
-  _ Der Quellcode ist lizenziert unter Apache Licence Version 2.0 (die „Lizenz“). Nutzung dieser Dateien ist nur in Übereinstimmung mit der Lizenz erlaubt. Eine Kopie der Lizenz erhalten Sie auf
-  _ 
-  _ <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">https://www.apache.org/licenses/LICENSE-2.0</a>
-  _ 
-  _ Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart, wird die Software unter der Lizenz so wie sie ist ("AS IS") OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNGSANSPRÜCHE übertragen. Siehe in Bezug auf die einzelnen Rechte und Einschränkungen die Bestimmungen des Lizenztexts.
-  _ 
-    ! Integrierter Code von externen Quellen:
-    * Grundlegende Zählerfunktionen basieren auf BeeCount, (C) 2016 Milo Thurston (knirirr ), Apache License, Version 2.0, https://github.com/knirirr/BeeCount
-    * AutoFitText.java, modifiziert, original code from author: pheuschk, 18.04.2013, Open Source, https://pastebin.com/raw/e6WyrwSN
-    * ChangeLog.java, modifiziert, Original-Code (C) 2011-2013, Karsten Priegnitz, Other Open Source, https://github.com/koem/android-change-log/
-    * CSVWriter.java, modifiziert, Original-Code (C) 2015 Bytecode Pty Ltd., Apache License, Version 2.0
-    * filechooser basiert auf android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
-    * egm, basiert auf Code von GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, https://geotools.org/
-  _ 
-    ! Schmetterlings-Abbildungen: 
-	* Adela paludicolella, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
-  * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
-	* Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth,	Autor: Dumi, GNU Free Documentation License, version 1.2
-  * Deltote bankiana, Autor: Andre den Ouden, lizensiert von www.saxifraga.nl, nicht-kommerzielle Verwendung erlaubt, erstellt aus http://freenatureimages.eu
-  * Evergestis extimalis, Autor: Adam Furlepa, CC BY-SA 3.0, erstellt aus https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
-	* Hipparchia neomiris, erstellt aus Abbildungen aus "Die Groß-Schmetterlinge der Erde",	Autor: Adalbert Seitz, 1909, Public Domain
-  * Hyles gallii (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
-  * Hyles hippophaes (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
-  * Hyponephele lupinus (Public Domain), erstellt aus https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
-  * Jordanita globulariae, Autor: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
-  * Marumba quercus (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
-  * Melanargia arge, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
-  * Melitaea parthenoides, Autor: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license, erstellt aus https://en.wikipedia.org/wiki/Melitaea_parthenoides
-  * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
-	* Nemaphora barbatellus, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",	Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
-  * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
-	* Scopula rubiginata, erstellt aus Abbildungen in http://www.freenatureimages.eu/Animals/index.html, Autor: Rob Felix, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
-	* Scopula virgulata derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Zoran Bozovic, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
-	* Sesia apiformis derived from picture on https://en.wikipedia.org/wiki/Hornet_moth	Autor: Jyrki Lehto, freie Verwendung
-	* Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Peter Gergely, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
-  _
-    ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein. 
-  _
-    ! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden.
-    ! Aber es ist nicht erlaubt, Abbildungen auf Social-Media-Plattformen hochzuladen, da die meisten der oben genannten Lizenzen mit den Lizenzen dieser Plattformen kollidieren und ich nicht mit den Lizenzbedingungen dieser Plattformen einverstanden bin.
-    ! Bitte beachten Sie bei Verwendung der Abbildungen anderer Autoren deren jeweilige Copyright-Bedingungen.
-  _ 
+% TourCount
+_ Copyright (C) 2016-2024, Wilhelm Stein
+_
+_ email: stein.wm@web.de
+_
+! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
+_
+! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
+! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
+ _
+! Quellcode und Dokumentation veröffentlicht unter:
+! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
+_
+! Geeignet für Android 7.1 (Nougat) oder neuer
+_
+
+$ 3.4.9
+  % Version 3.4.9
+  _ 23.07.2024
+  * Überflüssiger 'Speichern'-Button aus der Seite 'Speziesliste editieren' entfernt
+  * Zusätzliche Sortier-Option für die Ergebnisseite und den csv-Export (Namen oder Codes)
+  * Beim csv-Export Individuen nach Erfassungszeit sortiert
+  * Lizenzentext separiert und unter eigenem Menüpunkt aufrufbar
+  * Bug-Fix: Löschen einer Art löscht auch zugehörige Individuen-Einträge
+  * Doku-Update
 
 $ 3.4.8
   % Version 3.4.8
   _ 02.07.2024
   * Ansichten der Seiten 'Speziesliste editieren' und 'Spezies hinzufügen' überarbeitet
   * Checkboxen zum mehrfachen Hinzufügen weiterer Arten zur Zählliste bei 'Arten hinzufügen'
-  * Code-Verbesserungen
   * Veraltete (deprecated) Funktion ersetzt
-  * Bug-Fixes
   * Doku-Update
 
 $ 3.4.7
@@ -118,7 +82,6 @@ $ 3.4.7
   * Zusätzliche Erfassung von Temperatur, Wind und Wolken am Ende der Tour
   * Layout beim CSV-Export für die neu erfassten Werte ergänzt
   * Verbesserungen bei Code und Bildschirm-Layout
-  * Bug-Fixes
   * Doku-Update
 
 $ 3.4.6
@@ -127,23 +90,18 @@ $ 3.4.6
   * Code-Anpassungen für Android 14
   * Weitere Abbildungen von (sardischen) Arten
   * Einige lokale Artnamen ergänzt
-  * Bug-Fix
   * Doku-Update
 
 $ 3.4.5
   % Version 3.4.5
   _ 15.12.2023
   * SQlite DB: Table- und column-Namen 'temp' wg. reserviertem Term-Konflikt geändert
-  * Kompiliert mit SDK Ver. 34 für targetSdkVersion 33
-  * Gradle Plugin Upgrade -> 8.1.1
   * Import von DB-Dateien aus dem Verzeichnis "Documents/TourCount/"
   * Export von DB- und CSV-Dateien ins Verzeichnis "Documents/TourCount/"
   * Ergebnisseite verbessert
   * Einge Arten hinzugefügt
   * Fehlende Abbildungen ergänzt
   * Doku überarbeitet
-  * Code-Verbesserungen
-  * Bug-Fixes
   * Code-Anpassungen für Android 13
 
 $ 3.4.2
@@ -156,19 +114,14 @@ $ 3.4.0
   % Version 3.4.0
   _ 13.07.2023
   * Option Landscape-Modus entfernt, da der Portrait-Modus selbst auf Tablets vorteilhafter ist
-  * Weitere Module von Java nach Kotlin übersetzt
   * Code-Anpassungen für Kotlin
-  * Einge veraltete (deprecated) Funktionen ersetzt
-  * Code-Verbesserungen
+  * Einige veraltete (deprecated) Funktionen ersetzt
   * Doku überarbeitet
 
 $ 3.3.5
   % Version 3.3.5
   _ 19.06.2023
-  * Kompiliert mit SDK Ver. 33 für targetSdkVersion 33
-  * Gradle Plugin Upgrade -> 8.0.2
-  * Gradle Upgrade -> 8.0
-  * Veraltete (deprecated) Funktionen ersetzt
+  * Einige veraltete (deprecated) Funktionen ersetzt
   * Export von .csv-Files nach Documents/TourCount/ (erlaubt Bearbeitung mit anderen Apps)
   * Option für Vibration, kurz beim Hoch- und länger beim Runterzählen
   * Tieferer Ton beim Runterzählen
@@ -180,33 +133,27 @@ $ 3.3.5
 $ 3.3.3
   % Version 3.3.3
   _ 25.10.2022
-  * Gradle Plugin Upgrade -> 7.3.1
-  * Gradle Upgrade -> 7.4
-  * Kompiliert mit SDK Ver. 32 für targetSdkVersion 31
   * Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
   * Weitere Falterarten mit Abbildungen hinzugefügt
-	* Bugfix in arrays.xml
+  * Bugfix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9
   _ 21.05.2022
-	* Projekt-Anpassung für Android Studio 2021.2.1 und Gradle 7.3.3
 	* Kompiliert für SDK-Version 31 (benötigt für aktuelle Bibliotheken)
 	* Portrait/Landscape-Funktion verbessert
-	* Location background permission entfernt
+	* 'Location background'-Berechtigung entfernt
 	* Update der Doku und Beispiel-Datenbanken
 	* Update der Copyright und Lizenztexte
 	* Einige weitere Nachtfalterarten mit Abbildungen hinzugefügt
 	* Zustandsinfo für Puppe, Raupe oder Ei wird nicht mehr erfasst
-	* Code-Verbesserungen
 
 $ 3.2.6
   % Version 3.2.6
   _ 22.08.2021
-	* Projekt Anpassung für Android Studio 2020.3.1 und Gradle 7.0.1
 	* Verbesserung von Layout und Funktion des Spezieslisten-Editors
 	* Einige veraltete Spezies-Familiennamen angepasst (innerhalb App und Beispiel-DBs)
-	* Veraltete Code-Bezeichnungen aktualisiert
+	* Veraltete Arten-Codes aktualisiert
 	* Berechtigungsabfrage für Standortabfrage im Hintergrund
 	* Code-Anpassung für Fehlfunktion der Bilderanzeige unter Gradle 6.5
 	* Einige fehlende Schmetterlingsabbildungen hinzugefügt
@@ -215,7 +162,6 @@ $ 3.2.6
 $ 3.2.3
   % Version 3.2.3
   _ 09.09.2020
-	* Projekt-Anpassung für Android Studio 4.0.1 und Gradle 6.1.1
 	* Location-Dienst in den Hauptfunktionen
 	* Weitere Schmetterlingsabbildungen integriert
 	* Integrierte Auswahlliste der Arten vergrößert
@@ -223,31 +169,24 @@ $ 3.2.3
 	* Code für eingeschränkten Speicher-Zugriff angepasst für Android 10
 	* Datendateien nun in App-spezifischem Verzeichnis
 	* Code für Einstellungen angepasst für Android 10
-	* Verwendung von AndroidX-Bibliotheken
-	* Meldungen bereinigt
 	* Hilfetext angepasst
 	* Doku angepasst
-	* Einige kleine Code-Verbesserungen
 	* Bug in Location-Dienst behoben
 	* Fehler in Einstellung für Button-Sound behoben
 
 $ 3.1.5
   % Version 3.1.5
   _ 26.02.2020
-	* Projekt-Anpassung für Android Studio 3.6 und Gradle 5.6.4
 	* Code optimiert hinsichtlich Speichernutzung und Stromverbrauch
 	* App-Icon angepasst für bessere Darstellung auf Android 9
 	* Unterschneidung der Artnamen auf der Ergebnisseite korrigiert
 	* Kleinere Text-Verbesserungen
-	* Änderungen in AndroidManifest.xml und build.gradle
 
 $ 3.1.2
   % Version 3.1.2
   _ 04.08.2019
- 	* Projekt-Anpassung für Android Studio 3.4.1 und Gradle 5.1.1
  	* Schmetterlingsbilder geändert/ergänzt
  	* Exportierte csv-Datei mit Summe der gezählten Arten
- 	* Kleinere Designänderungen der Startseite
  	* Integrierte Auswahlliste mit vielen Europäischen Spezies
  	* Hinzufügen neuer Spezies mittels Scroll-Down-Auswahl aus einer umfassenden Liste, die nur nicht vorhandene Spezies anzeigt
  	* Fehler in Datenbanknutzung behoben
@@ -255,7 +194,6 @@ $ 3.1.2
 $ 3.0.8
   % Version 3.0.8
   _ 25.03.2019
- 	* Projekt-Anpassung für Android Studio 3.3.2 und Gradle 4.10.1
  	* Minimale Android-Version geändert in 4.4 (KitKat)
  	* DB-Struktur ergänzt für lokale Schmetterlingsnamen
  	* Beispiel-Datenbanken mit lokalen Schmetterlingsnamen
@@ -264,40 +202,32 @@ $ 3.0.8
  	* Einige Abbildungen erneuert mit Ober- und Unterseite der Flügel
  	* Kleinere Designänderungen in einigen App-Seiten
  	* Doku. teilweise überarbeitet
-  * Code-Bereinigungen
  	* Absturzfehler bei schnell wiederholtem Klicken der Art-Auswahl behoben
 
 $ 3.0.5
   % Version 3.0.5
   _ 20.09.2018
- 	* Projekt-Anpassungen für Android Studio 3.1.2 und Gradle 3.1.2
  	* Positionsabfragefunktion zuverlässiger, nun als Service
  	* Zusätzliche manuelle Eingabe für Datum, Start- und Stopzeit per langem Drücken
  	* Zusätzliche Schmetterlingsabbildungen
- 	* Wo sinnvoll, Toasts gegen Snackbars getauscht
- 	* Code-Verbesserungen
  	* Fehler bei Höhenkorrektur behoben
  	* Absturz-Fehler im Permission-Handling von Android >= Marshmallow behoben
  	* Absturz-Fehler im Modul "Edit Speziesliste" behoben
-	* Weitere Fehler behoben
 
 $ 3.0.1
   % Version 3.0.1
   _ 04.04.2018
-	* Projekt-Anpassungen für Android Studio 3.1, Gradle 3.1.0 und SDK 27 (Android 8.1)
-	* Unnötige Berechtigung WRITE_SETTINGS entfernt
 	* Neues Zählseiten-Layout mit Scroll-Menü zur Art-Auswahl
 	* Separate Zähler für ♂♀, ♂, ♀, Puppe, Raupe, Ei
  	* Multi-Window-Modus (Android 7+) gesperrt wegen inkompatiblem Pull-Down-Menü (Spinner)
 	* Korrekte Subtraktion bei Kategorien der Arten und der Individual-Einträge
 	* Datenbank Version 2 -> 3 berücksichtigt zusätzliche Zähler
-  * Automatische Konvertierung beim Laden von existierenden Datenbanken in neue Version
+    * Automatische Konvertierung beim Laden von existierenden Datenbanken in neue Version
  	* Erstmaliger Start erzeugt nun direkt nutzbare interne DB mit verbreiteten europäischen Arten
 	* Layout der Startseite geändert
 	* Layout der Ergebnisseite angepasst
 	* Weitere Schmetterlingsabbildungen integriert
 	* Dokumentation überarbeitet für Ver. 3.0
- 	* Fehler behoben
 
 $ 2.4.6
   % Version 2.4.6
@@ -307,21 +237,18 @@ $ 2.4.6
  	* Kamera-Button in Menüleiste der Zählseite hinzugefügt
 	* Verbesserung der Ergebnisanzeige (mittl. Koordinaten, auflisten der Individuen mit Daten)
 	* Verschiedene Detail-Verbesserungen
-	* Funktionsrelikte entfernt
 	* Abbildungen der Spezies von den Kanaren und Madeira ergänzt
 	* Weitere vorbereitete Datenbanken für Kanaren und Madeira unter <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
  	* Doku: Einführende Prasentation hinzugefügt
 	* Aktualisierung der Doku
- 	* Fehler behoben
 
 $ 2.3.0
   % Version 2.3.0
   _ 27.09.2017
- 	* Code für Android 7.1 angepasst und kompiliert
   * Höhenkorrektur mittels Geoid-Differenzwerte gemäß EarthGravitationalModel EGM96
- 	* Systemlog-Meldungen nur noch im MyDebug-Modus
-	* Links in App-Info und Hilfe hinzugefügt
- 	* Layout-Verbesserung der Ergebnisseite
+  * Systemlog-Meldungen nur noch im MyDebug-Modus
+  * Links in App-Info und Hilfe hinzugefügt
+  * Layout-Verbesserung der Ergebnisseite
   * Versionskontrolle für Datenbank hinzugefügt, um mit alter Datenbankstruktur (vor Version 2.1.4) kompatibel zu sein
   * Option zum Umschalten zwischen Portrait- und Landscape-Modus
   * Zeige richtige Überschrift direkt nach Laden oder Zurücksetzen einer DB
@@ -329,18 +256,17 @@ $ 2.3.0
   * CSV-Export unterdrückt Nullwerte für bessere Übersicht
   * Beenden der Individuuen-Dateneingabe mit Button-Sound
   * Datenbankstruktur angepasst an Erfordernisse des erweiterten Datenexports
- 	* Zum Beenden Back-Button zweimal drücken
+  * Zum Beenden Back-Button zweimal drücken
   * Unterstüzung auch für grobe Koordinatenbestimmung per Wifi und Funknetz
   * Ergebnisseite mit Summen
   * Weitere Falter-Abbildungen
- 	* Kleinere Verbesserungen an Textdarstellung
+  * Kleinere Verbesserungen an Textdarstellung
   * Fix gegen Absturz beim Zählen mit einer Datenbank in alter Struktur (vor 2.1.4)
-  * Fehlerbehebung und kleinere Code-Verbesserungen
 
 $ 2.1.4
   % Version 2.1.4
   _ 01.12.2016
- 	* Abbilder der Arten auf Zähl- und Ergebnisseite
+  * Abbilder der Arten auf Zähl- und Ergebnisseite
   * Anderes Standard-Hintergrundbild (verschieden von dem der TransektCount-App)
   * Icons auf der Seite "Einstellungen"
   * Icons für die Menüeinträge
@@ -358,8 +284,6 @@ $ 2.1.4
   * Aufzeichnung der geogr. Höhe
   * DB Struktur angepasst und verbessert
   * Eingabemasken verbessert
-  * Code-Verbesserung
-  * Fehlerbehebung
 
 $ 2.0.2
   % Version 2.0.2
@@ -383,23 +307,24 @@ $ 1.0.0
   % Version 1.0.0
   _ 18.04.2016
   ! 1. Release.
-  * Funktion "Reset Daten"
-  * App läuft immer im Portraitmodus
-  * Exportiert Ergebnisse in csv-Format
+  * TourCount basiert auf TransektCount, dessen Programmstruktur und Zählfunktionalität ursprünglich auf Teilen von BeeCount von knirirr basiert
+  * (https://github.com/knirirr/BeeCount.git)
+  * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
+  _
+  ! Features:
   * Eingabeseite für Meta-Daten
+  * Zählseite
+  * Editor für Zähl-Optionen
   * Ergebnisseite mit Stammdaten
   * Ausführliche Hilfe-Seite
+  * Seite für App-Einstellungen
+  * Deutsche und englische Texte
+  * Funktion "Reset Daten"
+  * Exportiert Ergebnisse in csv-Format
   * Basis-DB-Import/Export: Leere Datenbank 'tourcount0.db'
   * DB-Export: Datenbank 'tourcount_jjjjmmtt-hhmmss.db'
   * Zählergebnis-Export: Excel-Datei 'tourcount_yyyymmdd-hhmmss.csv'
-  * Deutsche und englische Texte
-  * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
-  * TourCount basiert auf TransektCount, dessen Programmstruktur und Zählfunktionalität ursprünglich auf Teilen von BeeCount von knirirr basiert
-  * (https://github.com/knirirr/BeeCount.git)
-  * Modifizierte AutoFitText.java, original Code von Autor: pheuschk
-  * Modifizierte ChangeLog.java original Code von Autor: Karsten Priegnitz
-  * Modifizierte CSVWriter.java original Code Copyright 2015 Bytecode Pty Ltd.
-  * Modifizierter Datei-Auswahl-Dialog basiert auf android-file-chooser, 2011, Google Code Archive, GNU GPL v3
+  * App läuft immer im Portraitmodus
   _
 $ END_OF_CHANGE_LOG
   </body>

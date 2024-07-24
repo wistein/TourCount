@@ -11,8 +11,8 @@
 
     <string-array name="pref_sort_sp_entries">
         <item>None</item>
-        <item>Species Names, alphab.</item>
-        <item>Species Codes</item>
+        <item>By species Names, alphab.</item>
+        <item>By species Codes</item>
     </string-array>
     <string-array name="pref_sort_sp_values">
         <item>none</item>
@@ -20,7 +20,16 @@
         <item>codes</item>
     </string-array>
 
-    <string-array name="initSpecs">
+	<string-array name="pref_sort_output_entries">
+		<item>By species names</item>
+		<item>By species codes</item>
+	</string-array>
+	<string-array name="pref_sort_output_values">
+		<item>names</item>
+		<item>codes</item>
+	</string-array>
+
+	<string-array name="initSpecs">
         <item comment="03998">Zygaena filipendulae</item>
 		<item comment="06605">Pyrausta purpuralis</item>
 		<item comment="06788">Aglia tau</item>

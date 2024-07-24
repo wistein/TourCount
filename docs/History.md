@@ -2,6 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2024, Wilhelm Stein
 
+#### Version 3.4.9 (2024-07-23)
+- Obsolete 'Save' button removed from View of 'Edit Species List'
+- Extra sort option for results and csv-output (names or codes)
+- In csv-export individuals sorted by recorded time
+- Licenses text separated with its own menu entry
+- Bug fixed: Deleting a species deletes related individual counts also
+- Docs updated
+
 #### Version 3.4.8 (2024-07-02)
 - Views of 'Edit Species List' and 'Add Species' improved
 - Checkboxes for bulk appending of further species to the counting list in 'Add Species'
@@ -245,23 +253,27 @@
     
 #### Version 1.0.0 (2016-04-18)
 ##### 1. Release.
-TourCount derived from TransektCount whose basic program structure and counting functionality originally derived partly from BeeCount by knirirr
+TourCount derived from TransektCount 1.2.0 whose basic program structure and counting functionality originally derived partly from BeeCount by knirirr
 (https://github.com/knirirr/BeeCount.git)
+- Text and structure adaptation for butterfly registration in the field
 
-Main features of 1. release comprise
-- "Reset Data" function
-- App runs always in portrait mode
-- Exports results in csv-format 
-- View for counting results
+Other sources:
+- Modified AutoFitText.java, author: pheuschk (open source code from stackoverflow)
+- Modified ChangeLog.java, author: Karsten Priegnitz (open source code from code.google.com)
+- Modified CSVWriter.java, Bytecode Pty Ltd. (Apache License 2.0)
+- Modified File Chooser dialog, Google Code Archive, GNU GPL v3
+
+Main features:
 - Input page for meta data
+- Counting page
+- Page to edit counting options
+- Results page with meta data
+- Settings page
 - Detailed Help page
+- In German and English language
+- "Reset Data" function
 - Base-DB-Import/Export: Raw Database 'tourcount0.db'
 - DB-Export: Database 'tourcount_yyyymmdd-hhmmss.db'
-- DB-Results export: Excel file 'tourcount_yyyymmdd-hhmmss.csv'
-- In German and English language 
-- Text and structure adaptation for butterfly registration in the field
-- Modified AutoFitText.java, original code from author: pheuschk (open source code from stackoverflow)
-- Modified ChangeLog.java original code from author: Karsten Priegnitz (open source code from code.google.com)
-- Modified CSVWriter.java original code copyright 2015 Bytecode Pty Ltd. (Apache License 2.0)
-- Modified File Chooser dialog based on android-file-chooser, 2011, Google Code Archive, GNU GPL v3
+- DB-Results export as table in csv-format: 'tourcount_yyyymmdd-hhmmss.csv'
+- App runs always in portrait mode
 

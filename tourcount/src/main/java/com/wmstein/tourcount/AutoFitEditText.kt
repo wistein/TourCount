@@ -14,14 +14,15 @@ import androidx.appcompat.widget.AppCompatEditText
 import java.util.Objects
 import kotlin.math.roundToInt
 
-/******************************************
- * AutoFitEditText is used in CountOptionsActivity to fit in larger count numbers
+/**************************************************
+ * AutoFitEditText is used in CountOptionsActivity
+ * to fit in larger count numbers
  *
  * Created by varsovski on 29-Oct-15, published on
  * https://github.com/viksaaskool/autofitedittext,
  * licensed under MIT License by Viktor Arsovski.
  *
- * Modified for TransektCount by wm.stein on 2023-09-18,
+ * Modified for TourCount by wm.stein on 2023-09-18,
  * last edited in Java on 2023-09-18
  * converted to Kotlin on 2023-09-19
  * last edited on 2024-05-14.

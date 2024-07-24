@@ -32,8 +32,8 @@ import com.wmstein.tourcount.widgets.AddSpeciesWidget
  *
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
- * converted to Kotlin on 2023-07-06
- * last edited on 2024-07-02
+ * converted to Kotlin on 2023-05-26
+ * last edited on 2024-07-23
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -111,6 +111,9 @@ class AddSpeciesActivity : AppCompatActivity() {
             onBackPressedDispatcher.addCallback(object :
                 OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    saveData()
+                    countDataSource!!.close()
+
                     NavUtils.navigateUpFromSameTask(this@AddSpeciesActivity)
                 }
             })
@@ -130,9 +133,11 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         supportActionBar!!.setTitle(R.string.addTitle)
 
-        // complete ArrayLists of species will get reduced to yet missing species
-        // 1.: get code list of contained species from counts
+        // list only new species not already contained in the species counting list
+        // 1. code list of contained species
         val specCodesContainedList = ArrayList<String?>()
+
+        // get species of the counting list
         val counts: List<Count> = countDataSource!!.allSpeciesSrtCode
 
         // build code ArrayList of already contained species
@@ -211,7 +216,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             listToAdd!!.add(saw)
             if (MyDebug.LOG) {
                 val codeA = saw.getSpecCode()
-                Log.d(TAG, "214, addCount, code: $codeA")
+                Log.d(TAG, "219, addCount, code: $codeA")
             }
         }
         else {
@@ -219,27 +224,25 @@ class AddSpeciesActivity : AppCompatActivity() {
             listToAdd!!.remove(saw)
             if (MyDebug.LOG) {
                 val codeA = saw.getSpecCode()
-                Log.d(TAG, "222, removeCount, code: $codeA")
+                Log.d(TAG, "227, removeCount, code: $codeA")
             }
         }
     }
 
-    private fun saveData(): Boolean {
-        var retValue = true
-
-        // for all species in list to add
+    private fun saveData() {
+        // for all species in list to add at the end of COUNT_TABLE
         var i = 0
         while (i < listToAdd!!.size) {
             specName = listToAdd!![i].getSpecName()
             specCode = listToAdd!![i].getSpecCode()
             specNameG = listToAdd!![i].getSpecNameG()
             if (MyDebug.LOG) {
-                Log.d(TAG, "237, saveData, code: $specCode")
+                Log.d(TAG, "240, saveData, code: $specCode")
             }
             try {
                 countDataSource!!.createCount(specName, specCode, specNameG)
             } catch (e: Exception) {
-                retValue = false
+                // nothing
             }
             i++
         }
@@ -251,7 +254,6 @@ class AddSpeciesActivity : AppCompatActivity() {
             editor.putString("new_spec_code", specCode)
             editor.commit()
         }
-        return retValue
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -261,18 +263,15 @@ class AddSpeciesActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (saveData()) {
-                countDataSource!!.close()
+            saveData()
+            countDataSource!!.close()
 
-                val intent = NavUtils.getParentActivityIntent(this)!!
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                NavUtils.navigateUpTo(this, intent)
-            }
+            val intent = NavUtils.getParentActivityIntent(this)!!
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            NavUtils.navigateUpTo(this, intent)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -280,11 +279,10 @@ class AddSpeciesActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     @SuppressLint("ApplySharedPref", "MissingSuperCall")
     override fun onBackPressed() {
-        if (saveData()) {
-            countDataSource!!.close()
+        saveData()
+        countDataSource!!.close()
 
-            NavUtils.navigateUpFromSameTask(this)
-        }
+        NavUtils.navigateUpFromSameTask(this)
         @Suppress("DEPRECATION")
         super.onBackPressed()
     }

@@ -32,8 +32,7 @@ import java.util.Locale;
  * author: Karsten Priegnitz
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
- * Adaptation for ViewHelp:
- * Copyright (c) 2016. Wilhelm Stein, Bonn, Germany,
+ * Adaptation for TourCount by wm.stein on 2016-04-18,
  * last edited on 2023-12-15
  */
 public class ViewHelp

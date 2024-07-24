@@ -41,10 +41,9 @@ $ 9
   ! Before initial use you should adapt the settings to your liking. 
   _ 
   ! Then you should edit the preliminary species list. (On the counting page use the Pencil-Button in the action bar for this).
-  ! Here you may add more species per Checkboxes from an integrated list of european species.
+  ! Here, on the blue page you may add more species per Checkboxes from an integrated list of european species.
   _ 
-  ! Alternatively, you could download a more comprehensive or special example Basic DB
-  ! (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
+  ! Alternatively, you could download a more comprehensive or special example Basic DB (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
   ! Copy it to the app's data directory "Documents/TourCount" which is created during the first start of the app.
   ! Now import and edit it suitably.
   _ 
@@ -71,7 +70,7 @@ $ 9
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
   ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
   _
-  ! Click "SAVE" to store the changes into the current counting list. This list can be changed or supplemented anytime afterwards.
+  ! Going back stores the changes into the current counting list. This list can be changed or supplemented anytime afterwards.
   _ 
   ! When you have entered the meta data and created the counting list for all expected species, the database is ready for export as a "Basic Database".
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page. 
@@ -98,7 +97,7 @@ $ 8
   ! Before leaving TourCount after a tour you should complete the meta data and save the current countings by exporting the internal DB (->tourcount_yyyy-mm-dd_hhmmss.db).
   _ 
   ! The results page can be opened with SHOW RESULTS-Button or the Eye-symbol in the app-bar. It shows all the registered data orderly arranged.
-  ! Beneath the meta data it shows the totals followed by a list of all counted species with their individual records.
+  ! Beneath the meta data it shows the totals followed by a list of all counted species with their individual records sorted by recorded time to the second.
   _
   ! When you have a large list or have collected big amounts of data the start of the results page may be delayed, as this needs some calculations.
 
@@ -118,25 +117,27 @@ $ 7
   _ 
   ! For preparing a new tour you may use "Reset Data" to reset the tour-specific meta data and all count data. Alternatively you may import the Basic DB or any other prepared tourcount-DB.
   _ 
-  ! Internally, TourCount stores the data always in a single, equally named SQlite-DB-file in the app's own protected storage area that is not accessible by the user.
+  ! Internally, TourCount stores the data always in a single, equally named SQlite-DB in the app's own protected storage area that is not accessible by the user.
   ! Therefore, exporting the data to files in a user reachable storage area is necessary.
+  ! The use of different user DB files (e.g. for different regions) is also only possible via import and export.
   _ 
   ! Exporting the DB as empty "Basic DB" is reasonable, when lasting changes of the counting list have been made (e.g. new species added).
-  _ 
-  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours.
-  ! To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc. (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
-  _ 
-  ! Exporting the current database (Export DB) writes a copy of the complete DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".
-  ! For your own purpose you can rename the exported DB-files by a file manager into e.g. tourcount1.db, tourcount_home.db, etc.
-  ! (Mind: The db file name must always start with the string “tourcount”, otherwise it cannot be imported).
   _
-  ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable .csv-file "tourcount_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
+  ! The “Import Basic DB” function always reads in the file "tourcount0.db" from "Documents/TourCount".
+  _
+  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours.
+  ! To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
+  ! (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
+  _ 
+  ! "Export current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".
+  _
+  ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "tourcount_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
   ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid).
   _ 
   ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" from "Documents/TourCount" to a PC.
   ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine and edit the .db-files.
   _
-  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program for further processing (under Android also into a free app like Collabora).
+  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program for further processing (under Android you may import it into a free app like Collabora).
   ! In order to display the formats and character sets correctly, please import it
   _
   ! - as a comma-separated text file with
@@ -144,7 +145,8 @@ $ 7
   ! - quotations marks for textfield recognition and
   ! - all columns in text format.
   _
-  ! Under "App Info" you find the email address of the author, the history of the app and the license notes.
+  ! Under "App Info" you find the email address of the author and the history of the app development.
+  ! Under "Licenses" you find the license notes.
   _ 
   ! The menu of the counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
   _ 

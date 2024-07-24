@@ -28,13 +28,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.google.android.material.snackbar.Snackbar
 import com.wmstein.tourcount.database.CountDataSource
+import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
 import com.wmstein.tourcount.widgets.CountEditWidget
 import com.wmstein.tourcount.widgets.EditHeadWidget
 import com.wmstein.tourcount.widgets.HintWidget
 
-/***************************************************************
+/*********************************************************************
  * EditSpecListActivity lets you edit the species list (change, delete
  * and insert new species)
  * EditSpecListActivity is called from CountingActivity
@@ -46,34 +47,43 @@ import com.wmstein.tourcount.widgets.HintWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-07-02
+ * last edited on 2024-07-23
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
-    private var savedCounts: ArrayList<CountEditWidget>? = null
-    private var countsArea: LinearLayout? = null
-    private var notesArea1: LinearLayout? = null
-    private var hintArea1: LinearLayout? = null
-    private var ehw: EditHeadWidget? = null
+    // Screen background
+    private var bMap: Bitmap? = null
+    private var bg: BitmapDrawable? = null
 
-    // the actual data
+    // Data
     private var section: Section? = null
     private var sectionDataSource: SectionDataSource? = null
     private var countDataSource: CountDataSource? = null
-    private var viewMarkedForDelete: View? = null
-    private var idToDelete = 0
-    private var bMap: Bitmap? = null
-    private var bg: BitmapDrawable? = null
+    private var individualsDataSource: IndividualsDataSource? = null
+
+    // Layouts
+    private var editingCountsArea: LinearLayout? = null
+    private var speciesNotesArea: LinearLayout? = null
+    private var hintArea1: LinearLayout? = null
+
+    // Widgets
+    private var ehw: EditHeadWidget? = null
+    private var cew: CountEditWidget? = null
+
+    // Arraylists
     private var cmpCountNames: ArrayList<String>? = null
     private var cmpCountCodes: ArrayList<String>? = null
+    private var savedCounts: ArrayList<CountEditWidget>? = null
 
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
     private var sortPref: String? = null
     private var brightPref = false
-
     private var oldname: String? = null
+
+    private var viewMarkedForDelete: View? = null
+    private var idToDelete = 0
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,9 +105,10 @@ class EditSpecListActivity : AppCompatActivity() {
         }
 
         savedCounts = ArrayList()
-        notesArea1 = findViewById(R.id.editingNotes1Layout)
+
+        speciesNotesArea = findViewById(R.id.editingNotes1Layout)
         hintArea1 = findViewById(R.id.showHintLayout)
-        countsArea = findViewById(R.id.editingCountsLayout)
+        editingCountsArea = findViewById(R.id.editingCountsLayout)
 
         // Restore any edit widgets the user has added previously
         if (savedInstanceState != null) {
@@ -126,11 +137,12 @@ class EditSpecListActivity : AppCompatActivity() {
         bg = BitmapDrawable(countingScreen.resources, bMap)
         countingScreen.background = bg
 
-        // setup the data sources
+        // Setup the data sources
         sectionDataSource = SectionDataSource(this)
         countDataSource = CountDataSource(this)
+        individualsDataSource = IndividualsDataSource(this)
 
-        // new onBackPressed logic
+        // New onBackPressed logic
         if (Build.VERSION.SDK_INT >= 33) {
             onBackPressedDispatcher.addCallback(object :
                 OnBackPressedCallback(true) {
@@ -144,11 +156,12 @@ class EditSpecListActivity : AppCompatActivity() {
             })
         }
     }
-    // end of onCreate
+    // End of onCreate()
 
     override fun onResume() {
         super.onResume()
 
+        // Load preferences
         prefs = TourCountApplication.getPrefs()
         brightPref = prefs.getBoolean("pref_bright", true)
 
@@ -160,69 +173,73 @@ class EditSpecListActivity : AppCompatActivity() {
             window.attributes = params
         }
 
-        // clear any existing views
-        countsArea!!.removeAllViews()
-        notesArea1!!.removeAllViews()
+        // Clear any existing views
+        editingCountsArea!!.removeAllViews()
+        speciesNotesArea!!.removeAllViews()
         hintArea1!!.removeAllViews()
 
         sectionDataSource!!.open()
         countDataSource!!.open()
+        individualsDataSource!!.open()
 
-        // load the sections data
+        // Load the sections data
         section = sectionDataSource!!.section
         oldname = section!!.name
         try {
             supportActionBar!!.title = oldname
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "178, NullPointerException: No section name!")
+            if (MyDebug.LOG) Log.e(TAG, "192, NullPointerException: No section name!")
         }
 
-        // display the section title
+        // Display the section title
         ehw = EditHeadWidget(this, null)
 
         ehw!!.setSpListTitle(getString(R.string.titleEdit))
         ehw!!.spListName = oldname
 
-        // display the section notes title
+        // Display the section notes title
         ehw!!.setNotesTitle(getString(R.string.notesHere))
         ehw!!.notesName = section!!.notes
-        notesArea1!!.addView(ehw)
+        speciesNotesArea!!.addView(ehw)
 
-        // display hint current species list:
+        // Display hint current species list:
         val nw = HintWidget(this, null)
         nw.setHint1(getString(R.string.presentSpecs))
         hintArea1!!.addView(nw)
 
-        // load the sorted species data
+        // Load the sorted species data
         val counts = when (sortPref) {
             "names_alpha" -> countDataSource!!.allSpeciesSrtName
             "codes" -> countDataSource!!.allSpeciesSrtCode
             else -> countDataSource!!.allSpecies
         }
 
-        // display all the counts by adding them to CountEditWidget
+        // Display all the counts by adding them to CountEditWidget
         for (count in counts) {
-            // widget
-            val cew = CountEditWidget(this, null)
-            cew.setCountName(count.name)
-            cew.setCountNameG(count.name_g)
-            cew.setCountCode(count.code)
-            cew.setCountId(count.id)
-            cew.setPSpec(count)
-            countsArea!!.addView(cew)
+            cew = CountEditWidget(this, null)
+            cew!!.setCountName(count.name)
+            cew!!.setCountNameG(count.name_g)
+            cew!!.setCountCode(count.code)
+            cew!!.setCountId(count.id)
+            cew!!.setPSpec(count)
+            editingCountsArea!!.addView(cew)
         }
+
+        // Add all counting widgets from savedInstanceState to the view
         for (cew in savedCounts!!) {
-            countsArea!!.addView(cew)
+            editingCountsArea!!.addView(cew)
         }
-    } // end of onResume
+    }
+    // End of onResume()
 
     override fun onPause() {
         super.onPause()
 
-        // close the data sources
+        // Close the data sources
         sectionDataSource!!.close()
         countDataSource!!.close()
+        individualsDataSource!!.close()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -242,23 +259,19 @@ class EditSpecListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here.
         if (!testData()) return true
 
         val id = item.itemId
         if (id == android.R.id.home) {
-            savedCounts!!.clear()
-            val intent = NavUtils.getParentActivityIntent(this)!!
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            NavUtils.navigateUpTo(this, intent)
-        } else if (id == R.id.menuSaveExit) {
             if (saveData()) {
                 savedCounts!!.clear()
-                super.finish()
+                val intent = NavUtils.getParentActivityIntent(this)!!
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                NavUtils.navigateUpTo(this, intent)
             }
-        } else if (id == R.id.newCount) {
+        }
+        else if (id == R.id.newCount) {
             newCount(view = null)
             return true
         }
@@ -270,15 +283,15 @@ class EditSpecListActivity : AppCompatActivity() {
         var name: String
         var isDblName = ""
         cmpCountNames = ArrayList()
-        val childcount = countsArea!!.childCount
+        val childcount = editingCountsArea!!.childCount
 
-        // for all CountEditWidgets
+        // For all CountEditWidgets
         for (i in 0 until childcount) {
-            val cew = countsArea!!.getChildAt(i) as CountEditWidget
+            val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
             name = cew.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.LOG) Log.d(TAG, "281, Double name = $isDblName")
+                if (MyDebug.LOG) Log.d(TAG, "294, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -291,15 +304,15 @@ class EditSpecListActivity : AppCompatActivity() {
         var code: String
         var isDblCode = ""
         cmpCountCodes = ArrayList()
-        val childcount = countsArea!!.childCount
+        val childcount = editingCountsArea!!.childCount
 
-        // for all CountEditWidgets
+        // For all CountEditWidgets
         for (i in 0 until childcount) {
-            val cew = countsArea!!.getChildAt(i) as CountEditWidget
+            val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
             code = cew.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.LOG) Log.d(TAG, "302, Double name = $isDblCode")
+                if (MyDebug.LOG) Log.d(TAG, "315, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)
@@ -307,21 +320,15 @@ class EditSpecListActivity : AppCompatActivity() {
         return isDblCode
     }
 
-    fun saveAndExit(view: View) {
-        if (saveData()) {
-            savedCounts!!.clear()
-            super.finish()
-        }
-    }
-
-    // test for double entries and save species list
+    // Test for double entries and save species list
     private fun saveData(): Boolean {
         // test for double entries and save species list
         var retValue = true
 
-        // add title if the user has written one...
+        // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.LOG) Log.d(TAG, "324, newName: $sectName")
+        if (MyDebug.LOG) Log.d(TAG, "330, newName: $sectName")
+
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
         } else {
@@ -330,7 +337,7 @@ class EditSpecListActivity : AppCompatActivity() {
             }
         }
 
-        // add notes if the user has written some...
+        // Add notes if the user has written some...
         val sectNotes = ehw!!.notesName
         if (isNotEmpty(sectNotes)) {
             section!!.notes = sectNotes
@@ -339,27 +346,24 @@ class EditSpecListActivity : AppCompatActivity() {
                 section!!.notes = sectNotes
             }
         }
-
         sectionDataSource!!.saveSection(section!!)
 
-        val isDblName: String
-        val isDblCode: String
-        val childcount: Int = countsArea!!.childCount //No. of species in list
-        if (MyDebug.LOG) Log.d(TAG, "348, childcount: $childcount")
+        val childcount: Int = editingCountsArea!!.childCount //No. of species in list
+        if (MyDebug.LOG) Log.d(TAG, "352, childcount: $childcount")
 
-        // check for unique species names and codes
-        isDblName = compCountNames()
-        isDblCode = compCountCodes()
+        // Check for unique species names and codes
+        val isDblName: String = compCountNames()
+        val isDblCode: String = compCountCodes()
         if (isDblName == "" && isDblCode == "") {
-            // do for all species
+            // For all species
             for (i in 0 until childcount) {
-                val cew = countsArea!!.getChildAt(i) as CountEditWidget
+                val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
                 retValue =
                     if (isNotEmpty(cew.getCountName()) && isNotEmpty(cew.getCountCode())) {
-                        if (MyDebug.LOG) Log.d(TAG, "359, cew: "
+                        if (MyDebug.LOG) Log.d(TAG, "363, cew: "
                                     + cew.countId + ", " + cew.getCountName())
 
-                        //updates species name and code
+                        // Update species names and code
                         countDataSource!!.updateCountName(
                             cew.countId,
                             cew.getCountName(),
@@ -391,12 +395,12 @@ class EditSpecListActivity : AppCompatActivity() {
         return retValue
     }
 
+    // Test species list for double entry
     private fun testData(): Boolean {
-        // test species list for double entry
         var retValue = true
         val isDbl: String
 
-        // check for unique species names
+        // Check for unique species names
         isDbl = compCountNames()
         if (isDbl != "") {
             showSnackbarRed(
@@ -412,9 +416,9 @@ class EditSpecListActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, getString(R.string.wait), Toast.LENGTH_SHORT)
             .show() // a Snackbar here comes incomplete
 
-        // pause for 100 msec to show toast
+        // Pause for 100 msec to show toast
         Handler(Looper.getMainLooper()).postDelayed({
-            // add title if the user has written one...
+            // Add title if the user has written one...
             val sectName = ehw!!.spListName
             if (isNotEmpty(sectName)) {
                 section!!.name = sectName
@@ -424,7 +428,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 }
             }
 
-            // add notes if the user has written some...
+            // Add notes if the user has written some...
             val sectNotes = ehw!!.notesName
             if (isNotEmpty(sectNotes)) {
                 section!!.notes = sectNotes
@@ -436,7 +440,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
             sectionDataSource!!.saveSection(section!!)
 
-            // save changes so far
+            // Save changes so far
             if (saveData()) {
                 savedCounts!!.clear()
             }
@@ -451,23 +455,24 @@ class EditSpecListActivity : AppCompatActivity() {
         viewMarkedForDelete = view
         idToDelete = view.tag as Int
         if (idToDelete == 0) {
-            // the actual CountEditWidget is 3 levels up from the button in which it is embedded
-            countsArea!!.removeView(view.parent.parent.parent as CountEditWidget)
+            // The actual CountEditWidget is 3 levels up from the button in which it is embedded
+            editingCountsArea!!.removeView(view.parent.parent.parent as CountEditWidget)
         } else {
             val areYouSure = AlertDialog.Builder(this)
             areYouSure.setTitle(getString(R.string.deleteCount))
             areYouSure.setMessage(getString(R.string.reallyDeleteCount))
             areYouSure.setPositiveButton(R.string.yesDeleteIt) { _: DialogInterface?, _: Int ->
-                // go ahead for the delete
+                // Go ahead for the delete
+                individualsDataSource!!.deleteIndividualByCountId(idToDelete)
                 countDataSource!!.deleteCountById(idToDelete)
-                countsArea!!.removeView(viewMarkedForDelete!!.parent.parent.parent as CountEditWidget)
+                editingCountsArea!!.removeView(viewMarkedForDelete!!.parent.parent.parent as CountEditWidget)
             }
             areYouSure.setNegativeButton(R.string.noCancel) { _: DialogInterface?, _: Int -> }
             areYouSure.show()
         }
     }
 
-    // catch back button for plausi test
+    // Catch back button with plausi test
     @Deprecated("Deprecated in Java")
     @SuppressLint("ApplySharedPref", "MissingSuperCall")
     override fun onBackPressed() {
@@ -475,6 +480,7 @@ class EditSpecListActivity : AppCompatActivity() {
             savedCounts!!.clear()
             countDataSource!!.close()
             sectionDataSource!!.close()
+            individualsDataSource!!.close()
 
             NavUtils.navigateUpFromSameTask(this)
         } else return
@@ -510,7 +516,7 @@ class EditSpecListActivity : AppCompatActivity() {
          * @return `true` if the CharSequence is empty or null
          */
         private fun isEmpty(cs: CharSequence?): Boolean {
-            return cs == null || cs.length == 0
+            return cs.isNullOrEmpty()
         }
 
         /**

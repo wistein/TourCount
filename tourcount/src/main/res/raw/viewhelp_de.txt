@@ -42,10 +42,9 @@ $ 9
   ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden. 
   _ 
   ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite).
-  ! Hier ggf. weitere Arten per Checkbox aus der integrierten Liste europäischer Arten hinzufügen.
+  ! Hier ggf. weitere Arten aus der integrierten Liste europäischer Arten auf der blauen Seite per Checkbox hinzufügen.
   _  
-  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB
-  ! (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>)
+  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>)
   ! heruntergeladen, in das App-Datenverzeichnis „Documents/TourCount" kopiert und von dort importiert und dann angepasst werden.
   ! Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt.
   _
@@ -74,7 +73,7 @@ $ 9
   ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum
   ! <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
   _
-  ! Mit „Speichern" werden die Änderungen in die aktuelle Zähliste übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
+  ! Alle Änderungen werden sofort in die aktuelle Zähliste übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
   _ 
   ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als Basis-Datenbank exportiert werden.
   ! Das geht mit Hilfe des „Export als Basis-DB"-Befehls im Menü der Startseite. Hierdurch wird eine Kopie der vorbereiteten Datenbank als leere „Basis-Datenbank" (tourcount0.db) im Daten-Verzeichnis der App (Documents/TourCount) abgelegt.
@@ -123,7 +122,7 @@ $ 7
   ! Zwecks Vorbereitung einer neuen Tour können mittels „Reset Daten“ die tourspezifischen Metadaten und alle Zählerdaten gelöscht werden.
   ! Alternativ kann die angelegte Basis-DB „tourcount0.db" importiert werden.
   _ 
-  ! TourCount arbeitet Android-spezifisch intern immer mit einer gleichnamigen DB-Datei im App-eigenen, für den Anwender gesperrten Speicherbereich.
+  ! Intern speichert TourCount die Daten Android-spezifisch immer in einer gleichnamigen SQLite-DB im App-eigenen, für den Anwender gesperrten Speicherbereich.
   ! Deshalb sind DB-Export in den und DB-Import aus dem Anwender erreichbaren Speicherbereich erforderlich.
   ! Auch die Verwendung verschiedener Anwender-DB-Dateien (z. B. für verschiedene Regionen) ist nur per Im- und Export möglich.
   _ 
@@ -133,15 +132,14 @@ $ 7
   _
   ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden.
   ! Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
-  ! (Merke: Der Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden).
+  ! (Merke: Der db-Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden).
   _ 
-  ! Der Export der aktuellen Datenbank (Export DB) schreibt eine Kopie der DB nach „Documents/TourCount/tourcount_JJJJ-MM-TT_hhmmss.db".
+  ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_JJJJ-MM-TT_hhmmss.db".
   _ 
   ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine aufbereitete Spreadsheet-kompatible Datei „tourcount_YYYY-MM-DD_hhmmss.csv" nach „Documents/TourCount".
   ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (erhältlich bei F-Droid).
   _ 
-  ! IT-affine Anwender können die mittels Exportfunktion erzeugte DB-Datei „tourcount_JJJJ-MM-TT_hhmmss.db" von „Documents/TourCount"
-  ! auf einen PC übertragen.
+  ! IT-affine Anwender können die mittels Exportfunktion erzeugte DB-Datei „tourcount_JJJJ-MM-TT_hhmmss.db" von „Documents/TourCount" auf einen PC übertragen.
   ! Dort können mit Hilfe eines kostenlosen Tools wie „SqliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
   _
   ! Auch die .csv-Ergebnisdateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in einer Tabellenkalkulation importiert werden (unter Android auch in eine kostenlose App wie Collabora).
@@ -154,7 +152,8 @@ $ 7
   _
   ! zu achten.
   _
-  ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung nebst Lizenzhinweisen sind unter „App-Info" abrufbar.
+  ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung sind unter „App-Info" abrufbar,
+  ! Lizenzhinweise unter Lizenzen.
   _
   ! Das Menü der Zählerseite hat eine Mitteilungsfunktion, um eine Nachricht über eine Standard-App, wie SMS oder E-Mail versenden zu können.
   _

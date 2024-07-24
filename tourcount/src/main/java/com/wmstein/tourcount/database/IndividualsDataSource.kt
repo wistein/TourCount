@@ -14,7 +14,7 @@ import com.wmstein.tourcount.MyDebug
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-14
+ * last edited on 2024-07-23
  */
 class IndividualsDataSource(context: Context?) {
     // Database fields
@@ -98,6 +98,10 @@ class IndividualsDataSource(context: Context?) {
         database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null)
     }
 
+    fun deleteIndividualByCountId(id: Int) {
+        database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_COUNT_ID + " = " + id, null)
+    }
+
     fun decreaseIndividual(id: Int, newicount: Int) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.I_ICOUNT, newicount)
@@ -170,7 +174,7 @@ class IndividualsDataSource(context: Context?) {
         // check for entries in individuals table, which are not there when bulk counts are entered
         return if (!cursor.isAfterLast) {
             individuals = cursorToIndividuals(cursor)
-            if (MyDebug.LOG) Log.e("IndividDataSource: ", "172, i_Id = " + individuals.id)
+            if (MyDebug.LOG) Log.e("IndividDataSource: ", "178, i_Id = " + individuals.id)
             cursor.close()
             individuals.id
         } else {

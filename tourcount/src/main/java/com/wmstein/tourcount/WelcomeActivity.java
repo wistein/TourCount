@@ -61,6 +61,7 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 import sheetrock.panda.changelog.ChangeLog;
 import sheetrock.panda.changelog.ViewHelp;
+import sheetrock.panda.changelog.ViewLicense;
 
 import static java.lang.Math.sqrt;
 
@@ -72,7 +73,7 @@ import static java.lang.Math.sqrt;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2024-06-04
+ * last edited on 2024-07-23
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -99,6 +100,7 @@ public class WelcomeActivity
 
     private ChangeLog cl;
     private ViewHelp vh;
+    private ViewLicense vl;
     public boolean doubleBackToExitPressedTwice = false;
 
     // Location info handling
@@ -115,9 +117,9 @@ public class WelcomeActivity
 
     // preferences
     private SharedPreferences prefs;
-    private String sortPref;
     private boolean metaPref;      // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
+    private String outPref;
 
     // db handling
     private SQLiteDatabase database;
@@ -157,9 +159,6 @@ public class WelcomeActivity
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        sortPref = prefs.getString("pref_sort_sp", "none"); // sort mode species list
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
 
         // check initial location permission state
         permLocGiven = isPermLocGranted();
@@ -195,6 +194,7 @@ public class WelcomeActivity
 
         cl = new ChangeLog(this);
         vh = new ViewHelp(this);
+        vl = new ViewLicense(this);
         // Show changelog for new version
         if (cl.firstRun())
             cl.getLogDialog().show();
@@ -261,6 +261,9 @@ public class WelcomeActivity
         super.onResume();
 
         prefs = TourCountApplication.getPrefs();
+        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");    // for reliable query of Nominatim service
+        outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -509,6 +512,11 @@ public class WelcomeActivity
             cl.getFullLogDialog().show();
             return true;
         }
+        else if (id == R.id.viewLicense)
+        {
+            vl.getFullLogDialog().show();
+            return true;
+        }
         else if (id == R.id.viewCounts)
         {
             Intent intent;
@@ -571,7 +579,7 @@ public class WelcomeActivity
         View baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(null);
         baseLayout.setBackground(tourCount.setBackground());
-        sortPref = prefs.getString("pref_sort_sp", "none");
+        outPref = prefs.getString("pref_sort_output", "names");
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
         permLocGiven = prefs.getBoolean("permLoc_Given", false);
@@ -597,7 +605,7 @@ public class WelcomeActivity
         {
             super.onBackPressed(); // stops app
             clear_loc(); // clear last locality in table 'tmp'
-            return;
+            finish();
         }
 
         this.doubleBackToExitPressedTwice = true;
@@ -692,7 +700,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "663, No sdcard access");
+                Log.e(TAG, "703, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -706,7 +714,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "677, Failed to copy database");
+                    Log.e(TAG, "717, Failed to copy database");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -754,6 +762,7 @@ public class WelcomeActivity
         double longi, lati, heigh, uncer;
         int frst, sum = 0;
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
+        String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
         double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
         if (Environment.MEDIA_MOUNTED.equals(state))
@@ -777,11 +786,20 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "748, No sdcard access");
+                Log.d(TAG, "789, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
         {
+            // sort mode species list
+            String sortMode;
+            if (outPref.equals("names"))
+            {
+                sortMode = getString(R.string.sort_names);
+            }
+            else {
+                sortMode = getString(R.string.sort_codes);
+            }
             // export the purged count table to csv
             try
             {
@@ -810,18 +828,23 @@ public class WelcomeActivity
 
                 String[] arrHead =
                     {
-                        getString(R.string.zlist) + ":", //Count List:
-                        sectName,                        //section name
-                        "",
-                        "",
-                        getString(R.string.inspector),   //Inspector:
-                        inspecName                       //inspector name
+                        getString(R.string.zlist) + ":", // Count List:
+                        sectName,          // Section name
+                        "", "",
+                        getString(R.string.inspector),     // Inspector:
+                        inspecName,        // Inspector name
+                        "", "", "",
+                        sortMode
                     };
                 csvWrite.writeNext(arrHead);
 
-                // Empty row
-                String[] arrEmpt = {};
-                csvWrite.writeNext(arrEmpt);
+                // 2nd row
+                String[] arrRow2 =
+                    {
+                        "", "", "", "", "", "", "", "", "",
+                        getString(R.string.sort_time)
+                    };
+                csvWrite.writeNext(arrRow2);
 
                 // set location headline
                 String[] arrLocHead =
@@ -846,6 +869,7 @@ public class WelcomeActivity
                 csvWrite.writeNext(arrLocation);
 
                 // Empty row
+                String[] arrEmpt = {};
                 csvWrite.writeNext(arrEmpt);
 
                 // set environment headline
@@ -919,19 +943,10 @@ public class WelcomeActivity
                 dbHandler = new DbHelper(this);
                 database = dbHandler.getWritableDatabase();
 
-                Cursor curCSVCnt;
+                Cursor curCSVCnt; // cursor for Counts table
 
                 // sort mode species list
-                if ("codes".equals(sortPref))
-                {
-                    curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE " + " ("
-                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-                        + " order by " + DbHelper.C_CODE, null, null);
-                }
-                else
+                if (outPref.equals("names"))
                 {
                     curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
                         + " WHERE " + " ("
@@ -940,6 +955,19 @@ public class WelcomeActivity
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
                         + " order by " + DbHelper.C_NAME, null, null);
                 }
+                else
+                {
+                    curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                        + " WHERE " + " ("
+                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                        + " order by " + DbHelper.C_CODE, null, null);
+                }
+
+                // open Counts table
+                CountDataSource countDataSource = new CountDataSource(this);
+                countDataSource.open();
 
                 // open Individuals table 
                 IndividualsDataSource individualsDataSource = new IndividualsDataSource(this);
@@ -967,12 +995,20 @@ public class WelcomeActivity
                 String stadium3 = getString(R.string.stadium_3);
                 String stadium4 = getString(R.string.stadium_4);
 
-                Cursor curCSVInd;
+                String spname = "";
+                String spcode = "";
+                String slct = ""; // recording time to sort individuals
+
+                Cursor curCSVInd; // cursor for Individuals table
+
                 while (curCSVCnt.moveToNext())
                 {
-                    String spname = curCSVCnt.getString(7); // species name
-                    String slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
-                        + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_SEX + " = ? AND " + DbHelper.I_STADIUM + " = ?";
+                    spname = curCSVCnt.getString(7); // species name from count table
+                    spcode = curCSVCnt.getString(8); // species code from count table
+                    slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
+                        + DbHelper.I_NAME + " = ? AND "
+                        + DbHelper.I_SEX + " = ? AND "
+                        + DbHelper.I_STADIUM + " = ?";
 
                     // select male
                     curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1});
@@ -1054,11 +1090,12 @@ public class WelcomeActivity
                     else
                         strcntse = "";
 
+                    // Species table
                     String[] arrStr =
                         {
                             spname,                 // species name
-                            curCSVCnt.getString(10), // local name 
-                            curCSVCnt.getString(8), // species code 
+                            curCSVCnt.getString(10), // local name
+                            spcode,                 // species code
                             strcntsmf,              // count ♂ o. ♀
                             strcntsm,               // count ♂
                             strcntsf,               // count ♀
@@ -1077,6 +1114,37 @@ public class WelcomeActivity
                     suml = suml + cntsl;
                     sume = sume + cntse;
 
+                    // suppress 0 by blank
+                    if (summf == 0)
+                        sumMF = "";
+                    else
+                        sumMF = Integer.toString(summf);
+
+                    if (summ == 0)
+                        sumM = "";
+                    else
+                        sumM = Integer.toString(summ);
+
+                    if (sumf == 0)
+                        sumF = "";
+                    else
+                        sumF = Integer.toString(sumf);
+
+                    if (sump == 0)
+                        sumP = "";
+                    else
+                        sumP = Integer.toString(sump);
+
+                    if (suml == 0)
+                        sumL = "";
+                    else
+                        sumL = Integer.toString(suml);
+
+                    if (sume == 0)
+                        sumE = "";
+                    else
+                        sumE = Integer.toString(sume);
+
                     cntsm = 0;
                     cntsf = 0;
                     cntsp = 0;
@@ -1085,8 +1153,6 @@ public class WelcomeActivity
                 }
                 curCSVCnt.close();
 
-                CountDataSource countDataSource = new CountDataSource(this);
-                countDataSource.open();
                 int sumSpec = countDataSource.getDiffSpec(); // get number of different species
                 countDataSource.close();
 
@@ -1096,21 +1162,23 @@ public class WelcomeActivity
                         getString(R.string.sumSpec),
                         Integer.toString(sumSpec),
                         getString(R.string.sum),
-                        Integer.toString(summf),
-                        Integer.toString(summ),
-                        Integer.toString(sumf),
-                        Integer.toString(sump),
-                        Integer.toString(suml),
-                        Integer.toString(sume),
+                        sumMF,
+                        sumM,
+                        sumF,
+                        sumP,
+                        sumL,
+                        sumE,
                         getString(R.string.sum_total),
                         Integer.toString(sum)
                     };
                 csvWrite.writeNext(arrSum);
+                // end of Species table
 
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
 
-                // write individual headline
+                // Individuals table
+                // Write individual headline
                 //    Individuals, Counts, Locality, Longitude, Latitude, Uncertainty, Height,
                 //    Date, Time, Sexus, Phase, State, Indiv.-Notes 
                 String[] arrIndHead =
@@ -1133,7 +1201,8 @@ public class WelcomeActivity
 
                 // build the sorted individuals array
                 curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
-                    + " order by " + DbHelper.I_COUNT_ID, null);
+                        + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP,
+                    null, null);
 
                 String lngi, latit;
                 frst = 0;
@@ -1172,19 +1241,19 @@ public class WelcomeActivity
 
                     String[] arrIndividual =
                         {
-                            curCSVInd.getString(2), //species name
-                            strcnts,                   //indiv. counts
-                            curCSVInd.getString(9), //locality
-                            lngi,                      //longitude
-                            latit,                     //latitude
-                            String.valueOf(Math.round(uncer + 20)), //uncertainty + 20 m extra
-                            String.valueOf(Math.round(heigh)),      //height
-                            curCSVInd.getString(7),  //date
-                            curCSVInd.getString(8),  //time
-                            curCSVInd.getString(10), //sexus
-                            curCSVInd.getString(11), //stadium
-                            spstate0,                   //state
-                            curCSVInd.getString(13)  //indiv. notes
+                            curCSVInd.getString(2), // species name
+                            strcnts,                   // indiv. counts
+                            curCSVInd.getString(9), // locality
+                            lngi,                      // longitude
+                            latit,                     // latitude
+                            String.valueOf(Math.round(uncer + 20)), // uncertainty + 20 m extra
+                            String.valueOf(Math.round(heigh)),      // height
+                            curCSVInd.getString(7),  // date
+                            curCSVInd.getString(8),  // time
+                            curCSVInd.getString(10), // sexus
+                            curCSVInd.getString(11), // stadium
+                            spstate0,                   // state
+                            curCSVInd.getString(13)  // indiv. notes
                         };
                     csvWrite.writeNext(arrIndividual);
 
@@ -1192,7 +1261,7 @@ public class WelcomeActivity
                     {
                         //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
                         if (MyDebug.LOG)
-                            Log.d(TAG, "1148, longi " + longi);
+                            Log.d(TAG, "1264, longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1212,9 +1281,8 @@ public class WelcomeActivity
                         }
                     }
                 }
-
-                individualsDataSource.close();
                 curCSVInd.close();
+                individualsDataSource.close();
 
                 // Empty row
                 csvWrite.writeNext(arrEmpt);
@@ -1276,7 +1344,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1232, Failed to export csv file");
+                    Log.e(TAG, "1347, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1336,7 +1404,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "1291, No sdcard access");
+                Log.d(TAG, "1407, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1365,7 +1433,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1320, Failed to export Basic DB");
+                    Log.e(TAG, "1436, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1458,7 +1526,7 @@ public class WelcomeActivity
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "1409, Failed to reset DB");
+                Log.e(TAG, "1529, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             r_ok = false;
         }
@@ -1523,7 +1591,7 @@ public class WelcomeActivity
                 } catch (IOException e)
                 {
                     if (MyDebug.LOG)
-                        Log.e(TAG, "1474, Failed to import database");
+                        Log.e(TAG, "1594, Failed to import database");
                     showSnackbarRed(getString(R.string.importFail));
                 }
                 // END
@@ -1550,7 +1618,7 @@ public class WelcomeActivity
                     selectedFile = data.getStringExtra("fileSelected");
                     if (MyDebug.LOG)
                     {
-                        Log.i(TAG, "1501, File selected: " + selectedFile);
+                        Log.i(TAG, "1621, File selected: " + selectedFile);
                         showSnackbar("Selected file: " + selectedFile);
                     }
                     assert selectedFile != null;
@@ -1600,7 +1668,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1551, Failed to import database");
+                    Log.e(TAG, "1671, Failed to import database");
                 showSnackbarRed(getString(R.string.importFail));
             }
             // END
