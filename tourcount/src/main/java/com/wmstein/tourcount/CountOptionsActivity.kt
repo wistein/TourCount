@@ -59,7 +59,7 @@ class CountOptionsActivity : AppCompatActivity() {
             params.screenBrightness = 1.0f
             window.attributes = params
         }
-        bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
+        bMap = tourCount!!.decodeBitmap(R.drawable.edbackground, tourCount!!.width, tourCount!!.height)
         bg = BitmapDrawable(countingScreen.resources, bMap)
         countingScreen.background = bg
         staticWidgetArea = findViewById(R.id.static_widget_area)

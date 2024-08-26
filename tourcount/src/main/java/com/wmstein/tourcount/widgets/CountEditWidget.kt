@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.wmstein.tourcount.R
@@ -18,7 +17,8 @@ import java.util.Objects
  * shows line with species name, code and delete button
  * Adopted for TourCount by wmstein on 2016-02-18
  * last edited in Java on 2020-10-17,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-08-23
  */
 class CountEditWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -36,7 +36,6 @@ class CountEditWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
 
     @Transient
     private val pSpecies: ImageView
-    private val deleteButton: ImageButton
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -45,8 +44,6 @@ class CountEditWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
         countNameG = findViewById(R.id.countNameG)
         countCode = findViewById(R.id.countCode)
         pSpecies = findViewById(R.id.pSpec)
-        deleteButton = findViewById(R.id.deleteCount)
-        deleteButton.tag = 0
     }
 
     fun getCountName(): String {
@@ -73,6 +70,10 @@ class CountEditWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
         countCode.setText(name)
     }
 
+    fun setCountId(id: Int) {
+        countId = id
+    }
+
     fun setPSpec(spec: Count) {
         val rname = "p" + spec.code // species picture resource name
 
@@ -84,8 +85,4 @@ class CountEditWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
         }
     }
 
-    fun setCountId(id: Int) {
-        countId = id
-        deleteButton.tag = id
-    }
 }

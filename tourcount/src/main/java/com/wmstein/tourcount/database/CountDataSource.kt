@@ -14,7 +14,7 @@ import com.wmstein.tourcount.TourCountApplication
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-07-23
+ * last edited on 2024-08-23
  */
 class CountDataSource(context: Context?) {
     // Database fields
@@ -92,6 +92,11 @@ class CountDataSource(context: Context?) {
     fun deleteCountById(id: Int) {
         println("Gelöscht: Zähler mit ID: $id")
         database!!.delete(DbHelper.COUNT_TABLE, DbHelper.C_ID + " = " + id, null)
+    }
+
+    fun deleteCountByCode(code: String) {
+        println("Gelöscht: Zähler mit Code: $code")
+        database!!.delete(DbHelper.COUNT_TABLE, DbHelper.C_CODE + " = '$code'", null)
     }
 
     fun saveCount(count: Count) {
@@ -504,5 +509,39 @@ class CountDataSource(context: Context?) {
             cursor.close()
             return counts
         }
+
+    // Sorts COUNT_TABLE for C_CODE and contiguous index
+    fun sortCounts() {
+        var sql = "alter table 'counts' rename to 'counts_backup'"
+        database!!.execSQL(sql)
+
+        // create new counts table
+        sql = ("create table counts("
+                + DbHelper.C_ID + " integer primary key, "
+                + DbHelper.C_COUNT_F1I + " int, "
+                + DbHelper.C_COUNT_F2I + " int, "
+                + DbHelper.C_COUNT_F3I + " int, "
+                + DbHelper.C_COUNT_PI + " int, "
+                + DbHelper.C_COUNT_LI + " int, "
+                + DbHelper.C_COUNT_EI + " int, "
+                + DbHelper.C_NAME + " text, "
+                + DbHelper.C_CODE + " text, "
+                + DbHelper.C_NOTES + " text, "
+                + DbHelper.C_NAME_G + " text)")
+        database!!.execSQL(sql)
+
+        // insert the whole COUNT_TABLE data sorted into counts
+        sql = ("INSERT INTO 'counts' (" +
+                "'count_f1i', 'count_f2i', 'count_f3i', 'count_pi', 'count_li', 'count_ei', " +
+                "'name', 'code', 'notes', 'name_g') " +
+                "SELECT " +
+                "count_f1i, count_f2i, count_f3i, count_pi, count_li, count_ei, " +
+                "name, code, notes, name_g " +
+                "from 'counts_backup' order by code")
+        database!!.execSQL(sql)
+
+        sql = "DROP TABLE 'counts_backup'"
+        database!!.execSQL(sql)
+    }
 
 }

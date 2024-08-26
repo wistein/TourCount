@@ -3,7 +3,6 @@
      ScrollView is always at the bottom of the view.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/editSect"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,40 +16,6 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/rounded_corner"
         android:orientation="vertical">
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:shrinkColumns="*"
-        android:stretchColumns="*">
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent">
-        </Space>
-
-        <Button
-            android:id="@+id/addNewCountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:onClick="newCount"
-            android:text="@string/labelNewCountButton"
-            tools:ignore="UsingOnClickInXml">
-        </Button>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent">
-        </Space>
-
     </LinearLayout>
 
     <!-- insert hint -->

@@ -2,21 +2,7 @@
 <!--
    edit_section.xml is used by EditSpecListActivity.kt
    -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.wmstein.tourcount.EditSpecListActivity">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wmstein.tourcount.EditSpecListActivity">
 
-    <item
-        android:id="@+id/newCount"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/labelNewCountButton"
-        app:showAsAction="ifRoom"/>
-<!--
-    <item
-        android:id="@+id/menuSaveExit"
-        android:icon="@android:drawable/ic_menu_save"
-        android:title="@string/saveCountsButton"
-        app:showAsAction="ifRoom"/>
--->
 </menu>

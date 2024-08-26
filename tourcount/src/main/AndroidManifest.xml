@@ -7,18 +7,18 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2024-05-06
+     Last edited 2024-08-23
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permissions used for exporting files to the public directory Documents/TransektCount
+    <!-- Permissions used for exporting files to the public directory Documents/TourCount
          which are then readable by an external app (until Android SDK-version 29) -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" android:maxSdkVersion="29"/>
 
-    <!-- Permission used for exporting files to the public directory Documents/TransektCount
+    <!-- Permission used for exporting files to the public directory Documents/TourCount
          which are then readable by an external app (since Android SDK-version 30) -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" android:minSdkVersion="30" />
@@ -26,7 +26,7 @@
     <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-feature android:name="android.hardware.location.gps" />
+<!--    <uses-feature android:name="android.hardware.location.gps" /> -->
 
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -166,15 +166,27 @@
         </activity>
 
         <activity
-            android:name="com.wmstein.tourcount.AddSpeciesActivity"
-            android:label="@string/title_activity_add_species"
-            android:parentActivityName="com.wmstein.tourcount.EditSpecListActivity"
+            android:name="com.wmstein.tourcount.DelSpeciesActivity"
+            android:label="@string/title_activity_del_species"
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="EditSpecListActivity"/>
+                android:value="CountingActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.AddSpeciesActivity"
+            android:label="@string/title_activity_add_species"
+            android:parentActivityName="com.wmstein.tourcount.CountingActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:theme="@style/Theme.AppCompat">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="CountingActivity"/>
         </activity>
 
         <service android:name="com.wmstein.tourcount.LocationService"

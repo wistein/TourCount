@@ -1,0 +1,6 @@
+/local.properties
+/apk/debug/
+/apk/release/
+/.idea/
+/.gradle/
+/tourcount/build/

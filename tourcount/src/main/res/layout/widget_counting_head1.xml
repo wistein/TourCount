@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ widget_counting_head1.xml used by CountingWidgetHead1.kt
-  ~ Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
-  ~ Last edited on 2023-12-07.
+  ~ shows line of the selected species
+  ~ Copyright (c) 2016-2024, Wilhelm Stein, Bonn, Germany.
+  ~ Last edited on 2024-08-25.
   -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="60dp"
     android:gravity="center_vertical"
     android:layout_marginLeft="2dp"
     android:layout_marginRight="2dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/rounded_corner"
     android:baselineAligned="false"
     android:paddingBottom="1dp"
@@ -108,7 +109,6 @@
             android:layout_weight="3.5"
             android:gravity="center_vertical|center_horizontal"
             android:paddingBottom="1dp"
-            android:paddingEnd="1dp"
             android:paddingStart="1dp"
             android:paddingTop="1dp"
             android:scaleType="fitCenter"

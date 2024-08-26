@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_del_species.xml is used by DelSpeciesActivity.kt in conjunction
+     with widget_delete_count.xml
+     -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/delSpec"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- insert hint -->
+    <LinearLayout
+        android:id="@+id/showHintDelLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <!-- insert list of all widget_delete_count in here -->
+    <ScrollView
+        android:id="@+id/deletingScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/deleteSpecLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

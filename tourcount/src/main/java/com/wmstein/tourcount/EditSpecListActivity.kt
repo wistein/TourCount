@@ -1,8 +1,6 @@
 package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -11,8 +9,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -27,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.google.android.material.snackbar.Snackbar
 import com.wmstein.tourcount.database.CountDataSource
-import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
 import com.wmstein.tourcount.widgets.CountEditWidget
@@ -46,7 +41,7 @@ import com.wmstein.tourcount.widgets.HintWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-07-23
+ * last edited on 2024-08-23
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -59,7 +54,6 @@ class EditSpecListActivity : AppCompatActivity() {
     private var section: Section? = null
     private var sectionDataSource: SectionDataSource? = null
     private var countDataSource: CountDataSource? = null
-    private var individualsDataSource: IndividualsDataSource? = null
 
     // Layouts
     private var editingCountsArea: LinearLayout? = null
@@ -80,9 +74,6 @@ class EditSpecListActivity : AppCompatActivity() {
     private var sortPref: String? = null
     private var brightPref = false
     private var oldname: String? = null
-
-    private var viewMarkedForDelete: View? = null
-    private var idToDelete = 0
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,7 +121,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         val countingScreen = findViewById<LinearLayout>(R.id.editSect)
         bMap = tourCount!!.decodeBitmap(
-            R.drawable.kbackground,
+            R.drawable.edbackground,
             tourCount!!.width, tourCount!!.height
         )
         bg = BitmapDrawable(countingScreen.resources, bMap)
@@ -139,7 +130,6 @@ class EditSpecListActivity : AppCompatActivity() {
         // Setup the data sources
         sectionDataSource = SectionDataSource(this)
         countDataSource = CountDataSource(this)
-        individualsDataSource = IndividualsDataSource(this)
 
         // New onBackPressed logic
         if (Build.VERSION.SDK_INT >= 33) {
@@ -147,7 +137,11 @@ class EditSpecListActivity : AppCompatActivity() {
                 OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (testData()) {
+                        saveData()
                         savedCounts!!.clear()
+
+                        countDataSource!!.close()
+                        sectionDataSource!!.close()
 
                         NavUtils.navigateUpFromSameTask(this@EditSpecListActivity)
                     } else return
@@ -179,21 +173,16 @@ class EditSpecListActivity : AppCompatActivity() {
 
         sectionDataSource!!.open()
         countDataSource!!.open()
-        individualsDataSource!!.open()
 
-        // Load the sections data
+        supportActionBar!!.setTitle(R.string.editTitle)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        // Load the section data
         section = sectionDataSource!!.section
         oldname = section!!.name
-        try {
-            supportActionBar!!.title = oldname
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "192, NullPointerException: No section name!")
-        }
 
         // Display the section title
         ehw = EditHeadWidget(this, null)
-
         ehw!!.setSpListTitle(getString(R.string.titleEdit))
         ehw!!.spListName = oldname
 
@@ -220,13 +209,8 @@ class EditSpecListActivity : AppCompatActivity() {
             cew!!.setCountName(count.name)
             cew!!.setCountNameG(count.name_g)
             cew!!.setCountCode(count.code)
-            cew!!.setCountId(count.id)
             cew!!.setPSpec(count)
-            editingCountsArea!!.addView(cew)
-        }
-
-        // Add all counting widgets from savedInstanceState to the view
-        for (cew in savedCounts!!) {
+            cew!!.setCountId(count.id)
             editingCountsArea!!.addView(cew)
         }
     }
@@ -238,7 +222,6 @@ class EditSpecListActivity : AppCompatActivity() {
         // Close the data sources
         sectionDataSource!!.close()
         countDataSource!!.close()
-        individualsDataSource!!.close()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -259,20 +242,20 @@ class EditSpecListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
-        if (!testData()) return true
-
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (saveData()) {
+            if (testData()) {
+                saveData()
                 savedCounts!!.clear()
+
+                countDataSource!!.close()
+                sectionDataSource!!.close()
+
                 val intent = NavUtils.getParentActivityIntent(this)!!
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 NavUtils.navigateUpTo(this, intent)
             }
-        }
-        else if (id == R.id.newCount) {
-            newCount(view = null)
-            return true
+            else return true
         }
         return super.onOptionsItemSelected(item)
     }
@@ -410,76 +393,16 @@ class EditSpecListActivity : AppCompatActivity() {
         return retValue
     }
 
-    // Start AddSpeciesActivity to add new species to the species list
-    fun newCount(view: View?) {
-        Toast.makeText(applicationContext, getString(R.string.wait), Toast.LENGTH_SHORT)
-            .show() // a Snackbar here comes incomplete
-
-        // Pause for 100 msec to show toast
-        Handler(Looper.getMainLooper()).postDelayed({
-            // Add title if the user has written one...
-            val sectName = ehw!!.spListName
-            if (isNotEmpty(sectName)) {
-                section!!.name = sectName
-            } else {
-                if (isNotEmpty(section!!.name)) {
-                    section!!.name = sectName
-                }
-            }
-
-            // Add notes if the user has written some...
-            val sectNotes = ehw!!.notesName
-            if (isNotEmpty(sectNotes)) {
-                section!!.notes = sectNotes
-            } else {
-                if (isNotEmpty(section!!.notes)) {
-                    section!!.notes = sectNotes
-                }
-            }
-
-            sectionDataSource!!.saveSection(section!!)
-
-            // Save changes so far
-            if (saveData()) {
-                savedCounts!!.clear()
-            }
-
-            val intent = Intent(this@EditSpecListActivity, AddSpeciesActivity::class.java)
-            startActivity(intent)
-        }, 100)
-    }
-
-    // Purging species
-    fun deleteCount(view: View) {
-        viewMarkedForDelete = view
-        idToDelete = view.tag as Int
-        if (idToDelete == 0) {
-            // The actual CountEditWidget is 3 levels up from the button in which it is embedded
-            editingCountsArea!!.removeView(view.parent.parent.parent as CountEditWidget)
-        } else {
-            val areYouSure = AlertDialog.Builder(this)
-            areYouSure.setTitle(getString(R.string.deleteCount))
-            areYouSure.setMessage(getString(R.string.reallyDeleteCount))
-            areYouSure.setPositiveButton(R.string.yesDeleteIt) { _: DialogInterface?, _: Int ->
-                // Go ahead for the delete
-                individualsDataSource!!.deleteIndividualByCountId(idToDelete)
-                countDataSource!!.deleteCountById(idToDelete)
-                editingCountsArea!!.removeView(viewMarkedForDelete!!.parent.parent.parent as CountEditWidget)
-            }
-            areYouSure.setNegativeButton(R.string.noCancel) { _: DialogInterface?, _: Int -> }
-            areYouSure.show()
-        }
-    }
-
     // Catch back button with plausi test
     @Deprecated("Deprecated in Java")
     @SuppressLint("ApplySharedPref", "MissingSuperCall")
     override fun onBackPressed() {
         if (testData()) {
+            saveData()
             savedCounts!!.clear()
+
             countDataSource!!.close()
             sectionDataSource!!.close()
-            individualsDataSource!!.close()
 
             NavUtils.navigateUpFromSameTask(this)
         } else return

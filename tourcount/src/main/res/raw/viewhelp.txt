@@ -38,24 +38,12 @@ $ 10
 $ 9
   % 2. Setting up
   !
-  ! Before initial use you should adapt the settings to your liking. 
+  ! Before initial use you should adapt the settings to your liking (-> 4. Further Functions). 
   _ 
-  ! Then you should edit the preliminary species list. (On the counting page use the Pencil-Button in the action bar for this).
-  ! Here, on the blue page you may add more species per Checkboxes from an integrated list of european species.
+  ! Then you should edit the provided species list. To do this, use the “Add Species”, “Delete Species” or “Edit Terms” buttons in the header of the counting page. Under “Add Species”, further species can be added from the larger integrated list of European species using the checkboxes.
   _ 
-  ! Alternatively, you could download a more comprehensive or special example Basic DB (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
-  ! Copy it to the app's data directory "Documents/TourCount" which is created during the first start of the app.
-  ! Now import and edit it suitably.
-  _ 
-  ! Then you may enter general parts of the master data under “Edit meta data” and finish this by clicking the saving symbol.
-  ! Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”.
-  ! The editable meta data may be modified anytime later.
-  _
-  ! Tip: Date and time can be entered by tapping the relevant field. If a different date or time is to be entered, these fields can be pressed longer and the input dialog that then opens can be used.
-  _ 
-  ! Then edit the counting species list on "Counting". Open the "Edit species list" page by the Pencil-Button in the action bar of the counting page.
-  ! The (+)-button opens the blue "Add species" page, where you can select further species to be added to the counting list. At the end of this list you may select a place holder for a not yet known species (NN), which could be edited afterwards by entering its scientific name, common name and code (five-digit with leading zeros, see List of coded Butterflies.pdf <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>), e.g.:
-  _
+  ! At the end of this list you may select a placeholder for an unknown species (NN). This could afterwards be edited by entering its real scientific name, common name and code (five-digit with leading zeros, see „List of coded Butterflies.pdf“.
+   _
   !               TourCount species list (partly)
   ! ---------------------------------------------
   ! ...
@@ -69,19 +57,33 @@ $ 9
   _ 
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
   ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
-  _
-  ! Going back stores the changes into the current counting list. This list can be changed or supplemented anytime afterwards.
   _ 
-  ! When you have entered the meta data and created the counting list for all expected species, the database is ready for export as a "Basic Database".
+  ! When going back from the "Edit ..." or "Add ..." pages the input is stored directly into the database.
+  ! But the tagged species on the "Delete ..." page get only deleted after confirming the dialog from the delete button.
+  _ 
+  ! The list can be changed or supplemented anytime afterwards.
+  _ 
+  ! Alternatively, you could download a more comprehensive or special example Basic DB (see <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
+  ! Copy it to the app's data directory "Documents/TourCount" which is created during the first start of the app.
+  ! Now import it into TourCount and edit it suitably.
+  _ 
+  ! Then you should enter general parts of the master data under “Edit Meta Data” and finish this by clicking the saving symbol.
+  ! Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”.
+  ! The editable meta data may be modified anytime later.
+  _
+  ! Tip: Date and time can be entered by tapping the relevant field. If a different date or time is to be entered, these fields can be pressed longer and the input dialog that then opens can be used.
+  _ 
+  ! When you have created the counting list for all expected species and entered the meta data, the database is ready for export as a "Basic Database".
+  _ 
   ! To do this, you can use the function "Export as Basic DB" in the menu of the starting page. 
   ! After that you have a copy of the empty database saved as "Basic Database" (tourcount0.db) in the app's data directory (Documents/TourCount).
   _ 
-  ! The Basic DB may be used as a template for further tour recordings. You may export the Basic DB anytime later, e.g. when you inserted new species. Saving as a Basic DB ignores all inspection-specific counting data.
+  ! The Basic DB may be used as a template for further tour recordings in the region. Saving as a Basic DB ignores all inspection-specific counting data.
 	
 $ 8
   % 3. Usage
   !
-  ! Start with "Edit meta data". Enter the relevant meta date of the tour.
+  ! Start with "Edit meta data". Enter the specific meta date of the tour.
   _
   ! Continue with "Counting". Select the species by clicking the species line to scroll down the species list.
   ! To count just tip on the (+)-Button of the corresponding category (♂ od. ♀, ♂, ♀, pupa, larva, egg) of the species.
@@ -89,20 +91,20 @@ $ 8
   ! Location may be edited and condition rating (state 0-6 with 0 = undefined, 1 = very good) as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
   ! The (-)-Buttons allow for corrections. Mind that the (-)-Buttons reduce the individuals list in a last-in-first-out-mode for the corresponding species category. 
   _ 
-  ! The Pencil-Button in the action bar of the counting page opens the counting list editing page for editing the list of species.
+  ! The Plus, Delete and Pencil buttons in the action bar of the counting page open the respective counting list editing pages for editing the list of species. 
   _ 
   ! The Pencil-Button on top of the counting field opens the species editing page that lets you add a remark for each species that will be shown aside of it. 
   _ 
-  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by clicking the Save-Button. 
-  ! Before leaving TourCount after a tour you should complete the meta data and save the current countings by exporting the internal DB (->tourcount_yyyy-mm-dd_hhmmss.db).
+  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by clicking the Save or Delete button if the page has one. 
+  ! Before finishing TourCount after a tour you should complete the meta data and save the current countings by exporting the internal DB (->tourcount_yyyy-mm-dd_hhmmss.db).
   _ 
-  ! The results page can be opened with SHOW RESULTS-Button or the Eye-symbol in the app-bar. It shows all the registered data orderly arranged.
-  ! Beneath the meta data it shows the totals followed by a list of all counted species with their individual records sorted by recorded time to the second.
+  ! The "Counting Results" page can be opened on the starting page with "Show Results" or the Eye-symbol in the app-bar. It shows all the registered data orderly arranged.
+  ! Beneath the meta data it shows the totals followed by a list of all counted species with their individual records sorted by the recorded time.
   _
-  ! When you have a large list or have collected big amounts of data the start of the results page may be delayed, as this needs some calculations.
+  ! With large lists or big amounts of data, the response of the app can be somewhat delayed, especially when calling up pages with large scroll lists, as extensive calculations are running in the background.
 
 $ 7
-  % 4. Further functions
+  % 4. Further Functions
   !
   ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
   _ 
@@ -125,8 +127,7 @@ $ 7
   _
   ! The “Import Basic DB” function always reads in the file "tourcount0.db" from "Documents/TourCount".
   _
-  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours.
-  ! To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
+  ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
   ! (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
   _ 
   ! "Export current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".

@@ -74,7 +74,7 @@ import androidx.work.WorkRequest;
  <p>
  * Basic counting functions created by milo for BeeCount on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification in Java on 2024-07-23
+ * last modification in Java on 2024-08-23
  */
 public class CountingActivity
     extends AppCompatActivity
@@ -403,6 +403,32 @@ public class CountingActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id == R.id.menuDelSpecies)
+        {
+            disableProximitySensor();
+
+            Intent intent = new Intent(CountingActivity.this, DelSpeciesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.menuAddSpecies)
+        {
+            disableProximitySensor();
+
+            // A Snackbar here comes incomplete
+            Toast.makeText(this, getString(R.string.wait), Toast.LENGTH_SHORT)
+                .show();
+
+            // Trick: Pause for 100 msec to show toast
+            Intent intent = new Intent(CountingActivity.this, AddSpeciesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mHandler.postDelayed(() ->
+                startActivity(intent), 100);
+            return true;
+        }
 
         if (id == R.id.menuEditSection)
         {

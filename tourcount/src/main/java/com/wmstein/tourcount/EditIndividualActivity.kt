@@ -45,7 +45,7 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-07-17
+ * last edited on 2024-08-23
  */
 class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
@@ -90,6 +90,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     private var phase123 : Boolean? = null // true for butterfly (♂♀, ♂ or ♀), false for egg, caterpillar or pupa
     private var datestamp : String? = ""
     private var timestamp : String? = ""
+    private var code: String? = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +111,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         }
         setContentView(R.layout.activity_edit_individual)
         val indivScreen = findViewById<ScrollView>(R.id.editIndividualScreen)
-        bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
+        bMap = tourCount!!.decodeBitmap(R.drawable.edbackground, tourCount!!.width, tourCount!!.height)
         bg = BitmapDrawable(indivScreen.resources, bMap)
         indivScreen.background = bg
         indivArea = findViewById(R.id.edit_individual)
@@ -120,6 +121,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         if (extras != null) {
             countId = extras.getInt("count_id")
             specName = extras.getString("SName")
+            code = extras.getString("SCode")
             datestamp = extras.getString("date")
             timestamp = extras.getString("time")
             indivAttr = extras.getInt("indivAtt")
@@ -232,7 +234,8 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 height,
                 uncertainty,
                 datestamp,
-                timestamp
+                timestamp,
+                code
             )
         )
         individuals = individualsDataSource!!.getIndividual(indivId)
@@ -389,7 +392,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         brightPref = prefs!!.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
         emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
-        bMap = tourCount!!.decodeBitmap(R.drawable.kbackground, tourCount!!.width, tourCount!!.height)
+        bMap = tourCount!!.decodeBitmap(R.drawable.edbackground, tourCount!!.width, tourCount!!.height)
         bg = BitmapDrawable(indivScreen.resources, bMap)
         indivScreen.background = bg
     }

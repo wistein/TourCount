@@ -12,13 +12,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.AddSpeciesWidget
+import com.wmstein.tourcount.widgets.HintWidget
 
 /**********************************************************************
  * AddSpeciesActivity lets you insert new species into the species list
@@ -31,12 +31,13 @@ import com.wmstein.tourcount.widgets.AddSpeciesWidget
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2024-07-23
+ * last edited on 2024-08-23
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
     private var addArea: LinearLayout? = null
+    private var hintArea: LinearLayout? = null
 
     // the actual count data
     private var countDataSource: CountDataSource? = null
@@ -77,7 +78,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         if (MyDebug.LOG) Log.d(TAG, "79, onCreate")
 
         setContentView(R.layout.activity_add_species)
-        val addScreen = findViewById<ScrollView>(R.id.add_screen)
+        val addScreen = findViewById<LinearLayout>(R.id.add_screen)
 
         // Set full brightness of screen
         if (brightPref) {
@@ -88,7 +89,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         }
 
         bMap = tourCount!!.decodeBitmap(
-            R.drawable.abackground,
+            R.drawable.addbackground,
             tourCount!!.width,
             tourCount!!.height
         )
@@ -97,6 +98,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         listToAdd = ArrayList()
 
+        hintArea = findViewById(R.id.showHintAddLayout)
         addArea = findViewById(R.id.addSpecLayout)
 
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
@@ -124,12 +126,19 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // clear any existing views
         addArea!!.removeAllViews()
+        hintArea!!.removeAllViews()
 
         // setup the data sources
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
 
         supportActionBar!!.setTitle(R.string.addTitle)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        // Display hint: Further available species
+        val nw = HintWidget(this, null)
+        nw.setHint1(getString(R.string.specsToAdd))
+        hintArea!!.addView(nw)
 
         // list only new species not already contained in the species counting list
         // 1. code list of contained species
@@ -196,64 +205,6 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        countDataSource!!.close()
-    }
-
-    // mark the selected species and consider it for the species counts list
-    fun checkBoxAdd(view: View) {
-        val idToAdd = view.tag as Int
-        val saw = addArea!!.getChildAt(idToAdd) as AddSpeciesWidget
-        
-        val checked = saw.getMarkSpec() // return boolean isChecked
-
-        // put species on add list
-        if (checked) {
-            listToAdd!!.add(saw)
-            if (MyDebug.LOG) {
-                val codeA = saw.getSpecCode()
-                Log.d(TAG, "219, addCount, code: $codeA")
-            }
-        }
-        else {
-            // remove species previously added from add list
-            listToAdd!!.remove(saw)
-            if (MyDebug.LOG) {
-                val codeA = saw.getSpecCode()
-                Log.d(TAG, "227, removeCount, code: $codeA")
-            }
-        }
-    }
-
-    private fun saveData() {
-        // for all species in list to add at the end of COUNT_TABLE
-        var i = 0
-        while (i < listToAdd!!.size) {
-            specName = listToAdd!![i].getSpecName()
-            specCode = listToAdd!![i].getSpecCode()
-            specNameG = listToAdd!![i].getSpecNameG()
-            if (MyDebug.LOG) {
-                Log.d(TAG, "240, saveData, code: $specCode")
-            }
-            try {
-                countDataSource!!.createCount(specName, specCode, specNameG)
-            } catch (e: Exception) {
-                // nothing
-            }
-            i++
-        }
-
-        // store code of last selected species in sharedPreferences
-        //  for Spinner in CountingActivity
-        if (i > 0) {
-            val editor = prefs.edit()
-            editor.putString("new_spec_code", specCode)
-            editor.commit()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.add_species, menu)
@@ -272,6 +223,67 @@ class AddSpeciesActivity : AppCompatActivity() {
             NavUtils.navigateUpTo(this, intent)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        countDataSource!!.close()
+    }
+
+    // mark the selected species and consider it for the species counts list
+    fun checkBoxAdd(view: View) {
+        val idToAdd = view.tag as Int
+        val asw = addArea!!.getChildAt(idToAdd) as AddSpeciesWidget
+        
+        val checked = asw.getMarkSpec() // return boolean isChecked
+
+        // put species on add list
+        if (checked) {
+            listToAdd!!.add(asw)
+            if (MyDebug.LOG) {
+                val codeA = asw.getSpecCode()
+                Log.d(TAG, "247, addCount, code: $codeA")
+            }
+        }
+        else {
+            // remove species previously added from add list
+            listToAdd!!.remove(asw)
+            if (MyDebug.LOG) {
+                val codeA = asw.getSpecCode()
+                Log.d(TAG, "255, removeCount, code: $codeA")
+            }
+        }
+    }
+
+    private fun saveData() {
+        // for all species in list to add at the end of COUNT_TABLE
+        var i = 0
+        while (i < listToAdd!!.size) {
+            specName = listToAdd!![i].getSpecName()
+            specCode = listToAdd!![i].getSpecCode()
+            specNameG = listToAdd!![i].getSpecNameG()
+            if (MyDebug.LOG) {
+                Log.d(TAG, "268, saveData, code: $specCode")
+            }
+            try {
+                countDataSource!!.createCount(specName, specCode, specNameG)
+            } catch (e: Exception) {
+                // nothing
+            }
+            i++
+        }
+
+        // sort counts table for code and contiguous index
+        countDataSource!!.sortCounts()
+
+        // store code of last selected species in sharedPreferences
+        //  for Spinner in CountingActivity
+        if (i > 0) {
+            val editor = prefs.edit()
+            editor.putString("new_spec_code", specCode)
+            editor.commit()
+        }
     }
 
     @Deprecated("Deprecated in Java")

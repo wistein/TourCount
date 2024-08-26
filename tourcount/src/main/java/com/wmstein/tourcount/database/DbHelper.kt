@@ -16,7 +16,11 @@ import com.wmstein.tourcount.R
  * updated to version 4 on 2019-03-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-05-14
+ * last edited on 2024-08-25
+ *
+ * *******************************************************************
+ * Current DB version must be set under 'companion object' at the end
+ * *******************************************************************
  */
 class DbHelper    // constructor
     (private val mContext: Context?) :
@@ -86,7 +90,8 @@ class DbHelper    // constructor
                 + I_STATE_1_6 + " int, "
                 + I_NOTES + " text, "
                 + I_ICOUNT + " int, "
-                + I_CATEGORY + " int)")
+                + I_CATEGORY + " int, "
+                + I_CODE + " text)")
         db.execSQL(sql)
 
         //create empty row for SECTION_TABLE
@@ -139,23 +144,30 @@ class DbHelper    // constructor
     // called if newVersion != oldVersion
     // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 6) {
+            version7(db)
+        }
         if (oldVersion == 5) {
             version6(db)
+            version7(db)
         }
         if (oldVersion == 4) {
             version5(db)
             version6(db)
+            version7(db)
         }
         if (oldVersion == 3) {
             version4(db)
             version5(db)
             version6(db)
+            version7(db)
         }
         if (oldVersion == 2) {
             version3(db)
             version4(db)
             version5(db)
             version6(db)
+            version7(db)
         }
         if (oldVersion == 1) {
             version2(db)
@@ -163,6 +175,7 @@ class DbHelper    // constructor
             version4(db)
             version5(db)
             version6(db)
+            version7(db)
         }
     }
 
@@ -350,7 +363,7 @@ class DbHelper    // constructor
     }
 
     /*** V6 ***/
-    // Version 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
+    // Version 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to SECTION_TABLE
     private fun version6(db: SQLiteDatabase) {
         // in SECTION_TABLE rename column 'temp' to 'tmp'
         var sql = "alter table $SECTION_TABLE rename to 'section_backup'"
@@ -403,16 +416,34 @@ class DbHelper    // constructor
         if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 6")
     }
 
+    /*** V7 ***/
+    // Version 7: Add field I_CODE to INDIVIDUALS_TABLE and clear count data
+    private fun version7(db: SQLiteDatabase) {
+        // empty INDIVIDUALS_TABLE
+        var sql = "DELETE FROM $INDIVIDUALS_TABLE"
+        db.execSQL(sql)
+
+        // add I_CODE to INDIVIDUALS table
+        sql = "alter table $INDIVIDUALS_TABLE add column $I_CODE"
+        db.execSQL(sql)
+
+        // empty COUNT_TABLE
+        sql = "UPDATE $COUNT_TABLE SET $C_COUNT_F1I = 0, $C_COUNT_F2I = 0, $C_COUNT_F3I = 0, " +
+                "$C_COUNT_PI = 0, $C_COUNT_LI = 0, $C_COUNT_EI = 0, $C_NOTES = ''"
+        db.execSQL(sql)
+    }
+
     companion object {
+        private const val DATABASE_VERSION = 7
+        //DATABASE_VERSION 7: Add field I_CODE to INDIVIDUALS_TABLE and clear count data
+        //DATABASE_VERSION 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
+        //DATABASE_VERSION 5: Rename table 'temp' to 'tmp' and SECTION_TABLE column 'temp' to 'tmp'
+        //DATABASE_VERSION 4: Column C_NAME_G added to COUNT_TABLE for local butterfly names
+        //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
+        //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
+
         private const val TAG = "TourCount DBHelper"
         private const val DATABASE_NAME = "tourcount.db"
-
-        //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
-        //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
-        //DATABASE_VERSION 4: Column C_NAME_G added to COUNT_TABLE for local butterfly names 
-        //DATABASE_VERSION 5: Rename table 'temp' to 'tmp' and SECTION_TABLE column 'temp' to 'tmp'
-        //DATABASE_VERSION 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
-        private const val DATABASE_VERSION = 6
 
         // tables
         const val SECTION_TABLE = "sections"
@@ -476,6 +507,9 @@ class DbHelper    // constructor
         const val I_NOTES = "notes"
         const val I_ICOUNT = "icount"
         const val I_CATEGORY = "icategory"
+        const val I_CODE = "code"
+
+        // fields of table temp
         const val T_ID = "_id"
         const val T_TEMP_LOC = "temp_loc"
         const val T_TEMP_CNT = "temp_cnt"

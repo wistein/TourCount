@@ -104,7 +104,7 @@ public class EditMetaActivity extends AppCompatActivity
             getWindow().setAttributes(params);
         }
 
-        Bitmap bMap = tourCount.decodeBitmap(R.drawable.kbackground, tourCount.width, tourCount.height);
+        Bitmap bMap = tourCount.decodeBitmap(R.drawable.edbackground, tourCount.width, tourCount.height);
         BitmapDrawable bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
         editHead_screen.setBackground(bg);
 

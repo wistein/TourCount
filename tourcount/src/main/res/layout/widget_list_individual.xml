@@ -112,13 +112,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!-- Time of individual -->
+        <TextView
+            android:id="@+id/txtIndTm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:gravity="start|top"
+            android:hint="@string/txt_time"
+            android:padding="4sp"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
         <!-- State of individual -->
         <TextView
             android:id="@+id/txtIndLon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
-            android:gravity="start"
+            android:layout_marginStart="4dp"
+            android:gravity="end"
             android:hint="@string/txtLon"
             android:maxLines="1"
             android:padding="4sp"
@@ -143,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
             android:layout_marginStart="8dp"
-            android:gravity="start"
+            android:gravity="end"
             android:hint="@string/txtLat"
             android:maxLines="1"
             android:padding="4sp"
@@ -160,30 +173,6 @@
             android:textColor="#FFFFFF"
             android:textSize="14sp" />
 
-        <!-- Height of individual -->
-        <TextView
-            android:id="@+id/txtIndHgt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:layout_marginStart="8dp"
-            android:gravity="start"
-            android:hint="@string/txtHgt"
-            android:maxLines="1"
-            android:padding="4sp"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtIndHt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:gravity="start|top"
-            android:padding="4sp"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
-
         <!-- count of individual -->
         <com.wmstein.tourcount.AutoFitText
             android:id="@+id/txtIndCnt"
@@ -192,7 +181,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center|top"
             android:layout_marginBottom="0dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:layout_weight="0.6"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"

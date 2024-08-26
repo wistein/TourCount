@@ -99,17 +99,13 @@
             android:textSize="13sp"
             tools:ignore="Autofill" />
 
-        <ImageButton
-            android:id="@+id/deleteCount"
+        <Space
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom|start|end|top"
             android:layout_marginEnd="5dp"
             android:layout_weight="3"
-            android:gravity="center_vertical|end"
-            android:onClick="deleteCount"
-            android:src="@android:drawable/ic_menu_delete"
-            tools:ignore="ContentDescription,UsingOnClickInXml" />
+            android:layout_height="match_parent">
+        </Space>
+
     </LinearLayout>
 
 </LinearLayout>

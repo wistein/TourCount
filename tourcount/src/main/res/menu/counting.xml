@@ -9,18 +9,25 @@
       tools:context="com.wmstein.tourcount.CountingActivity">
 
     <item
+        android:id="@+id/menuAddSpecies"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/editAddSpecTitle"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/menuDelSpecies"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/editDelSpecTitle"
+        app:showAsAction="always">
+    </item>
+
+    <item
         android:id="@+id/menuEditSection"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/editSectTitle"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction">
-    </item>
-
-    <item
-        android:id="@+id/menuTakePhoto"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="@string/takePhoto"
-        app:showAsAction="always">
     </item>
 
     <item
@@ -30,6 +37,13 @@
         app:showAsAction="always">
 
         <menu>
+            <item
+                android:id="@+id/menuTakePhoto"
+                android:icon="@android:drawable/ic_menu_camera"
+                android:title="@string/takePhoto"
+                app:showAsAction="always">
+            </item>
+
             <item
                 android:id="@+id/action_share"
                 android:icon="@drawable/baseline_share_24"

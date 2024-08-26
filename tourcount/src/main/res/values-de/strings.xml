@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2024-07-18 -->
+     last edited on 2024-08-23 -->
 
 <resources>
 
     <!-- generic -->
-    <string name="app_name">TourCount</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="title_activity_meta">EditMetaActivity</string>
-    <string name="title_activity_counting">CountingActivity</string>
-    <string name="title_activity_list_species">ListSpeciesActivity</string>
-    <string name="title_activity_count_options">CountOptionsActivity</string>
-    <string name="title_activity_edit_individual">EditIndividualActivity</string>
-    <string name="title_activity_edit_section">EditSpecListActivity</string>
-    <string name="title_activity_file_chooser">AdvFileChooser</string>
-    <string name="title_activity_add_species">AddSpeciesActivity</string>
 
     <!-- WelcomeActivity -->
     <string name="hello">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
@@ -116,16 +107,14 @@
     <string name="valState">Zustand überprüfen!</string>
     <string name="note">Bemerkung zum Individuum</string>
 
-    <!-- NewSectionActivity -->
-    <string name="labelNewsectSaveButton">Speichern</string>
-    <string name="labelNewCountButton">Arten hinzufügen</string>
-    <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
-
     <!-- CountingActivity -->
+    <string name="editDelSpecTitle">Arten löschen</string>
+    <string name="editAddSpecTitle">Arten hinzufügen</string>
     <string name="saveCountsButton">Sichern</string>
     <string name="sectSaving">Speichern </string>
     <string name="editSectTitle">Liste bearbeiten</string>
     <string name="deleteButton">Löschen</string>
+    <string name="deleteSpecies">Arten entfernen</string>
     <string name="action_share">Mitteilen</string>
     <string name="send_to">Versenden</string>
     <string name="noPhotoPermit">Kamera-Berechtigung ist erforderlich.</string>
@@ -133,19 +122,26 @@
 	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSpecListActivity -->
+    <string name="editTitle">Bezeichnungen editieren</string>
+    <string name="labelNewsectSaveButton">Speichern und editieren</string>
+    <string name="labelDelSpecButton">Art entfernen</string>
+    <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
     <string name="titleEdit">Listenname:</string>
     <string name="titleHint">Listenname hier einfügen&#8230;</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
-    <string name="deleteCount">Element löschen</string>
-    <string name="reallyDeleteCount">Bist Du sicher? Das Element wird sofort gelöscht.</string>
     <string name="isdouble"> ist doppelt!</string>
     <string name="presentSpecs">Arten in der Zählliste:</string>
     <string name="isempt">Name oder Code ist leer!</string>
     <string name="spname">Name</string>
     <string name="orcode"> oder Code</string>
 
+    <!-- DelSpeciesActivity -->
+    <string name="deleteSpecs">Arten löschen</string>
+    <string name="reallyDeleteSpecs">Bist Du sicher? Die Arten werden sofort gelöscht.</string>
+
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Arten hinzufügen</string>
+    <string name="specsToAdd">Weitere Arten:</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App-Info</string>
@@ -191,12 +187,13 @@
     <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
 
     <!-- CountOptionsActivity -->
+    <string name="spec_Name">Name</string>
+    <string name="spec_NameG">Deutscher Name</string>
     <string name="countName">Neue Art</string>
     <string name="countNameG">Neue Art (deutscher Name)</string>
     <string name="countCode">Code</string>
-    <string name="notesSpecies">Bemerkung zur Art:</string>
+    <string name="notesSpecies">Allg. Bem. zur Art:</string>
     <string name="yesDeleteIt">Löschen</string>
-    <string name="noCancel">Abbrechen</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Zählergebnis</string>
@@ -220,6 +217,7 @@
     <string name="txt_p">Puppe</string>
     <string name="txt_l">Raupe</string>
     <string name="txt_e">Ei</string>
+    <string name="txt_time">Zeit</string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>

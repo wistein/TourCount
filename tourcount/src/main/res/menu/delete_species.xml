@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   delete_species.xml is used by DelSpeciesActivity.kt
+   -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.wmstein.tourcount.DelSpeciesActivity">
+
+    <item
+        android:id="@+id/deleteSpec"
+        android:title="@string/labelDelSpecButton"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_delete"/>
+
+</menu>

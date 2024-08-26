@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2024-07-18 -->
+     last edited on 2024-08-23 -->
 
 <resources>
 
     <!-- generic -->
-    <string name="app_name">TourCount</string>
+    <string name="app_name" translatable="false">TourCount</string>
+    <string name="title_activity_meta" translatable="false">EditMetaActivity</string>
+    <string name="title_activity_counting" translatable="false">CountingActivity</string>
+    <string name="title_activity_list_species" translatable="false">ListSpeciesActivity</string>
+    <string name="title_activity_count_options" translatable="false">CountOptionsActivity</string>
+    <string name="title_activity_edit_individual" translatable="false">EditIndividualActivity</string>
+    <string name="title_activity_edit_section" translatable="false">EditSpecListActivity</string>
+    <string name="title_activity_file_chooser" translatable="false">AdvFileChooser</string>
+    <string name="title_activity_del_species" translatable="false">DelSpeciesActivity</string>
+    <string name="title_activity_add_species" translatable="false">AddSpeciesActivity</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_meta">EditMetaActivity</string>
-    <string name="title_activity_counting">CountingActivity</string>
-    <string name="title_activity_list_species">ListSpeciesActivity</string>
-    <string name="title_activity_count_options">CountOptionsActivity</string>
-    <string name="title_activity_edit_individual">EditIndividualActivity</string>
-    <string name="title_activity_edit_section">EditSpecListActivity</string>
-    <string name="title_activity_file_chooser">AdvFileChooser</string>
-    <string name="title_activity_add_species">AddSpeciesActivity</string>
 
     <!-- WelcomeActivity -->
     <string name="hello">Species-specific counting\n\nof butterflies on walks</string>
@@ -116,16 +117,14 @@
     <string name="valState">State out of range!</string>
     <string name="note">Individual Notes</string>
 
-    <!-- NewSectionActivity -->
-    <string name="labelNewsectSaveButton">Save</string>
-    <string name="labelNewCountButton">Add Species</string>
-    <string name="duplicate">Each name must be unique!</string>
-
     <!-- CountingActivity -->
+    <string name="editDelSpecTitle">Delete species</string>
+    <string name="editAddSpecTitle">Add species</string>
     <string name="saveCountsButton">Save &amp; Exit</string>
     <string name="sectSaving">Saving </string>
     <string name="editSectTitle">Edit List</string>
     <string name="deleteButton">Delete</string>
+    <string name="deleteSpecies">Remove species</string>
     <string name="action_share">Share</string>
     <string name="send_to">Share notes</string>
     <string name="noPhotoPermit">The right to take photos is missing.</string>
@@ -133,19 +132,26 @@
 	<string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSpecListActivity -->
+    <string name="editTitle">Edit Terms</string>
+    <string name="labelNewsectSaveButton">Save and edit</string>
+    <string name="labelDelSpecButton">Delete Species</string>
+    <string name="duplicate">Each name must be unique!</string>
     <string name="titleEdit">List Name:</string>
     <string name="titleHint">Insert list name here&#8230;</string>
     <string name="notesHint">Type notes here&#8230;</string>
-    <string name="deleteCount">Delete Item</string>
-    <string name="reallyDeleteCount">Are you sure? This item will be deleted immediately.</string>
     <string name="isdouble"> is double!</string>
     <string name="presentSpecs">Species in counting list:</string>
     <string name="isempt">Name or Code is empty!</string>
     <string name="spname">Name</string>
     <string name="orcode"> or code</string>
 
+    <!-- DelSpeciesActivity -->
+    <string name="deleteSpecs">Remove Species</string>
+    <string name="reallyDeleteSpecs">Are you sure? The species will be removed immediately.</string>
+
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
+    <string name="specsToAdd">Further Species:</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App Info</string>
@@ -191,12 +197,13 @@
     <string name="email_hint">Please, type in a valid email address here</string>
 
     <!-- CountOptionsActivity -->
+    <string name="spec_Name">Name</string>
+    <string name="spec_NameG">Local Name</string>
     <string name="countName">New Species</string>
     <string name="countNameG">New Species (English name)</string>
     <string name="countCode">Code</string>
-    <string name="notesSpecies">Species Notes:</string>
+    <string name="notesSpecies">General species notes:</string>
     <string name="yesDeleteIt">Delete</string>
-    <string name="noCancel">Cancel</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Counting Results</string>
@@ -220,6 +227,7 @@
     <string name="txt_p">Pupa</string>
     <string name="txt_l">Larva</string>
     <string name="txt_e">Egg</string>
+    <string name="txt_time">Time</string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>

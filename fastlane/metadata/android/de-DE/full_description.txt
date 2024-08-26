@@ -1,32 +1,32 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Eigenschaften
+Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
+- Datenbanken beziehen sich auf eine "Tour" und können innerhalb der App individuell erstellt und angepasst werden bezüglich Meta-Daten und zu erwartenden Arten.
 - Die App enthält eine vorbereitete Datenbank mit den häufigsten zu erwartenden europäischen Arten als Ausgangspunkt.
-- Datenbanken können innerhalb der App individuell erstellt und angepasst werden bezüglich Meta-Daten und zu erwartenden Arten.
+- Getrennte Zähler für ♂♀, ♂, ♀, Puppe, Raupe oder Ei.
 - Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
-- Die App enthält einen Editor für die Einrichtung und Pflege der Artenliste.
-- Hinzufügen neuer Arten per Scroll-Down-Auswahl aus einer umfassenden internen Artenliste.
-- Meta-Daten zur Vorbereitung einer Tour können editiert werden.
-- Individuelle Spezies-Daten können pro Sichtung editiert werden (z.B. Zustand, Bemerkung oder größere Anzahl).
-- Die Artauswahl erfolgt auf der Zählerseite per Rollbalken-Menü mit Schmetterlingsnamen und -abbildungen.
-- Die Zählerseite hat 6 unabhängige Zähler für ♂ oder ♀ unbestimmt, ♂, ♀, Puppe, Raupe oder Ei.
-- Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie
-- Ortsdaten durch inverse OSM-Geocodierung, wenn GPS und Internet funktionieren.
-- Die Ergebnisse sind aufbereitet für die Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung unter www.falterfunde.de.
-- Die Ergebnisseite zeigt Meta-Daten, Summen, Bemerkungen und Zählergebnisse pro Art und Individuum.
-- Die Ergebnisse können als SQLite-Datei oder im CSV-Format ausgegeben werden (zwecks Transfer und Weiterverwendung auf einem PC.)
+- Ergebnisseite mit aufbereiteter Darstellung zur Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung unter www.falterfunde.de.
+- Das Ergebnis kann als SQLite-Datei oder im CSV-Format ausgegeben werden (u. a. zwecks Transfer und Weiterverwendung in einem Spreadsheet-Programm auf einem PC.)
 - Die Hilfe enthält eine detaillierte Benutzeranleitung.
-- TourCount verwendet die europäische Kodierung der Schmetterlinge nach Karsholt/Razowski.
+
+Funktionen:
+- Editor für Meta-Daten zur Vorbereitung einer Tour.
+- Zählerseite mit Scroll-Down-Liste zur Artauswahl.
+- Individuelle Spezies-Daten können pro Sichtung editiert werden (z.B. Zustand, Bemerkung oder größere Anzahl).
+- Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie Ortsdaten durch inverse OSM-Geocodierung, wenn GPS und Internet funktionieren.
+- Artenlisteneditor (Hinzufügen, Löschen und Editieren) der Arten.
+- Die Ergebnisseite zeigt Meta-Daten, Bemerkungen, Summen und Zählergebnisse pro Art.
 
 Voraussetzungen
 Die App benötigt
 - Speicherzugriffsrecht zwecks Im- und Export der Zähldaten, 
 - GPS für Koordinaten der gezählten Individuen, 
 - Internet-Zugang für OpenStreetMaps inverse Geocodierung, 
-- Einstellungsänderungsrechte zwecks Helligkeitssteuerung des Bildschirms, 
-- Recht zur Steuerung des Ruhezustands um Bildschirm abzuschalten, solange das Smartphone eingesteckt wird.
-Die Auflösung des Smartphone-Bildschirm sollte mindestens 1920 x 1024 Pixel sein. 
+- Einstellungsrecht zwecks Helligkeitssteuerung des Bildschirms,
+- Recht zur Verhinderung des Ruhezustands.
+
+Der Smartphone-Bildschirm sollte eine Auflösung von mindestens 1920 x 1024 Pixel haben.
 Die App kann ab Android-Version 7.1 (Nougat) oder neuer verwendet werden.
 
 Dokumentation ist unter

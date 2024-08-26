@@ -9,14 +9,13 @@ import com.wmstein.tourcount.AutoFitText
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Individuals
 import java.util.Objects
-import kotlin.math.roundToInt
 
 /**********************************
  * Created by wmstein on 2018-02-22
  * used by ListSpeciesActivity
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-07-24
+ * last edited on 2024-08-23
  */
 class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -25,7 +24,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     private val txtIndStad: TextView
     private val txtIndLa: TextView
     private val txtIndLo: TextView
-    private val txtIndHt: TextView
+    private val txtIndTm: TextView
     private val txtIndStat: TextView
     val txtIndCnt: AutoFitText
     private var phase123: Boolean = false // butterfly ♂♀, ♂ or ♀
@@ -38,7 +37,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
         txtIndStad = findViewById(R.id.txtIndStad)
         txtIndLa = findViewById(R.id.txtIndLa)
         txtIndLo = findViewById(R.id.txtIndLo)
-        txtIndHt = findViewById(R.id.txtIndHt)
+        txtIndTm = findViewById(R.id.txtIndTm)
         txtIndStat = findViewById(R.id.txtIndStat)
         txtIndCnt = findViewById(R.id.txtIndCnt)
     }
@@ -83,12 +82,8 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
             }
         }
 
-        // Height
-        if (individual.coord_z == 0.0) {
-            txtIndHt.text = ""
-        } else {
-            txtIndHt.text = String.format("%s m", individual.coord_z.roundToInt())
-        }
+        // Time
+        txtIndTm.text = individual.time_stamp.toString()
 
         // State
         val indStat = individual.state_1_6.toString()

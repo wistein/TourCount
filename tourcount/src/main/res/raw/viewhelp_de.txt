@@ -39,25 +39,17 @@ $ 10
 $ 9
   % 2. Einrichtung
   !
-  ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden. 
+  ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden (-> 4. Weitere Funktionen).
   _ 
-  ! Dann sollte die vorbereitete Artenliste editiert werden (per Bleistiftsymbol in der Kopfzeile der Zählerseite).
-  ! Hier ggf. weitere Arten aus der integrierten Liste europäischer Arten auf der blauen Seite per Checkbox hinzufügen.
+  ! Dann sollte die vorbereitete Artenliste editiert werden. Hierzu die Buttons der Funktionen „Arten hinzufügen“, „Arten löschen“ oder „Bezeichnungen editieren“ in der Kopfzeile der Zählseite verwenden. Unter „Arten hinzufügen“ können weitere Arten aus der größeren integrierten Liste europäischer Arten per Checkbox hinzugefügt werden.
   _  
-  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>)
-  ! heruntergeladen, in das App-Datenverzeichnis „Documents/TourCount" kopiert und von dort importiert und dann angepasst werden.
-  ! Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt.
-  _
-  ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „Meta-Daten editieren“ eingegeben werden.
-  ! Die ortsbezogenen Meta-Daten werden bei Internetverbindung und Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt.
-  ! Die editierbaren Metadaten können später jederzeit bearbeitet werden.
-  _
-  ! Tipp: Die Uhrzeit kann durch Antippen des jeweiligen Felds eingegeben werden. Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe Dialog genutzt werden.
-  _
-  ! Dann unter „Zählen" die Zähl-Artenliste editieren. Aufruf mittels Bleistift-Button in der Kopfzeile der Zählseite.
-  ! Mit dem (+)-Button wird die blaue „Arten hinzufügen"-Seite aufgerufen, auf der die Artenliste der Zählseite um weitere Arten ergänzt werden kann. Am Ende dieser Scroll-Down-Liste kann ein Platzhalter für eine unbekannte Art (NN) hinzugefügt werden, die ggf. anschließend editiert werden kann (Name, 5-stelliger Code mit führenden Nullen und ggf. deutscher Name, siehe „Liste kodierter Schmetterlinge.pdf"
+  ! Vom Ende dieser Liste kann ein Platzhalter für eine unbekannte Art (NN) hinzugefügt werden, die ggf. nach Bestimmung editiert werden kann (Name, 5-st. Code mit führenden Nullen und ggf. deutschem Namen, siehe „Liste kodierter Schmetterlinge.pdf"
   ! <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
   _ 
+  ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite. 
+  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum
+  ! <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
+  _
   !                   (Ausschnitt der Artenliste)
   ! ---------------------------------------------
   ! ...
@@ -69,42 +61,48 @@ $ 9
   ) Westlicher Resedafalter
   ! ...
   _ 
-  ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum
-  ! <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
+  ! Werden die Seiten „Bezeichnungen editieren“ oder „Arten hinzufügen“ über den Zurück-Button verlassen, werden die Änderungen gespeichert.
   _
-  ! Alle Änderungen werden sofort in die aktuelle Zähliste übernommen. Die Liste kann nachträglich ergänzt oder geändert werden.
+  ! Bei der „Arten entfernen“-Seite muss aber explizit per Lösch-Button die Änderung im Dialog bestätigt werden.
   _ 
-  ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig und sollte nun als Basis-Datenbank exportiert werden.
-  ! Das geht mit Hilfe des „Export als Basis-DB"-Befehls im Menü der Startseite. Hierdurch wird eine Kopie der vorbereiteten Datenbank als leere „Basis-Datenbank" (tourcount0.db) im Daten-Verzeichnis der App (Documents/TourCount) abgelegt.
+  ! Die Liste kann jederzeit geändert oder ergänzt werden.
+  _
+  ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>)
+  ! heruntergeladen, in das App-Datenverzeichnis „Documents/TourCount" kopiert und von dort importiert und dann angepasst werden.
+  ! Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt.
+  _
+  ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „Meta-Daten editieren“ eingegeben werden.
+  ! Die ortsbezogenen Meta-Daten werden bei Internetverbindung und Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt, können aber jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen.
+  _
+  ! Tipp: Datum und Uhrzeit können durch Antippen des jeweiligen Felds eingegeben werden. Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe Dialog genutzt werden.
+  _
+  ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig vorbereitet und sollte nun als Basis-Datenbank exportiert werden.
+  ! Hierzu dient die Funktion „Export als Basis-DB" im Menü der Startseite. Hierdurch wird eine Kopie der vorbereiteten Datenbank als leere „Basis-Datenbank" (tourcount0.db) im Daten-Verzeichnis der App (Documents/TourCount) abgelegt.
   _ 
-  ! Die Basis-DB dient als leere Vorlage für weitere Touren. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden. Beim Speichern als Basis-DB werden alle begehungsspezifischen Daten ignoriert.
+  ! Die Basis-DB dient als leere Vorlage für weitere Touren in der Region. Sie sollte ggf. per Datei-Manager entsprechend umbenannt werden (z. B. in tourcount0_kottenforst. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden. Beim Speichern als Basis-DB werden alle begehungsspezifischen Daten ignoriert.
 
 $ 8
   % 3. Benutzung
   !
   ! Beginne mit „Meta-Daten editieren". Gib die relevanten Metadaten der Tour ein.
   _ 
-  ! Dann wähle ZÄHLEN. Wähle die Art durch antippen der Art-Zeile in der Scroll-Liste.
+  ! Dann wähle "Zählen". Wähle die Art durch Antippen der Art-Zeile in der Scroll-Liste.
   ! Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Kategorie (♂ od. ♀ unbestimmt, ♂, ♀, Puppe, Raupe, Ei) der Art.
   ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Lokalität, Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt.
   ! Die Lokalität kann auch editiert und die Zustandsangabe (0-6 mit 0 = unbestimmt, 1 = sehr gut) sowie Mehrfachzählungen können hier eingegeben werden. Mittels Speicher-Button geht es zurück zur Zählerseite.
   ! Mit den (-)-Buttons kann ggf. korrigiert werden. Beachte, dass die (-)-Buttons jeweils die Einträge gemäß der last-in-first-out-Methode der jeweiligen Art-Kategorie
   ! aus der Individuen-Liste reduzieren bzw. löschen.
   _ 
-  ! Mit dem Bleistift-Button in der Kopfzeile der Zählerseite lässt sich die Artenliste editieren. 
-  _ 
   ! Der Bleistift-Button oberhalb des Zählerfeldes ruft die Art-editieren-Seite auf. Hier kann eine Art-spezifische Bemerkung hinzugefügt werden, die neben dem Button angezeigt wird. 
   _ 
-  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil oben links. Um geänderten Inhalt sicher zu übernehmen, sollte der Speichern-Button benutzt werden. 
+  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil oben links. Um geänderten Inhalt sicher zu übernehmen, sollte, wenn vorhanden, der Speichern- oder Lösch-Button benutzt werden. 
   ! Bevor TourCount nach einer Tour beendet wird, sollten immer die Metadaten ergänzt und über das Menü der Startseite mittels Export die aktuelle Zählung gesichert werden
   ! (-> tourcount_yyyy-mm-dd_hhmmss.db).
   _ 
-  ! Bei großen Datenmengen kann sich die Reaktion der App, insbesondere beim Aufruf der Ergebnisseite etwas verlangsamen, da hier im Hintergrund einige Berechnungen laufen.
-  ! Das wird durch einen kurzen Hinweis „Liste wird berechnet...“ angezeigt.
+  ! Die Ergebnisseite wird mit "Ergebnis anzeigen" bzw. mit dem Augen-Icon in der App-Leiste auf der Startseite aufgerufen und zeigt alle registrierten Daten geordnet an. Unterhalb der Meta-Daten werden die Summen gefolgt von der Liste aller gezählten Falter mit individuellen Daten anzeigt.
   _ 
-  ! Die Ergebnisseite zeigt alle registrierten Daten geordnet an. Unterhalb der Meta-Daten werden die Summen gefolgt von der Liste aller gezählten Falter mit individuellen Daten anzeigt.
-  ! Diese Seite wird von der Startseite aus erreicht mit ERGEBNIS ANZEIGEN bzw. mit dem Augen-Icon in der App-Leiste. Der Aufbau dieser Seite kann einige Sekunden dauern.
+  ! Bei großen Datenmengen kann sich die Reaktion der App, insbesondere beim Aufruf der Seiten mit langen Scroll-Listen etwas verzögern, da hier im Hintergrund umfangreiche Berechnungen laufen.
+  ! Das wird durch einen kurzen Hinweis „Liste wird berechnet...“ angezeigt.
 
 $ 7
   % 4. Weitere Funktionen
@@ -130,8 +128,7 @@ $ 7
   _
   ! Die Funktion „Import Basis-DB“ liest immer die Datei „tourcount0.db" von „Documents/TourCount" ein.
   _
-  ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden.
-  ! Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
+  ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
   ! (Merke: Der db-Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden).
   _ 
   ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_JJJJ-MM-TT_hhmmss.db".

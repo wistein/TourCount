@@ -5,13 +5,13 @@ package com.wmstein.tourcount.database
  * Created by wmstein for TourCount on 2016-04-20
  * Last edited in Java on 2022-03-25,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-07-17
+ * last edited on 2024-08-23
  */
 class Individuals {
     @JvmField
     var id = 0
     @JvmField
-    var count_id = 0
+    var count_id = 0 // deprecated -> code (String)
     @JvmField
     var name: String? = null
     @JvmField
@@ -40,4 +40,6 @@ class Individuals {
     var icount = 0
     @JvmField
     var icategory = 0 // 1=♂♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg
+    @JvmField
+    var code: String? = null
 }

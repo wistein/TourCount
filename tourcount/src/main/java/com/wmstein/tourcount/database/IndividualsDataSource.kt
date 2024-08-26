@@ -14,7 +14,7 @@ import com.wmstein.tourcount.MyDebug
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-07-23
+ * last edited on 2024-08-23
  */
 class IndividualsDataSource(context: Context?) {
     // Database fields
@@ -23,20 +23,21 @@ class IndividualsDataSource(context: Context?) {
     private val allColumns = arrayOf(
         DbHelper.I_ID,
         DbHelper.I_COUNT_ID,  // ID of table count
-        DbHelper.I_NAME,  // species name
-        DbHelper.I_COORD_X,  // latitude
-        DbHelper.I_COORD_Y,  // longitude
-        DbHelper.I_COORD_Z,  // height
-        DbHelper.I_UNCERT,  // uncertainty
+        DbHelper.I_NAME,      // species name
+        DbHelper.I_COORD_X,   // latitude
+        DbHelper.I_COORD_Y,   // longitude
+        DbHelper.I_COORD_Z,   // height
+        DbHelper.I_UNCERT,    // uncertainty
         DbHelper.I_DATE_STAMP,  // date
         DbHelper.I_TIME_STAMP,  // time
         DbHelper.I_LOCALITY,  // locality
-        DbHelper.I_SEX,  // sexus
-        DbHelper.I_STADIUM,  // stadium
-        DbHelper.I_STATE_1_6,  // state
-        DbHelper.I_NOTES,  // notes
-        DbHelper.I_ICOUNT,  // individual count
-        DbHelper.I_CATEGORY // category (1-6)
+        DbHelper.I_SEX,       // sexus
+        DbHelper.I_STADIUM,   // stadium
+        DbHelper.I_STATE_1_6, // state
+        DbHelper.I_NOTES,     // notes
+        DbHelper.I_ICOUNT,    // individual count
+        DbHelper.I_CATEGORY,  // category (1-6)
+        DbHelper.I_CODE       // code
     )
 
     init {
@@ -53,19 +54,20 @@ class IndividualsDataSource(context: Context?) {
     }
 
     fun createIndividuals(
-        count_id: Int,
+        countId: Int,
         name: String?,
         latitude: Double,
         longitude: Double,
         height: Double,
         uncert: String?,
         datestamp: String?,
-        timestamp: String?
+        timestamp: String?,
+        code: String?
     ): Individuals? {
         return if (database!!.isOpen) // prohibits crash when doubleclicking count button
         {
             val values = ContentValues()
-            values.put(DbHelper.I_COUNT_ID, count_id)
+            values.put(DbHelper.I_COUNT_ID, countId)
             values.put(DbHelper.I_NAME, name)
             values.put(DbHelper.I_COORD_X, latitude)
             values.put(DbHelper.I_COORD_Y, longitude)
@@ -80,6 +82,7 @@ class IndividualsDataSource(context: Context?) {
             values.put(DbHelper.I_NOTES, "")
             values.put(DbHelper.I_ICOUNT, 0)
             values.put(DbHelper.I_CATEGORY, 0)
+            values.put(DbHelper.I_CODE, code)
             val insertId = database!!.insert(DbHelper.INDIVIDUALS_TABLE, null, values).toInt()
             val cursor = database!!.query(
                 DbHelper.INDIVIDUALS_TABLE,
@@ -98,8 +101,8 @@ class IndividualsDataSource(context: Context?) {
         database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null)
     }
 
-    fun deleteIndividualByCountId(id: Int) {
-        database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_COUNT_ID + " = " + id, null)
+    fun deleteIndividualsByCode(cd: String) {
+        database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_CODE + " = '$cd'", null)
     }
 
     fun decreaseIndividual(id: Int, newicount: Int) {
@@ -129,6 +132,7 @@ class IndividualsDataSource(context: Context?) {
         newindividuals.notes = cursor.getString(cursor.getColumnIndex(DbHelper.I_NOTES))
         newindividuals.icount = cursor.getInt(cursor.getColumnIndex(DbHelper.I_ICOUNT))
         newindividuals.icategory = cursor.getInt(cursor.getColumnIndex(DbHelper.I_CATEGORY))
+        newindividuals.code = cursor.getString(cursor.getColumnIndex(DbHelper.I_CODE))
         return newindividuals
     }
 
@@ -150,6 +154,7 @@ class IndividualsDataSource(context: Context?) {
             dataToInsert.put(DbHelper.I_NOTES, individuals.notes)
             dataToInsert.put(DbHelper.I_ICOUNT, individuals.icount)
             dataToInsert.put(DbHelper.I_CATEGORY, individuals.icategory)
+            dataToInsert.put(DbHelper.I_CODE, individuals.code)
             val where = DbHelper.I_ID + " = ?"
             val whereArgs = arrayOf(individuals.id.toString())
             database!!.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)

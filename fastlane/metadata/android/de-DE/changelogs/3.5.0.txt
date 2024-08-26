@@ -1,0 +1,7 @@
+Version 3.5.0 (25.08.2024)
+- Getrennte Ansichten für Editieren, Löschen und Hinzufügen von Arten
+- Checkboxen zum mehrfachen Löschen von Arten der Zählliste
+- Checkboxen zum mehrfachen Hinzufügen weiterer Arten zur Zählliste
+- Geänderte DB-Struktur, DB-Version auf 7 erhöht (Seiteneffekt: löscht Individuen-Daten beim Import einer alten DB)
+- Beispiel-DBs Update auf Version-7-Struktur
+- Doku Update

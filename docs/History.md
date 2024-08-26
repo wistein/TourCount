@@ -2,6 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2024, Wilhelm Stein
 
+#### Version 3.5.0 (2024-08-25)
+- Separate views for editing, deleting and adding species
+- Checkboxes for bulk deleting of species from the counting list
+- Checkboxes for bulk adding of further species to the counting list
+- DB structure changed, DB version increased to 7 (side effect: deletes individuals count data when importing an old DB)
+- Example DBs updated to version 7 structure
+- Docs updated
+
 #### Version 3.4.9 (2024-07-23)
 - Obsolete 'Save' button removed from View of 'Edit Species List'
 - Extra sort option for results and csv-output (names or codes)
