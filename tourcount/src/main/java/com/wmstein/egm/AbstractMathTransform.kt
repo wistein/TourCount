@@ -1,4 +1,6 @@
-/*
+package com.wmstein.egm
+
+/******************************************************************************************
  *    Derived from:
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -17,10 +19,7 @@
  *
  *    This package contains documentation from OpenGIS specifications.
  *    OpenGIS consortium's work is fully acknowledged here.
- */
-package com.wmstein.egm
-
-/******************************************************************************************
+ *
  * Provides a default implementation for most methods required by the {MathTransform}
  * interface. `AbstractMathTransform` provides a convenient base class from which other
  * transform classes can be easily derived. In addition, `AbstractMathTransform` implements
@@ -33,27 +32,19 @@ package com.wmstein.egm
  * @since 2.0
  *
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
- * last change in Java on 2020-04-17
- * converted to Kotlin on 2023-07-05
+ * last change in Java on 2020-04-17,
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-10-01.
  */
-abstract class AbstractMathTransform
-/**
- * Constructs a math transform.
- */
-internal constructor() {
-    /**
-     * Gets the dimension of input points.
-     */
+// Constructs a math transform.
+abstract class AbstractMathTransform internal constructor() {
+    // Gets the dimension of input points.
     abstract val sourceDimensions: Int
 
-    /**
-     * Gets the dimension of output points.
-     */
+    // Gets the dimension of output points.
     abstract val targetDimensions: Int
 
-    /**
-     * Returns a hash value for this transform.
-     */
+    // Returns a hash value for this transform.
     override fun hashCode(): Int {
         return sourceDimensions + 37 * targetDimensions
     }
@@ -67,4 +58,5 @@ internal constructor() {
 
         return true
     }
+
 }

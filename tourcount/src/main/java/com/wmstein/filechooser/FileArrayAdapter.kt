@@ -47,4 +47,5 @@ internal class FileArrayAdapter(
         if (t2 != null) t2.text = o.data
         return v
     }
+
 }

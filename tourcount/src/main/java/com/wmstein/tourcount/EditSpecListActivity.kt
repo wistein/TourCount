@@ -29,9 +29,9 @@ import com.wmstein.tourcount.widgets.CountEditWidget
 import com.wmstein.tourcount.widgets.EditHeadWidget
 import com.wmstein.tourcount.widgets.HintWidget
 
-/*********************************************************************
- * EditSpecListActivity lets you edit the species list (change, delete
- * and insert new species)
+/***************************************************************************
+ * EditSpecListActivity lets you edit the species list
+ * (change head and species data).
  * EditSpecListActivity is called from CountingActivity
  * Uses EditHeadWidget.kt, CountEditWidget.kt, HintWidget.kt,
  * activity_edit_section.xml, widget_edit_head.xml, widget_edit_count.xml.
@@ -273,7 +273,7 @@ class EditSpecListActivity : AppCompatActivity() {
             name = cew.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.LOG) Log.d(TAG, "294, Double name = $isDblName")
+                if (MyDebug.LOG) Log.d(TAG, "276, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -294,7 +294,7 @@ class EditSpecListActivity : AppCompatActivity() {
             code = cew.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.LOG) Log.d(TAG, "315, Double name = $isDblCode")
+                if (MyDebug.LOG) Log.d(TAG, "297, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)
@@ -309,7 +309,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.LOG) Log.d(TAG, "330, newName: $sectName")
+        if (MyDebug.LOG) Log.d(TAG, "312, newName: $sectName")
 
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
@@ -331,7 +331,7 @@ class EditSpecListActivity : AppCompatActivity() {
         sectionDataSource!!.saveSection(section!!)
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
-        if (MyDebug.LOG) Log.d(TAG, "352, childcount: $childcount")
+        if (MyDebug.LOG) Log.d(TAG, "334, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -342,7 +342,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
                 retValue =
                     if (isNotEmpty(cew.getCountName()) && isNotEmpty(cew.getCountCode())) {
-                        if (MyDebug.LOG) Log.d(TAG, "363, cew: "
+                        if (MyDebug.LOG) Log.d(TAG, "345, cew: "
                                     + cew.countId + ", " + cew.getCountName())
 
                         // Update species names and code

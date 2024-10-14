@@ -56,6 +56,15 @@ _ Subtitle
   ! Suitable for Android 7.1 (Nougat) or newer
   _ 
 
+$ 3.5.1
+  % Version 3.5.1
+  _ 2024-10-14
+  * Filenames of exported current DB and csv table files include tour name
+  * Option to preselect species names by initial letters for adding them to the counting list
+  * Option to preselect species names by initial letters for deleting them from the counting list
+  * Bug fixes
+  * Docs updated
+
 $ 3.5.0
   % Version 3.5.0
   _ 2024-08-25

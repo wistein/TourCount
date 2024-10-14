@@ -1,4 +1,6 @@
-/*
+package com.wmstein.egm
+
+/*****************************************************************************
  *    Derived from:
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -14,10 +16,7 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- */
-package com.wmstein.egm
-
-/*****************************************************************************
+ *
  * Base class for transformations from a height above the ellipsoid to a
  * height above the geoid. This transform expects three-dimensional geographic
  * coordinates in (longitude, latitude, height) order. The
@@ -28,23 +27,18 @@ package com.wmstein.egm
  * @since 2.3
  *
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
- * last edited on 2020-04-17,
- * converted to Kotlin on 2023-07-05
+ * last edited in Java on 2020-04-17,
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2024-10-01.
  */
-abstract class VerticalTransform
-/**
- * Creates a new instance of VerticalTransform.
- */
-internal constructor() : AbstractMathTransform() {
-    /**
-     * Gets the dimension of input points.
-     */
+// Creates a new instance of VerticalTransform.
+abstract class VerticalTransform internal constructor() : AbstractMathTransform() {
+
+    // Gets the dimension of input points.
     override val sourceDimensions: Int
         get() = 3
 
-    /**
-     * Gets the dimension of output points.
-     */
+    // Gets the dimension of output points.
     override val targetDimensions: Int
         get() = 3
 
@@ -60,4 +54,5 @@ internal constructor() : AbstractMathTransform() {
      */
     @Throws(Exception::class)
     protected abstract fun heightOffset(longitude: Double, latitude: Double, height: Double): Double
+
 }

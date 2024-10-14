@@ -1,3 +1,5 @@
+// kotlin_version = '2.0.20' produces lots of errors
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -12,8 +14,8 @@ android {
         minSdk 25
         //noinspection EditedTargetSdkVersion
         targetSdk 34
-        versionCode 350
-        versionName "3.5.0"
+        versionCode 351
+        versionName "3.5.1"
     }
 
     buildTypes {
@@ -49,6 +51,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

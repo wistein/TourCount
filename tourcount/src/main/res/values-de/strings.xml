@@ -114,7 +114,6 @@
     <string name="sectSaving">Speichern </string>
     <string name="editSectTitle">Liste bearbeiten</string>
     <string name="deleteButton">Löschen</string>
-    <string name="deleteSpecies">Arten entfernen</string>
     <string name="action_share">Mitteilen</string>
     <string name="send_to">Versenden</string>
     <string name="noPhotoPermit">Kamera-Berechtigung ist erforderlich.</string>
@@ -124,24 +123,27 @@
     <!-- EditSpecListActivity -->
     <string name="editTitle">Bezeichnungen editieren</string>
     <string name="labelNewsectSaveButton">Speichern und editieren</string>
-    <string name="labelDelSpecButton">Art entfernen</string>
+    <string name="labelAddSpecButton">Arten hinzufügen</string>
+    <string name="labelDelSpecButton">Arten entfernen</string>
     <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
     <string name="titleEdit">Listenname:</string>
     <string name="titleHint">Listenname hier einfügen&#8230;</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
     <string name="isdouble"> ist doppelt!</string>
-    <string name="presentSpecs">Arten in der Zählliste:</string>
+    <string name="presentSpecs">Arten der Zählliste:</string>
     <string name="isempt">Name oder Code ist leer!</string>
     <string name="spname">Name</string>
     <string name="orcode"> oder Code</string>
 
     <!-- DelSpeciesActivity -->
-    <string name="deleteSpecs">Arten löschen</string>
+    <string name="delTitle">Arten entfernen</string>
     <string name="reallyDeleteSpecs">Bist Du sicher? Die Arten werden sofort gelöscht.</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Arten hinzufügen</string>
     <string name="specsToAdd">Weitere Arten:</string>
+    <string name="hintSearch">Anfangsbuchst.</string>
+    <string name="initCharsL">Bitte 2 Buchst.</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App-Info</string>

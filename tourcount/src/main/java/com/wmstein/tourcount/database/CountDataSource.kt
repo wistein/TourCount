@@ -14,7 +14,7 @@ import com.wmstein.tourcount.TourCountApplication
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-08-23
+ * last edited on 2024-10-14
  */
 class CountDataSource(context: Context?) {
     // Database fields
@@ -87,11 +87,6 @@ class CountDataSource(context: Context?) {
         newcount.notes = cursor.getString(cursor.getColumnIndex(DbHelper.C_NOTES))
         newcount.name_g = cursor.getString(cursor.getColumnIndex(DbHelper.C_NAME_G))
         return newcount
-    }
-
-    fun deleteCountById(id: Int) {
-        println("Gelöscht: Zähler mit ID: $id")
-        database!!.delete(DbHelper.COUNT_TABLE, DbHelper.C_ID + " = " + id, null)
     }
 
     fun deleteCountByCode(code: String) {
@@ -472,7 +467,7 @@ class CountDataSource(context: Context?) {
             val counts: MutableList<Count> = ArrayList()
             val cursor = database!!.rawQuery(
                 "select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE " + " ("
+                        + " WHERE ("
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
                         + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"

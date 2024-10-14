@@ -3,12 +3,9 @@ package com.wmstein.tourcount
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 
 /**********************************************************
  * Set the Settings parameters for TourCount
@@ -16,7 +13,7 @@ import androidx.core.app.NavUtils
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2024-07-23
+ * last edited on 2024-10-06
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -36,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
             .replace(R.id.settings_container, SettingsFragment())
             .commit()
         editor = prefs.edit() // will be committed on pause
-
+/*
         // new onBackPressed logic
         if (Build.VERSION.SDK_INT >= 33) {
             onBackPressedDispatcher.addCallback(object :
@@ -46,6 +43,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
             })
         }
+ */
     }
 
     override fun onPause() {
@@ -73,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
+/*
     @Deprecated("Deprecated in Java")
     @SuppressLint("ApplySharedPref", "MissingSuperCall")
     override fun onBackPressed() {
@@ -81,5 +79,5 @@ class SettingsActivity : AppCompatActivity() {
         @Suppress("DEPRECATION")
         super.onBackPressed()
     }
-
+*/
 }

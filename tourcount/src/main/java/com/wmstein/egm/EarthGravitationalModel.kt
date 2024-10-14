@@ -1,4 +1,18 @@
-/*
+package com.wmstein.egm
+
+import android.content.Context
+import com.wmstein.tourcount.R
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.LineNumberReader
+import java.nio.charset.StandardCharsets
+import java.util.StringTokenizer
+import kotlin.math.atan
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
+
+/**
  *    Derived from:
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -17,22 +31,7 @@
  *
  *    This file is derived from NGA/NASA software available for unlimited distribution.
  *    See http://earth-info.nima.mil/GandG/wgs84/gravitymod/.
- */
-package com.wmstein.egm
-
-import android.content.Context
-import com.wmstein.tourcount.R
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.LineNumberReader
-import java.nio.charset.StandardCharsets
-import java.util.StringTokenizer
-import kotlin.math.atan
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
-
-/**
+ *
  * Transforms vertical coordinates using coefficients from the
  * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
  * Earth Gravitational Model.
@@ -53,9 +52,8 @@ import kotlin.math.sqrt
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
  * last edit in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edit on 2023-07-19
+ * last edit on 2024-10-01
  */
-
 // Maximum degree and order attained.
 class EarthGravitationalModel @JvmOverloads constructor(
     private val nmax: Int = DEFAULT_ORDER) : VerticalTransform() {
@@ -103,7 +101,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
 
     // Creates a model with the default maximum degree and order.
     init {
-        /*
+        /**
          * WGS84 model values.
          * NOTE: The Fortran program gives 3.9860015e+14 for 'rkm' constant. This value has been
          * modified in later programs. From http://cddis.gsfc.nasa.gov/926/egm96/doc/S11.HTML :
@@ -149,7 +147,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
         while (`in`.readLine().also { line = it } != null) {
             val tokens = StringTokenizer(line)
             try {
-                /*
+                /**
                  * Note: we use 'parseShort' instead of 'parseInt' as an easy way to ensure that
                  *       the values are in some reasonable range. The range is typically [0..180].
                  *       We don't check that, but at least 'parseShort' disallows values greater
@@ -166,7 +164,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
                     snmGeopCoef[ll] = sbar
                 }
             } catch (cause: RuntimeException) {
-                /*
+                /**
                  * Catch the following exceptions:
                  *   - NoSuchElementException      if a line has too few numbers.
                  *   - NumberFormatException       if a number can't be parsed.
@@ -186,7 +184,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
      * version.
      */
     private fun initialize() {
-        /*
+        /**
          * MODIFY CNM EVEN ZONAL COEFFICIENTS.
          */
         val c2n = DoubleArray(6)
@@ -198,15 +196,17 @@ class EarthGravitationalModel @JvmOverloads constructor(
             esqi *= esq
             c2n[i] = sign * (3 * esqi) / ((2 * i + 1) * (2 * i + 3)) * (1 - i + 5 * i * c2 / esq)
         }
-        /* all nmax */cnmGeopCoef[3] += c2n[1] / SQRT_05
-        /* all nmax */cnmGeopCoef[10] += c2n[2] / 3
-        /* all nmax */cnmGeopCoef[21] += c2n[3] / SQRT_13
+        // all nmax
+        cnmGeopCoef[3] += c2n[1] / SQRT_05
+        cnmGeopCoef[10] += c2n[2] / 3
+        cnmGeopCoef[21] += c2n[3] / SQRT_13
         if (nmax > 6) cnmGeopCoef[36] += c2n[4] / SQRT_17
         if (nmax > 9) cnmGeopCoef[55] += c2n[5] / SQRT_21
 
-        /*
+        /**
          * BUILD ALL CLENSHAW COEFFICIENT ARRAYS.
-         */for (i in 0..nmax) {
+         */
+        for (i in 0..nmax) {
             `as`[i] = -sqrt(1.0 + 1.0 / (2 * (i + 1)))
         }
         for (i in 0..nmax) {
@@ -231,7 +231,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
      * @return The value to add in order to get the height above the geoid (in metres).
      */
     public override fun heightOffset(longitude: Double, latitude: Double, height: Double): Double {
-        /*
+        /**
          * Note: no need to ensure that longitude is in [-180..+180°] range, because its value
          * is used only in trigonometric functions (sin / cos), which roll it as we would expect.
          * Latitude is used only in trigonometric functions as well.
@@ -291,7 +291,6 @@ class EarthGravitationalModel @JvmOverloads constructor(
 
         /**
          * Computes the index as it would be returned by the locating array iv
-         * (from the Fortran code).
          *
          * Tip (used in some place in this class):
          * locatingArray(n+1) == locatingArray(n) + n + 1.
@@ -300,4 +299,5 @@ class EarthGravitationalModel @JvmOverloads constructor(
             return (n + 1) * n shr 1
         }
     }
+
 }

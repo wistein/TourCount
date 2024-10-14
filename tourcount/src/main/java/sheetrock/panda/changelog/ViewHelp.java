@@ -33,7 +33,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-07-24
+ * last edited on 2024-10-01
  */
 public class ViewHelp
 {
@@ -46,7 +46,7 @@ public class ViewHelp
     private StringBuffer sb = null;
 
     /**
-     * Constructor <p/>
+     * Constructor
      * Retrieves the version names and stores the new version name in SharedPreferences
      */
     public ViewHelp(Context context)
@@ -66,7 +66,7 @@ public class ViewHelp
         }
     }
 
-    /*********************************************************
+    /**
      * @return an AlertDialog with a full change log displayed
      */
     public AlertDialog getFullLogDialog()

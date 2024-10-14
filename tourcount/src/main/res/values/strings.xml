@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2024-08-23 -->
+     last edited on 2024-10-13 -->
 
 <resources>
 
@@ -15,6 +15,7 @@
     <string name="title_activity_file_chooser" translatable="false">AdvFileChooser</string>
     <string name="title_activity_del_species" translatable="false">DelSpeciesActivity</string>
     <string name="title_activity_add_species" translatable="false">AddSpeciesActivity</string>
+    <string name="title_activity_dummy" translatable="false">DummyActivity</string>
     <string name="action_settings">Settings</string>
 
     <!-- WelcomeActivity -->
@@ -124,7 +125,6 @@
     <string name="sectSaving">Saving </string>
     <string name="editSectTitle">Edit List</string>
     <string name="deleteButton">Delete</string>
-    <string name="deleteSpecies">Remove species</string>
     <string name="action_share">Share</string>
     <string name="send_to">Share notes</string>
     <string name="noPhotoPermit">The right to take photos is missing.</string>
@@ -135,23 +135,26 @@
     <string name="editTitle">Edit Terms</string>
     <string name="labelNewsectSaveButton">Save and edit</string>
     <string name="labelDelSpecButton">Delete Species</string>
+    <string name="labelAddSpecButton">Add Species</string>
     <string name="duplicate">Each name must be unique!</string>
     <string name="titleEdit">List Name:</string>
     <string name="titleHint">Insert list name here&#8230;</string>
     <string name="notesHint">Type notes here&#8230;</string>
     <string name="isdouble"> is double!</string>
-    <string name="presentSpecs">Species in counting list:</string>
+    <string name="presentSpecs">Species in list:</string>
     <string name="isempt">Name or Code is empty!</string>
     <string name="spname">Name</string>
     <string name="orcode"> or code</string>
 
     <!-- DelSpeciesActivity -->
-    <string name="deleteSpecs">Remove Species</string>
+    <string name="delTitle">Remove Species</string>
     <string name="reallyDeleteSpecs">Are you sure? The species will be removed immediately.</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
     <string name="specsToAdd">Further Species:</string>
+    <string name="hintSearch">Starting chars.</string>
+    <string name="initCharsL">Please, 2 chars.</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App Info</string>

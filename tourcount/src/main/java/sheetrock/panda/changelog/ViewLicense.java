@@ -32,7 +32,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for ViewLicense by wmstein on 2024-07-16,
- * last edited on 2024-07-24
+ * last edited on 2024-10-01
  */
 public class ViewLicense
 {
@@ -43,7 +43,7 @@ public class ViewLicense
     private StringBuffer sb = null;
 
     /**
-     * Constructor <p/>
+     * Constructor
      * Retrieves the version names and stores the new version name in SharedPreferences
      */
     public ViewLicense(Context context)
@@ -51,7 +51,7 @@ public class ViewLicense
         this.context = context;
     }
 
-    /*********************************************************
+    /**
      * @return an AlertDialog with a full change log displayed
      */
     public AlertDialog getFullLogDialog()

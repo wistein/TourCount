@@ -1,0 +1,6 @@
+Version 3.5.1 (14.10.2024)
+- Dateinamen von exportierter aktueller DB und csv-Tabelle mit Tour-Bezeichnung
+- Hinzufügen von Arten in die Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
+- Löschen von Arten aus der Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
+- Bug-Fixes
+- Doku-Update

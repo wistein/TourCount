@@ -665,13 +665,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (MyDebug.LOG)
-                        Log.d(TAG, "642, SpinnerListener, count id: " + count.id
+                        Log.d(TAG, "668, SpinnerListener, count id: " + count.id
                             + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.LOG) Log.e(TAG, "648, SpinnerListener: " + e);
+                    if (MyDebug.LOG) Log.e(TAG, "674, SpinnerListener: " + e);
                 }
             }
 
@@ -1588,11 +1588,11 @@ public class CountingActivity
                     notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 r = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 r.play();
-                new Handler().postDelayed(r::stop, 300);
+                mHandler.postDelayed(r::stop, 300);
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1569, could not play button sound.", e);
+                    Log.e(TAG, "1595, could not play button sound.", e);
             }
         }
     }
@@ -1610,11 +1610,11 @@ public class CountingActivity
                     notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 r = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 r.play();
-                new Handler().postDelayed(r::stop, 400);
+                mHandler.postDelayed(r::stop, 400);
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1591, could not play button sound.", e);
+                    Log.e(TAG, "1617, could not play button sound.", e);
             }
         }
     }
@@ -1641,7 +1641,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1618, could not vibrate.", e);
+                    Log.e(TAG, "1644, could not vibrate.", e);
             }
         }
     }
@@ -1668,7 +1668,7 @@ public class CountingActivity
             } catch (Exception e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1645, could not vibrate.", e);
+                    Log.e(TAG, "1671, could not vibrate.", e);
             }
         }
     }

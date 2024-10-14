@@ -16,4 +16,5 @@ class Option(val name: String?, val data: String, val path: String, val isBack: 
         return name?.lowercase(Locale.getDefault())?.compareTo(other.name!!.lowercase(Locale.getDefault()))
             ?: throw IllegalArgumentException()
     }
+
 }

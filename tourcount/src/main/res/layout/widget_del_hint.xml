@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    widget_del_hint.xml
+    used by HintDelWidget.kt
+    Copyright (c) 2023 - 2024, Wilhelm Stein, Bonn, Germany.
+    Last edited on 2024-10-14
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="2dp"
+    android:background="@drawable/rounded_corner"
+    android:orientation="horizontal"
+    android:padding="2dp">
+
+    <TextView
+        android:id="@+id/hint_text"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|start"
+        android:layout_weight="0.7"
+        android:text="@string/presentSpecs"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0BFFFF"
+        android:textSize="17sp"/>
+
+    <EditText
+        android:id="@+id/searchD"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences"
+        android:hint="@string/hintSearch"
+        android:textSize="16sp"/>
+    <ImageButton
+        android:id="@+id/buttonSearchD"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:onClick="getInitialChars"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_search_black_24dp"
+        tools:ignore="ContentDescription,UsingOnClickInXml" />
+
+</LinearLayout>

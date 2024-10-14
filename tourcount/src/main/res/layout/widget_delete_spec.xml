@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- widget_delete_spec.xml
+     used by DeleteSpeciesWidget.kt
+     Copyright (c) 2016-2024, Wilhelm Stein, Bonn, Germany.
+     Last change: 2024-07-27.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
+              android:layout_marginTop="5dp"
+              android:background="@drawable/rounded_corner_ec"
+              android:orientation="vertical"
+              android:paddingEnd="5dp"
+              android:paddingStart="5dp"
+              android:paddingTop="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/spName"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="8"
+            android:gravity="start|center"
+            android:background="@drawable/edit_background"
+            android:hint="@string/spec_Name"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/spCode"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="3"
+            android:gravity="start|center"
+            android:background="@drawable/edit_background"
+            android:hint="@string/countCode"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/spPic"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="3.4"
+            android:scaleType="fitCenter"
+            android:src="@drawable/p00000"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        
+        <TextView
+            android:id="@+id/spNameG"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:gravity="start|center"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="12"
+            android:background="@drawable/edit_background"
+            android:hint="@string/spec_NameG"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#AEAEAE"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="13sp" />
+
+        <!-- not visible, used for getting the species Id -->
+        <TextView
+            android:id="@+id/spId"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxDel"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="26dp"
+            android:layout_gravity="bottom|start|end|top"
+            android:onClick="checkBoxDel"
+            android:layout_weight="2.5"/>
+    </LinearLayout>
+
+</LinearLayout>

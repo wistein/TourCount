@@ -8,34 +8,26 @@ import android.widget.TextView
 import com.wmstein.tourcount.R
 import java.util.Objects
 
-/**********************************
+/****************************************
  * HintWidget used by EditSpeciesActivity
  * shows single Hint line
  * Created for TourCount by wmstein on 2023-05-16,
  * last edited in java on 2023-05-16,
  * converted to Kotlin on 2023-12-07,
- * last edited on 2024-06-12.
+ * last edited on 2024-09-06.
  */
 class HintWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val textView: TextView
-//    private val search_e: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_hint, this, true)
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_hint, this, true)
         textView = findViewById(R.id.hint_text)
-//        search_e = findViewById(R.id.searchE)
     }
 
+    // todo fun ist überflüssig
     fun setHint1(notes: String?) {
         textView.text = notes
     }
-/*
-    // Search capital letter
-    var searchE: String?
-        get() = search_e.text.toString()
-        set(name) {
-            search_e.setText(name)
-        }
-*/
+
 }

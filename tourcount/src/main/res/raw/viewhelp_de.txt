@@ -30,8 +30,7 @@ $ 10
   ! Sie ermöglicht dies ohne Feldbuch und Bleistift bei jeglichen Aufenthalten in der Natur.
   _
   ! Die integrierte Datenbank kann individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
-  ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder vom Smartphone abgelesen
-  ! oder für weitere Bearbeitung auf den PC übertragen werden.
+  ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder vom Smartphone abgelesen oder für weitere Bearbeitung auf den PC übertragen werden.
   _ 
   ! Die App ist Open Source, (veröffentlicht unter <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), 
   ! enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind (Speicher- und GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung).
@@ -61,9 +60,9 @@ $ 9
   ) Westlicher Resedafalter
   ! ...
   _ 
-  ! Werden die Seiten „Bezeichnungen editieren“ oder „Arten hinzufügen“ über den Zurück-Button verlassen, werden die Änderungen gespeichert.
+  ! Wird die Seite „Bezeichnungen editieren“ über den Zurück-Button verlassen, werden die Änderungen gespeichert.
   _
-  ! Bei der „Arten entfernen“-Seite muss aber explizit per Lösch-Button die Änderung im Dialog bestätigt werden.
+  ! Bei den Seiten „Arten hinzufügen“ und „Arten entfernen“ kann die Auswahl der Arten durch die Eingabe von 2 Anfangsbuchstaben des wissenschaftlichen Namens erleichtert werden. Hier müssen die Änderungen explizit per "+"- bzw. Lösch-Button übernommen werden.
   _ 
   ! Die Liste kann jederzeit geändert oder ergänzt werden.
   _

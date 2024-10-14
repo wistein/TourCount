@@ -48,7 +48,7 @@ import androidx.work.WorkRequest;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2024-06-30
+ * last edit in Java on 2024-10-14
  */
 public class EditMetaActivity extends AppCompatActivity
     implements PermissionsDialogFragment.PermissionsGrantedCallback
@@ -92,7 +92,7 @@ public class EditMetaActivity extends AppCompatActivity
         // option for full bright screen
         boolean brightPref = prefs.getBoolean("pref_bright", true);
 
-        setContentView(R.layout.activity_edit_head);
+        setContentView(R.layout.activity_edit_meta);
         ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
 
         // Set full brightness of screen
@@ -323,13 +323,6 @@ public class EditMetaActivity extends AppCompatActivity
         // Stop location service with permissions check
         locationPermissionDispatcherMode = 2;
         locationCaptureFragment();
-    }
-
-    // triggered by save button in actionbar
-    public void saveAndExit(View view)
-    {
-        if (saveData())
-            super.finish();
     }
 
     private boolean saveData()

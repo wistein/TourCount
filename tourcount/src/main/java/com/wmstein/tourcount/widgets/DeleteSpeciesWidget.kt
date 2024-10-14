@@ -42,7 +42,7 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
 
     init {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_delete_count, this, true)
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_delete_spec, this, true)
         specName = findViewById(R.id.spName)
         specNameG = findViewById(R.id.spNameG)
         specCode = findViewById(R.id.spCode)
@@ -82,10 +82,6 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
 
     fun getSpecCode(): String {
         return specCode.text.toString()
-    }
-
-    fun getSpecId(): Int {
-        return spId.text.toString().toInt()
     }
 
     // get state of delete checkbox

@@ -80,6 +80,7 @@ class AdvFileChooser : Activity() {
 
     // Disable Back-key in AdvFileChooser as return with no selected file produces
     //   NullPointerException of FileInputStream
+    @SuppressLint("GestureBackNavigation")
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             showSnackbar(getString(R.string.noBack))

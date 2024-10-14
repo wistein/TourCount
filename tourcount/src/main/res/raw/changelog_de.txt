@@ -54,6 +54,15 @@ _
 ! Geeignet für Android 7.1 (Nougat) oder neuer
 _
 
+$ 3.5.1
+  % Version 3.5.1
+  _ 14.10.2024
+  * Dateinamen von exportierter aktueller DB und csv-Tabelle mit Tour-Bezeichnung
+  * Hinzufügen von Arten in die Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
+  * Löschen von Arten aus der Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
+  * Bug-Fixes
+  * Doku-Update
+
 $ 3.5.0
   % Version 3.5.0
   _ 25.08.2024
@@ -71,7 +80,7 @@ $ 3.4.9
   * Zusätzliche Sortier-Option für die Ergebnisseite und den csv-Export (Namen oder Codes)
   * Beim csv-Export Individuen nach Erfassungszeit sortiert
   * Lizenzentext separiert und unter eigenem Menüpunkt aufrufbar
-  * Bug-Fix: Löschen einer Art löscht auch zugehörige Individuen-Einträge
+  * Bug-Fix: Löschen einer Art löscht nun auch zugehörige Individuen-Einträge
   * Doku-Update
 
 $ 3.4.8

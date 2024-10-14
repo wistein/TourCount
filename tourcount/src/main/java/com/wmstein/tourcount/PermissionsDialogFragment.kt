@@ -43,13 +43,14 @@ class PermissionsDialogFragment : DialogFragment() {
         requestNecessaryPermissions()
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {
         super.onResume()
         if (shouldResolve) {
             if (externalGrantNeeded) {
                 showAppSettingsDialog()
             }
-            @RequiresApi(Build.VERSION_CODES.R)
+            // @RequiresApi(Build.VERSION_CODES.R)
             if (externalGrant30Needed) {
                 showAppSettingsDialog30()
 

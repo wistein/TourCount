@@ -2,6 +2,13 @@
 
 #### TourCount Copyright (C) 2016-2024, Wilhelm Stein
 
+#### Version 3.5.1 (2024-10-14)
+- Filenames of exported current DB and csv table files include tour name
+- Option to preselect species names by initial letters for adding them to the counting list
+- Option to preselect species names by initial letters for deleting them from the counting list
+- Bug fixes
+- Docs updated
+
 #### Version 3.5.0 (2024-08-25)
 - Separate views for editing, deleting and adding species
 - Checkboxes for bulk deleting of species from the counting list

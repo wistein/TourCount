@@ -35,7 +35,7 @@ import androidx.preference.PreferenceManager;
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-07-16
+ * last edited on 2024-10-01
  */
 public class ChangeLog
 {
@@ -119,7 +119,7 @@ public class ChangeLog
         return this.getDialog(this.firstRunEver());
     }
 
-    /*********************************************************
+    /**
      * @return an AlertDialog with a full change log displayed
      */
     public AlertDialog getFullLogDialog()
@@ -131,11 +131,13 @@ public class ChangeLog
     {
         WebView wv = new WebView(this.context);
 
-// try to fit text in screen width -> no effect
-//        wv.getSettings().setUseWideViewPort(false);
-//        wv.setPadding(0,0,30,0);
-// also eliminating leading blanks in text to show -> no effect
-
+        /* **********************************
+         * Problem: Text exceeds right margin
+         * tried to fit text in screen width -> no effect
+         *   wv.getSettings().setUseWideViewPort(false);
+         *   wv.setPadding(0,0,30,0);
+         * also eliminating leading blanks in text to show -> no effect
+         */
         wv.setBackgroundColor(Color.BLACK);
         wv.loadDataWithBaseURL(null, this.getLog(full), "text/html", "UTF-8",
             null);
@@ -175,7 +177,7 @@ public class ChangeLog
         editor.apply();
     }
 
-    /**************************************************************************
+    /**
      * @return HTML displaying the changes since the previous installed version
      *         of your app (what's new)
      */

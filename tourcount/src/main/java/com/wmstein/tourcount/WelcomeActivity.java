@@ -73,7 +73,7 @@ import static java.lang.Math.sqrt;
  <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2024-07-23
+ * last edited on 2024-09-20
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -127,6 +127,10 @@ public class WelcomeActivity
     private SectionDataSource sectionDataSource;
     private Section section;
 
+    private String tourName = "";
+
+    private boolean willFinish = false;
+
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -168,28 +172,19 @@ public class WelcomeActivity
         editor.putBoolean("permLoc_Given", permLocGiven);
         editor.apply();
 
-        // List tour name as title
-        String sname;
+        // Check DB and try to get tour name
         try
         {
             sectionDataSource = new SectionDataSource(this);
             sectionDataSource.open();
             section = sectionDataSource.getSection();
-            sname = section.name;
+            tourName = section.name;
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
             sectionDataSource.close();
-            sname = getString(R.string.errorDb);
             showSnackbarRed(getString(R.string.corruptDb));
-        }
-
-        try
-        {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(sname);
-        } catch (NullPointerException e)
-        {
-            // nothing
+            finish();
         }
 
         cl = new ChangeLog(this);
@@ -226,8 +221,7 @@ public class WelcomeActivity
                     {
                         if (doubleBackToExitPressedTwice)
                         {
-                            clear_loc(); // Clear last locality in tmp
-                            finish();
+                            willFinish = true;
                         }
 
                         doubleBackToExitPressedTwice = true;
@@ -250,6 +244,20 @@ public class WelcomeActivity
                     }
                 }
             );
+            if (willFinish)
+            {
+                clear_loc(); // Clear last locality in tmp
+                prefs.unregisterOnSharedPreferenceChangeListener(this);
+
+                // Stop location service with permissions check
+                locationPermissionDispatcherMode = 2;
+                locationCaptureFragment();
+
+                // Stop RetrieveAddrWorker
+                WorkManager.getInstance(this).cancelAllWork();
+
+                finishAndRemoveTask();
+            }
         }
     }
     // end of onCreate()
@@ -275,24 +283,15 @@ public class WelcomeActivity
         if (MyDebug.LOG)
             Toast.makeText(this, "onResume permLocGiven = " + permLocGiven, Toast.LENGTH_SHORT).show();
 
-        // List tour name as title
-        String sname;
+        // Set tour name as title
+        sectionDataSource = new SectionDataSource(this);
+        sectionDataSource.open();
+        section = sectionDataSource.getSection();
+        tourName = section.name;
+        sectionDataSource.close();
         try
         {
-            sectionDataSource = new SectionDataSource(this);
-            sectionDataSource.open();
-            section = sectionDataSource.getSection();
-            sectionDataSource.close();
-            sname = section.name;
-        } catch (SQLiteException e)
-        {
-            sname = getString(R.string.errorDb);
-            sectionDataSource.close();
-        }
-
-        try
-        {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(sname);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
         } catch (NullPointerException e)
         {
             // nothing
@@ -604,8 +603,18 @@ public class WelcomeActivity
         if (doubleBackToExitPressedTwice)
         {
             super.onBackPressed(); // stops app
+
             clear_loc(); // clear last locality in table 'tmp'
-            finish();
+            prefs.unregisterOnSharedPreferenceChangeListener(this);
+
+            // Stop location service with permissions check
+            locationPermissionDispatcherMode = 2;
+            locationCaptureFragment();
+
+            // Stop RetrieveAddrWorker
+            WorkManager.getInstance(this).cancelAllWork();
+
+            finishAndRemoveTask();
         }
 
         this.doubleBackToExitPressedTwice = true;
@@ -672,7 +681,10 @@ public class WelcomeActivity
         }
 
         path.mkdirs(); // just verify path, result ignored
-        outfile = new File(path, "/tourcount_" + getcurDate() + ".db");
+        if (Objects.equals(tourName, ""))
+            outfile = new File(path, "/tourcount_" + getcurDate() + ".db");
+        else
+            outfile = new File(path, "/tourcount_" + tourName + "_" + getcurDate() + ".db");
 
         // infile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
         String inPath = getApplicationContext().getFilesDir().getPath();
@@ -700,7 +712,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "703, No sdcard access");
+                Log.e(TAG, "690, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -714,7 +726,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "717, Failed to copy database");
+                    Log.e(TAG, "704, Failed to copy database");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -747,7 +759,10 @@ public class WelcomeActivity
         }
 
         path.mkdirs(); // just verify path, result ignored
-        outfile = new File(path, "/tourcount_" + getcurDate() + ".csv");
+        if (Objects.equals(tourName, ""))
+            outfile = new File(path, "/tourcount_" + getcurDate() + ".csv");
+        else
+            outfile = new File(path, "/tourcount_" + tourName + "_" + getcurDate() + ".csv");
 
         String sectName;
         String sectNotes;
@@ -786,7 +801,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "789, No sdcard access");
+                Log.d(TAG, "779, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1261,7 +1276,7 @@ public class WelcomeActivity
                     {
                         //Toast.makeText(getApplicationContext(), longi, Toast.LENGTH_SHORT).show();
                         if (MyDebug.LOG)
-                            Log.d(TAG, "1264, longi " + longi);
+                            Log.d(TAG, "1254, longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1344,7 +1359,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1347, Failed to export csv file");
+                    Log.e(TAG, "1337, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1404,7 +1419,7 @@ public class WelcomeActivity
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
             if (MyDebug.LOG)
-                Log.d(TAG, "1407, No sdcard access");
+                Log.d(TAG, "1397, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1433,7 +1448,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1436, Failed to export Basic DB");
+                    Log.e(TAG, "1426, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1526,7 +1541,7 @@ public class WelcomeActivity
         } catch (Exception e)
         {
             if (MyDebug.LOG)
-                Log.e(TAG, "1529, Failed to reset DB");
+                Log.e(TAG, "1519, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             r_ok = false;
         }
@@ -1591,7 +1606,7 @@ public class WelcomeActivity
                 } catch (IOException e)
                 {
                     if (MyDebug.LOG)
-                        Log.e(TAG, "1594, Failed to import database");
+                        Log.e(TAG, "1584, Failed to import database");
                     showSnackbarRed(getString(R.string.importFail));
                 }
                 // END
@@ -1618,7 +1633,7 @@ public class WelcomeActivity
                     selectedFile = data.getStringExtra("fileSelected");
                     if (MyDebug.LOG)
                     {
-                        Log.i(TAG, "1621, File selected: " + selectedFile);
+                        Log.i(TAG, "1611, File selected: " + selectedFile);
                         showSnackbar("Selected file: " + selectedFile);
                     }
                     assert selectedFile != null;
@@ -1668,7 +1683,7 @@ public class WelcomeActivity
             } catch (IOException e)
             {
                 if (MyDebug.LOG)
-                    Log.e(TAG, "1671, Failed to import database");
+                    Log.e(TAG, "1661, Failed to import database");
                 showSnackbarRed(getString(R.string.importFail));
             }
             // END

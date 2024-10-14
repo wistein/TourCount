@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- activity_del_species.xml is used by DelSpeciesActivity.kt in conjunction
-     with widget_delete_count.xml
+     with widget_delete_spec.xml
      -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,7 +20,7 @@
         android:orientation="vertical">
     </LinearLayout>
 
-    <!-- insert list of all widget_delete_count in here -->
+    <!-- insert list of all widget_delete_spec in here -->
     <ScrollView
         android:id="@+id/deletingScreen"
         android:layout_width="match_parent"

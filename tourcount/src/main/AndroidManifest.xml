@@ -7,7 +7,7 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2024-08-23
+     Last edited 2024-10-14
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +26,6 @@
     <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-<!--    <uses-feature android:name="android.hardware.location.gps" /> -->
 
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -56,7 +55,8 @@
             android:name="com.wmstein.tourcount.WelcomeActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -78,7 +78,7 @@
             android:name="com.wmstein.tourcount.SettingsActivity"
             android:label="@string/action_settings"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -90,7 +90,7 @@
             android:label="@string/title_activity_meta"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
@@ -104,7 +104,7 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -116,7 +116,7 @@
             android:label="@string/title_activity_counting"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
             android:theme="@style/Theme.AppCompat"
             android:exported="true">
@@ -134,7 +134,7 @@
             android:label="@string/title_activity_count_options"
             android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -146,7 +146,7 @@
             android:label="@string/title_activity_edit_individual"
             android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -158,7 +158,7 @@
             android:label="@string/title_activity_edit_section"
             android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -170,7 +170,7 @@
             android:label="@string/title_activity_del_species"
             android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -182,11 +182,19 @@
             android:label="@string/title_activity_add_species"
             android:parentActivityName="com.wmstein.tourcount.CountingActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            tools:ignore="Instantiatable,LockedOrientationActivity"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="CountingActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.wmstein.tourcount.DummyActivity"
+            android:label="@string/title_activity_dummy"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            tools:ignore="Instantiatable,LockedOrientationActivity">
         </activity>
 
         <service android:name="com.wmstein.tourcount.LocationService"

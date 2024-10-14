@@ -101,10 +101,9 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
 
     fun setPSpec(ucode: String) {
         val rname = "p$ucode" // species picture resource name
-
-        // make instance of class TransektCountApplication to reference non-static method 
         val tourCountApp = TourCountApplication()
         val resId = tourCountApp.getResId(rname)
+
         if (resId != 0) {
             specPic.setImageResource(resId)
         }

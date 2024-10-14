@@ -156,7 +156,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         try {
             supportActionBar!!.title = specName
         } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "157, NullPointerException: No species name!")
+            if (MyDebug.LOG) Log.e(TAG, "159, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 

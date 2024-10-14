@@ -162,7 +162,7 @@ class ListSpeciesActivity : AppCompatActivity() {
             uncer = round(curAInd.getDouble(6))
             if (longi != 0.0) // has coordinates
             {
-                if (MyDebug.LOG) Log.d(TAG, "166, longitude: $longi")
+                if (MyDebug.LOG) Log.d(TAG, "165, longitude: $longi")
                 if (frst == 0) {
                     loMin = longi
                     loMax = longi

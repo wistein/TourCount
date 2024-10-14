@@ -42,8 +42,11 @@ $ 9
   _ 
   ! Then you should edit the provided species list. To do this, use the “Add Species”, “Delete Species” or “Edit Terms” buttons in the header of the counting page. Under “Add Species”, further species can be added from the larger integrated list of European species using the checkboxes.
   _ 
-  ! At the end of this list you may select a placeholder for an unknown species (NN). This could afterwards be edited by entering its real scientific name, common name and code (five-digit with leading zeros, see „List of coded Butterflies.pdf“.
+  ! At the end of this list you may select a placeholder for an unknown species (NN). Afterwards this could be edited by entering its real scientific name, common name and code (five-digit with leading zeros, see „List of coded Butterflies.pdf“.
    _
+  ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
+  ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
+  _
   !               TourCount species list (partly)
   ! ---------------------------------------------
   ! ...
@@ -55,11 +58,9 @@ $ 9
   ) Bath white
   ! ...
   _ 
-  ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
-  ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
-  _ 
-  ! When going back from the "Edit ..." or "Add ..." pages the input is stored directly into the database.
-  ! But the tagged species on the "Delete ..." page get only deleted after confirming the dialog from the delete button.
+  ! When going back from the "Edit Terms" page the changes will be stored.
+  _
+  ! On the “Add species” and “Remove species” pages, the selection of species can be made easier by entering the first 2 letters of the scientific name. Here, the changes must be explicitly accepted using the “+” or delete button respectively.
   _ 
   ! The list can be changed or supplemented anytime afterwards.
   _ 
