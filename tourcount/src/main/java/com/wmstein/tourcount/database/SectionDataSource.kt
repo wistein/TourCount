@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase
  * converted to Kotlin on 2023-07-05,
  * last modified on 2024-05-14
  */
-class SectionDataSource(context: Context?) {
+class SectionDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
     private val dbHandler: DbHelper
@@ -38,7 +38,7 @@ class SectionDataSource(context: Context?) {
     )
 
     init {
-        dbHandler = DbHelper(context!!)
+        dbHandler = DbHelper(context)
     }
 
     @Throws(SQLException::class)

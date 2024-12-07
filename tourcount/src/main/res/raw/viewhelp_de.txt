@@ -23,92 +23,91 @@
     </style>
   </head>
   <body>
-$ 10
+
   % 1. Einführung
   !
-  ! Diese Zähler-App soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch, getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.
-  ! Sie ermöglicht dies ohne Feldbuch und Bleistift bei jeglichen Aufenthalten in der Natur.
+  ! Die TourCount-App soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch, getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.
+  ! Sie ermöglicht dies ohne Feldbuch, Bleistift und Kamera bei jeglichen Aufenthalten in der Natur.
   _
-  ! Die integrierte Datenbank kann individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
-  ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder vom Smartphone abgelesen oder für weitere Bearbeitung auf den PC übertragen werden.
+  ! Die integrierte Datenbank kann Tour-bezogen, d. h. pro Tour wird eine neue Datenbank-Instanz verwendet. Datenbanken können individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
+  ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder von der Ergebnisseite geordnet abgelesen oder in eine Tabelle exportiert und für eigene Bearbeitung auf einen PC übertragen und dort komfortabler gelesen oder weiterverarbeitet werden.
   _ 
-  ! Die App ist Open Source, (veröffentlicht unter <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>), 
-  ! enthält weder Tracking- noch Werbefunktionen und fordert nur die Zugriffsrechte, die für die Aufzeichungsfunktionen nötig sind (Speicher- und GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung).
+  ! Die App ist Open Source, (veröffentlicht unter <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>) mit Quellcode und Dokumentation. Sie enthält weder Tracking- noch Werbefunktionen erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: Import von DB-Dateien, Export der Zählergebnisse in DB- oder CSV-Dateien, GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung und Wakelock zwecks Verhinderung, dass die App sich dimmt oder abschaltet.
 
-$ 9
   % 2. Einrichtung
   !
   ! Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden (-> 4. Weitere Funktionen).
   _ 
-  ! Dann sollte die vorbereitete Artenliste editiert werden. Hierzu die Buttons der Funktionen „Arten hinzufügen“, „Arten löschen“ oder „Bezeichnungen editieren“ in der Kopfzeile der Zählseite verwenden. Unter „Arten hinzufügen“ können weitere Arten aus der größeren integrierten Liste europäischer Arten per Checkbox hinzugefügt werden.
+  ! Dann sollte die vorbereitete Artenliste editiert werden. Hierzu die Buttons der Funktionen „Arten hinzufügen“, „Arten löschen“ oder „Bezeichnungen editieren“ in der Kopfzeile der Zählseite verwenden. Unter „Arten hinzufügen“ können weitere Arten aus der integrierten Liste europäischer Arten per Checkbox hinzugefügt werden.
   _  
   ! Vom Ende dieser Liste kann ein Platzhalter für eine unbekannte Art (NN) hinzugefügt werden, die ggf. nach Bestimmung editiert werden kann (Name, 5-st. Code mit führenden Nullen und ggf. deutschem Namen, siehe „Liste kodierter Schmetterlinge.pdf"
   ! <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>).
   _ 
-  ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite. 
-  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum
-  ! <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
-  _
   !                   (Ausschnitt der Artenliste)
   ! ---------------------------------------------
   ! ...
   ! Pieris rapae .............. 06998
-  ) Kleiner Kohlweißling 
+  ) Kleiner Kohlweißling
+  )
   ! Pieris napi ................ 07000
   ) Grünaderweißling
+  )
   ! Pontia daplidice ....... 07005
   ) Westlicher Resedafalter
   ! ...
   _ 
-  ! Wird die Seite „Bezeichnungen editieren“ über den Zurück-Button verlassen, werden die Änderungen gespeichert.
+  ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite.
+  ! Als Code wird die Nummerierung der europäischen Schmetterlinge nach Karsholt/Razowski verwendet, wie bspw. im Lepiforum
+  ! <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
   _
-  ! Bei den Seiten „Arten hinzufügen“ und „Arten entfernen“ kann die Auswahl der Arten durch die Eingabe von 2 Anfangsbuchstaben des wissenschaftlichen Namens erleichtert werden. Hier müssen die Änderungen explizit per "+"- bzw. Lösch-Button übernommen werden.
+  ! Bei den Seiten „Arten hinzufügen“, „Arten entfernen“ und „Bezeichnungen editieren" kann die Auswahl der Arten durch die Eingabe von 2 Anfangsbuchstaben des wissenschaftlichen Namens erleichtert werden. Änderungen werden jeweils per Funktions-Button der Kopfzeile übernommen.
   _ 
-  ! Die Liste kann jederzeit geändert oder ergänzt werden.
+  ! Die Artenliste kann jederzeit geändert oder ergänzt werden.
   _
   ! Alternativ kann auch eine umfassendere oder spezielle Beispiel-Basis-DB (s. <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>)
   ! heruntergeladen, in das App-Datenverzeichnis „Documents/TourCount" kopiert und von dort importiert und dann angepasst werden.
-  ! Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt.
+  ! Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt. Bei Deinstallation von TourCount werden die Daten in diesem Verzeichnis nicht gelöscht.
   _
   ! Dann sollten einige allgemeingültige Meta-Daten (Stammdaten) unter „Meta-Daten editieren“ eingegeben werden.
   ! Die ortsbezogenen Meta-Daten werden bei Internetverbindung und Nutzung der inversen Geokodierung automatisch auf Basis der GPS-Koordinaten erzeugt, können aber jederzeit bearbeitet werden. Mit Tippen aufs Speichersymbol abschließen.
   _
-  ! Tipp: Datum und Uhrzeit können durch Antippen des jeweiligen Felds eingegeben werden. Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe Dialog genutzt werden.
-  _
   ! Sind die Meta-Daten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig vorbereitet und sollte nun als Basis-Datenbank exportiert werden.
   ! Hierzu dient die Funktion „Export als Basis-DB" im Menü der Startseite. Hierdurch wird eine Kopie der vorbereiteten Datenbank als leere „Basis-Datenbank" (tourcount0.db) im Daten-Verzeichnis der App (Documents/TourCount) abgelegt.
   _ 
-  ! Die Basis-DB dient als leere Vorlage für weitere Touren in der Region. Sie sollte ggf. per Datei-Manager entsprechend umbenannt werden (z. B. in tourcount0_kottenforst. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden. Beim Speichern als Basis-DB werden alle begehungsspezifischen Daten ignoriert.
+  ! Die Basis-DB dient als leere Vorlage für weitere Touren in der Region. Sie sollte ggf. per Datei-Manager entsprechend umbenannt werden (z. B. in tourcount0_kottenforst. Die Basis-DB kann jederzeit, z.B. nach Änderung der Liste, erneut exportiert werden. Beim Speichern als Basis-DB werden alle Tour-spezifischen Daten ignoriert.
 
-$ 8
   % 3. Benutzung
   !
-  ! Beginne mit „Meta-Daten editieren". Gib die relevanten Metadaten der Tour ein.
+  ! Beginne mit „Meta-Daten editieren". Gib die relevanten Metadaten der Tour ein. Das aktuelle Datum und die momentane Uhrzeit kann durch Antippen des jeweiligen Felds eingegeben werden.
+  ! Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe-Dialog genutzt werden.
   _ 
   ! Dann wähle "Zählen". Wähle die Art durch Antippen der Art-Zeile in der Scroll-Liste.
   ! Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Kategorie (♂ od. ♀ unbestimmt, ♂, ♀, Puppe, Raupe, Ei) der Art.
   ! Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Lokalität, Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt.
+  _
   ! Die Lokalität kann auch editiert und die Zustandsangabe (0-6 mit 0 = unbestimmt, 1 = sehr gut) sowie Mehrfachzählungen können hier eingegeben werden. Mittels Speicher-Button geht es zurück zur Zählerseite.
-  ! Mit den (-)-Buttons kann ggf. korrigiert werden. Beachte, dass die (-)-Buttons jeweils die Einträge gemäß der last-in-first-out-Methode der jeweiligen Art-Kategorie
-  ! aus der Individuen-Liste reduzieren bzw. löschen.
+  _
+  ! Mit den (-)-Buttons kann ggf. korrigiert werden. Beachte, dass die (-)-Buttons jeweils die Einträge gemäß der last-in-first-out-Methode der jeweiligen Art-Kategorie aus der Individuen-Liste reduzieren bzw. löschen.
   _ 
-  ! Der Bleistift-Button oberhalb des Zählerfeldes ruft die Art-editieren-Seite auf. Hier kann eine Art-spezifische Bemerkung hinzugefügt werden, die neben dem Button angezeigt wird. 
-  _ 
-  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil oben links. Um geänderten Inhalt sicher zu übernehmen, sollte, wenn vorhanden, der Speichern- oder Lösch-Button benutzt werden. 
-  ! Bevor TourCount nach einer Tour beendet wird, sollten immer die Metadaten ergänzt und über das Menü der Startseite mittels Export die aktuelle Zählung gesichert werden
-  ! (-> tourcount_yyyy-mm-dd_hhmmss.db).
+  ! Der Bleistift-Button unterhalb der Schmetterlingsabbildung in der Artnamen-Zeile der Zählerseite ruft die Art-editieren-Seite auf. Hier kann eine Art-spezifische Bemerkung hinzugefügt werden, die neben dem Button angezeigt wird.
   _ 
   ! Die Ergebnisseite wird mit "Ergebnis anzeigen" bzw. mit dem Augen-Icon in der App-Leiste auf der Startseite aufgerufen und zeigt alle registrierten Daten geordnet an. Unterhalb der Meta-Daten werden die Summen gefolgt von der Liste aller gezählten Falter mit individuellen Daten anzeigt.
   _ 
+  ! Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder dem Pfeil oben links. Um geänderten Inhalt sicher zu übernehmen, sollte, wie vorhanden, jeweils der Hinzufügen-, Lösch-, oder Speichern-Button benutzt werden.
+  _
+  ! Bevor TourCount nach einer Tour beendet wird, sollten immer die Metadaten ergänzt und über das Menü der Startseite mittels Export die aktuelle Zählung gesichert werden
+  ! (-> tourcount_Tour_JJJJ-MM-TT_hhmmss.db oder .csv im Verzeichnis Documents/TourCount mit 'Tour' für Tourbezeichnung, 'JJJJ-MM-TT' Datum und 'hhmmss' Zeitpunkt des Speicherns).
+  _
   ! Bei großen Datenmengen kann sich die Reaktion der App, insbesondere beim Aufruf der Seiten mit langen Scroll-Listen etwas verzögern, da hier im Hintergrund umfangreiche Berechnungen laufen.
   ! Das wird durch einen kurzen Hinweis „Liste wird berechnet...“ angezeigt.
+  _
+  ! Auf eine ggf. auftauchende Meldung „TourCount reagiert nicht“ bitte mit „Warten“ antworten.
 
-$ 7
   % 4. Weitere Funktionen
   !
-  ! Das Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen. 
+  ! Das System-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen.
   _ 
-  ! Unter „Einstellungen“ können das Aussehen und Verhalten dem eigenen Geschmack angepasst werden, z. B. Sounds, Sortierfolge oder Rechts-/Linkshänder-Darstellung der Zählerseite. 
+  ! Unter „Einstellungen“ können das Aussehen und Verhalten der App dem eigenen Geschmack angepasst werden, z. B. Sounds, Sortierfolge oder Rechts-/Linkshänder-Darstellung der Zählerseite.
   _
   ! Mittels inverser Geokodierung lassen sich Ortsangaben (PLZ, Stadt, Ort) in die Metadaten und Lokalität in die Individuen-Daten automatisch einfügen.
   ! Zur inversen Geokodierung (Erzeugung von Adressdaten aus GPS-Koordinaten) wird der kostenlose Nominatim-Dienst von OpenStreetMap verwendet.
@@ -119,44 +118,47 @@ $ 7
   ! Zwecks Vorbereitung einer neuen Tour können mittels „Reset Daten“ die tourspezifischen Metadaten und alle Zählerdaten gelöscht werden.
   ! Alternativ kann die angelegte Basis-DB „tourcount0.db" importiert werden.
   _ 
-  ! Intern speichert TourCount die Daten Android-spezifisch immer in einer gleichnamigen SQLite-DB im App-eigenen, für den Anwender gesperrten Speicherbereich.
-  ! Deshalb sind DB-Export in den und DB-Import aus dem Anwender erreichbaren Speicherbereich erforderlich.
-  ! Auch die Verwendung verschiedener Anwender-DB-Dateien (z. B. für verschiedene Regionen) ist nur per Im- und Export möglich.
-  _ 
-  ! Der Export der internen DB als Basis-DB ist sinnvoll, wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden (z.B. neue Arten hinzugefügt).
+  ! TourCount speichert die Daten Android-spezifisch immer in einer gleichnamigen SQLite-DB im App-eigenen, für den Anwender gesperrten Speicherbereich.
+  ! Dadurch sind Anwenderdaten nur per Import für die App nutzbar und DB-Daten bzw. Ergebnisse nur per Export zur weiteren Verwendung durch den Anwender erreichbar.
+  _
+  ! Mit "Export Basis-DB" kann die interne DB als Basis-DB (tourcount0.db), d. h. ohne begehungsspezifische Daten nach Documents/TourCount exportiert werden, wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden (z.B. neue Arten hinzugefügt).
   _
   ! Die Funktion „Import Basis-DB“ liest immer die Datei „tourcount0.db" von „Documents/TourCount" ein.
+  _
+  ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_Tour_JJJJ-MM-TT_hhmmss.db".
   _
   ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
   ! (Merke: Der db-Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden).
   _ 
-  ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_JJJJ-MM-TT_hhmmss.db".
-  _ 
-  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine aufbereitete Spreadsheet-kompatible Datei „tourcount_YYYY-MM-DD_hhmmss.csv" nach „Documents/TourCount".
-  ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (erhältlich bei F-Droid).
-  _ 
-  ! IT-affine Anwender können die mittels Exportfunktion erzeugte DB-Datei „tourcount_JJJJ-MM-TT_hhmmss.db" von „Documents/TourCount" auf einen PC übertragen.
-  ! Dort können mit Hilfe eines kostenlosen Tools wie „SqliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
+  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine aufbereitete Spreadsheet-kompatible Datei „tourcount_Tour_JJJJ-MM-TT_hhmmss.csv" nach „Documents/TourCount".
+  ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (Open Source, kostenlos erhältlich im F-Droid-App-Store).
   _
-  ! Auch die .csv-Ergebnisdateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in einer Tabellenkalkulation importiert werden (unter Android auch in eine kostenlose App wie Collabora).
-  ! Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze auf
+  ! IT-affine Anwender können die mittels Exportfunktion erzeugte DB-Datei „tourcount_Tour_JJJJ-MM-TT_hhmmss.db" von „Documents/TourCount" auf einen PC übertragen.
+  ! Dort können mit Hilfe eines kostenlosen Tools wie „SqliteBrowser" (<a href="https://sqlitebrowser.org/" target="_blank">https://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
+  ! Einige nützliche vorbereitete SQL-Scripte finden sich im docs-Verzeichnis der GitHub-Webseite  <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>.
   _
-  ! - Komma als Trennzeichen,
+  ! Auch die exportierten .csv-Ergebnisdateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in einer Tabellenkalkulation importiert werden (unter Android auch in eine kostenlose App wie Collabora).
+  ! Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze darauf zu achten, dass
+  _
   ! - Dateiursprung im Format „Unicode UTF-8",
-  ! - Anführungszeichen zur Texterkennung und
+  ! - nur Komma als Trennzeichen,
+  ! - Anführungszeichen ("") zur Texterkennung und
   ! - alle Spalten in Textformat
   _
-  ! zu achten.
+  ! gesetzt sind.
   _
-  ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung sind unter „App-Info" abrufbar,
-  ! Lizenzhinweise unter Lizenzen.
+  ! Die exportierte Tabelle kann per Sortier-Option (nach Spezies oder Abschnitten) geordnet aufbereitet werden. Je nach Gusto hinsichtlich einer einfacheren Dateneingabe in eine zentrale Monitoring Web-Seite, wie
   _
-  ! Das Menü der Zählerseite hat eine Mitteilungsfunktion, um eine Nachricht über eine Standard-App, wie SMS oder E-Mail versenden zu können.
+    <a href="https://www.falterfunde.de/platform/s4y/falterfunde/index.do" target="_blank">https://www.falterfunde.de/platform/s4y/falterfunde/index.do</a>.
   _
-  ! In der Zähler-Ansicht kann die Anzeige temporär per Näherungssensor abgeschaltet werden, wenn das Handy eingesteckt oder nahe am Körper gehalten wird.
-  ! Das spart Energie, verhindert unerwünschte Eingaben und bringt die App augenblicklich zurück, wenn sie wieder normal genutzt wird.
+  ! Die E-Mail-Adresse des Autors und die Historie der App-Entwicklung sind unter „App-Info" abrufbar, Lizenzhinweise unter Lizenzen.
+  _
+  ! Das Menü der Zählerseite hat eine Fotofunktion um die Kamera möglichst schnell zu starten, ohne TourCount zu verlassen.
+  _
+  ! Dort lässt sich auch eine Mitteilungsfunktion aufrufen, um eine TourCount-spezifische Nachricht über SMS oder E-Mail versenden zu können.
+  _
+  ! In der Zähler-Ansicht kann die Anzeige temporär per Näherungssensor abgeschaltet werden, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert unerwünschte Eingaben und bringt die App augenblicklich zurück, wenn sie wieder normal genutzt wird.
 
-$ 6
   % 5. Quellen
   ! Source-Code: <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   ! Doku: <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>

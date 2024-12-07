@@ -2,10 +2,8 @@ package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
 import android.database.Cursor
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -37,66 +35,73 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-08-23
+ * last edited on 2024-11-14
  */
 class ListSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
     private var specArea: LinearLayout? = null
-    var head: Head? = null
 
-    // preferences
-    private var prefs = TourCountApplication.getPrefs()
-    private var awakePref = false
-    private var outPref: String? = null
-
-    // the actual data
+    // Data
     private var countDataSource: CountDataSource? = null
     private var sectionDataSource: SectionDataSource? = null
     private var headDataSource: HeadDataSource? = null
     private var individualsDataSource: IndividualsDataSource? = null
+    var head: Head? = null
     private var lsw: ListSumWidget? = null
+
+    // Preferences
+    private var prefs = TourCountApplication.getPrefs()
+    private var awakePref = false
+    private var outPref: String? = null
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (MyDebug.dLOG) Log.i(TAG, "62, onCreate")
+
         tourCount = application as TourCountApplication
+
         awakePref = prefs.getBoolean("pref_awake", true)
         outPref = prefs.getString("pref_sort_output", "names") // sort mode output
 
         setContentView(R.layout.activity_list_species)
+
         countDataSource = CountDataSource(this)
         sectionDataSource = SectionDataSource(this)
         headDataSource = HeadDataSource(this)
         individualsDataSource = IndividualsDataSource(this)
 
         val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
-        resultsScreen.background = tourCount!!.background
+        resultsScreen.background = tourCount!!.getBackground()
+
         supportActionBar!!.title = getString(R.string.viewSpecTitle)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         specArea = findViewById(R.id.listSpecLayout)
+
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
         // new onBackPressed logic
-        if (Build.VERSION.SDK_INT >= 33) {
-            onBackPressedDispatcher.addCallback(object :
-                OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    headDataSource!!.close()
-                    sectionDataSource!!.close()
-                    countDataSource!!.close()
-                    individualsDataSource!!.close()
+        val callback = object :  OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (MyDebug.dLOG) Log.i(TAG, "91, handleOnBackPressed")
 
-                    NavUtils.navigateUpFromSameTask(this@ListSpeciesActivity)
-                }
-            })
+                NavUtils.navigateUpFromSameTask(this@ListSpeciesActivity)
+            }
         }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
+    // End of onCreate()
 
     override fun onResume() {
         super.onResume()
+
+        if (MyDebug.dLOG) Log.i(TAG, "103, onResume")
+
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
@@ -111,6 +116,7 @@ class ListSpeciesActivity : AppCompatActivity() {
         specArea!!.removeAllViews()
         loadData()
     }
+    // End of onResume()
 
     // fill ListSpeciesWidget with relevant counts and sections data
     private fun loadData() {
@@ -162,7 +168,6 @@ class ListSpeciesActivity : AppCompatActivity() {
             uncer = round(curAInd.getDouble(6))
             if (longi != 0.0) // has coordinates
             {
-                if (MyDebug.LOG) Log.d(TAG, "165, longitude: $longi")
                 if (frst == 0) {
                     loMin = longi
                     loMax = longi
@@ -294,17 +299,10 @@ class ListSpeciesActivity : AppCompatActivity() {
     }
     // end of loadData()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. 
-        if (item.itemId == android.R.id.home) {
-            super.finish()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onPause() {
         super.onPause()
+
+        if (MyDebug.dLOG) Log.i(TAG, "305, onPause")
 
         // close the data sources
         headDataSource!!.close()
@@ -315,19 +313,6 @@ class ListSpeciesActivity : AppCompatActivity() {
         if (awakePref) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
-    }
-
-    @Deprecated("Deprecated in Java")
-    @SuppressLint("ApplySharedPref", "MissingSuperCall")
-    override fun onBackPressed() {
-        headDataSource!!.close()
-        sectionDataSource!!.close()
-        countDataSource!!.close()
-        individualsDataSource!!.close()
-
-        NavUtils.navigateUpFromSameTask(this)
-        @Suppress("DEPRECATION")
-        super.onBackPressed()
     }
 
     companion object {

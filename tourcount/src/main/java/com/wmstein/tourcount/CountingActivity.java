@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -31,6 +32,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -54,27 +63,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-
-/****************************************************************************************
- * CountingActivity is the central activity of TourCount in portrait mode. 
+/***************************************************************************************
+ * CountingActivity is the central activity of TourCount.
  * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
- * starts EditSpecListActivity, switches screen off when pocketed 
+ * starts EditSpecListActivity, switches screen off when device is pocketed
  * and allows taking pictures and sending notes.
  <p>
  * CountingActivity uses CountingWidget.kt, CountingWidgetLH.kt, NotesWidget.kt,
  * activity_counting.xml and activity_counting_lh.xml
  <p>
- * Basic counting functions created by milo for BeeCount on 05/05/2014.
+ * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last modification in Java on 2024-08-23
+ * last edited in Java on 2024-12-07
  */
 public class CountingActivity
     extends AppCompatActivity
@@ -87,15 +87,18 @@ public class CountingActivity
 
     private LinearLayout head_area2;
     private LinearLayout notes_area1;
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-    // the actual data
+    // Data
     private Count count;
     private Section section;
     private List<CountingWidget> countingWidgets;
     private List<CountingWidgetLH> countingWidgetsLH;
     private Spinner spinner;
     private int itemPosition = 0;
+    private int i_Id = 0; // Individuals id
+    private String spec_name;
+    private int specCnt;
 
     // Location info handling
     private double latitude, longitude, height;
@@ -108,31 +111,27 @@ public class CountingActivity
 
     private boolean locServiceOn = false;
 
+    // Proximity sensor handling screen on/off
     private PowerManager.WakeLock mProximityWakeLock;
 
-    // preferences
+    // Preferences
     private SharedPreferences prefs;
     private boolean awakePref;
     private boolean brightPref;
     private String sortPref;
     private boolean fontPref;
-    private boolean lhandPref; // true for lefthand mode of counting screen
+    private boolean lhandPref;       // true for left hand mode of counting screen
     private boolean buttonSoundPref;
     private boolean buttonVibPref;
-    private String buttonSound;
     private String buttonSoundMinus;
-    private boolean metaPref;      // option for reverse geocoding
+    private boolean metaPref;        // option for reverse geocoding
     private String emailString = ""; // mail address for OSM query
     private String specCode = "";
 
-    // data sources
+    // Data sources
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
-
-    private int i_Id = 0; // Individuals id
-    private String spec_name;
-    private int specCnt;
 
     private Ringtone r;
     private VibratorManager vibratorManager;
@@ -143,17 +142,35 @@ public class CountingActivity
     {
         super.onCreate(savedInstanceState);
 
-        Context context = this.getApplicationContext();
+        if (MyDebug.dLOG) Log.i(TAG, "145, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
-        setPrefVariables();
+        setPrefVariables(); // set all stored preferences into their variables
+
+        // get parameters from WelcomeActivity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            latitude = extras.getDouble("Latitude");
+            longitude = extras.getDouble("Longitude");
+            height = extras.getDouble("Height");
+        }
 
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
 
-        // if left-handed counting page
+        // Set full brightness of screen
+        if (brightPref)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.screenBrightness = 1.0f;
+            getWindow().setAttributes(params);
+        }
+
+        // Distinguish between left-/ right-handed counting page layout
         if (lhandPref)
         {
             setContentView(R.layout.activity_counting_lh);
@@ -173,45 +190,26 @@ public class CountingActivity
             head_area2 = findViewById(R.id.countHead2Layout);
         }
 
-        // Set full brightness of screen
-        if (brightPref)
-        {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.screenBrightness = 1.0f;
-            getWindow().setAttributes(params);
-        }
-
-        if (awakePref)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        try
-        {
-            assert mPowerManager != null;
-            if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
-                mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "TourCount:WAKELOCK");
-            enableProximitySensor();
-        } catch (NullPointerException e)
-        {
-            // do nothing
-        }
+        PowerManager mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK))
+            mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+                "TourCount:WAKELOCK");
+        else
+            mProximityWakeLock = null;
 
         // new onBackPressed logic
-        if (Build.VERSION.SDK_INT >= 33)
+        OnBackPressedCallback callback = new OnBackPressedCallback(true)
         {
-            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true)
-                {
-                    @Override
-                    public void handleOnBackPressed()
-                    {
-                        NavUtils.navigateUpFromSameTask(CountingActivity.this);
-                    }
-                }
-            );
-        }
+            @Override
+            public void handleOnBackPressed()
+            {
+                if (MyDebug.dLOG) Log.i(TAG, "206, handleOnBackPressed");
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
-    // End of onCreate
+    // End of onCreate()
 
     // Load preferences at start, and also when a change is detected
     private void setPrefVariables()
@@ -223,7 +221,6 @@ public class CountingActivity
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
-        buttonSound = prefs.getString("button_sound", null);   // use standard button sound
         buttonSoundMinus = prefs.getString("button_sound_minus", null); //use deeper button sound
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
@@ -231,23 +228,19 @@ public class CountingActivity
         iid = prefs.getInt("count_id", 1);                      // species id
     }
 
+    @SuppressLint("DiscouragedApi")
     @Override
     protected void onResume()
     {
         super.onResume();
 
+        if (MyDebug.dLOG) Log.i(TAG, "237, onResume");
+
+        enableProximitySensor();
+
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         setPrefVariables(); // set prefs into their variables
-
-        // get parameters from WelcomeActivity
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-            latitude = extras.getDouble("Latitude");
-            longitude = extras.getDouble("Longitude");
-            height = extras.getDouble("Height");
-        }
 
         // Set full brightness of screen
         if (brightPref)
@@ -257,8 +250,6 @@ public class CountingActivity
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
-
-        enableProximitySensor();
 
         // Get location with permissions check
         locationPermissionDispatcherMode = 1;
@@ -270,63 +261,87 @@ public class CountingActivity
         notes_area1.removeAllViews();
         head_area2.removeAllViews();
 
-        // setup the data sources
+        // Setup the data sources
         sectionDataSource.open();
         countDataSource.open();
         individualsDataSource.open();
 
-        // load the data
-        // sections
+        // Load the section data
         try
         {
             section = sectionDataSource.getSection();
         } catch (CursorIndexOutOfBoundsException e)
         {
-            if (MyDebug.LOG) Log.e(TAG, "285, Problem loading section: " + e);
             showSnackbarRed(getString(R.string.getHelp));
             finish();
         }
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
+        // Load and show the data, set title in ActionBar
+        try
+        {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e)
+        {
+            // nothing
+        }
 
         String[] idArray;
         String[] nameArray;
         String[] nameArrayG;
         String[] codeArray;
-        Integer[] imageArray;
 
         switch (sortPref)
         {
-        case "names_alpha" ->
-        {
-            idArray = countDataSource.getAllIdsSrtName();
-            nameArray = countDataSource.getAllStringsSrtName("name");
-            codeArray = countDataSource.getAllStringsSrtName("code");
-            nameArrayG = countDataSource.getAllStringsSrtName("name_g");
-            imageArray = countDataSource.getAllImagesSrtName();
+            case "names_alpha" ->
+            {
+                idArray = countDataSource.getAllIdsSrtName();
+                nameArray = countDataSource.getAllStringsSrtName("name");
+                codeArray = countDataSource.getAllStringsSrtName("code");
+                nameArrayG = countDataSource.getAllStringsSrtName("name_g");
+            }
+
+            case "codes" ->
+            {
+                idArray = countDataSource.getAllIdsSrtCode();
+                nameArray = countDataSource.getAllStringsSrtCode("name");
+                codeArray = countDataSource.getAllStringsSrtCode("code");
+                nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
+            }
+
+            default ->
+            {
+                idArray = countDataSource.getAllIds();
+                nameArray = countDataSource.getAllStrings("name");
+                codeArray = countDataSource.getAllStrings("code");
+                nameArrayG = countDataSource.getAllStrings("name_g");
+            }
         }
-        case "codes" ->
+
+        String ucode, rName;
+        int resId, resId0;
+        int z = 0;
+        resId0 = getResources().getIdentifier("p00000", "drawable",
+            this.getPackageName());
+
+        Integer[] imageArray = new Integer[codeArray.length];
+        for (String code : codeArray)
         {
-            idArray = countDataSource.getAllIdsSrtCode();
-            nameArray = countDataSource.getAllStringsSrtCode("name");
-            codeArray = countDataSource.getAllStringsSrtCode("code");
-            nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
-            imageArray = countDataSource.getAllImagesSrtCode();
-        }
-        default ->
-        {
-            idArray = countDataSource.getAllIds();
-            nameArray = countDataSource.getAllStrings("name");
-            codeArray = countDataSource.getAllStrings("code");
-            nameArrayG = countDataSource.getAllStrings("name_g");
-            imageArray = countDataSource.getAllImages();
-        }
+            ucode = code;
+            rName = "p" + ucode;
+            resId = getResources().getIdentifier(rName, "drawable",
+                this.getPackageName());
+            if (resId != 0)
+                imageArray[z] = resId;
+            else
+                imageArray[z] = resId0;
+            z++;
         }
 
         countingWidgets = new ArrayList<>();
         countingWidgetsLH = new ArrayList<>();
 
-        // display list notes
+        // Display list notes
         if (section.notes != null)
         {
             if (!section.notes.isEmpty())
@@ -343,13 +358,13 @@ public class CountingActivity
         else
             vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        // 2. Head1, species selection spinner
+        // Show head1: Species with spinner to select
         if (lhandPref) // if left-handed counting page
             spinner = findViewById(R.id.countHead1SpinnerLH);
         else
             spinner = findViewById(R.id.countHead1Spinner);
 
-        //   get itemPosition of added species by specCode from sharedPreference
+        // Get itemPosition of added species by specCode from sharedPreference
         if (!Objects.equals(prefs.getString("new_spec_code", ""), ""))
         {
             specCode = prefs.getString("new_spec_code", "");
@@ -373,6 +388,7 @@ public class CountingActivity
             specCode = "";
         }
 
+        // Set part of counting screen
         CountingWidgetHead1 adapter = new CountingWidgetHead1(this,
             idArray, nameArray, codeArray, imageArray, nameArrayG);
         spinner.setAdapter(adapter);
@@ -380,11 +396,9 @@ public class CountingActivity
         spinnerListener();
 
         if (awakePref)
-        {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
     }
-    // end of onResume
+    // End of onResume()
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -399,32 +413,39 @@ public class CountingActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.menuDelSpecies)
-        {
-            disableProximitySensor();
-
-            Intent intent = new Intent(CountingActivity.this, DelSpeciesActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        }
 
         if (id == R.id.menuAddSpecies)
         {
             disableProximitySensor();
 
-            // A Snackbar here comes incomplete
+            // Use toast as a Snackbar here comes incomplete
             Toast.makeText(this, getString(R.string.wait), Toast.LENGTH_SHORT)
                 .show();
 
-            // Trick: Pause for 100 msec to show toast
-            Intent intent = new Intent(CountingActivity.this, AddSpeciesActivity.class);
+            Intent intent = new Intent(CountingActivity.this,
+                AddSpeciesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Trick: Pause for 100 msec to show toast
+            mHandler.postDelayed(() ->
+                startActivity(intent), 100);
+            return true;
+        }
+
+        if (id == R.id.menuDelSpecies)
+        {
+            disableProximitySensor();
+
+            Toast.makeText(this, getString(R.string.wait),
+                Toast.LENGTH_SHORT).show(); // here, a Snackbar instead comes incomplete
+
+            Intent intent = new Intent(CountingActivity.this,
+                DelSpeciesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
                 startActivity(intent), 100);
             return true;
@@ -434,16 +455,16 @@ public class CountingActivity
         {
             disableProximitySensor();
 
-            Toast.makeText(getApplicationContext(), getString(R.string.wait),
+            Toast.makeText(this, getString(R.string.wait),
                 Toast.LENGTH_SHORT).show(); // here, a Snackbar instead comes incomplete
 
-            // pause for 100 msec to show toast
+            Intent intent = new Intent(CountingActivity.this,
+                EditSpecListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
-            {
-                Intent intent = new Intent(CountingActivity.this,
-                    EditSpecListActivity.class);
-                startActivity(intent);
-            }, 100);
+                startActivity(intent), 100);
             return true;
         }
         else if (id == R.id.menuTakePhoto)
@@ -477,34 +498,23 @@ public class CountingActivity
         {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, section.notes);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, section.name);
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "TourCount");
+            sendIntent.putExtra(Intent.EXTRA_TITLE, "Message of TourCount");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, section.name + ": ");
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    } // end of onOptionsItemSelected
+    }
+    // End of onOptionsItemSelected()
 
     // Edit count options by CountOptionsActivity by button in widget_counting_head2.xml
     public void editOptions(View view)
     {
-        disableProximitySensor();
-
         Intent intent = new Intent(CountingActivity.this, CountOptionsActivity.class);
         intent.putExtra("count_id", iid);
         startActivity(intent);
-    }
-
-    /**
-     * @noinspection deprecation
-     */ // puts up function to back button
-    @Override
-    public void onBackPressed()
-    {
-        NavUtils.navigateUpFromSameTask(this);
-        super.onBackPressed();
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
@@ -516,6 +526,8 @@ public class CountingActivity
     protected void onPause()
     {
         super.onPause();
+
+        if (MyDebug.dLOG) Log.i(TAG, "530, onPause");
 
         disableProximitySensor();
 
@@ -540,16 +552,28 @@ public class CountingActivity
         {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+
         prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
-    // end of onPause()
+    // End of onPause()
 
     @Override
     public void onStop()
     {
         super.onStop();
+
+        if (MyDebug.dLOG) Log.i(TAG, "565, onStop");
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        if (MyDebug.dLOG) Log.i(TAG, "573, onDestroy");
+
         if (r != null)
-            r.stop();
+            r.stop(); // stop media player
     }
 
     // Part of permission handling
@@ -563,16 +587,16 @@ public class CountingActivity
         {
             switch (locationPermissionDispatcherMode)
             {
-            case 1 -> // get location
-                getLoc();
-            case 2 -> // stop location service
-            {
-                if (locServiceOn)
+                case 1 -> // get location
+                    getLoc();
+                case 2 -> // stop location service
                 {
-                    locationService.stopListener();
-                    locServiceOn = false;
+                    if (locServiceOn)
+                    {
+                        locationService.stopListener();
+                        locServiceOn = false;
+                    }
                 }
-            }
             }
         }
         else
@@ -602,13 +626,13 @@ public class CountingActivity
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            // Trial with WorkManager
+            // Using WorkManager
             WorkRequest retrieveAddrWorkRequest =
                 new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
                     .setInputData(new Data.Builder()
-                        .putString("URL_STRING", urlString)
-                        .build()
-                    )
+                            .putString("URL_STRING", urlString)
+                            .build()
+                                 )
                     .build();
 
             WorkManager
@@ -664,14 +688,14 @@ public class CountingActivity
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    if (MyDebug.LOG)
-                        Log.d(TAG, "668, SpinnerListener, count id: " + count.id
+                    if (MyDebug.dLOG)
+                        Log.d(TAG, "692, SpinnerListener, count id: " + count.id
                             + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.LOG) Log.e(TAG, "674, SpinnerListener: " + e);
+                    if (MyDebug.dLOG) Log.e(TAG, "698, SpinnerListener: " + e);
                 }
             }
 
@@ -686,6 +710,9 @@ public class CountingActivity
     // Show rest of widgets for counting screen
     private void countingScreen(Count count)
     {
+        if (MyDebug.dLOG) Log.i(TAG, "713, countingScreen");
+
+        // 1. Species line is set by CountingWidgetHead1 in onResume, Spinner
         // 2. Head2 with species notes and edit button
         CountingWidgetHead2 head2 = new CountingWidgetHead2(this, null);
         head2.setCountHead2(count);
@@ -708,14 +735,38 @@ public class CountingActivity
             count_area.addView(widgeti);
         }
     }
+    // End of countingScreen
+
+    // Get the referenced counting widgets
+    // CountingWidget (right-handed)
+    private CountingWidget getCountFromId(int id)
+    {
+        for (CountingWidget widget : countingWidgets)
+        {
+            assert widget.count != null;
+            if (widget.count.id == id)
+                return widget;
+        }
+        return null;
+    }
+
+    // CountingWidget (left-handed)
+    private CountingWidgetLH getCountFromIdLH(int id)
+    {
+        for (CountingWidgetLH widget : countingWidgetsLH)
+        {
+            assert widget.count != null;
+            if (widget.count.id == id)
+                return widget;
+        }
+        return null;
+    }
 
     // The functions below are triggered by the count buttons
-    // and start EditIndividualActivity
+    // on the righthand/lefthand (LH) views
+    // and start EditIndividualActivity when up-counting
     public void countUpf1i(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -724,7 +775,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf1i();
 
-        disableProximitySensor();
+        disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
         assert widget.count != null;
@@ -742,9 +793,6 @@ public class CountingActivity
 
     public void countUpLHf1i(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         int iAtt = 1;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -850,9 +898,6 @@ public class CountingActivity
     // starts EditIndividualActivity
     public void countUpf2i(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -879,9 +924,6 @@ public class CountingActivity
 
     public void countUpLHf2i(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         int iAtt = 2;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -984,9 +1026,6 @@ public class CountingActivity
 
     public void countUpf3i(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1013,9 +1052,6 @@ public class CountingActivity
 
     public void countUpLHf3i(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         int iAtt = 3;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1118,9 +1154,6 @@ public class CountingActivity
 
     public void countUppi(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1147,9 +1180,6 @@ public class CountingActivity
 
     public void countUpLHpi(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         int iAtt = 4;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1252,9 +1282,6 @@ public class CountingActivity
 
     public void countUpli(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1281,9 +1308,6 @@ public class CountingActivity
 
     public void countUpLHli(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         int iAtt = 5;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1386,9 +1410,6 @@ public class CountingActivity
 
     public void countUpei(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -1415,9 +1436,6 @@ public class CountingActivity
 
     public void countUpLHei(View view)
     {
-        soundButtonSound();
-        buttonVib();
-
         int iAtt = 6;
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
@@ -1519,32 +1537,9 @@ public class CountingActivity
             }
         }
     }
+    // End of counters
 
-    // Get a counting widget (with reference to the associated count) from the list of widgets.
-    private CountingWidget getCountFromId(int id)
-    {
-        for (CountingWidget widget : countingWidgets)
-        {
-            assert widget.count != null;
-            if (widget.count.id == id)
-                return widget;
-        }
-        return null;
-    }
-
-    // Get a left-handed counting widget
-    private CountingWidgetLH getCountFromIdLH(int id)
-    {
-        for (CountingWidgetLH widget : countingWidgetsLH)
-        {
-            assert widget.count != null;
-            if (widget.count.id == id)
-                return widget;
-        }
-        return null;
-    }
-
-    // delete individual for count_id
+    // Delete individual for count_id
     private void deleteIndividual(int id)
     {
         System.out.println(getString(R.string.indivdel) + " " + id);
@@ -1575,28 +1570,7 @@ public class CountingActivity
         return dform.format(date);
     }
 
-    private void soundButtonSound()
-    {
-        if (buttonSoundPref)
-        {
-            try
-            {
-                Uri notification;
-                if (isNotBlank(buttonSound) && buttonSound != null)
-                    notification = Uri.parse(buttonSound);
-                else
-                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                r.play();
-                mHandler.postDelayed(r::stop, 300);
-            } catch (Exception e)
-            {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "1595, could not play button sound.", e);
-            }
-        }
-    }
-
+    // If the user has set the preference for button sound, then sound it here.
     private void soundButtonSoundMinus()
     {
         if (buttonSoundPref)
@@ -1608,40 +1582,13 @@ public class CountingActivity
                     notification = Uri.parse(buttonSoundMinus);
                 else
                     notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r = RingtoneManager.getRingtone(this, notification);
                 r.play();
-                mHandler.postDelayed(r::stop, 400);
+                mHandler.postDelayed(r::stop, 420);
             } catch (Exception e)
             {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "1617, could not play button sound.", e);
-            }
-        }
-    }
-
-    private void buttonVib()
-    {
-        if (buttonVibPref)
-        {
-            try
-            {
-                if (Build.VERSION.SDK_INT >= 31)
-                {
-                    vibratorManager.getDefaultVibrator();
-                    vibratorManager.cancel();
-                }
-                else
-                {
-                    if (Build.VERSION.SDK_INT >= 26)
-                        vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-                    else
-                        vibrator.vibrate(100);
-                    vibrator.cancel();
-                }
-            } catch (Exception e)
-            {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "1644, could not vibrate.", e);
+                if (MyDebug.dLOG)
+                    Log.e(TAG, "1591, could not play button sound.", e);
             }
         }
     }
@@ -1667,26 +1614,28 @@ public class CountingActivity
                 }
             } catch (Exception e)
             {
-                if (MyDebug.LOG)
-                    Log.e(TAG, "1671, could not vibrate.", e);
+                if (MyDebug.dLOG)
+                    Log.e(TAG, "1618, could not vibrate.", e);
             }
         }
     }
 
+    // Enable ProximitySensor for 30 minutes
     private void enableProximitySensor()
     {
         if (mProximityWakeLock == null)
             return;
 
         if (!mProximityWakeLock.isHeld())
-            mProximityWakeLock.acquire(30 * 60 * 1000L /*30 minutes*/);
+            mProximityWakeLock.acquire(30 * 60 * 1000L); // 30 minutes
     }
 
-    @SuppressLint("NewApi")
+    // Switch off ProximitySensor
     private void disableProximitySensor()
     {
         if (mProximityWakeLock == null)
             return;
+
         if (mProximityWakeLock.isHeld())
         {
             int flags = PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY;
@@ -1701,6 +1650,7 @@ public class CountingActivity
             view = findViewById(R.id.countingScreenLH);
         else
             view = findViewById(R.id.counting_screen);
+
         Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
         sB.setActionTextColor(Color.RED);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
@@ -1732,6 +1682,7 @@ public class CountingActivity
         int strLen;
         if (cs == null || (strLen = cs.length()) == 0)
             return true;
+
         for (int i = 0; i < strLen; i++)
         {
             if (!Character.isWhitespace(cs.charAt(i)))

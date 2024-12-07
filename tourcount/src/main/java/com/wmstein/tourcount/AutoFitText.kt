@@ -32,9 +32,9 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
     AppCompatTextView(context, attrs) {
     /**
      * Scaling factor for fonts. It's a method of calculating independently (!) from the actual
-     * density of the screen that is used so users have the same experience on different devices. We
-     * will use DisplayMetrics in the Constructor to get the value of the factor and then calculate
-     * SP from pixel values
+     * density of the screen that is used so users have the same experience on different devices.
+     * We will use DisplayMetrics in the Constructor to get the value of the factor and then
+     * calculate SP from pixel values
      */
     private val mScaledDensityFactor: Float
 

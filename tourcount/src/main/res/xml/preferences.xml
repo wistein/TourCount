@@ -12,7 +12,7 @@
             android:defaultValue="default"
             android:entryValues="@array/pref_bg_values"
             android:icon="@drawable/baseline_wallpaper_48"
-            android:key="pref_back"
+            android:key="pref_backgr"
             app:useSimpleSummaryProvider="true"
             android:dialogTitle="@string/pref_bg_summ"
             android:title="@string/pref_bg"/>

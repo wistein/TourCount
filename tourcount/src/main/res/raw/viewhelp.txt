@@ -40,7 +40,7 @@ $ 9
   !
   ! Before initial use you should adapt the settings to your liking (-> 4. Further Functions). 
   _ 
-  ! Then you should edit the provided species list. To do this, use the “Add Species”, “Delete Species” or “Edit Terms” buttons in the header of the counting page. Under “Add Species”, further species can be added from the larger integrated list of European species using the checkboxes.
+  ! Then you should edit the provided species list. To do this, use the “Add Species”, “Remove Species” or “Edit Terms” buttons in the header of the counting page. Under “Add Species”, further species can be added from the larger integrated list of European species using the checkboxes.
   _ 
   ! At the end of this list you may select a placeholder for an unknown species (NN). Afterwards this could be edited by entering its real scientific name, common name and code (five-digit with leading zeros, see „List of coded Butterflies.pdf“.
    _
@@ -60,7 +60,7 @@ $ 9
   _ 
   ! When going back from the "Edit Terms" page the changes will be stored.
   _
-  ! On the “Add species” and “Remove species” pages, the selection of species can be made easier by entering the first 2 letters of the scientific name. Here, the changes must be explicitly accepted using the “+” or delete button respectively.
+  ! On the “Add species” and “Remove species” pages, the selection of species can be made easier by entering the first 2 letters of the scientific name. Here, the changes must be explicitly accepted using the “+” or remove button respectively.
   _ 
   ! The list can be changed or supplemented anytime afterwards.
   _ 
@@ -92,11 +92,11 @@ $ 8
   ! Location may be edited and condition rating (state 0-6 with 0 = undefined, 1 = very good) as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
   ! The (-)-Buttons allow for corrections. Mind that the (-)-Buttons reduce the individuals list in a last-in-first-out-mode for the corresponding species category. 
   _ 
-  ! The Plus, Delete and Pencil buttons in the action bar of the counting page open the respective counting list editing pages for editing the list of species. 
+  ! The Plus, Remove and Pencil buttons in the action bar of the counting page open the respective counting list editing pages for editing the list of species.
   _ 
   ! The Pencil-Button on top of the counting field opens the species editing page that lets you add a remark for each species that will be shown aside of it. 
   _ 
-  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by clicking the Save or Delete button if the page has one. 
+  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by clicking the Save or Remove button if the page has one.
   ! Before finishing TourCount after a tour you should complete the meta data and save the current countings by exporting the internal DB (->tourcount_yyyy-mm-dd_hhmmss.db).
   _ 
   ! The "Counting Results" page can be opened on the starting page with "Show Results" or the Eye-symbol in the app-bar. It shows all the registered data orderly arranged.
@@ -131,7 +131,7 @@ $ 7
   ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
   ! (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
   _ 
-  ! "Export current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".
+  ! "Export Current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".
   _
   ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "tourcount_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
   ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid).

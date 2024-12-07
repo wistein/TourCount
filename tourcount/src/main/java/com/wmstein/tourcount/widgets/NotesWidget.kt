@@ -2,11 +2,9 @@ package com.wmstein.tourcount.widgets
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.wmstein.tourcount.MyDebug
 import com.wmstein.tourcount.R
 import java.util.Objects
 
@@ -17,6 +15,7 @@ import java.util.Objects
  * Adopted for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2024-07-11
+ * last edited on 2024-10-21
  */
 class NotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val textView: TextView
@@ -33,16 +32,10 @@ class NotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context
 
     fun setFont(large: Boolean) {
         if (large) {
-            if (MyDebug.LOG) Log.d(TAG, "Setzt große Schrift.")
             textView.textSize = 16f
         } else {
-            if (MyDebug.LOG) Log.d(TAG, "Setzt kleine Schrift.")
             textView.textSize = 14f
         }
-    }
-
-    companion object {
-        private const val TAG = "TourCntNotesWidget"
     }
 
 }

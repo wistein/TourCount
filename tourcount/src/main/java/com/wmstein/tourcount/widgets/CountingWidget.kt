@@ -3,6 +3,7 @@
  */
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -20,8 +21,9 @@ import java.util.Objects
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-05-14
+ * last edited on 2024-11-25
  */
+@SuppressLint("SetTextI18n")
 class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val namef1i: TextView
     private val namef2i: TextView
@@ -39,8 +41,9 @@ class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(co
     @JvmField
     var count: Count? = null
 
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_i, this, true)
         namef1i = findViewById(R.id.f1iName)
         namef2i = findViewById(R.id.f2iName)

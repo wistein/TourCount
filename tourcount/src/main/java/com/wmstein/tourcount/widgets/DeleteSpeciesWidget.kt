@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.wmstein.tourcount.R
-import com.wmstein.tourcount.TourCountApplication
 import com.wmstein.tourcount.database.Count
 import java.io.Serializable
 import java.util.Objects
@@ -18,7 +18,7 @@ import java.util.Objects
  * shows list of selectable species with name, code, picture and add checkbox
  *
  * Created for TourCount by wmstein on 2024-08-22,
- * last edited on 2024-08-23
+ * last edited on 2024-11-25
  */
 class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -38,10 +38,10 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
     private val specPic: ImageView
     private val markButton: CheckBox
 
-    val inflater: LayoutInflater
+    val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
+            as LayoutInflater
 
     init {
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_delete_spec, this, true)
         specName = findViewById(R.id.spName)
         specNameG = findViewById(R.id.spNameG)
@@ -69,12 +69,11 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
         markButton.tag = id.toInt() - 1
     }
 
-    // get code from Count to set picture resource
+    // Set picture of species
+    @SuppressLint("DiscouragedApi")
     fun setPSpec(spec: Count) {
-        val rname = "p" + spec.code // species picture resource name
-        val tourCountApp = TourCountApplication()
-        val resId = tourCountApp.getResId(rname)
-
+        val rName = "p" + spec.code // species picture resource name
+        val resId = resources.getIdentifier(rName, "drawable", context.packageName)
         if (resId != 0) {
             specPic.setImageResource(resId)
         }
@@ -84,7 +83,7 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
         return specCode.text.toString()
     }
 
-    // get state of delete checkbox
+    // Get state of delete checkbox
     fun getMarkSpec(): Boolean {
         val checked: Boolean
         if (markButton.isChecked)

@@ -1,10 +1,17 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
+Neu in Version 3.6.0:
+- Editieren von Arten in der Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
+- Bei Beenden der App wird sie komplett aus dem Arbeitsspeicher entfernt
+- Code-Verbesserungen
+- Bug-Fixe
+- Doku überarbeitet
+
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
 - Datenbanken beziehen sich auf eine "Tour" und können innerhalb der App individuell erstellt und angepasst werden bezüglich Meta-Daten und zu erwartenden Arten.
-- Die App enthält eine vorbereitete Datenbank mit den häufigsten zu erwartenden europäischen Arten als Ausgangspunkt.
-- Getrennte Zähler für ♂♀, ♂, ♀, Puppe, Raupe oder Ei.
+- Die App enthält eine interne Liste mit vielen europäischen Arten und hat als Ausgangspunkt zur direkten Nutzung eine vorbereitete Datenbank mit den häufigsten zu erwartenden europäischen Arten.
+- Getrennte Zähler für ♂-♀-unbestimmt, ♂, ♀, Puppe, Raupe oder Ei.
 - Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
 - Ergebnisseite mit aufbereiteter Darstellung zur Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung unter www.falterfunde.de.
 - Das Ergebnis kann als SQLite-Datei oder im CSV-Format ausgegeben werden (u. a. zwecks Transfer und Weiterverwendung in einem Spreadsheet-Programm auf einem PC.)
@@ -15,7 +22,7 @@ Funktionen:
 - Zählerseite mit Scroll-Down-Liste zur Artauswahl.
 - Individuelle Spezies-Daten können pro Sichtung editiert werden (z.B. Zustand, Bemerkung oder größere Anzahl).
 - Die App fügt automatisch Datum, Zeit, Koordinaten und Höhe über NN ein sowie Ortsdaten durch inverse OSM-Geocodierung, wenn GPS und Internet funktionieren.
-- Artenlisteneditor (Hinzufügen, Löschen und Editieren) der Arten.
+- Artenlistenbearbeitung (Hinzufügen, Löschen und Editieren mit eingrenzender Vorauswahl) der Arten.
 - Die Ergebnisseite zeigt Meta-Daten, Bemerkungen, Summen und Zählergebnisse pro Art.
 
 Voraussetzungen

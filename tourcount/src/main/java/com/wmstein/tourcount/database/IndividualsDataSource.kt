@@ -6,17 +6,15 @@ import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
-import com.wmstein.tourcount.MyDebug
 
 /********************************************************************
  * Class IndividualsDataSource provides methods for table Individuals
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-08-23
+ * last edited on 2024-10-21
  */
-class IndividualsDataSource(context: Context?) {
+class IndividualsDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
     private val dbHandler: DbHelper
@@ -41,7 +39,7 @@ class IndividualsDataSource(context: Context?) {
     )
 
     init {
-        dbHandler = DbHelper(context!!)
+        dbHandler = DbHelper(context)
     }
 
     @Throws(SQLException::class)
@@ -179,7 +177,6 @@ class IndividualsDataSource(context: Context?) {
         // check for entries in individuals table, which are not there when bulk counts are entered
         return if (!cursor.isAfterLast) {
             individuals = cursorToIndividuals(cursor)
-            if (MyDebug.LOG) Log.e("IndividDataSource: ", "178, i_Id = " + individuals.id)
             cursor.close()
             individuals.id
         } else {

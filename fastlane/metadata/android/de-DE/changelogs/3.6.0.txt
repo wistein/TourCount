@@ -1,0 +1,6 @@
+Version 3.6.0 (07.12.2024)
+- Option der Vorauswahl mit 2 Anfangsbuchstaben auch für das Editieren von Arten in der Zählliste
+- Bei Beenden der App wird sie komplett aus dem Arbeitsspeicher entfernt
+- Code-Verbesserungen
+- Bug-Fixe
+- Doku überarbeitet

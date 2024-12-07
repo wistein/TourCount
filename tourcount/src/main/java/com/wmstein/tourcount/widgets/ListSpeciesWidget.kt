@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -7,7 +8,6 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.wmstein.tourcount.R
-import com.wmstein.tourcount.TourCountApplication
 import com.wmstein.tourcount.database.Count
 import java.util.Objects
 
@@ -50,15 +50,14 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
         picSpecies = findViewById(R.id.picSpecies)
     }
 
+    @SuppressLint("DiscouragedApi", "SetTextI18n")
     fun setCount(spec: Count) {
-        val rname = "p" + spec.code // species picture resource name
-
-        // make instance of class TransektCountApplication to reference non-static method 
-        val tourCountApp = TourCountApplication()
-        val resId = tourCountApp.getResId(rname)
+        val rName = "p" + spec.code // species picture resource name
+        val resId = resources.getIdentifier(rName, "drawable", context.packageName)
         if (resId != 0) {
             picSpecies.setImageResource(resId)
         }
+
         val spCount = (spec.count_f1i + spec.count_f2i + spec.count_f3i + spec.count_pi
                 + spec.count_li + spec.count_ei)
         txtSpecName.text = spec.name
@@ -69,6 +68,7 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
                 txtSpecNameG.text = ""
             }
         }
+
         specCount.text = spCount.toString()
         if (spec.count_f1i > 0) specCountf1i.text = spec.count_f1i.toString()
         if (spec.count_f2i > 0) specCountf2i.text = spec.count_f2i.toString()

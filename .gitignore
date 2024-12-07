@@ -1,3 +1,4 @@
+.gitignore
 /local.properties
 /apk/debug/
 /apk/release/
@@ -5,3 +6,5 @@
 /.gradle/
 /tourcount/build/
 /.kotlin/
+build
+

@@ -61,8 +61,8 @@ public class ViewHelp
         } catch (NameNotFoundException e)
         {
             thisVersion = NO_VERSION;
-            if (MyDebug.LOG)
-                Log.e(TAG, "66, Could not get version name from manifest!", e);
+            if (MyDebug.dLOG)
+                Log.e(TAG, "65, Could not get version name from manifest!", e);
         }
     }
 
@@ -176,7 +176,7 @@ public class ViewHelp
             br.close();
         } catch (IOException e)
         {
-            if (MyDebug.LOG)
+            if (MyDebug.dLOG)
                 Log.e(TAG, "181, could not read help text.", e);
         }
 

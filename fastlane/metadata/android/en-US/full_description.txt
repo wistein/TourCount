@@ -1,10 +1,17 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
+New in Version  3.6.0:
+- Option to preselect species names by initial letters for editing them in the counting list
+- App gets completely removed from memory when finished
+- Code improvements
+- Bug fixes
+- Docs updated
+
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.
 - Databases can be individually created and adapted within the app regarding meta data and expected butterfly species.
-- The app comes with a prepared basic database with the most common species in Europe as a starting point.
-- Separate counters for ♂ or ♀, ♂, ♀, pupa, larva or egg.
+- The app has an internal pool of many European species and comes with a prepared basic database with the most common species in Europe as a starting point for direct use.
+- Separate counters for ♂-♀-indeterminate, ♂, ♀, pupa, larva or egg.
 - You may use an individual species list per region.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
 - Results may be exported in SQLite- or CSV-format (for transfer to a PC for your own processing, e.g. in a spreadsheet.)
@@ -15,7 +22,7 @@ Functions:
 - Counter page with scroll-down list for species selection
 - Editor for individual species data of a count (e.g. state, remark or bulk count entry).
 - The app automatically inserts date, time, coordinates and height as well as location data by reverse OSM-geocoding provided that GPS and internet are accessible.
-- The app contains an editor to add, delete or edit the species for the current species list.
+- The app provides functions to add, delete or edit the species for the current species list.
 - The results page shows metadata, notes, totals and counting results per species.
 
 Prerequisites:

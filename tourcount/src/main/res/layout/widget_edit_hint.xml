@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     widget_edit_hint.xml
-    used by HintWidget.kt
+    used by HintEditWidget.kt
     Last edited on 2024-10-14
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginEnd="5dp"
     android:layout_marginStart="5dp"
     android:layout_marginTop="2dp"
@@ -16,15 +17,41 @@
 
     <TextView
         android:id="@+id/hint_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical|start"
-        android:paddingTop="2dp"
         android:paddingStart="5dp"
-        android:paddingBottom="2dp"
+        android:layout_weight="0.6"
         android:text="@string/presentSpecs"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#0BFFFF"
         android:textSize="17sp"/>
+
+    <EditText
+        android:id="@+id/searchE"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:hint="@string/hintSearch"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/buttonSearchE"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:onClick="getInitialChars"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_search_black_24dp"
+        tools:ignore="ContentDescription,UsingOnClickInXml" />
 </LinearLayout>

@@ -1,21 +1,24 @@
 package com.wmstein.egm
 
 import android.content.Context
+
 import com.wmstein.tourcount.R
+
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.LineNumberReader
 import java.nio.charset.StandardCharsets
 import java.util.StringTokenizer
+
 import kotlin.math.atan
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-/**
+/******************
  *    Derived from:
  *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ *    https://geotools.org
  *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
@@ -29,20 +32,12 @@ import kotlin.math.sqrt
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  *
- *    This file is derived from NGA/NASA software available for unlimited distribution.
- *    See http://earth-info.nima.mil/GandG/wgs84/gravitymod/.
+ *    The original file is derived from NGA/NASA software available for unlimited distribution.
+ *    See https://earth-info.nima.mil/GandG/wgs84/gravitymod/.
  *
  * Transforms vertical coordinates using coefficients from the
- * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
+ * https://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
  * Earth Gravitational Model.
- *
- * Aknowledgement
- * This class is an adaption of Fortran code
- * http://earth-info.nga.mil/GandG/wgs84/gravitymod/wgs84_180/clenqt.for
- * from the National Geospatial-Intelligence Agency and available in public domain.
- * The normalized geopotential coefficients file bundled in this module is an adaptation of
- * http://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/egm180.nor
- * file, with some spaces trimmed.
  *
  * @author Pierre Cardinal
  * @author Martin Desruisseaux
@@ -52,11 +47,12 @@ import kotlin.math.sqrt
  * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
  * last edit in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edit on 2024-10-01
+ * last edit on 2024-11-19
  */
 // Maximum degree and order attained.
 class EarthGravitationalModel @JvmOverloads constructor(
     private val nmax: Int = DEFAULT_ORDER) : VerticalTransform() {
+
     // WGS 84 semi-major axis.
     private val semiMajor = 6378137.0
 

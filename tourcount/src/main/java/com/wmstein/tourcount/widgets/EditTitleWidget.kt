@@ -14,64 +14,65 @@ import java.util.Objects
  * Adopted by wmstein for TourCount 2016-02-18,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-10
+ * last edited on 2024-11-25
  */
 class EditTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
-    private val widget_title: TextView
-    private val widget_name: EditText
-    private val widget_oname1: TextView
-    private val widget_oname2: EditText
-    private val widget_onotes1: TextView
-    private val widget_onotes2: EditText
+    private val widgetEditTitle: TextView
+    private val widgetEditName: EditText
+    private val widgetEditOName1: TextView
+    private val widgetEditOName2: EditText
+    private val widgetEditONotes1: TextView
+    private val widgetEditONotes2: EditText
+
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_title, this, true)
-        widget_title = findViewById(R.id.widgetTitle)
-        widget_name = findViewById(R.id.widgetName)
+        widgetEditTitle = findViewById(R.id.widgetTitle)
+        widgetEditName = findViewById(R.id.widgetName)
 
-        widget_oname1 = findViewById(R.id.widgetOName1)
-        widget_oname2 = findViewById(R.id.widgetOName2)
+        widgetEditOName1 = findViewById(R.id.widgetOName1)
+        widgetEditOName2 = findViewById(R.id.widgetOName2)
 
-        widget_onotes1 = findViewById(R.id.widgetONotes1)
-        widget_onotes2 = findViewById(R.id.widgetONotes2)
+        widgetEditONotes1 = findViewById(R.id.widgetONotes1)
+        widgetEditONotes2 = findViewById(R.id.widgetONotes2)
     }
 
     // List name headline
     fun setWidgetTitle(title: String?) {
-        widget_title.text = title
+        widgetEditTitle.text = title
     }
 
     // List name edittext
     var widgetName: String?
-        get() = widget_name.text.toString()
+        get() = widgetEditName.text.toString()
         set(name) {
-            widget_name.setText(name)
+            widgetEditName.setText(name)
         }
 
     // Observer name headline
     fun setWidgetOName1(title: String?) {
-        widget_oname1.text = title
+        widgetEditOName1.text = title
     }
 
     var widgetOName2: String?
-        get() = widget_oname2.text.toString()
+        get() = widgetEditOName2.text.toString()
         set(name) {
-            widget_oname2.setText(name)
+            widgetEditOName2.setText(name)
         }
 
     // notes
     fun setWidgetONotes1(title: String?) {
-        widget_onotes1.text = title
+        widgetEditONotes1.text = title
     }
 
     fun setHintN(hint: String?) {
-        widget_onotes2.hint = hint
+        widgetEditONotes2.hint = hint
     }
 
     var widgetONotes2: String?
-        get() = widget_onotes2.text.toString()
-        set(name) {widget_onotes2.setText(name)
+        get() = widgetEditONotes2.text.toString()
+        set(name) {widgetEditONotes2.setText(name)
         }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2024-10-13 -->
+     last edited on 2024-12-03 -->
 
 <resources>
 
@@ -33,14 +33,13 @@
     <string name="savecsv">Export CSV-file to Documents/TourCount</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
-    <string name="exportMenu">Export current DB</string>
+    <string name="exportMenu">Export Current DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
     <string name="exportCSVMenu">Export Data -> CSV File</string>
     <string name="resetDBMenu">Reset Data</string>
     <string name="importBasisMenu">Import Basic DB</string>
     <string name="importFail">Your database could not be imported!</string>
     <string name="importWin">Your database has been imported.</string>
-    <string name="errorDb">DB Error!</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
     <string name="noDb">Please provide \'tourcount0.db\' in the directory \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
@@ -70,15 +69,14 @@
     <!-- FileChooser -->
     <string name="currentDir">Current Dir</string>
     <string name="fileSize">Size</string>
-    <string name="noBack">Please select a file, you may cancel afterwards.</string>
     <string name="fileHeadlineDB">List of selectable DB files</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlnotes">Count List Notes:</string>
+    <string name="zlnotes">Tour Notes:</string>
     <string name="speccode">Spec. Code:</string>
     <string name="cnts">Counts</string>
     <string name="bema">Spec. Notes:</string>
-    <string name="bemi">Indiv. Notes</string>
+    <string name="bemi">Type indiv. notes here&#8230;</string>
     <string name="editHeadTitle">Meta Data</string>
     <string name="country">Country:</string>
     <string name="inspector">Observer Name:</string>
@@ -119,26 +117,27 @@
     <string name="note">Individual Notes</string>
 
     <!-- CountingActivity -->
-    <string name="editDelSpecTitle">Delete species</string>
-    <string name="editAddSpecTitle">Add species</string>
+    <string name="editDelSpecTitle">Remove Species</string>
+    <string name="editAddSpecTitle">Add Species</string>
     <string name="saveCountsButton">Save &amp; Exit</string>
     <string name="sectSaving">Saving </string>
     <string name="editSectTitle">Edit List</string>
-    <string name="deleteButton">Delete</string>
+    <string name="deleteButton">Remove</string>
     <string name="action_share">Share</string>
     <string name="send_to">Share notes</string>
     <string name="noPhotoPermit">The right to take photos is missing.</string>
     <string name="chooserTitle">Select photo app</string>
-	<string name="takePhoto">Foto aufnehmen</string>
+	<string name="takePhoto">Take Photo</string>
 
     <!-- EditSpecListActivity -->
     <string name="editTitle">Edit Terms</string>
-    <string name="labelNewsectSaveButton">Save and edit</string>
-    <string name="labelDelSpecButton">Delete Species</string>
+    <string name="labelDelSpecButton">Remove Species</string>
     <string name="labelAddSpecButton">Add Species</string>
+    <string name="labelEditSpecButton">Edit List</string>
     <string name="duplicate">Each name must be unique!</string>
-    <string name="titleEdit">List Name:</string>
-    <string name="titleHint">Insert list name here&#8230;</string>
+    <string name="titleEdit">Tour Name:</string>
+    <string name="titleHint">Insert tour name here&#8230;</string>
+    <string name="titleHintShort">Insert here&#8230;</string>
     <string name="notesHint">Type notes here&#8230;</string>
     <string name="isdouble"> is double!</string>
     <string name="presentSpecs">Species in list:</string>
@@ -148,11 +147,10 @@
 
     <!-- DelSpeciesActivity -->
     <string name="delTitle">Remove Species</string>
-    <string name="reallyDeleteSpecs">Are you sure? The species will be removed immediately.</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
-    <string name="specsToAdd">Further Species:</string>
+    <string name="specsToAdd">Further species:</string>
     <string name="hintSearch">Starting chars.</string>
     <string name="initCharsL">Please, 2 chars.</string>
 
@@ -171,28 +169,28 @@
     <string name="prefs_appearance">Appearance</string>
     <string name="pref_bg">Background</string>
     <string name="pref_bg_summ">Choose default or no background image.</string>
-    <string name="pref_sort_order">Sorting of species</string>
+    <string name="pref_sort_order">Sorting of Species</string>
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
-    <string name="pref_note_font">Note font</string>
+    <string name="pref_note_font">Notes Font</string>
     <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
     <string name="pref_left_hand_summ">Show left-hander counting view.</string>
 
     <string name="prefs_csv_output_title">Output</string>
-    <string name="pref_csv_output_title">Sorting the results</string>
+    <string name="pref_csv_output_title">Sorting the Results</string>
     <string name="pref_csv_output_dialog">Sort order of the results and exported csv-table</string>
 
     <string name="prefs_sound">Sound/Vibration</string>
-    <string name="pref_button_sound">Button sounds</string>
+    <string name="pref_button_sound">Button Sounds</string>
     <string name="pref_button_sound_summary">Make a sound upon pressing a count button.</string>
-    <string name="pref_button_vib">Button vibration</string>
+    <string name="pref_button_vib">Button Vibration</string>
     <string name="pref_button_vib_summary">Make a vibration upon pressing a count button.</string>
     <string name="prefs_counting">Counting</string>
-    <string name="pref_awake">Keep screen on</string>
+    <string name="pref_awake">Keep Screen On</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
-    <string name="pref_bright">Screen bright</string>
+    <string name="pref_bright">Screen Bright</string>
     <string name="pref_bright_summ">Sets the TourCount screens for counting and editing bright.</string>
-    <string name="prefs_metadata">Meta data</string>
+    <string name="prefs_metadata">Meta Data</string>
     <string name="pref_metadata">GPS Reverse Geocoding</string>
     <string name="pref_metadata_summ">When selected, tries to substitute the location meta data you entered by Reverse Geocoding</string>
     <string name="pref_email_string">Mail Address for OSM Geocoder</string>
@@ -206,7 +204,6 @@
     <string name="countNameG">New Species (English name)</string>
     <string name="countCode">Code</string>
     <string name="notesSpecies">General species notes:</string>
-    <string name="yesDeleteIt">Delete</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Counting Results</string>
@@ -221,7 +218,6 @@
     <string name="txtSte">State:</string>
     <string name="txtLat">La.:</string>
     <string name="txtLon">Lo.:</string>
-    <string name="txtHgt">H:</string>
     <string name="rem_Sp">Sp.-Rem.:</string>
     <string name="rem_Ind">Ind.-Rem.:</string>
     <string name="txt_mf">♂, ♀</string>

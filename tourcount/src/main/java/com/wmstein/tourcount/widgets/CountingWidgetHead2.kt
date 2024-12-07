@@ -5,12 +5,10 @@ package com.wmstein.tourcount.widgets
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.wmstein.tourcount.MyDebug
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
 import java.util.Objects
@@ -22,7 +20,7 @@ import java.util.Objects
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-05-14
+ * last edited on 2024-10-21
  */
 class CountingWidgetHead2(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -45,16 +43,10 @@ class CountingWidgetHead2(context: Context, attrs: AttributeSet?) :
 
     fun setFont(large: Boolean) {
         if (large) {
-            if (MyDebug.LOG) Log.d(TAG, "Setzt große Schrift.")
             countHead2.textSize = 16f
         } else {
-            if (MyDebug.LOG) Log.d(TAG, "Setzt kleine Schrift.")
             countHead2.textSize = 14f
         }
-    }
-
-    companion object {
-        private const val TAG = "tourcountCntWidget_hd2"
     }
 
 }

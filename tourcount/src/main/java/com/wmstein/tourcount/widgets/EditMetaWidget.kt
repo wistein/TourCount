@@ -15,7 +15,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-07-02
+ * last edited on 2024-11-25
  */
 class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -45,8 +45,9 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     private val widget_clouds2: EditText
     private val widget_clouds3: EditText
 
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_meta, this, true)
         widget_date1 = findViewById(R.id.widgetDate1)
         widget_date2 = findViewById(R.id.widgetDate2)
@@ -111,7 +112,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     100
                 }
             }
@@ -130,7 +131,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     100
                 }
             }
@@ -150,7 +151,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     100
                 }
             }
@@ -169,7 +170,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     100
                 }
             }
@@ -189,7 +190,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     200
                 }
             }
@@ -208,7 +209,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     200
                 }
             }

@@ -14,7 +14,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-07
+ * last edited on 2024-11-25
  */
 class EditLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
@@ -33,8 +33,9 @@ class EditLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
     private val widget_place1: TextView
     private val widget_place2: TextView
 
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_location, this, true)
         widget_co1 = findViewById(R.id.widgetCountryTitle) // Country
         widget_co2 = findViewById(R.id.widgetCountryName)
@@ -72,7 +73,7 @@ class EditLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
     }
 
     // plausi for numeric input
-    private val pattern = Regex("^[0-9]*$")
+//    private val pattern = Regex("^[0-9]*$")
 
     // following the GETS
     // get country

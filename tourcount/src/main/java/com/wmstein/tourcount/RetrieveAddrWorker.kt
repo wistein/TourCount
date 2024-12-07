@@ -56,16 +56,16 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     sb.append(line).append('\n')
                 }
             } catch (e: IOException) {
-                if (MyDebug.LOG) Log.e(ContentValues.TAG, "59, Problem converting Stream to String: $e")
+                if (MyDebug.dLOG) Log.e(ContentValues.TAG, "59, Problem converting Stream to String: $e")
             } finally {
                 try {
                     iStream.close()
                 } catch (e: IOException) {
-                    if (MyDebug.LOG) Log.e(ContentValues.TAG, "64, Problem closing InputStream: $e")
+                    if (MyDebug.dLOG) Log.e(ContentValues.TAG, "64, Problem closing InputStream: $e")
                 }
             }
             xmlString = sb.toString()
-            if (MyDebug.LOG) Log.d(
+            if (MyDebug.dLOG) Log.d(
                 ContentValues.TAG,
                 "70, xmlString: $xmlString"
             ) // Log gzip-content of url
@@ -84,7 +84,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 var sstart = xmlString.indexOf("<addressparts>") + 14
                 var send = xmlString.indexOf("</addressparts>")
                 xmlString = xmlString.substring(sstart, send)
-                if (MyDebug.LOG) Log.d(ContentValues.TAG, "87, <addressparts>: $xmlString")
+                if (MyDebug.dLOG) Log.d(ContentValues.TAG, "87, <addressparts>: $xmlString")
                 val locality = StringBuilder()
                 val plz = StringBuilder()
                 val city = StringBuilder()
@@ -171,7 +171,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     country.append(tcountry)
                 }
                 sCountry = country.toString()
-                sectionDataSource = SectionDataSource(TourCountApplication.getAppContext())
+                sectionDataSource = SectionDataSource(getApplicationContext())
                 sectionDataSource.open()
                 val section: Section = sectionDataSource.section
 
@@ -203,7 +203,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 sectionDataSource.close()
 
                 // Save sLocality to DB table Temp
-                tempDataSource = TempDataSource(TourCountApplication.getAppContext())
+                tempDataSource = TempDataSource(applicationContext)
                 tempDataSource.open()
                 val tmp: Temp = tempDataSource.tmp
                 if (sLocality.isNotEmpty()) {
@@ -215,7 +215,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 tempDataSource.close()
             }
         } catch (e: IOException) {
-            if (MyDebug.LOG) Log.e(ContentValues.TAG, "218, Problem with address handling: $e")
+            if (MyDebug.dLOG) Log.e(ContentValues.TAG, "218, Problem with address handling: $e")
         }
         return Result.success()
     }

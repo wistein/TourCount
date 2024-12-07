@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-03-31,
  * last edited on 2022-03-23
  */
-class HeadDataSource(context: Context?) {
+class HeadDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
     private val dbHandler: DbHelper
@@ -22,7 +22,7 @@ class HeadDataSource(context: Context?) {
     )
 
     init {
-        dbHandler = DbHelper(context!!)
+        dbHandler = DbHelper(context)
     }
 
     @Throws(SQLException::class)

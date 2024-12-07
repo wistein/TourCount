@@ -17,7 +17,7 @@
         tools:ignore="AlwaysShowAction">
     </item>
     <item
-        android:id="@+id/viewCounts"
+        android:id="@+id/startCounting"
         android:icon="@drawable/ic_count_white"
         android:title="@string/counting"
         app:showAsAction="always">

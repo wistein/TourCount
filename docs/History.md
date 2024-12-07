@@ -2,6 +2,15 @@
 
 #### TourCount Copyright (C) 2016-2024, Wilhelm Stein
 
+#### Version 3.6.0 (2024-12-07)
+- Option to preselect species by initial letters for editing them in the counting list
+- App gets completely removed from memory when finished
+- Code improvements and Kotlin code adapted to Kotlin 2
+- Bug fixes
+- Update Gradle -> 8.9
+- Update AGP dependency -> 8.7.1
+- Docs updated
+
 #### Version 3.5.1 (2024-10-14)
 - Filenames of exported current DB and csv table files include tour name
 - Option to preselect species names by initial letters for adding them to the counting list

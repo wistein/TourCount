@@ -15,7 +15,7 @@ import java.util.Objects
 import kotlin.math.roundToInt
 
 /**************************************************
- * AutoFitEditText is used in CountOptionsActivity
+ * AutoFitEditText is used in EditIndividualWidget
  * to fit in larger count numbers
  *
  * Created by varsovski on 29-Oct-15, published on
@@ -25,7 +25,7 @@ import kotlin.math.roundToInt
  * Modified for TourCount by wm.stein on 2023-09-18,
  * last edited in Java on 2023-09-18
  * converted to Kotlin on 2023-09-19
- * last edited on 2024-05-14.
+ * last edited on 2024-11-19.
  */
 class AutoFitEditText @JvmOverloads constructor(
     context: Context?, attrs: AttributeSet? = null,

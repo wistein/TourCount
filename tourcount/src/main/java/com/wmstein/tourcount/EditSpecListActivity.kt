@@ -1,11 +1,8 @@
 package com.wmstein.tourcount
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -25,30 +23,25 @@ import com.google.android.material.snackbar.Snackbar
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
-import com.wmstein.tourcount.widgets.CountEditWidget
 import com.wmstein.tourcount.widgets.EditHeadWidget
-import com.wmstein.tourcount.widgets.HintWidget
+import com.wmstein.tourcount.widgets.EditSpeciesWidget
+import com.wmstein.tourcount.widgets.HintEditWidget
 
-/***************************************************************************
+/*************************************************************************
  * EditSpecListActivity lets you edit the species list
  * (change head and species data).
  * EditSpecListActivity is called from CountingActivity
- * Uses EditHeadWidget.kt, CountEditWidget.kt, HintWidget.kt,
+ * Uses EditHeadWidget.kt, EditSpeciesWidget.kt, HintEditWidget.kt,
  * activity_edit_section.xml, widget_edit_head.xml, widget_edit_count.xml.
- * Calls AddSpeciesActivity.kt for adding a new species to the species list.
  *
  * Based on EditProjectActivity.java by milo on 05/05/2014.
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-08-23
+ * last edited on 2024-11-27
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
-
-    // Screen background
-    private var bMap: Bitmap? = null
-    private var bg: BitmapDrawable? = null
 
     // Data
     private var section: Section? = null
@@ -62,12 +55,15 @@ class EditSpecListActivity : AppCompatActivity() {
 
     // Widgets
     private var ehw: EditHeadWidget? = null
-    private var cew: CountEditWidget? = null
+    private var esw: EditSpeciesWidget? = null
 
     // Arraylists
     private var cmpCountNames: ArrayList<String>? = null
     private var cmpCountCodes: ArrayList<String>? = null
-    private var savedCounts: ArrayList<CountEditWidget>? = null
+    private var savedCounts: ArrayList<EditSpeciesWidget>? = null
+
+    // 2 initial characters to limit selection
+    private var initChars: String = ""
 
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
@@ -75,16 +71,17 @@ class EditSpecListActivity : AppCompatActivity() {
     private var brightPref = false
     private var oldname: String? = null
 
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (MyDebug.dLOG) Log.i(TAG, "77, onCreate")
 
         tourCount = application as TourCountApplication
 
         sortPref = prefs.getString("pref_sort_sp", "none")
         brightPref = prefs.getBoolean("pref_bright", true)
 
-        setContentView(R.layout.activity_edit_section)
+        setContentView(R.layout.activity_edit_species_list)
 
         // Set full brightness of screen
         if (brightPref) {
@@ -107,47 +104,35 @@ class EditSpecListActivity : AppCompatActivity() {
                 if (savedInstanceState.getSerializable("savedCounts") != null) {
                     @Suppress("UNCHECKED_CAST")
                     savedCounts = savedInstanceState.getSerializable("savedCounts")
-                            as ArrayList<CountEditWidget>?
+                            as ArrayList<EditSpeciesWidget>?
                 }
             } else {
                 if (savedInstanceState.getSerializable("savedCounts", T::class.java) != null) {
                     @Suppress("UNCHECKED_CAST")
                     savedCounts =
                         savedInstanceState.getSerializable("savedCounts", T::class.java)
-                                as ArrayList<CountEditWidget>?
+                                as ArrayList<EditSpeciesWidget>? // produces error without cast
                 }
             }
         }
 
-        val countingScreen = findViewById<LinearLayout>(R.id.editSect)
-        bMap = tourCount!!.decodeBitmap(
-            R.drawable.edbackground,
-            tourCount!!.width, tourCount!!.height
-        )
-        bg = BitmapDrawable(countingScreen.resources, bMap)
-        countingScreen.background = bg
+        //  Note variables to restore them
+        val extras = intent.extras
+        if (extras != null) {
+            initChars = extras.getString("init_Chars").toString()
+        }
 
         // Setup the data sources
         sectionDataSource = SectionDataSource(this)
         countDataSource = CountDataSource(this)
 
         // New onBackPressed logic
-        if (Build.VERSION.SDK_INT >= 33) {
-            onBackPressedDispatcher.addCallback(object :
-                OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (testData()) {
-                        saveData()
-                        savedCounts!!.clear()
-
-                        countDataSource!!.close()
-                        sectionDataSource!!.close()
-
-                        NavUtils.navigateUpFromSameTask(this@EditSpecListActivity)
-                    } else return
-                }
-            })
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                NavUtils.navigateUpFromSameTask(this@EditSpecListActivity)
+            }
         }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
     // End of onCreate()
 
@@ -155,7 +140,6 @@ class EditSpecListActivity : AppCompatActivity() {
         super.onResume()
 
         // Load preferences
-        prefs = TourCountApplication.getPrefs()
         brightPref = prefs.getBoolean("pref_bright", true)
 
         // Set full brightness of screen
@@ -177,25 +161,58 @@ class EditSpecListActivity : AppCompatActivity() {
         supportActionBar!!.setTitle(R.string.editTitle)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // Load the section data
+        // Load the tour data
         section = sectionDataSource!!.section
         oldname = section!!.name
 
-        // Display the section title
+        // Edit the tour title
         ehw = EditHeadWidget(this, null)
         ehw!!.setSpListTitle(getString(R.string.titleEdit))
         ehw!!.spListName = oldname
 
-        // Display the section notes title
+        // Display the tour notes title
         ehw!!.setNotesTitle(getString(R.string.notesHere))
         ehw!!.notesName = section!!.notes
         speciesNotesArea!!.addView(ehw)
 
-        // Display hint current species list:
-        val nw = HintWidget(this, null)
-        nw.setHint1(getString(R.string.presentSpecs))
-        hintArea1!!.addView(nw)
+        // Display hint: Current species list
+        val hew = HintEditWidget(this, null)
+        if (initChars.length == 2)
+            hew.setSearchE(initChars)
+        else
+            hew.setSearchE(getString(R.string.hintSearch))
+        hintArea1!!.addView(hew)
 
+        constructEditList()
+    }
+    // End of onResume()
+
+    // Get initial 2 characters of species to select by search button
+    fun getInitialChars(view: View) {
+        // Read EditText searchEdit from widget_edit_hint.xml
+        val searchEdit: EditText = findViewById(R.id.searchE)
+
+        // Get the initial characters of species to select from
+        initChars = searchEdit.text.toString().trim()
+        if (initChars.length == 1) {
+            // Reminder: "Please, 2 characters"
+            searchEdit.error = getString(R.string.initCharsL)
+        } else {
+            searchEdit.error = null
+
+            if (MyDebug.dLOG) Log.d(TAG, "203, initChars: $initChars")
+
+            // Call DummyActivity to reenter EditSectionListActivity for reduced add list
+            val intent = Intent(this@EditSpecListActivity, DummyActivity::class.java)
+            intent.putExtra("init_Chars", initChars)
+            intent.putExtra("is_Flag", "isEdit")
+            startActivity(intent)
+        }
+    }
+
+    // Construct edit-species-list of contained species in the counting list
+    //   and optionally reduce it by initChar selection
+    private fun constructEditList() {
         // Load the sorted species data
         val counts = when (sortPref) {
             "names_alpha" -> countDataSource!!.allSpeciesSrtName
@@ -203,18 +220,36 @@ class EditSpecListActivity : AppCompatActivity() {
             else -> countDataSource!!.allSpecies
         }
 
-        // Display all the counts by adding them to CountEditWidget
-        for (count in counts) {
-            cew = CountEditWidget(this, null)
-            cew!!.setCountName(count.name)
-            cew!!.setCountNameG(count.name_g)
-            cew!!.setCountCode(count.code)
-            cew!!.setPSpec(count)
-            cew!!.setCountId(count.id)
-            editingCountsArea!!.addView(cew)
+        // Display all the counts by adding them to editingCountsArea
+        // Get the counting list species into their EditSpeciesWidget and add them to the view
+        if (initChars.length == 2) {
+            // Check name in counts for InitChars to reduce list
+            var cnt = 1
+            for (count in counts) {
+                if (count.name?.substring(0, 2) == initChars) {
+                    esw = EditSpeciesWidget(this, null)
+                    esw!!.setCountName(count.name)
+                    esw!!.setCountNameG(count.name_g)
+                    esw!!.setCountCode(count.code)
+                    esw!!.setPSpec(count)
+                    esw!!.setCountId(count.id)
+                    editingCountsArea!!.addView(esw)
+                    cnt++
+                }
+            }
+        } else {
+
+            for (count in counts) {
+                esw = EditSpeciesWidget(this, null)
+                esw!!.setCountName(count.name)
+                esw!!.setCountNameG(count.name_g)
+                esw!!.setCountCode(count.code)
+                esw!!.setPSpec(count)
+                esw!!.setCountId(count.id)
+                editingCountsArea!!.addView(esw)
+            }
         }
     }
-    // End of onResume()
 
     override fun onPause() {
         super.onPause()
@@ -228,8 +263,8 @@ class EditSpecListActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
 
         // Widgets must be removed from their parent before they can be serialised.
-        for (cew in savedCounts!!) {
-            (cew.parent as ViewGroup).removeView(cew)
+        for (esw in savedCounts!!) {
+            (esw.parent as ViewGroup).removeView(esw)
         }
         outState.putSerializable("savedCounts", savedCounts)
     }
@@ -244,62 +279,16 @@ class EditSpecListActivity : AppCompatActivity() {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
+            finish()
+            return true
+        } else if (id == R.id.editSpecL) {
             if (testData()) {
-                saveData()
-                savedCounts!!.clear()
-
-                countDataSource!!.close()
-                sectionDataSource!!.close()
-
-                val intent = NavUtils.getParentActivityIntent(this)!!
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                NavUtils.navigateUpTo(this, intent)
+                if (saveData())
+                    savedCounts!!.clear()
             }
-            else return true
+            return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    // Compare count names for duplicates and returns name of 1. duplicate found
-    private fun compCountNames(): String {
-        var name: String
-        var isDblName = ""
-        cmpCountNames = ArrayList()
-        val childcount = editingCountsArea!!.childCount
-
-        // For all CountEditWidgets
-        for (i in 0 until childcount) {
-            val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
-            name = cew.getCountName()
-            if (cmpCountNames!!.contains(name)) {
-                isDblName = name
-                if (MyDebug.LOG) Log.d(TAG, "276, Double name = $isDblName")
-                break
-            }
-            cmpCountNames!!.add(name)
-        }
-        return isDblName
-    }
-
-    // Compare count codes for duplicates and returns name of 1. duplicate found
-    private fun compCountCodes(): String {
-        var code: String
-        var isDblCode = ""
-        cmpCountCodes = ArrayList()
-        val childcount = editingCountsArea!!.childCount
-
-        // For all CountEditWidgets
-        for (i in 0 until childcount) {
-            val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
-            code = cew.getCountCode()
-            if (cmpCountCodes!!.contains(code)) {
-                isDblCode = code
-                if (MyDebug.LOG) Log.d(TAG, "297, Double name = $isDblCode")
-                break
-            }
-            cmpCountCodes!!.add(code)
-        }
-        return isDblCode
     }
 
     // Test for double entries and save species list
@@ -309,7 +298,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.LOG) Log.d(TAG, "312, newName: $sectName")
+        if (MyDebug.dLOG) Log.d(TAG, "301, newName: $sectName")
 
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
@@ -331,7 +320,7 @@ class EditSpecListActivity : AppCompatActivity() {
         sectionDataSource!!.saveSection(section!!)
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
-        if (MyDebug.LOG) Log.d(TAG, "334, childcount: $childcount")
+        if (MyDebug.dLOG) Log.d(TAG, "323, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -339,18 +328,19 @@ class EditSpecListActivity : AppCompatActivity() {
         if (isDblName == "" && isDblCode == "") {
             // For all species
             for (i in 0 until childcount) {
-                val cew = editingCountsArea!!.getChildAt(i) as CountEditWidget
+                val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
                 retValue =
-                    if (isNotEmpty(cew.getCountName()) && isNotEmpty(cew.getCountCode())) {
-                        if (MyDebug.LOG) Log.d(TAG, "345, cew: "
-                                    + cew.countId + ", " + cew.getCountName())
+                    if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
+                        if (MyDebug.dLOG) Log.d(TAG, "334, esw: "
+                                    + esw.countId + ", " + esw.getCountName()
+                        )
 
                         // Update species names and code
                         countDataSource!!.updateCountName(
-                            cew.countId,
-                            cew.getCountName(),
-                            cew.getCountCode(),
-                            cew.getCountNameG()
+                            esw.countId,
+                            esw.getCountName(),
+                            esw.getCountCode(),
+                            esw.getCountNameG()
                         )
                         true
                     } else {
@@ -363,7 +353,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 getString(R.string.spname) + " " + isDblName + " " + getString(R.string.orcode) + " " + isDblCode + " "
                         + getString(R.string.isdouble)
             )
-                retValue = false
+            retValue = false
         }
 
         if (retValue) {
@@ -376,6 +366,7 @@ class EditSpecListActivity : AppCompatActivity() {
         }
         return retValue
     }
+    // End of saveData()
 
     // Test species list for double entry
     private fun testData(): Boolean {
@@ -393,21 +384,46 @@ class EditSpecListActivity : AppCompatActivity() {
         return retValue
     }
 
-    // Catch back button with plausi test
-    @Deprecated("Deprecated in Java")
-    @SuppressLint("ApplySharedPref", "MissingSuperCall")
-    override fun onBackPressed() {
-        if (testData()) {
-            saveData()
-            savedCounts!!.clear()
+    // Compare count names for duplicates and returns name of 1. duplicate found
+    private fun compCountNames(): String {
+        var name: String
+        var isDblName = ""
+        cmpCountNames = ArrayList()
+        val childcount = editingCountsArea!!.childCount
 
-            countDataSource!!.close()
-            sectionDataSource!!.close()
+        // For all CountEditWidgets
+        for (i in 0 until childcount) {
+            val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
+            name = esw.getCountName()
+            if (cmpCountNames!!.contains(name)) {
+                isDblName = name
+                if (MyDebug.dLOG) Log.d(TAG, "400, Double name = $isDblName")
+                break
+            }
+            cmpCountNames!!.add(name)
+        }
+        return isDblName
+    }
 
-            NavUtils.navigateUpFromSameTask(this)
-        } else return
-        @Suppress("DEPRECATION")
-        super.onBackPressed()
+    // Compare count codes for duplicates and returns name of 1. duplicate found
+    private fun compCountCodes(): String {
+        var code: String
+        var isDblCode = ""
+        cmpCountCodes = ArrayList()
+        val childcount = editingCountsArea!!.childCount
+
+        // For all CountEditWidgets
+        for (i in 0 until childcount) {
+            val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
+            code = esw.getCountCode()
+            if (cmpCountCodes!!.contains(code)) {
+                isDblCode = code
+                if (MyDebug.dLOG) Log.d(TAG, "421, Double name = $isDblCode")
+                break
+            }
+            cmpCountCodes!!.add(code)
+        }
+        return isDblCode
     }
 
     private fun showSnackbarRed(str: String) // bold red text

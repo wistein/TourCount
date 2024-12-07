@@ -3,6 +3,14 @@
    edit_section.xml is used by EditSpecListActivity.kt
    -->
 <menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.wmstein.tourcount.EditSpecListActivity">
+
+    <item
+        android:id="@+id/editSpecL"
+        android:title="@string/labelEditSpecButton"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_save"/>
 
 </menu>

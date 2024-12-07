@@ -1,10 +1,6 @@
 package com.wmstein.tourcount
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -30,25 +26,19 @@ import com.wmstein.tourcount.widgets.HintDelWidget
  * activity_del_species.xml, widget_edit_title.xml.
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2024-10-13
+ * last edited on 2024-11-25
  */
 class DelSpeciesActivity : AppCompatActivity() {
-    private var tourCount: TourCountApplication? = null
-
-    // Layouts
-    private var deleteArea: LinearLayout? = null
-    private var hintArea: LinearLayout? = null
-
-    // Screen background
-    private var bMap: Bitmap? = null
-    private var bg: BitmapDrawable? = null
-
     // Data
     var section: Section? = null
     private var specCode: String? = null
     private var sectionDataSource: SectionDataSource? = null
     private var countDataSource: CountDataSource? = null
     private var individualsDataSource: IndividualsDataSource? = null
+
+    // Layouts
+    private var deleteArea: LinearLayout? = null
+    private var hintArea: LinearLayout? = null
 
     // 2 initial characters to limit selection
     private var initChars: String = ""
@@ -60,19 +50,15 @@ class DelSpeciesActivity : AppCompatActivity() {
     private var prefs = TourCountApplication.getPrefs()
     private var brightPref = false
 
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        tourCount = application as TourCountApplication
+        if (MyDebug.dLOG) Log.i(TAG, "56, onCreate")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
 
-        if (MyDebug.LOG) Log.d(TAG, "75 onCreate")
-
         setContentView(R.layout.activity_del_species)
-        val deleteScreen = findViewById<LinearLayout>(R.id.delSpec)
 
         // Set full brightness of screen
         if (brightPref) {
@@ -81,14 +67,6 @@ class DelSpeciesActivity : AppCompatActivity() {
             params.screenBrightness = 1.0f
             window.attributes = params
         }
-
-        bMap = tourCount!!.decodeBitmap(
-            R.drawable.delbackground,
-            tourCount!!.width,
-            tourCount!!.height
-        )
-        bg = BitmapDrawable(deleteScreen.resources, bMap)
-        deleteScreen.background = bg
 
         // Get value from DummyActivity respective getInitialChars()
         val extras = intent.extras
@@ -106,27 +84,22 @@ class DelSpeciesActivity : AppCompatActivity() {
         individualsDataSource = IndividualsDataSource(this)
 
         // New onBackPressed logic
-        if (Build.VERSION.SDK_INT >= 33) {
-            onBackPressedDispatcher.addCallback(object :
-                OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    countDataSource!!.close()
-                    sectionDataSource!!.close()
-                    individualsDataSource!!.close()
-
-                    NavUtils.navigateUpFromSameTask(this@DelSpeciesActivity)
-                }
-            })
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                NavUtils.navigateUpFromSameTask(this@DelSpeciesActivity)
+            }
         }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
     // End of onCreate()
 
     override fun onResume() {
         super.onResume()
 
-        // Build the Delete Species screen
-        countDataSource!!.open()
+        if (MyDebug.dLOG) Log.d(TAG, "99 onResume")
+
         sectionDataSource!!.open()
+        countDataSource!!.open()
         individualsDataSource!!.open()
 
         // Clear any existing views
@@ -138,7 +111,7 @@ class DelSpeciesActivity : AppCompatActivity() {
 
         // Display hint: Species in counting list
         val hdw = HintDelWidget(this, null)
-        if (initChars != "")
+        if (initChars.length == 2)
             hdw.setSearchD(initChars)
         else
             hdw.setSearchD(getString(R.string.hintSearch))
@@ -146,7 +119,7 @@ class DelSpeciesActivity : AppCompatActivity() {
 
         constructDelList()
     }
-    // End of onResume
+    // End of onResume()
 
     // Get initial 2 characters of species to select by search button
     fun getInitialChars(view: View) {
@@ -155,15 +128,15 @@ class DelSpeciesActivity : AppCompatActivity() {
 
         // Get the initial characters of species to select from
         initChars = searchDel.text.toString().trim()
-        if (initChars.length < 2) {
+        if (initChars.length == 1) {
             // Reminder: "Please, 2 characters"
             searchDel.error = getString(R.string.initCharsL)
         } else {
             searchDel.error = null
 
-            if (MyDebug.LOG) Log.d(TAG, "167, initChars: $initChars")
+            if (MyDebug.dLOG) Log.d(TAG, "137, initChars: $initChars")
 
-            // Call DummyActivity to reenter AddSpeciesActivity for reduced add list
+            // Call DummyActivity to reenter DelSpeciesActivity for reduced add list
             val intent = Intent(this@DelSpeciesActivity, DummyActivity::class.java)
             intent.putExtra("init_Chars", initChars)
             intent.putExtra("is_Flag", "isDel")
@@ -177,21 +150,8 @@ class DelSpeciesActivity : AppCompatActivity() {
         // Load the sorted species data from section 1
         val counts = countDataSource!!.allSpeciesSrtCode
 
-
         // Get all counting list species into their CountEditWidgets and add these to the view
-        if (initChars.isEmpty()) {
-            for (count in counts) {
-                val dsw = DeleteSpeciesWidget(this, null)
-                dsw.setSpecName(count.name)
-                dsw.setSpecNameG(count.name_g)
-                dsw.setSpecCode(count.code)
-                dsw.setPSpec(count)
-                dsw.setSpecId(count.id.toString()) // Index in complete list
-                deleteArea!!.addView(dsw)
-                if (MyDebug.LOG) Log.d(TAG, "194, name: " + count.name)
-            }
-        }
-        else {
+        if (initChars.length == 2) {
             // Check name in counts for InitChars to reduce list
             var cnt = 1
             for (count in counts) {
@@ -204,20 +164,27 @@ class DelSpeciesActivity : AppCompatActivity() {
                     dsw.setSpecId(cnt.toString()) // Index in reduced list
                     cnt++
                     deleteArea!!.addView(dsw)
-                    if (MyDebug.LOG) Log.d(TAG, "210, name: " + count.name)
+                    if (MyDebug.dLOG) Log.d(TAG, "167, name: " + count.name)
                 }
             }
+        } else {
+            for (count in counts) {
+                val dsw = DeleteSpeciesWidget(this, null)
+                dsw.setSpecName(count.name)
+                dsw.setSpecNameG(count.name_g)
+                dsw.setSpecCode(count.code)
+                dsw.setPSpec(count)
+                dsw.setSpecId(count.id.toString()) // Index in complete list
+                deleteArea!!.addView(dsw)
+                if (MyDebug.dLOG) Log.d(TAG, "179, name: " + count.name)
+            }
         }
-
-        val editor = prefs.edit()
-        editor.putString("is_Del", "")
-        editor.commit()
     }
 
     // Mark the selected species and consider it for delete from the species counts list
     fun checkBoxDel(view: View) {
         val idToDel = view.tag as Int
-        if (MyDebug.LOG) Log.d(TAG, "223, View.tag: $idToDel")
+        if (MyDebug.dLOG) Log.d(TAG, "187, View.tag: $idToDel")
         val dsw = deleteArea!!.getChildAt(idToDel) as DeleteSpeciesWidget
 
         val checked = dsw.getMarkSpec() // return boolean isChecked
@@ -225,30 +192,30 @@ class DelSpeciesActivity : AppCompatActivity() {
         // Put species on add list
         if (checked) {
             listToDelete!!.add(dsw)
-            if (MyDebug.LOG) {
+            if (MyDebug.dLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "233, mark delete code: $codeD")
+                Log.d(TAG, "197, mark delete code: $codeD")
             }
         } else {
             // Remove species previously added from add list
             listToDelete!!.remove(dsw)
-            if (MyDebug.LOG) {
+            if (MyDebug.dLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "240, mark delete code: $codeD")
+                Log.d(TAG, "204 mark delete code: $codeD")
             }
         }
     }
 
-    // Delete selected species from species lists of all sections
+    // Delete selected species from species list
     private fun delSpecs() {
         var i = 0 // index of species list to delete
         while (i < listToDelete!!.size) {
             specCode = listToDelete!![i].getSpecCode()
-            if (MyDebug.LOG) Log.d(TAG, "250, delete code: $specCode")
+            if (MyDebug.dLOG) Log.d(TAG, "214, delete code: $specCode")
             try {
                 countDataSource!!.deleteCountByCode(specCode!!)
                 individualsDataSource!!.deleteIndividualsByCode(specCode!!)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // nothing
             }
             i++
@@ -283,31 +250,24 @@ class DelSpeciesActivity : AppCompatActivity() {
         return true
     }
 
-    @SuppressLint("ApplySharedPref")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
-            sectionDataSource!!.close()
-            countDataSource!!.close()
-            individualsDataSource!!.close()
-
-            val intent = NavUtils.getParentActivityIntent(this)!!
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            NavUtils.navigateUpTo(this, intent)
+            finish()
+            return true
         } else if (id == R.id.deleteSpec) {
             if (listToDelete!!.size > 0)
                 delSpecs()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-    }
-
     override fun onPause() {
         super.onPause()
+
+        if (MyDebug.dLOG) Log.i(TAG, "270, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -315,20 +275,8 @@ class DelSpeciesActivity : AppCompatActivity() {
         individualsDataSource!!.close()
     }
 
-    @Deprecated("Deprecated in Java")
-    @SuppressLint("ApplySharedPref", "MissingSuperCall")
-    override fun onBackPressed() {
-        countDataSource!!.close()
-        sectionDataSource!!.close()
-        individualsDataSource!!.close()
-
-        NavUtils.navigateUpFromSameTask(this)
-        @Suppress("DEPRECATION")
-        super.onBackPressed()
-    }
-
     companion object {
-        private const val TAG = "DelSpecAct"
+        private const val TAG = "DelSpeciesAct"
     }
 
 }

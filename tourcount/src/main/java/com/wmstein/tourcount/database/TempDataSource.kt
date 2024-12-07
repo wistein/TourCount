@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase
  * converted to Kotlin on 2023-07-05,
  * last edited on 2024-05-14.
  */
-class TempDataSource(context: Context?) {
+class TempDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
     private val dbHandler: DbHelper
@@ -25,7 +25,7 @@ class TempDataSource(context: Context?) {
     )
 
     init {
-        dbHandler = DbHelper(context!!)
+        dbHandler = DbHelper(context)
     }
 
     @Throws(SQLException::class)

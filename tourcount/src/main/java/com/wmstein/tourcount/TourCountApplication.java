@@ -1,6 +1,5 @@
 package com.wmstein.tourcount;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,37 +8,45 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-
-import java.util.Objects;
+import android.view.WindowMetrics;
 
 import androidx.preference.PreferenceManager;
+
+import java.util.Objects;
 
 /**********************************************************
  * Based on BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2024-06-30
+ * last change on 2024-12-05
  */
 public class TourCountApplication extends Application
 {
     private static final String TAG = "TourCountAppl";
     public static SharedPreferences prefs;
-    @SuppressLint("StaticFieldLeak")
-    private static Context context;
     private BitmapDrawable bMapDraw;
     private Bitmap bMap;
     int width;
     int height;
-    int resID;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
 
-        TourCountApplication.context = getApplicationContext();
+        // Support to debug "A resource failed to call ..." (close, dispose or similar)
+        if (MyDebug.dLOG)
+        {
+            Log.i(TAG, "44, StrictMode.setVmPolicy");
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
+                .detectLeakedClosableObjects()
+                .build());
+        }
+
         bMapDraw = null;
         bMap = null;
         try
@@ -47,17 +54,14 @@ public class TourCountApplication extends Application
             prefs = PreferenceManager.getDefaultSharedPreferences(this);
         } catch (Exception e)
         {
-            if (MyDebug.LOG)
-                Log.e(TAG,"51, Error: " + e);
+            if (MyDebug.dLOG)
+                Log.e(TAG, "58, Error: " + e);
         }
     }
+    // End of onCreate()
 
-    // Provide access to Application Context
-    public static Context getAppContext()
-    {
-        return TourCountApplication.context;
-    }
-
+    // bMapDraw is a pre-prepared bitmap set when the application starts up
+    // or the settings are changed
     public BitmapDrawable getBackground()
     {
         if (bMapDraw == null)
@@ -74,41 +78,50 @@ public class TourCountApplication extends Application
     {
         bMapDraw = null;
 
-        String backgroundPref = prefs.getString("pref_back", "default");
+        String backgroundPref = prefs.getString("pref_backgr", "default");
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         assert wm != null;
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        width = size.x;
-        height = size.y;
-        if (MyDebug.LOG)
-            Log.i(TAG, "87, Width: " + width + " Height: " + height);
+
+        if (Build.VERSION.SDK_INT >= 30) {
+            final WindowMetrics metrics = wm.getCurrentWindowMetrics();
+            width = metrics.getBounds().right + metrics.getBounds().left;
+            height = metrics.getBounds().top +metrics.getBounds().bottom;
+        }
+        else
+        {
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+        }
+        if (MyDebug.dLOG)
+            Log.d(TAG, "100, Width: " + width + " Height: " + height);
 
         switch (Objects.requireNonNull(backgroundPref))
         {
-        case "none" ->
-        {
-            // boring black screen
-            bMap = null;
-            bMap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            bMap.eraseColor(Color.BLACK);
-        }
-        case "default" ->
-        {
-            // portrait
-            if ((double) height / width < 1.8)
+            case "none" ->
             {
-                // normal screen
-                bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height);
+                // boring black screen
+                bMap = null;
+                bMap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                bMap.eraseColor(Color.BLACK);
             }
-            else
+            case "default" ->
             {
-                // long screen
-                bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height);
+                // portrait
+                if ((double) height / width < 1.8)
+                {
+                    // normal screen
+                    bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height);
+                }
+                else
+                {
+                    // long screen
+                    bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height);
+                }
             }
-        }
         }
 
         bMapDraw = new BitmapDrawable(this.getResources(), bMap);
@@ -118,7 +131,7 @@ public class TourCountApplication extends Application
 
     public Bitmap decodeBitmap(int resId, int reqWidth, int reqHeight)
     {
-        // First decode with inJustDecodeBounds=true to check dimensions
+        // First decode with inJustDecodeBounds = true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(getResources(), resId, options);
@@ -137,10 +150,7 @@ public class TourCountApplication extends Application
         }
     }
 
-    /*
-     * Keep bMapDraw around as a pre-prepared bitmap, only setting it up
-     * when the user's settings change or when the application starts up.
-     */
+    // Scale background bitmap
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
     {
         // Raw height and width of image
@@ -168,21 +178,6 @@ public class TourCountApplication extends Application
     public static SharedPreferences getPrefs()
     {
         return prefs;
-    }
-
-    // Get resource ID from resource name
-    @SuppressLint("DiscouragedApi")
-    public int getResId(String rName) // non-static method
-    {
-        try
-        {
-            resID = getAppContext().getResources().getIdentifier(rName, "drawable",
-                getAppContext().getPackageName());
-            return resID;
-        } catch (Exception e)
-        {
-            return 0;
-        }
     }
 
 }

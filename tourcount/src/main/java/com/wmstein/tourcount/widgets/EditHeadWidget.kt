@@ -13,7 +13,8 @@ import java.util.Objects
  * EditHeadWidget used by CountOptionsActivity
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
- * converted to Kotlin on 2024-05-11
+ * converted to Kotlin on 2024-05-11,
+ * last edited on 2024-11-25
  */
 class EditHeadWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val sp_list_title: TextView
@@ -21,8 +22,9 @@ class EditHeadWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     private val notes_title: TextView
     private val notes_name: EditText
 
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_head, this, true)
         sp_list_title = findViewById(R.id.spListTitle)
         sp_list_name = findViewById(R.id.spListName)

@@ -1,0 +1,6 @@
+Version 3.6.0 (2024-12-07)
+- Option to preselect species by initial letters also for editing them in the counting list
+- App gets completely removed from memory when finished
+- Code improvements
+- Bug fixes
+- Docs updated

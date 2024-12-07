@@ -16,7 +16,7 @@ import com.wmstein.tourcount.TourCountApplication
  * converted to Kotlin on 2023-07-06,
  * last edited on 2024-10-14
  */
-class CountDataSource(context: Context?) {
+class CountDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
     private val dbHandler: DbHelper
@@ -33,7 +33,6 @@ class CountDataSource(context: Context?) {
         DbHelper.C_NOTES,
         DbHelper.C_NAME_G
     )
-    private val tourCountApp = TourCountApplication()
 
     init {
         dbHandler = DbHelper(context)
@@ -94,18 +93,9 @@ class CountDataSource(context: Context?) {
         database!!.delete(DbHelper.COUNT_TABLE, DbHelper.C_CODE + " = '$code'", null)
     }
 
-    fun saveCount(count: Count) {
+    fun saveCountNotes(count: Count) {
         val dataToInsert = ContentValues()
-        dataToInsert.put(DbHelper.C_COUNT_F1I, count.count_f1i)
-        dataToInsert.put(DbHelper.C_COUNT_F2I, count.count_f2i)
-        dataToInsert.put(DbHelper.C_COUNT_F3I, count.count_f3i)
-        dataToInsert.put(DbHelper.C_COUNT_PI, count.count_pi)
-        dataToInsert.put(DbHelper.C_COUNT_LI, count.count_li)
-        dataToInsert.put(DbHelper.C_COUNT_EI, count.count_ei)
-        dataToInsert.put(DbHelper.C_NAME, count.name)
-        dataToInsert.put(DbHelper.C_CODE, count.code)
         dataToInsert.put(DbHelper.C_NOTES, count.notes)
-        dataToInsert.put(DbHelper.C_NAME_G, count.name_g)
         val where = DbHelper.C_ID + " = ?"
         val whereArgs = arrayOf(count.id.toString())
         database!!.update(DbHelper.COUNT_TABLE, dataToInsert, where, whereArgs)
@@ -305,87 +295,6 @@ class CountDataSource(context: Context?) {
         cursor.close()
         return uArray
     }
-
-    // Used by CountingActivity
-    val allImages: Array<Int?>
-        get() {
-            val cursor = database!!.query(
-                DbHelper.COUNT_TABLE, allColumns,
-                null, null, null, null, null
-            )
-            val imageArray = arrayOfNulls<Int>(cursor.count)
-            cursor.moveToFirst()
-            var i = 0
-            while (!cursor.isAfterLast) {
-                @SuppressLint("Range") val ucode = cursor.getString(cursor.getColumnIndex("code"))
-                val rname = "p$ucode" // species picture resource name
-                val resId = tourCountApp.getResId(rname)
-                val resId0 = tourCountApp.getResId("p00000")
-                if (resId != 0) {
-                    imageArray[i] = resId
-                } else {
-                    imageArray[i] = resId0
-                }
-                i++
-                cursor.moveToNext()
-            }
-            cursor.close()
-            return imageArray
-        }
-
-    // Used by CountingActivity
-    val allImagesSrtName: Array<Int?>
-        get() {
-            val cursor = database!!.query(
-                DbHelper.COUNT_TABLE, allColumns,
-                null, null, null, null, DbHelper.C_NAME
-            )
-            val imageArray = arrayOfNulls<Int>(cursor.count)
-            cursor.moveToFirst()
-            var i = 0
-            while (!cursor.isAfterLast) {
-                @SuppressLint("Range") val ucode = cursor.getString(cursor.getColumnIndex("code"))
-                val rname = "p$ucode" // species picture resource name
-                val resId = tourCountApp.getResId(rname)
-                val resId0 = tourCountApp.getResId("p00000")
-                if (resId != 0) {
-                    imageArray[i] = resId
-                } else {
-                    imageArray[i] = resId0
-                }
-                i++
-                cursor.moveToNext()
-            }
-            cursor.close()
-            return imageArray
-        }
-
-    // Used by CountingActivity
-    val allImagesSrtCode: Array<Int?>
-        get() {
-            val cursor = database!!.query(
-                DbHelper.COUNT_TABLE, allColumns,
-                null, null, null, null, DbHelper.C_CODE
-            )
-            val imageArray = arrayOfNulls<Int>(cursor.count)
-            cursor.moveToFirst()
-            var i = 0
-            while (!cursor.isAfterLast) {
-                @SuppressLint("Range") val ucode = cursor.getString(cursor.getColumnIndex("code"))
-                val rname = "p$ucode" // species picture resource name
-                val resId = tourCountApp.getResId(rname)
-                val resId0 = tourCountApp.getResId("p00000")
-                if (resId != 0) {
-                    imageArray[i] = resId
-                } else {
-                    imageArray[i] = resId0
-                }
-                i++
-                cursor.moveToNext()
-            }
-            cursor.close()
-            return imageArray
-        }
 
     // Used by EditSpecListActivity
     val allSpecies: List<Count>

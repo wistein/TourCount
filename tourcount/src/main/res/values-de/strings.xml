@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2024-08-23 -->
+     last edited on 2024-12-02 -->
 
 <resources>
 
@@ -29,7 +29,6 @@
     <string name="importBasisMenu">Import Basis-DB</string>
     <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
     <string name="importWin">Die Datenbank wurde importiert.</string>
-    <string name="errorDb">DB-Fehler!</string>
     <string name="corruptDb">DB-Fehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
     <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
@@ -59,15 +58,14 @@
     <!-- FileChooser -->
     <string name="currentDir">Aktuelles Verz.</string>
     <string name="fileSize">Größe</string>
-    <string name="noBack">Bitte Datei wählen, Abbruch ist danach möglich.</string>
     <string name="fileHeadlineDB">Liste der DB-Dateien</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlnotes">Bem. zur Liste:</string>
+    <string name="zlnotes">Bem. zur Tour:</string>
     <string name="speccode">Spez.-Code:</string>
     <string name="cnts">Anzahl</string>
     <string name="bema">Art-Bemerkung:</string>
-    <string name="bemi">Indiv.-Bemerkung</string>
+    <string name="bemi">Indiv.-Bemerkung hier einfügen&#8230;</string>
     <string name="editHeadTitle">Meta-Daten</string>
     <string name="country">Land:</string>
     <string name="inspector">Melder(in):</string>
@@ -122,12 +120,13 @@
 
     <!-- EditSpecListActivity -->
     <string name="editTitle">Bezeichnungen editieren</string>
-    <string name="labelNewsectSaveButton">Speichern und editieren</string>
     <string name="labelAddSpecButton">Arten hinzufügen</string>
     <string name="labelDelSpecButton">Arten entfernen</string>
+    <string name="labelEditSpecButton">Liste editieren</string>
     <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
-    <string name="titleEdit">Listenname:</string>
-    <string name="titleHint">Listenname hier einfügen&#8230;</string>
+    <string name="titleEdit">Tour-Name:</string>
+    <string name="titleHint">Tour-Bezeichnung hier einfügen&#8230;</string>
+    <string name="titleHintShort">Hier einfügen&#8230;</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
     <string name="isdouble"> ist doppelt!</string>
     <string name="presentSpecs">Arten der Zählliste:</string>
@@ -137,7 +136,6 @@
 
     <!-- DelSpeciesActivity -->
     <string name="delTitle">Arten entfernen</string>
-    <string name="reallyDeleteSpecs">Bist Du sicher? Die Arten werden sofort gelöscht.</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Arten hinzufügen</string>
@@ -195,7 +193,6 @@
     <string name="countNameG">Neue Art (deutscher Name)</string>
     <string name="countCode">Code</string>
     <string name="notesSpecies">Allg. Bem. zur Art:</string>
-    <string name="yesDeleteIt">Löschen</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Zählergebnis</string>
@@ -210,7 +207,6 @@
     <string name="txtSte">Zust.:</string>
     <string name="txtLat">La.:</string>
     <string name="txtLon">Lo.:</string>
-    <string name="txtHgt">H:</string>
     <string name="rem_Sp">Art-Bem.:</string>
     <string name="rem_Ind">Ind.-Bem.:</string>
     <string name="txt_mf">♂, ♀</string>
@@ -227,8 +223,8 @@
     <string name="countNameHintG">Art-Name (deutsch)</string>
     <string name="hintTitle">Titel:</string>
     <string name="hintName">Name</string>
-    <string name="notesHere">Bemerkung zur Liste:</string>
-    <string name="hintListNotes">Bemerkung zur Liste:</string>
+    <string name="notesHere">Bemerkung zur Tour:</string>
+    <string name="hintListNotes">Bemerkung zur Tour:</string>
     <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount_yyyy-mm-dd_hhmmss.db\" per E-Mail, falls Du Hilfe brauchst.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂, ♀</string>

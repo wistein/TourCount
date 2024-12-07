@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_edit_section.xml is used by EditSpecListActivity.kt
+     ScrollView is always at the bottom of the view.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editSpecList"
+    android:background="#006600"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- insert section title and notes -->
+    <LinearLayout
+        android:id="@+id/editingNotes1Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <!-- insert hint -->
+    <LinearLayout
+        android:id="@+id/showHintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/editingScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- insert species as they are created in here -->
+        <LinearLayout
+            android:id="@+id/editingCountsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+

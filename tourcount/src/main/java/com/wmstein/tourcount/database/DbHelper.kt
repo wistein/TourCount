@@ -16,19 +16,20 @@ import com.wmstein.tourcount.R
  * updated to version 4 on 2019-03-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-08-25
+ * last edited on 2024-11-26
  *
- * *******************************************************************
- * Current DB version must be set under 'companion object' at the end
- * *******************************************************************
+ * ************************************************************************
+ * ATTENTION!
+ * Current DATABASE_VERSION must be set under 'companion object' at the end
+ * ************************************************************************
  */
 class DbHelper    // constructor
-    (private val mContext: Context?) :
+    (private val mContext: Context) :
     SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
     // called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
-        if (MyDebug.LOG) Log.i(TAG, "Creating database: $DATABASE_NAME")
+        if (MyDebug.dLOG) Log.d(TAG, "32, Creating database: $DATABASE_NAME")
 
         var sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
@@ -115,12 +116,12 @@ class DbHelper    // constructor
 
         //create initial data for COUNT_TABLE
         initialCounts(db)
-        if (MyDebug.LOG) Log.d(TAG, "Success!")
+        if (MyDebug.dLOG) Log.d(TAG, "119, Success!")
     }
 
     // initial data for COUNT_TABLE
     private fun initialCounts(db: SQLiteDatabase) {
-        val specs: Array<String> = mContext?.resources!!.getStringArray(R.array.initSpecs)
+        val specs: Array<String> = mContext.resources.getStringArray(R.array.initSpecs)
         val codes: Array<String> = mContext.resources.getStringArray(R.array.initCodes)
         val specsG: Array<String> = mContext.resources.getStringArray(R.array.initSpecs_g)
         for (i in 1 until specs.size) {
@@ -188,11 +189,11 @@ class DbHelper    // constructor
         try {
             sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing icount column added to individuals")
+            if (MyDebug.dLOG) Log.d(TAG, "Missing icount column added to individuals")
         } catch (e: Exception) {
-            if (MyDebug.LOG) Log.e(TAG, "Column already present: $e")
+            if (MyDebug.dLOG) Log.e(TAG, "Column already present: $e")
         }
-        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 2")
+        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -206,38 +207,38 @@ class DbHelper    // constructor
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F2I int"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing count_f2i column added to counts!")
+            if (MyDebug.dLOG) Log.d(TAG, "Missing count_f2i column added to counts!")
         } catch (e: Exception) {
-            if (MyDebug.LOG) Log.e(TAG, "Column already present: $e")
+            if (MyDebug.dLOG) Log.e(TAG, "Column already present: $e")
             colExist = true
         }
-        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 3")
+        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 3")
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing count_f3i column added to counts!")
-        } catch (e: Exception) {
+            if (MyDebug.dLOG) Log.d(TAG, "Missing count_f3i column added to counts!")
+        } catch (_: Exception) {
             // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_PI int"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing count_pi column added to counts!")
-        } catch (e: Exception) {
+            if (MyDebug.dLOG) Log.d(TAG, "Missing count_pi column added to counts!")
+        } catch (_: Exception) {
             // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_LI int"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing count_li column added to counts!")
-        } catch (e: Exception) {
+            if (MyDebug.dLOG) Log.d(TAG, "Missing count_li column added to counts!")
+        } catch (_: Exception) {
             // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing count_ei column added to counts!")
-        } catch (e: Exception) {
+            if (MyDebug.dLOG) Log.d(TAG, "Missing count_ei column added to counts!")
+        } catch (_: Exception) {
             // do nothing
         }
 
@@ -246,9 +247,9 @@ class DbHelper    // constructor
             sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                     + " int default 1")
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Missing icategory column added to individuals!")
+            if (MyDebug.dLOG) Log.d(TAG, "Missing icategory column added to individuals!")
         } catch (e: Exception) {
-            if (MyDebug.LOG) Log.e(TAG, "Column I_CATEGORY already present: $e")
+            if (MyDebug.dLOG) Log.e(TAG, "Column I_CATEGORY already present: $e")
             colCatExist = true
         }
 
@@ -257,8 +258,8 @@ class DbHelper    // constructor
             try {
                 sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
                 db.execSQL(sql)
-                if (MyDebug.LOG) Log.d(TAG, "I_SEX filled with '-'")
-            } catch (e: Exception) {
+                if (MyDebug.dLOG) Log.d(TAG, "I_SEX filled with '-'")
+            } catch (_: Exception) {
                 // do nothing
             }
         }
@@ -298,7 +299,7 @@ class DbHelper    // constructor
             db.execSQL(sql)
             sql = "DROP TABLE counts_backup"
             db.execSQL(sql)
-            if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 3")
+            if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 3")
         }
     }
 
@@ -307,7 +308,7 @@ class DbHelper    // constructor
     private fun version4(db: SQLiteDatabase) {
         val sql = "alter table $COUNT_TABLE add column $C_NAME_G text"
         db.execSQL(sql)
-        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 4")
+        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -359,7 +360,7 @@ class DbHelper    // constructor
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 5")
+        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -413,7 +414,7 @@ class DbHelper    // constructor
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (MyDebug.LOG) Log.d(TAG, "Upgraded database to version 6")
+        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 6")
     }
 
     /*** V7 ***/
@@ -442,7 +443,7 @@ class DbHelper    // constructor
         //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
         //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
 
-        private const val TAG = "TourCount DBHelper"
+        private const val TAG = "TourCnt DBHelper"
         private const val DATABASE_NAME = "tourcount.db"
 
         // tables

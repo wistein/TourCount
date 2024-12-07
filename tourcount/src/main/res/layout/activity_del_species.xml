@@ -5,6 +5,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/delSpec"
+    android:background="#6A0023"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">

@@ -6,18 +6,24 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -45,12 +51,10 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-08-23
+ * last edited on 2024-12-05
  */
 class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
     PermissionsGrantedCallback {
-    private var tourCount: TourCountApplication? = null
-
     private var individuals: Individuals? = null
     private var tmp: Temp? = null
     private var counts: Count? = null
@@ -61,14 +65,20 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     private var individualsDataSource: IndividualsDataSource? = null
     private var tempDataSource: TempDataSource? = null
     private var countDataSource: CountDataSource? = null
-    private var bMap: Bitmap? = null
-    private var bg: BitmapDrawable? = null
 
     // Preferences
     private val prefs = TourCountApplication.getPrefs()
     private var brightPref = false // option for full bright screen
     private var metaPref = false // option for reverse geocoding
     private var emailString: String? = "" // mail address for OSM query
+    private var buttonSound: String = ""
+    private var buttonSoundPref = false
+    private var buttonVibPref = false
+
+    private val mHandler = Handler(Looper.getMainLooper())
+    private var r: Ringtone? = null
+    private var vibratorManager: VibratorManager? = null
+    private var vibrator: Vibrator? = null
 
     // Location info handling
     private var latitude = 0.0
@@ -86,7 +96,6 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
     private var specName: String? = null
-    private var sdata : Boolean? = null // true: data saved already
     private var phase123 : Boolean? = null // true for butterfly (♂♀, ♂ or ♀), false for egg, caterpillar or pupa
     private var datestamp : String? = ""
     private var timestamp : String? = ""
@@ -96,11 +105,14 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        tourCount = application as TourCountApplication
-        prefs.registerOnSharedPreferenceChangeListener(this)
+        if (MyDebug.dLOG) Log.i(TAG, "108, onCreate")
+
         brightPref = prefs.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
         emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
+        buttonVibPref = prefs.getBoolean("pref_button_vib", false)
+        buttonSound = prefs.getString("button_sound", null).toString()
 
         // Set full brightness of screen
         if (brightPref) {
@@ -110,13 +122,18 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             window.attributes = params
         }
         setContentView(R.layout.activity_edit_individual)
-        val indivScreen = findViewById<ScrollView>(R.id.editIndividualScreen)
-        bMap = tourCount!!.decodeBitmap(R.drawable.edbackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(indivScreen.resources, bMap)
-        indivScreen.background = bg
         indivArea = findViewById(R.id.edit_individual)
 
-        // get parameters from CountingActivity
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager?
+        else
+            vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator?
+
+        soundButtonSound()
+        buttonVib()
+
+        // Get parameters from CountingActivity
         val extras = intent.extras
         if (extras != null) {
             countId = extras.getInt("count_id")
@@ -126,25 +143,27 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             timestamp = extras.getString("time")
             indivAttr = extras.getInt("indivAtt")
         }
-        sdata = false
     }
+    // End of onCreate()
 
     @SuppressLint("LongLogTag", "DefaultLocale")
     override fun onResume() {
         super.onResume()
 
+        prefs.registerOnSharedPreferenceChangeListener(this)
+
         // Get location with permissions check
         locationPermissionDispatcherMode = 1
         locationCaptureFragment()
 
-        // clear any existing views
+        // Clear any existing views
         indivArea!!.removeAllViews()
 
         // setup the data sources
         individualsDataSource = IndividualsDataSource(this)
         individualsDataSource!!.open()
 
-        // get last found locality from tmp
+        // Get last found locality from tmp
         tempDataSource = TempDataSource(this)
         tempDataSource!!.open()
         tmp = tempDataSource!!.tmp
@@ -152,15 +171,15 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
 
-        // set title
+        // Set title
         try {
             supportActionBar!!.title = specName
-        } catch (e: NullPointerException) {
-            if (MyDebug.LOG) Log.e(TAG, "159, NullPointerException: No species name!")
+        } catch (_: NullPointerException) {
+            if (MyDebug.dLOG) Log.e(TAG, "178, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
-        // display the editable data
+        // Display the editable data
         eiw = EditIndividualWidget(this, null)
         eiw!!.setWidgetLocality1(getString(R.string.locality)+":")
         eiw!!.widgetLocality2 = sLocality!!
@@ -208,12 +227,12 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         eiw!!.setWidgetYCoord2(String.format("%.6f", longitude))
         indivArea!!.addView(eiw)
     }
-    // end of onResume()
+    // End of onResume()
 
     override fun onPause() {
         super.onPause()
 
-        // close the data sources
+        // Close the data sources
         individualsDataSource!!.close()
         tempDataSource!!.close()
         countDataSource!!.close()
@@ -221,10 +240,15 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         // Stop location service with permissions check
         locationPermissionDispatcherMode = 2
         locationCaptureFragment()
+
+        if (r != null)
+            r!!.stop() // stop media player
+
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     private fun saveData(): Boolean {
-        // save individual data
+        // Save individual data
         indivId = individualsDataSource!!.saveIndividual(
             individualsDataSource!!.createIndividuals(
                 countId,
@@ -268,7 +292,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             }
         }
 
-        // number of individuals
+        // Number of individuals
         val newcount = eiw!!.widgetCount2
         if (newcount > 0) // valid positive newcount
         {
@@ -301,7 +325,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 }
 
                 4 -> {
-                    // pupa
+                    // Pupa
                     counts!!.count_pi = counts!!.count_pi + newcount
                     individuals!!.icount = newcount
                     individuals!!.sex = "-"
@@ -310,7 +334,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 }
 
                 5 -> {
-                    // larva
+                    // Larva
                     counts!!.count_li = counts!!.count_li + newcount
                     individuals!!.icount = newcount
                     individuals!!.sex = "-"
@@ -319,7 +343,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 }
 
                 6 -> {
-                    // eggs
+                    // Eggs
                     counts!!.count_ei = counts!!.count_ei + newcount
                     individuals!!.icount = newcount
                     individuals!!.sex = "-"
@@ -341,7 +365,6 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         }
 
         tempDataSource!!.saveTempLoc(tmp!!)
-        sdata = true
         return true
     }
 
@@ -362,17 +385,11 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here.
         val id = item.itemId
         if (id == R.id.menuSaveExit) {
             if (saveData()) {
-                super.finish()
-                // close the data sources
-                individualsDataSource!!.close()
-                tempDataSource!!.close()
-                countDataSource!!.close()
+                finish()
             }
             return true
         }
@@ -387,24 +404,19 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        val indivScreen = findViewById<ScrollView>(R.id.editIndividualScreen)
-        indivScreen.background = null
         brightPref = prefs!!.getBoolean("pref_bright", true)
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
-        bMap = tourCount!!.decodeBitmap(R.drawable.edbackground, tourCount!!.width, tourCount!!.height)
-        bg = BitmapDrawable(indivScreen.resources, bMap)
-        indivScreen.background = bg
+        metaPref = prefs.getBoolean("pref_metadata", false) // Use Reverse Geocoding
+        emailString = prefs.getString("email_String", "") // For reliable query of Nominatim service
     }
 
     override fun locationCaptureFragment() {
         run {
             if (this.isPermissionGranted) {
                 when (locationPermissionDispatcherMode) {
-                    1 ->  // get location
+                    1 ->  // Get location
                         this.loc
 
-                    2 ->  // stop location service
+                    2 ->  // Stop location service
                         locationService!!.stopListener()
                 }
             } else {
@@ -416,7 +428,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         }
     }
 
-    // if API level > 23 test for permissions granted
+    // If API level > 23 test for permissions granted
     private val isPermissionGranted: Boolean
         get() = (ContextCompat.checkSelfPermission(
             this,
@@ -427,7 +439,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED)
 
-    // get the location data
+    // Get the location data
     private val loc: Unit
         get() {
             locationService = LocationService(this)
@@ -439,12 +451,12 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 uncertainty = locationService!!.accuracy.toString()
             }
 
-            // get reverse geocoding
+            // Get reverse geocoding
             if (locationService!!.canGetLocation() && metaPref && (latitude != 0.0 || longitude != 0.0)) {
                 val urlString = ("https://nominatim.openstreetmap.org/reverse?email=" + emailString
                         + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1")
 
-                // Trial with WorkManager
+                // Implementation with WorkManager
                 val retrieveAddrWorkRequest: WorkRequest = OneTimeWorkRequest.Builder(RetrieveAddrWorker::class.java)
                     .setInputData(
                         Data.Builder()
@@ -464,17 +476,56 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         val gh = EarthGravitationalModel()
         try {
             gh.load(this) // load the WGS84 correction coefficient table egm180.txt
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             return 0.0
         }
 
         // Calculate the offset between the ellipsoid and geoid
         corrHeight = try {
             gh.heightOffset(latitude, longitude, gpsHeight)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return 0.0
         }
         return gpsHeight + corrHeight
+    }
+
+    private fun soundButtonSound() {
+        if (buttonSoundPref) {
+            try {
+                var notification: Uri?
+                if (buttonSound.isNotBlank()) notification =
+                    Uri.parse(buttonSound)
+                else notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                r = RingtoneManager.getRingtone(applicationContext, notification)
+                r!!.play()
+                mHandler.postDelayed(Runnable { r!!.stop() }, 400)
+            } catch (e: java.lang.Exception) {
+                if (MyDebug.dLOG) Log.e(TAG, "503, could not play button sound.", e)
+            }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun buttonVib() {
+        if (buttonVibPref) {
+            try {
+                if (Build.VERSION.SDK_INT >= 31) {
+                    vibratorManager!!.defaultVibrator
+                    vibratorManager!!.cancel()
+                } else {
+                    if (Build.VERSION.SDK_INT >= 26) vibrator!!.vibrate(
+                        VibrationEffect.createOneShot(
+                            100,
+                            VibrationEffect.DEFAULT_AMPLITUDE
+                        )
+                    )
+                    else vibrator!!.vibrate(100)
+                    vibrator!!.cancel()
+                }
+            } catch (e: java.lang.Exception) {
+                if (MyDebug.dLOG) Log.e(TAG, "526, could not vibrate.", e)
+            }
+        }
     }
 
     companion object {

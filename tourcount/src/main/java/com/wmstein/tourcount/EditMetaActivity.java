@@ -1,23 +1,19 @@
 package com.wmstein.tourcount;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -38,7 +34,6 @@ import java.util.Objects;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -48,14 +43,15 @@ import androidx.work.WorkRequest;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2024-10-14
+ * last edit in Java on 2024-11-25
  */
 public class EditMetaActivity extends AppCompatActivity
     implements PermissionsDialogFragment.PermissionsGrantedCallback
 {
+    private static final String TAG = "EditMetaAct";
 
     private final SharedPreferences prefs = TourCountApplication.getPrefs();
-    private boolean metaPref;      // option for reverse geocoding
+    private boolean metaPref;        // option for OSM reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
     private Head head;
@@ -82,18 +78,17 @@ public class EditMetaActivity extends AppCompatActivity
     //  2 = end location service
     int locationPermissionDispatcherMode;
 
-    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        TourCountApplication tourCount = (TourCountApplication) getApplication();
-        // option for full bright screen
-        boolean brightPref = prefs.getBoolean("pref_bright", true);
+        if (MyDebug.dLOG) Log.i(TAG, "86, onCreate");
 
         setContentView(R.layout.activity_edit_meta);
-        ScrollView editHead_screen = findViewById(R.id.editHeadScreen);
+
+        // Option for full bright screen
+        boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
         if (brightPref)
@@ -104,35 +99,33 @@ public class EditMetaActivity extends AppCompatActivity
             getWindow().setAttributes(params);
         }
 
-        Bitmap bMap = tourCount.decodeBitmap(R.drawable.edbackground, tourCount.width, tourCount.height);
-        BitmapDrawable bg = new BitmapDrawable(editHead_screen.getResources(), bMap);
-        editHead_screen.setBackground(bg);
-
         head_area = findViewById(R.id.edit_head);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.editHeadTitle));
 
-        // new onBackPressed logic
-        if (Build.VERSION.SDK_INT >= 33)
-        {
-            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true)
-                {
-                    @Override
-                    public void handleOnBackPressed()
-                    {
-                        NavUtils.navigateUpFromSameTask(EditMetaActivity.this);
-                    }
-                }
-            );
-        }
-    }
-    // end of onCreate()
+        headDataSource = new HeadDataSource(this);
+        sectionDataSource = new SectionDataSource(this);
 
-    @SuppressLint("SourceLockedOrientationActivity")
+        // New onBackPressed logic
+        OnBackPressedCallback callback = new OnBackPressedCallback(true)
+        {
+            @Override
+            public void handleOnBackPressed()
+            {
+                if (MyDebug.dLOG) Log.i(TAG, "115, handleOnBackPressed");
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+    // End of onCreate()
+
     @Override
     protected void onResume()
     {
         super.onResume();
+
+        if (MyDebug.dLOG) Log.i(TAG, "128, onResume");
 
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
@@ -141,20 +134,18 @@ public class EditMetaActivity extends AppCompatActivity
         locationPermissionDispatcherMode = 1;
         locationCaptureFragment();
 
-        //clear existing view
+        // Clear existing view
         head_area.removeAllViews();
 
-        //setup data sources
-        headDataSource = new HeadDataSource(this);
+        // Setup data sources
         headDataSource.open();
-        sectionDataSource = new SectionDataSource(this);
         sectionDataSource.open();
 
-        //load head and meta data
+        // Load head and meta data
         head = headDataSource.getHead();
         section = sectionDataSource.getSection();
 
-        // display editable list title, observer name and notes
+        // Display editable list title, observer name and notes
         ett = new EditTitleWidget(this, null);
         ett.setWidgetTitle(getString(R.string.titleEdit));
         ett.setWidgetName(section.name);
@@ -165,7 +156,7 @@ public class EditMetaActivity extends AppCompatActivity
         ett.setHintN(getString(R.string.notesHint));
         head_area.addView(ett);
 
-        // display the editable location data
+        // Display the editable location data
         elw = new EditLocationWidget(this, null);
         elw.setWidgetCo1(getString(R.string.country));
         elw.setWidgetCo2(section.country);
@@ -178,7 +169,7 @@ public class EditMetaActivity extends AppCompatActivity
 
         head_area.addView(elw);
 
-        // display the editable meta data
+        // Display the editable meta data
         emw = new EditMetaWidget(this, null);
         emw.setWidgetDate1(getString(R.string.date));
         emw.setWidgetDate2(section.date);
@@ -206,14 +197,14 @@ public class EditMetaActivity extends AppCompatActivity
         sTime = this.findViewById(R.id.widgetStartTm2);
         eTime = this.findViewById(R.id.widgetEndTm2);
 
-        // get current date by click
+        // Get current date by click
         sDate.setOnClickListener(v ->
         {
             Date date = new Date();
             sDate.setText(getformDate(date));
         });
 
-        // get date picker result
+        // Get date picker result
         final DatePickerDialog.OnDateSetListener dpd = (view, year, monthOfYear, dayOfMonth) ->
         {
             pdate.set(Calendar.YEAR, year);
@@ -223,7 +214,7 @@ public class EditMetaActivity extends AppCompatActivity
             sDate.setText(getformDate(date));
         };
 
-        // select date by long click
+        // Select date by long click
         sDate.setOnLongClickListener(v ->
         {
             new DatePickerDialog(EditMetaActivity.this, dpd,
@@ -233,14 +224,14 @@ public class EditMetaActivity extends AppCompatActivity
             return true;
         });
 
-        // get current start time
+        // Get current start time
         sTime.setOnClickListener(v ->
         {
             Date date = new Date();
             sTime.setText(getformTime(date));
         });
 
-        // get start time picker result
+        // Get start time picker result
         final TimePickerDialog.OnTimeSetListener stpd = (view, hourOfDay, minute) ->
         {
             ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -249,7 +240,7 @@ public class EditMetaActivity extends AppCompatActivity
             sTime.setText(getformTime(date));
         };
 
-        // select start time
+        // Select start time
         sTime.setOnLongClickListener(v ->
         {
             new TimePickerDialog(EditMetaActivity.this, stpd,
@@ -259,14 +250,14 @@ public class EditMetaActivity extends AppCompatActivity
             return true;
         });
 
-        // get current end time
+        // Get current end time
         eTime.setOnClickListener(v ->
         {
             Date date = new Date();
             eTime.setText(getformTime(date));
         });
 
-        // get start time picker result
+        // Get start time picker result
         final TimePickerDialog.OnTimeSetListener etpd = (view, hourOfDay, minute) ->
         {
             ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -275,7 +266,7 @@ public class EditMetaActivity extends AppCompatActivity
             eTime.setText(getformTime(date));
         };
 
-        // select end time
+        // Select end time
         eTime.setOnLongClickListener(v ->
         {
             new TimePickerDialog(EditMetaActivity.this, etpd,
@@ -285,30 +276,36 @@ public class EditMetaActivity extends AppCompatActivity
             return true;
         });
     }
-    // end of onResume()
+    // End of onResume()
 
-    // formatted date
-    public static String getformDate(Date date)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        DateFormat dform;
-        String lng = Locale.getDefault().toString().substring(0, 2);
-
-        if (lng.equals("de"))
-        {
-            dform = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        }
-        else
-        {
-            dform = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        }
-        return dform.format(date);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.edit_meta, menu);
+        return true;
     }
 
-    // date for start_tm and end_tm
-    public static String getformTime(Date date)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
     {
-        DateFormat dform = new SimpleDateFormat("HH:mm", Locale.US);
-        return dform.format(date);
+        // Handle action bar item clicks here.
+        int id = item.getItemId();
+        if (id == android.R.id.home) // back button in actionBar
+        {
+            if (MyDebug.dLOG) Log.d(TAG, "296, MenuItem home");
+            finish();
+            return true;
+        }
+
+        if (id == R.id.menuSaveExit)
+        {
+            if (MyDebug.dLOG) Log.d(TAG, "303, MenuItem saveExit");
+            if (saveData())
+                finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -316,17 +313,43 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onPause();
 
-        // close the data sources
+        if (MyDebug.dLOG) Log.i(TAG, "316, onPause");
+
         headDataSource.close();
         sectionDataSource.close();
 
         // Stop location service with permissions check
         locationPermissionDispatcherMode = 2;
         locationCaptureFragment();
+
+        sDate.setOnClickListener(null);
+        sDate.setOnLongClickListener(null);
+        sTime.setOnClickListener(null);
+        sTime.setOnLongClickListener(null);
+        eTime.setOnClickListener(null);
+        eTime.setOnLongClickListener(null);
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        if (MyDebug.dLOG) Log.i(TAG, "338, onStop");
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (MyDebug.dLOG) Log.i(TAG, "346, onDestroy");
     }
 
     private boolean saveData()
     {
+        if (MyDebug.dLOG) Log.i(TAG, "351, saveData");
+
         // Save head data
         head.observer = ett.getWidgetOName2();
         headDataSource.saveHead(head);
@@ -386,36 +409,28 @@ public class EditMetaActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    // Formatted date
+    public static String getformDate(Date date)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.edit_meta, menu);
-        return true;
-    }
+        DateFormat dform;
+        String lng = Locale.getDefault().toString().substring(0, 2);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.menuSaveExit)
+        if (lng.equals("de"))
         {
-            if (saveData())
-                super.finish();
+            dform = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
         }
-        return super.onOptionsItemSelected(item);
+        else
+        {
+            dform = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        }
+        return dform.format(date);
     }
 
-    /** @noinspection deprecation*/
-    // puts up function to back button
-    @Override
-    public void onBackPressed()
+    // Date for start_tm and end_tm
+    public static String getformTime(Date date)
     {
-        NavUtils.navigateUpFromSameTask(this);
-        super.onBackPressed();
+        DateFormat dform = new SimpleDateFormat("HH:mm", Locale.US);
+        return dform.format(date);
     }
 
     @Override
@@ -426,9 +441,9 @@ public class EditMetaActivity extends AppCompatActivity
             {
                 switch (locationPermissionDispatcherMode)
                 {
-                case 1 -> // get location
+                case 1 -> // Get location
                     getLoc();
-                case 2 -> // stop location service
+                case 2 -> // Stop location service
                     locationService.stopListener();
                 }
             }
@@ -440,14 +455,14 @@ public class EditMetaActivity extends AppCompatActivity
         }
     }
 
-    // if API level > 23 test for permissions granted
+    // If API level > 23 test for permissions granted
     private boolean isPermissionGranted()
     {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
-    // get the location data
+    // Get the location data
     public void getLoc()
     {
         locationService = new LocationService(this);
@@ -458,13 +473,13 @@ public class EditMetaActivity extends AppCompatActivity
             latitude = locationService.getLatitude();
         }
 
-        // get reverse geocoding
+        // Get reverse geocoding
         if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
         {
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            // Trial with WorkManager
+            // Implementation with WorkManager
             WorkRequest retrieveAddrWorkRequest =
                 new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
                     .setInputData(new Data.Builder()

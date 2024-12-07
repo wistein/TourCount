@@ -3,17 +3,14 @@ package com.wmstein.filechooser
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
 import com.wmstein.tourcount.R
 import java.io.File
 import java.io.FileFilter
@@ -27,7 +24,7 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-06.
+ * last edited on 2024-11-07.
  */
 class AdvFileChooser : Activity() {
     private var currentDir: File? = null
@@ -61,12 +58,12 @@ class AdvFileChooser : Activity() {
             }
         }
 
-        // set FileChooser Headline
+        // Set FileChooser Headline
         val fileHd = getString(R.string.fileHeadlineDB)
         val fileHead: TextView = findViewById(R.id.fileHead)
         fileHead.text = fileHd
 
-        // currentDir = /storage/emulated/0/Documents/TransektCount/
+        // currentDir = /storage/emulated/0/Documents/TourCount/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             currentDir = Environment.getExternalStorageDirectory()
@@ -76,17 +73,6 @@ class AdvFileChooser : Activity() {
             currentDir = File("$currentDir/TourCount")
         }
         fill(currentDir!!)
-    }
-
-    // Disable Back-key in AdvFileChooser as return with no selected file produces
-    //   NullPointerException of FileInputStream
-    @SuppressLint("GestureBackNavigation")
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            showSnackbar(getString(R.string.noBack))
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
     }
 
     // List only files in /sdcard
@@ -111,7 +97,7 @@ class AdvFileChooser : Activity() {
                     }
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // do nothing
         }
         fls.sort()
@@ -120,17 +106,17 @@ class AdvFileChooser : Activity() {
         listView.adapter = adapter
         listView.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
-                val o = adapter!!.getItem(position)
-                if (!o.isBack) doSelect(o) else {
-                        currentDir = File(o.path)
+                val opt = adapter!!.getItem(position)
+                if (!opt.isBack) doSelect(opt) else {
+                        currentDir = File(opt.path)
                         fill(currentDir!!)
                     }
             }
     }
 
-    private fun doSelect(o: Option?) {
-        //onFileClick(o);
-        val fileSelected = File(o!!.path)
+    private fun doSelect(opt: Option?) {
+        // onFileClick(opt);
+        val fileSelected = File(opt!!.path)
         val intent = Intent()
         intent.putExtra("fileSelected", fileSelected.absolutePath)
         setResult(RESULT_OK, intent)
@@ -139,16 +125,6 @@ class AdvFileChooser : Activity() {
 
     public override fun onStop() {
         super.onStop()
-    }
-
-    private fun showSnackbar(str: String) // green text
-    {
-        val view = findViewById<View>(R.id.lvFiles)
-        val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
-        sB.setTextColor(Color.GREEN)
-        val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        sB.show()
     }
 
 }

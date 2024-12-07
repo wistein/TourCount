@@ -14,31 +14,32 @@ import java.util.Objects
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-11
+ * last edited on 2024-11-25
  */
 class EditSpNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
-    private val sp_notes_title: TextView
-    private val sp_notes_name: EditText
+    private val specNotesTitle: TextView
+    private val specNotesName: EditText
+
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_spnotes, this, true)
-        sp_notes_title = findViewById(R.id.spNotesTitle)
-        sp_notes_name = findViewById(R.id.spNotesName)
+        specNotesTitle = findViewById(R.id.spNotesTitle)
+        specNotesName = findViewById(R.id.spNotesName)
     }
 
     fun setSpNotesTitle(title: String?) {
-        sp_notes_title.text = title
+        specNotesTitle.text = title
     }
 
     fun setHint(hint: String?) {
-        sp_notes_name.hint = hint
+        specNotesName.hint = hint
     }
 
     var spNotesName: String?
-        get() = sp_notes_name.text.toString()
+        get() = specNotesName.text.toString()
         set(name) {
-            sp_notes_name.setText(name)
+            specNotesName.setText(name)
         }
 		
 }

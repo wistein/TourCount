@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.wmstein.tourcount.R
-import com.wmstein.tourcount.TourCountApplication
 import java.io.Serializable
 import java.util.Objects
 
@@ -18,7 +18,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2019-04-03,
  * last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-05-02
- * last edited in Kotlin on 2023-07-02
+ * last edited in Kotlin on 2024-11-25
  */
 class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -38,10 +38,9 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
     private val specPic: ImageView
     private val markButton: CheckBox
 
-    val inflater: LayoutInflater
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_add_spec, this, true)
         specName = findViewById(R.id.specName)
         specNameG = findViewById(R.id.specNameG)
@@ -76,7 +75,7 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         specCode.text = code
     }
 
-    // get state of add checkbox
+    // Get state of add checkbox
     fun getMarkSpec(): Boolean {
         val checked: Boolean
         if (markButton.isChecked)
@@ -86,7 +85,7 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         return checked
     }
 
-    // set state of add checkbox
+    // Set state of add checkbox
     fun setMarkSpec(state: Boolean) {
         if (state)
             markButton.isChecked = true
@@ -99,11 +98,11 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         markButton.tag = id.toInt() - 1
     }
 
+    // Set picture of species
+    @SuppressLint("DiscouragedApi")
     fun setPSpec(ucode: String) {
-        val rname = "p$ucode" // species picture resource name
-        val tourCountApp = TourCountApplication()
-        val resId = tourCountApp.getResId(rname)
-
+        val rName = "p$ucode" // species picture resource name
+        val resId = resources.getIdentifier(rName, "drawable", context.packageName)
         if (resId != 0) {
             specPic.setImageResource(resId)
         }

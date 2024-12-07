@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 
 /************************************************************************
- * Based on ChangeLog.java
+ * ViewLicense.java is based on ChangeLog.java
  * Copyright (C) 2011-2013, Karsten Priegnitz
  * <p>
  * Permission to use, copy, modify, and distribute this piece of software
@@ -86,7 +86,7 @@ public class ViewLicense
 
     private String getLog()
     {
-        // read viewhelp.txt file
+        // read file viewlicense.txt
         sb = new StringBuffer();
         try
         {
@@ -149,7 +149,7 @@ public class ViewLicense
             br.close();
         } catch (IOException e)
         {
-            if (MyDebug.LOG)
+            if (MyDebug.dLOG)
                 Log.e(TAG, "181, could not read license text.", e);
         }
 
