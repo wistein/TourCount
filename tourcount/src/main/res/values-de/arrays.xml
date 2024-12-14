@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- last edited 2024-12-09 -->
+
 <resources>
     <string-array name="pref_bg_entries">
-        <item>Kein</item>
+        <item>Schwarz</item>
+		<item>Grau</item>
         <item>TourCount (Standard)</item>
     </string-array>
     <string-array name="pref_bg_values">
         <item>none</item>
+		<item>grey</item>
         <item>default</item>
     </string-array>
 

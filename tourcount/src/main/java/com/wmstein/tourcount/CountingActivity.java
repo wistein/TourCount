@@ -175,7 +175,7 @@ public class CountingActivity
         {
             setContentView(R.layout.activity_counting_lh);
             LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
-            counting_screen.setBackground(tourCount.getBackground());
+            counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayoutLH);
             notes_area1 = findViewById(R.id.sectionNotesLayoutLH);
             head_area2 = findViewById(R.id.countHead2LayoutLH);
@@ -184,7 +184,7 @@ public class CountingActivity
         {
             setContentView(R.layout.activity_counting);
             LinearLayout counting_screen = findViewById(R.id.counting_screen);
-            counting_screen.setBackground(tourCount.getBackground());
+            counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayout);
             notes_area1 = findViewById(R.id.sectionNotesLayout);
             head_area2 = findViewById(R.id.countHead2Layout);
@@ -563,6 +563,9 @@ public class CountingActivity
         super.onStop();
 
         if (MyDebug.dLOG) Log.i(TAG, "565, onStop");
+
+        if (r != null)
+            r.stop(); // stop media player
     }
 
     @Override
@@ -571,9 +574,6 @@ public class CountingActivity
         super.onDestroy();
 
         if (MyDebug.dLOG) Log.i(TAG, "573, onDestroy");
-
-        if (r != null)
-            r.stop(); // stop media player
     }
 
     // Part of permission handling

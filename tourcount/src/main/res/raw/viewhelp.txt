@@ -26,14 +26,14 @@
 $ 10
   % 1. Introduction
   !
-  ! This counting app should support you when recording butterflies. It allows to register individuals species-specific, separated by sexus and metamorphic stages as well as individually localized in the field.
+  ! TourCount should support you when recording butterflies. It allows to register individuals species-specific, separated by sexus and metamorphic stages as well as individually localized in the field.
   ! It facilitates this comfortably without field book and pencil on every stay in nature.
   _ 
   ! The integrated database can be individually created and adapted regarding expected butterfly species.
   ! The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into the butterfly registration system (e.g. on www.science4you.org) or transferred to a PC for your own processing.
   _ 
-  ! The app is open source (published under <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>),
-  ! has no tracking or advertising functions, demands only for permissions which are needed for recording the counting data (access rights for storage and GPS as well as internet for reverse geocoding.)
+  ! The app is open source (published under <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>).
+  ! It contains neither tracking nor advertising functions, but requires access rights that are necessary for the app's serviceable functions: Import of DB files, export of counting results to DB or CSV files, GPS access rights, internet access for inverse geocoding and wakelock to prevent the app from dimming or switching off.
 
 $ 9
   % 2. Setting up
@@ -44,9 +44,6 @@ $ 9
   _ 
   ! At the end of this list you may select a placeholder for an unknown species (NN). Afterwards this could be edited by entering its real scientific name, common name and code (five-digit with leading zeros, see „List of coded Butterflies.pdf“.
    _
-  ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
-  ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
-  _
   !               TourCount species list (partly)
   ! ---------------------------------------------
   ! ...
@@ -58,9 +55,10 @@ $ 9
   ) Bath white
   ! ...
   _ 
-  ! When going back from the "Edit Terms" page the changes will be stored.
+  ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.
+  ! The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum <a href="https://lepiforum.org/" target="_blank">https://lepiforum.org/</a>.
   _
-  ! On the “Add species” and “Remove species” pages, the selection of species can be made easier by entering the first 2 letters of the scientific name. Here, the changes must be explicitly accepted using the “+” or remove button respectively.
+  ! On the “Add Species”, “Remove Species” and "Edit Terms" pages, the selection of species can be made easier by entering the first 2 letters of the scientific name. Changes must be accepted using the “+”, remove button or save Buttons of the App Bar respectively.
   _ 
   ! The list can be changed or supplemented anytime afterwards.
   _ 
@@ -85,33 +83,38 @@ $ 8
   % 3. Usage
   !
   ! Start with "Edit meta data". Enter the specific meta date of the tour.
+  ! You may enter the current date and time by clicking the related field or enter any date and time by long pressing the related field.
   _
   ! Continue with "Counting". Select the species by clicking the species line to scroll down the species list.
   ! To count just tip on the (+)-Button of the corresponding category (♂ od. ♀, ♂, ♀, pupa, larva, egg) of the species.
   ! The counter will increment and a page opens to enter individual data. Location info, latitude, longitude, height as well as date and time will be added automatically.
+  _
   ! Location may be edited and condition rating (state 0-6 with 0 = undefined, 1 = very good) as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
+  _
   ! The (-)-Buttons allow for corrections. Mind that the (-)-Buttons reduce the individuals list in a last-in-first-out-mode for the corresponding species category. 
   _ 
   ! The Plus, Remove and Pencil buttons in the action bar of the counting page open the respective counting list editing pages for editing the list of species.
   _ 
   ! The Pencil-Button on top of the counting field opens the species editing page that lets you add a remark for each species that will be shown aside of it. 
   _ 
-  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should go back by clicking the Save or Remove button if the page has one.
-  ! Before finishing TourCount after a tour you should complete the meta data and save the current countings by exporting the internal DB (->tourcount_yyyy-mm-dd_hhmmss.db).
-  _ 
   ! The "Counting Results" page can be opened on the starting page with "Show Results" or the Eye-symbol in the app-bar. It shows all the registered data orderly arranged.
   ! Beneath the meta data it shows the totals followed by a list of all counted species with their individual records sorted by the recorded time.
   _
+  ! To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should click the Save or Remove button if the page has one.
+  _
+  ! Before closing TourCount after a tour you should complete the meta data and save the current count by exporting the internal DB (-> tourcount_Tour_YYYY-MM-DD_hhmmss.db or .csv in Documents/TourCount with 'Tour' for tour name, 'YY-MM-DD' for date and 'hhmmss' for time of storage).
+  _
   ! With large lists or big amounts of data, the response of the app can be somewhat delayed, especially when calling up pages with large scroll lists, as extensive calculations are running in the background.
+  _
+  ! If the message “TourCount not responding” appears, please reply with “Wait”.
 
 $ 7
   % 4. Further Functions
   !
-  ! The menu on the starting page has Settings, Reset, Import, Export, Info and Help functions. 
+  ! The app menu on the starting page has Settings, Reset, Import, Export, Info and Help functions.
   _ 
   ! In "Settings" you may adapt the look an feel in some aspects to your wishes, e.g. sounds, sorting order or left-/right-hand counting.
-  ! Here you should enter a valid email address, if you want a reliable Reverse Geocoding function.
-  _ 
+  _
   ! Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location data into the individual's record.
   ! For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nominatim from OpenStreetMap is used.
   ! A valid own email address is necessary for durably reliable queries of address data and to exclude abuse.
@@ -120,39 +123,44 @@ $ 7
   _ 
   ! For preparing a new tour you may use "Reset Data" to reset the tour-specific meta data and all count data. Alternatively you may import the Basic DB or any other prepared tourcount-DB.
   _ 
-  ! Internally, TourCount stores the data always in a single, equally named SQlite-DB in the app's own protected storage area that is not accessible by the user.
+  ! Android-specifically, TourCount stores the data always in a single SQlite-DB in the app's own protected storage area that is not accessible by the user.
   ! Therefore, exporting the data to files in a user reachable storage area is necessary.
   ! The use of different user DB files (e.g. for different regions) is also only possible via import and export.
   _ 
-  ! Exporting the DB as empty "Basic DB" is reasonable, when lasting changes of the counting list have been made (e.g. new species added).
+  ! Exporting the DB as empty Basic DB "tourcount0.db" (without tour-specific data) is reasonable, when lasting changes of the counting list have been made (e.g. new species added).
   _
-  ! The “Import Basic DB” function always reads in the file "tourcount0.db" from "Documents/TourCount".
+  ! The “Import Basic DB” function always reads in the file "tourcount0.db" from "Documents/TourCount" e.g. if incorrect changes have been made to the current DB by mistake.
+  _
+  ! "Export Current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_Tour_YYYY-MM-DD_hhmmss.db".
   _
   ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
   ! (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
   _ 
-  ! "Export Current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_YYYY-MM-DD_hhmmss.db".
-  _
-  ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "tourcount_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
-  ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid).
+  ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "tourcount_Tour_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
+  ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid app store).
   _ 
-  ! IT-affine users may transfer the exported "tourcount_YYYY-MM-DD_hhmmss.db" from "Documents/TourCount" to a PC.
+  ! IT-affine users may transfer the exported "tourcount_Tour_YYYY-MM-DD_hhmmss.db" from "Documents/TourCount" to a PC.
   ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine and edit the .db-files.
+  ! Some useful prepared SQL-scripts can be found under <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>.
   _
-  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program for further processing (under Android you may import it into a free app like Collabora).
-  ! In order to display the formats and character sets correctly, please import it
+  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program for further processing.
+  ! In order to display the formats and character sets correctly, please import it as a
   _
-  ! - as a comma-separated text file with
+  ! - comma-separated text file with
   ! - file origin “Unicode UTF-8”,
-  ! - quotations marks for textfield recognition and
+  ! - quotations marks "" for textfield recognition and
   ! - all columns in text format.
   _
-  ! Under "App Info" you find the email address of the author and the history of the app development.
-  ! Under "Licenses" you find the license notes.
+  ! The exported table can be adapted by a sort option (sort by species names or codes) for an easy data entry of the results into a Monitoring web page like
+  _
+   <a href="https://www.falterfunde.de/platform/s4y/falterfunde/index.do" target="_blank">https://www.falterfunde.de/platform/s4y/falterfunde/index.do</a>
+  _
+  ! The author's e-mail address and the app development history can be found under “App info”, license information under Licenses.
   _ 
-  ! The menu of the counting page provides a "Share" function for sending notes using a standard app, like SMS or email.
+  ! The menu of the counting page provides a "Photo" function to quickly take a photo and a
+  "Share" function for sending notes using a standard app, like SMS or email.
   _ 
-  ! The counting page is temporarily switched off by means of the proximity sensor when the phone is put into a pocket or held closed to the body.
+  ! The counter view is temporarily switched off by means of the proximity sensor when the phone is put into a pocket or held closed to the body.
   ! This saves energy, prohibits unwanted input and recalls the app into its current state immediately when used again.
 
 $ 6

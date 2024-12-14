@@ -26,8 +26,8 @@
 
   % 1. Einführung
   !
-  ! Die TourCount-App soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch, getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.
-  ! Sie ermöglicht dies ohne Feldbuch, Bleistift und Kamera bei jeglichen Aufenthalten in der Natur.
+  ! TourCount soll bei der Erfassung von Schmetterlingen unterstützen. Mit ihr können Individuen vor Ort artspezifisch, getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.
+  ! Sie ermöglicht dies ohne Feldbuch und Bleistift bei jeglichen Aufenthalten in der Natur.
   _
   ! Die integrierte Datenbank kann Tour-bezogen, d. h. pro Tour wird eine neue Datenbank-Instanz verwendet. Datenbanken können individuell bezüglich der zu erwartenden Schmetterlingsarten angelegt und angepasst werden.
   ! Die erfassten Daten (Meta-Daten, Zählerstände und Anmerkungen) können zur Eingabe ins Tagfaltermeldesystem entweder von der Ergebnisseite geordnet abgelesen oder in eine Tabelle exportiert und für eigene Bearbeitung auf einen PC übertragen und dort komfortabler gelesen oder weiterverarbeitet werden.
@@ -105,7 +105,7 @@
 
   % 4. Weitere Funktionen
   !
-  ! Das System-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen.
+  ! Das App-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen.
   _ 
   ! Unter „Einstellungen“ können das Aussehen und Verhalten der App dem eigenen Geschmack angepasst werden, z. B. Sounds, Sortierfolge oder Rechts-/Linkshänder-Darstellung der Zählerseite.
   _
@@ -118,12 +118,12 @@
   ! Zwecks Vorbereitung einer neuen Tour können mittels „Reset Daten“ die tourspezifischen Metadaten und alle Zählerdaten gelöscht werden.
   ! Alternativ kann die angelegte Basis-DB „tourcount0.db" importiert werden.
   _ 
-  ! TourCount speichert die Daten Android-spezifisch immer in einer gleichnamigen SQLite-DB im App-eigenen, für den Anwender gesperrten Speicherbereich.
+  ! TourCount speichert die Daten Android-spezifisch immer in einer SQLite-DB im App-eigenen, für den Anwender gesperrten Speicherbereich.
   ! Dadurch sind Anwenderdaten nur per Import für die App nutzbar und DB-Daten bzw. Ergebnisse nur per Export zur weiteren Verwendung durch den Anwender erreichbar.
   _
-  ! Mit "Export Basis-DB" kann die interne DB als Basis-DB (tourcount0.db), d. h. ohne begehungsspezifische Daten nach Documents/TourCount exportiert werden, wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden (z.B. neue Arten hinzugefügt).
+  ! Mit "Export Basis-DB" kann die interne DB als Basis-DB "tourcount0.db", d. h. ohne begehungsspezifische Daten nach Documents/TourCount exportiert werden, wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden (z.B. neue Arten hinzugefügt).
   _
-  ! Die Funktion „Import Basis-DB“ liest immer die Datei „tourcount0.db" von „Documents/TourCount" ein.
+  ! Die Funktion „Import Basis-DB“ liest immer die Datei „tourcount0.db" von „Documents/TourCount" ein, z. B. falls irrtümlich falsche Änderungen vorgenommen wurden.
   _
   ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_Tour_JJJJ-MM-TT_hhmmss.db".
   _
@@ -137,7 +137,7 @@
   ! Dort können mit Hilfe eines kostenlosen Tools wie „SqliteBrowser" (<a href="https://sqlitebrowser.org/" target="_blank">https://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
   ! Einige nützliche vorbereitete SQL-Scripte finden sich im docs-Verzeichnis der GitHub-Webseite  <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>.
   _
-  ! Auch die exportierten .csv-Ergebnisdateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung in einer Tabellenkalkulation importiert werden (unter Android auch in eine kostenlose App wie Collabora).
+  ! Auch die exportierten .csv-Ergebnisdateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung auf einen PC übertragen und in einer Tabellenkalkulation importiert werden.
   ! Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze darauf zu achten, dass
   _
   ! - Dateiursprung im Format „Unicode UTF-8",
@@ -147,7 +147,7 @@
   _
   ! gesetzt sind.
   _
-  ! Die exportierte Tabelle kann per Sortier-Option (nach Spezies oder Abschnitten) geordnet aufbereitet werden. Je nach Gusto hinsichtlich einer einfacheren Dateneingabe in eine zentrale Monitoring Web-Seite, wie
+  ! Die exportierte Tabelle kann per Sortier-Option (nach Speziesnamen oder -Codes) geordnet aufbereitet werden. Je nach Gusto hinsichtlich einer einfacheren Dateneingabe in eine zentrale Monitoring Web-Seite, wie
   _
     <a href="https://www.falterfunde.de/platform/s4y/falterfunde/index.do" target="_blank">https://www.falterfunde.de/platform/s4y/falterfunde/index.do</a>.
   _
@@ -157,7 +157,7 @@
   _
   ! Dort lässt sich auch eine Mitteilungsfunktion aufrufen, um eine TourCount-spezifische Nachricht über SMS oder E-Mail versenden zu können.
   _
-  ! In der Zähler-Ansicht kann die Anzeige temporär per Näherungssensor abgeschaltet werden, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert unerwünschte Eingaben und bringt die App augenblicklich zurück, wenn sie wieder normal genutzt wird.
+  ! In der Zähler-Ansicht wird die Anzeige temporär per Näherungssensor abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert unerwünschte Eingaben und bringt die App augenblicklich zurück, wenn sie wieder normal genutzt wird.
 
   % 5. Quellen
   ! Source-Code: <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>

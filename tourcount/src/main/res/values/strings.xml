@@ -174,7 +174,7 @@
     <string name="pref_note_font">Notes Font</string>
     <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
     <string name="pref_left_hand">Lefties</string>
-    <string name="pref_left_hand_summ">Show left-hander counting view.</string>
+    <string name="pref_left_hand_summ">Show left-hander counter view.</string>
 
     <string name="prefs_csv_output_title">Output</string>
     <string name="pref_csv_output_title">Sorting the Results</string>
@@ -237,7 +237,7 @@
     <string name="notesHere">List Notes:</string>
     <string name="hintListNotes">List notes:</string>
 
-    <string name="getHelp">Database problem! Please mail your exported \'tourcount_yyyy-mm-dd_hhmmss.db\' if you need assistance.</string>
+    <string name="getHelp">Database problem! Please mail your exported \'tourcount_Tour_YYYY-MM-DD_hhmmss.db\' if you need assistance.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂, ♀</string>
     <string name="countImagomHint">Butterfly ♂</string>

@@ -225,7 +225,7 @@
     <string name="hintName">Name</string>
     <string name="notesHere">Bemerkung zur Tour:</string>
     <string name="hintListNotes">Bemerkung zur Tour:</string>
-    <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount_yyyy-mm-dd_hhmmss.db\" per E-Mail, falls Du Hilfe brauchst.</string>
+    <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount_Tour_JJJJ-MM-TT_hhmmss.db\" per E-Mail, falls Du Hilfe brauchst.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂, ♀</string>
     <string name="countImagomHint">Falter ♂</string>

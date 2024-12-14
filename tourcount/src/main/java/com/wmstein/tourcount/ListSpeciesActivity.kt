@@ -74,7 +74,7 @@ class ListSpeciesActivity : AppCompatActivity() {
         individualsDataSource = IndividualsDataSource(this)
 
         val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
-        resultsScreen.background = tourCount!!.getBackground()
+        resultsScreen.background = tourCount!!.setBackgr()
 
         supportActionBar!!.title = getString(R.string.viewSpecTitle)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

@@ -1,183 +1,150 @@
-package com.wmstein.tourcount;
+package com.wmstein.tourcount
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
-import android.os.StrictMode;
-import android.util.Log;
-import android.view.Display;
-import android.view.WindowManager;
-import android.view.WindowMetrics;
+import android.app.Application
+import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
+import android.util.Log
+import android.view.WindowManager
+import androidx.preference.PreferenceManager
+import java.lang.Exception
 
-import androidx.preference.PreferenceManager;
-
-import java.util.Objects;
-
-/**********************************************************
- * Based on BeeCountApplication.java by milo on 14/05/2014.
- * Adopted for TourCount by wmstein on 2016-02-18, 
- * last change on 2024-12-05
+/*********************************************************************
+ * Handle background image and prefs
+ * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
+ * Adopted for TourCount by wmstein on 2016-02-18,
+ * converted to Kotlin on 2024-12-09,
+ * last edit on 2024-12-09
  */
-public class TourCountApplication extends Application
-{
-    private static final String TAG = "TourCountAppl";
-    public static SharedPreferences prefs;
-    private BitmapDrawable bMapDraw;
-    private Bitmap bMap;
-    int width;
-    int height;
+class TourCountApplication : Application() {
+    var bMapDraw: BitmapDrawable? = null
+    var width: Int = 0
+    var height: Int = 0
 
-    @Override
-    public void onCreate()
-    {
-        super.onCreate();
+    override fun onCreate() {
+        super.onCreate()
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
-        if (MyDebug.dLOG)
-        {
-            Log.i(TAG, "44, StrictMode.setVmPolicy");
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
-                .detectLeakedClosableObjects()
-                .build());
+        if (MyDebug.dLOG) {
+            Log.i(TAG, "42, StrictMode.setVmPolicy")
+            StrictMode.setVmPolicy(
+                VmPolicy.Builder(StrictMode.getVmPolicy())
+                    .detectLeakedClosableObjects()
+                    .build()
+            )
         }
 
-        bMapDraw = null;
-        bMap = null;
-        try
-        {
-            prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        } catch (Exception e)
-        {
-            if (MyDebug.dLOG)
-                Log.e(TAG, "58, Error: " + e);
+        try {
+            prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        } catch (e: Exception) {
+            if (MyDebug.dLOG) Log.e(TAG, "46, Error: $e")
         }
     }
     // End of onCreate()
 
-    // bMapDraw is a pre-prepared bitmap set when the application starts up
-    // or the settings are changed
-    public BitmapDrawable getBackground()
-    {
-        if (bMapDraw == null)
-        {
-            return setBackground();
-        }
-        else
-        {
-            return bMapDraw;
-        }
-    }
+    // bMapDraw is a pre-prepared bitmap read by WelcomeActivity, SelectSectionActivity
+    //   and CountingActivity
+    @Suppress("DEPRECATION")
+    fun setBackgr(): BitmapDrawable {
+        bMapDraw = null
 
-    public BitmapDrawable setBackground()
-    {
-        bMapDraw = null;
+        val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
+        if (MyDebug.dLOG) Log.i(TAG, "58, Backgr.: $backgroundPref")
 
-        String backgroundPref = prefs.getString("pref_backgr", "default");
-
-        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        assert wm != null;
-
+        val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
         if (Build.VERSION.SDK_INT >= 30) {
-            final WindowMetrics metrics = wm.getCurrentWindowMetrics();
-            width = metrics.getBounds().right + metrics.getBounds().left;
-            height = metrics.getBounds().top +metrics.getBounds().bottom;
+            val metrics = wm.currentWindowMetrics
+            width = metrics.bounds.right + metrics.bounds.left
+            height = metrics.bounds.top + metrics.bounds.bottom
+        } else {
+            val display = wm.defaultDisplay
+            val size = Point()
+            display.getSize(size)
+            width = size.x
+            height = size.y
         }
-        else
-        {
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-        }
-        if (MyDebug.dLOG)
-            Log.d(TAG, "100, Width: " + width + " Height: " + height);
+        if (MyDebug.dLOG) Log.d(TAG, "72, Width: $width Height: $height")
 
-        switch (Objects.requireNonNull(backgroundPref))
-        {
-            case "none" ->
-            {
-                // boring black screen
-                bMap = null;
-                bMap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                bMap.eraseColor(Color.BLACK);
-            }
-            case "default" ->
-            {
-                // portrait
-                if ((double) height / width < 1.8)
-                {
-                    // normal screen
-                    bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height);
-                }
-                else
-                {
-                    // long screen
-                    bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height);
-                }
+        var bMap: Bitmap?
+        if (backgroundPref == "none") {
+            // black screen
+            bMap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            bMap.eraseColor(Color.BLACK)
+        } else if (backgroundPref == "grey") {
+            bMap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            bMap.eraseColor(-0xddddde)
+        } else {
+            if (height.toDouble() / width < 1.8) {
+                // normal screen
+                bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height)
+            } else {
+                // long screen
+                bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height)
             }
         }
 
-        bMapDraw = new BitmapDrawable(this.getResources(), bMap);
-        bMap = null;
-        return bMapDraw;
+        bMapDraw = BitmapDrawable(this.resources, bMap)
+        return bMapDraw!!
     }
 
-    public Bitmap decodeBitmap(int resId, int reqWidth, int reqHeight)
-    {
+    fun decodeBitmap(resId: Int, reqWidth: Int, reqHeight: Int): Bitmap? {
         // First decode with inJustDecodeBounds = true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(getResources(), resId, options);
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeResource(resources, resId, options)
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
 
         // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        try
-        {
-            return BitmapFactory.decodeResource(getResources(), resId, options);
-        } catch (OutOfMemoryError e)
-        {
-            return null;
+        options.inJustDecodeBounds = false
+        try {
+            return BitmapFactory.decodeResource(resources, resId, options)
+        } catch (_: OutOfMemoryError) {
+            return null
         }
     }
 
-    // Scale background bitmap
-    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
-    {
-        // Raw height and width of image
-        final int height1 = options.outHeight;
-        final int width1 = options.outWidth;
-        int inSampleSize = 1;
+    companion object {
+        private const val TAG = "TourCountAppl"
+        private var prefs: SharedPreferences? = null
 
-        if (height1 > reqHeight || width1 > reqWidth)
-        {
+        // Scale background bitmap
+        private fun calculateInSampleSize(
+            options: BitmapFactory.Options,
+            reqWidth: Int,
+            reqHeight: Int
+        ): Int {
+            // Raw height and width of image
+            val height1 = options.outHeight
+            val width1 = options.outWidth
+            var inSampleSize = 1
 
-            final int halfHeight = height1 / 2;
-            final int halfWidth = width1 / 2;
+            if (height1 > reqHeight || width1 > reqWidth) {
+                val halfHeight = height1 / 2
+                val halfWidth = width1 / 2
 
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            //   height1 and width1 larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                && (halfWidth / inSampleSize) > reqWidth)
-            {
-                inSampleSize *= 2;
+                // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+                //   height1 and width1 larger than the requested height and width.
+                while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth
+                ) {
+                    inSampleSize *= 2
+                }
             }
+            return inSampleSize
         }
-        return inSampleSize;
-    }
 
-    public static SharedPreferences getPrefs()
-    {
-        return prefs;
+        @JvmStatic
+        fun getPrefs(): SharedPreferences {
+            return prefs!!
+        }
     }
 
 }

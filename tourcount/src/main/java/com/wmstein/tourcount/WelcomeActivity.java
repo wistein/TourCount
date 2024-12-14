@@ -149,9 +149,11 @@ public class WelcomeActivity
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        prefs = TourCountApplication.getPrefs();
+
         setContentView(R.layout.activity_welcome);
         baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(tourCount.getBackground());
+        baseLayout.setBackground(tourCount.setBackgr());
 
         if (!isStorageGranted())
         {
@@ -159,8 +161,6 @@ public class WelcomeActivity
             if (!isStorageGranted())
                 showSnackbarRed(getString(R.string.perm_cancel));
         }
-
-        prefs = TourCountApplication.getPrefs();
 
         // Check initial location permission state
         permLocGiven = isPermLocGranted();
@@ -571,8 +571,7 @@ public class WelcomeActivity
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
     {
         baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(null);
-        baseLayout.setBackground(tourCount.setBackground());
+        baseLayout.setBackground(tourCount.setBackgr());
         outPref = prefs.getString("pref_sort_output", "names");
         metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
         emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
