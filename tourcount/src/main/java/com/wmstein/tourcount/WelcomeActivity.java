@@ -77,7 +77,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2024-11-25
+ * last edited on 2024-12-17
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -582,7 +582,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.dLOG) Log.i(TAG, "586, onPause");
+        if (MyDebug.dLOG) Log.i(TAG, "585, onPause");
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("permLoc_Given", permLocGiven);
@@ -608,7 +608,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.dLOG) Log.i(TAG, "612, onStop");
+        if (MyDebug.dLOG) Log.i(TAG, "611, onStop");
     }
 
     @Override
@@ -616,7 +616,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.dLOG) Log.i(TAG, "620, onDestroy");
+        if (MyDebug.dLOG) Log.i(TAG, "619, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -714,7 +714,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.dLOG) Log.e(TAG, "718, No sdcard access");
+            if (MyDebug.dLOG) Log.e(TAG, "717, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else

@@ -16,7 +16,7 @@ import com.wmstein.tourcount.R
  * updated to version 4 on 2019-03-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-11-26
+ * last edited on 2024-12-17
  *
  * ************************************************************************
  * ATTENTION!
@@ -189,11 +189,11 @@ class DbHelper    // constructor
         try {
             sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing icount column added to individuals")
+            if (MyDebug.dLOG) Log.d(TAG, "192, Missing icount column added to individuals")
         } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "Column already present: $e")
+            if (MyDebug.dLOG) Log.e(TAG, "194, Column already present: $e")
         }
-        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 2")
+        if (MyDebug.dLOG) Log.d(TAG, "196, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -207,37 +207,37 @@ class DbHelper    // constructor
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F2I int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing count_f2i column added to counts!")
+            if (MyDebug.dLOG) Log.d(TAG, "210, Missing count_f2i column added to counts!")
         } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "Column already present: $e")
+            if (MyDebug.dLOG) Log.e(TAG, "212, Column already present: $e")
             colExist = true
         }
-        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 3")
+        if (MyDebug.dLOG) Log.d(TAG, "215, Upgraded database to version 3")
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing count_f3i column added to counts!")
+            if (MyDebug.dLOG) Log.d(TAG, "219, Missing count_f3i column added to counts!")
         } catch (_: Exception) {
             // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_PI int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing count_pi column added to counts!")
+            if (MyDebug.dLOG) Log.d(TAG, "226, Missing count_pi column added to counts!")
         } catch (_: Exception) {
             // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_LI int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing count_li column added to counts!")
+            if (MyDebug.dLOG) Log.d(TAG, "233, Missing count_li column added to counts!")
         } catch (_: Exception) {
             // do nothing
         }
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing count_ei column added to counts!")
+            if (MyDebug.dLOG) Log.d(TAG, "240, Missing count_ei column added to counts!")
         } catch (_: Exception) {
             // do nothing
         }
@@ -247,9 +247,9 @@ class DbHelper    // constructor
             sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                     + " int default 1")
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Missing icategory column added to individuals!")
+            if (MyDebug.dLOG) Log.d(TAG, "250, Missing icategory column added to individuals!")
         } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "Column I_CATEGORY already present: $e")
+            if (MyDebug.dLOG) Log.e(TAG, "252, Column I_CATEGORY already present: $e")
             colCatExist = true
         }
 
@@ -258,7 +258,7 @@ class DbHelper    // constructor
             try {
                 sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
                 db.execSQL(sql)
-                if (MyDebug.dLOG) Log.d(TAG, "I_SEX filled with '-'")
+                if (MyDebug.dLOG) Log.d(TAG, "261, I_SEX filled with '-'")
             } catch (_: Exception) {
                 // do nothing
             }
@@ -299,7 +299,7 @@ class DbHelper    // constructor
             db.execSQL(sql)
             sql = "DROP TABLE counts_backup"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 3")
+            if (MyDebug.dLOG) Log.d(TAG, "302, Upgraded database to version 3")
         }
     }
 

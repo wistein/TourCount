@@ -74,7 +74,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2024-12-07
+ * last edited in Java on 2024-12-17
  */
 public class CountingActivity
     extends AppCompatActivity
@@ -573,7 +573,7 @@ public class CountingActivity
     {
         super.onDestroy();
 
-        if (MyDebug.dLOG) Log.i(TAG, "573, onDestroy");
+        if (MyDebug.dLOG) Log.i(TAG, "576, onDestroy");
     }
 
     // Part of permission handling

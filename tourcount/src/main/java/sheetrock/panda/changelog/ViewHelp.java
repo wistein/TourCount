@@ -33,7 +33,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-10-01
+ * last edited on 2024-12-17
  */
 public class ViewHelp
 {
@@ -177,7 +177,7 @@ public class ViewHelp
         } catch (IOException e)
         {
             if (MyDebug.dLOG)
-                Log.e(TAG, "181, could not read help text.", e);
+                Log.e(TAG, "180, could not read help text.", e);
         }
 
         return sb.toString();

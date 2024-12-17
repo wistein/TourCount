@@ -65,10 +65,8 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 }
             }
             xmlString = sb.toString()
-            if (MyDebug.dLOG) Log.d(
-                ContentValues.TAG,
-                "70, xmlString: $xmlString"
-            ) // Log gzip-content of url
+            // Log gzip-content of url
+            if (MyDebug.dLOG) Log.d(ContentValues.TAG, "69, xmlString: $xmlString")
 
             // Parse Geocoder string to write DB fields
             val sectionDataSource: SectionDataSource
@@ -84,7 +82,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 var sstart = xmlString.indexOf("<addressparts>") + 14
                 var send = xmlString.indexOf("</addressparts>")
                 xmlString = xmlString.substring(sstart, send)
-                if (MyDebug.dLOG) Log.d(ContentValues.TAG, "87, <addressparts>: $xmlString")
+                if (MyDebug.dLOG) Log.d(ContentValues.TAG, "85, <addressparts>: $xmlString")
                 val locality = StringBuilder()
                 val plz = StringBuilder()
                 val city = StringBuilder()
@@ -215,7 +213,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 tempDataSource.close()
             }
         } catch (e: IOException) {
-            if (MyDebug.dLOG) Log.e(ContentValues.TAG, "218, Problem with address handling: $e")
+            if (MyDebug.dLOG) Log.e(ContentValues.TAG, "216, Problem with address handling: $e")
         }
         return Result.success()
     }

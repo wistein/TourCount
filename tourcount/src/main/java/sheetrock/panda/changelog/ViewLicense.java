@@ -150,7 +150,7 @@ public class ViewLicense
         } catch (IOException e)
         {
             if (MyDebug.dLOG)
-                Log.e(TAG, "181, could not read license text.", e);
+                Log.e(TAG, "153, could not read license text.", e);
         }
 
         return sb.toString();

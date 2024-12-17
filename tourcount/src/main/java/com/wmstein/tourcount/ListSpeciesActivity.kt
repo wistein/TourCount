@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
@@ -35,7 +34,7 @@ import kotlin.math.sqrt
  * Created by wmstein on 2016-03-15,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-11-14
+ * last edited on 2024-12-17
  */
 class ListSpeciesActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -59,7 +58,7 @@ class ListSpeciesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.dLOG) Log.i(TAG, "62, onCreate")
+        if (MyDebug.dLOG) Log.i(TAG, "61, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -73,9 +72,6 @@ class ListSpeciesActivity : AppCompatActivity() {
         headDataSource = HeadDataSource(this)
         individualsDataSource = IndividualsDataSource(this)
 
-        val resultsScreen = findViewById<ScrollView>(R.id.listSpecScreen)
-        resultsScreen.background = tourCount!!.setBackgr()
-
         supportActionBar!!.title = getString(R.string.viewSpecTitle)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -88,7 +84,7 @@ class ListSpeciesActivity : AppCompatActivity() {
         // new onBackPressed logic
         val callback = object :  OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.dLOG) Log.i(TAG, "91, handleOnBackPressed")
+                if (MyDebug.dLOG) Log.i(TAG, "87, handleOnBackPressed")
 
                 NavUtils.navigateUpFromSameTask(this@ListSpeciesActivity)
             }
@@ -100,7 +96,7 @@ class ListSpeciesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.dLOG) Log.i(TAG, "103, onResume")
+        if (MyDebug.dLOG) Log.i(TAG, "99, onResume")
 
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -302,7 +298,7 @@ class ListSpeciesActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.dLOG) Log.i(TAG, "305, onPause")
+        if (MyDebug.dLOG) Log.i(TAG, "301, onPause")
 
         // close the data sources
         headDataSource!!.close()

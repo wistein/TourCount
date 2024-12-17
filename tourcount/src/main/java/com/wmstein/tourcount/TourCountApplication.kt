@@ -20,7 +20,7 @@ import java.lang.Exception
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2024-12-09
+ * last edit on 2024-12-17
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -32,7 +32,7 @@ class TourCountApplication : Application() {
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (MyDebug.dLOG) {
-            Log.i(TAG, "42, StrictMode.setVmPolicy")
+            Log.i(TAG, "35, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
@@ -63,9 +63,9 @@ class TourCountApplication : Application() {
             width = metrics.bounds.right + metrics.bounds.left
             height = metrics.bounds.top + metrics.bounds.bottom
         } else {
-            val display = wm.defaultDisplay
+            val display = wm.defaultDisplay // deprecated in 30
             val size = Point()
-            display.getSize(size)
+            display.getSize(size) // deprecated in 30
             width = size.x
             height = size.y
         }

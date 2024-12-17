@@ -35,7 +35,7 @@ import androidx.preference.PreferenceManager;
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-10-01
+ * last edited on 2024-12-17
  */
 public class ChangeLog
 {

@@ -58,7 +58,7 @@ _ Subtitle
 
 $ 3.6.0
   % Version 3.6.0
-  _ 2024-12-07
+  _ 2024-12-17
   * Option to preselect species by initial letters also for editing them in the counting list
   * App gets completely removed from memory when finished
   * Code improvements
