@@ -11,7 +11,7 @@ TourCount is an Android app that supports species-specific and individually loca
 - You may use an individual species list per region.
 - The app contains editors to setup or adapt the current species list with add and delete species functions,
 - to prepare the meta data for a tour and
-- for individual species data of a count (e.g. state, remark or bulk count entry).
+- for individual species data of a count (e.g. status, remark or bulk count entry).
 - The counting page has a scroll-list to select a species by picture and name.
 - Separate counters for ♂♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
@@ -63,7 +63,7 @@ repository under the master branch https://github.com/wistein/TourCount/tree/mas
 
 ### Licenses
 
-Copyright 2016-2024 Wilhelm Stein
+Copyright 2016-2025 Wilhelm Stein
 
 TourCount is licensed under the Apache License, Version 2.0 (the "License");
 you may not use any of its files except in compliance with the License.

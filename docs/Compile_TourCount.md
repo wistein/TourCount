@@ -4,14 +4,14 @@
 Windows 64-bit with adb driver or
 Linux 64-bit
 
-Smartphone with high resolution screen (Android 7.1 or higher)
+Android Smartphone with high resolution screen (Android 7.1 or higher)
 
 ## Dependencies
 - Android Studio (current version)
 
 ## Android Studio Components
 Android SDK with
-- Android Platforms: 9, 10, 11, 12, 13, 14
+- Android Platforms: 9, 10, 11, 12, 13, 14, 15
 - SDK Tools: Android Emulator, Android SDK Platform-Tools, Android SDK Tools, Android Support Library, Google USB Driver, Intel x86 Emulator Accelerator, Android Support Repository, Google Repository
 - Plugins: .ignore, Android Support, CVS Integration, EditorConfig, Git Integration, GitHub, Gradle, Groovy, hg4idea, I18n for Java, IntelliLang, Java Bytecode Decompiler, JUnit, Properties Support, SDK Updater, Subversion Integration, Task Management, Terminal 
 
@@ -19,12 +19,18 @@ Android SDK with
 
 ### build.gradle (TourCount)
 - buildscript:
-  kotlin_version = '1.9.22' (or higher)
-  classpath 'com.android.tools.build:gradle:8.2.2' (or higher)
-  classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  ext:
+    kotlin_version = '2.0.20' (or higher)
+  repositories:
+    mavenCentral()
+    google()
+  dependencies:
+    classpath 'com.android.tools.build:gradle:8.7.3' (or higher)
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 ### build.gradle (tourcount)
-- Compiled with SDK Ver. 34 for targetSdk 34 and minSdk 25.
+- Compiled with SDK Ver. 35 for targetSdk 34 and minSdk 25.
+- JavaVersion.VERSION_17 (or current version)
 - External Libraries:
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation 'androidx.appcompat:appcompat:x.y.z' (current version)

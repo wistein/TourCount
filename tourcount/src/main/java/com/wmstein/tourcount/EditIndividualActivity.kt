@@ -3,8 +3,6 @@ package com.wmstein.tourcount
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
@@ -12,6 +10,7 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -33,8 +32,6 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.google.android.material.snackbar.Snackbar
 import com.wmstein.egm.EarthGravitationalModel
-import com.wmstein.tourcount.PermissionsDialogFragment.Companion.newInstance
-import com.wmstein.tourcount.PermissionsDialogFragment.PermissionsGrantedCallback
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Individuals
@@ -51,10 +48,10 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-12-05
+ * last edited on 2025-02-26
  */
-class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeListener,
-    PermissionsGrantedCallback {
+class EditIndividualActivity : AppCompatActivity()
+{
     private var individuals: Individuals? = null
     private var tmp: Temp? = null
     private var counts: Count? = null
@@ -88,15 +85,15 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     private var locationService: LocationService? = null
     private var sLocality: String? = ""
 
-    // Permission dispatcher mode locationPermissionDispatcherMode:
+    // locationDispatcherMode:
     //  1 = use location service
     //  2 = end location service
-    private var locationPermissionDispatcherMode = 0
+    private var locationDispatcherMode = 0
     private var countId = 0
     private var indivId = 0
-    private var indivAttr = 0 // 1 = ♂♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
+    private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
     private var specName: String? = null
-    private var phase123 : Boolean? = null // true for butterfly (♂♀, ♂ or ♀), false for egg, caterpillar or pupa
+    private var phase123 : Boolean? = null // true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
     private var datestamp : String? = ""
     private var timestamp : String? = ""
     private var code: String? = ""
@@ -105,7 +102,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.dLOG) Log.i(TAG, "108, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "105, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
@@ -125,7 +122,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         indivArea = findViewById(R.id.edit_individual)
 
         @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        if (SDK_INT >= Build.VERSION_CODES.S)
             vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager?
         else
             vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator?
@@ -150,11 +147,9 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     override fun onResume() {
         super.onResume()
 
-        prefs.registerOnSharedPreferenceChangeListener(this)
-
         // Get location with permissions check
-        locationPermissionDispatcherMode = 1
-        locationCaptureFragment()
+        locationDispatcherMode = 1
+        locationDispatcher()
 
         // Clear any existing views
         indivArea!!.removeAllViews()
@@ -168,6 +163,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         tempDataSource!!.open()
         tmp = tempDataSource!!.tmp
         sLocality = if (tmp!!.temp_loc != null) tmp!!.temp_loc else ""
+
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
 
@@ -175,7 +171,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         try {
             supportActionBar!!.title = specName
         } catch (_: NullPointerException) {
-            if (MyDebug.dLOG) Log.e(TAG, "178, NullPointerException: No species name!")
+            if (MyDebug.DLOG) Log.e(TAG, "173, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
@@ -208,8 +204,8 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
             }
         }
         if (phase123!!) {
-            eiw!!.widgetState1(true) // headline state
-            eiw!!.setWidgetState1(getString(R.string.state)+":")
+            eiw!!.widgetState1(true) // headline status
+            eiw!!.setWidgetState1(getString(R.string.status123)+":")
             eiw!!.widgetState2(true) // state
             eiw!!.setWidgetState2("")
         } else {
@@ -237,14 +233,15 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         tempDataSource!!.close()
         countDataSource!!.close()
 
+        // Stop RetrieveAddrWorker
+        WorkManager.getInstance(this).cancelAllWork()
+
         // Stop location service with permissions check
-        locationPermissionDispatcherMode = 2
-        locationCaptureFragment()
+        locationDispatcherMode = 2
+        locationDispatcher()
 
         if (r != null)
             r!!.stop() // stop media player
-
-        prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     private fun saveData(): Boolean {
@@ -259,6 +256,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 uncertainty,
                 datestamp,
                 timestamp,
+                sLocality,
                 code
             )
         )
@@ -298,7 +296,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         {
             when (indivAttr) {
                 1 -> {
-                    // ♂♀
+                    // ♂|♀
                     counts!!.count_f1i = counts!!.count_f1i + newcount
                     individuals!!.icount = newcount
                     individuals!!.sex = "-"
@@ -371,9 +369,8 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     private fun showSnackbarRed(str: String) {
         val view = findViewById<View>(R.id.editIndividualScreen)
         val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
-        sB.setActionTextColor(Color.RED)
         val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        tv.setTextColor(Color.RED);
         tv.setTypeface(tv.typeface, Typeface.BOLD)
         sB.show()
     }
@@ -402,42 +399,23 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        brightPref = prefs!!.getBoolean("pref_bright", true)
-        metaPref = prefs.getBoolean("pref_metadata", false) // Use Reverse Geocoding
-        emailString = prefs.getString("email_String", "") // For reliable query of Nominatim service
-    }
-
-    override fun locationCaptureFragment() {
+    fun locationDispatcher() {
         run {
-            if (this.isPermissionGranted) {
-                when (locationPermissionDispatcherMode) {
+            if (this.isFineLocationPermGranted) {
+                when (locationDispatcherMode) {
                     1 ->  // Get location
                         this.loc
 
                     2 ->  // Stop location service
                         locationService!!.stopListener()
                 }
-            } else {
-                if (locationPermissionDispatcherMode == 1) newInstance().show(
-                    supportFragmentManager,
-                    PermissionsDialogFragment::class.java.name
-                )
             }
         }
     }
 
-    // If API level > 23 test for permissions granted
-    private val isPermissionGranted: Boolean
-        get() = (ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED)
+    private val isFineLocationPermGranted: Boolean
+        get() = (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
 
     // Get the location data
     private val loc: Unit
@@ -457,7 +435,8 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                         + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1")
 
                 // Implementation with WorkManager
-                val retrieveAddrWorkRequest: WorkRequest = OneTimeWorkRequest.Builder(RetrieveAddrWorker::class.java)
+                val retrieveAddrWorkRequest: WorkRequest = OneTimeWorkRequest
+                    .Builder(RetrieveAddrWorker::class.java)
                     .setInputData(
                         Data.Builder()
                             .putString("URL_STRING", urlString)
@@ -500,7 +479,7 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
                 r!!.play()
                 mHandler.postDelayed(Runnable { r!!.stop() }, 400)
             } catch (e: java.lang.Exception) {
-                if (MyDebug.dLOG) Log.e(TAG, "503, could not play button sound.", e)
+                if (MyDebug.DLOG) Log.e(TAG, "481, could not play button sound.", e)
             }
         }
     }
@@ -509,21 +488,18 @@ class EditIndividualActivity : AppCompatActivity(), OnSharedPreferenceChangeList
     private fun buttonVib() {
         if (buttonVibPref) {
             try {
-                if (Build.VERSION.SDK_INT >= 31) {
+                if (SDK_INT >= 31) {
                     vibratorManager!!.defaultVibrator
                     vibratorManager!!.cancel()
                 } else {
-                    if (Build.VERSION.SDK_INT >= 26) vibrator!!.vibrate(
-                        VibrationEffect.createOneShot(
-                            100,
-                            VibrationEffect.DEFAULT_AMPLITUDE
-                        )
+                    if (SDK_INT >= 26) vibrator!!.vibrate(
+                        VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
                     )
                     else vibrator!!.vibrate(100)
                     vibrator!!.cancel()
                 }
             } catch (e: java.lang.Exception) {
-                if (MyDebug.dLOG) Log.e(TAG, "526, could not vibrate.", e)
+                if (MyDebug.DLOG) Log.e(TAG, "501, could not vibrate.", e)
             }
         }
     }

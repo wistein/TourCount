@@ -34,47 +34,43 @@ import androidx.preference.PreferenceManager;
  * Author: Karsten Priegnitz
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
+ * Newly installed: Shows the history of TourCount.
+ * Updated: Shows the last changes of TourCount.
+ * <p>
+ * Therefore retrieves the version names and stores the new version name in SharedPreferences
+ * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-12-17
+ * last edited on 2025-02-23
  */
 public class ChangeLog
 {
     private static final String TAG = "ChangeLog";
 
-    // key for storing the version name in SharedPreferences
-    private static final String VERSION_KEY = "PREFS_VERSION_KEY";
-    private static final String NO_VERSION = "";
-    private static final String EOCL = "END_OF_CHANGE_LOG";
-
     private final Context context;
     private final String lastVersion;
     private String thisVersion;
+
+    // key for storing the version name in SharedPreferences
+    private static final String VERSION_KEY = "PREFS_VERSION_KEY";
+    private static final String NO_VERSION = "";
     private Listmode listMode = Listmode.NONE;
     private StringBuffer sb = null;
+    private static final String EOCL = "END_OF_CHANGE_LOG";
 
-    /**
-     * Constructor <p/>
-     * Retrieves the version names and stores the new version name in SharedPreferences
-     */
     public ChangeLog(Context context)
     {
         this(context, PreferenceManager.getDefaultSharedPreferences(context));
     }
 
-    /**
-     * Constructor <p/>
-     * Retrieves the version names and stores the new version name in SharedPreferences
-     *
-     * @param prefs the shared preferences to store the last version name into
-     */
     private ChangeLog(Context context, SharedPreferences prefs)
     {
         this.context = context;
 
         // get version numbers of lastVersion and thisVersion to compare
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
-        if (MyDebug.dLOG)
-            Log.d(TAG, "77, lastVersion: " + lastVersion);
+        if (MyDebug.DLOG)
+            Log.d(TAG, "72, lastVersion: " + lastVersion);
+
         try
         {
             this.thisVersion = context.getPackageManager().getPackageInfo(
@@ -82,16 +78,15 @@ public class ChangeLog
         } catch (NameNotFoundException e)
         {
             this.thisVersion = NO_VERSION;
-            if (MyDebug.dLOG)
-                Log.e(TAG, "86, could not get version name from manifest!", e);
+            if (MyDebug.DLOG)
+                Log.e(TAG, "82, could not get version name from manifest!", e);
         }
-        if (MyDebug.dLOG)
-            Log.d(TAG, "89, appVersion: " + thisVersion);
+        if (MyDebug.DLOG)
+            Log.d(TAG, "85, appVersion: " + thisVersion);
     }
 
     /**
-     * @return <code>true</code> if this version of your app is started the
-     * first time
+     * Return true if this version of your app is started the first time
      */
     public boolean firstRun()
     {
@@ -99,9 +94,8 @@ public class ChangeLog
     }
 
     /**
-     * @return <code>true</code> if your app including ChangeLog is started the
-     * first time ever. Also <code>true</code> if your app was
-     * deinstalled and installed again.
+     * Return true if your app including ChangeLog is started the first time ever.
+     * Return also true if your app was deinstalled and reinstalled again.
      */
     private boolean firstRunEver()
     {
@@ -109,10 +103,9 @@ public class ChangeLog
     }
 
     /**
-     * @return An AlertDialog displaying the changes since the previous
-     * installed version of your app (what's new). But when this is the
-     * first run of your app including ChangeLog then the full log
-     * dialog is show.
+     * Return an AlertDialog displaying the changes since the previous installed
+     * version of your app (what's new). But when this is the first run of your app
+     * including ChangeLog then the full log dialog is show.
      */
     public AlertDialog getLogDialog()
     {
@@ -120,7 +113,7 @@ public class ChangeLog
     }
 
     /**
-     * @return an AlertDialog with a full change log displayed
+     * Return an AlertDialog with a full change log displayed
      */
     public AlertDialog getFullLogDialog()
     {
@@ -131,20 +124,13 @@ public class ChangeLog
     {
         WebView wv = new WebView(this.context);
 
-        /* **********************************
-         * Problem: Text exceeds right margin
-         * tried to fit text in screen width -> no effect
-         *   wv.getSettings().setUseWideViewPort(false);
-         *   wv.setPadding(0,0,30,0);
-         * also eliminating leading blanks in text to show -> no effect
-         */
         wv.setBackgroundColor(Color.BLACK);
-        wv.loadDataWithBaseURL(null, this.getLog(full), "text/html", "UTF-8",
-            null);
+        wv.loadDataWithBaseURL(null, this.getLog(full), "text/html",
+            "UTF-8", null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
             new ContextThemeWrapper(
-                this.context, android.R.style.Theme_Holo_Dialog));
+                this.context, android.R.style.Theme_Material_Dialog));
         String fullTitle = context.getResources().getString(R.string.changelog_full_title)
             + " Ver. " + thisVersion;
         String changeTitle = "Ver. " + thisVersion + ": "
@@ -153,18 +139,14 @@ public class ChangeLog
             .setView(wv)
             .setCancelable(false)
             // OK button
-            .setPositiveButton(
-                context.getResources().getString(
-                    R.string.ok_button),
-                (dialog, which) -> updateVersionInPreferences());
+            .setPositiveButton(context.getResources().getString(
+                    R.string.ok_button), (dialog, which) -> updateVersionInPreferences());
 
         if (!full)
         {
             // "more ..." button
-            builder.setNegativeButton(R.string.changelog_show_full,
-                (dialog, id) -> getFullLogDialog().show());
+            builder.setNegativeButton(R.string.changelog_show_full, (dialog, id) -> getFullLogDialog().show());
         }
-
         return builder.create();
     }
 
@@ -178,7 +160,7 @@ public class ChangeLog
     }
 
     /**
-     * @return HTML displaying the changes since the previous installed version
+     * Return HTML displaying the changes since the previous installed version
      *         of your app (what's new)
      */
     public String getLog()
@@ -272,8 +254,7 @@ public class ChangeLog
             br.close();
         } catch (IOException e)
         {
-            if (MyDebug.dLOG)
-                Log.e(TAG, "276, could not read changelog.", e);
+            if (MyDebug.DLOG) Log.e(TAG, "257, could not read changelog.", e);
         }
 
         return sb.toString();

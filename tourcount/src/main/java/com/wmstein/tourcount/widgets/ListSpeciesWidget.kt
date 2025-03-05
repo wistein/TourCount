@@ -13,7 +13,7 @@ import java.util.Objects
 
 /*******************************************************
  * ListSpeciesWidget shows count info area for a species
- * ListSpeciesActivity shows the result page
+ * ShowResultsActivity shows the result page
  * Created for TourCount by wmstein on 15.03.2016
  * Last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-07-05,
@@ -88,7 +88,7 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
         }
     }
 
-    //Parameter specCnt* for use in ListSpeciesActivity
+    //Parameter specCnt* for use in ShowResultsActivity
     fun getSpec_countf1i(spec: Count): Int {
         return spec.count_f1i
     }
@@ -113,7 +113,7 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
         return spec.count_ei
     }
 
-    //Parameter spec_name for use in ListSpeciesActivity
+    //Parameter spec_name for use in ShowResultsActivity
     fun getSpec_name(newcount: Count): String? {
         return newcount.name
     }

@@ -9,7 +9,7 @@ import com.wmstein.tourcount.R
 import java.util.Objects
 
 /*********************************************
- * ListTitleWidget used by ListSpeciesActivity
+ * ListTitleWidget used by ShowResultsActivity
  * Created by wmstein on 2016-06-06,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,

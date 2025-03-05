@@ -39,7 +39,7 @@ class Individuals {
     @JvmField
     var icount = 0
     @JvmField
-    var icategory = 0 // 1=♂♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg
+    var icategory = 0 // 1=♂|♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg
     @JvmField
     var code: String? = null
 }

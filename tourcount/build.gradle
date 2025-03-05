@@ -11,8 +11,8 @@ android {
         applicationId "com.wmstein.tourcount"
         minSdk 25
         targetSdk 34
-        versionCode 360
-        versionName "3.6.0"
+        versionCode 362
+        versionName "3.6.2"
     }
 
     buildTypes {
@@ -55,4 +55,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.work:work-runtime:2.10.0'
     implementation 'androidx.core:core-ktx:1.15.0'
+//  debugImplementation because LeakCanary should only run in debug builds.
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
 }

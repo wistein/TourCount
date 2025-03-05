@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -10,11 +11,11 @@ import com.wmstein.tourcount.database.Section
 import java.util.Objects
 
 /*************************************************************
- * ListMetaWidget.kt used by ListSpeciesActivity.kt
+ * ListMetaWidget.kt used by ShowResultsActivity.kt
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-07-01
+ * last edited on 2025-03-04
  */
 class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -70,6 +71,7 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     }
 
     // Following the SETS
+    @SuppressLint("SetTextI18n")
     fun setListMetaWidget(section: Section) {
         widget_ldate1.setText(R.string.date)
         widget_ldate2.text = section.date

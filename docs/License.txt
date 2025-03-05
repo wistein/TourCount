@@ -2,7 +2,7 @@
  * **************************************************************************
  *  TourCount
  * **************************************************************************
- *  Copyright (c) 2016-2024 Wilhelm Stein
+ *  Copyright (c) 2016-2025 Wilhelm Stein
  *  Author: Wilhelm Stein
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

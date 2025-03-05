@@ -53,7 +53,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.dLOG) Log.i(TAG, "56, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "56, onCreate")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -87,6 +87,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 NavUtils.navigateUpFromSameTask(this@DelSpeciesActivity)
+                remove()
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
@@ -96,7 +97,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.dLOG) Log.d(TAG, "99 onResume")
+        if (MyDebug.DLOG) Log.d(TAG, "100 onResume")
 
         sectionDataSource!!.open()
         countDataSource!!.open()
@@ -134,7 +135,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         } else {
             searchDel.error = null
 
-            if (MyDebug.dLOG) Log.d(TAG, "137, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "138, initChars: $initChars")
 
             // Call DummyActivity to reenter DelSpeciesActivity for reduced add list
             val intent = Intent(this@DelSpeciesActivity, DummyActivity::class.java)
@@ -164,7 +165,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                     dsw.setSpecId(cnt.toString()) // Index in reduced list
                     cnt++
                     deleteArea!!.addView(dsw)
-                    if (MyDebug.dLOG) Log.d(TAG, "167, name: " + count.name)
+                    if (MyDebug.DLOG) Log.d(TAG, "168, name: " + count.name)
                 }
             }
         } else {
@@ -176,7 +177,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                 dsw.setPSpec(count)
                 dsw.setSpecId(count.id.toString()) // Index in complete list
                 deleteArea!!.addView(dsw)
-                if (MyDebug.dLOG) Log.d(TAG, "179, name: " + count.name)
+                if (MyDebug.DLOG) Log.d(TAG, "180, name: " + count.name)
             }
         }
     }
@@ -184,7 +185,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     // Mark the selected species and consider it for delete from the species counts list
     fun checkBoxDel(view: View) {
         val idToDel = view.tag as Int
-        if (MyDebug.dLOG) Log.d(TAG, "187, View.tag: $idToDel")
+        if (MyDebug.DLOG) Log.d(TAG, "188, View.tag: $idToDel")
         val dsw = deleteArea!!.getChildAt(idToDel) as DeleteSpeciesWidget
 
         val checked = dsw.getMarkSpec() // return boolean isChecked
@@ -192,16 +193,16 @@ class DelSpeciesActivity : AppCompatActivity() {
         // Put species on add list
         if (checked) {
             listToDelete!!.add(dsw)
-            if (MyDebug.dLOG) {
+            if (MyDebug.DLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "197, mark delete code: $codeD")
+                Log.d(TAG, "198, mark delete code: $codeD")
             }
         } else {
             // Remove species previously added from add list
             listToDelete!!.remove(dsw)
-            if (MyDebug.dLOG) {
+            if (MyDebug.DLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "204 mark delete code: $codeD")
+                Log.d(TAG, "205 mark delete code: $codeD")
             }
         }
     }
@@ -211,7 +212,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         var i = 0 // index of species list to delete
         while (i < listToDelete!!.size) {
             specCode = listToDelete!![i].getSpecCode()
-            if (MyDebug.dLOG) Log.d(TAG, "214, delete code: $specCode")
+            if (MyDebug.DLOG) Log.d(TAG, "215, delete code: $specCode")
             try {
                 countDataSource!!.deleteCountByCode(specCode!!)
                 individualsDataSource!!.deleteIndividualsByCode(specCode!!)
@@ -267,7 +268,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.dLOG) Log.i(TAG, "270, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "271, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()

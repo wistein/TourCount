@@ -11,7 +11,7 @@ import java.util.Objects
 
 /**********************************
  * Created by wmstein on 2018-03-21
- * used by ListSpeciesActivity
+ * used by ShowResultsActivity
  * Last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05
  */

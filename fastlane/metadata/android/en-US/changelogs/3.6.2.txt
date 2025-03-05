@@ -1,0 +1,9 @@
+Version 3.6.2 (2025-03-03)
+- Permission handling revised and adapted
+- Location permission option 'Allow all the time' added for Android >= 10 (Q)
+- Location attributes enhanced and adapted to modified Nominatim attributes
+- Database structure adapted to new location attributes
+- Backpress logic on starting page improved
+- Bugfix for using default camera as only camera
+- Deprecated functions replaced
+- Docs updated

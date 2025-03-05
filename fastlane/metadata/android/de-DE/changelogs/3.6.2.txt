@@ -1,0 +1,9 @@
+Version 3.6.2 (03.03.2025)
+- Berechtigungserteilung überarbeitet und angepasst
+- Standort-Berechtigungsoption 'Immer zulassen' für Android >= 10 (Q) unterstützt
+- Ortsangaben an zwischenzeitlich modifizierte Nominatim-Attribute angepasst
+- Datenbankstruktur an neue Ortsangaben angepasst
+- Die Funktion des Zurück-Buttons der Startseite verbessert
+- Bugfix für die Verwendung der Standard-Kamera-App als alleinige Kamera-App
+- Veraltete Funktionen ersetzt
+- Doku überarbeitet

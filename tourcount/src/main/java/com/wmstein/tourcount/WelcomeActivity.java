@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import static android.os.Build.VERSION.SDK_INT;
 import static java.lang.Math.sqrt;
 
 import android.Manifest;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -22,7 +24,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,12 +35,9 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -69,7 +67,7 @@ import sheetrock.panda.changelog.ViewLicense;
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and lets you call 
- * EditMetaActivity, CountingActivity and ListSpeciesActivity.
+ * EditMetaActivity, CountingActivity and ShowResultsActivity.
  * It uses further LocationService and PermissionDialogFragment.
  * <p>
  * Database handling is mainly done in WelcomeActivity as upgrade to current
@@ -77,12 +75,11 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2024-12-17
+ * last edited on 2025-03-04
  */
 public class WelcomeActivity
     extends AppCompatActivity
-    implements SharedPreferences.OnSharedPreferenceChangeListener,
-               PermissionsDialogFragment.PermissionsGrantedCallback
+    implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "WelcomeAct";
 
@@ -90,40 +87,37 @@ public class WelcomeActivity
 
     LocationService locationService;
 
-    // Permission dispatcher mode locationPermissionDispatcherMode: 
+    // locationDispatcherMode: 
     //  1 = use location service
     //  2 = end location service
-    private int locationPermissionDispatcherMode;
+    private int locationDispatcherMode;
 
-    // permLocGiven contains initial location permission state that
-    // controls if location listener has to be stopped after permission changed: 
-    // Stop listener if permission was denied after listener start.
-    // Don't stop listener if permission was allowed later and listener has not been started
-    private boolean permLocGiven;
+    private boolean locServiceOn = false;
+
+    // Location info handling
+    private double latitude, longitude, height, uncertainty;
 
     private ChangeLog cl;
     private ViewHelp vh;
     private ViewLicense vl;
     public boolean doubleBackToExitPressedTwice = false;
 
-    // Location info handling
-    private double latitude, longitude, height, uncertainty;
-
     // Import/export stuff
     private File infile;
     private File outfile;
     private boolean mExternalStorageAvailable = false;
     private boolean mExternalStorageWriteable = false;
-    private final String state = Environment.getExternalStorageState();
+    private final String sState = Environment.getExternalStorageState();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private AlertDialog alert;
 
     // Preferences
     private SharedPreferences prefs;
-    private boolean metaPref;        // option for reverse geocoding
-    private String emailString = ""; // mail address for OSM query
     private String outPref;
+
+    private boolean storagePermGranted = false;  // Storage permission state
+    private boolean fineLocationPermGranted = false; // Foreground location permission state
 
     // DB handling
     private SQLiteDatabase database;
@@ -137,36 +131,42 @@ public class WelcomeActivity
     private String tourName = "";
     private View baseLayout;
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.dLOG) Log.i(TAG, "146, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "140, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        prefs = TourCountApplication.getPrefs();
-
         setContentView(R.layout.activity_welcome);
         baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.setBackgr());
 
-        if (!isStorageGranted())
-        {
-            PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
-            if (!isStorageGranted())
-                showSnackbarRed(getString(R.string.perm_cancel));
-        }
-
-        // Check initial location permission state
-        permLocGiven = isPermLocGranted();
+        prefs = TourCountApplication.getPrefs();
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("permLoc_Given", permLocGiven);
-        editor.apply();
+
+        // Check initial storage permission state and provide dialog
+        isStoragePermGranted();
+        if (!storagePermGranted)
+        {
+            // Ask necessary storage permission with info in Snackbar
+            showSnackbarPermission(getString(R.string.dialog_storage_hint));
+
+            // Prepare to ask foreground location permission only once
+            editor.putBoolean("has_asked_foreground", false);
+            editor.commit();
+        }
+        if (MyDebug.DLOG) Log.d(TAG, "164, onCreate, storagePermGranted: " + storagePermGranted);
+
+        // Check DB version and upgrade if necessary
+        dbHandler = new DbHelper(this);
+        database = dbHandler.getWritableDatabase();
+        dbHandler.close();
 
         // setup the data sources
         headDataSource = new HeadDataSource(this);
@@ -174,12 +174,14 @@ public class WelcomeActivity
         countDataSource = new CountDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
 
-        // Check DB and try to get tour name
+        // Get tour name and check for DB integrity
         try
         {
+            if (MyDebug.DLOG) Log.i(TAG, "180, onCreate, try section");
             sectionDataSource.open();
             section = sectionDataSource.getSection();
             tourName = section.name;
+            if (MyDebug.DLOG) Log.i(TAG, "184, onCreate, tourName: " + tourName);
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
@@ -199,7 +201,7 @@ public class WelcomeActivity
 
         // Test for existence of file /storage/emulated/0/Documents/TourCount/tourcount0.db
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
+        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -210,65 +212,107 @@ public class WelcomeActivity
             path = new File(path + "/TourCount");
         }
 
+        // Create preliminary tourcount0.db if it does not exist
         infile = new File(path, "/tourcount0.db");
         if (!infile.exists())
             exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
 
-        // New onBackPressed logic
-        OnBackPressedCallback callback = new OnBackPressedCallback(true)
+        // Different Navigation Bar modes and layouts:
+        // - Classic three-button navigation: NavBarMode = 0
+        // - Two-button navigation (Android P): NavBarMode = 1
+        // - Full screen gesture mode (Android Q): NavBarMode = 2
+        // Use onBackPressed logic only if 2 or 3 button Navigation bar is present.
+        if (getNavBarMode() == 0 || getNavBarMode() == 1)
+        {
+            OnBackPressedCallback callback = getOnBackPressedCallback();
+            getOnBackPressedDispatcher().addCallback(this, callback);
+        }
+    }
+    // End of onCreate()
+
+    // Check for Navigation bar
+    public int getNavBarMode() {
+        Resources resources = this.getResources();
+
+        @SuppressLint("DiscouragedApi")
+        int resourceId = resources.getIdentifier("config_navBarInteractionMode",
+            "integer", "android");
+
+        // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
+        int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
+        if (MyDebug.DLOG) Log.i(TAG, "243, NavBarMode = " + iMode);
+        return iMode;
+    }
+
+    // Use onBackPressed logic for button navigation
+    @NonNull
+    private OnBackPressedCallback getOnBackPressedCallback()
+    {
+        final Handler m1Handler = new Handler(Looper.getMainLooper());
+        final Runnable r1 = () -> doubleBackToExitPressedTwice = false;
+
+        return new OnBackPressedCallback(true)
         {
             @Override
             public void handleOnBackPressed()
             {
                 if (doubleBackToExitPressedTwice)
                 {
-                    if (MyDebug.dLOG) Log.i(TAG, "225, handleOnBackPressed");
-
-                    clear_loc(); // Clear last locality in tmp
-
-                    finishAndRemoveTask();
+                    m1Handler.removeCallbacks(r1);
+                    // Clear last locality in temp_loc of table TEMP, otherwise the old
+                    //   locality is shown in the 1. count of a new started tour
+                    clear_loc();
+                    finish();
+                    remove();
                 }
-
-                doubleBackToExitPressedTwice = true;
-
-                Toast t = new Toast(getApplicationContext());
-                LayoutInflater inflater = getLayoutInflater();
-
-                @SuppressLint("InflateParams")
-                View toastView = inflater.inflate(R.layout.toast_view, null);
-                TextView textView = toastView.findViewById(R.id.toast);
-                textView.setText(R.string.back_twice);
-
-                t.setView(toastView);
-                t.setDuration(Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 0);
-                t.show();
-
-                mHandler.postDelayed(() ->
-                    doubleBackToExitPressedTwice = false, 1500);
+                else
+                {
+                    doubleBackToExitPressedTwice = true;
+                    showSnackbarBlue(getString(R.string.back_twice));
+                    m1Handler.postDelayed(r1, 1500);
+                }
             }
         };
-        getOnBackPressedDispatcher().addCallback(this, callback);
     }
-    // End of onCreate()
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    // Check initial external storage permission and set 'storagePermGranted'
+    private void isStoragePermGranted()
+    {
+        if (SDK_INT >= Build.VERSION_CODES.R) // Android >= 11
+        {
+            // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
+            storagePermGranted = Environment.isExternalStorageManager();
+            if (MyDebug.DLOG) Log.i(TAG, "285, ManageStoragePermission: " + storagePermGranted);
+        }
+        else
+        {
+            storagePermGranted = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            if (MyDebug.DLOG) Log.i(TAG, "291, ExtStoragePermission: " + storagePermGranted);
+        }
+    }
+
+    // Check initial fine location permission
+    private void isFineLocationPermGranted()
+    {
+        fineLocationPermGranted = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
     @Override
     protected void onResume()
     {
         super.onResume();
 
-        if (MyDebug.dLOG) Log.i(TAG, "261, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "308, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");    // for reliable query of Nominatim service
+        SharedPreferences.Editor editor = prefs.edit();
         outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
 
-        permLocGiven = prefs.getBoolean("permLoc_Given", false);
-        if (MyDebug.dLOG)
-            Toast.makeText(this, "onResume permLocGiven = " + permLocGiven, Toast.LENGTH_SHORT).show();
+        isStoragePermGranted(); // set storagePermGranted from self permission
 
         headDataSource.open();
         sectionDataSource.open();
@@ -276,8 +320,10 @@ public class WelcomeActivity
         individualsDataSource.open();
 
         // Set tour name as title
+        if (MyDebug.DLOG) Log.i(TAG, "323, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
+        if (MyDebug.DLOG) Log.i(TAG, "326, tourName: " + tourName);
         try
         {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
@@ -286,75 +332,97 @@ public class WelcomeActivity
             // nothing
         }
 
-        // Get location with permissions check
-        locationPermissionDispatcherMode = 1; // get location
-        locationCaptureFragment();
+        // 1. Part of location permissions handling:
+        //   Set flag fineLocationPermGranted from self permissions
+        // Store flag 'hasAskedBackground = true' in SharedPreferences
+        isFineLocationPermGranted();
+        if (MyDebug.DLOG) Log.i(TAG, "339, onCreate, fineLocationPermGranted: "
+            + fineLocationPermGranted);
+
+        // If not yet location permission is granted prepare and query for them
+        if (storagePermGranted && !fineLocationPermGranted)
+        {
+            // Reset background location permission status in case it was set previously
+            editor.putBoolean("has_asked_background", false);
+            editor.commit();
+
+            // Get flag 'has_asked_foreground'
+            boolean hasAskedForegroundLocation = prefs.getBoolean("has_asked_foreground", false);
+
+            if (!hasAskedForegroundLocation)
+            {
+                // Query foreground location permission first
+                // Ask necessary fine location permission after info in Snackbar
+                showSnackbarForegroundLocationPermission(getString(R.string.dialog_fine_location_hint));
+
+                editor.putBoolean("has_asked_foreground", true);
+                editor.commit();
+            }
+        }
+
+        // Get location self permission state
+        isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
+        if (MyDebug.DLOG) Log.i(TAG, "365, onResume, fineLocationPermGranted: "
+            + fineLocationPermGranted);
+
+        // Get flag 'has_asked_background'
+        boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
+        if (MyDebug.DLOG) Log.i(TAG, "370, hasAskedBackgroundLocation: "
+            + hasAskedBackgroundLocation);
+
+        // Get background location with permissions check only once and if storage and fine location
+        //   permissions are granted
+        if (storagePermGranted && fineLocationPermGranted && !hasAskedBackgroundLocation
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            // Ask optional background location permission with info in Snackbar
+            showSnackbarBackgroundLocationPermission(getString(R.string.dialog_background_loc_hint));
+
+            // Store flag 'hasAskedBackground = true' in SharedPreferences
+            editor.putBoolean("has_asked_background", true);
+            editor.commit();
+        }
+        locationDispatcherMode = 1;
+        locationDispatcher();
     }
     // End of onResume()
 
-    // Check initial location permission
-    private boolean isPermLocGranted()
-    {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    // Check initial external storage permission
-    private boolean isStorageGranted()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
-        {
-            return Environment.isExternalStorageManager(); // check permission MANAGE_EXTERNAL_STORAGE for Android 11+
-        }
-        else
-            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-
     // Part of permission handling
-    @Override
-    public void locationCaptureFragment()
+    public void locationDispatcher()
     {
-        if (isLocPermissionGranted()) // current location permission state granted
+        if (fineLocationPermGranted) // current location permission state granted
         {
             // Handle action here
-            if (MyDebug.dLOG)
-                Toast.makeText(this, "Fragment permLocGiven = " + permLocGiven, Toast.LENGTH_SHORT).show();
-
-            switch (locationPermissionDispatcherMode)
+            if (MyDebug.DLOG) Log.i(TAG, "396, locationDispatcher, fineLocationPermGranted: true");
+            switch (locationDispatcherMode)
             {
                 case 1 ->
-                { // Get location
-                    if (permLocGiven) // location permission state after start
-                    {
-                        getLoc();
-                    }
+                {
+                    // Get location data
+                    getLoc();
                 }
                 case 2 ->
-                { // Stop location service
-                    if (permLocGiven)
+                {
+                    // Stop location service
+                    if (locServiceOn)
+                    {
                         locationService.stopListener();
+                        Intent sIntent = new Intent(this, LocationService.class);
+                        stopService(sIntent);
+                        locServiceOn = false;
+                    }
                 }
             }
         }
-        else
-        {
-            if (locationPermissionDispatcherMode == 1)
-                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
-        }
-
-    }
-
-    // If API level > 23 test for permissions granted
-    private boolean isLocPermissionGranted()
-    {
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
     // Get the location data
     public void getLoc()
     {
         locationService = new LocationService(this);
+        Intent sIntent = new Intent(this, LocationService.class);
+        startService(sIntent);
+        locServiceOn = true;
 
         if (locationService.canGetLocation())
         {
@@ -364,26 +432,6 @@ public class WelcomeActivity
             if (height != 0)
                 height = correctHeight(latitude, longitude, height);
             uncertainty = locationService.getAccuracy();
-        }
-
-        // Get reverse geocoding
-        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
-        {
-            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-
-            // Using WorkManager
-            WorkRequest retrieveAddrWorkRequest =
-                new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
-                    .setInputData(new Data.Builder()
-                            .putString("URL_STRING", urlString)
-                            .build()
-                                 )
-                    .build();
-
-            WorkManager
-                .getInstance(this)
-                .enqueue(retrieveAddrWorkRequest);
         }
     }
 
@@ -435,63 +483,45 @@ public class WelcomeActivity
         }
         else if (id == R.id.exportMenu)
         {
-            if (isStorageGranted())
+            if (storagePermGranted)
             {
                 exportDb();
             }
             else
             {
-                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(),
-                    PermissionsDialogFragment.class.getName());
-                if (isStorageGranted())
-                {
-                    exportDb();
-                }
-                else
-                {
-                    showSnackbarRed(getString(R.string.perm_cancel));
-                }
+                showSnackbarRed(getString(R.string.storage_perm_cancel));
             }
             return true;
         }
         else if (id == R.id.exportCSVMenu)
         {
-            if (isStorageGranted())
+            if (storagePermGranted)
             {
                 exportDb2CSV();
             }
             else
             {
-                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), 
-                    PermissionsDialogFragment.class.getName());
-                if (isStorageGranted())
-                {
-                    exportDb2CSV();
-                }
-                else
-                {
-                    showSnackbarRed(getString(R.string.perm_cancel));
-                }
+                showSnackbarRed(getString(R.string.storage_perm_cancel));
             }
             return true;
         }
         else if (id == R.id.exportBasisMenu)
         {
-            if (isStorageGranted())
+            if (storagePermGranted)
             {
                 exportBasisDb();
             }
             else
             {
-                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(),
-                    PermissionsDialogFragment.class.getName());
-                if (isStorageGranted())
+                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                    PermissionsStorageDialogFragment.class.getName());
+                if (storagePermGranted)
                 {
                     exportBasisDb();
                 }
                 else
                 {
-                    showSnackbarRed(getString(R.string.perm_cancel));
+                    showSnackbarRed(getString(R.string.storage_perm_cancel));
                 }
             }
             return true;
@@ -503,7 +533,27 @@ public class WelcomeActivity
         }
         else if (id == R.id.importFileMenu)
         {
+            headDataSource.close();
+            individualsDataSource.close();
+            countDataSource.close();
+            sectionDataSource.close();
+
             importDBFile();
+
+            headDataSource.open();
+            sectionDataSource.open();
+            countDataSource.open();
+            individualsDataSource.open();
+
+            // List tour name as title
+            section = sectionDataSource.getSection();
+            try
+            {
+                Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
+            } catch (NullPointerException e)
+            {
+                // nothing
+            }
             return true;
         }
         else if (id == R.id.resetDBMenu)
@@ -537,8 +587,7 @@ public class WelcomeActivity
         {
             // Call CountingActivity
             Intent intent;
-            intent = new Intent(WelcomeActivity.this,
-                CountingActivity.class);
+            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             intent.putExtra("Latitude", latitude);
             intent.putExtra("Longitude", longitude);
             intent.putExtra("Height", height);
@@ -560,7 +609,7 @@ public class WelcomeActivity
 
             // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
-                startActivity(new Intent(getApplicationContext(), ListSpeciesActivity
+                startActivity(new Intent(getApplicationContext(), ShowResultsActivity
                     .class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
             return true;
         }
@@ -573,32 +622,21 @@ public class WelcomeActivity
         baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.setBackgr());
         outPref = prefs.getString("pref_sort_output", "names");
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
-        permLocGiven = prefs.getBoolean("permLoc_Given", false);
     }
 
     public void onPause()
     {
         super.onPause();
 
-        if (MyDebug.dLOG) Log.i(TAG, "585, onPause");
-
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("permLoc_Given", permLocGiven);
-        editor.apply();
+        if (MyDebug.DLOG) Log.i(TAG, "631, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
         countDataSource.close();
         sectionDataSource.close();
 
-        // Stop location service with permissions check
-        locationPermissionDispatcherMode = 2;
-        locationCaptureFragment();
-
-        // Stop RetrieveAddrWorker
-        WorkManager.getInstance(this).cancelAllWork();
+        locationDispatcherMode = 2;
+        locationDispatcher();
 
         prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -608,7 +646,10 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.dLOG) Log.i(TAG, "611, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "649, onStop");
+        // Stop location service with permissions check
+
+        baseLayout.invalidate();
     }
 
     @Override
@@ -616,7 +657,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.dLOG) Log.i(TAG, "619, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "660, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -641,11 +682,12 @@ public class WelcomeActivity
     // Handle button click "Show Results" here
     public void viewSpecies(View view)
     {
-        Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
+        // a Snackbar here comes incomplete
+        Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
 
         // Trick: Pause for 100 msec to show toast
         mHandler.postDelayed(() ->
-            startActivity(new Intent(getApplicationContext(), ListSpeciesActivity.class)
+            startActivity(new Intent(getApplicationContext(), ShowResultsActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
     }
 
@@ -658,17 +700,17 @@ public class WelcomeActivity
         return dform.format(date);
     }
 
-    /****************************************************************************
+    /***********************************************************************************************
      * The six functions below are for exporting and importing of database files.
      * They've been put here because no database should be open at this point.
      */
     @SuppressLint({"SdCardPath", "LongLogTag"})
     private void exportDb()
     {
-        // New data directory
-        // outfile -> Public Directory Documents/TourCount/
+        // New data directory:
+        //   outfile -> Public Directory Documents/TourCount/
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
+        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -680,7 +722,7 @@ public class WelcomeActivity
         }
 
         //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // just verify path, result ignored
+        path.mkdirs(); // Just verify path, result ignored
 
         // outfile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.db
         if (Objects.equals(tourName, ""))
@@ -694,12 +736,12 @@ public class WelcomeActivity
             + "/databases/tourcount.db";
         infile = new File(inPath);
 
-        if (Environment.MEDIA_MOUNTED.equals(state))
+        if (Environment.MEDIA_MOUNTED.equals(sState))
         {
             // We can read and write the media
             mExternalStorageAvailable = mExternalStorageWriteable = true;
         }
-        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(sState))
         {
             // We can only read the media
             mExternalStorageAvailable = true;
@@ -714,7 +756,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.dLOG) Log.e(TAG, "717, No sdcard access");
+            if (MyDebug.DLOG) Log.e(TAG, "759, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -732,7 +774,7 @@ public class WelcomeActivity
     }
     // End of exportDb()
 
-    /************************************************************
+    /***********************************************************************************************
      // Exports DB contents as tourcount_yyyy-MM-dd_HHmmss.csv to
      // Documents/TourCount/ with purged data set.
      // Spreadsheet programs can import this csv file with
@@ -745,7 +787,7 @@ public class WelcomeActivity
         // outfile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.csv
         //   and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        if (SDK_INT >= Build.VERSION_CODES.R) // Android 11+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -768,9 +810,9 @@ public class WelcomeActivity
         String sectNotes;
 
         Head head;
-        String country, inspecName;
+        String country, b_state, inspecName;
         int temps, winds, clouds, tempe, winde, cloude;
-        String plz, city, place;
+        String plz, city, place, locality;
         String date, start_tm, end_tm;
         int spstate;
         String spstate0;
@@ -780,12 +822,12 @@ public class WelcomeActivity
         String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
         double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
-        if (Environment.MEDIA_MOUNTED.equals(state))
+        if (Environment.MEDIA_MOUNTED.equals(sState))
         {
             // We can read and write the media
             mExternalStorageAvailable = mExternalStorageWriteable = true;
         }
-        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(sState))
         {
             // We can only read the media
             mExternalStorageAvailable = true;
@@ -800,7 +842,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.dLOG) Log.e(TAG, "804, No sdcard access");
+            if (MyDebug.DLOG) Log.e(TAG, "845, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -827,9 +869,11 @@ public class WelcomeActivity
                 sectName = section.name;
                 sectNotes = section.notes;
                 country = section.country;
+                b_state = section.b_state;
                 plz = section.plz;
                 city = section.city;
                 place = section.place;
+                locality = section.st_locality;
 
                 head = headDataSource.getHead();
 
@@ -859,9 +903,11 @@ public class WelcomeActivity
                 String[] arrLocHead =
                     {
                         getString(R.string.country),
+                        getString(R.string.bstate),
                         getString(R.string.plz),
                         getString(R.string.city),
                         getString(R.string.place),
+                        getString(R.string.slocality),
                         getString(R.string.zlnotes)
                     };
                 csvWrite.writeNext(arrLocHead);
@@ -870,9 +916,11 @@ public class WelcomeActivity
                 String[] arrLocation =
                     {
                         country,
+                        b_state,
                         plz,
                         city,
                         place,
+                        locality,
                         sectNotes
                     };
                 csvWrite.writeNext(arrLocation);
@@ -1194,8 +1242,8 @@ public class WelcomeActivity
                         getString(R.string.time) + ":",
                         getString(R.string.sex) + ":",
                         getString(R.string.stadium) + ":",
-                        getString(R.string.state1) + ":",
-                        getString(R.string.bemi) + ":"
+                        getString(R.string.status123) + ":",
+                        getString(R.string.bema) + ":"
                     };
                 csvWrite.writeNext(arrIndHead);
 
@@ -1252,14 +1300,14 @@ public class WelcomeActivity
                             curCSVInd.getString(8),  // time
                             curCSVInd.getString(10), // sexus
                             curCSVInd.getString(11), // stadium
-                            spstate0,                   // state
+                            spstate0,                   // status
                             curCSVInd.getString(13)  // indiv. notes
                         };
                     csvWrite.writeNext(arrIndividual);
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.dLOG) Log.d(TAG, "1263, longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1310 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1322,7 +1370,6 @@ public class WelcomeActivity
                     latit = String.valueOf(la);
                 }
 
-
                 String[] arrAvCoords =
                     {
                         "",
@@ -1340,14 +1387,14 @@ public class WelcomeActivity
                 showSnackbar(getString(R.string.savecsv));
             } catch (IOException e)
             {
-                if (MyDebug.dLOG) Log.e(TAG, "1344, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1390, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
     }
     // End of exportDb2CSV()
 
-    /***************************************************************************************/
+    /**********************************************************************************************/
     // Exports Basis DB to Documents/TourCount/tourcount0.db
     private void exportBasisDb()
     {
@@ -1365,7 +1412,7 @@ public class WelcomeActivity
         // outfile in Public Directory Documents/TourCount/
         // distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
+        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -1380,12 +1427,12 @@ public class WelcomeActivity
         path.mkdirs(); // just verify path, result ignored
         outfile = new File(path, "/tourcount0.db");
 
-        if (Environment.MEDIA_MOUNTED.equals(state))
+        if (Environment.MEDIA_MOUNTED.equals(sState))
         {
             // We can read and write the media
             mExternalStorageAvailable = mExternalStorageWriteable = true;
         }
-        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(sState))
         {
             // We can only read the media
             mExternalStorageAvailable = true;
@@ -1400,7 +1447,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.dLOG) Log.e(TAG, "1404, No sdcard access");
+            if (MyDebug.DLOG) Log.e(TAG, "1450, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1428,14 +1475,14 @@ public class WelcomeActivity
                 }
             } catch (IOException e)
             {
-                if (MyDebug.dLOG) Log.e(TAG, "1432, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1478, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
     }
     // End of exportBasisDb()
 
-    /*************************************************/
+    /**********************************************************************************************/
     // Clear all relevant DB values, reset to basic DB 
     private void resetToBasisDb()
     {
@@ -1491,6 +1538,7 @@ public class WelcomeActivity
 
             sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
                 + DbHelper.S_NAME + " = '', "
+                + DbHelper.S_COUNTRY + " = '', "
                 + DbHelper.S_PLZ + " = '', "
                 + DbHelper.S_CITY + " = '', "
                 + DbHelper.S_PLACE + " = '', "
@@ -1503,7 +1551,9 @@ public class WelcomeActivity
                 + DbHelper.S_DATE + " = '', "
                 + DbHelper.S_START_TM + " = '', "
                 + DbHelper.S_END_TM + " = '', "
-                + DbHelper.S_NOTES + " = '';";
+                + DbHelper.S_NOTES + " = '', "
+                + DbHelper.S_STATE + " = '', "
+                + DbHelper.S_ST_LOCALITY + " = '';";
             database.execSQL(sql);
 
             sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
@@ -1517,7 +1567,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.dLOG) Log.e(TAG, "1521, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1570, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             dbHandler.close();
             r_ok = false;
@@ -1529,6 +1579,8 @@ public class WelcomeActivity
     // Choose a tourcount db-file to load and set it to tourcount.db
     private void importDBFile()
     {
+        if (MyDebug.DLOG) Log.d(TAG, "1582, importDBFile");
+
         String extension = ".db";
         String filterFileName = "tourcount";
 
@@ -1539,12 +1591,12 @@ public class WelcomeActivity
         myActivityResultLauncher.launch(intent);
     }
 
-    // ActivityResultLauncher is part of importDBFile()
-    // and processes the result of AdvFileChooser
+    // ActivityResultLauncher processes the result of AdvFileChooser
     final ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<>()
         {
+            @SuppressLint("ApplySharedPref")
             @Override
             public void onActivityResult(ActivityResult result)
             {
@@ -1556,8 +1608,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.dLOG)
-                            Log.d(TAG, "1561, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "1611, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             infile = new File(selectedFile);
@@ -1568,7 +1619,8 @@ public class WelcomeActivity
 
                 // outfile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
                 String destPath = getApplicationContext().getFilesDir().getPath();
-                destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
+                destPath = destPath.substring(0, destPath.lastIndexOf("/"))
+                    + "/databases/tourcount.db";
                 outfile = new File(destPath);
 
                 if (infile != null)
@@ -1587,19 +1639,11 @@ public class WelcomeActivity
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putInt("count_id", 1);
                             editor.putInt("item_Position", 0);
-                            editor.apply();
+                            editor.commit();
 
-                            section = sectionDataSource.getSection();
-                            showSnackbar(getString(R.string.importWin));
-
-                            // List tour name as title
-                            try
-                            {
-                                Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
-                            } catch (NullPointerException e)
-                            {
-                                // nothing
-                            }
+                            // Trick: Pause for 100 msec to accept the imported DB
+                            mHandler.postDelayed(() ->
+                                showSnackbar(getString(R.string.importWin)), 100);
                         } catch (IOException e)
                         {
                             showSnackbarRed(getString(R.string.importFail));
@@ -1612,13 +1656,13 @@ public class WelcomeActivity
             }
         });
 
-    /**************************************************************************************************/
+    /**********************************************************************************************/
     // Import the basic DB
     private void importBasisDb()
     {
         // infile <- /storage/emulated/0/Documents/TourCount/tourcount0.db
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
+        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -1660,7 +1704,7 @@ public class WelcomeActivity
                 Objects.requireNonNull(getSupportActionBar()).setTitle("");
             } catch (IOException e)
             {
-                if (MyDebug.dLOG) Log.e(TAG, "1664, Failed to import database");
+                if (MyDebug.DLOG) Log.e(TAG, "1707, Failed to import database");
                 showSnackbarRed(getString(R.string.importFail));
             }
         }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
@@ -1669,7 +1713,7 @@ public class WelcomeActivity
     }
 
     /**********************************************************************************************/
-    // http://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
+    // Copy file block-wise
     private static void copy(File src, File dst) throws IOException
     {
         FileInputStream in = new FileInputStream(src);
@@ -1686,24 +1730,95 @@ public class WelcomeActivity
         out.close();
     }
 
-    private void showSnackbar(String str) // green text
+    // Green message to point something out
+    private void showSnackbar(String str)
     {
         baseLayout = findViewById(R.id.baseLayout);
         Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
         tv.setTextColor(Color.GREEN);
+        tv.setGravity(Gravity.CENTER);
         sB.show();
     }
 
-    private void showSnackbarRed(String str) // bold red text
+    // Red warning message
+    private void showSnackbarRed(String str)
     {
         baseLayout = findViewById(R.id.baseLayout);
         Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
         tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         tv.setTextColor(Color.RED);
+        tv.setGravity(Gravity.CENTER);
+        sB.show();
+    }
+
+    // Blue message to do something
+    private void showSnackbarBlue(String str)
+    {
+        baseLayout = findViewById(R.id.baseLayout);
+        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setTextColor(Color.CYAN);
+        tv.setGravity(Gravity.CENTER);
+        sB.show();
+    }
+
+    // Blue storage permission message with button before granting dialog
+    private void showSnackbarPermission(String str)
+    {
+        baseLayout = findViewById(R.id.baseLayout);
+        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_INDEFINITE);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setTextColor(Color.CYAN);
+        tv.setMaxLines(3);
+        tv.setGravity(Gravity.CENTER);
+        sB.setAction("Ok", View ->
+        {
+            sB.dismiss();
+            PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                PermissionsStorageDialogFragment.class.getName());
+        });
+        sB.show();
+    }
+
+    // Blue foreground location permission message with button before granting dialog
+    private void showSnackbarForegroundLocationPermission(String str)
+    {
+        baseLayout = findViewById(R.id.baseLayout);
+        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_INDEFINITE);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setTextColor(Color.CYAN);
+        tv.setMaxLines(7);
+        tv.setGravity(Gravity.CENTER);
+        sB.setAction("Ok", View ->
+        {
+            sB.dismiss();
+            PermissionsForegroundDialogFragment.newInstance().show(getSupportFragmentManager(),
+                PermissionsForegroundDialogFragment.class.getName());
+        });
+        sB.show();
+    }
+
+    // Blue background location permission message with button before granting dialog
+    private void showSnackbarBackgroundLocationPermission(String str)
+    {
+        baseLayout = findViewById(R.id.baseLayout);
+        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_INDEFINITE);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setTextColor(Color.CYAN);
+        tv.setMaxLines(5);
+        tv.setGravity(Gravity.CENTER);
+        sB.setAction("Ok", View ->
+        {
+            sB.dismiss();
+            PermissionsBackgroundDialogFragment.newInstance().show(getSupportFragmentManager(),
+                PermissionsBackgroundDialogFragment.class.getName());
+        });
         sB.show();
     }
 

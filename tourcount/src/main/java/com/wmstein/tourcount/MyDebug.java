@@ -12,6 +12,6 @@ package com.wmstein.tourcount;
  */
 public class MyDebug
 {
-    public static boolean dLOG = false; // for release version
-//    public static boolean dLOG = true; // for debug version
+    public static boolean DLOG = false; // for release version
+//    public static boolean DLOG = true; // for debug version
 }

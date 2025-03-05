@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textColor="@android:color/holo_blue_light"
-        android:layout_gravity="center_vertical" />
+        android:textColor="@android:color/holo_blue_light" />
 
 </LinearLayout>

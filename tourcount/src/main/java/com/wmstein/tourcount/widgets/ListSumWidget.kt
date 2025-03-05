@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -10,10 +11,10 @@ import java.util.Objects
 
 /****************************************************
  * ListSumWidget shows count totals area for
- * ListSpeciesActivity that shows the result page
+ * ShowResultsActivity that shows the result page
  * Created for TourCount by wmstein on 2017-05-27,
  * last edited in Java on 2021-01-26,
- * converted to Kotlin on 2023-07-05
+ * converted to Kotlin on 2025-03-04
  */
 class ListSumWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val sumSpecies: TextView
@@ -26,6 +27,7 @@ class ListSumWidget(context: Context, attrs: AttributeSet?) : LinearLayout(conte
         sumIndividuals = findViewById(R.id.sumIndividuals)
     }
 
+    @SuppressLint("SetTextI18n")
     fun setSum(sumsp: Int, sumind: Int) {
         sumSpecies.text = sumsp.toString()
         sumIndividuals.text = sumind.toString()

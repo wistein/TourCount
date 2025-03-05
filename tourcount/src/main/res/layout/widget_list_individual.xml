@@ -13,11 +13,11 @@
     android:baselineAligned="false"
     android:orientation="vertical"
     android:padding="3dp"
-    tools:context=".ListSpeciesActivity">
+    tools:context=".ShowResultsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="28dp"
+        android:layout_height="30sp"
         android:orientation="horizontal">
 
         <!-- Locality of individual -->
@@ -25,12 +25,12 @@
             android:id="@+id/txtIndLoc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="3.8"
             android:ellipsize="end"
             android:gravity="start"
             android:padding="4sp"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <!-- Sexus of individual -->
@@ -54,7 +54,7 @@
             android:layout_weight="0.5"
             android:gravity="start"
             android:padding="4sp"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <!-- Stadium of individual -->
@@ -62,7 +62,7 @@
             android:id="@+id/txtIndStd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="0.9"
             android:layout_marginStart="5dp"
             android:gravity="start"
             android:hint="@string/txtSt"
@@ -78,7 +78,7 @@
             android:layout_weight="0.4"
             android:gravity="start"
             android:padding="4sp"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <!-- State of individual -->
@@ -86,7 +86,7 @@
             android:id="@+id/txtIndSte"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="0.9"
             android:layout_marginStart="5dp"
             android:gravity="start"
             android:hint="@string/txtSte"
@@ -103,7 +103,7 @@
             android:layout_marginEnd="3dp"
             android:gravity="start"
             android:padding="4sp"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -117,12 +117,12 @@
             android:id="@+id/txtIndTm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:gravity="start|top"
             android:hint="@string/txt_time"
             android:padding="4sp"
             android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <!-- State of individual -->
         <TextView
@@ -143,11 +143,11 @@
             android:id="@+id/txtIndLo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.95"
             android:gravity="start|top"
             android:padding="4sp"
             android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <!-- Longitude of individual -->
         <TextView
@@ -167,18 +167,18 @@
             android:id="@+id/txtIndLa"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.95"
             android:gravity="start|top"
             android:padding="4sp"
             android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <!-- count of individual -->
         <com.wmstein.tourcount.AutoFitText
             android:id="@+id/txtIndCnt"
             style="@style/LineText"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center|top"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="6dp"

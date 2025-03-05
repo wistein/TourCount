@@ -7,7 +7,7 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 
-/*
+/**
  * Class HeadDataSource provides methods for table Head
  * Created by wmstein on 2016-03-31,
  * last edited on 2022-03-23

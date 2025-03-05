@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- widget_list_line.xml
- used by ListSpeciesActivity.kt.
+ used by ShowResultsActivity.kt.
  Shows a white line -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +11,7 @@
               android:baselineAligned="false"
               android:orientation="horizontal"
               android:padding="3dp"
-              tools:context=".ListSpeciesActivity">
+              tools:context=".ShowResultsActivity">
 
     <LinearLayout
         android:layout_width="0dp"

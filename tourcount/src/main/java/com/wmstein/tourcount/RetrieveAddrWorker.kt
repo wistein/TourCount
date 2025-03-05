@@ -1,6 +1,5 @@
 package com.wmstein.tourcount
 
-import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import androidx.work.Worker
@@ -22,7 +21,7 @@ import java.net.URL
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2023-12-15
+ * last edited on 2025-02-10
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -56,17 +55,17 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     sb.append(line).append('\n')
                 }
             } catch (e: IOException) {
-                if (MyDebug.dLOG) Log.e(ContentValues.TAG, "59, Problem converting Stream to String: $e")
+                if (MyDebug.DLOG) Log.e(TAG, "58, Problem converting Stream to String: $e")
             } finally {
                 try {
                     iStream.close()
                 } catch (e: IOException) {
-                    if (MyDebug.dLOG) Log.e(ContentValues.TAG, "64, Problem closing InputStream: $e")
+                    if (MyDebug.DLOG) Log.e(TAG, "63, Problem closing InputStream: $e")
                 }
             }
             xmlString = sb.toString()
             // Log gzip-content of url
-            if (MyDebug.dLOG) Log.d(ContentValues.TAG, "69, xmlString: $xmlString")
+            if (MyDebug.DLOG) Log.d(TAG, "68, xmlString: $xmlString")
 
             // Parse Geocoder string to write DB fields
             val sectionDataSource: SectionDataSource
@@ -76,58 +75,96 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             val sCity: String
             val sPlace: String
             val sCountry: String
+            val sState: String
 
             // parse the XML content
             if (xmlString.contains("<addressparts>")) {
                 var sstart = xmlString.indexOf("<addressparts>") + 14
                 var send = xmlString.indexOf("</addressparts>")
                 xmlString = xmlString.substring(sstart, send)
-                if (MyDebug.dLOG) Log.d(ContentValues.TAG, "85, <addressparts>: $xmlString")
+                if (MyDebug.DLOG) Log.d(TAG, "85, <addressparts>: $xmlString")
+
                 val locality = StringBuilder()
                 val plz = StringBuilder()
                 val city = StringBuilder()
-                val place = StringBuilder()
-                val country = StringBuilder()
+                val place = StringBuilder() //
+                val country = StringBuilder() // Land
+                val b_state = StringBuilder() // Bundesland
 
-                // 1. Get locality with road, street and suburb
+                // 1. Get country
+                if (xmlString.contains("<country>")) {
+                    sstart = xmlString.indexOf("<country>") + 9
+                    send = xmlString.indexOf("</country>")
+                    val tcountry = xmlString.substring(sstart, send)
+                    country.append(tcountry)
+                }
+                sCountry = country.toString()
+
+                // 2. Get state
+                if (xmlString.contains("<b_state>")) {
+                    sstart = xmlString.indexOf("<b_state>") + 9
+                    send = xmlString.indexOf("</b_state>")
+                    val tstate = xmlString.substring(sstart, send)
+                    b_state.append(tstate)
+                }
+                sState = b_state.toString()
+
+                // 3. Get city or town and village
+                if (xmlString.contains("<city>")) {
+                    sstart = xmlString.indexOf("<city>") + 6
+                    send = xmlString.indexOf("</city>")
+                    val tcity = xmlString.substring(sstart, send)
+                    city.append(tcity)
+                } else {
+                    if (xmlString.contains("<town>")) {
+                        sstart = xmlString.indexOf("<town>") + 6
+                        send = xmlString.indexOf("</town>")
+                        val town = xmlString.substring(sstart, send)
+                        city.append(town)
+                    }
+                }
+                if (city.toString() != "" && xmlString.contains("<village>")) city.append(", ")
+                if (xmlString.contains("<village>")) {
+                    sstart = xmlString.indexOf("<village>") + 9
+                    send = xmlString.indexOf("</village>")
+                    val village = xmlString.substring(sstart, send)
+                    city.append(village)
+                }
+                sCity = city.toString()
+
+                // 4. Get place with suburb
+                if (xmlString.contains("<suburb>")) {
+                    sstart = xmlString.indexOf("<suburb>") + 8
+                    send = xmlString.indexOf("</suburb>")
+                    val suburb = xmlString.substring(sstart, send)
+                    place.append(suburb)
+                }
+                sPlace = place.toString()
+
+                // 5. Get locality with quarter, road, street
+                if (xmlString.contains("<quarter>")) {
+                    sstart = xmlString.indexOf("<quarter>") + 9
+                    send = xmlString.indexOf("</quarter>")
+                    val quarter = xmlString.substring(sstart, send)
+                    locality.append(quarter)
+                }
+                if (locality.toString() != "" && xmlString.contains("<road>")) locality.append(", ")
                 if (xmlString.contains("<road>")) {
                     sstart = xmlString.indexOf("<road>") + 6
                     send = xmlString.indexOf("</road>")
                     val road = xmlString.substring(sstart, send)
                     locality.append(road)
                 }
+                if (locality.toString() != "" && xmlString.contains("<street>")) locality.append(", ")
                 if (xmlString.contains("<street>")) {
                     sstart = xmlString.indexOf("<street>") + 8
                     send = xmlString.indexOf("</street>")
                     val street = xmlString.substring(sstart, send)
                     locality.append(street)
                 }
-                if (locality.toString() != "" && xmlString.contains("<suburb>")) locality.append(", ")
-                if (xmlString.contains("<suburb>")) {
-                    sstart = xmlString.indexOf("<suburb>") + 8
-                    send = xmlString.indexOf("</suburb>")
-                    val suburb = xmlString.substring(sstart, send)
-                    locality.append(suburb)
-                }
                 sLocality = locality.toString()
 
-                // 2. Get place with city_district and village
-                if (xmlString.contains("<city_district>")) {
-                    sstart = xmlString.indexOf("<city_district>") + 15
-                    send = xmlString.indexOf("</city_district>")
-                    val cityDistrict = xmlString.substring(sstart, send)
-                    place.append(cityDistrict)
-                }
-                if (place.toString() != "" && xmlString.contains("<village>")) place.append(", ")
-                if (xmlString.contains("<village>")) {
-                    sstart = xmlString.indexOf("<village>") + 9
-                    send = xmlString.indexOf("</village>")
-                    val village = xmlString.substring(sstart, send)
-                    place.append(village)
-                }
-                sPlace = place.toString()
-
-                // 3.  Get plz (postcode)
+                // 6.  Get plz (postcode)
                 if (xmlString.contains("<postcode>")) {
                     sstart = xmlString.indexOf("<postcode>") + 10
                     send = xmlString.indexOf("</postcode>")
@@ -136,85 +173,86 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 }
                 sPlz = plz.toString()
 
-                // 4. Get city with city and town or county
-                if (xmlString.contains("<city>")) {
-                    sstart = xmlString.indexOf("<city>") + 6
-                    send = xmlString.indexOf("</city>")
-                    val tcity = xmlString.substring(sstart, send)
-                    city.append(tcity)
-                }
-                if (city.toString() != "" && xmlString.contains("<town>")) city.append(", ")
-                if (xmlString.contains("<town>")) {
-                    sstart = xmlString.indexOf("<town>") + 6
-                    send = xmlString.indexOf("</town>")
-                    val town = xmlString.substring(sstart, send)
-                    city.append(town)
-                }
-                if (xmlString.contains("<county>")) {
-                    sstart = xmlString.indexOf("<county>") + 8
-                    send = xmlString.indexOf("</county>")
-                    val county = xmlString.substring(sstart, send)
-                    if (city.toString() != "") {
-                        city.append(", ")
-                    }
-                    city.append(county)
-                }
-                sCity = city.toString()
-
-                // 5. Get country
-                if (xmlString.contains("<country>")) {
-                    sstart = xmlString.indexOf("<country>") + 9
-                    send = xmlString.indexOf("</country>")
-                    val tcountry = xmlString.substring(sstart, send)
-                    country.append(tcountry)
-                }
-                sCountry = country.toString()
-                sectionDataSource = SectionDataSource(getApplicationContext())
+                sectionDataSource = SectionDataSource(applicationContext)
                 sectionDataSource.open()
                 val section: Section = sectionDataSource.section
 
-                // Save sCountry, sPlz, sCity, sPlace to DB Section
-                if (sCountry.isNotEmpty()) {
-                    section.country = sCountry
-                } else {
-                    section.country = ""
+                // Save sCountry, sState, sCity, sPlace, sLocality, sPlz to DB Section table
+                if (section.country == "") {
+                    if (sCountry.isNotEmpty()) {
+                        section.country = sCountry
+                    } else {
+                        section.country = ""
+                    }
+                    sectionDataSource.storeEmptyCountry(section.id, section.country)
                 }
-                sectionDataSource.updateEmptyCountry(section.id, section.country)
-                if (sPlz.isNotEmpty()) {
-                    section.plz = sPlz
-                } else {
-                    section.plz = ""
+                if (section.b_state == "") {
+                    if (sState.isNotEmpty()) {
+                        section.b_state = sState
+                    } else {
+                        section.b_state = ""
+                    }
+                    sectionDataSource.storeEmptyState(section.id, section.b_state)
                 }
-                sectionDataSource.updateEmptyPlz(section.id, section.plz)
-                if (sCity.isNotEmpty()) {
-                    section.city = sCity
-                } else {
-                    section.city = ""
+
+                if (section.city == "") {
+                    if (sCity.isNotEmpty()) {
+                        section.city = sCity
+                    } else {
+                        section.city = ""
+                    }
+                    sectionDataSource.storeEmptyCity(section.id, section.city)
                 }
-                sectionDataSource.updateEmptyCity(section.id, section.city)
+
                 if (sPlace.isNotEmpty()) {
                     section.place = sPlace
                 } else {
                     section.place = ""
                 }
-                sectionDataSource.updateEmptyPlace(section.id, section.place)
+                sectionDataSource.storeEmptyPlace(section.id, section.place)
+
+                if (section.st_locality == "") {
+                    if (sLocality.isNotEmpty()) {
+                        section.st_locality = sLocality
+                    } else {
+                        section.st_locality = ""
+                    }
+                    sectionDataSource.storeEmptyStLocality(section.id, section.st_locality)
+                }
+
+                if (section.plz == "") {
+                    if (sPlz.isNotEmpty()) {
+                        section.plz = sPlz
+                    } else {
+                        section.plz = ""
+                    }
+                    sectionDataSource.storeEmptyPlz(section.id, section.plz)
+                }
+
                 sectionDataSource.close()
 
-                // Save sLocality to DB table Temp
+                // Save sLocality to temp_loc in DB table Temp
                 tempDataSource = TempDataSource(applicationContext)
                 tempDataSource.open()
                 val tmp: Temp = tempDataSource.tmp
+
                 if (sLocality.isNotEmpty()) {
                     tmp.temp_loc = sLocality
                 } else {
                     tmp.temp_loc = ""
                 }
                 tempDataSource.saveTempLoc(tmp)
+
                 tempDataSource.close()
             }
         } catch (e: IOException) {
-            if (MyDebug.dLOG) Log.e(ContentValues.TAG, "216, Problem with address handling: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "220, Problem with address handling: $e")
         }
         return Result.success()
     }
+
+    companion object {
+        private const val TAG = "RetrAddrWorker"
+    }
+
 }

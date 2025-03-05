@@ -21,7 +21,7 @@ import com.wmstein.tourcount.widgets.EditSpNotesWidget
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-11-25
+ * last edited on 2025-02-10
  */
 class CountOptionsActivity : AppCompatActivity() {
     private var staticWidgetArea: LinearLayout? = null
@@ -37,7 +37,7 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.dLOG) Log.i(TAG, "40, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "40, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
 
@@ -64,6 +64,7 @@ class CountOptionsActivity : AppCompatActivity() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
+                remove()
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
@@ -73,7 +74,7 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.dLOG) Log.i(TAG, "76, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "77, onResume")
 
         // Clear any existing views
         staticWidgetArea!!.removeAllViews()
@@ -104,11 +105,11 @@ class CountOptionsActivity : AppCompatActivity() {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (MyDebug.dLOG) Log.i(TAG, "107, Home")
+            if (MyDebug.DLOG) Log.i(TAG, "108, Home")
             finish()
             return true
         } else if (id == R.id.menuSaveExit) {
-            if (MyDebug.dLOG) Log.i(TAG, "111, SaveExit")
+            if (MyDebug.DLOG) Log.i(TAG, "112, SaveExit")
             if (saveData())
                 finish()
             return true
@@ -119,13 +120,13 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.dLOG) Log.i(TAG, "122, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "123, onPause")
 
         countDataSource!!.close()
     }
 
     private fun saveData(): Boolean {
-        if (MyDebug.dLOG) Log.i(TAG, "128, saveData")
+        if (MyDebug.DLOG) Log.i(TAG, "129, saveData")
 
         // Toast here, as snackbar doesn't show up
         Toast.makeText(this@CountOptionsActivity, getString(R.string.sectSaving)

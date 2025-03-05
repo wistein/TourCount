@@ -3,6 +3,7 @@ package com.wmstein.tourcount;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -15,6 +16,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.tourcount.database.Head;
@@ -32,28 +41,21 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2024-11-25
+ * last edit in Java on 2025-02-26
  */
 public class EditMetaActivity extends AppCompatActivity
-    implements PermissionsDialogFragment.PermissionsGrantedCallback
 {
     private static final String TAG = "EditMetaAct";
 
+    // Preferences
     private final SharedPreferences prefs = TourCountApplication.getPrefs();
     private boolean metaPref;        // option for OSM reverse geocoding
     private String emailString = ""; // mail address for OSM query
 
+    // Database
     private Head head;
     private Section section;
     private HeadDataSource headDataSource;
@@ -71,24 +73,29 @@ public class EditMetaActivity extends AppCompatActivity
     // Location info handling in the first activity to support a quicker 1. GPS fix
     private double latitude;
     private double longitude;
+
     LocationService locationService;
 
-    // Permission dispatcher mode locationPermissionDispatcherMode: 
+    // locationDispatcherMode:
     //  1 = use location service
     //  2 = end location service
-    int locationPermissionDispatcherMode;
+    int locationDispatcherMode;
+
+    private boolean locServiceOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.dLOG) Log.i(TAG, "86, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "91, onCreate");
 
         setContentView(R.layout.activity_edit_meta);
 
         // Option for full bright screen
         boolean brightPref = prefs.getBoolean("pref_bright", true);
+        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
 
         // Set full brightness of screen
         if (brightPref)
@@ -112,8 +119,9 @@ public class EditMetaActivity extends AppCompatActivity
             @Override
             public void handleOnBackPressed()
             {
-                if (MyDebug.dLOG) Log.i(TAG, "115, handleOnBackPressed");
+                if (MyDebug.DLOG) Log.i(TAG, "122, handleOnBackPressed");
                 finish();
+                remove();
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
@@ -125,14 +133,11 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onResume();
 
-        if (MyDebug.dLOG) Log.i(TAG, "128, onResume");
-
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
+        if (MyDebug.DLOG) Log.i(TAG, "136, onResume");
 
         // Get location with permissions check
-        locationPermissionDispatcherMode = 1;
-        locationCaptureFragment();
+        locationDispatcherMode = 1;
+        locationDispatcher();
 
         // Clear existing view
         head_area.removeAllViews();
@@ -160,12 +165,16 @@ public class EditMetaActivity extends AppCompatActivity
         elw = new EditLocationWidget(this, null);
         elw.setWidgetCo1(getString(R.string.country));
         elw.setWidgetCo2(section.country);
+        elw.setWidgetState1(getString(R.string.bstate));
+        elw.setWidgetState2(section.b_state);
         elw.setWidgetPlz1(getString(R.string.plz));
         elw.setWidgetPlz2(section.plz);
         elw.setWidgetCity1(getString(R.string.city));
         elw.setWidgetCity2(section.city);
         elw.setWidgetPlace1(getString(R.string.place));
         elw.setWidgetPlace2(section.place);
+        elw.setWidgetLocality1(getString(R.string.slocality));
+        elw.setWidgetLocality2(section.st_locality);
 
         head_area.addView(elw);
 
@@ -293,14 +302,14 @@ public class EditMetaActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == android.R.id.home) // back button in actionBar
         {
-            if (MyDebug.dLOG) Log.d(TAG, "296, MenuItem home");
+            if (MyDebug.DLOG) Log.d(TAG, "305, MenuItem home");
             finish();
             return true;
         }
 
         if (id == R.id.menuSaveExit)
         {
-            if (MyDebug.dLOG) Log.d(TAG, "303, MenuItem saveExit");
+            if (MyDebug.DLOG) Log.d(TAG, "312, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;
@@ -313,14 +322,10 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onPause();
 
-        if (MyDebug.dLOG) Log.i(TAG, "316, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "325, onPause");
 
         headDataSource.close();
         sectionDataSource.close();
-
-        // Stop location service with permissions check
-        locationPermissionDispatcherMode = 2;
-        locationCaptureFragment();
 
         sDate.setOnClickListener(null);
         sDate.setOnLongClickListener(null);
@@ -328,6 +333,13 @@ public class EditMetaActivity extends AppCompatActivity
         sTime.setOnLongClickListener(null);
         eTime.setOnClickListener(null);
         eTime.setOnLongClickListener(null);
+
+        // Stop RetrieveAddrWorker
+        WorkManager.getInstance(this).cancelAllWork();
+
+        // Stop location service with permissions check
+        locationDispatcherMode = 2;
+        locationDispatcher();
     }
 
     @Override
@@ -335,7 +347,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onStop();
 
-        if (MyDebug.dLOG) Log.i(TAG, "338, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "350, onStop");
     }
 
     @Override
@@ -343,12 +355,12 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onDestroy();
 
-        if (MyDebug.dLOG) Log.i(TAG, "346, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "358, onDestroy");
     }
 
     private boolean saveData()
     {
-        if (MyDebug.dLOG) Log.i(TAG, "351, saveData");
+        if (MyDebug.DLOG) Log.i(TAG, "363, saveData");
 
         // Save head data
         head.observer = ett.getWidgetOName2();
@@ -358,16 +370,22 @@ public class EditMetaActivity extends AppCompatActivity
         section.name = ett.getWidgetName();
         section.notes = ett.getWidgetONotes2();
 
-        section.country = elw.setWidgetCo2();
+        section.country = elw.getWidgetCo2();
+        section.b_state = elw.getWidgetState2();
+        section.city = elw.getWidgetCity2();
+        section.place = elw.getWidgetPlace2();
+        section.st_locality = elw.getWidgetLocality2();
+        section.plz = elw.getWidgetPlz2();
+
         section.tmp = emw.getWidgetTemp2();
         section.tmp_end = emw.getWidgetTemp3();
         if (section.tmp > 50 || section.tmp_end > 50 || section.tmp < 0 || section.tmp_end < 0)
         {
             Snackbar sB = Snackbar.make(emw, getString(R.string.valTemp), Snackbar.LENGTH_LONG);
-            sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+            tv.setTextColor(Color.RED);
             sB.show();
             return false;
         }
@@ -377,10 +395,10 @@ public class EditMetaActivity extends AppCompatActivity
         if (section.wind > 4 || section.wind_end > 4 || section.wind < 0 || section.wind_end < 0)
         {
             Snackbar sB = Snackbar.make(emw, getString(R.string.valWind), Snackbar.LENGTH_LONG);
-            sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+            tv.setTextColor(Color.RED);
             sB.show();
             return false;
         }
@@ -390,17 +408,14 @@ public class EditMetaActivity extends AppCompatActivity
         if (section.clouds > 100 || section.clouds_end > 100 || section.clouds < 0 || section.clouds_end < 0)
         {
             Snackbar sB = Snackbar.make(emw, getString(R.string.valClouds), Snackbar.LENGTH_LONG);
-            sB.setActionTextColor(Color.RED);
             TextView tv = sB.getView().findViewById(R.id.snackbar_text);
             tv.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
             tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+            tv.setTextColor(Color.RED);
             sB.show();
             return false;
         }
 
-        section.plz = elw.getWidgetPlz2();
-        section.city = elw.getWidgetCity2();
-        section.place = elw.getWidgetPlace2();
         section.date = emw.getWidgetDate2();
         section.start_tm = emw.getWidgetStartTm2();
         section.end_tm = emw.getWidgetEndTm2();
@@ -433,39 +448,41 @@ public class EditMetaActivity extends AppCompatActivity
         return dform.format(date);
     }
 
-    @Override
-    public void locationCaptureFragment()
+    public void locationDispatcher()
     {
+        if (isFineLocationPermGranted())
         {
-            if (isPermissionGranted())
+            switch (locationDispatcherMode)
             {
-                switch (locationPermissionDispatcherMode)
-                {
                 case 1 -> // Get location
                     getLoc();
                 case 2 -> // Stop location service
-                    locationService.stopListener();
+                {
+                    if (locServiceOn)
+                    {
+                        locationService.stopListener();
+                        Intent sIntent = new Intent(this, LocationService.class);
+                        stopService(sIntent);
+                        locServiceOn = false;
+                    }
                 }
-            }
-            else
-            {
-                if (locationPermissionDispatcherMode == 1)
-                    PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
             }
         }
     }
 
-    // If API level > 23 test for permissions granted
-    private boolean isPermissionGranted()
+    private boolean isFineLocationPermGranted()
     {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED;
     }
 
     // Get the location data
     public void getLoc()
     {
         locationService = new LocationService(this);
+        Intent sIntent = new Intent(this, LocationService.class);
+        startService(sIntent);
+        locServiceOn = true;
 
         if (locationService.canGetLocation())
         {
@@ -479,7 +496,6 @@ public class EditMetaActivity extends AppCompatActivity
             String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
                 + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
 
-            // Implementation with WorkManager
             WorkRequest retrieveAddrWorkRequest =
                 new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
                     .setInputData(new Data.Builder()

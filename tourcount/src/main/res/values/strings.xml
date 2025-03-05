@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2024-12-03 -->
+     last edited on 2025-03-03 -->
 
 <resources>
 
@@ -50,7 +50,7 @@
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
     <string name="name_spec">Species Name:</string>
     <string name="name_spec_g">English Name:</string>
-    <string name="cntsmf">Counts ♂ ♀</string>
+    <string name="cntsmf">Counts ♂|♀</string>
     <string name="cntsm">Counts ♂</string>
     <string name="cntsf">Counts ♀</string>
     <string name="cntsp">Counts Pu.</string>
@@ -79,6 +79,11 @@
     <string name="bemi">Type indiv. notes here&#8230;</string>
     <string name="editHeadTitle">Meta Data</string>
     <string name="country">Country:</string>
+    <string name="bstate">State:</string>
+    <string name="city">City:</string>
+    <string name="place">Place:</string>
+    <string name="slocality">Locality (Start):</string>
+    <string name="plz">P. Code:</string>
     <string name="inspector">Observer Name:</string>
     <string name="temperature">Temp. (°C):</string>
     <string name="wind">Wind (0–4):</string>
@@ -88,9 +93,6 @@
     <string name="valWind">Wind out of range!</string>
     <string name="valClouds">Clouds out of range!</string>
     <string name="date">Date:</string>
-    <string name="plz">P. Code:</string>
-    <string name="city">City:</string>
-    <string name="place">Place:</string>
     <string name="tm">Time:</string>
     <string name="starttm">from:</string>
     <string name="endtm">until:</string>
@@ -110,8 +112,7 @@
     <string name="stadium_2">Pupa</string>
     <string name="stadium_3">Caterpillar</string>
     <string name="stadium_4">Egg</string>
-    <string name="state">State (0–6)</string>
-    <string name="state1">State (0–6)</string>
+    <string name="status123">Status (0–6)</string>
     <string name="count1">No.</string>
     <string name="valState">State out of range!</string>
     <string name="note">Individual Notes</string>
@@ -173,7 +174,7 @@
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
     <string name="pref_note_font">Notes Font</string>
     <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
-    <string name="pref_left_hand">Lefties</string>
+    <string name="pref_left_hand">Left-hander</string>
     <string name="pref_left_hand_summ">Show left-hander counter view.</string>
 
     <string name="prefs_csv_output_title">Output</string>
@@ -250,12 +251,21 @@
     <string name="ok_button">OK</string>
     
     <!-- Permissions -->
-    <string name="perm_required">Permissions required</string>
     <string name="app_settings">App Settings</string>
-    <string name="perm_hint">In order to register butterflies with location data, access to location data is necessary.</string>
-    <string name="perm_hint1">Please enable the missing permission for the app in the phone settings.</string>
-    <string name="perm_cancel">Export denied. Please, accept permission and try again.</string>
-    <string name="perm_denied">At least one permission is denied. Functionality is limited.</string>
+    <string name="dialog_storage_title">Storage permission required</string>
+    <string name="dialog_storage_message">Please grant storage permission for TourCount to be able to export data.</string>
+    <string name="dialog_storage_hint">TourCount needs storage permission to import and export data, please grant it in the following dialog.</string>
+    <string name="storage_perm_cancel">TourCount needs storage permission to import and export data, please grant it in the Android system settings.</string>
+    <string name="storage_perm_denied">Storage permission denied. Functionality is needed to export DBs and results.</string>
+
+    <string name="dialog_fine_location_title">Allow to use precise location.</string>
+    <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
+    <string name="dialog_fine_location_hint">Registering butterflies should be done with precise location data. If you deny location permission all location-related information will be missing in the results. Authorization can then only be granted in the system settings.</string>
+    <string name="dialog_background_loc_title">Permission wanted</string>
+    <string name="dialog_background_loc_message">Location data is more precise with the optional permission \'Allow all the time\'.</string>
+    <string name="dialog_background_loc_hint">Location data is more precise with the optional permission \'Allow all the time\'. This can be granted in the following dialog.</string>
+    <string name="grant_perm_later">You may grant the optional Background location permission in system settings later.</string>
+
     <string name="cancel">Cancel</string>
-    
+
 </resources>

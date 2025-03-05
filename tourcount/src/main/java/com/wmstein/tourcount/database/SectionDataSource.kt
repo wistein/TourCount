@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-04-18,
  * last modified in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last modified on 2024-05-14
+ * last modified on 2025-03-03
  */
 class SectionDataSource(context: Context) {
     // Database fields
@@ -34,7 +34,9 @@ class SectionDataSource(context: Context) {
         DbHelper.S_DATE,
         DbHelper.S_START_TM,
         DbHelper.S_END_TM,
-        DbHelper.S_NOTES
+        DbHelper.S_NOTES,
+        DbHelper.S_STATE,
+        DbHelper.S_ST_LOCALITY
     )
 
     init {
@@ -69,6 +71,8 @@ class SectionDataSource(context: Context) {
         section.start_tm = cursor.getString(cursor.getColumnIndex(DbHelper.S_START_TM))
         section.end_tm = cursor.getString(cursor.getColumnIndex(DbHelper.S_END_TM))
         section.notes = cursor.getString(cursor.getColumnIndex(DbHelper.S_NOTES))
+        section.b_state = cursor.getString(cursor.getColumnIndex(DbHelper.S_STATE))
+        section.st_locality = cursor.getString(cursor.getColumnIndex(DbHelper.S_ST_LOCALITY))
         return section
     }
 
@@ -89,12 +93,14 @@ class SectionDataSource(context: Context) {
         dataToInsert.put(DbHelper.S_START_TM, section.start_tm)
         dataToInsert.put(DbHelper.S_END_TM, section.end_tm)
         dataToInsert.put(DbHelper.S_NOTES, section.notes)
+        dataToInsert.put(DbHelper.S_STATE, section.b_state)
+        dataToInsert.put(DbHelper.S_ST_LOCALITY, section.st_locality)
         val where = DbHelper.S_ID + " = ?"
         val whereArgs = arrayOf(section.id.toString())
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    // called from RetrieveAddr, CountingActivity and EditSpecListActivity
+    // Called from WelcomeActivity, CountingActivity and EditMetaActivity
     val section: Section
         get() {
             val section: Section
@@ -102,10 +108,7 @@ class SectionDataSource(context: Context) {
                 DbHelper.SECTION_TABLE,
                 allColumns,
                 DbHelper.S_ID + " = 1",
-                null,
-                null,
-                null,
-                null
+                null, null, null, null
             )
             cursor.moveToFirst()
             section = cursorToSection(cursor)
@@ -113,9 +116,8 @@ class SectionDataSource(context: Context) {
             return section
         }
 
-    // called from CountingActivity
-    // store only when field is empty
-    fun updateEmptyCountry(id: Int, name: String?) {
+    // Store only when field is empty
+    fun storeEmptyCountry(id: Int, name: String?) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_COUNTRY, name)
         val where =
@@ -124,7 +126,16 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun updateEmptyPlz(id: Int, name: String?) {
+    fun storeEmptyState(id: Int, name: String?) {
+        val dataToInsert = ContentValues()
+        dataToInsert.put(DbHelper.S_STATE, name)
+        val where =
+            DbHelper.S_ID + " = ? AND (" + DbHelper.S_STATE + " IS NULL OR " + DbHelper.S_STATE + " == '')"
+        val whereArgs = arrayOf(id.toString())
+        database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
+    }
+
+    fun storeEmptyPlz(id: Int, name: String?) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_PLZ, name)
         val where =
@@ -133,7 +144,7 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun updateEmptyCity(id: Int, name: String?) {
+    fun storeEmptyCity(id: Int, name: String?) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_CITY, name)
         val where =
@@ -142,11 +153,20 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun updateEmptyPlace(id: Int, name: String?) {
+    fun storeEmptyPlace(id: Int, name: String?) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_PLACE, name)
         val where =
             DbHelper.S_ID + " = ? AND (" + DbHelper.S_PLACE + " IS NULL OR " + DbHelper.S_PLACE + " == '')"
+        val whereArgs = arrayOf(id.toString())
+        database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
+    }
+
+    fun storeEmptyStLocality(id: Int, name: String?) {
+        val dataToInsert = ContentValues()
+        dataToInsert.put(DbHelper.S_ST_LOCALITY, name)
+        val where =
+            DbHelper.S_ID + " = ? AND (" + DbHelper.S_ST_LOCALITY + " IS NULL OR " + DbHelper.S_ST_LOCALITY + " == '')"
         val whereArgs = arrayOf(id.toString())
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }

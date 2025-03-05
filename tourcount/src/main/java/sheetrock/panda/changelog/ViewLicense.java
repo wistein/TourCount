@@ -32,7 +32,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for ViewLicense by wmstein on 2024-07-16,
- * last edited on 2024-10-01
+ * last edited on 2025-02-23
  */
 public class ViewLicense
 {
@@ -42,17 +42,13 @@ public class ViewLicense
     private Listmode lm = Listmode.NONE;
     private StringBuffer sb = null;
 
-    /**
-     * Constructor
-     * Retrieves the version names and stores the new version name in SharedPreferences
-     */
     public ViewLicense(Context context)
     {
         this.context = context;
     }
 
     /**
-     * @return an AlertDialog with a full change log displayed
+     * @return an AlertDialog with the license text displayed
      */
     public AlertDialog getFullLogDialog()
     {
@@ -68,7 +64,7 @@ public class ViewLicense
             null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-            new ContextThemeWrapper(this.context, android.R.style.Theme_Holo_Dialog));
+            new ContextThemeWrapper(this.context, android.R.style.Theme_Material_Dialog));
         builder.setTitle(context.getResources().getString(
                 R.string.viewlicense_full_title))
             .setView(wl)
@@ -109,13 +105,15 @@ public class ViewLicense
                     {
                         // line contains version title
                         this.closeList();
-                        sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                        sb.append("<div class='title'>")
+                            .append(line.substring(1).trim()).append("</div>\n");
                     }
                     case '_' ->
                     {
                         // line contains version title
                         this.closeList();
-                        sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
+                        sb.append("<div class='subtitle'>")
+                            .append(line.substring(1).trim()).append("</div>\n");
                     }
                     case '&' ->
                     {
@@ -129,13 +127,15 @@ public class ViewLicense
                     {
                         // line contains free text
                         this.closeList();
-                        sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                        sb.append("<div class='freetext'>")
+                            .append(line.substring(1).trim()).append("</div>\n");
                     }
                     case '*' ->
                     {
                         // line contains bullet list item
                         this.openList();
-                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                        sb.append("<li>").
+                            append(line.substring(1).trim()).append("</li>\n");
                     }
                     default ->
                     {
@@ -147,10 +147,11 @@ public class ViewLicense
             }
             this.closeList();
             br.close();
+            ins.close();
         } catch (IOException e)
         {
-            if (MyDebug.dLOG)
-                Log.e(TAG, "153, could not read license text.", e);
+            if (MyDebug.DLOG)
+                Log.e(TAG, "154, could not read license text.", e);
         }
 
         return sb.toString();

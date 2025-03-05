@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2024-12-02 -->
+     last edited on 2025-03-03 -->
 
 <resources>
 
@@ -16,7 +16,7 @@
     <string name="changeLogTitle">App-Info</string>
     <string name="viewHelpTitle">Hilfe</string>
     <string name="viewLicenseTitle">Lizenzen</string>
-    <string name="noCard">Kann nicht ins Documents-Directory schreiben!</string>
+    <string name="noCard">Kann nicht ins Documents-Verzeichnis schreiben!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
     <string name="savecsv">Export der CSV-Datei nach Documents/TourCount</string>
@@ -39,7 +39,7 @@
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
     <string name="name_spec">Spezies-Name:</string>
     <string name="name_spec_g">Deutscher Name:</string>
-    <string name="cntsmf">Anzahl ♂ ♀</string>
+    <string name="cntsmf">Anzahl ♂|♀</string>
     <string name="cntsm">Anzahl ♂</string>
     <string name="cntsf">Anzahl ♀</string>
     <string name="cntsp">Anzahl Pu.</string>
@@ -51,8 +51,8 @@
     <string name="avCoords">Mittlere Koordinaten:</string>
     <string name="back_twice">Zum Beenden erneut drücken</string>
     <string name="resetFail">Die Datenbank konnte nicht zurückgesetzt werden!</string>
-    <string name="sort_names">Species sortiert nach Spezies-Namen</string>
-    <string name="sort_codes">Species sortiert nach Spezies-Codes</string>
+    <string name="sort_names">Spezies sortiert nach Spezies-Namen</string>
+    <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
     <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
 
     <!-- FileChooser -->
@@ -64,10 +64,15 @@
     <string name="zlnotes">Bem. zur Tour:</string>
     <string name="speccode">Spez.-Code:</string>
     <string name="cnts">Anzahl</string>
-    <string name="bema">Art-Bemerkung:</string>
+    <string name="bema">Bem. zur Art:</string>
     <string name="bemi">Indiv.-Bemerkung hier einfügen&#8230;</string>
     <string name="editHeadTitle">Meta-Daten</string>
     <string name="country">Land:</string>
+    <string name="bstate">Bundesland:</string>
+    <string name="city">Stadt:</string>
+    <string name="place">Ort:</string>
+    <string name="slocality">Lokalität (Start):</string>
+    <string name="plz">PLZ:</string>
     <string name="inspector">Melder(in):</string>
     <string name="temperature">Temp. (°C):</string>
     <string name="wind">Wind (0–4):</string>
@@ -77,9 +82,6 @@
     <string name="valWind">Wind überprüfen!</string>
     <string name="valClouds">Wolken überprüfen!</string>
     <string name="date">Datum:</string>
-    <string name="plz">PLZ:</string>
-    <string name="city">Stadt:</string>
-    <string name="place">Ort:</string>
     <string name="tm">Zeit:</string>
     <string name="starttm">von:</string>
     <string name="endtm">bis:</string>
@@ -99,8 +101,7 @@
     <string name="stadium_2">Puppe</string>
     <string name="stadium_3">Raupe</string>
     <string name="stadium_4">Ei</string>
-    <string name="state">Zust. (0–6)</string>
-    <string name="state1">Zust. (0–6)</string>
+    <string name="status123">Zust. (0–6)</string>
     <string name="count1">Anz.</string>
     <string name="valState">Zustand überprüfen!</string>
     <string name="note">Bemerkung zum Individuum</string>
@@ -130,7 +131,7 @@
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
     <string name="isdouble"> ist doppelt!</string>
     <string name="presentSpecs">Arten der Zählliste:</string>
-    <string name="isempt">Name oder Code ist leer!</string>
+    <string name="isempt">Name oder Code fehlt!</string>
     <string name="spname">Name</string>
     <string name="orcode"> oder Code</string>
 
@@ -225,7 +226,7 @@
     <string name="hintName">Name</string>
     <string name="notesHere">Bemerkung zur Tour:</string>
     <string name="hintListNotes">Bemerkung zur Tour:</string>
-    <string name="getHelp">Datenbank-Problem! Bitte sende die exportierte \"tourcount_Tour_JJJJ-MM-TT_hhmmss.db\" per E-Mail, falls Du Hilfe brauchst.</string>
+    <string name="getHelp">Datenbank-Problem! Bitte maile die exportierte \"tourcount_Tour_JJJJ-MM-TT_hhmmss.db\", falls Du Hilfe brauchst.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂, ♀</string>
     <string name="countImagomHint">Falter ♂</string>
@@ -238,12 +239,21 @@
     <string name="ok_button">OK</string>
 
     <!-- Permissions -->
-    <string name="perm_required">Berechtigungen benötigt</string>
-    <string name="perm_hint">Um Schmetterlinge mit Ortsangaben zu registrieren, sind in TourCount Standortberechtigungen erforderlich. </string>
-    <string name="perm_hint1">Bitte erteile die fehlende Berechtigung für die App in den Smartphone-Einstellungen.</string>
     <string name="app_settings">App-Einstellungen</string>
-    <string name="perm_cancel">Export blockiert. Bitte erteile Berechtigung und versuche es erneut.</string>
-    <string name="perm_denied">Mindestens eine Berechtigung fehlt. Die Funktion ist entsprechend eingeschränkt.</string>
+    <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
+    <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Export der Ergebnisse.</string>
+    <string name="dialog_storage_hint">TourCount benötigt zum Datenim- und -export Speicherberechtigung, bitte diese im folgenden Dialog erteilen.</string>
+    <string name="storage_perm_cancel">TourCount benötigt zum Datenim- und -export Speicherberechtigung, bitte diese im Android-Berechtigungdialog erteilen.</string>
+    <string name="storage_perm_denied">Die Speicher-Berechtigung fehlt. Die Funktion wird benötigt für die Speicherung von DBs und Ergebnissen. </string>
+
+    <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
+    <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
+    <string name="dialog_fine_location_hint">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen. Wird die Standort-Berechtigung verweigert, fehlen alle Standort-bezogenen Informationen in den Ergebnissen. Die Berechtigung kann danach nur noch in den Systemeinstellungen erteilt werden.</string>
+    <string name="dialog_background_loc_title">Berechtigung erwünscht</string>
+    <string name="dialog_background_loc_message">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'.</string>
+    <string name="dialog_background_loc_hint">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'. Diese kann im folgenden Dialog erteilt werden.</string>
+    <string name="grant_perm_later">Die optionale Hintergrund-Standort-Berechtigung kann ggf. später in den Systemeinstellungen erteilt werden.</string>
+
     <string name="cancel">Abbrechen</string>
-    
+
 </resources>

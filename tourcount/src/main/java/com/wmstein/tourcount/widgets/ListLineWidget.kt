@@ -9,7 +9,7 @@ import java.util.Objects
 
 /**********************************
  * Created by wmstein on 2018-02-24
- * used by ListSpeciesActivity
+ * used by ShowResultsActivity
  * last edited in Java on 2019-01-27,
  * converted to Kotlin on 2023-07-05
  */

@@ -29,9 +29,9 @@ class TourCountApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+/*
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
-        if (MyDebug.dLOG) {
+        if (MyDebug.DLOG) {
             Log.i(TAG, "35, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
@@ -39,23 +39,22 @@ class TourCountApplication : Application() {
                     .build()
             )
         }
-
+*/
         try {
             prefs = PreferenceManager.getDefaultSharedPreferences(this)
         } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "46, Error: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "46, Error: $e")
         }
     }
     // End of onCreate()
 
     // bMapDraw is a pre-prepared bitmap read by WelcomeActivity, SelectSectionActivity
     //   and CountingActivity
-    @Suppress("DEPRECATION")
     fun setBackgr(): BitmapDrawable {
         bMapDraw = null
 
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
-        if (MyDebug.dLOG) Log.i(TAG, "58, Backgr.: $backgroundPref")
+        if (MyDebug.DLOG) Log.i(TAG, "57, Backgr.: $backgroundPref")
 
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
         if (Build.VERSION.SDK_INT >= 30) {
@@ -63,13 +62,15 @@ class TourCountApplication : Application() {
             width = metrics.bounds.right + metrics.bounds.left
             height = metrics.bounds.top + metrics.bounds.bottom
         } else {
+			@Suppress("DEPRECATION")
             val display = wm.defaultDisplay // deprecated in 30
             val size = Point()
+			@Suppress("DEPRECATION")
             display.getSize(size) // deprecated in 30
             width = size.x
             height = size.y
         }
-        if (MyDebug.dLOG) Log.d(TAG, "72, Width: $width Height: $height")
+        if (MyDebug.DLOG) Log.d(TAG, "73, Width: $width Height: $height")
 
         var bMap: Bitmap?
         if (backgroundPref == "none") {

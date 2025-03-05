@@ -1,8 +1,10 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.wmstein.tourcount.R
@@ -11,16 +13,20 @@ import java.util.Objects
 import kotlin.math.roundToInt
 
 /*************************************************************
- * ListLocationWidget.kt used by EditMetaActivity.java
+ * ListLocationWidget.kt used by ShowResultsActivity.java
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-07
+ * last edited on 2025-02-25
  */
 class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
     private val widget_co1: TextView
     private val widget_co2: TextView
+
+    // state
+    private val widget_state1: TextView
+    private val widget_state2: TextView
 
     // plz
     private val widget_plz1: TextView
@@ -33,6 +39,10 @@ class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
     // place
     private val widget_place1: TextView
     private val widget_place2: TextView
+
+    // locality
+    private val widget_locality1: TextView
+    private val widget_locality2: TextView
 
     // average longitude
     private val widget_dlo1: TextView
@@ -51,12 +61,16 @@ class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_location, this, true)
         widget_co1 = findViewById(R.id.widgetLCountryTitle) // Country
         widget_co2 = findViewById(R.id.widgetLCountryName)
+        widget_state1 = findViewById(R.id.widgetState1)
+        widget_state2 = findViewById(R.id.widgetState2)
         widget_plz1 = findViewById(R.id.widgetLPlz1) // plz
         widget_plz2 = findViewById(R.id.widgetLPlz2)
         widget_city1 = findViewById(R.id.widgetLCity1) // city
         widget_city2 = findViewById(R.id.widgetLCity2)
         widget_place1 = findViewById(R.id.widgetLPlace1) // place
         widget_place2 = findViewById(R.id.widgetLPlace2)
+        widget_locality1 = findViewById(R.id.widgetLoc1)
+        widget_locality2 = findViewById(R.id.widgetLoc2)
         widget_dlo1 = findViewById(R.id.widgetLdlo1) // lon
         widget_dlo2 = findViewById(R.id.widgetLdlo2)
         widget_dla1 = findViewById(R.id.widgetLdla1) // lat
@@ -69,19 +83,25 @@ class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
     fun setLocationWidget(section: Section) {
         widget_co1.setText(R.string.country)
         widget_co2.text = section.country
-        widget_plz1.setText(R.string.plz)
-        widget_plz2.text = section.plz
+        widget_state1.setText(R.string.bstate)
+        widget_state2.text = section.b_state
 
         widget_city1.setText(R.string.city)
         widget_city2.text = section.city
         widget_place1.setText(R.string.place)
         widget_place2.text = section.place
 
+        widget_locality1.setText(R.string.slocality)
+        widget_locality2.text = section.st_locality
+        widget_plz1.setText(R.string.plz)
+        widget_plz2.text = section.plz
+
         widget_dlo1.setText(R.string.dLo)
         widget_dla1.setText(R.string.dLa)
         widget_muncert1.setText(R.string.mUncert)
     }
 
+    @SuppressLint("SetTextI18n")
     fun setWidgetDla2(name: Double) {
         val slen = name.toString().length
         if (slen > 8) {
@@ -91,6 +111,7 @@ class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun setWidgetDlo2(name: Double) {
         val slen = name.toString().length
         if (slen > 8) {

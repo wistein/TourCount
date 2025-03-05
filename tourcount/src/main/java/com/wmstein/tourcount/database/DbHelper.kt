@@ -14,22 +14,22 @@ import com.wmstein.tourcount.R
  * updated to version 2 on 2017-09-09,
  * updated to version 3 on 2018-03-31,
  * updated to version 4 on 2019-03-25,
+ * updated to version 8 on 2025-02-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2024-12-17
+ * last edited on 2025-03-04
  *
  * ************************************************************************
  * ATTENTION!
  * Current DATABASE_VERSION must be set under 'companion object' at the end
  * ************************************************************************
  */
-class DbHelper    // constructor
-    (private val mContext: Context) :
+class DbHelper (private val mContext: Context) :
     SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
-    // called once on database creation
+    // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
-        if (MyDebug.dLOG) Log.d(TAG, "32, Creating database: $DATABASE_NAME")
+        if (MyDebug.DLOG) Log.d(TAG, "32, Creating database: $DATABASE_NAME")
 
         var sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
@@ -47,7 +47,9 @@ class DbHelper    // constructor
                 + S_DATE + " text, "
                 + S_START_TM + " text, "
                 + S_END_TM + " text, "
-                + S_NOTES + " text)")
+                + S_NOTES + " text, "
+                + S_STATE + " text, "
+                + S_ST_LOCALITY + " text)")
         db.execSQL(sql)
 
         sql = ("create table " + COUNT_TABLE + " ("
@@ -95,31 +97,31 @@ class DbHelper    // constructor
                 + I_CODE + " text)")
         db.execSQL(sql)
 
-        //create empty row for SECTION_TABLE
+        // Create empty row for SECTION_TABLE
         var values1 = ContentValues()
         values1.put(S_ID, 1)
         values1.put(S_NAME, "")
         db.insert(SECTION_TABLE, null, values1)
 
-        //create empty row for HEAD_TABLE
+        // Create empty row for HEAD_TABLE
         values1 = ContentValues()
         values1.put(H_ID, 1)
         values1.put(H_OBSERVER, "")
         db.insert(HEAD_TABLE, null, values1)
 
-        //create empty row for TEMP_TABLE
+        // Create empty row for TEMP_TABLE
         values1 = ContentValues()
         values1.put(T_ID, 1)
         values1.put(T_TEMP_LOC, "")
         values1.put(T_TEMP_CNT, 0)
         db.insert(TEMP_TABLE, null, values1)
 
-        //create initial data for COUNT_TABLE
+        // Create initial data for COUNT_TABLE
         initialCounts(db)
-        if (MyDebug.dLOG) Log.d(TAG, "119, Success!")
+        if (MyDebug.DLOG) Log.d(TAG, "121, Success!")
     }
 
-    // initial data for COUNT_TABLE
+    // Initial data for COUNT_TABLE
     private fun initialCounts(db: SQLiteDatabase) {
         val specs: Array<String> = mContext.resources.getStringArray(R.array.initSpecs)
         val codes: Array<String> = mContext.resources.getStringArray(R.array.initCodes)
@@ -141,27 +143,34 @@ class DbHelper    // constructor
         }
     }
 
-    // ******************************************************************************************
-    // called if newVersion != oldVersion
+    // **********************************************************************************
+    // Called with 1. call of dbHandler.getWritableDatabase() if newVersion != oldVersion
     // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 7) {
+            version8(db)
+        }
         if (oldVersion == 6) {
             version7(db)
+            version8(db)
         }
         if (oldVersion == 5) {
             version6(db)
             version7(db)
+            version8(db)
         }
         if (oldVersion == 4) {
             version5(db)
             version6(db)
             version7(db)
+            version8(db)
         }
         if (oldVersion == 3) {
             version4(db)
             version5(db)
             version6(db)
             version7(db)
+            version8(db)
         }
         if (oldVersion == 2) {
             version3(db)
@@ -169,6 +178,7 @@ class DbHelper    // constructor
             version5(db)
             version6(db)
             version7(db)
+            version8(db)
         }
         if (oldVersion == 1) {
             version2(db)
@@ -177,6 +187,7 @@ class DbHelper    // constructor
             version5(db)
             version6(db)
             version7(db)
+            version8(db)
         }
     }
 
@@ -186,14 +197,10 @@ class DbHelper    // constructor
         val sql: String
 
         // add new extra column icount to table individuals
-        try {
-            sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
-            db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "192, Missing icount column added to individuals")
-        } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "194, Column already present: $e")
-        }
-        if (MyDebug.dLOG) Log.d(TAG, "196, Upgraded database to version 2")
+        sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
+        db.execSQL(sql)
+
+        if (MyDebug.DLOG) Log.d(TAG, "203, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -207,61 +214,38 @@ class DbHelper    // constructor
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F2I int"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "210, Missing count_f2i column added to counts!")
+            if (MyDebug.DLOG) Log.d(TAG, "217, Missing count_f2i column added to counts!")
         } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "212, Column already present: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "219, Column already present: $e")
             colExist = true
         }
-        if (MyDebug.dLOG) Log.d(TAG, "215, Upgraded database to version 3")
-        try {
-            sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
-            db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "219, Missing count_f3i column added to counts!")
-        } catch (_: Exception) {
-            // do nothing
-        }
-        try {
-            sql = "alter table $COUNT_TABLE add column $C_COUNT_PI int"
-            db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "226, Missing count_pi column added to counts!")
-        } catch (_: Exception) {
-            // do nothing
-        }
-        try {
-            sql = "alter table $COUNT_TABLE add column $C_COUNT_LI int"
-            db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "233, Missing count_li column added to counts!")
-        } catch (_: Exception) {
-            // do nothing
-        }
-        try {
-            sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
-            db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "240, Missing count_ei column added to counts!")
-        } catch (_: Exception) {
-            // do nothing
-        }
+        if (MyDebug.DLOG) Log.d(TAG, "222, Upgraded database to version 3")
+
+        sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
+        db.execSQL(sql)
+        sql = "alter table $COUNT_TABLE add column $C_COUNT_PI int"
+        db.execSQL(sql)
+        sql = "alter table $COUNT_TABLE add column $C_COUNT_LI int"
+        db.execSQL(sql)
+        sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
+        db.execSQL(sql)
 
         // add I_CATEGORY to INDIVIDUALS table
         try {
             sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                     + " int default 1")
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "250, Missing icategory column added to individuals!")
+            if (MyDebug.DLOG) Log.d(TAG, "238, Missing icategory column added to individuals!")
         } catch (e: Exception) {
-            if (MyDebug.dLOG) Log.e(TAG, "252, Column I_CATEGORY already present: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "240, Column I_CATEGORY already present: $e")
             colCatExist = true
         }
 
         // fill sex and icategory with default values to avoid crash when negative counting
         if (!colCatExist) {
-            try {
-                sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
-                db.execSQL(sql)
-                if (MyDebug.dLOG) Log.d(TAG, "261, I_SEX filled with '-'")
-            } catch (_: Exception) {
-                // do nothing
-            }
+            sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
+            db.execSQL(sql)
+            if (MyDebug.DLOG) Log.d(TAG, "248, I_SEX filled with '-'")
         }
 
         // copy old data into new structure
@@ -299,7 +283,7 @@ class DbHelper    // constructor
             db.execSQL(sql)
             sql = "DROP TABLE counts_backup"
             db.execSQL(sql)
-            if (MyDebug.dLOG) Log.d(TAG, "302, Upgraded database to version 3")
+            if (MyDebug.DLOG) Log.d(TAG, "286, Upgraded database to version 3")
         }
     }
 
@@ -308,7 +292,7 @@ class DbHelper    // constructor
     private fun version4(db: SQLiteDatabase) {
         val sql = "alter table $COUNT_TABLE add column $C_NAME_G text"
         db.execSQL(sql)
-        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 4")
+        if (MyDebug.DLOG) Log.d(TAG, "295, Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -360,7 +344,7 @@ class DbHelper    // constructor
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 5")
+        if (MyDebug.DLOG) Log.d(TAG, "347, Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -414,28 +398,45 @@ class DbHelper    // constructor
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (MyDebug.dLOG) Log.d(TAG, "Upgraded database to version 6")
+        if (MyDebug.DLOG) Log.d(TAG, "401, Upgraded database to version 6")
     }
 
     /*** V7 ***/
     // Version 7: Add field I_CODE to INDIVIDUALS_TABLE and clear count data
     private fun version7(db: SQLiteDatabase) {
-        // empty INDIVIDUALS_TABLE
+        // Empty INDIVIDUALS_TABLE
         var sql = "DELETE FROM $INDIVIDUALS_TABLE"
         db.execSQL(sql)
 
-        // add I_CODE to INDIVIDUALS table
-        sql = "alter table $INDIVIDUALS_TABLE add column $I_CODE"
+        // Add I_CODE to INDIVIDUALS table
+        sql = "alter table $INDIVIDUALS_TABLE add column $I_CODE text"
         db.execSQL(sql)
 
-        // empty COUNT_TABLE
+        // Empty COUNT_TABLE
         sql = "UPDATE $COUNT_TABLE SET $C_COUNT_F1I = 0, $C_COUNT_F2I = 0, $C_COUNT_F3I = 0, " +
                 "$C_COUNT_PI = 0, $C_COUNT_LI = 0, $C_COUNT_EI = 0, $C_NOTES = ''"
         db.execSQL(sql)
+
+        if (MyDebug.DLOG) Log.d(TAG, "420, Upgraded database to version 7")
+    }
+
+    /*** V8 ***/
+    // Version 8: Add fields S_STATE and S_ST_LOCALITY to SECTION_TABLE
+    private fun version8(db: SQLiteDatabase) {
+        if (MyDebug.DLOG) Log.d(TAG, "426, Upgrade to database version 8")
+
+        var sql = "alter table $SECTION_TABLE add column $S_STATE text"
+        db.execSQL(sql)
+
+        sql = "alter table $SECTION_TABLE add column $S_ST_LOCALITY text"
+        db.execSQL(sql)
+
+        if (MyDebug.DLOG) Log.d(TAG, "434, Upgraded database to version 8")
     }
 
     companion object {
-        private const val DATABASE_VERSION = 7
+        private const val DATABASE_VERSION = 8
+        //DATABASE_VERSION 8: Add fields S_STATE and S_ST_LOCALITY to SECTION_TABLE
         //DATABASE_VERSION 7: Add field I_CODE to INDIVIDUALS_TABLE and clear count data
         //DATABASE_VERSION 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
         //DATABASE_VERSION 5: Rename table 'temp' to 'tmp' and SECTION_TABLE column 'temp' to 'tmp'
@@ -443,7 +444,7 @@ class DbHelper    // constructor
         //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
         //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
 
-        private const val TAG = "TourCnt DBHelper"
+        private const val TAG = "DBHelper"
         private const val DATABASE_NAME = "tourcount.db"
 
         // tables
@@ -470,8 +471,10 @@ class DbHelper    // constructor
         const val S_START_TM = "start_tm"
         const val S_END_TM = "end_tm"
         const val S_NOTES = "notes"
+        const val S_STATE = "b_state"
+        const val S_ST_LOCALITY = "st_locality"
 
-        private const val S_TEMP = "temp" // deprecated for reserved term conflict
+        private const val S_TEMP = "temp" // table name 'temp' has term conflict, changed tp 'tmp'
 
         // fields of table counts
         const val C_ID = "_id"

@@ -33,7 +33,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2024-12-17
+ * last edited on 2025-02-23
  */
 public class ViewHelp
 {
@@ -45,15 +45,11 @@ public class ViewHelp
     private Listmode listMode = Listmode.NONE;
     private StringBuffer sb = null;
 
-    /**
-     * Constructor
-     * Retrieves the version names and stores the new version name in SharedPreferences
-     */
     public ViewHelp(Context context)
     {
         this.context = context;
 
-        // get version number
+        // get version name
         try
         {
             thisVersion = context.getPackageManager().getPackageInfo(
@@ -61,13 +57,13 @@ public class ViewHelp
         } catch (NameNotFoundException e)
         {
             thisVersion = NO_VERSION;
-            if (MyDebug.dLOG)
+            if (MyDebug.DLOG)
                 Log.e(TAG, "65, Could not get version name from manifest!", e);
         }
     }
 
     /**
-     * @return an AlertDialog with a full change log displayed
+     * Return an AlertDialog with a full change log displayed
      */
     public AlertDialog getFullLogDialog()
     {
@@ -83,7 +79,7 @@ public class ViewHelp
             null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-            new ContextThemeWrapper(this.context, android.R.style.Theme_Holo_Dialog));
+            new ContextThemeWrapper(this.context, android.R.style.Theme_Material_Dialog));
         builder.setTitle(context.getResources().getString(
                 R.string.viewhelp_full_title) + " " + thisVersion + ")")
             .setView(wv)
@@ -108,13 +104,9 @@ public class ViewHelp
             String language = Locale.getDefault().toString().substring(0, 2);
             InputStream ins;
             if (language.equals("de"))
-            {
                 ins = context.getResources().openRawResource(R.raw.viewhelp_de);
-            }
             else
-            {
                 ins = context.getResources().openRawResource(R.raw.viewhelp);
-            }
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
             String line;
             while ((line = br.readLine()) != null)
@@ -128,55 +120,59 @@ public class ViewHelp
                 }
                 switch (marker)
                 {
-                case '%' ->
-                {
-                    // line contains version title
-                    this.closeList();
-                    sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
-                }
-                case '_' ->
-                {
-                    // line contains version title
-                    this.closeList();
-                    sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
-                }
-                case '!' ->
-                {
-                    // line contains free text
-                    this.closeList();
-                    sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
-                }
-                case ')' ->
-                {
-                    // line contains small text
-                    this.closeList();
-                    sb.append("<div class='smalltext'>").append(line.substring(1).trim()).append("</div>\n");
-                }
-                case '#' ->
-                {
-                    // line contains numbered list item
-                    this.openList(Listmode.ORDERED);
-                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                }
-                case '*' ->
-                {
-                    // line contains bullet list item
-                    this.openList(Listmode.UNORDERED);
-                    sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
-                }
-                default ->
-                {
-                    // no special character: just use line as is
-                    this.closeList();
-                    sb.append(line).append(" \n");
-                }
+                    case '%' ->
+                    {
+                        // line contains version title
+                        this.closeList();
+                        sb.append("<div class='title'>").append(line.substring(1).trim())
+                            .append("</div>\n");
+                    }
+                    case '_' ->
+                    {
+                        // line contains version title
+                        this.closeList();
+                        sb.append("<div class='subtitle'>").append(line.substring(1).trim())
+                            .append("</div>\n");
+                    }
+                    case '!' ->
+                    {
+                        // line contains free text
+                        this.closeList();
+                        sb.append("<div class='freetext'>").append(line.substring(1).trim())
+                            .append("</div>\n");
+                    }
+                    case ')' ->
+                    {
+                        // line contains small text
+                        this.closeList();
+                        sb.append("<div class='smalltext'>").append(line.substring(1).trim())
+                            .append("</div>\n");
+                    }
+                    case '#' ->
+                    {
+                        // line contains numbered list item
+                        this.openList(Listmode.ORDERED);
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                    }
+                    case '*' ->
+                    {
+                        // line contains bullet list item
+                        this.openList(Listmode.UNORDERED);
+                        sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                    }
+                    default ->
+                    {
+                        // no special character: just use line as is
+                        this.closeList();
+                        sb.append(line).append(" \n");
+                    }
                 }
             }
             this.closeList();
             br.close();
         } catch (IOException e)
         {
-            if (MyDebug.dLOG)
+            if (MyDebug.DLOG)
                 Log.e(TAG, "180, could not read help text.", e);
         }
 
@@ -189,13 +185,9 @@ public class ViewHelp
         {
             closeList();
             if (listMode == Listmode.ORDERED)
-            {
                 sb.append("<div class='list'><ol>\n");
-            }
             else if (listMode == Listmode.UNORDERED)
-            {
                 sb.append("<div class='list'><ul>\n");
-            }
             this.listMode = listMode;
         }
     }
@@ -203,13 +195,9 @@ public class ViewHelp
     private void closeList()
     {
         if (this.listMode == Listmode.ORDERED)
-        {
             sb.append("</ol></div>\n");
-        }
         else if (this.listMode == Listmode.UNORDERED)
-        {
             sb.append("</ul></div>\n");
-        }
         this.listMode = Listmode.NONE;
     }
 

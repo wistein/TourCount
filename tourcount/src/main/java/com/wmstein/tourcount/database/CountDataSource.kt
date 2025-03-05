@@ -370,7 +370,7 @@ class CountDataSource(context: Context) {
             return speci
         }
 
-    // Used by ListSpeciesActivity
+    // Used by ShowResultsActivity
     val cntSpeciesSrtName: List<Count>
         get() {
             val counts: MutableList<Count> = ArrayList()
@@ -392,7 +392,7 @@ class CountDataSource(context: Context) {
             return counts
         }
 
-    // Used by ListSpeciesActivity
+    // Used by ShowResultsActivity
     val cntSpeciesSrtCode: List<Count>
         get() {
             val counts: MutableList<Count> = ArrayList()

@@ -31,7 +31,7 @@ class IndividualsDataSource(context: Context) {
         DbHelper.I_LOCALITY,  // locality
         DbHelper.I_SEX,       // sexus
         DbHelper.I_STADIUM,   // stadium
-        DbHelper.I_STATE_1_6, // state
+        DbHelper.I_STATE_1_6, // b_state
         DbHelper.I_NOTES,     // notes
         DbHelper.I_ICOUNT,    // individual count
         DbHelper.I_CATEGORY,  // category (1-6)
@@ -60,6 +60,7 @@ class IndividualsDataSource(context: Context) {
         uncert: String?,
         datestamp: String?,
         timestamp: String?,
+        locality: String?,
         code: String?
     ): Individuals? {
         return if (database!!.isOpen) // prohibits crash when doubleclicking count button
@@ -73,7 +74,7 @@ class IndividualsDataSource(context: Context) {
             values.put(DbHelper.I_UNCERT, uncert)
             values.put(DbHelper.I_DATE_STAMP, datestamp)
             values.put(DbHelper.I_TIME_STAMP, timestamp)
-            values.put(DbHelper.I_LOCALITY, "")
+            values.put(DbHelper.I_LOCALITY, locality)
             values.put(DbHelper.I_SEX, "")
             values.put(DbHelper.I_STADIUM, "")
             values.put(DbHelper.I_STATE_1_6, 0)
@@ -214,7 +215,7 @@ class IndividualsDataSource(context: Context) {
         return individuals.icount
     }
 
-    // Used by ListSpeciesActivity
+    // Used by ShowResultsActivity
     fun getIndividualsByName(iname: String): List<Individuals> {
         val indivs: MutableList<Individuals> = ArrayList()
         val slct =

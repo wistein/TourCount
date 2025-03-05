@@ -21,10 +21,13 @@ import androidx.core.app.ActivityCompat
  * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
  * licensed under the MIT License.
  *
+ * Uses minimal distance for updates: 10 m,
+ *      minimal time between updates: 10 sec.
+ *
  * Adopted for TourCount by wmstein since 2018-07-26,
- * last edited on 2023-05-30,
+ * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2024-05-14
+ * last edited on 2025-01-26
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -63,11 +66,10 @@ open class LocationService : Service, LocationListener {
 
             // if GPS is enabled get position using GPS Service
             if (checkGPS && canGetLocation) {
-                if (ActivityCompat.checkSelfPermission(
-                        mContext!!,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                )
+
+                if (ActivityCompat.checkSelfPermission(mContext!!, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED
+                    )
                 {
                     locationManager!!.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
@@ -91,11 +93,9 @@ open class LocationService : Service, LocationListener {
             if (!exactLocation) {
                 // if Network is enabled and still no GPS fix achieved
                 if (checkNetwork && canGetLocation) {
-                    if (ActivityCompat.checkSelfPermission(
-                            mContext!!,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    )
+                    if (ActivityCompat.checkSelfPermission(mContext!!, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED
+                        )
                     {
                         locationManager!!.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
@@ -125,23 +125,17 @@ open class LocationService : Service, LocationListener {
     fun stopListener() {
         try {
             if (locationManager != null) {
-                if (ActivityCompat.checkSelfPermission(
-                        mContext!!,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(
-                        mContext!!,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS);
-                    return
-                }
+                if (ActivityCompat.checkSelfPermission(mContext!!, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(mContext!!, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                        return
+                    }
                 locationManager!!.removeUpdates(this@LocationService)
                 locationManager = null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "144, StopListener: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "138, StopListener: $e")
         }
     }
 
@@ -195,7 +189,7 @@ open class LocationService : Service, LocationListener {
     }
 
     companion object {
-        private const val TAG = "TourCountLocationSrv"
+        private const val TAG = "TourCountLocSrv"
         private const val MIN_DISTANCE_FOR_UPDATES: Long = 10 // (m)
         private const val MIN_TIME_BW_UPDATES: Long = 10000 // (msec)
     }

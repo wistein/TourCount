@@ -20,7 +20,7 @@ Features:
 Functions:
 - Editor for metadata in preparation for an inspection
 - Counter page with scroll-down list for species selection
-- Editor for individual species data of a count (e.g. state, remark or bulk count entry).
+- Editor for individual species data of a count (e.g. status, remark or bulk count entry).
 - The app automatically inserts date, time, coordinates and height as well as location data by reverse OSM-geocoding provided that GPS and internet are accessible.
 - The app provides functions to add, delete or edit the species for the current species list.
 - The results page shows metadata, notes, totals and counting results per species.

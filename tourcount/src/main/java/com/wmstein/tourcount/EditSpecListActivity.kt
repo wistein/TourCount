@@ -38,7 +38,7 @@ import com.wmstein.tourcount.widgets.HintEditWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-11-27
+ * last edited on 2025-02-10
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -74,7 +74,7 @@ class EditSpecListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.dLOG) Log.i(TAG, "77, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "77, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -130,6 +130,7 @@ class EditSpecListActivity : AppCompatActivity() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 NavUtils.navigateUpFromSameTask(this@EditSpecListActivity)
+                remove()
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
@@ -200,7 +201,7 @@ class EditSpecListActivity : AppCompatActivity() {
         } else {
             searchEdit.error = null
 
-            if (MyDebug.dLOG) Log.d(TAG, "203, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "204, initChars: $initChars")
 
             // Call DummyActivity to reenter EditSectionListActivity for reduced add list
             val intent = Intent(this@EditSpecListActivity, DummyActivity::class.java)
@@ -298,7 +299,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.dLOG) Log.d(TAG, "301, newName: $sectName")
+        if (MyDebug.DLOG) Log.d(TAG, "302, newName: $sectName")
 
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
@@ -320,7 +321,7 @@ class EditSpecListActivity : AppCompatActivity() {
         sectionDataSource!!.saveSection(section!!)
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
-        if (MyDebug.dLOG) Log.d(TAG, "323, childcount: $childcount")
+        if (MyDebug.DLOG) Log.d(TAG, "324, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -331,7 +332,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
                 retValue =
                     if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
-                        if (MyDebug.dLOG) Log.d(TAG, "334, esw: "
+                        if (MyDebug.DLOG) Log.d(TAG, "335, esw: "
                                     + esw.countId + ", " + esw.getCountName()
                         )
 
@@ -397,7 +398,7 @@ class EditSpecListActivity : AppCompatActivity() {
             name = esw.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.dLOG) Log.d(TAG, "400, Double name = $isDblName")
+                if (MyDebug.DLOG) Log.d(TAG, "401, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -418,7 +419,7 @@ class EditSpecListActivity : AppCompatActivity() {
             code = esw.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.dLOG) Log.d(TAG, "421, Double name = $isDblCode")
+                if (MyDebug.DLOG) Log.d(TAG, "422, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)
@@ -430,9 +431,8 @@ class EditSpecListActivity : AppCompatActivity() {
     {
         val view = findViewById<View>(R.id.editingScreen)
         val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
-        sB.setActionTextColor(Color.RED)
         val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        tv.setTextColor(Color.RED);
         tv.setTypeface(tv.typeface, Typeface.BOLD)
         sB.show()
     }

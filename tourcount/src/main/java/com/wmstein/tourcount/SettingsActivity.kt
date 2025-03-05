@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2024-10-21
+ * last edited on 2024-12-22
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.settings)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //add Preferences From Resource (R.xml.preferences)
+        //Add preferences from resource (R.xml.preferences)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings_container, SettingsFragment())

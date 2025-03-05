@@ -36,10 +36,6 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
@@ -74,11 +70,11 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2024-12-17
+ * last edited in Java on 2025-02-26
  */
 public class CountingActivity
     extends AppCompatActivity
-    implements SharedPreferences.OnSharedPreferenceChangeListener, PermissionsDialogFragment.PermissionsGrantedCallback
+    implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "CountAct";
 
@@ -104,10 +100,10 @@ public class CountingActivity
     private double latitude, longitude, height;
     LocationService locationService;
 
-    // Permission dispatcher mode locationPermissionDispatcherMode: 
+    // locationDispatcherMode:
     //  1 = use location service
     //  2 = end location service
-    int locationPermissionDispatcherMode;
+    private int locationDispatcherMode;
 
     private boolean locServiceOn = false;
 
@@ -124,8 +120,6 @@ public class CountingActivity
     private boolean buttonSoundPref;
     private boolean buttonVibPref;
     private String buttonSoundMinus;
-    private boolean metaPref;        // option for reverse geocoding
-    private String emailString = ""; // mail address for OSM query
     private String specCode = "";
 
     // Data sources
@@ -142,7 +136,7 @@ public class CountingActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.dLOG) Log.i(TAG, "145, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "139, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -203,8 +197,9 @@ public class CountingActivity
             @Override
             public void handleOnBackPressed()
             {
-                if (MyDebug.dLOG) Log.i(TAG, "206, handleOnBackPressed");
+                if (MyDebug.DLOG) Log.i(TAG, "200, handleOnBackPressed");
                 finish();
+                remove();
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
@@ -222,8 +217,6 @@ public class CountingActivity
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
         buttonSoundMinus = prefs.getString("button_sound_minus", null); //use deeper button sound
-        metaPref = prefs.getBoolean("pref_metadata", false);   // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "");     // for reliable query of Nominatim service
         itemPosition = prefs.getInt("item_Position", 0);        // spinner pos.
         iid = prefs.getInt("count_id", 1);                      // species id
     }
@@ -234,7 +227,11 @@ public class CountingActivity
     {
         super.onResume();
 
-        if (MyDebug.dLOG) Log.i(TAG, "237, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "230, onResume");
+
+        // Get location with permissions check
+        locationDispatcherMode = 1;
+        locationDispatcher();
 
         enableProximitySensor();
 
@@ -250,10 +247,6 @@ public class CountingActivity
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
-
-        // Get location with permissions check
-        locationPermissionDispatcherMode = 1;
-        locationCaptureFragment();
 
         // build the counting screen
         // clear any existing views
@@ -357,7 +350,7 @@ public class CountingActivity
             vibratorManager = (VibratorManager) getSystemService(VIBRATOR_MANAGER_SERVICE);
         else
             vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-
+        
         // Show head1: Species with spinner to select
         if (lhandPref) // if left-handed counting page
             spinner = findViewById(R.id.countHead1SpinnerLH);
@@ -472,11 +465,11 @@ public class CountingActivity
             Intent camIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
 
             PackageManager packageManager = getPackageManager();
-            @SuppressLint("QueryPermissionsNeeded")
             List<ResolveInfo> activities = packageManager.queryIntentActivities(camIntent,
                 PackageManager.MATCH_DEFAULT_ONLY);
-            boolean isIntentSafe = !activities.isEmpty();
 
+            // Select from available camera apps
+            boolean isIntentSafe = !activities.isEmpty();
             if (isIntentSafe)
             {
                 String title = getResources().getString(R.string.chooserTitle);
@@ -491,6 +484,10 @@ public class CountingActivity
                         showSnackbarRed(getString(R.string.noPhotoPermit));
                     }
                 }
+            }
+            else {
+                // Only default camera available
+                startActivity(camIntent);
             }
             return true;
         }
@@ -527,7 +524,7 @@ public class CountingActivity
     {
         super.onPause();
 
-        if (MyDebug.dLOG) Log.i(TAG, "530, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "527, onPause");
 
         disableProximitySensor();
 
@@ -542,16 +539,16 @@ public class CountingActivity
         countDataSource.close();
         individualsDataSource.close();
 
-        // Stop location service with permissions check
-        locationPermissionDispatcherMode = 2;
-        locationCaptureFragment();
-
         // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
         // has denied wakelock permission to TourCount
         if (awakePref)
         {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+
+        // Stop location service with permissions check
+        locationDispatcherMode = 2;
+        locationDispatcher();
 
         prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -562,7 +559,7 @@ public class CountingActivity
     {
         super.onStop();
 
-        if (MyDebug.dLOG) Log.i(TAG, "565, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "562, onStop");
 
         if (r != null)
             r.stop(); // stop media player
@@ -573,19 +570,14 @@ public class CountingActivity
     {
         super.onDestroy();
 
-        if (MyDebug.dLOG) Log.i(TAG, "576, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "573, onDestroy");
     }
 
-    // Part of permission handling
-    @Override
-    public void locationCaptureFragment()
+    public void locationDispatcher()
     {
-        boolean locationPermission = (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-
-        if (locationPermission)
+        if (isFineLocationPermGranted())
         {
-            switch (locationPermissionDispatcherMode)
+            switch (locationDispatcherMode)
             {
                 case 1 -> // get location
                     getLoc();
@@ -594,22 +586,28 @@ public class CountingActivity
                     if (locServiceOn)
                     {
                         locationService.stopListener();
+                        Intent sIntent = new Intent(this, LocationService.class);
+                        stopService(sIntent);
                         locServiceOn = false;
                     }
                 }
             }
         }
-        else
-        {
-            if (locationPermissionDispatcherMode == 1)
-                PermissionsDialogFragment.newInstance().show(getSupportFragmentManager(), PermissionsDialogFragment.class.getName());
-        }
     }
 
-    // get the location data
+    private boolean isFineLocationPermGranted()
+    {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED;
+    }
+
+    // Get the location data
     public void getLoc()
     {
         locationService = new LocationService(this);
+        Intent sIntent = new Intent(this, LocationService.class);
+        startService(sIntent);
+        locServiceOn = true;
 
         if (locationService.canGetLocation())
         {
@@ -618,26 +616,6 @@ public class CountingActivity
             height = locationService.getAltitude();
             if (height != 0)
                 height = correctHeight(latitude, longitude, height);
-        }
-
-        // get reverse geocoding
-        if (locationService.canGetLocation() && metaPref && (latitude != 0 || longitude != 0))
-        {
-            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
-                + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-
-            // Using WorkManager
-            WorkRequest retrieveAddrWorkRequest =
-                new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
-                    .setInputData(new Data.Builder()
-                            .putString("URL_STRING", urlString)
-                            .build()
-                                 )
-                    .build();
-
-            WorkManager
-                .getInstance(this)
-                .enqueue(retrieveAddrWorkRequest);
         }
     }
 
@@ -688,14 +666,13 @@ public class CountingActivity
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    if (MyDebug.dLOG)
-                        Log.d(TAG, "692, SpinnerListener, count id: " + count.id
-                            + ", code: " + count.code + ", name: " + count.name);
+                    if (MyDebug.DLOG) Log.d(TAG, "669, SpinnerListener, count id: "
+                        + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.dLOG) Log.e(TAG, "698, SpinnerListener: " + e);
+                    if (MyDebug.DLOG) Log.e(TAG, "675, SpinnerListener: " + e);
                 }
             }
 
@@ -710,7 +687,7 @@ public class CountingActivity
     // Show rest of widgets for counting screen
     private void countingScreen(Count count)
     {
-        if (MyDebug.dLOG) Log.i(TAG, "713, countingScreen");
+        if (MyDebug.DLOG) Log.i(TAG, "690, countingScreen");
 
         // 1. Species line is set by CountingWidgetHead1 in onResume, Spinner
         // 2. Head2 with species notes and edit button
@@ -833,7 +810,7 @@ public class CountingActivity
             widget.countDownf1i(); // decrease species counter
             countDataSource.saveCountf1i(count);
 
-            // get last individual of category 1 (♂♀)
+            // get last individual of category 1 (♂|♀)
             i_Id = individualsDataSource.getLastIndiv(count_id, 1);
             if (i_Id == -1)
             {
@@ -1587,8 +1564,7 @@ public class CountingActivity
                 mHandler.postDelayed(r::stop, 420);
             } catch (Exception e)
             {
-                if (MyDebug.dLOG)
-                    Log.e(TAG, "1591, could not play button sound.", e);
+                if (MyDebug.DLOG) Log.e(TAG, "1567, could not play button sound.", e);
             }
         }
     }
@@ -1607,15 +1583,15 @@ public class CountingActivity
                 else
                 {
                     if (Build.VERSION.SDK_INT >= 26)
-                        vibrator.vibrate(VibrationEffect.createOneShot(450, VibrationEffect.DEFAULT_AMPLITUDE));
+                        vibrator.vibrate(VibrationEffect.createOneShot(450,
+                            VibrationEffect.DEFAULT_AMPLITUDE));
                     else
                         vibrator.vibrate(450);
                     vibrator.cancel();
                 }
             } catch (Exception e)
             {
-                if (MyDebug.dLOG)
-                    Log.e(TAG, "1618, could not vibrate.", e);
+                if (MyDebug.DLOG) Log.e(TAG, "1594, could not vibrate.", e);
             }
         }
     }
@@ -1652,9 +1628,8 @@ public class CountingActivity
             view = findViewById(R.id.counting_screen);
 
         Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
-        sB.setActionTextColor(Color.RED);
         TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTextColor(Color.RED);
         tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         sB.show();
     }

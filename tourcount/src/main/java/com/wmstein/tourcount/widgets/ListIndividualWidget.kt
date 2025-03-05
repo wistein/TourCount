@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.widgets
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -12,10 +13,10 @@ import java.util.Objects
 
 /**********************************
  * Created by wmstein on 2018-02-22
- * used by ListSpeciesActivity
+ * used by ShowResultsActivity
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-08-23
+ * last edited on 2025-01-20
  */
 class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -27,7 +28,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     private val txtIndTm: TextView
     private val txtIndStat: TextView
     val txtIndCnt: AutoFitText
-    private var phase123: Boolean = false // butterfly ♂♀, ♂ or ♀
+    private var phase123: Boolean = false // butterfly ♂|♀, ♂ or ♀
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -42,6 +43,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
         txtIndCnt = findViewById(R.id.txtIndCnt)
     }
 
+    @SuppressLint("SetTextI18n")
     fun setIndividual(individual: Individuals) {
         // Locality
         txtIndLoc.text = individual.locality
