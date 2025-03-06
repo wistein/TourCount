@@ -2,13 +2,14 @@
 
 #### TourCount Copyright (C) 2016-2025, Wilhelm Stein
 
-#### Version 3.6.2 (2025-03-04)
+#### Version 3.6.2 (2025-03-06)
 - Permission handling revised and adapted
 - Location permission option 'Allow all the time' added for Android >= 10 (Q)
 - Location attributes enhanced and adapted to modified Nominatim attributes
 - Database structure adapted to new location attributes
 - Backpress logic on starting page improved
 - Bugfix for using default camera as only camera
+- Bugfix in RetrieveAddrWorker
 - Deprecated functions replaced
 - Update Gradle -> 8.10.2
 - Update AGP dependency -> 8.8.2

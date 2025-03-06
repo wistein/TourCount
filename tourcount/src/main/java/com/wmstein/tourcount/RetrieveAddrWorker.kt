@@ -21,7 +21,7 @@ import java.net.URL
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-02-10
+ * last edited on 2025-03-06
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -101,9 +101,9 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 sCountry = country.toString()
 
                 // 2. Get state
-                if (xmlString.contains("<b_state>")) {
-                    sstart = xmlString.indexOf("<b_state>") + 9
-                    send = xmlString.indexOf("</b_state>")
+                if (xmlString.contains("<state>")) {
+                    sstart = xmlString.indexOf("<state>") + 7
+                    send = xmlString.indexOf("</state>")
                     val tstate = xmlString.substring(sstart, send)
                     b_state.append(tstate)
                 }
