@@ -45,6 +45,9 @@ Butterfly pictures:
  - Adela paludicolella, created from picture in
    "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",
    Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
+ - Agriphila geniculea, created from picture 'Agriphila geniculea lateral Bytom.jpg' by Adrian Tync, Poland,
+   licensed under Creative Commons Attribution-Share Alike 4.0 International, derived from
+   https://commons.wikimedia.org/wiki/Category:Agriphila_geniculea
  - Crambus pascuella, Author: Olaf Leillinger, GNU Free Documentation License, derived from 
    https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
  - Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth, 

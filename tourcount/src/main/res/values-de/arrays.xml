@@ -119,6 +119,7 @@
 		<item comment="00354">-</item>
 		<item comment="00363">-</item>
 		<item comment="01348">Pflaumen-Gespinstmotte</item>
+		<item comment="01349">Apfel-Gespinstmotte</item>
 		<item comment="01350">Pfaffenhütchen-Gespinstmotte</item>
 		<item comment="02321">-</item>
 		<item comment="03907">Großer Schneckenspinner</item>
@@ -174,7 +175,8 @@
 		<item comment="06253">Weißer Graszünsler</item>
 		<item comment="06258">-</item>
 		<item comment="06266">Weißstreifiger Feuchtwiesen-Graszünsler</item>
-		<item comment="06267">-</item>
+		<item comment="06267">Unscheinbarer Graszünsler</item>
+		<item comment="06275">Ellbogenstreifiger Graszünsler</item>
 		<item comment="06350">-</item>
 		<item comment="06364">-</item>
 		<item comment="06416">Seerosenzünsler</item>
@@ -528,6 +530,7 @@
 		<item comment="07641">Dreistreifiger Mondfleckspanner</item>
 		<item comment="07659">Nachtschwalbenschwanz</item>
 		<item comment="07665">Schlehenspanner</item>
+		<item comment="07672">Schneespanner</item>
 		<item comment="07804">Heideland-Tagspanner</item>
 		<item comment="07822">Kiefernspanner</item>
 		<item comment="07824">Weißstirn-Weißspanner</item>
@@ -546,6 +549,7 @@
 		<item comment="08060">Weißgrauer Kleinspanner</item>
 		<item comment="08099">Ockerfarbiger Steppenheiden-Zwergspanner</item>
 		<item comment="08104">Purpurstreifen-Zwergspanner</item>
+		<item comment="08107">Südlicher Zwergspanner</item>
 		<item comment="08155">Grauer Zwergspanner</item>
 		<item comment="08184">Dunkelbindiger Doppellinien-Zwergspanner</item>
 		<item comment="08186">Zweifarbiger Doppellinien-Zwergspanner</item>
@@ -557,6 +561,7 @@
 		<item comment="08248">Springkraut-Blattspanner</item>
 		<item comment="08253">Dunkler Rostfarben-Blattspanner</item>
 		<item comment="08255">Schwarzbraunbinden-Blattspanner</item>
+		<item comment="08256">Garten-Blattspanner</item>
 		<item comment="08274">Fleckleib-Labkrautspanner</item>
 		<item comment="08275">Graubinden-Labkrautspanner</item>
 		<item comment="08277">Weißbinden-Labkrautspanner</item>
@@ -600,6 +605,7 @@
 		<item comment="10102">Janthina-Bandeule</item>
 		<item comment="10397">Eckfleck-Bürstenspinner</item>
 		<item comment="10483">Rotkragen-Flechtenbärchen</item>
+		<item comment="10493">Weißgraues Flechtenbärchen</item>
 		<item comment="10497">Dunkelstirniges Flechtenbärchen</item>
 		<item comment="10499">Dottergelbes Flechtenbärchen</item>
 		<item comment="10509">Trockenrasen-Flechtenbärchen</item>

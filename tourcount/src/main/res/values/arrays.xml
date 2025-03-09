@@ -273,6 +273,7 @@
 		<item comment="00354">Nemophora barbatellus</item>
 		<item comment="00363">Adela paludicolella</item>
 		<item comment="01348">Yponomeuta padella</item>
+		<item comment="01349">Yponomeuta malinellus</item>
 		<item comment="01350">Yponomeuta cagnagella</item>
 		<item comment="02321">Alabonia geoffrella</item>
 		<item comment="03907">Apoda limacodes</item>
@@ -329,6 +330,7 @@
 		<item comment="06258">Agriphila tristella</item>
 		<item comment="06266">Agriphila selasella</item>
 		<item comment="06267">Agriphila straminella</item>
+		<item comment="06275">Agriphila geniculea</item>
 		<item comment="06350">Thisanotia chrysonuchella</item>
 		<item comment="06364">Pediasia contaminella</item>
 		<item comment="06416">Elophila nymphaeata</item>
@@ -682,6 +684,7 @@
 		<item comment="07641">Selenia dentaria</item>
 		<item comment="07659">Ourapteryx sambucaria</item>
 		<item comment="07665">Angerona prunaria</item>
+		<item comment="07672">Phigalia pilosaria</item>
 		<item comment="07804">Ematurga atomaria</item>
 		<item comment="07822">Bupalus piniaria</item>
 		<item comment="07824">Cabera pusaria</item>
@@ -700,6 +703,7 @@
 		<item comment="08060">Scopula incanata</item>
 		<item comment="08099">Idaea ochrata</item>
 		<item comment="08104">Idaea muricata</item>
+		<item comment="08107">Idaea rusticata</item>
 		<item comment="08155">Idaea seriata</item>
 		<item comment="08184">Idea aversata</item>
 		<item comment="08186">Idaea degeneraria</item>
@@ -711,6 +715,7 @@
 		<item comment="08248">Xanthorhoe biriviata</item>
 		<item comment="08253">Xanthorhoe ferrugata</item>
 		<item comment="08255">Xanthorhoe montanata</item>
+		<item comment="08256">Xanthorhoe fluctuata</item>
 		<item comment="08274">Epirrhoe tristata</item>
 		<item comment="08275">Epirrhoe alternata</item>
 		<item comment="08277">Epirrhoe rivata</item>
@@ -754,6 +759,7 @@
 		<item comment="10102">Noctua janthina</item>
 		<item comment="10397">Orgya antiqua</item>
 		<item comment="10483">Atolmis rubricollis</item>
+		<item comment="10493">Eilema caniola</item>
 		<item comment="10497">Eilema lutarella</item>
 		<item comment="10499">Eilema sororcula</item>
 		<item comment="10509">Setina irrorella</item>
@@ -781,6 +787,7 @@
 		<item comment="00354">-</item>
 		<item comment="00363">Opler\'s longhorn moth</item>
 		<item comment="01348">Orchard ermine</item>
+		<item comment="01349">Apple ermine</item>
 		<item comment="01350">Spindle ermine</item>
 		<item comment="02321">Hedge Beauty</item>
 		<item comment="03907">Festoon</item>
@@ -837,6 +844,7 @@
 		<item comment="06258">Common grass-veneer</item>
 		<item comment="06266">Pale-streak grass-veneer</item>
 		<item comment="06267">Straw grass-veneer</item>
+		<item comment="06275">Elbow-striped grass-veneer</item>
 		<item comment="06350">Powdered grass-veneer</item>
 		<item comment="06364">Waste grass-veneer</item>
 		<item comment="06416">Brown china-mark</item>
@@ -1190,6 +1198,7 @@
 		<item comment="07641">Early thorn</item>
 		<item comment="07659">Swallow-tailed moth</item>
 		<item comment="07665">Orange moth</item>
+		<item comment="07672">Pale brindled beauty</item>
 		<item comment="07804">Common heath</item>
 		<item comment="07822">Bordered white</item>
 		<item comment="07824">Common white wave</item>
@@ -1208,6 +1217,7 @@
 		<item comment="08060">Pale mullein wave</item>
 		<item comment="08099">Bright wave</item>
 		<item comment="08104">Purple-bordered gold</item>
+		<item comment="08107">Least carpet</item>
 		<item comment="08155">Small dusty wave</item>
 		<item comment="08184">Riband wave</item>
 		<item comment="08186">Portland Ribbon wave</item>
@@ -1219,6 +1229,7 @@
 		<item comment="08248">Balsam carpet</item>
 		<item comment="08253">Dark-barred twin-spot carpet</item>
 		<item comment="08255">Silver-ground carpet</item>
+		<item comment="08256">Garden carpet</item>
 		<item comment="08274">Small argent and sable</item>
 		<item comment="08275">Common carpet</item>
 		<item comment="08277">Wood carpet</item>
@@ -1262,6 +1273,7 @@
 		<item comment="10102">Langmaid\'s yellow underwing</item>
 		<item comment="10397">Vapourer</item>
 		<item comment="10483">Red-necked footman</item>
+		<item comment="10493">Hoary footman</item>
 		<item comment="10497">-</item>
 		<item comment="10499">Orange footman</item>
 		<item comment="10509">Dew moth</item>
@@ -1289,6 +1301,7 @@
 		<item>00354</item>
 		<item>00363</item>
 		<item>01348</item>
+		<item>01349</item>
 		<item>01350</item>
 		<item>02321</item>
 		<item>03907</item>
@@ -1345,6 +1358,7 @@
 		<item>06258</item>
 		<item>06266</item>
 		<item>06267</item>
+		<item>06275</item>
 		<item>06350</item>
 		<item>06364</item>
 		<item>06416</item>
@@ -1698,6 +1712,7 @@
 		<item>07641</item>
 		<item>07659</item>
 		<item>07665</item>
+		<item>07672</item>
 		<item>07804</item>
 		<item>07822</item>
 		<item>07824</item>
@@ -1716,6 +1731,7 @@
 		<item>08060</item>
 		<item>08099</item>
 		<item>08104</item>
+		<item>08107</item>
 		<item>08155</item>
 		<item>08184</item>
 		<item>08186</item>
@@ -1727,6 +1743,7 @@
 		<item>08248</item>
 		<item>08253</item>
 		<item>08255</item>
+		<item>08256</item>
 		<item>08274</item>
 		<item>08275</item>
 		<item>08277</item>
@@ -1770,6 +1787,7 @@
 		<item>10102</item>
 		<item>10397</item>
 		<item>10483</item>
+		<item>10493</item>
 		<item>10497</item>
 		<item>10499</item>
 		<item>10509</item>
