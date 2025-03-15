@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- last edited 2024-12-09 -->
+<!-- last edited 2025-03-10 -->
 
 <resources>
     <string-array name="pref_bg_entries">
@@ -726,6 +726,7 @@
 		<item comment="08385">Colostygia pectinataria</item>
 		<item comment="08411">Melanthia procellata</item>
 		<item comment="08447">Operophtera brumata</item>
+		<item comment="08534">Eupithecia vulgata</item>
 		<item comment="08620">Aplocera plagiata</item>
 		<item comment="08622">Aplocera efformata</item>
 		<item comment="08631">Odezia atrata</item>
@@ -1240,6 +1241,7 @@
 		<item comment="08385">Green carpet</item>
 		<item comment="08411">Pretty chalk carpet</item>
 		<item comment="08447">Winter moth</item>
+		<item comment="08534">Common pug</item>
 		<item comment="08620">Treble-bar</item>
 		<item comment="08622">Lesser treble-bar</item>
 		<item comment="08631">Chimney sweeper</item>
@@ -1754,6 +1756,7 @@
 		<item>08385</item>
 		<item>08411</item>
 		<item>08447</item>
+		<item>08534</item>
 		<item>08620</item>
 		<item>08622</item>
 		<item>08631</item>

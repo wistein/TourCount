@@ -2,8 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2025, Wilhelm Stein
 
-#### Version 3.6.3 (2025-03-09)
-- Added pictures of Yponameuta melinellus, Agriphila geniculea, Phigalia pilosaria, Idaea rusticata, Xanthorhoe fluctuata, Eileme caniola
+#### Version 3.6.3 (2025-03-15)
+- Added pictures of Yponameuta melinellus, Agriphila geniculea, Phigalia pilosaria, Idaea rusticata, Xanthorhoe fluctuata, Eupithecia vulgata, Eileme caniola
+- Added export of current species list for import in TransektCount
+- Added import of TransektCount species list
 - Update Gradle -> 8.11.1
 - Update AGP dependency -> 8.9.0
 - Update kotlin -> 2.1.0

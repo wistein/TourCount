@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-03-03 -->
+     last edited on 2025-03-15 -->
 
 <resources>
 
@@ -29,17 +29,23 @@
     <string name="viewLicenseTitle">Licenses</string>
     <string name="noCard">Cannot write to the Documents directory!</string>
     <string name="saveFail">Your database could not be exported!</string>
+    <string name="saveFailList">The species list could not be exported!</string>
     <string name="saveDB">Export internal DB to Documents/TourCount</string>
     <string name="savecsv">Export CSV-file to Documents/TourCount</string>
+    <string name="saveList">Export species list to Documents/TourCount.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
     <string name="exportMenu">Export Current DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
     <string name="exportCSVMenu">Export Data -> CSV File</string>
+    <string name="exportSpeciesListMenu">Export Species List</string>
     <string name="resetDBMenu">Reset Data</string>
     <string name="importBasisMenu">Import Basic DB</string>
+    <string name="importSpeciesListMenu">Import TransektCount Species</string>
     <string name="importFail">Your database could not be imported!</string>
+    <string name="importListFail">The species list could not be imported!</string>
     <string name="importWin">Your database has been imported.</string>
+    <string name="importList">The species list has been imported.</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
     <string name="noDb">Please provide \'tourcount0.db\' in the directory \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
@@ -47,6 +53,7 @@
     <string name="cancelButton">Cancel</string>
     <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
+    <string name="confirmListImport">Are you sure you want to import a species list? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
     <string name="name_spec">Species Name:</string>
     <string name="name_spec_g">English Name:</string>
@@ -70,6 +77,8 @@
     <string name="currentDir">Current Dir</string>
     <string name="fileSize">Size</string>
     <string name="fileHeadlineDB">List of selectable DB files</string>
+    <string name="fileHeadlineCSV">TransektCount species lists</string>
+    <string name="noFile">No file available!</string>
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Tour Notes:</string>

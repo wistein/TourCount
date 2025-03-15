@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-   welcome.xml is used by WelcomeActivity.java
-   Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
--->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.wmstein.tourcount.WelcomeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wmstein.tourcount.WelcomeActivity">
 
     <item
         android:id="@+id/editMeta"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/editMetaButton"
         app:showAsAction="always"
-        tools:ignore="AlwaysShowAction">
-    </item>
+        tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/startCounting"
         android:icon="@drawable/ic_count_white"
         android:title="@string/counting"
-        app:showAsAction="always">
-    </item>
+        app:showAsAction="always" />
     <item
         android:id="@+id/viewSpecies"
         android:icon="@android:drawable/ic_menu_view"
         android:title="@string/viewSpeciesButton"
-        app:showAsAction="always">
-    </item>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_list_item"
@@ -36,66 +29,76 @@
         app:showAsAction="always">
 
         <menu>
-            <item
-                android:id="@+id/action_settings"
-                android:icon="@drawable/baseline_settings_24"
-                android:title="@string/action_settings"
-                app:showAsAction="never"/>
+            <group android:id="@+id/nav_g1">
+                <item
+                    android:id="@+id/action_settings"
+                    android:icon="@drawable/baseline_settings_24"
+                    android:title="@string/action_settings"
+                    app:showAsAction="never" />
 
-            <item
-                android:id="@+id/resetDBMenu"
-                android:icon="@drawable/clear"
-                android:title="@string/resetDBMenu"
-                app:showAsAction="never">
-            </item>
-            <item
-                android:id="@+id/importBasisMenu"
-                android:icon="@drawable/importr"
-                android:title="@string/importBasisMenu"
-                app:showAsAction="never">
-            </item>
-            <item
-                android:id="@+id/exportBasisMenu"
-                android:icon="@drawable/exportr"
-                android:title="@string/exportBasisMenu"
-                app:showAsAction="never">
-            </item>
-            <item
-                android:id="@+id/importFileMenu"
-                android:icon="@drawable/importr"
-                android:title="@string/importFileMenu"
-                app:showAsAction="never">
-            </item>
-            <item
-                android:id="@+id/exportMenu"
-                android:icon="@drawable/exportr"
-                android:title="@string/exportMenu"
-                app:showAsAction="never">
-            </item>
-            <item
-                android:id="@+id/exportCSVMenu"
-                android:icon="@drawable/exportr"
-                android:title="@string/exportCSVMenu"
-                app:showAsAction="never">
-            </item>
+                <item
+                    android:id="@+id/resetDBMenu"
+                    android:icon="@drawable/clear"
+                    android:title="@string/resetDBMenu"
+                    app:showAsAction="never" />
+            </group>
+
+            <group android:id="@+id/nav_g2">
+                <item
+                    android:id="@+id/importBasisMenu"
+                    android:icon="@drawable/importr"
+                    android:title="@string/importBasisMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/importFileMenu"
+                    android:icon="@drawable/importr"
+                    android:title="@string/importFileMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/importSpeciesListMenu"
+                    android:icon="@drawable/importr"
+                    android:title="@string/importSpeciesListMenu"
+                    app:showAsAction="never" />
+            </group>
+
+            <group android:id="@+id/nav_g3">
+                <item
+                    android:id="@+id/exportBasisMenu"
+                    android:icon="@drawable/exportr"
+                    android:title="@string/exportBasisMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/exportMenu"
+                    android:icon="@drawable/exportr"
+                    android:title="@string/exportMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/exportCSVMenu"
+                    android:icon="@drawable/exportr"
+                    android:title="@string/exportCSVMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/exportSpeciesListMenu"
+                    android:icon="@drawable/exportr"
+                    android:title="@string/exportSpeciesListMenu"
+                    app:showAsAction="never" />
+            </group>
+
             <item
                 android:id="@+id/viewHelp"
                 android:icon="@drawable/outline_help_outline_24"
                 android:title="@string/viewHelpTitle"
-                app:showAsAction="never">
-            </item>
+                app:showAsAction="never" />
             <item
                 android:id="@+id/changeLog"
                 android:icon="@drawable/outline_format_align_left_24"
                 android:title="@string/changeLogTitle"
-                app:showAsAction="never">
-            </item>
+                app:showAsAction="never" />
             <item
                 android:id="@+id/viewLicense"
                 android:icon="@drawable/outline_format_align_left_24"
                 android:title="@string/viewLicenseTitle"
-                app:showAsAction="never">
-            </item>
+                app:showAsAction="never" />
 
         </menu>
     </item>

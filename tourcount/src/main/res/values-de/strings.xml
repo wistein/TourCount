@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-03-03 -->
+     last edited on 2025-03-15 -->
 
 <resources>
 
@@ -18,17 +18,23 @@
     <string name="viewLicenseTitle">Lizenzen</string>
     <string name="noCard">Kann nicht ins Documents-Verzeichnis schreiben!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
+    <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
     <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
     <string name="savecsv">Export der CSV-Datei nach Documents/TourCount</string>
+    <string name="saveList">Export der Speziesliste nach Documents/TourCount.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
     <string name="exportCSVMenu">Export Daten -> CSV-Datei</string>
+    <string name="exportSpeciesListMenu">Export Speziesliste</string>
     <string name="resetDBMenu">Reset Daten</string>
     <string name="importFileMenu">Import DB</string>
     <string name="importBasisMenu">Import Basis-DB</string>
+    <string name="importSpeciesListMenu">Import TransektCount-Spezies</string>
     <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
+    <string name="importListFail">Die Speziesliste konnte nicht importiert werden!</string>
     <string name="importWin">Die Datenbank wurde importiert.</string>
+    <string name="importList">Die Speziesliste wurde importiert.</string>
     <string name="corruptDb">DB-Fehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
     <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
@@ -36,6 +42,7 @@
     <string name="individuals">Individuen</string>
     <string name="confirmBasisImport">Willst Du wirklich die leere Basis-Datenbank \"tourcount0.db\" importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
+    <string name="confirmListImport">Willst Du wirklich eine Speziesliste importieren? Deine aktuellen Daten werden überschrieben!</string>
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
     <string name="name_spec">Spezies-Name:</string>
     <string name="name_spec_g">Deutscher Name:</string>
@@ -59,6 +66,8 @@
     <string name="currentDir">Aktuelles Verz.</string>
     <string name="fileSize">Größe</string>
     <string name="fileHeadlineDB">Liste der DB-Dateien</string>
+    <string name="fileHeadlineCSV">TransektCount-Spezieslisten</string>
+    <string name="noFile">Keine Datei vorhanden!</string>
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Bem. zur Tour:</string>

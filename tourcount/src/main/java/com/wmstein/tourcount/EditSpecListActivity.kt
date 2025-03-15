@@ -337,7 +337,7 @@ class EditSpecListActivity : AppCompatActivity() {
                         )
 
                         // Update species names and code
-                        countDataSource!!.updateCountName(
+                        countDataSource!!.updateCountItem(
                             esw.countId,
                             esw.getCountName(),
                             esw.getCountCode(),

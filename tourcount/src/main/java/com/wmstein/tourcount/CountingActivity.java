@@ -347,9 +347,11 @@ public class CountingActivity
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            vibratorManager = (VibratorManager) getSystemService(VIBRATOR_MANAGER_SERVICE);
+            vibratorManager = (VibratorManager) getApplicationContext()
+                .getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
         else
-            vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            vibrator = (Vibrator) getApplicationContext()
+                .getSystemService(Context.VIBRATOR_SERVICE);
         
         // Show head1: Species with spinner to select
         if (lhandPref) // if left-handed counting page
@@ -524,7 +526,7 @@ public class CountingActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "527, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "529, onPause");
 
         disableProximitySensor();
 
@@ -559,7 +561,7 @@ public class CountingActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "562, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "564, onStop");
 
         if (r != null)
             r.stop(); // stop media player
@@ -570,7 +572,7 @@ public class CountingActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "573, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "575, onDestroy");
     }
 
     public void locationDispatcher()
@@ -666,13 +668,13 @@ public class CountingActivity
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    if (MyDebug.DLOG) Log.d(TAG, "669, SpinnerListener, count id: "
+                    if (MyDebug.DLOG) Log.d(TAG, "671, SpinnerListener, count id: "
                         + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e)
                 {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.DLOG) Log.e(TAG, "675, SpinnerListener: " + e);
+                    if (MyDebug.DLOG) Log.e(TAG, "677, SpinnerListener: " + e);
                 }
             }
 
@@ -687,7 +689,7 @@ public class CountingActivity
     // Show rest of widgets for counting screen
     private void countingScreen(Count count)
     {
-        if (MyDebug.DLOG) Log.i(TAG, "690, countingScreen");
+        if (MyDebug.DLOG) Log.i(TAG, "692, countingScreen");
 
         // 1. Species line is set by CountingWidgetHead1 in onResume, Spinner
         // 2. Head2 with species notes and edit button
@@ -1564,7 +1566,7 @@ public class CountingActivity
                 mHandler.postDelayed(r::stop, 420);
             } catch (Exception e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1567, could not play button sound.", e);
+                if (MyDebug.DLOG) Log.e(TAG, "1569, could not play button sound.", e);
             }
         }
     }
@@ -1591,7 +1593,7 @@ public class CountingActivity
                 }
             } catch (Exception e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1594, could not vibrate.", e);
+                if (MyDebug.DLOG) Log.e(TAG, "1596, could not vibrate.", e);
             }
         }
     }

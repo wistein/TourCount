@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- last edited 2024-12-09 -->
+<!-- last edited 2025-03-10 -->
 
 <resources>
     <string-array name="pref_bg_entries">
@@ -572,6 +572,7 @@
 		<item comment="08385">Prachtgrüner Bindenspanner</item>
 		<item comment="08411">Waldreben-Blattspanner</item>
 		<item comment="08447">Kleiner Frostspanner</item>
+		<item comment="08534">Gemeiner Blütenspanner</item>
 		<item comment="08620">Großer Johanniskrautspanner</item>
 		<item comment="08622">Sandheiden-Johanniskrautspanner</item>
 		<item comment="08631">Schwarzspanner</item>

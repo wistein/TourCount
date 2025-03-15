@@ -17,7 +17,7 @@ import com.wmstein.tourcount.R
  * updated to version 8 on 2025-02-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-03-04
+ * last edited on 2025-03-15
  *
  * ************************************************************************
  * ATTENTION!
@@ -196,7 +196,7 @@ class DbHelper (private val mContext: Context) :
     private fun version2(db: SQLiteDatabase) {
         val sql: String
 
-        // add new extra column icount to table individuals
+        // Add new extra column icount to table individuals
         sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
         db.execSQL(sql)
 
@@ -230,7 +230,7 @@ class DbHelper (private val mContext: Context) :
         sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
         db.execSQL(sql)
 
-        // add I_CATEGORY to INDIVIDUALS table
+        // Add I_CATEGORY to INDIVIDUALS table
         try {
             sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                     + " int default 1")
@@ -241,20 +241,20 @@ class DbHelper (private val mContext: Context) :
             colCatExist = true
         }
 
-        // fill sex and icategory with default values to avoid crash when negative counting
+        // Fill sex and icategory with default values to avoid crash when negative counting
         if (!colCatExist) {
             sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
             db.execSQL(sql)
             if (MyDebug.DLOG) Log.d(TAG, "248, I_SEX filled with '-'")
         }
 
-        // copy old data into new structure
+        // Copy old data into new structure
         if (!colExist) {
-            // rename table counts to counts_backup
+            // Rename table counts to counts_backup
             sql = "alter table $COUNT_TABLE rename to counts_backup"
             db.execSQL(sql)
 
-            // create new counts table
+            // Create new counts table
             sql = ("create table " + COUNT_TABLE + " ("
                     + C_ID + " integer primary key, "
                     + C_COUNT_F1I + " int, "
@@ -268,7 +268,7 @@ class DbHelper (private val mContext: Context) :
                     + C_NOTES + " text)")
             db.execSQL(sql)
 
-            // insert the old data into counts
+            // Insert the old data into counts
             sql = ("INSERT INTO " + COUNT_TABLE + " SELECT "
                     + C_ID + ","
                     + C_COUNT + ","
@@ -302,11 +302,11 @@ class DbHelper (private val mContext: Context) :
         var sql = "alter table 'temp' rename to 'tmp'"
         db.execSQL(sql)
 
-        // in SECTION_TABLE rename column 'temp' to 'tmp'
+        // Rename column 'temp' to 'tmp' in SECTION_TABLE
         sql = "alter table $SECTION_TABLE rename to 'section_backup'"
         db.execSQL(sql)
 
-        // create new sections table
+        // Create new sections table
         sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
                 + S_NAME + " text, "
@@ -323,7 +323,7 @@ class DbHelper (private val mContext: Context) :
                 + S_NOTES + " text)")
         db.execSQL(sql)
 
-        // insert the old data into sections
+        // Insert the old data into sections
         sql = ("INSERT INTO " + SECTION_TABLE + " SELECT "
                 + S_ID + ", "
                 + S_NAME + ", "
@@ -340,7 +340,7 @@ class DbHelper (private val mContext: Context) :
                 + S_NOTES + " FROM section_backup")
         db.execSQL(sql)
 
-        // delete section_backup
+        // Delete section_backup
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
@@ -354,7 +354,7 @@ class DbHelper (private val mContext: Context) :
         var sql = "alter table $SECTION_TABLE rename to 'section_backup'"
         db.execSQL(sql)
 
-        // create new sections table
+        // Create new sections table
         sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
                 + S_NAME + " text, "
@@ -374,7 +374,7 @@ class DbHelper (private val mContext: Context) :
                 + S_NOTES + " text)")
         db.execSQL(sql)
 
-        // insert the old data into sections
+        // Insert the old data into sections
         sql = ("INSERT INTO " + SECTION_TABLE + " SELECT "
                 + S_ID + ", "
                 + S_NAME + ", "
@@ -394,7 +394,7 @@ class DbHelper (private val mContext: Context) :
                 + S_NOTES + " FROM section_backup")
         db.execSQL(sql)
 
-        // delete section_backup
+        // Delete section_backup
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
@@ -476,7 +476,7 @@ class DbHelper (private val mContext: Context) :
 
         private const val S_TEMP = "temp" // table name 'temp' has term conflict, changed tp 'tmp'
 
-        // fields of table counts
+        // Fields of table counts
         const val C_ID = "_id"
         const val C_COUNT_F1I = "count_f1i"
         const val C_COUNT_F2I = "count_f2i"
@@ -490,11 +490,11 @@ class DbHelper (private val mContext: Context) :
         const val C_NAME_G = "name_g"
         private const val C_COUNT = "count" // eliminated in Version 3
 
-        // fields of table head
+        // Fields of table head
         const val H_ID = "_id"
         const val H_OBSERVER = "observer"
 
-        // fields of table individuals
+        // Fields of table individuals
         const val I_ID = "_id"
         const val I_COUNT_ID = "count_id"
         const val I_NAME = "name"
@@ -513,7 +513,7 @@ class DbHelper (private val mContext: Context) :
         const val I_CATEGORY = "icategory"
         const val I_CODE = "code"
 
-        // fields of table temp
+        // Fields of table temp
         const val T_ID = "_id"
         const val T_TEMP_LOC = "temp_loc"
         const val T_TEMP_CNT = "temp_cnt"
