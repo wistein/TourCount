@@ -80,7 +80,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-03-15
+ * last edited on 2025-03-16
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -966,22 +966,22 @@ public class WelcomeActivity
             // Read exported TransektCount species list and write items to table counts
             BufferedReader br = new BufferedReader(new FileReader(inFile));
             String csvLine;
-            List<String> idArray = new ArrayList<>();
             List<String> codeArray = new ArrayList<>();
             List<String> nameArray = new ArrayList<>();
             List<String> nameGArray = new ArrayList<>();
             int i = 0;
             while ((csvLine = br.readLine()) != null) // for each csvLine
             {
-                String[] specLine = csvLine.split(","); // separated id, code, name, nameL
-                idArray.add(i, specLine[0]);
-                codeArray.add(i, specLine[1]);
-                nameArray.add(i, specLine[2]);
-                nameGArray.add(i, specLine[3]);
-                countDataSource.writeCountItem(idArray.get(i), codeArray.get(i),
+                // comma-separated 0:code, 1:name, 2:nameL
+                String[] specLine = csvLine.split(",");
+                codeArray.add(i, specLine[0]);
+                nameArray.add(i, specLine[1]);
+                nameGArray.add(i, specLine[2]);
+                countDataSource.writeCountItem(String.valueOf(i + 1), codeArray.get(i),
                     nameArray.get(i), nameGArray.get(i));
                 i++;
             }
+            br.close();
             showSnackbar(getString(R.string.importList));
         } catch (Exception e)
         {
@@ -1164,7 +1164,7 @@ public class WelcomeActivity
         // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.csv
         //   and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
-        if (SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -1777,7 +1777,7 @@ public class WelcomeActivity
     {
         // outFile -> /storage/emulated/0/Documents/TourCount/species_yyyy-MM-dd_HHmmss.csv
         File path;
-        if (SDK_INT >= Build.VERSION_CODES.R) // Android 11+
+        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
             path = Environment.getExternalStorageDirectory();
             path = new File(path + "/Documents/TourCount");
@@ -1806,17 +1806,15 @@ public class WelcomeActivity
             dbHandler = new DbHelper(this);
             database = dbHandler.getWritableDatabase();
 
-            String[] idArray;
             String[] codeArray;
             String[] nameArray;
             String[] nameArrayL;
 
-            idArray = countDataSource.getContiguousIdsForList();
             codeArray = countDataSource.getAllStringsSrtCode("code");
             nameArray = countDataSource.getAllStringsSrtCode("name");
             nameArrayL = countDataSource.getAllStringsSrtCode("name_g");
 
-            int specNum = idArray.length;
+            int specNum = codeArray.length;
 
             try
             {
@@ -1827,7 +1825,6 @@ public class WelcomeActivity
                 {
                     String[] specLine =
                         {
-                            idArray[i],
                             codeArray[i],
                             nameArray[i],
                             nameArrayL[i]
@@ -1930,7 +1927,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1933, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1930, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             dbHandler.close();
             r_ok = false;

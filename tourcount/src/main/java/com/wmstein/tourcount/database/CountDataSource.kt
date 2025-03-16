@@ -431,25 +431,6 @@ class CountDataSource(context: Context) {
             return counts
         }
 
-    // Used in WelcomeActivity by exportSpeciesList()
-    fun getContiguousIdsForList(): Array<String?> {
-        val cursor = database!!.rawQuery(
-            "select * from " + COUNT_TABLE
-                    + " order by " + DbHelper.C_CODE, null
-        )
-        val idArray = arrayOfNulls<String>(cursor.count)
-        cursor.moveToFirst()
-        var i = 0
-        while (!cursor.isAfterLast) {
-            val uid = i + 1
-            idArray[i] = uid.toString()
-            i++
-            cursor.moveToNext()
-        }
-        cursor.close()
-        return idArray
-    }
-
     // Sorts COUNT_TABLE for C_CODE and contiguous index
     fun sortCounts() {
         var sql = "alter table 'counts' rename to 'counts_backup'"
