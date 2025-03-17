@@ -136,6 +136,8 @@ $ 7
   ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
   ! (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
   _ 
+  ! If the TransektCount app is installed, a species list exported from it can be imported.
+  _ 
   ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "tourcount_Tour_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
   ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid app store).
   _ 

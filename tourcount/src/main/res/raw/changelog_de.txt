@@ -56,7 +56,7 @@ _
 
 $ 3.6.3
   % Version 3.6.3
-  _ 15.03.2025
+  _ 17.03.2025
   * Abbildungen von Yponameuta melinellus, Agriphila geniculea, Phigalia pilosaria, Idaea rusticata, Xanthorhoe fluctuata, Eupithecia vulgata, Eileme caniola hinzugefügt
   * Neu: Export der aktuellen Speziesliste für Import in TransektCount
   * Neu: Import der TransektCount Speziesliste

@@ -80,7 +80,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-03-16
+ * last edited on 2025-03-17
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -964,6 +964,7 @@ public class WelcomeActivity
         try
         {
             // Read exported TransektCount species list and write items to table counts
+            Toast.makeText(getApplicationContext(), getString(R.string.waitImport), Toast.LENGTH_SHORT).show();
             BufferedReader br = new BufferedReader(new FileReader(inFile));
             String csvLine;
             List<String> codeArray = new ArrayList<>();
@@ -1046,7 +1047,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1049, No sdcard access");
+            if (MyDebug.DLOG) Log.e(TAG, "1050, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1074,7 +1075,7 @@ public class WelcomeActivity
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1077, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1078, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1133,7 +1134,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1136, No sdcard access");
+            if (MyDebug.DLOG) Log.e(TAG, "1137, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1219,7 +1220,7 @@ public class WelcomeActivity
 
         if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1222, No sdcard access");
+            if (MyDebug.DLOG) Log.e(TAG, "1223, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1684,7 +1685,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1687 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1688 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1764,7 +1765,7 @@ public class WelcomeActivity
                 showSnackbar(getString(R.string.savecsv));
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1767, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1768, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1927,7 +1928,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1930, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1931, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             dbHandler.close();
             r_ok = false;
@@ -1974,6 +1975,11 @@ public class WelcomeActivity
         database.execSQL(sql);
 
         dbHandler.close();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("item_Position", 0);
+        editor.putInt("count_id", 1);
+        editor.apply();
     }
 
     // Green message to point something out

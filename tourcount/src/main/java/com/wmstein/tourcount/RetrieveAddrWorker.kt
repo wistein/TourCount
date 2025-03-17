@@ -21,7 +21,7 @@ import java.net.URL
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-03-06
+ * last edited on 2025-03-17
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -59,6 +59,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             } finally {
                 try {
                     iStream.close()
+                    reader.close()
                 } catch (e: IOException) {
                     if (MyDebug.DLOG) Log.e(TAG, "63, Problem closing InputStream: $e")
                 }

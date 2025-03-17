@@ -130,6 +130,8 @@
   ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
   ! (Merke: Der db-Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden).
   _ 
+  ! Falls die App TransektCount installiert ist, kann eine daraus exportierte Speziesliste importiert werden.
+  _ 
   ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine aufbereitete Spreadsheet-kompatible Datei „tourcount_Tour_JJJJ-MM-TT_hhmmss.csv" nach „Documents/TourCount".
   ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (Open Source, kostenlos erhältlich im F-Droid-App-Store).
   _

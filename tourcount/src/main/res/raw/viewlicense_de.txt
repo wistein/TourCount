@@ -66,8 +66,8 @@
   * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
   * Nemaphora barbatellus, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",	Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
   * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
-    * Phragmataecia castaneae derived from https://species.wikimedia.org/wiki/Phragmataecia_castaneae,
-     Author: Dumi, GNU Free Documentation License, version 1.2
+  * Phragmataecia castaneae derived from https://species.wikimedia.org/wiki/Phragmataecia_castaneae,
+    Author: Dumi, GNU Free Documentation License, version 1.2
   * Scopula rubiginata, erstellt aus Abbildungen in http://www.freenatureimages.eu/Animals/index.html, Autor: Rob Felix, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
   * Scopula virgulata derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Zoran Bozovic, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
   * Sesia apiformis derived from picture on https://en.wikipedia.org/wiki/Hornet_moth, Autor: Jyrki Lehto, freie Verwendung

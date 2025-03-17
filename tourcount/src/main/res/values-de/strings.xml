@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-03-15 -->
+     last edited on 2025-03-17 -->
 
 <resources>
 
@@ -61,6 +61,7 @@
     <string name="sort_names">Spezies sortiert nach Spezies-Namen</string>
     <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
     <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
+    <string name="waitImport">Bitte warten, der Import läuft!</string>
 
     <!-- FileChooser -->
     <string name="currentDir">Aktuelles Verz.</string>
