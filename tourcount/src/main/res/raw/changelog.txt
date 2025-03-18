@@ -56,6 +56,12 @@ _ Subtitle
   ! Suitable for Android 7.1 (Nougat) or newer
   _ 
 
+$ 3.6.4
+  % Version 3.6.4
+  _ 2025-03-18
+  * Changed export of the current species list for import by TransektCount and TourCount
+  * Docs updated
+
 $ 3.6.3
   % Version 3.6.3
   _ 2025-03-17

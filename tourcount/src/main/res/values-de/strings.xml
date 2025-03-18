@@ -19,9 +19,10 @@
     <string name="noCard">Kann nicht ins Documents-Verzeichnis schreiben!</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
+    <string name="saveFailListTransect">Export nach Documents/TransektCount schlug fehl!</string>
     <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
     <string name="savecsv">Export der CSV-Datei nach Documents/TourCount</string>
-    <string name="saveList">Export der Speziesliste nach Documents/TourCount.</string>
+    <string name="saveList">Export der Speziesliste.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>

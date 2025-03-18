@@ -54,6 +54,12 @@ _
 ! Geeignet für Android 7.1 (Nougat) oder neuer
 _
 
+$ 3.6.4
+  % Version 3.6.4
+  _ 18.03.2025
+  * Export der Speziesliste für Import durch TransektCount und TourCount ergänzt
+  * Doku angepasst
+
 $ 3.6.3
   % Version 3.6.3
   _ 17.03.2025

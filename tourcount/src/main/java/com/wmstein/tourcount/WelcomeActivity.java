@@ -80,7 +80,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-03-17
+ * last edited on 2025-03-18
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -110,7 +110,6 @@ public class WelcomeActivity
     // Import/export stuff
     private File inFile;
     private File outFile;
-    private boolean mExternalStorageAvailable = false;
     private boolean mExternalStorageWriteable = false;
     private final String sState = Environment.getExternalStorageState();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -142,7 +141,7 @@ public class WelcomeActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "145, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "144, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -166,7 +165,7 @@ public class WelcomeActivity
             editor.putBoolean("has_asked_foreground", false);
             editor.commit();
         }
-        if (MyDebug.DLOG) Log.d(TAG, "169, onCreate, storagePermGranted: " + storagePermGranted);
+        if (MyDebug.DLOG) Log.d(TAG, "168, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHandler = new DbHelper(this);
@@ -182,11 +181,11 @@ public class WelcomeActivity
         // Get tour name and check for DB integrity
         try
         {
-            if (MyDebug.DLOG) Log.i(TAG, "185, onCreate, try section");
+            if (MyDebug.DLOG) Log.i(TAG, "184, onCreate, try section");
             sectionDataSource.open();
             section = sectionDataSource.getSection();
             tourName = section.name;
-            if (MyDebug.DLOG) Log.i(TAG, "189, onCreate, tourName: " + tourName);
+            if (MyDebug.DLOG) Log.i(TAG, "188, onCreate, tourName: " + tourName);
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
@@ -246,7 +245,7 @@ public class WelcomeActivity
 
         // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
         int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
-        if (MyDebug.DLOG) Log.i(TAG, "249, NavBarMode = " + iMode);
+        if (MyDebug.DLOG) Log.i(TAG, "248, NavBarMode = " + iMode);
         return iMode;
     }
 
@@ -288,13 +287,13 @@ public class WelcomeActivity
         {
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storagePermGranted = Environment.isExternalStorageManager();
-            if (MyDebug.DLOG) Log.i(TAG, "291, ManageStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "290, ManageStoragePermission: " + storagePermGranted);
         }
         else
         {
             storagePermGranted = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (MyDebug.DLOG) Log.i(TAG, "297, ExtStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "296, ExtStoragePermission: " + storagePermGranted);
         }
     }
 
@@ -311,7 +310,7 @@ public class WelcomeActivity
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "314, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "313, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -326,10 +325,10 @@ public class WelcomeActivity
         individualsDataSource.open();
 
         // Set tour name as title
-        if (MyDebug.DLOG) Log.i(TAG, "329, onResume, get section");
+        if (MyDebug.DLOG) Log.i(TAG, "328, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
-        if (MyDebug.DLOG) Log.i(TAG, "332, tourName: " + tourName);
+        if (MyDebug.DLOG) Log.i(TAG, "331, tourName: " + tourName);
         try
         {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
@@ -342,7 +341,7 @@ public class WelcomeActivity
         //   Set flag fineLocationPermGranted from self permissions
         // Store flag 'hasAskedBackground = true' in SharedPreferences
         isFineLocationPermGranted();
-        if (MyDebug.DLOG) Log.i(TAG, "345, onCreate, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "344, onCreate, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // If not yet location permission is granted prepare and query for them
@@ -368,12 +367,12 @@ public class WelcomeActivity
 
         // Get location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
-        if (MyDebug.DLOG) Log.i(TAG, "371, onResume, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "370, onResume, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // Get flag 'has_asked_background'
         boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
-        if (MyDebug.DLOG) Log.i(TAG, "376, hasAskedBackgroundLocation: "
+        if (MyDebug.DLOG) Log.i(TAG, "375, hasAskedBackgroundLocation: "
             + hasAskedBackgroundLocation);
 
         // Get background location with permissions check only once and if storage and fine location
@@ -399,7 +398,7 @@ public class WelcomeActivity
         if (fineLocationPermGranted) // current location permission state granted
         {
             // Handle action here
-            if (MyDebug.DLOG) Log.i(TAG, "402, locationDispatcher, fineLocationPermGranted: true");
+            if (MyDebug.DLOG) Log.i(TAG, "401, locationDispatcher, fineLocationPermGranted: true");
             switch (locationDispatcherMode)
             {
                 case 1 ->
@@ -475,37 +474,6 @@ public class WelcomeActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.welcome, menu);
         MenuCompat.setGroupDividerEnabled(menu, true); // Show dividers in menu
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        // Grey out menu item 'Import Species List' if there is no
-        //   directory /storage/emulated/0/Documents/TransektCount
-        File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-        {
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TransektCount");
-        }
-        else
-        {
-            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            path = new File(path + "/TransektCount");
-        }
-
-        MenuItem item = menu.findItem(R.id.importSpeciesListMenu);
-        if (path.exists() && path.isDirectory())
-        {
-            item.setEnabled(true);
-            Objects.requireNonNull(item.getIcon()).setAlpha(255);
-        }
-        else
-        {
-            item.setEnabled(false);
-            Objects.requireNonNull(item.getIcon()).setAlpha(130);
-        }
         return true;
     }
 
@@ -669,7 +637,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "672, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "640, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -687,7 +655,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "690, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "658, onStop");
         // Stop location service with permissions check
 
         baseLayout.invalidate();
@@ -698,7 +666,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "701, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "669, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -792,7 +760,7 @@ public class WelcomeActivity
                 Objects.requireNonNull(getSupportActionBar()).setTitle("");
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "795, Failed to import database");
+                if (MyDebug.DLOG) Log.e(TAG, "763, Failed to import database");
                 showSnackbarRed(getString(R.string.importFail));
             }
         }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
@@ -823,7 +791,7 @@ public class WelcomeActivity
     // Choose a tourcount db-file to load and set it to tourcount.db
     private void importDBFile()
     {
-        if (MyDebug.DLOG) Log.d(TAG, "826, importDBFile");
+        if (MyDebug.DLOG) Log.d(TAG, "794, importDBFile");
 
         String fileExtension = ".db";
         String fileName = "tourcount";
@@ -852,7 +820,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "855, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "823, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -933,7 +901,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "936, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "904, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -1027,27 +995,11 @@ public class WelcomeActivity
         path.mkdirs(); // just verify path, result ignored
         outFile = new File(path, "/tourcount0.db");
 
-        if (Environment.MEDIA_MOUNTED.equals(sState))
-        {
-            // We can read and write the media
-            mExternalStorageAvailable = mExternalStorageWriteable = true;
-        }
-        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(sState))
-        {
-            // We can only read the media
-            mExternalStorageAvailable = true;
-            mExternalStorageWriteable = false;
-        }
-        else
-        {
-            // Something else is wrong. It may be one of many other states, but all we need
-            //  to know is we can neither read nor write
-            mExternalStorageAvailable = mExternalStorageWriteable = false;
-        }
+        // Check if we can write the media
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
 
-        if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
+        if (!mExternalStorageWriteable)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1050, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1075,7 +1027,7 @@ public class WelcomeActivity
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1078, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1030, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1114,27 +1066,11 @@ public class WelcomeActivity
             + "/databases/tourcount.db";
         inFile = new File(inPath);
 
-        if (Environment.MEDIA_MOUNTED.equals(sState))
-        {
-            // We can read and write the media
-            mExternalStorageAvailable = mExternalStorageWriteable = true;
-        }
-        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(sState))
-        {
-            // We can only read the media
-            mExternalStorageAvailable = true;
-            mExternalStorageWriteable = false;
-        }
-        else
-        {
-            // Something else is wrong. It may be one of many other states, but all we need
-            //  to know is we can neither read nor write
-            mExternalStorageAvailable = mExternalStorageWriteable = false;
-        }
+        // Check if we can write the media
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
 
-        if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
+        if (!mExternalStorageWriteable)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1137, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1200,27 +1136,11 @@ public class WelcomeActivity
         String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
         double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
-        if (Environment.MEDIA_MOUNTED.equals(sState))
-        {
-            // We can read and write the media
-            mExternalStorageAvailable = mExternalStorageWriteable = true;
-        }
-        else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(sState))
-        {
-            // We can only read the media
-            mExternalStorageAvailable = true;
-            mExternalStorageWriteable = false;
-        }
-        else
-        {
-            // Something else is wrong. It may be one of many other states, but all we need
-            //  to know is we can neither read nor write
-            mExternalStorageAvailable = mExternalStorageWriteable = false;
-        }
+        // Check if we can write the media
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
 
-        if ((!mExternalStorageAvailable) || (!mExternalStorageWriteable))
+        if (!mExternalStorageWriteable)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1223, No sdcard access");
             showSnackbarRed(getString(R.string.noCard));
         }
         else
@@ -1685,7 +1605,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1688 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1608 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1765,34 +1685,36 @@ public class WelcomeActivity
                 showSnackbar(getString(R.string.savecsv));
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1768, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1688, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
     }
     // End of exportDb2CSV()
 
-    /**********************************************************************************************/
-    // Export current species list to species_YYYY-MM-DD_hhmmss.csv
+    /**
+     * @noinspection ResultOfMethodCallIgnored
+     * ********************************************************************************************/
+    // Export current species list to both data directories
+    //  /Documents/TransektCount/species_YYYY-MM-DD_hhmmss.csv
+    //  /Documents/TourCount/species_YYYY-MM-DD_hhmmss.csv and
     private void exportSpeciesList()
     {
-        // outFile -> /storage/emulated/0/Documents/TourCount/species_yyyy-MM-dd_HHmmss.csv
-        File path;
+        // outFileTour -> /storage/emulated/0/Documents/TourCount/species_yyyy-MM-dd_HHmmss.csv
+        // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_yyyy-MM-dd_HHmmss.csv
+        File pathTour, outFileTour, pathTransect, outFileTransect;
         if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TourCount");
+            pathTransect = new File(Environment.getExternalStorageDirectory() + "/Documents/TransektCount");
+            pathTour = new File(Environment.getExternalStorageDirectory() + "/Documents/TourCount");
         }
         else
         {
-            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            path = new File(path + "/TourCount");
+            pathTransect = new File(Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/TransektCount");
+            pathTour = new File(Environment.
+                getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/TourCount");
         }
-
-        //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // Just verify path, result ignored
-
-        outFile = new File(path, "/species_" + getcurDate() + ".csv");
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
@@ -1817,9 +1739,40 @@ public class WelcomeActivity
 
             int specNum = codeArray.length;
 
+            // If TransektCount is installed export to /Documents/TransektCount
+            if (pathTransect.exists() && pathTransect.isDirectory())
+            {
+                try
+                {
+                    pathTransect.mkdirs(); // Just verify pathTour, result ignored
+                    outFileTransect = new File(pathTransect, "/species_" + getcurDate() + ".csv");
+                    CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTransect));
+
+                    int i = 0;
+                    while (i < specNum)
+                    {
+                        String[] specLine =
+                            {
+                                codeArray[i],
+                                nameArray[i],
+                                nameArrayL[i]
+                            };
+                        i++;
+                        csvWrite.writeNext(specLine);
+                    }
+                    csvWrite.close();
+                } catch (Exception e)
+                {
+                    showSnackbarRed(getString(R.string.saveFailListTransect));
+                }
+            }
+
+            // Export to /Documents/TourCount
             try
             {
-                CSVWriter csvWrite = new CSVWriter(new FileWriter(outFile));
+                pathTour.mkdirs(); // Just verify pathTour, result ignored
+                outFileTour = new File(pathTour, "/species_" + getcurDate() + ".csv");
+                CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTour));
 
                 int i = 0;
                 while (i < specNum)
@@ -1835,7 +1788,6 @@ public class WelcomeActivity
                 }
                 csvWrite.close();
                 showSnackbar(getString(R.string.saveList));
-
             } catch (Exception e)
             {
                 showSnackbarRed(getString(R.string.saveFailList));
@@ -1928,7 +1880,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1931, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1883, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             dbHandler.close();
             r_ok = false;

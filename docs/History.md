@@ -2,6 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2025, Wilhelm Stein
 
+#### Version 3.6.4 (2025-03-18)
+- Changed export of the current species list for import by TransektCount and TourCount
+- Docs updated
+
 #### Version 3.6.3 (2025-03-17)
 - Added pictures of Yponameuta melinellus, Agriphila geniculea, Phigalia pilosaria, Idaea rusticata, Xanthorhoe fluctuata, Eupithecia vulgata, Eileme caniola
 - Added export of current species list for import in TransektCount
