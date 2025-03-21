@@ -10,15 +10,16 @@ TourCount is an Android app that supports species-specific and individually loca
 - Databases can be individually created and adapted within the app regarding meta data and expected butterfly species.
 - You may use an individual species list per region.
 - The app contains editors to setup or adapt the current species list with add and delete species functions,
-- to prepare the meta data for a tour and
-- for individual species data of a count (e.g. status, remark or bulk count entry).
+-  to prepare the meta data for a tour and
+-  for individual species data of a count (e.g. status, remark or bulk count entry).
 - The counting page has a scroll-list to select a species by picture and name.
 - Separate counters for ♂♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
-  location data by reverse OSM-geocoding when GPS and internet are accessible.
+  location data by reverse OSM-geocoding when GPS and internet access are granted.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
 - Results are shown with meta data, totals, remarks, species results and individual data.
 - Results may be exported as SQLite-DB or in CSV-format (e.g. for transfer to a PC for processing in a spreadsheet).
+- The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
 - Help contains a detailed userguide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
 
@@ -52,6 +53,7 @@ https://f-droid.org/packages/com.wmstein.tourcount/.
  
 All versions of the apk-file 'tourcount-release_nnn.apk' are provided in the GitHub repository under 
 https://github.com/wistein/TourCount.
+
 Please note that both F-Droid and GitHub versions are compiled from the same sources but signed 
 differently and so cannot be mutually updated.
 

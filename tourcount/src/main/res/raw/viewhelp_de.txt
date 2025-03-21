@@ -11,6 +11,8 @@
           text-align:center }
       div.smalltext    { 
           color:#F0F0F0; 
+          margin-top:0.5em;
+          margin-bottom:0.8em;
           font-size:0.8em }
       div.subtitle { 
           color:#C0F0C0; 
@@ -48,10 +50,8 @@
   ! ...
   ! Pieris rapae .............. 06998
   ) Kleiner Kohlweißling
-  )
   ! Pieris napi ................ 07000
   ) Grünaderweißling
-  )
   ! Pontia daplidice ....... 07005
   ) Westlicher Resedafalter
   ! ...
@@ -125,21 +125,22 @@
   _
   ! Die Funktion „Import Basis-DB“ liest immer die Datei „tourcount0.db" von „Documents/TourCount" ein, z. B. falls irrtümlich falsche Änderungen vorgenommen wurden.
   _
-  ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_Tour_JJJJ-MM-TT_hhmmss.db".
+  ! „Export akt. DB" schreibt eine Kopie der internen DB nach „Documents/TourCount/tourcount_[Name_]JJJJ-MM-TT_hhmmss.db".
   _
-  ! Der Import einer beliebigen, zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
+  ! Der Import einer zuvor exportierten TourCount-DB ist möglich. Das ist z.B. sinnvoll, wenn verschiedene Touren am gleichen Tag begangen werden. Dazu können Tour-bezogene Basis-DBs angelegt und jeweils unter Zuhilfenahme eines File-Managers umbenannt werden, z.B. in tourcount1.db, tourcount2.db usw.
   ! (Merke: Der db-Dateiname muss immer mit „tourcount“ beginnen, sonst kann die Datei nicht importiert werden).
   _ 
-  ! Falls die App TransektCount installiert ist, kann eine daraus exportierte Speziesliste importiert werden.
-  _ 
-  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse in eine aufbereitete Spreadsheet-kompatible Datei „tourcount_Tour_JJJJ-MM-TT_hhmmss.csv" nach „Documents/TourCount".
-  ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (Open Source, kostenlos erhältlich im F-Droid-App-Store).
+  ! Die aktuelle Speziesliste (ohne Tour-Metadaten) kann als csv-Datei „species_Tour_[Name_]JJJJMMTT_hhmmss.csv“ exportiert werden. Mittels Datei-Manager lässt auch diese sich für den späteren Re-Import sinnvoll umbennenen. Falls die App TransektCount installiert ist, können die exportierten Spezieslisten wechselseitig importiert werden.
+  ! Merke: Der Dateiname einer Speziesliste muss immer mit „species“ beginnen, sonst kann die Datei nicht importiert werden.
   _
-  ! IT-affine Anwender können die mittels Exportfunktion erzeugte DB-Datei „tourcount_Tour_JJJJ-MM-TT_hhmmss.db" von „Documents/TourCount" auf einen PC übertragen.
-  ! Dort können mit Hilfe eines kostenlosen Tools wie „SqliteBrowser" (<a href="https://sqlitebrowser.org/" target="_blank">https://sqlitebrowser.org</a>) die .db-Dateien bearbeitet werden.
+  ! Die Funktion „Export Daten -> CSV-Datei“ scheibt die Zählergebnisse als aufbereitete, Spreadsheet-kompatible Tabelle „Tour_[Name_]JJJJ-MM-TT_hhmmss.csv" nach „Documents/TourCount".
+  ! Dieses Verzeichnis erlaubt den Zugriff und die Verarbeitung der Datei mit einer Tabellenkalkulations-App wie Collabora (Open Source, kostenlos erhältlich z.B. im F-Droid-App-Store).
+  _
+  ! IT-affine Anwender können die mittels Exportfunktion erzeugten .db- und .csv-Dateien von „Documents/TourCount" auf einen PC übertragen.
+  ! Dort können .db-Dateien mit Hilfe eines kostenlosen Tools wie „SqliteBrowser" (<a href="https://sqlitebrowser.org/" target="_blank">https://sqlitebrowser.org</a>) bearbeitet werden.
   ! Einige nützliche vorbereitete SQL-Scripte finden sich im docs-Verzeichnis der GitHub-Webseite  <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>.
   _
-  ! Auch die exportierten .csv-Ergebnisdateien (Komma-getrennte Textdateien) können für die weitere Bearbeitung auf einen PC übertragen und in einer Tabellenkalkulation importiert werden.
+  ! Die exportierten .csv-Ergebnisdateien können auf einem PC in eine Tabellenkalkulation importiert werden.
   ! Hierbei ist zur korrekten Darstellung der Formate und Zeichensätze darauf zu achten, dass
   _
   ! - Dateiursprung im Format „Unicode UTF-8",

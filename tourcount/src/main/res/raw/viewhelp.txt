@@ -11,6 +11,8 @@
           text-align:center }
       div.smalltext    { 
           color:#F0F0F0; 
+          margin-top:0.5em;
+          margin-bottom:0.8em;
           font-size:0.8em }
       div.subtitle { 
           color:#C0F0C0; 
@@ -131,21 +133,22 @@ $ 7
   _
   ! The “Import Basic DB” function always reads in the file "tourcount0.db" from "Documents/TourCount" e.g. if incorrect changes have been made to the current DB by mistake.
   _
-  ! "Export Current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_Tour_YYYY-MM-DD_hhmmss.db".
+  ! "Export Current DB" writes a copy of the internal DB to "Documents/TourCount/tourcount_[name_]YYYY-MM-DD_hhmmss.db".
   _
   ! You may import any previously exported TourCount-DB. This supports monitoring on different tours. To achieve this you may create tour-specific Basic DBs which may be renamed by a file manager into e.g. tourcount1.db, tourcount2.db, etc.
   ! (Mind: The db file name must always start with “tourcount”, otherwise the file cannot be imported).
   _ 
-  ! If the TransektCount app is installed, a species list exported from it can be imported.
+  ! The current species list (without tour metadata) can be exported as a .csv file “species_Tour_[name_]YYYYMMDD_hhmmss.csv”. This can also be renamed for later re-import using a file manager. If the TransektCount app is installed, the exported species lists can be imported mutually.
+  ! (Mind: The file name of a species list must always begin with “species”, otherwise the file cannot be imported.)
+  _
+  ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "Tour_[name_]YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
+  ! This directory allows accessing the files by other spreadsheet apps, like Collabora (open source, obtainable free of charge e.g. from the F-Droid app store).
   _ 
-  ! The function “Export Data -> CSV File” writes the counting results into the pre-formatted spreadsheet-readable file "tourcount_Tour_YYYY-MM-DD_hhmmss.csv" to "Documents/TourCount".
-  ! This directory allows accessing the files by other spreadsheet apps, like Collabora (obtainable from F-Droid app store).
-  _ 
-  ! IT-affine users may transfer the exported "tourcount_Tour_YYYY-MM-DD_hhmmss.db" from "Documents/TourCount" to a PC.
+  ! IT-affine users may transfer the exported .db and .csv files from "Documents/TourCount" to a PC.
   ! With a free tool like "SQliteBrowser" (<a href="http://sqlitebrowser.org/" target="_blank">http://sqlitebrowser.org</a>) you may examine and edit the .db-files.
   ! Some useful prepared SQL-scripts can be found under <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>.
   _
-  ! You may also copy a .csv-file from Documents/TourCount/ to a PC and import it into a spreadsheet program for further processing.
+  ! You may import .csv-files into a spreadsheet program for further processing.
   ! In order to display the formats and character sets correctly, please import it as a
   _
   ! - comma-separated text file with

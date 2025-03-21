@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-03-17 -->
+     last edited on 2025-03-20 -->
 
 <resources>
 
@@ -31,7 +31,7 @@
     <string name="resetDBMenu">Reset Daten</string>
     <string name="importFileMenu">Import DB</string>
     <string name="importBasisMenu">Import Basis-DB</string>
-    <string name="importSpeciesListMenu">Import TransektCount-Spezies</string>
+    <string name="importSpeciesListMenu">Import Speziesliste</string>
     <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
     <string name="importListFail">Die Speziesliste konnte nicht importiert werden!</string>
     <string name="importWin">Die Datenbank wurde importiert.</string>
@@ -68,7 +68,7 @@
     <string name="currentDir">Aktuelles Verz.</string>
     <string name="fileSize">Größe</string>
     <string name="fileHeadlineDB">Liste der DB-Dateien</string>
-    <string name="fileHeadlineCSV">TransektCount-Spezieslisten</string>
+    <string name="fileHeadlineCSV">Spezieslisten</string>
     <string name="noFile">Keine Datei vorhanden!</string>
 
     <!-- EditMetaActivity -->

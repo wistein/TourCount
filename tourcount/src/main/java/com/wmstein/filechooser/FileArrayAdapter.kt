@@ -17,7 +17,7 @@ import java.util.Locale
  * Adopted by wmstein on 2016-06-18,
  * modifications for TourCount by wmstein on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-03-12
+ * last edited on 2025-03-19
  */
 internal class FileArrayAdapter(
     private val faaContext: Context,
@@ -49,8 +49,8 @@ internal class FileArrayAdapter(
 
         if (name != null) {
             if (name.endsWith(".db")) im.setImageResource(R.drawable.db)
-            else if (name.endsWith(".csv")) im.setImageResource(R.drawable.outline_format_align_left_24)
-            else im.setImageResource(R.drawable.baseline_insert_drive_file_24)
+            else if (name.endsWith(".csv")) im.setImageResource(R.drawable.outline_align_left)
+            else im.setImageResource(R.drawable.insert_drive_file)
         }
 
         if (t1 != null) t1.text = fileItem.name

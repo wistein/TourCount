@@ -56,8 +56,9 @@ _
 
 $ 3.6.4
   % Version 3.6.4
-  _ 18.03.2025
-  * Export der Speziesliste für Import durch TransektCount und TourCount ergänzt
+  _ 21.03.2025
+  * Export der Speziesliste für Import durch TransektCount und TourCount
+  * Einige Textanpassunge und -korrekturen
   * Doku angepasst
 
 $ 3.6.3

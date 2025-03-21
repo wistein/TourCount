@@ -80,7 +80,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-03-18
+ * last edited on 2025-03-20
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -700,12 +700,12 @@ public class WelcomeActivity
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
     }
 
-    // Date for filename of Export-DB
+    // Date for filename of exported data
     private static String getcurDate()
     {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat")
-        DateFormat dform = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
+        DateFormat dform = new SimpleDateFormat("yyyyMMdd_HHmmss");
         return dform.format(date);
     }
 
@@ -1116,9 +1116,9 @@ public class WelcomeActivity
         path.mkdirs(); // Just verify path, result ignored
 
         if (Objects.equals(tourName, ""))
-            outFile = new File(path, "/tourcount_" + getcurDate() + ".csv");
+            outFile = new File(path, "/Tour_" + getcurDate() + ".csv");
         else
-            outFile = new File(path, "/tourcount_" + tourName + "_" + getcurDate() + ".csv");
+            outFile = new File(path, "/Tour_" + tourName + "_" + getcurDate() + ".csv");
 
         String sectName;
         String sectNotes;
@@ -1745,7 +1745,10 @@ public class WelcomeActivity
                 try
                 {
                     pathTransect.mkdirs(); // Just verify pathTour, result ignored
-                    outFileTransect = new File(pathTransect, "/species_" + getcurDate() + ".csv");
+                    if (Objects.equals(tourName, ""))
+                        outFileTransect = new File(pathTransect, "/species_Tour_" + getcurDate() + ".csv");
+                    else
+                        outFileTransect = new File(pathTransect, "/species_Tour_" + tourName + "_" + getcurDate() + ".csv");
                     CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTransect));
 
                     int i = 0;
@@ -1771,7 +1774,10 @@ public class WelcomeActivity
             try
             {
                 pathTour.mkdirs(); // Just verify pathTour, result ignored
-                outFileTour = new File(pathTour, "/species_" + getcurDate() + ".csv");
+                if (Objects.equals(tourName, ""))
+                    outFileTour = new File(pathTour, "/species_Tour_" + getcurDate() + ".csv");
+                else
+                    outFileTour = new File(pathTour, "/species_Tour_" + tourName + "_" + getcurDate() + ".csv");
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTour));
 
                 int i = 0;

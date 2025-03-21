@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-03-17 -->
+     last edited on 2025-03-20 -->
 
 <resources>
 
@@ -42,7 +42,7 @@
     <string name="exportSpeciesListMenu">Export Species List</string>
     <string name="resetDBMenu">Reset Data</string>
     <string name="importBasisMenu">Import Basic DB</string>
-    <string name="importSpeciesListMenu">Import TransektCount Species</string>
+    <string name="importSpeciesListMenu">Import Species List</string>
     <string name="importFail">Your database could not be imported!</string>
     <string name="importListFail">The species list could not be imported!</string>
     <string name="importWin">Your database has been imported.</string>
@@ -79,7 +79,7 @@
     <string name="currentDir">Current Dir</string>
     <string name="fileSize">Size</string>
     <string name="fileHeadlineDB">List of selectable DB files</string>
-    <string name="fileHeadlineCSV">TransektCount species lists</string>
+    <string name="fileHeadlineCSV">Species lists</string>
     <string name="noFile">No file available!</string>
 
     <!-- EditMetaActivity -->

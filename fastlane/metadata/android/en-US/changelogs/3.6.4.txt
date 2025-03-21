@@ -1,3 +1,4 @@
-Version 3.6.4 (2025-03-18)
-- Changed export of the current species list for import by TransektCount and TourCount
+Version 3.6.4 (2025-03-21)
+- Export of the current species list for import by TransektCount and TourCount
+- Some text updates and corrections
 - Docs updated
