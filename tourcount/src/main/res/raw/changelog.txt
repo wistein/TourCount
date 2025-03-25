@@ -3,9 +3,9 @@
 <!--
 Formatting commands:
 % Title
-& bold
 _ Subtitle
 ! free text
+& bold
 # numbered list item
 * bullet list item
 -->
@@ -20,20 +20,20 @@ _ Subtitle
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
-      div.boldtext {
-          color:#F0F0F0;
-          font-size:1.2em; 
-          font-weight:bold; 
-          margin-top:1em; 
-          margin-bottom:0.5em; 
-          text-align:start }
-      div.subtitle { 
+      div.subtitle {
           color:#C0F0C0; 
           font-size:0.8em; 
           margin-bottom:1em; 
           text-align:center }
       div.freetext {
           color:#F0F0F0 }
+      div.boldtext {
+          color:#F0F0F0;
+          font-size:1.2em;
+          font-weight:bold;
+          margin-top:1em;
+          margin-bottom:0.5em;
+          text-align:start }
       div.list {
           color:#C0C0F0 }
     </style>
@@ -58,9 +58,10 @@ _ Subtitle
 
 $ 3.6.4
   % Version 3.6.4
-  _ 2025-03-21
+  _ 2025-03-25
   * Export of the current species list for import by TransektCount and TourCount
   * Some text updates and corrections
+  * Bugfix zur Anzeige des korrekten Tournamens nach DB-Import
   * Docs updated
 
 $ 3.6.3
@@ -364,17 +365,17 @@ $ 1.0.2
 $ 1.0.0
   % Version 1.0.0
   _ 2016-04-18
-  ! 1. Release.
+  & 1. Release.
   * TourCount derived from TransektCount 1.2.0 whose basic program structure and counting functionality originally derived partly from BeeCount by knirirr (https://github.com/knirirr/BeeCount.git)
   * Text and structure adaptation for butterfly registration in the field
   _
-  ! Other sources:
+  & Other sources:
   * Modified AutoFitText.java, author: pheuschk (open source code from stackoverflow)
   * Modified ChangeLog.java, author: Karsten Priegnitz (open source code from code.google.com)
   * Modified CSVWriter.java, Bytecode Pty Ltd. (Apache License 2.0)
-  * Modified File Chooser dialog, Google Code Archive, GNU GPL v3
+  * Modified File Chooser Dialog, Google Code Archive, GNU GPL v3
   _
-  ! Main Features:
+  & Main Features:
   * Input page for meta data
   * Counting page
   * Page to edit counting options

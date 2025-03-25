@@ -1,4 +1,5 @@
-Version 3.6.4 (21.03.2025)
+Version 3.6.4 (25.03.2025)
 - Export der Speziesliste für Import durch TransektCount und TourCount
 - Einige Textanpassunge und -korrekturen
+- Bugfix to show name correct of tour after DB import
 - Doku angepasst

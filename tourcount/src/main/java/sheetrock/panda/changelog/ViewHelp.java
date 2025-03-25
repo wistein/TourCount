@@ -33,7 +33,7 @@ import java.util.Locale;
  * <a href="http://code.google.com/p/android-change-log/">...</a>
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2025-02-23
+ * last edited on 2025-03-24
  */
 public class ViewHelp
 {
@@ -58,7 +58,7 @@ public class ViewHelp
         {
             thisVersion = NO_VERSION;
             if (MyDebug.DLOG)
-                Log.e(TAG, "65, Could not get version name from manifest!", e);
+                Log.e(TAG, "61, Could not get version name from manifest!", e);
         }
     }
 
@@ -80,24 +80,21 @@ public class ViewHelp
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
             new ContextThemeWrapper(this.context, android.R.style.Theme_Material_Dialog));
-        builder.setTitle(context.getResources().getString(
-                R.string.viewhelp_full_title) + " " + thisVersion + ")")
+        builder
+            .setTitle(context.getResources().getString(R.string.viewhelp_full_title)
+                + " " + thisVersion + ")\n")
             .setView(wv)
             .setCancelable(false)
-            // OK button
+            // Just an OK button
             .setPositiveButton(
-                context.getResources().getString(
-                    R.string.ok_button),
-                (dialog, which) ->
-                {
-                });
-
+                context.getResources().getString(R.string.ok_button),
+                (dialog, which) -> {});
         return builder.create();
     }
 
     private String getLog()
     {
-        // read viewhelp.txt file
+        // Read viewhelp.txt file
         sb = new StringBuffer();
         try
         {
@@ -141,12 +138,44 @@ public class ViewHelp
                         sb.append("<div class='freetext'>").append(line.substring(1).trim())
                             .append("</div>\n");
                     }
+                    case '&' ->
+                    {
+                        // line contains bold text
+                        this.closeList();
+                        sb.append("<div class='boldtext'>");
+                        sb.append(line.substring(1).trim());
+                        sb.append("</div>\n");
+                    }
+                    case ']' ->
+                    {
+                        // line contains italic text
+                        this.closeList();
+                        sb.append("<div class='italictext'>");
+                        sb.append(line.substring(1).trim());
+                        sb.append("</div>\n");
+                    }
                     case ')' ->
                     {
-                        // line contains small text
+                        // line contains small text with top and bottom space
                         this.closeList();
                         sb.append("<div class='smalltext'>").append(line.substring(1).trim())
                             .append("</div>\n");
+                    }
+                    case '}' ->
+                    {
+                        // line contains small text with top space
+                        this.closeList();
+                        sb.append("<div class='smalltext1'>");
+                        sb.append(line.substring(1).trim());
+                        sb.append("</div>\n");
+                    }
+                    case '?' ->
+                    {
+                        // line contains small text with bottom space
+                        this.closeList();
+                        sb.append("<div class='textspace'>");
+                        sb.append(line.substring(1).trim());
+                        sb.append("</div>\n");
                     }
                     case '#' ->
                     {

@@ -3,16 +3,16 @@
 <!--
 Formatting commands:
 % Title
-& bold red
 _ Subtitle
 ! free text
+& bold
 # numbered list item
 * bullet list item
 -->
 
   <head>
     <style type='text/css'>
-      a            { color:#a0a0e0 }
+      a { color:#a0a0e0 }
       div.title    { 
           color:#C0F0C0; 
           font-size:1.2em; 
@@ -20,19 +20,20 @@ _ Subtitle
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
-      div.boldtext {
-          color:#F0F0F0;
-          font-size:1.2em; 
-          font-weight:bold; 
-          margin-top:1em; 
-          margin-bottom:0.5em; 
-          text-align:start }
-      div.subtitle { 
+      div.subtitle {
           color:#C0F0C0; 
           font-size:0.8em; 
           margin-bottom:1em; 
           text-align:center }
-      div.freetext { color:#F0F0F0 }
+      div.freetext {
+          color:#F0F0F0 }
+      div.boldtext {
+          color:#F0F0F0;
+          font-size:1.2em;
+          font-weight:bold;
+          margin-top:1em;
+          margin-bottom:0.5em;
+          text-align:start }
       div.list     { color:#C0C0F0 }
     </style>
   </head>
@@ -56,9 +57,10 @@ _
 
 $ 3.6.4
   % Version 3.6.4
-  _ 21.03.2025
+  _ 25.03.2025
   * Export der Speziesliste für Import durch TransektCount und TourCount
   * Einige Textanpassunge und -korrekturen
+  * Bugfix to show name correct of tour after DB import
   * Doku angepasst
 
 $ 3.6.3
@@ -362,9 +364,14 @@ $ 1.0.0
   % Version 1.0.0
   _ 18.04.2016
   ! 1. Release.
-  * TourCount basiert auf TransektCount, dessen Programmstruktur und Zählfunktionalität ursprünglich auf Teilen von BeeCount von knirirr basiert
-  * (https://github.com/knirirr/BeeCount.git)
+  * TourCount basiert auf TransektCount, dessen Programmstruktur und Zählfunktionalität ursprünglich auf Teilen von BeeCount von knirirr basiert (https://github.com/knirirr/BeeCount.git)
   * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
+  _
+  ! Andere Quellen:
+  * Angepasste AutoFitText.java, Autor: pheuschk (Open source code from stackoverflow)
+  * Angepasste ChangeLog.java, Autor: Karsten Priegnitz (Open source code from code.google.com)
+  * Angepasste CSVWriter.java, Bytecode Pty Ltd. (Apache License 2.0)
+  * Angepasster File Chooser Dialog, Google Code Archive, GNU GPL v3
   _
   ! Features:
   * Eingabeseite für Meta-Daten

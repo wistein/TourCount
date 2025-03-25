@@ -1,7 +1,17 @@
 <html>
+<!--
+Formatting commands:
+--------------------
+% title
+_ subtitle
+! freetext
+) smalltext (small text with top and bottom space)
+} smalltext1 (small text with top space)
+? textspace (small text with bottom space)
+-->
   <head>
     <style type='text/css'>
-      a            { color:#a0a0e0 }
+      a { color:#a0a0e0 }
       div.title    { 
           color:#C0F0C0; 
           font-size:1.2em; 
@@ -9,19 +19,29 @@
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
-      div.smalltext    { 
-          color:#F0F0F0; 
-          margin-top:0.5em;
-          margin-bottom:0.8em;
-          font-size:0.8em }
-      div.subtitle { 
+      div.subtitle {
           color:#C0F0C0; 
           font-size:1.0em;
           font-weight:bold;
           margin-bottom:1em;
           text-align:center }
-      div.freetext { color:#F0F0F0 }
-      div.list     { color:#C0C0F0 }
+      div.freetext {
+          color:#F0F0F0 }
+      div.smalltext    {
+          color:#F0F0F0;
+          margin-top:0.5em;
+          margin-bottom:0.8em;
+          font-size:0.8em }
+      div.smalltext1 {
+          margin-top:0.5em;
+          color:#F0F0F0;
+          font-size:0.8em }
+      div.textspace {
+          font-size:0.5em;
+          margin-bottom:0.8em;
+          color:#F0F0F0 }
+      div.list {
+          color:#C0C0F0 }
     </style>
   </head>
   <body>
@@ -49,12 +69,13 @@ $ 9
   !               TourCount species list (partly)
   ! ---------------------------------------------
   ! ...
+  ?
   ! Pieris rapae .............. 06998
   ) Small white
   ! Pieris napi ................ 07000
   ) Green-veined white
   ! Pontia daplidice ....... 07005
-  ) Bath white
+  } Bath white
   ! ...
   _ 
   ! The codes will be used as an option to sort the list and as a reference to show corresponding butterfly pictures on the counting and results page.

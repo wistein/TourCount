@@ -539,6 +539,11 @@ public class WelcomeActivity
         }
         else if (id == R.id.importBasisMenu)
         {
+            headDataSource.close();
+            individualsDataSource.close();
+            countDataSource.close();
+            sectionDataSource.close();
+
             importBasisDb();
             return true;
         }
@@ -550,21 +555,6 @@ public class WelcomeActivity
             sectionDataSource.close();
 
             importDBFile();
-
-            headDataSource.open();
-            sectionDataSource.open();
-            countDataSource.open();
-            individualsDataSource.open();
-
-            // List tour name as title
-            section = sectionDataSource.getSection();
-            try
-            {
-                Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
-            } catch (NullPointerException e)
-            {
-                // nothing
-            }
             return true;
         }
         else if (id == R.id.resetDBMenu)
@@ -852,6 +842,19 @@ public class WelcomeActivity
                             editor.putInt("count_id", 1);
                             editor.putInt("item_Position", 0);
                             editor.commit();
+
+                            // List tour name as title
+                            sectionDataSource.open();
+                            section = sectionDataSource.getSection();
+                            tourName = section.name;
+                            sectionDataSource.close();
+                            try
+                            {
+                                Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
+                            } catch (NullPointerException e)
+                            {
+                                // nothing
+                            }
 
                             // Trick: Pause for 100 msec to accept the imported DB
                             mHandler.postDelayed(() ->

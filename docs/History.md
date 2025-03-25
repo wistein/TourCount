@@ -2,9 +2,10 @@
 
 #### TourCount Copyright (C) 2016-2025, Wilhelm Stein
 
-#### Version 3.6.4 (2025-03-21)
+#### Version 3.6.4 (2025-03-25)
 - Export of the current species list for import by TransektCount and TourCount
 - Some text updates and corrections
+- Bugfix
 - Docs updated
 
 #### Version 3.6.3 (2025-03-17)

@@ -1,4 +1,13 @@
 <html>
+<!--
+Formattierungsbefehle:
+----------------------
+% Title
+_ Subtitle
+& bold
+! free text
+* bullet list item
+-->
   <head>
     <style type='text/css'>
       a { color:#a0a0e0 }
@@ -9,20 +18,20 @@
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:start }
-      div.boldtext {
-          color:#F0F0F0;
-          font-size:1.2em; 
-          font-weight:bold; 
-          margin-top:1em; 
-          margin-bottom:0.5em; 
-          text-align:start }
-      div.subtitle { 
+      div.subtitle {
           color:#C0F0C0; 
           font-size:0.8em; 
           margin-bottom:1em; 
           text-align:center }
       div.freetext {
           color:#F0F0F0 }
+      div.boldtext {
+          color:#F0F0F0;
+          font-size:1.2em;
+          font-weight:bold;
+          margin-top:1em;
+          margin-bottom:0.5em;
+          text-align:start }
       div.list {
           color:#C0C0F0 }
     </style>
@@ -48,9 +57,7 @@
   _
   & Schmetterlings-Abbildungen:
   * Adela paludicolella, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
-  * Agriphila geniculea, created from picture 'Agriphila geniculea lateral Bytom.jpg' by Adrian Tync, Poland,
-   licensed under Creative Commons Attribution-Share Alike 4.0 International, derived from
-   https://commons.wikimedia.org/wiki/Category:Agriphila_geniculea
+  * Agriphila geniculea, erstellt aus Abbildung 'Agriphila geniculea lateral Bytom.jpg' Autor: Adrian Tync, Poland, licensed under Creative Commons Attribution-Share Alike 4.0 International, derived from https://commons.wikimedia.org/wiki/Category:Agriphila_geniculea
   * Crambus pascuella, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
   * Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth,	Autor: Dumi, GNU Free Documentation License, version 1.2
   * Deltote bankiana, Autor: Andre den Ouden, lizensiert von www.saxifraga.nl, nicht-kommerzielle Verwendung erlaubt, erstellt aus http://freenatureimages.eu
@@ -66,12 +73,11 @@
   * Muschampia lavatherae, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus https://en.wikipedia.org/wiki/Muschampia_lavatherae
   * Nemaphora barbatellus, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",	Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
   * Pediasia contaminella, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus  https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
-  * Phragmataecia castaneae derived from https://species.wikimedia.org/wiki/Phragmataecia_castaneae,
-    Author: Dumi, GNU Free Documentation License, version 1.2
+  * Phragmataecia castaneae erstellt aus https://species.wikimedia.org/wiki/Phragmataecia_castaneae, Autor: Dumi, GNU Free Documentation License, version 1.2
   * Scopula rubiginata, erstellt aus Abbildungen in http://www.freenatureimages.eu/Animals/index.html, Autor: Rob Felix, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
-  * Scopula virgulata derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Zoran Bozovic, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
-  * Sesia apiformis derived from picture on https://en.wikipedia.org/wiki/Hornet_moth, Autor: Jyrki Lehto, freie Verwendung
-  * Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, Autor: Peter Gergely, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
+  * Scopula virgulata erstellt aus http://www.freenatureimages.eu/Animals/index.html, Autor: Zoran Bozovic, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
+  * Sesia apiformis erstellt aus picture on https://en.wikipedia.org/wiki/Hornet_moth, Autor: Jyrki Lehto, freie Verwendung
+  * Tiliacea aurago, erstellt aus http://www.freenatureimages.eu/Animals/index.html, Autor: Peter Gergely, lizensiert von www.saxifraga.nl frei für nicht kommerzielle Zwecke
   _
   ! Alle anderen Abbildungen sowie App-Icon und -Hintergrundbilder (C) Wilhelm Stein.
   ! Abbildungen dieser App von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke ohne explizite Erlaubnis genutzt werden.

@@ -1,7 +1,17 @@
 <html>
+<!--
+Formattierungsbefehle:
+----------------------
+% title
+_ subtitle
+! freetext
+) smalltext (small text with top and bottom space)
+} smalltext1 (small text with top space)
+? textspace (small text with bottom space)
+-->
   <head>
     <style type='text/css'>
-      a            { color:#a0a0e0 }
+      a { color:#a0a0e0 }
       div.title    { 
           color:#C0F0C0; 
           font-size:1.2em; 
@@ -9,19 +19,29 @@
           margin-top:1em; 
           margin-bottom:0.5em; 
           text-align:center }
-      div.smalltext    { 
-          color:#F0F0F0; 
-          margin-top:0.5em;
-          margin-bottom:0.8em;
-          font-size:0.8em }
-      div.subtitle { 
+      div.subtitle {
           color:#C0F0C0; 
           font-size:1.0em;
           font-weight:bold;
           margin-bottom:1em;
           text-align:center }
-      div.freetext { color:#F0F0F0 }
-      div.list     { color:#C0C0F0 }
+      div.freetext {
+          color:#F0F0F0 }
+      div.smalltext    {
+          color:#F0F0F0;
+          margin-top:0.5em;
+          margin-bottom:0.8em;
+          font-size:0.8em }
+      div.smalltext1 {
+          margin-top:0.5em;
+          color:#F0F0F0;
+          font-size:0.8em }
+      div.textspace {
+          font-size:0.5em;
+          margin-bottom:0.8em;
+          color:#F0F0F0 }
+      div.list {
+          color:#C0C0F0 }
     </style>
   </head>
   <body>
@@ -48,12 +68,13 @@
   !                   (Ausschnitt der Artenliste)
   ! ---------------------------------------------
   ! ...
+  ?
   ! Pieris rapae .............. 06998
   ) Kleiner Kohlweißling
   ! Pieris napi ................ 07000
   ) Grünaderweißling
   ! Pontia daplidice ....... 07005
-  ) Westlicher Resedafalter
+  } Westlicher Resedafalter
   ! ...
   _ 
   ! Die Codes dienen als ein Sortierkriterium für die Liste und als Referenz zur Anzeige der Falterabbildungen auf der Zähler- und auf der Ergebnisseite.
