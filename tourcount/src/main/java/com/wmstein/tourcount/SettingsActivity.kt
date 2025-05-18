@@ -2,7 +2,6 @@ package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity

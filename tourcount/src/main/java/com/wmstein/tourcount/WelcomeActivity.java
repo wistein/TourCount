@@ -418,10 +418,7 @@ public class WelcomeActivity
             switch (locationDispatcherMode)
             {
                 case 1 ->
-                {
-                    // Get location data
-                    getLoc();
-                }
+                    getLoc(); // Get location data
                 case 2 ->
                 {
                     // Stop location service

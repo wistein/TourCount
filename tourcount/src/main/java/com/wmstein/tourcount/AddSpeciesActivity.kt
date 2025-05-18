@@ -16,6 +16,7 @@ import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.AddSpeciesWidget
 import com.wmstein.tourcount.widgets.HintAddWidget
+import androidx.core.content.edit
 
 /**********************************************************************
  * AddSpeciesActivity lets you insert new species into the species list
@@ -257,9 +258,9 @@ class AddSpeciesActivity : AppCompatActivity() {
             i++
         }
 
-        val editor = prefs.edit()
-        editor.putString("is_Add", "")
-        editor.commit()
+        prefs.edit(commit = true) {
+            putString("is_Add", "")
+        }
     }
 
     // mark the selected species and consider it for the species counts list
@@ -313,9 +314,9 @@ class AddSpeciesActivity : AppCompatActivity() {
         // Store code of last selected species in sharedPreferences
         //  for Spinner in CountingActivity
         if (i > 0) {
-            val editor = prefs.edit()
-            editor.putString("new_spec_code", specCode)
-            editor.commit()
+            prefs.edit(commit = true) {
+                putString("new_spec_code", specCode)
+            }
         }
 
         // Call DummyActivity to reenter AddSpeciesActivity to rebuild the species list

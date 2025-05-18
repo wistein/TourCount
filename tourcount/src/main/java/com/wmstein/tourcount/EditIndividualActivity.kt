@@ -369,7 +369,7 @@ class EditIndividualActivity : AppCompatActivity() {
         val view = findViewById<View>(R.id.editIndividualScreen)
         val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
         val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.setTextColor(Color.RED);
+        tv.setTextColor(Color.RED)
         tv.setTypeface(tv.typeface, Typeface.BOLD)
         sB.show()
     }
