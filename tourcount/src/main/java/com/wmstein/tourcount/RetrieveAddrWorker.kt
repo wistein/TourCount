@@ -21,7 +21,7 @@ import java.net.URL
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-03-17
+ * last edited on 2025-05-08
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -61,12 +61,12 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     iStream.close()
                     reader.close()
                 } catch (e: IOException) {
-                    if (MyDebug.DLOG) Log.e(TAG, "63, Problem closing InputStream: $e")
+                    if (MyDebug.DLOG) Log.e(TAG, "64, Problem closing InputStream: $e")
                 }
             }
             xmlString = sb.toString()
             // Log gzip-content of url
-            if (MyDebug.DLOG) Log.d(TAG, "68, xmlString: $xmlString")
+            if (MyDebug.DLOG) Log.d(TAG, "69, xmlString: $xmlString")
 
             // Parse Geocoder string to write DB fields
             val sectionDataSource: SectionDataSource
@@ -83,7 +83,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 var sstart = xmlString.indexOf("<addressparts>") + 14
                 var send = xmlString.indexOf("</addressparts>")
                 xmlString = xmlString.substring(sstart, send)
-                if (MyDebug.DLOG) Log.d(TAG, "85, <addressparts>: $xmlString")
+                if (MyDebug.DLOG) Log.d(TAG, "86, <addressparts>: $xmlString")
 
                 val locality = StringBuilder()
                 val plz = StringBuilder()
@@ -247,7 +247,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 tempDataSource.close()
             }
         } catch (e: IOException) {
-            if (MyDebug.DLOG) Log.e(TAG, "220, Problem with address handling: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "250, Problem with address handling: $e")
         }
         return Result.success()
     }

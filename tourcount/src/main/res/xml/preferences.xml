@@ -92,6 +92,16 @@
             android:key="pref_bright"
             android:summary="@string/pref_bright_summ"
             android:title="@string/pref_bright"/>
+
+        <ListPreference
+            android:key="pref_prox"
+            android:defaultValue="Off"
+            android:dialogTitle="@string/pref_proximity_dialog"
+            android:entries="@array/pref_prox_entries"
+            android:entryValues="@array/pref_prox_values"
+            android:icon="@drawable/ic_speaker_phone_black_48dp"
+            android:title="@string/pref_proximity_title"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

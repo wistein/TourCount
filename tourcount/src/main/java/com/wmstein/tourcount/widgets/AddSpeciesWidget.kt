@@ -18,7 +18,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2019-04-03,
  * last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-05-02
- * last edited in Kotlin on 2024-11-25
+ * last edited in Kotlin on 2025-05-02
  */
 class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -77,20 +77,13 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
 
     // Get state of add checkbox
     fun getMarkSpec(): Boolean {
-        val checked: Boolean
-        if (markButton.isChecked)
-            checked = true
-        else
-            checked = false
+        val checked: Boolean = markButton.isChecked
         return checked
     }
 
     // Set state of add checkbox
     fun setMarkSpec(state: Boolean) {
-        if (state)
-            markButton.isChecked = true
-        else
-            markButton.isChecked = false
+        markButton.isChecked = state
     }
 
     fun setSpecId(id: String) {

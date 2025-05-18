@@ -7,6 +7,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -17,6 +18,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -80,7 +83,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-03-20
+ * last edited on 2025-05-15
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -141,18 +144,30 @@ public class WelcomeActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "144, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "147, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Get preferences
+        prefs = TourCountApplication.getPrefs();
+
+        // Proximity sensor handling in preferences menu
+        SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        // Grey out preferences menu item pref_prox when max. proximity sensitivity = null
+        boolean prefProx = mProximity != null;
+
+        // Set pref_prox enabler, used in SettingsFragment
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("enable_prox", prefProx);
+        editor.apply();
+
         setContentView(R.layout.activity_welcome);
         baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.setBackgr());
-
-        prefs = TourCountApplication.getPrefs();
-        SharedPreferences.Editor editor = prefs.edit();
 
         // Check initial storage permission state and provide dialog
         isStoragePermGranted();
@@ -165,7 +180,7 @@ public class WelcomeActivity
             editor.putBoolean("has_asked_foreground", false);
             editor.commit();
         }
-        if (MyDebug.DLOG) Log.d(TAG, "168, onCreate, storagePermGranted: " + storagePermGranted);
+        if (MyDebug.DLOG) Log.d(TAG, "183, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHandler = new DbHelper(this);
@@ -181,11 +196,11 @@ public class WelcomeActivity
         // Get tour name and check for DB integrity
         try
         {
-            if (MyDebug.DLOG) Log.i(TAG, "184, onCreate, try section");
+            if (MyDebug.DLOG) Log.i(TAG, "199, onCreate, try section");
             sectionDataSource.open();
             section = sectionDataSource.getSection();
             tourName = section.name;
-            if (MyDebug.DLOG) Log.i(TAG, "188, onCreate, tourName: " + tourName);
+            if (MyDebug.DLOG) Log.i(TAG, "203, onCreate, tourName: " + tourName);
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
@@ -221,11 +236,12 @@ public class WelcomeActivity
         if (!inFile.exists())
             exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
 
+        // New onBackPressed logic
         // Different Navigation Bar modes and layouts:
         // - Classic three-button navigation: NavBarMode = 0
         // - Two-button navigation (Android P): NavBarMode = 1
         // - Full screen gesture mode (Android Q): NavBarMode = 2
-        // Use onBackPressed logic only if 2 or 3 button Navigation bar is present.
+        // Use onBackPressed logic only if NavBarMode = 0 or 1.
         if (getNavBarMode() == 0 || getNavBarMode() == 1)
         {
             OnBackPressedCallback callback = getOnBackPressedCallback();
@@ -245,7 +261,7 @@ public class WelcomeActivity
 
         // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
         int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
-        if (MyDebug.DLOG) Log.i(TAG, "248, NavBarMode = " + iMode);
+        if (MyDebug.DLOG) Log.i(TAG, "264, NavBarMode = " + iMode);
         return iMode;
     }
 
@@ -287,13 +303,13 @@ public class WelcomeActivity
         {
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storagePermGranted = Environment.isExternalStorageManager();
-            if (MyDebug.DLOG) Log.i(TAG, "290, ManageStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "306, ManageStoragePermission: " + storagePermGranted);
         }
         else
         {
             storagePermGranted = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (MyDebug.DLOG) Log.i(TAG, "296, ExtStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "312, ExtStoragePermission: " + storagePermGranted);
         }
     }
 
@@ -310,7 +326,7 @@ public class WelcomeActivity
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "313, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "329, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -325,10 +341,10 @@ public class WelcomeActivity
         individualsDataSource.open();
 
         // Set tour name as title
-        if (MyDebug.DLOG) Log.i(TAG, "328, onResume, get section");
+        if (MyDebug.DLOG) Log.i(TAG, "344, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
-        if (MyDebug.DLOG) Log.i(TAG, "331, tourName: " + tourName);
+        if (MyDebug.DLOG) Log.i(TAG, "347, tourName: " + tourName);
         try
         {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
@@ -341,7 +357,7 @@ public class WelcomeActivity
         //   Set flag fineLocationPermGranted from self permissions
         // Store flag 'hasAskedBackground = true' in SharedPreferences
         isFineLocationPermGranted();
-        if (MyDebug.DLOG) Log.i(TAG, "344, onCreate, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "360, onCreate, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // If not yet location permission is granted prepare and query for them
@@ -367,12 +383,12 @@ public class WelcomeActivity
 
         // Get location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
-        if (MyDebug.DLOG) Log.i(TAG, "370, onResume, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "386, onResume, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // Get flag 'has_asked_background'
         boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
-        if (MyDebug.DLOG) Log.i(TAG, "375, hasAskedBackgroundLocation: "
+        if (MyDebug.DLOG) Log.i(TAG, "391, hasAskedBackgroundLocation: "
             + hasAskedBackgroundLocation);
 
         // Get background location with permissions check only once and if storage and fine location
@@ -398,7 +414,7 @@ public class WelcomeActivity
         if (fineLocationPermGranted) // current location permission state granted
         {
             // Handle action here
-            if (MyDebug.DLOG) Log.i(TAG, "401, locationDispatcher, fineLocationPermGranted: true");
+            if (MyDebug.DLOG) Log.i(TAG, "417, locationDispatcher, fineLocationPermGranted: true");
             switch (locationDispatcherMode)
             {
                 case 1 ->
@@ -627,7 +643,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "640, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "646, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -645,9 +661,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "658, onStop");
-        // Stop location service with permissions check
-
+        if (MyDebug.DLOG) Log.i(TAG, "664, onStop");
         baseLayout.invalidate();
     }
 
@@ -656,7 +670,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "669, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "673, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -704,59 +718,112 @@ public class WelcomeActivity
      * They've been put here because no database should be open at this point.
      **********************************************************************************************/
     // Import the basic DB
-    private void importBasisDb()
-    {
-        // inFile <- /storage/emulated/0/Documents/TourCount/tourcount0.db
-        File path;
-        if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-        {
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TourCount");
-        }
-        else
-        {
-            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            path = new File(path + "/TourCount");
-        }
-        inFile = new File(path, "/tourcount0.db");
+    private void importBasisDb() {
+        if (MyDebug.DLOG) Log.d(TAG, "722, importBasicDBFile");
 
-        // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
-        String destPath = getApplicationContext().getFilesDir().getPath();
-        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
-        outFile = new File(destPath);
-        if (!(inFile.exists()))
-        {
-            showSnackbar(getString(R.string.noDb));
-            return;
-        }
+        String fileExtension = ".db";
+        String fileNameStart = "tourcount0";
+        String fileHd = getString(R.string.fileHeadlineBasicDB);
 
-        // Confirm dialogue before importing
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setMessage(R.string.confirmBasisImport);
-        builder.setCancelable(false).setPositiveButton(R.string.importButton, (dialog, id) ->
-        {
-            try
-            {
-                copy(inFile, outFile);
-                showSnackbar(getString(R.string.importWin));
-
-                // Save values for initial count-id and itemposition
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("count_id", 1);
-                editor.putInt("item_Position", 0);
-                editor.apply();
-
-                Objects.requireNonNull(getSupportActionBar()).setTitle("");
-            } catch (IOException e)
-            {
-                if (MyDebug.DLOG) Log.e(TAG, "763, Failed to import database");
-                showSnackbarRed(getString(R.string.importFail));
-            }
-        }).setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-        alert = builder.create();
-        alert.show();
+        Intent intent;
+        intent = new Intent(this, AdvFileChooser.class);
+        intent.putExtra("filterFileExtension", fileExtension);
+        intent.putExtra("filterFileNameStart", fileNameStart);
+        intent.putExtra("fileHd", fileHd);
+        myActivityResultLauncher.launch(intent);
     }
+    // End of importBasisDb()
+
+    /**********************************************************************************************/
+    // Choose a tourcount db-file to load and set it to tourcount.db
+    private void importDBFile()
+    {
+        String fileExtension = ".db";
+        String fileNameStart = "tourcount_";
+        String fileHd = getString(R.string.fileHeadlineDB);
+
+        Intent intent;
+        intent = new Intent(this, AdvFileChooser.class);
+        intent.putExtra("filterFileExtension", fileExtension);
+        intent.putExtra("filterFileNameStart", fileNameStart);
+        intent.putExtra("fileHd", fileHd);
+        myActivityResultLauncher.launch(intent);
+    }
+
+    // ActivityResultLauncher is part of importDBFile()
+    // and processes the result of AdvFileChooser
+    final ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<>()
+            {
+                @Override
+                public void onActivityResult(ActivityResult result)
+                {
+                    String selectedFile;
+                    inFile = null;
+                    if (result.getResultCode() == Activity.RESULT_OK) // has a file
+                    {
+                        Intent data = result.getData();
+                        if (data != null)
+                        {
+                            selectedFile = data.getStringExtra("fileSelected");
+                            if (MyDebug.DLOG)
+                                Log.i(TAG, "771, Selected file: " + selectedFile);
+
+                            if (selectedFile != null)
+                                inFile = new File(selectedFile);
+                            else
+                                inFile = null;
+                        }
+                    }
+                    else if ((result.getResultCode() == Activity.RESULT_FIRST_USER))
+                        showSnackbarRed(getString(R.string.noFile));
+
+                    if (inFile != null)
+                    {
+                        // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
+                        String destPath = getApplicationContext().getFilesDir().getPath();
+                        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
+                        outFile = new File(destPath);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
+                        builder.setIcon(android.R.drawable.ic_dialog_alert);
+                        builder.setMessage(R.string.confirmDBImport);
+                        builder.setCancelable(false);
+                        builder.setPositiveButton(R.string.importButton, (dialog, id) ->
+                        {
+                            try
+                            {
+                                copy(inFile, outFile);
+
+                                // Save values for initial count-id and itemposition
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putInt("count_id", 1);
+                                editor.putInt("item_Position", 0);
+                                editor.apply();
+
+                                // List tour name as title
+                                sectionDataSource.open();
+                                section = sectionDataSource.getSection();
+                                tourName = section.name;
+                                sectionDataSource.close();
+                                Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
+
+                                // Trick: Pause for 100 msec to accept the imported DB
+                                mHandler.postDelayed(() ->
+                                        showSnackbar(getString(R.string.importWin)), 100);
+                            } catch (IOException e)
+                            {
+                                showSnackbarRed(getString(R.string.importFail));
+                            }
+                        });
+                        builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+                        alert = builder.create();
+                        alert.show();
+                    }
+                }
+            });
+    // End of importDBFile()
 
     /**********************************************************************************************/
     // Copy file block-wise
@@ -775,102 +842,6 @@ public class WelcomeActivity
         in.close();
         out.close();
     }
-    // End of importBasisDb() 
-
-    /************************************************************/
-    // Choose a tourcount db-file to load and set it to tourcount.db
-    private void importDBFile()
-    {
-        if (MyDebug.DLOG) Log.d(TAG, "794, importDBFile");
-
-        String fileExtension = ".db";
-        String fileName = "tourcount";
-
-        Intent intent;
-        intent = new Intent(this, AdvFileChooser.class);
-        intent.putExtra("filterFileExtension", fileExtension);
-        intent.putExtra("filterFileName", fileName);
-        myActivityResultLauncher.launch(intent);
-    }
-
-    // ActivityResultLauncher processes the result of AdvFileChooser
-    final ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<>()
-        {
-            @SuppressLint("ApplySharedPref")
-            @Override
-            public void onActivityResult(ActivityResult result)
-            {
-                String selectedFile;
-                inFile = null;
-                if (result.getResultCode() == Activity.RESULT_OK)
-                {
-                    Intent data = result.getData();
-                    if (data != null)
-                    {
-                        selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "823, File selected: " + selectedFile);
-
-                        if (selectedFile != null)
-                            inFile = new File(selectedFile);
-                        else
-                            inFile = null;
-                    }
-                }
-
-                // outFile = "/data/data/com.wmstein.tourcount/databases/tourcount.db"
-                String destPath = getApplicationContext().getFilesDir().getPath();
-                destPath = destPath.substring(0, destPath.lastIndexOf("/"))
-                    + "/databases/tourcount.db";
-                outFile = new File(destPath);
-
-                if (inFile != null)
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
-                    builder.setIcon(android.R.drawable.ic_dialog_alert);
-                    builder.setMessage(R.string.confirmDBImport);
-                    builder.setCancelable(false);
-                    builder.setPositiveButton(R.string.importButton, (dialog, id) ->
-                    {
-                        try
-                        {
-                            copy(inFile, outFile);
-
-                            // save values for initial countId and itemposition
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putInt("count_id", 1);
-                            editor.putInt("item_Position", 0);
-                            editor.commit();
-
-                            // List tour name as title
-                            sectionDataSource.open();
-                            section = sectionDataSource.getSection();
-                            tourName = section.name;
-                            sectionDataSource.close();
-                            try
-                            {
-                                Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
-                            } catch (NullPointerException e)
-                            {
-                                // nothing
-                            }
-
-                            // Trick: Pause for 100 msec to accept the imported DB
-                            mHandler.postDelayed(() ->
-                                showSnackbar(getString(R.string.importWin)), 100);
-                        } catch (IOException e)
-                        {
-                            showSnackbarRed(getString(R.string.importFail));
-                        }
-                    });
-                    builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-                    alert = builder.create();
-                    alert.show();
-                }
-            }
-        });
-    // End of importDBFile()
 
     /**********************************************************************************************/
     // Import species list from TransektCount file species_YYYY-MM-DD_hhmmss.csv
@@ -878,12 +849,14 @@ public class WelcomeActivity
     {
         // Select exported TransektCount species list file
         String fileExtension = ".csv";
-        String fileName = "species";
+        String fileNameStart = "species_";
+        String fileHd = getString(R.string.fileHeadlineCSV);
 
         Intent intent;
         intent = new Intent(this, AdvFileChooser.class);
         intent.putExtra("filterFileExtension", fileExtension);
-        intent.putExtra("filterFileName", fileName);
+        intent.putExtra("filterFileNameStart", fileNameStart);
+        intent.putExtra("fileHd", fileHd);
         listActivityResultLauncher.launch(intent);
     }
 
@@ -904,7 +877,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "904, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "880, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -912,6 +885,10 @@ public class WelcomeActivity
                             inFile = null;
                     }
                 }
+                // RESULT_FIRST_USER is set in AdvFileChooser for no file
+                else if ((result.getResultCode() == Activity.RESULT_FIRST_USER))
+                    showSnackbarRed(getString(R.string.noFile));
+
                 if (inFile != null)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
@@ -934,7 +911,7 @@ public class WelcomeActivity
     {
         try
         {
-            // Read exported TransektCount species list and write items to table counts
+            // Read exported species list and write items to table counts
             Toast.makeText(getApplicationContext(), getString(R.string.waitImport), Toast.LENGTH_SHORT).show();
             BufferedReader br = new BufferedReader(new FileReader(inFile));
             String csvLine;
@@ -996,7 +973,7 @@ public class WelcomeActivity
 
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // just verify path, result ignored
-        outFile = new File(path, "/tourcount0.db");
+        outFile = new File(path, "/tourcount0_" + tourName +".db");
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
@@ -1026,11 +1003,11 @@ public class WelcomeActivity
                 boolean d0 = tmpFile.delete();
                 if (d0)
                 {
-                    showSnackbar(getString(R.string.saveDB));
+                    showSnackbar(getString(R.string.saveBasisDB));
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1030, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1010, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1057,7 +1034,7 @@ public class WelcomeActivity
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // Just verify path, result ignored
 
-        // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.db
+        // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyyMMdd_HHmmss.db
         if (Objects.equals(tourName, ""))
             outFile = new File(path, "/tourcount_" + getcurDate() + ".db");
         else
@@ -1544,7 +1521,7 @@ public class WelcomeActivity
                         getString(R.string.sex) + ":",
                         getString(R.string.stadium) + ":",
                         getString(R.string.status123) + ":",
-                        getString(R.string.bema) + ":"
+                        getString(R.string.bema)
                     };
                 csvWrite.writeNext(arrIndHead);
 
@@ -1608,7 +1585,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1608 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1588 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1688,7 +1665,7 @@ public class WelcomeActivity
                 showSnackbar(getString(R.string.savecsv));
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1688, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1668, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1699,12 +1676,12 @@ public class WelcomeActivity
      * @noinspection ResultOfMethodCallIgnored
      * ********************************************************************************************/
     // Export current species list to both data directories
-    //  /Documents/TransektCount/species_YYYY-MM-DD_hhmmss.csv
-    //  /Documents/TourCount/species_YYYY-MM-DD_hhmmss.csv and
+    //  /Documents/TransektCount/species_YYYYMMDD_hhmmss.csv
+    //  /Documents/TourCount/species_YYYYMMDD_hhmmss.csv and
     private void exportSpeciesList()
     {
-        // outFileTour -> /storage/emulated/0/Documents/TourCount/species_yyyy-MM-dd_HHmmss.csv
-        // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_yyyy-MM-dd_HHmmss.csv
+        // outFileTour -> /storage/emulated/0/Documents/TourCount/species_yyyyMMdd_HHmmss.csv
+        // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_yyyyMMdd_HHmmss.csv
         File pathTour, outFileTour, pathTransect, outFileTransect;
         if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
@@ -1728,7 +1705,7 @@ public class WelcomeActivity
         }
         else
         {
-            // Export species list into species_yyyy-MM-dd_HHmmss.csv
+            // Export species list into species_yyyyMMdd_HHmmss.csv
             dbHandler = new DbHelper(this);
             database = dbHandler.getWritableDatabase();
 
@@ -1745,13 +1722,14 @@ public class WelcomeActivity
             // If TransektCount is installed export to /Documents/TransektCount
             if (pathTransect.exists() && pathTransect.isDirectory())
             {
+                pathTransect.mkdirs(); // Just verify pathTour, result ignored
+                if (Objects.equals(tourName, ""))
+                    outFileTransect = new File(pathTransect, "/species_Tour_" + getcurDate() + ".csv");
+                else
+                    outFileTransect = new File(pathTransect, "/species_Tour_" + tourName + "_" + getcurDate() + ".csv");
+
                 try
                 {
-                    pathTransect.mkdirs(); // Just verify pathTour, result ignored
-                    if (Objects.equals(tourName, ""))
-                        outFileTransect = new File(pathTransect, "/species_Tour_" + getcurDate() + ".csv");
-                    else
-                        outFileTransect = new File(pathTransect, "/species_Tour_" + tourName + "_" + getcurDate() + ".csv");
                     CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTransect));
 
                     int i = 0;
@@ -1889,7 +1867,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1883, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1869, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             dbHandler.close();
             r_ok = false;
@@ -1905,26 +1883,6 @@ public class WelcomeActivity
         database = dbHandler.getWritableDatabase();
 
         String sql = "DELETE FROM " + DbHelper.COUNT_TABLE;
-        database.execSQL(sql);
-
-        sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
-            + DbHelper.S_NAME + " = '', "
-            + DbHelper.S_COUNTRY + " = '', "
-            + DbHelper.S_PLZ + " = '', "
-            + DbHelper.S_CITY + " = '', "
-            + DbHelper.S_PLACE + " = '', "
-            + DbHelper.S_TEMPE + " = 0, "
-            + DbHelper.S_WIND + " = 0, "
-            + DbHelper.S_CLOUDS + " = 0, "
-            + DbHelper.S_TEMPE_END + " = 0, "
-            + DbHelper.S_WIND_END + " = 0, "
-            + DbHelper.S_CLOUDS_END + " = 0, "
-            + DbHelper.S_DATE + " = '', "
-            + DbHelper.S_START_TM + " = '', "
-            + DbHelper.S_END_TM + " = '', "
-            + DbHelper.S_NOTES + " = '', "
-            + DbHelper.S_STATE + " = '', "
-            + DbHelper.S_ST_LOCALITY + " = '';";
         database.execSQL(sql);
 
         sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;

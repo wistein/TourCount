@@ -45,6 +45,24 @@
 
             <group android:id="@+id/nav_g2">
                 <item
+                    android:id="@+id/importBasisMenu"
+                    android:icon="@drawable/importr"
+                    android:title="@string/importBasisMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/importFileMenu"
+                    android:icon="@drawable/importr"
+                    android:title="@string/importFileMenu"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/importSpeciesListMenu"
+                    android:icon="@drawable/importr"
+                    android:title="@string/importSpeciesListMenu"
+                    app:showAsAction="never" />
+            </group>
+
+            <group android:id="@+id/nav_g3">
+                <item
                     android:id="@+id/exportBasisMenu"
                     android:icon="@drawable/exportr"
                     android:title="@string/exportBasisMenu"
@@ -63,24 +81,6 @@
                     android:id="@+id/exportSpeciesListMenu"
                     android:icon="@drawable/exportr"
                     android:title="@string/exportSpeciesListMenu"
-                    app:showAsAction="never" />
-            </group>
-
-            <group android:id="@+id/nav_g3">
-                <item
-                    android:id="@+id/importBasisMenu"
-                    android:icon="@drawable/importr"
-                    android:title="@string/importBasisMenu"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/importFileMenu"
-                    android:icon="@drawable/importr"
-                    android:title="@string/importFileMenu"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/importSpeciesListMenu"
-                    android:icon="@drawable/importr"
-                    android:title="@string/importSpeciesListMenu"
                     app:showAsAction="never" />
             </group>
 

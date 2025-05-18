@@ -2,6 +2,16 @@
 
 #### TourCount Copyright (C) 2016-2025, Wilhelm Stein
 
+#### Version 3.6.5 (2025-05-18)
+- Option to set the proximity Wakelock sensitivity (if supported by device)
+- Corrected message when there is no suitable file for import
+- Export to a Basic DB now writes the tour name into the filename
+- Import of a Basic DB with file selection
+- Optional button vibration fixed for Android Version > 11
+- Some other bugfixes
+- Code, data and layout improvements
+- Docs updated
+
 #### Version 3.6.4 (2025-03-25)
 - Export of the current species list for import by TransektCount and TourCount
 - Some text updates and corrections

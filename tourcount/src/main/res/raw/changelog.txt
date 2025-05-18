@@ -56,6 +56,18 @@ _ Subtitle
   ! Suitable for Android 7.1 (Nougat) or newer
   _ 
 
+$ 3.6.5
+  % Version 3.6.5
+  _ 2025-05-18
+  * Option to set the proximity Wakelock sensitivity (if supported by device)
+  * Corrected message when there is no suitable file for import
+  * Export to a Basic DB now writes the tour name into the filename
+  * Import of a Basic DB with file selection
+  * Optional button vibration fixed for Android Version > 11
+  * Some other bugfixes
+  * Code, data and layout improvements
+  * Docs updated
+
 $ 3.6.4
   % Version 3.6.4
   _ 2025-03-25

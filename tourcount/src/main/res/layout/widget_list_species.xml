@@ -137,7 +137,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Headline ♂, ♀,... -->
+        <!-- Headline ♂|♀,... -->
         <TextView
             android:id="@+id/txt_mf"
             android:layout_width="0dp"

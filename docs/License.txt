@@ -20,7 +20,7 @@
  * Pictures of this work by Wilhelm Stein may be used for scientific or other 
  * non-commercial purposes without prior permission. 
  * But it is not permitted to upload pictures to social media platforms, as 
- * most of the mentioned licenses do not comply with and I do not agree with 
+ * most of the here mentioned licenses do not comply with and I do not agree with 
  * the licensing terms of these platforms.
  *
  * Please note that illustrations provided by other authors remain the copyright 
@@ -91,3 +91,4 @@ Butterfly pictures:
    derived from http://www.freenatureimages.eu/Animals/index.html
 
  - All other pictures, app icon and background (C) Wilhelm Stein. 
+

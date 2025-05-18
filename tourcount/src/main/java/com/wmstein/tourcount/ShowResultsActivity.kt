@@ -143,16 +143,13 @@ class ShowResultsActivity : AppCompatActivity() {
         val section = sectionDataSource!!.section
 
         // Build the screen
-        // 1. Display list name, observer name and remark by ListTitleWidget
+        // 1. Display list name and observer name by ListTitleWidget
         val ltw = ListTitleWidget(this, null)
         ltw.setListTitle(getString(R.string.titleEdit))
         ltw.setListName(section.name)
 
         ltw.setWidgetName1(getString(R.string.inspector))
         ltw.setWidgetName2(head!!.observer)
-
-        ltw.setWidgetNotes1(getString(R.string.notesHere))
-        ltw.setWidgetNotes2(section.notes)
         specArea!!.addView(ltw)
 
         // Calculate mean average values for coords and uncertainty
@@ -206,6 +203,9 @@ class ShowResultsActivity : AppCompatActivity() {
         // 3. Display the date, time, temperature, wind and clouds data
         val lmw = ListMetaWidget(this, null)
         lmw.setListMetaWidget(section)
+
+        lmw.setWidgetNotes1(getString(R.string.notesHere))
+        lmw.setWidgetNotes2(section.notes)
         specArea!!.addView(lmw)
 
         // load the species data

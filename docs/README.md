@@ -9,9 +9,10 @@ TourCount is an Android app that supports species-specific and individually loca
 - The app comes with a prepared basic database with the most common species in Europe as a starting point.
 - Databases can be individually created and adapted within the app regarding meta data and expected butterfly species.
 - You may use an individual species list per region.
-- The app contains editors to setup or adapt the current species list with add and delete species functions,
--  to prepare the meta data for a tour and
--  for individual species data of a count (e.g. status, remark or bulk count entry).
+- The app contains editors 
+  - to setup or adapt the current species list with add and delete species functions,
+  -  to prepare the meta data for a tour and
+  -  for individual species data of a count (e.g. status, remark or bulk count entry).
 - The counting page has a scroll-list to select a species by picture and name.
 - Separate counters for ♂♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
@@ -80,66 +81,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 Pictures of this work by Wilhelm Stein may be used for scientific or other non-commercial purposes without prior permission.
-But it is not permitted to upload pictures to social media platforms, as most of their licenses do not comply with and I do not agree with the licensing terms of these platforms.
+But it is not permitted to upload pictures to social media platforms, as most of here mentioned licenses do not comply with and I do not agree with the licensing terms of these platforms.
 
 Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced or distributed other than with their permission.
 
-### External references
+For detailed Copyrights on external code and pictures see the separate document "License.txt" in TourCount/docs.
 
-Integrated code from external references:
-- Basic counting functions structure from BeeCount, (C) 2016 Milo Thurston (knirirr), 
-  Apache License, Version 2.0, https://github.com/knirirr/BeeCount
-- AutoFitText.java, modified, original code from author: pheuschk, 18.04.2013, 
-  Open Source, https://pastebin.com/raw/e6WyrwSN
-- ChangeLog.java, modified, original code (C) 2011-2013, Karsten Priegnitz, 
-  Other Open Source, https://github.com/koem/android-change-log/
-- CSVWriter.java, modified, original code (C) 2015 Bytecode Pty Ltd., 
-  Apache License, Version 2.0
-- filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
-- egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, 
-  https://geotools.org/
-
-Butterfly pictures from external references: 
-- Adela paludicolella, created from picture in
-  "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",
-  Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
-- Crambus pascuella derived from https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg,
-  Author: Olaf Leillinger, GNU Free Documentation License
-- Cucullia verbasci, derived from https://en.wikipedia.org/wiki/Mullein_moth, 
-  Author: Dumi, GNU Free Documentation License, version 1.2
-- Deltote bankiana derived from http://www.freenatureimages.eu/Animals/index.html, 
-  Author: Andre den Ouden, licensed by www.saxifraga.nl free for non-commercial use
-- Evergestis extimalis derived from https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG,
-  Author: Adam Furlepa, CC BY-SA 3.0
-- Hipparchia neomiris, created from pictures of "Die Groß-Schmetterlinge der Erde",
-  Author: Adalbert Seitz, 1909, Public Domain
-- Hyles gallii derived from https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg (non-commercial use allowed)
-- Hyles hippophaes derived from https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg (non-commercial use allowed)
-- Hyponephele lupinus (Public Domain), derived from https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
-- Jordanita globulariae derived from https://commons.wikimedia.org, Author: Reza Zahiri et al, 
-  Creative Commons Attribution License (CC BY 4.0)
-- Marumba quercus derived from https://tpittaway.tripod.com/sphinx/m_que_a4.jpg (non-commercial use allowed)
-- Melanargia arge, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from 
-  https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
-- Melitaea parthenoides derived from https://en.wikipedia.org/wiki/Melitaea_parthenoides, 
-  Author: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license
-- Muschampia lavatherae derived from https://en.wikipedia.org/wiki/Muschampia_lavatherae, 
-  Author: Dumi, GNU Free Documentation License, version 1.2
-- Nemaphora barbatellus, created from picture in
-  "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",
-  Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
-- Pediasia contaminella derived from
-  https://commons.wikimedia.org/wiki/File:Pediasia_contaminella_(33480878804).jpg,
-  Author: Ben Sale, Creative Commons Attribution 2.0 Generic License
-- Phragmataecia castaneae derived from https://species.wikimedia.org/wiki/Phragmataecia_castaneae,
-  Author: Dumi, GNU Free Documentation License, version 1.2 
-- Scopula rubiginata derived from http://www.freenatureimages.eu/Animals/index.html,
-  Author: Rob Felix, licensed by www.saxifraga.nl free for non-commercial use
-- Scopula virgulata derived from http://www.freenatureimages.eu/Animals/index.html,
-  Author: Zoran Bozovic, licensed by www.saxifraga.nl free for non-commercial use
-- Sesia apiformis derived from picture on https://en.wikipedia.org/wiki/Hornet_moth
-  Author: Jyrki Lehto, free use
-- Tiliacea aurago, derived from http://www.freenatureimages.eu/Animals/index.html, 
-  Author: Peter Gergely, licensed by www.saxifraga.nl free for non-commercial use
-
-- All other pictures, app icon and background (C) Wilhelm Stein. 

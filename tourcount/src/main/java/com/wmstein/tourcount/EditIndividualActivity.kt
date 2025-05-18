@@ -2,21 +2,18 @@ package com.wmstein.tourcount
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.os.VibratorManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -26,6 +23,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -48,10 +46,9 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-02-26
+ * last edited on 2025-05-08
  */
-class EditIndividualActivity : AppCompatActivity()
-{
+class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
     private var tmp: Temp? = null
     private var counts: Count? = null
@@ -74,7 +71,8 @@ class EditIndividualActivity : AppCompatActivity()
 
     private val mHandler = Handler(Looper.getMainLooper())
     private var r: Ringtone? = null
-    private var vibratorManager: VibratorManager? = null
+
+    // Prepare vibrator service
     private var vibrator: Vibrator? = null
 
     // Location info handling
@@ -93,16 +91,17 @@ class EditIndividualActivity : AppCompatActivity()
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
     private var specName: String? = null
-    private var phase123 : Boolean? = null // true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
-    private var datestamp : String? = ""
-    private var timestamp : String? = ""
+    private var phase123: Boolean? =
+        null // true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
+    private var datestamp: String? = ""
+    private var timestamp: String? = ""
     private var code: String? = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "105, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "104, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
@@ -121,14 +120,14 @@ class EditIndividualActivity : AppCompatActivity()
         setContentView(R.layout.activity_edit_individual)
         indivArea = findViewById(R.id.edit_individual)
 
-        @Suppress("DEPRECATION")
-        if (SDK_INT >= Build.VERSION_CODES.S)
-            vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager?
-        else
-            vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator?
-
         soundButtonSound()
-        buttonVib()
+
+        // Prepare vibrator service
+        vibrator = applicationContext.getSystemService(Vibrator::class.java)
+
+        if (buttonVibPref && vibrator!!.hasVibrator()) {
+            buttonVib()
+        }
 
         // Get parameters from CountingActivity
         val extras = intent.extras
@@ -177,11 +176,11 @@ class EditIndividualActivity : AppCompatActivity()
 
         // Display the editable data
         eiw = EditIndividualWidget(this, null)
-        eiw!!.setWidgetLocality1(getString(R.string.locality)+":")
+        eiw!!.setWidgetLocality1(getString(R.string.locality) + ":")
         eiw!!.widgetLocality2 = sLocality!!
-        eiw!!.setWidgetZCoord1(getString(R.string.zcoord)+":")
-        eiw!!.setWidgetZCoord2(String.format("%.1f", height)+":")
-        eiw!!.setWidgetStadium1(getString(R.string.stadium)+":")
+        eiw!!.setWidgetZCoord1(getString(R.string.zcoord))
+        eiw!!.setWidgetZCoord2(String.format("%.1f", height))
+        eiw!!.setWidgetStadium1(getString(R.string.stadium) + ":")
         when (indivAttr) {
             1, 2, 3 -> {
                 eiw!!.widgetStadium2 = getString(R.string.stadium_1)
@@ -205,7 +204,7 @@ class EditIndividualActivity : AppCompatActivity()
         }
         if (phase123!!) {
             eiw!!.widgetState1(true) // headline status
-            eiw!!.setWidgetState1(getString(R.string.status123)+":")
+            eiw!!.setWidgetState1(getString(R.string.status123) + ":")
             eiw!!.widgetState2(true) // state
             eiw!!.setWidgetState2("")
         } else {
@@ -213,9 +212,9 @@ class EditIndividualActivity : AppCompatActivity()
             eiw!!.setWidgetState2("-")
             eiw!!.widgetState2(false)
         }
-        eiw!!.setWidgetCount1(getString(R.string.count1)+":") // icount
+        eiw!!.setWidgetCount1(getString(R.string.count1) + ":") // icount
         eiw!!.widgetCount2 = 1
-        eiw!!.setWidgetIndivNote1(getString(R.string.note)+":")
+        eiw!!.setWidgetIndivNote1(getString(R.string.note) + ":")
         eiw!!.widgetIndivNote2 = ""
         eiw!!.setWidgetXCoord1(getString(R.string.xcoord))
         eiw!!.setWidgetXCoord2(String.format("%.6f", latitude))
@@ -389,11 +388,8 @@ class EditIndividualActivity : AppCompatActivity()
                 finish()
             }
             return true
-        }
-        if (id == android.R.id.home)
-        {
-            val intent = Intent(this@EditIndividualActivity, CountingActivity::class.java)
-            startActivity(intent)
+        } else if (id == android.R.id.home) {
+            finish()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -473,34 +469,33 @@ class EditIndividualActivity : AppCompatActivity()
             try {
                 var notification: Uri?
                 if (buttonSound.isNotBlank()) notification =
-                    Uri.parse(buttonSound)
+                    buttonSound.toUri()
                 else notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 r = RingtoneManager.getRingtone(applicationContext, notification)
                 r!!.play()
                 mHandler.postDelayed(Runnable { r!!.stop() }, 400)
             } catch (e: java.lang.Exception) {
-                if (MyDebug.DLOG) Log.e(TAG, "481, could not play button sound.", e)
+                if (MyDebug.DLOG) Log.e(TAG, "478, could not play button sound.", e)
             }
         }
     }
 
-    @Suppress("DEPRECATION")
     private fun buttonVib() {
-        if (buttonVibPref) {
-            try {
-                if (SDK_INT >= 31) {
-                    vibratorManager!!.defaultVibrator
-                    vibratorManager!!.cancel()
-                } else {
-                    if (SDK_INT >= 26) vibrator!!.vibrate(
-                        VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+        if (SDK_INT >= 31) {
+            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        } else {
+            if (SDK_INT >= 26) {
+                vibrator?.vibrate(
+                    VibrationEffect.createOneShot(
+                        200,
+                        VibrationEffect.DEFAULT_AMPLITUDE
                     )
-                    else vibrator!!.vibrate(100)
-                    vibrator!!.cancel()
-                }
-            } catch (e: java.lang.Exception) {
-                if (MyDebug.DLOG) Log.e(TAG, "501, could not vibrate.", e)
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator?.vibrate(200)
             }
+            vibrator?.cancel()
         }
     }
 

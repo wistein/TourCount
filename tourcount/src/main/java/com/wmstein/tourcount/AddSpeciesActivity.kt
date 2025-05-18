@@ -40,12 +40,12 @@ class AddSpeciesActivity : AppCompatActivity() {
     // ID-list of not yet included species
     private lateinit var remainingIdArrayList: Array<String?>
 
-    // 3 ArrayLists (for names, namesG and codes) of all species from arrays.xml
+    // 3 ArrayLists (for names, namesL and codes) of all species from arrays.xml
     // will get reduced to lists of not yet included Species
     private var namesCompleteArrayList: ArrayList<String>? = null
     private var namesReducedArrayList: ArrayList<String>? = null
-    private var namesGCompleteArrayList: ArrayList<String>? = null
-    private var namesGReducedArrayList: ArrayList<String>? = null
+    private var namesLCompleteArrayList: ArrayList<String>? = null
+    private var namesLReducedArrayList: ArrayList<String>? = null
     private var codesCompleteArrayList: ArrayList<String?>? = null
     private var codesReducedArrayList: ArrayList<String?>? = null
 
@@ -121,7 +121,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
         namesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs)))
-        namesGCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_g)))
+        namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_l)))
         codesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selCodes)))
 
         // clear any existing views
@@ -191,12 +191,12 @@ class AddSpeciesActivity : AppCompatActivity() {
         for (i in 0 until codesCountListSize) {
             if (codesCompleteArrayList!!.contains(codesCountList[i])) {
                 // Remove species with specCode[i] from missing species lists.
-                // Prerequisites: Exactly correlated arrays of selCodes, selSpecs and selSpecs_g
+                // Prerequisites: Exactly correlated arrays of selCodes, selSpecs and selSpecs_l
                 specCode = codesCountList[i]
                 posSpec = codesCompleteArrayList!!.indexOf(specCode)
                 if (MyDebug.DLOG) Log.d(TAG, "197, 1. specCode: $specCode, posSpec: $posSpec")
                 namesCompleteArrayList!!.removeAt(posSpec)
-                namesGCompleteArrayList!!.removeAt(posSpec)
+                namesLCompleteArrayList!!.removeAt(posSpec)
                 codesCompleteArrayList!!.removeAt(posSpec)
             }
         }
@@ -208,27 +208,27 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Copy ...CompleteArrayLists to ...ReducedArrayLists
         namesReducedArrayList = namesCompleteArrayList
-        namesGReducedArrayList = namesGCompleteArrayList
+        namesLReducedArrayList = namesLCompleteArrayList
         codesReducedArrayList = codesCompleteArrayList
 
         // 3. Further, optionally reduce the complete Arraylists for all but initChar species
         if (initChars.length == 2) {
             // Empty ...ReducedArrayLists
             namesReducedArrayList = arrayListOf()
-            namesGReducedArrayList = arrayListOf()
+            namesLReducedArrayList = arrayListOf()
             codesReducedArrayList = arrayListOf()
 
             // Check NamesCompleteArrayList for InitChars
             for (i in 0 until namesCompleteArrayList!!.size) {
                 if (namesCompleteArrayList!![i].substring(0, 2) == initChars) {
                     specName = namesCompleteArrayList!![i]
-                    specNameG = namesGCompleteArrayList!![i]
+                    specNameG = namesLCompleteArrayList!![i]
                     specCode = codesCompleteArrayList!![i]
                     if (MyDebug.DLOG) Log.d(TAG, "227, 2. specName: $specName, specCode: $specCode")
 
                     // Assemble remaining ReducedArrayLists for all Species with initChars
                     namesReducedArrayList!!.add(specName!!)
-                    namesGReducedArrayList!!.add(specNameG!!)
+                    namesLReducedArrayList!!.add(specNameG!!)
                     codesReducedArrayList!!.add(specCode!!)
                 }
             }
@@ -248,7 +248,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         while (i < codesReducedArrayList!!.size) {
             val asw = AddSpeciesWidget(this, null)
             asw.setSpecName(namesReducedArrayList!![i])
-            asw.setSpecNameG(namesGReducedArrayList!![i])
+            asw.setSpecNameG(namesLReducedArrayList!![i])
             asw.setSpecCode(codesReducedArrayList!![i])
             asw.setPSpec(codesReducedArrayList!![i]!!)
             asw.setSpecId(remainingIdArrayList[i]!!)

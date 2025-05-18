@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-03-20 -->
+     last edited on 2025-05-05 -->
 
 <resources>
 
@@ -31,6 +31,7 @@
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveFailList">The species list could not be exported!</string>
     <string name="saveFailListTransect">Export to Documents/TransektCount failed!</string>
+    <string name="saveBasisDB">Export BasisDB to Documents/TourCount</string>
     <string name="saveDB">Export internal DB to Documents/TourCount</string>
     <string name="savecsv">Export CSV-file to Documents/TourCount</string>
     <string name="saveList">Species list exported.</string>
@@ -81,6 +82,7 @@
     <string name="fileHeadlineDB">List of selectable DB files</string>
     <string name="fileHeadlineCSV">Species lists</string>
     <string name="noFile">No file available!</string>
+    <string name="fileHeadlineBasicDB">TransektCount Basic DB files</string>
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Tour Notes:</string>
@@ -105,7 +107,7 @@
     <string name="valClouds">Clouds out of range!</string>
     <string name="date">Date:</string>
     <string name="tm">Time:</string>
-    <string name="starttm">from:</string>
+    <string name="starttm">Time from:</string>
     <string name="endtm">until:</string>
 
     <!-- EditIndividualActivity -->
@@ -209,6 +211,9 @@
     <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and will only be used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
     <string name="email_hint">Please, type in a valid email address here</string>
 
+    <string name="pref_proximity_dialog">Set the sensitivity for switching off the screen.</string>
+    <string name="pref_proximity_title">Proximity Sensor</string>
+
     <!-- CountOptionsActivity -->
     <string name="spec_Name">Name</string>
     <string name="spec_NameG">Local Name</string>
@@ -232,7 +237,7 @@
     <string name="txtLon">Lo.:</string>
     <string name="rem_Sp">Sp.-Rem.:</string>
     <string name="rem_Ind">Ind.-Rem.:</string>
-    <string name="txt_mf">♂, ♀</string>
+    <string name="txt_mf">♂|♀</string>
     <string name="txt_m">♂</string>
     <string name="txt_f">♀</string>
     <string name="txt_p">Pupa</string>
@@ -246,12 +251,11 @@
     <string name="countNameHintG">Name of Species (English)</string>
     <string name="hintTitle">Title:</string>
     <string name="hintName">Name</string>
-    <string name="notesHere">List Notes:</string>
-    <string name="hintListNotes">List notes:</string>
-
+    <string name="notesHere">Tour Notes:</string>
+    <string name="hintListNotes">Tour notes:</string>
     <string name="getHelp">Database problem! Please mail your exported \'tourcount_Tour_YYYY-MM-DD_hhmmss.db\' if you need assistance.</string>
     <string name="countCodeHint">Code</string>
-    <string name="countImagomfHint">Butterfly ♂, ♀</string>
+    <string name="countImagomfHint">Butterfly ♂|♀</string>
     <string name="countImagomHint">Butterfly ♂</string>
     <string name="countImagofHint">Butterfly ♀</string>
     <string name="countPupaHint">Pupa</string>

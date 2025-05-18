@@ -1,0 +1,9 @@
+Version 3.6.5 (18.05.2025)
+- Option zur Wahl der Empfindlichkeit des Näherungssensors (falls vom Gerät unterstützt)
+- Korrekte Meldung beim Import wenn keine passende Datei vorhanden ist
+- Export einer Basis-DB schreibt nun den Tour-Namen in den Dateinamen
+- Importfunktion der Basis-DB mit Datei-Auswahl
+- Optionale Button-Vibration gefixt für Android Version > 11
+- Weitere Bugfixes
+- Code-, Daten- und Layout-Verbesserungen
+- Doku überarbeitet

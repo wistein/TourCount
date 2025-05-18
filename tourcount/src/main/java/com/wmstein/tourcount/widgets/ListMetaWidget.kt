@@ -15,7 +15,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-03-04
+ * last edited on 2025-05-12
  */
 class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -45,6 +45,9 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     private val widget_lstartclouds2: TextView
     private val widget_lendclouds2: TextView
 
+    private val widget_notes1: TextView
+    private val widget_notes2: TextView
+
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_meta, this, true)
@@ -68,6 +71,10 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         widget_lclouds1 = findViewById(R.id.widgetLClouds1)
         widget_lstartclouds2 = findViewById(R.id.widgetLStartClouds2)
         widget_lendclouds2 = findViewById(R.id.widgetLEndClouds2)
+
+        widget_notes1 = findViewById(R.id.widgetNotes1)
+        widget_notes2 = findViewById(R.id.widgetNotes2)
+
     }
 
     // Following the SETS
@@ -97,5 +104,14 @@ class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         widget_lstartclouds2.text = section.clouds.toString()
         widget_lendclouds2.text = section.clouds_end.toString()
     }
+
+    fun setWidgetNotes1(name: String?) {
+        widget_notes1.text = name
+    }
+
+    fun setWidgetNotes2(name: String?) {
+        widget_notes2.text = name
+    }
+
 
 }

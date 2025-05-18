@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-03-20 -->
+     last edited on 2025-05-12 -->
 
 <resources>
 
@@ -20,6 +20,7 @@
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
     <string name="saveFailListTransect">Export nach Documents/TransektCount schlug fehl!</string>
+    <string name="saveBasisDB">Export der BasisDB nach Documents/TourCount</string>
     <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
     <string name="savecsv">Export der CSV-Datei nach Documents/TourCount</string>
     <string name="saveList">Export der Speziesliste.</string>
@@ -70,6 +71,7 @@
     <string name="fileHeadlineDB">Liste der DB-Dateien</string>
     <string name="fileHeadlineCSV">Spezieslisten</string>
     <string name="noFile">Keine Datei vorhanden!</string>
+    <string name="fileHeadlineBasicDB">TransektCount Basis-DB-Dateien</string>
 
     <!-- EditMetaActivity -->
     <string name="zlnotes">Bem. zur Tour:</string>
@@ -94,7 +96,7 @@
     <string name="valClouds">Wolken überprüfen!</string>
     <string name="date">Datum:</string>
     <string name="tm">Zeit:</string>
-    <string name="starttm">von:</string>
+    <string name="starttm">Zeit von:</string>
     <string name="endtm">bis:</string>
 
     <!-- EditIndividualActivity -->
@@ -198,6 +200,9 @@
     <string name="pref_email_string_summ">Erforderlich für die zuverlässige Abfrage der Adressdaten per OSM-Nominatim-Reverse-Geocoder.\nDie Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe https://wiki.openstreetmap.org/wiki/Nominatim.</string>
     <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
 
+    <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
+    <string name="pref_proximity_title">Näherungsensor</string>
+
     <!-- CountOptionsActivity -->
     <string name="spec_Name">Name</string>
     <string name="spec_NameG">Deutscher Name</string>
@@ -221,7 +226,7 @@
     <string name="txtLon">Lo.:</string>
     <string name="rem_Sp">Art-Bem.:</string>
     <string name="rem_Ind">Ind.-Bem.:</string>
-    <string name="txt_mf">♂, ♀</string>
+    <string name="txt_mf">♂|♀</string>
     <string name="txt_m">♂</string>
     <string name="txt_f">♀</string>
     <string name="txt_p">Puppe</string>
@@ -235,11 +240,11 @@
     <string name="countNameHintG">Art-Name (deutsch)</string>
     <string name="hintTitle">Titel:</string>
     <string name="hintName">Name</string>
-    <string name="notesHere">Bemerkung zur Tour:</string>
+    <string name="notesHere">Tour-Bem.:</string>
     <string name="hintListNotes">Bemerkung zur Tour:</string>
     <string name="getHelp">Datenbank-Problem! Bitte maile die exportierte \"tourcount_Tour_JJJJ-MM-TT_hhmmss.db\", falls Du Hilfe brauchst.</string>
     <string name="countCodeHint">Code</string>
-    <string name="countImagomfHint">Falter ♂, ♀</string>
+    <string name="countImagomfHint">Falter ♂|♀</string>
     <string name="countImagomHint">Falter ♂</string>
     <string name="countImagofHint">Falter ♀</string>
     <string name="countPupaHint">Puppe</string>

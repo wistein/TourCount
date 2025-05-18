@@ -14,13 +14,15 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.preference.PreferenceManager
 import java.lang.Exception
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.drawable.toDrawable
 
 /*********************************************************************
  * Handle background image and prefs
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2024-12-17
+ * last edit on 2025-05-08
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -29,21 +31,21 @@ class TourCountApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-/*
+
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (MyDebug.DLOG) {
-            Log.i(TAG, "35, StrictMode.setVmPolicy")
+            Log.i(TAG, "37, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
                     .build()
             )
         }
-*/
+
         try {
             prefs = PreferenceManager.getDefaultSharedPreferences(this)
         } catch (e: Exception) {
-            if (MyDebug.DLOG) Log.e(TAG, "46, Error: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "48, Error: $e")
         }
     }
     // End of onCreate()
@@ -54,7 +56,7 @@ class TourCountApplication : Application() {
         bMapDraw = null
 
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
-        if (MyDebug.DLOG) Log.i(TAG, "57, Backgr.: $backgroundPref")
+        if (MyDebug.DLOG) Log.i(TAG, "59, Backgr.: $backgroundPref")
 
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
         if (Build.VERSION.SDK_INT >= 30) {
@@ -70,15 +72,15 @@ class TourCountApplication : Application() {
             width = size.x
             height = size.y
         }
-        if (MyDebug.DLOG) Log.d(TAG, "73, Width: $width Height: $height")
+        if (MyDebug.DLOG) Log.d(TAG, "75, Width: $width Height: $height")
 
         var bMap: Bitmap?
         if (backgroundPref == "none") {
             // black screen
-            bMap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            bMap = createBitmap(width, height, Bitmap.Config.RGB_565)
             bMap.eraseColor(Color.BLACK)
         } else if (backgroundPref == "grey") {
-            bMap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            bMap = createBitmap(width, height, Bitmap.Config.RGB_565)
             bMap.eraseColor(-0xddddde)
         } else {
             if (height.toDouble() / width < 1.8) {
@@ -90,7 +92,7 @@ class TourCountApplication : Application() {
             }
         }
 
-        bMapDraw = BitmapDrawable(this.resources, bMap)
+        bMapDraw = bMap?.toDrawable(this.resources)
         return bMapDraw!!
     }
 

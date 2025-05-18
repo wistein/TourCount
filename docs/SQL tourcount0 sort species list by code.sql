@@ -13,7 +13,7 @@ CREATE TABLE counts
   name text,
   code text,
   notes text DEFAULT "",
-  name_g text DEFAULT "",
+  name_g text,
   PRIMARY KEY(_id)
 );
 
@@ -22,6 +22,5 @@ INSERT INTO counts (name, code, name_g)
   FROM counts_old
   order by code;
 
-DROP TABLE counts_old;  
+DROP TABLE counts_old;
 
-  

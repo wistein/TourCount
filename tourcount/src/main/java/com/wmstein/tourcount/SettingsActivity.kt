@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 
 /**********************************************************
  * Set the Settings parameters for TourCount
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2024-12-22
+ * last edited on 2025-05-01
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -41,12 +42,12 @@ class SettingsActivity : AppCompatActivity() {
         var ringtone: String
 
         val buttonSoundUri =
-            Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button)
+            ("android.resource://com.wmstein.tourcount/" + R.raw.button).toUri()
         ringtone = buttonSoundUri.toString()
         editor?.putString("button_sound", ringtone)
 
         val buttonSoundUriM =
-            Uri.parse("android.resource://com.wmstein.tourcount/" + R.raw.button_minus)
+            ("android.resource://com.wmstein.tourcount/" + R.raw.button_minus).toUri()
         ringtone = buttonSoundUriM.toString()
         editor?.putString("button_sound_minus", ringtone)
         editor?.commit()

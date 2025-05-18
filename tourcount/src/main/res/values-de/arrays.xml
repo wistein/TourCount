@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- last edited 2025-03-10 -->
+<!-- last edited 2025-05-15 -->
 
 <resources>
     <string-array name="pref_bg_entries">
@@ -31,6 +31,17 @@
 	<string-array name="pref_sort_output_values">
 		<item>names</item>
 		<item>codes</item>
+	</string-array>
+
+	<string-array name="pref_prox_entries">
+		<item>Aus</item>
+		<item>Mittel</item>
+		<item>Hoch</item>
+	</string-array>
+	<string-array name="pref_prox_values">
+		<item>Off</item>
+		<item>Medium</item>
+		<item>High</item>
 	</string-array>
 
 	<string-array name="initSpecs_g">
@@ -110,7 +121,7 @@
 		<item comment="20000">Neue Art</item>
 	</string-array>
 
-	<string-array name="selSpecs_g">
+	<string-array name="selSpecs_l">
 		<item comment="00063">Ampfer-Wurzelbohrer</item>
 		<item comment="00067">Kleiner Hopfen-Wurzelbohrer</item>
 		<item comment="00069">Adlerfarn-Wurzelbohrer</item>
@@ -133,6 +144,7 @@
 		<item comment="03951">Südwestdeutsches Grünwidderchen</item>
 		<item comment="03955a">-</item>
 		<item comment="03956">Ampfer-Grünwidderchen</item>
+		<item comment="03956*">Grünwidderchen-Kompl.</item>
 		<item comment="03959">Trauerwidderchen</item>
 		<item comment="03963">-</item>
 		<item comment="03965">-</item>
@@ -142,6 +154,7 @@
 		<item comment="03972">-</item>
 		<item comment="03973">Bibernell-Widderchen</item>
 		<item comment="03974">Thymian-Widderchen</item>
+		<item comment="03974*">Bib./Thym.-Widd.-Kompl.</item>
 		<item comment="03977">-</item>
 		<item comment="03978">-</item>
 		<item comment="03979">Bergkronwicken-Widderchen</item>
@@ -159,8 +172,10 @@
 		<item comment="03996">Hufeisenklee-Widderchen</item>
 		<item comment="03997">Elegans-Widderchen</item>
 		<item comment="03998">Sechsfleck-Widderchen</item>
+		<item comment="03998*">6-Fleck-Widd.-Kompl.</item>
 		<item comment="03999">Großes Fünffleck-Widderchen</item>
 		<item comment="04000">Sumpfhornklee-Widderchen</item>
+		<item comment="04000*">5-Fleck-Widd-Kompl.</item>
 		<item comment="04013b">Palmenmotte</item>
 		<item comment="04030">Hornissen-Glasflügler</item>
 		<item comment="04044">Großer Birken-Glasflügler</item>
@@ -238,14 +253,16 @@
 		<item comment="06906">Schwarzbrauner Würfeldickkopffalter</item>
 		<item comment="06907">Ambossfleck-Würfeldickkopffalter</item>
 		<item comment="06908">Südwestalpen-Würfeldickkopffalter</item>
-        <item comment="06909">Spätsommer-Würfeldickkopffalter</item>
+		<item comment="06909">Spätsommer-Würfeldickkopffalter</item>
 		<item comment="06911">Zweibrütiger Würfeldickkopffalter</item>
 		<item comment="06912">Sonnenröschen-Würfeldickkopffalter</item>
+		<item comment="06912*">Pyr. alv./arm.-Kompl.</item>
 		<item comment="06917">Spiegelfleck-Dickkopffalter</item>
 		<item comment="06919">Gelbwürfeliger Dickkopffalter</item>
-        <item comment="06920">Gold-Dickkopffalter</item>
+		<item comment="06920">Gold-Dickkopffalter</item>
 		<item comment="06923">Schwarzkolbiger Braundickkopffalter</item>
 		<item comment="06924">Braunkolbiger Braundickkopffalter</item>
+		<item comment="06924*">Braun-Dickkopff.-Kompl.</item>
 		<item comment="06925">Mattscheckiger Braundickkopffalter</item>
 		<item comment="06925a">Kanaren-Dickkopf</item>
 		<item comment="06928">Komma-Dickkopffalter</item>
@@ -270,6 +287,7 @@
 		<item comment="06967">Reals Tintenfleck-Weißling</item>
 		<item comment="06968">Südlicher Tintenfleck-Weißling</item>
 		<item comment="06969">Östlicher Tintenfleck-Weißling</item>
+		<item comment="06969*">Tintenfleck-Weißl.-Kompl.</item>
 		<item comment="06973">Aurorafalter</item>
 		<item comment="06974">Gelber Aurorafalter</item>
 		<item comment="06975">Östlicher Aurorafalter</item>
@@ -290,6 +308,7 @@
 		<item comment="06999">-</item>
 		<item comment="07000">Grünader-Weißling</item>
 		<item comment="07001">Bergweißling</item>
+		<item comment="07001*">Kl. Kohlweißling-Kompl.</item>
 		<item comment="07004">Alpenweißling</item>
 		<item comment="07005">Westlicher Resedafalter</item>
 		<item comment="07005a">Resedafalter</item>
@@ -301,6 +320,7 @@
 		<item comment="07018">Orangegrüner Gelbling</item>
 		<item comment="07021">Goldene Acht</item>
 		<item comment="07022">Hufeisenklee-Gelbling</item>
+		<item comment="07022*">Col. alfa./hyale-Kompl.</item>
 		<item comment="07023">-</item>
 		<item comment="07024">Zitronenfalter</item>
 		<item comment="07026">Cleopatra</item>
@@ -360,6 +380,7 @@
 		<item comment="07128">Idas-Bläuling</item>
 		<item comment="07129">Kronwicken-Bläuling</item>
 		<item comment="07129a">-</item>
+		<item comment="07129*">Ple. argus/idas/argy.-Kompl.</item>
 		<item comment="07131">Hochmoor-Bläuling</item>
 		<item comment="07139">Dunkler Alpenbläuling</item>
 		<item comment="07141">Heller Alpenbläuling</item>
@@ -367,11 +388,13 @@
 		<item comment="07144">Südlicher Sonnenröschen-Bläuling</item>
 		<item comment="07145">Kleiner Sonnenröschen-Bläuling</item>
 		<item comment="07146">Großer Sonnenröschen-Bläuling</item>
+		<item comment="07146*">Ari. ages./arta.-Kompl.</item>
 		<item comment="07152">Rotklee-Bläuling</item>
 		<item comment="07156">Escher-Bläuling</item>
 		<item comment="07157">Großer Wundklee-Bläuling</item>
 		<item comment="07160">Vogelwicken-Bläuling</item>
 		<item comment="07162">Kleiner Esparsetten-Bläuling</item>
+		<item comment="07162*">Pol. aman./ther.-Kompl.</item>
 		<item comment="07163">Hauhechel-Bläuling</item>
 		<item comment="07163a">-</item>
 		<item comment="07167">Eros-Bläuling</item>
@@ -430,6 +453,7 @@
 		<item comment="07280">Ehrenpreis-Scheckenfalter</item>
 		<item comment="07281">Östlicher Scheckenfalter</item>
 		<item comment="07283">Wachtelweizen-Scheckenfalter</item>
+		<item comment="07283*">Mel. aure./atha.-Kompl.</item>
 		<item comment="07286">Großer Eisvogel</item>
 		<item comment="07287">Kleiner Eisvogel</item>
 		<item comment="07288">Blauschwarzer Eisvogel</item>
@@ -465,6 +489,7 @@
 		<item comment="07350">Großes Ochsenauge</item>
 		<item comment="07353">Kleines Ochsenauge</item>
 		<item comment="07354">-</item>
+		<item comment="07354*">Ochsenaugen-Kompl.</item>
 		<item comment="07360">Weißbindiger Mohrenfalter</item>
 		<item comment="07361">Bergwald-Mohrenfalter</item>
 		<item comment="07362">Ähnlicher Mohrenfalter</item>
@@ -501,6 +526,7 @@
 		<item comment="07427">Blauäugiger Waldportier</item>
 		<item comment="07429">Großer Waldportier</item>
 		<item comment="07430">Kleiner Waldportier</item>
+		<item comment="07430*">Waldportier-Kompl.</item>
 		<item comment="07433">-</item>
 		<item comment="07434">Korsische Rostbinde</item>
 		<item comment="07436">Rostbinde</item>

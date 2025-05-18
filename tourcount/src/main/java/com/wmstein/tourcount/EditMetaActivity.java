@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -44,7 +45,7 @@ import java.util.Objects;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2025-02-26
+ * last edit in Java on 2025-05-08
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -88,7 +89,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "91, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "92, onCreate");
 
         setContentView(R.layout.activity_edit_meta);
 
@@ -119,7 +120,7 @@ public class EditMetaActivity extends AppCompatActivity
             @Override
             public void handleOnBackPressed()
             {
-                if (MyDebug.DLOG) Log.i(TAG, "122, handleOnBackPressed");
+                if (MyDebug.DLOG) Log.i(TAG, "123, handleOnBackPressed");
                 finish();
                 remove();
             }
@@ -133,7 +134,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "136, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "137, onResume");
 
         // Get location with permissions check
         locationDispatcherMode = 1;
@@ -198,6 +199,17 @@ public class EditMetaActivity extends AppCompatActivity
         emw.setWidgetClouds2(section.clouds);
         emw.setWidgetClouds3(section.clouds_end);
         head_area.addView(emw);
+
+        // Check for focus
+        String sName = section.name;
+        if (isNotEmpty(sName))
+        {
+            emw.requestFocus();
+        }
+        else
+        {
+            ett.requestFocus();
+        }
 
         pdate = Calendar.getInstance();
         ptime = Calendar.getInstance();
@@ -302,14 +314,13 @@ public class EditMetaActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == android.R.id.home) // back button in actionBar
         {
-            if (MyDebug.DLOG) Log.d(TAG, "305, MenuItem home");
+            if (MyDebug.DLOG) Log.d(TAG, "317, MenuItem home");
             finish();
             return true;
         }
-
-        if (id == R.id.menuSaveExit)
+        else if (id == R.id.menuSaveExit)
         {
-            if (MyDebug.DLOG) Log.d(TAG, "312, MenuItem saveExit");
+            if (MyDebug.DLOG) Log.d(TAG, "323, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;
@@ -322,7 +333,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "325, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "336, onPause");
 
         headDataSource.close();
         sectionDataSource.close();
@@ -347,7 +358,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "350, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "361, onStop");
     }
 
     @Override
@@ -355,12 +366,15 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "358, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "369, onDestroy");
+
+        head_area.clearFocus();
+        head_area.removeAllViews();
     }
 
     private boolean saveData()
     {
-        if (MyDebug.DLOG) Log.i(TAG, "363, saveData");
+        if (MyDebug.DLOG) Log.i(TAG, "377, saveData");
 
         // Save head data
         head.observer = ett.getWidgetOName2();
@@ -508,6 +522,46 @@ public class EditMetaActivity extends AppCompatActivity
                 .getInstance(this)
                 .enqueue(retrieveAddrWorkRequest);
         }
+    }
+
+    /**
+     * Following functions are taken from the Apache commons-lang3-3.4 library
+     * licensed under Apache License Version 2.0, January 2004
+     <p>
+     * Checks if a CharSequence is not empty ("") and not null.
+     <p>
+     * isNotEmpty(null)      = false
+     * isNotEmpty("")        = false
+     * isNotEmpty(" ")       = true
+     * isNotEmpty("bob")     = true
+     * isNotEmpty("  bob  ") = true
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is not empty and not null
+     */
+    public static boolean isNotEmpty(final CharSequence cs)
+    {
+        return !isEmpty(cs);
+    }
+
+    /**
+     * Checks if a CharSequence is empty ("") or null.
+     <p>
+     * isEmpty(null)      = true
+     * isEmpty("")        = true
+     * isEmpty(" ")       = false
+     * isEmpty("bob")     = false
+     * isEmpty("  bob  ") = false
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is empty or null
+     */
+    public static boolean isEmpty(final CharSequence cs)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM)
+            return cs == null || cs.isEmpty();
+        else
+            return cs == null || cs.length() == 0; // needed for older Android versions
     }
 
 }

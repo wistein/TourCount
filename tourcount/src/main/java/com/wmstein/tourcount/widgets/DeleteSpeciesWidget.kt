@@ -18,7 +18,7 @@ import java.util.Objects
  * shows list of selectable species with name, code, picture and add checkbox
  *
  * Created for TourCount by wmstein on 2024-08-22,
- * last edited on 2024-11-25
+ * last edited on 2025-05-02
  */
 class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -85,11 +85,7 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
 
     // Get state of delete checkbox
     fun getMarkSpec(): Boolean {
-        val checked: Boolean
-        if (markButton.isChecked)
-            checked = true
-        else
-            checked = false
+        val checked: Boolean = markButton.isChecked
         return checked
     }
 

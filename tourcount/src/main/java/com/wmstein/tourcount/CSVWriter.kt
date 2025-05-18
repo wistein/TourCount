@@ -26,19 +26,20 @@ import java.io.Writer
  *
  * Reduced to needed functions with modifications for TourCount by wmstein
  * Last edited in Java on 2023-06-17,
- * converted to Kotlin on 2023-07-06
+ * converted to Kotlin on 2023-07-06,
+ * last edited on 2025-05-08
  */
 internal class CSVWriter private constructor(
     private val rawWriter: Writer,
     separator: Char,
-    quotechar: Char = DEFAULT_QUOTE_CHARACTER,
-    escapechar: Char = DEFAULT_ESCAPE_CHARACTER,
+    quoteChar: Char = DEFAULT_QUOTE_CHARACTER,
+    escapeChar: Char = DEFAULT_ESCAPE_CHARACTER,
     lineEnd: String = DEFAULT_LINE_END
 ) : Closeable, Flushable {
     private val pw: PrintWriter = PrintWriter(rawWriter)
     private val separator: Char
-    private val quotechar: Char
-    private val escapechar: Char
+    private val quoteChar: Char
+    private val escapeChar: Char
     private val lineEnd: String
 
     /**
@@ -49,8 +50,8 @@ internal class CSVWriter private constructor(
     constructor(writer: Writer) : this(writer, DEFAULT_SEPARATOR)
     init {
         this.separator = separator
-        this.quotechar = quotechar
-        this.escapechar = escapechar
+        this.quoteChar = quoteChar
+        this.escapeChar = escapeChar
         this.lineEnd = lineEnd
     }
 
@@ -72,16 +73,16 @@ internal class CSVWriter private constructor(
             }
             val nextElement = nextLine[i] ?: continue
             val stringContainsSpecialCharacters = stringContainsSpecialCharacters(nextElement)
-            if (stringContainsSpecialCharacters && quotechar != NO_QUOTE_CHARACTER) {
-                sb.append(quotechar)
+            if (stringContainsSpecialCharacters && quoteChar != NO_QUOTE_CHARACTER) {
+                sb.append(quoteChar)
             }
             if (stringContainsSpecialCharacters) {
                 sb.append(processLine(nextElement))
             } else {
                 sb.append(nextElement)
             }
-            if (stringContainsSpecialCharacters && quotechar != NO_QUOTE_CHARACTER) {
-                sb.append(quotechar)
+            if (stringContainsSpecialCharacters && quoteChar != NO_QUOTE_CHARACTER) {
+                sb.append(quoteChar)
             }
         }
         sb.append(lineEnd)
@@ -95,7 +96,7 @@ internal class CSVWriter private constructor(
      * @return true if the line contains the quote, escape, separator, newline or return.
      */
     private fun stringContainsSpecialCharacters(line: String): Boolean {
-        return line.indexOf(quotechar) != -1 || line.indexOf(escapechar) != -1 || line.indexOf(
+        return line.indexOf(quoteChar) != -1 || line.indexOf(escapeChar) != -1 || line.indexOf(
             separator
         ) != -1 || line.contains(
             DEFAULT_LINE_END
@@ -124,15 +125,15 @@ internal class CSVWriter private constructor(
      * @param nextChar - character to process
      */
     private fun processCharacter(sb: StringBuilder, nextChar: Char) {
-        if (escapechar != NO_ESCAPE_CHARACTER && checkCharactersToEscape(nextChar)) {
-            sb.append(escapechar).append(nextChar)
+        if (escapeChar != NO_ESCAPE_CHARACTER && checkCharactersToEscape(nextChar)) {
+            sb.append(escapeChar).append(nextChar)
         } else {
             sb.append(nextChar)
         }
     }
 
     private fun checkCharactersToEscape(nextChar: Char): Boolean {
-        return if (quotechar == NO_QUOTE_CHARACTER) nextChar == quotechar || nextChar == escapechar || nextChar == separator else nextChar == quotechar || nextChar == escapechar
+        return if (quoteChar == NO_QUOTE_CHARACTER) nextChar == quoteChar || nextChar == escapeChar || nextChar == separator else nextChar == quoteChar || nextChar == escapeChar
     }
 
     /**

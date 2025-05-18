@@ -13,15 +13,13 @@ import java.util.Objects
  * Created by wmstein on 2016-06-06,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-07
+ * last edited on 2025-05-12
  */
 class ListTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val list_title: TextView
     private val list_name: TextView
     private val widget_name1: TextView
     private val widget_name2: TextView
-    private val widget_notes1: TextView
-    private val widget_notes2: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -30,8 +28,6 @@ class ListTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
         list_name = findViewById(R.id.listName)
         widget_name1 = findViewById(R.id.widgetName1)
         widget_name2 = findViewById(R.id.widgetName2)
-        widget_notes1 = findViewById(R.id.widgetNotes1)
-        widget_notes2 = findViewById(R.id.widgetNotes2)
     }
 
     fun setListTitle(title: String?) {
@@ -48,14 +44,6 @@ class ListTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
 
     fun setWidgetName2(name: String?) {
         widget_name2.text = name
-    }
-
-    fun setWidgetNotes1(name: String?) {
-        widget_notes1.text = name
-    }
-
-    fun setWidgetNotes2(name: String?) {
-        widget_notes2.text = name
     }
 
 }

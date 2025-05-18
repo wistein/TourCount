@@ -1,10 +1,13 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version  3.6.0:
-- Option to preselect species names by initial letters for editing them in the counting list
-- App gets completely removed from memory when finished
-- Code improvements
-- Bug fixes
+New in Version  3.6.5:
+- Option to set the proximity Wakelock sensitivity (if supported by device)
+- Corrected message when there is no suitable file for import
+- Export to a Basic DB now writes the tour name into the filename
+- Import of a Basic DB with file selection
+- Optional button vibration fixed for Android Version > 11
+- Some other bugfixes
+- Code, data and layout improvements
 - Docs updated
 
 Features:
