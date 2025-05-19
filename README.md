@@ -14,7 +14,7 @@ TourCount is an Android app that supports species-specific and individually loca
   -  to prepare the meta data for a tour and
   -  for individual species data of a count (e.g. status, remark or bulk count entry).
 - The counting page has a scroll-list to select a species by picture and name.
-- Separate counters for ♂♀, ♂, ♀, pupa, larva or egg.
+- Separate counters for ♂|♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
   location data by reverse OSM-geocoding when GPS and internet access are granted.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
