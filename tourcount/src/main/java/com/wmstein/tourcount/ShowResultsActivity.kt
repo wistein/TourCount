@@ -34,7 +34,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2025-02-25
+ * last edited on 2025-05-19
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -58,7 +58,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "60, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "61, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -84,10 +84,9 @@ class ShowResultsActivity : AppCompatActivity() {
         // new onBackPressed logic
         val callback = object :  OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.DLOG) Log.i(TAG, "86, handleOnBackPressed")
+                if (MyDebug.DLOG) Log.i(TAG, "87, handleOnBackPressed")
                 finish()
                 remove()
-//                NavUtils.navigateUpFromSameTask(this@ShowResultsActivity)
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)

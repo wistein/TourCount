@@ -29,7 +29,7 @@ import androidx.core.content.edit
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2024-11-25
+ * last edited on 2025-05-19
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -71,7 +71,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "73, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "74, onCreate")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -102,7 +102,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         // new onBackPressed logic
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.DLOG) Log.i(TAG, "104, handleOnBackPressed")
+                if (MyDebug.DLOG) Log.i(TAG, "105, handleOnBackPressed")
 
                 countDataSource!!.close()
                 finish()
@@ -116,7 +116,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "118, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "119, onResume")
 
         countDataSource!!.open()
 
@@ -158,7 +158,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         } else {
             searchAdd.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "160, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "161, initChars: $initChars")
 
             // Call DummyActivity to reenter AddSpeciesActivity for reduced add list
             countDataSource!!.close()
@@ -186,7 +186,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // 2. Build lists of all yet missing species
         val codesCountListSize = codesCountList.size
-        if (MyDebug.DLOG) Log.d(TAG, "188, codesCountListSize: $codesCountListSize")
+        if (MyDebug.DLOG) Log.d(TAG, "189, codesCountListSize: $codesCountListSize")
 
         // Reduce complete arraylists for already contained species
         for (i in 0 until codesCountListSize) {
@@ -195,15 +195,15 @@ class AddSpeciesActivity : AppCompatActivity() {
                 // Prerequisites: Exactly correlated arrays of selCodes, selSpecs and selSpecs_l
                 specCode = codesCountList[i]
                 posSpec = codesCompleteArrayList!!.indexOf(specCode)
-                if (MyDebug.DLOG) Log.d(TAG, "197, 1. specCode: $specCode, posSpec: $posSpec")
+                if (MyDebug.DLOG) Log.d(TAG, "198, 1. specCode: $specCode, posSpec: $posSpec")
                 namesCompleteArrayList!!.removeAt(posSpec)
                 namesLCompleteArrayList!!.removeAt(posSpec)
                 codesCompleteArrayList!!.removeAt(posSpec)
             }
         }
 
-        if (MyDebug.DLOG) Log.d(TAG, "204, initChars: $initChars")
-        if (MyDebug.DLOG) Log.d(TAG, "205, namesCompleteArrayListSize: "
+        if (MyDebug.DLOG) Log.d(TAG, "205, initChars: $initChars")
+        if (MyDebug.DLOG) Log.d(TAG, "206, namesCompleteArrayListSize: "
                 + namesCompleteArrayList!!.size
         )
 
@@ -225,7 +225,7 @@ class AddSpeciesActivity : AppCompatActivity() {
                     specName = namesCompleteArrayList!![i]
                     specNameG = namesLCompleteArrayList!![i]
                     specCode = codesCompleteArrayList!![i]
-                    if (MyDebug.DLOG) Log.d(TAG, "227, 2. specName: $specName, specCode: $specCode")
+                    if (MyDebug.DLOG) Log.d(TAG, "228, 2. specName: $specName, specCode: $specCode")
 
                     // Assemble remaining ReducedArrayLists for all Species with initChars
                     namesReducedArrayList!!.add(specName!!)
@@ -237,7 +237,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Create remainingIdArrayList with IDs of remaining species
         remainingIdArrayList = arrayOfNulls(codesReducedArrayList!!.size)
-        if (MyDebug.DLOG) Log.d(TAG, "239, remainingIdArrayListSize: " + remainingIdArrayList.size)
+        if (MyDebug.DLOG) Log.d(TAG, "240, remainingIdArrayListSize: " + remainingIdArrayList.size)
         var i = 0
         while (i < codesReducedArrayList!!.size) {
             remainingIdArrayList[i] = (i + 1).toString()

@@ -83,7 +83,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-05-15
+ * last edited on 2025-05-19
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -640,7 +640,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "646, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "643, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -658,7 +658,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "664, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "661, onStop");
         baseLayout.invalidate();
     }
 
@@ -667,7 +667,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "673, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "670, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -716,7 +716,7 @@ public class WelcomeActivity
      **********************************************************************************************/
     // Import the basic DB
     private void importBasisDb() {
-        if (MyDebug.DLOG) Log.d(TAG, "722, importBasicDBFile");
+        if (MyDebug.DLOG) Log.d(TAG, "719, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -765,7 +765,7 @@ public class WelcomeActivity
                         {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (MyDebug.DLOG)
-                                Log.i(TAG, "771, Selected file: " + selectedFile);
+                                Log.i(TAG, "768, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -874,7 +874,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "880, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "877, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -1004,7 +1004,7 @@ public class WelcomeActivity
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1010, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1007, Failed to export Basic DB");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1582,7 +1582,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1588 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1585 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1662,7 +1662,7 @@ public class WelcomeActivity
                 showSnackbar(getString(R.string.savecsv));
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1668, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1665, Failed to export csv file");
                 showSnackbarRed(getString(R.string.saveFail));
             }
         }
@@ -1864,7 +1864,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1869, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1867, Failed to reset DB");
             showSnackbarRed(getString(R.string.resetFail));
             dbHandler.close();
             r_ok = false;
