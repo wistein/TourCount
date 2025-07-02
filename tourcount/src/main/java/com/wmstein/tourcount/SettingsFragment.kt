@@ -32,7 +32,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         else {
             proxPref?.isEnabled = false
         }
-
     }
 
 }

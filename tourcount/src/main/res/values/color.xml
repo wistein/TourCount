@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Color collection -->
+
+<resources>
+    <color name="DarkerRed">#52001C</color>
+    <color name="DarkGreen">#006400</color>
+    <color name="DarkerGreen">#005000</color>
+    <color name="Navy">#002866</color>
+    <color name="BrightGray">#A9A9A9</color>
+    <color name="DarkerGray">#404040</color>
+    <color name="Black">#000000</color>
+</resources>

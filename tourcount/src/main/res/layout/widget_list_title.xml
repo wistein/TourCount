@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/listName"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -80,7 +80,7 @@
 
             <TextView
                 android:id="@+id/widgetName2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"

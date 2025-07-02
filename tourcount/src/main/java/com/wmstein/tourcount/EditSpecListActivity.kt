@@ -1,8 +1,6 @@
 package com.wmstein.tourcount
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Typeface
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Build
 import android.os.Bundle
@@ -11,15 +9,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
-import com.google.android.material.snackbar.Snackbar
+import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
@@ -38,7 +40,7 @@ import com.wmstein.tourcount.widgets.HintEditWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-02-10
+ * last edited on 2025-06-30
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -70,18 +72,42 @@ class EditSpecListActivity : AppCompatActivity() {
     private var sortPref: String? = null
     private var brightPref = false
     private var oldname: String? = null
+    private var mesg: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "77, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "80, onCreate")
 
         tourCount = application as TourCountApplication
 
         sortPref = prefs.getString("pref_sort_sp", "none")
         brightPref = prefs.getBoolean("pref_bright", true)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        {
+            enableEdgeToEdge()
+        }
         setContentView(R.layout.activity_edit_species_list)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.editSpecList))
+        { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. This solution sets
+            // only the bottom, left, and right dimensions, but you can apply whichever
+            // insets are appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = insets.top
+                leftMargin = insets.left
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+
+            // Return CONSUMED if you don't want the window insets to keep passing
+            // down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Set full brightness of screen
         if (brightPref) {
@@ -151,7 +177,7 @@ class EditSpecListActivity : AppCompatActivity() {
             window.attributes = params
         }
 
-        // Clear any existing views
+        // // Build the EditSpeciesList screen
         editingCountsArea!!.removeAllViews()
         speciesNotesArea!!.removeAllViews()
         hintArea1!!.removeAllViews()
@@ -199,9 +225,10 @@ class EditSpecListActivity : AppCompatActivity() {
             // Reminder: "Please, 2 characters"
             searchEdit.error = getString(R.string.initCharsL)
         } else {
+            initChars = initChars.substring(0,2)
             searchEdit.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "204, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "230, initChars: $initChars")
 
             // Call DummyActivity to reenter EditSectionListActivity for reduced add list
             val intent = Intent(this@EditSpecListActivity, DummyActivity::class.java)
@@ -260,6 +287,13 @@ class EditSpecListActivity : AppCompatActivity() {
         countDataSource!!.close()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        speciesNotesArea = null
+        editingCountsArea = null
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
@@ -299,7 +333,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.DLOG) Log.d(TAG, "302, newName: $sectName")
+        if (MyDebug.DLOG) Log.d(TAG, "335, newName: $sectName")
 
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
@@ -321,7 +355,7 @@ class EditSpecListActivity : AppCompatActivity() {
         sectionDataSource!!.saveSection(section!!)
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
-        if (MyDebug.DLOG) Log.d(TAG, "324, childcount: $childcount")
+        if (MyDebug.DLOG) Log.d(TAG, "357, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -332,7 +366,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
                 retValue =
                     if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
-                        if (MyDebug.DLOG) Log.d(TAG, "335, esw: "
+                        if (MyDebug.DLOG) Log.d(TAG, "368, esw: "
                                     + esw.countId + ", " + esw.getCountName()
                         )
 
@@ -345,24 +379,39 @@ class EditSpecListActivity : AppCompatActivity() {
                         )
                         true
                     } else {
-                        showSnackbarRed(getString(R.string.isempt))
+                        mesg = getString(R.string.isempt)
+                        Toast.makeText(
+                            applicationContext,
+                            HtmlCompat.fromHtml(
+                                "<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                            ), Toast.LENGTH_LONG
+                        ).show()
                         false
                     }
             }
         } else {
-            showSnackbarRed(
-                getString(R.string.spname) + " " + isDblName + " " + getString(R.string.orcode) + " " + isDblCode + " "
-                        + getString(R.string.isdouble)
-            )
+            mesg = getString(R.string.spname) + " " + isDblName +
+                    " " + getString(R.string.orcode) + " " + isDblCode +
+                    " " + getString(R.string.isdouble)
+            Toast.makeText(
+                applicationContext,
+                HtmlCompat.fromHtml(
+                    "<font color='red'><b>" + mesg + "</b></font>",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ), Toast.LENGTH_LONG
+            ).show()
             retValue = false
         }
 
         if (retValue) {
-            // Snackbar doesn't appear, so Toast is used
+            mesg = getString(R.string.sectSaving) + " " + section!!.name + "!"
             Toast.makeText(
-                this@EditSpecListActivity,
-                getString(R.string.sectSaving) + " " + section!!.name + "!",
-                Toast.LENGTH_SHORT
+                applicationContext,
+                HtmlCompat.fromHtml(
+                    "<font color='#008000'>" + mesg + "</font>",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ), Toast.LENGTH_SHORT
             ).show()
         }
         return retValue
@@ -377,9 +426,14 @@ class EditSpecListActivity : AppCompatActivity() {
         // Check for unique species names
         isDbl = compCountNames()
         if (isDbl != "") {
-            showSnackbarRed(
-                isDbl + " " + getString(R.string.isdouble) + " " + getString(R.string.duplicate)
-            )
+            mesg = isDbl + " " + getString(R.string.isdouble) + " " + getString(R.string.duplicate)
+            Toast.makeText(
+                applicationContext,
+                HtmlCompat.fromHtml(
+                    "<font color='red'><b>" + mesg + "</b></font>",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ), Toast.LENGTH_LONG
+            ).show()
             retValue = false
         }
         return retValue
@@ -398,7 +452,7 @@ class EditSpecListActivity : AppCompatActivity() {
             name = esw.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.DLOG) Log.d(TAG, "401, Double name = $isDblName")
+                if (MyDebug.DLOG) Log.d(TAG, "454, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -419,22 +473,12 @@ class EditSpecListActivity : AppCompatActivity() {
             code = esw.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.DLOG) Log.d(TAG, "422, Double name = $isDblCode")
+                if (MyDebug.DLOG) Log.d(TAG, "475, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)
         }
         return isDblCode
-    }
-
-    private fun showSnackbarRed(str: String) // bold red text
-    {
-        val view = findViewById<View>(R.id.editingScreen)
-        val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
-        val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.setTextColor(Color.RED);
-        tv.setTypeface(tv.typeface, Typeface.BOLD)
-        sB.show()
     }
 
     companion object {

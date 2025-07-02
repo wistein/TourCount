@@ -1,0 +1,10 @@
+Version 3.6.6 (02.07.2025)
+- Vibrator-Funktion nur bei Android-Versionen >= 8
+- Code angepasst an Erfordernisse von Android 15 (Kante-bis-Kante-Layout)
+- Einige Seiten-Layouts angepasst für "Kante-bis-Kante-Layout"
+- Alle Snackbars (Pop-up-Meldungen) zu farbigen Toasts geändert
+- Dunkler Navigations-Balken trotz deaktiviertes "Dunkles Design" in den System-Einstellungen
+- Dateinamen-Struktur der exportierten Datendateien geändert
+- Dateinamen der exportierten Spezieslisten mit Sprach-Indikator (de oder en)
+- Einige Code-Verbesserungen
+- Bugfixes

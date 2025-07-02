@@ -30,7 +30,7 @@
 
     <EditText
         android:id="@+id/spListName"
-        style="@style/LineText"
+        style="@style/BoldText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/count_background"
@@ -57,7 +57,7 @@
 
     <EditText
         android:id="@+id/notesName"
-        style="@style/LineText"
+        style="@style/BoldText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/count_background"

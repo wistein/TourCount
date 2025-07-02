@@ -1,10 +1,12 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme"
+        parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="PermissionsDialogFragmentStyle" parent="Base.Theme.AppCompat.Dialog">
+    <style name="PermissionsDialogFragmentStyle"
+        parent="Base.Theme.AppCompat.Dialog">
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
@@ -14,8 +16,14 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="LineText">
+    <style name="BoldText">
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="ListBoldText">
+        <item name="android:textColor">#EEEEEE</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">17sp</item>
     </style>

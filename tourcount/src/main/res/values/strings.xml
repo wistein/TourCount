@@ -77,7 +77,7 @@
     <string name="waitImport">Please wait, import may take a while!</string>
 
     <!-- FileChooser -->
-    <string name="currentDir">Current Dir</string>
+    <string name="importHead">Data Import</string>
     <string name="fileSize">Size</string>
     <string name="fileHeadlineDB">List of selectable DB files</string>
     <string name="fileHeadlineCSV">Species lists</string>
@@ -169,15 +169,12 @@
     <string name="initCharsL">Please, 2 chars.</string>
 
     <!-- ChangeLog -->
-    <string name="changelog_full_title">App Info</string>
+    <string name="changelog_full_title">App Info (TourCount Ver. </string>
     <string name="changelog_title">What\'s New?</string>
     <string name="changelog_show_full">more&#8230;</string>
 
-    <!-- ViewHelp -->
     <string name="viewhelp_full_title">Help (TourCount Ver.</string>
-
-    <!-- ViewLicense -->
-    <string name="viewlicense_full_title">Licenses</string>
+    <string name="viewlicense_full_title">Licenses (TourCount Ver. </string>
 
     <!-- Preferences -->
     <string name="prefs_appearance">Appearance</string>
@@ -253,7 +250,7 @@
     <string name="hintName">Name</string>
     <string name="notesHere">Tour Notes:</string>
     <string name="hintListNotes">Tour notes:</string>
-    <string name="getHelp">Database problem! Please mail your exported \'tourcount_Tour_YYYY-MM-DD_hhmmss.db\' if you need assistance.</string>
+    <string name="getHelp">Database problem! Please mail your problematic DB if you need assistance.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂|♀</string>
     <string name="countImagomHint">Butterfly ♂</string>
@@ -269,9 +266,8 @@
     <string name="app_settings">App Settings</string>
     <string name="dialog_storage_title">Storage permission required</string>
     <string name="dialog_storage_message">Please grant storage permission for TourCount to be able to export data.</string>
-    <string name="dialog_storage_hint">TourCount needs storage permission to import and export data, please grant it in the following dialog.</string>
-    <string name="storage_perm_cancel">TourCount needs storage permission to import and export data, please grant it in the Android system settings.</string>
-    <string name="storage_perm_denied">Storage permission denied. Functionality is needed to export DBs and results.</string>
+    <string name="storage_perm_cancel">Storage problem! Please grant TourCount the needed storage permission.</string>
+    <string name="storage_perm_denied">Required storage permission for TransektCount is missing.</string>
 
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>

@@ -1,14 +1,20 @@
 package com.wmstein.tourcount
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.EditSpNotesWidget
@@ -21,7 +27,7 @@ import com.wmstein.tourcount.widgets.EditSpNotesWidget
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-02-10
+ * last edited on 2025-06-28
  */
 class CountOptionsActivity : AppCompatActivity() {
     private var staticWidgetArea: LinearLayout? = null
@@ -37,11 +43,33 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "40, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "46, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        {
+            enableEdgeToEdge()
+        }
         setContentView(R.layout.activity_count_options)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.count_options)) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. This solution sets
+            // only the bottom, left, and right dimensions, but you can apply whichever
+            // insets are appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = insets.top
+                leftMargin = insets.left
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+
+            // Return CONSUMED if you don't want the window insets to keep passing
+            // down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Set full brightness of screen
         if (brightPref) {
@@ -74,7 +102,7 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "77, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "105, onResume")
 
         // Clear any existing views
         staticWidgetArea!!.removeAllViews()
@@ -105,11 +133,11 @@ class CountOptionsActivity : AppCompatActivity() {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (MyDebug.DLOG) Log.i(TAG, "108, Home")
+            if (MyDebug.DLOG) Log.i(TAG, "136, Home")
             finish()
             return true
         } else if (id == R.id.menuSaveExit) {
-            if (MyDebug.DLOG) Log.i(TAG, "112, SaveExit")
+            if (MyDebug.DLOG) Log.i(TAG, "140, SaveExit")
             if (saveData())
                 finish()
             return true
@@ -120,13 +148,19 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "123, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "151, onPause")
 
         countDataSource!!.close()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        staticWidgetArea!!.clearFocus()
+    }
+
     private fun saveData(): Boolean {
-        if (MyDebug.DLOG) Log.i(TAG, "129, saveData")
+        if (MyDebug.DLOG) Log.i(TAG, "163, saveData")
 
         // Toast here, as snackbar doesn't show up
         Toast.makeText(this@CountOptionsActivity, getString(R.string.sectSaving)

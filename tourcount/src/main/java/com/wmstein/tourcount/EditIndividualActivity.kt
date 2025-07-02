@@ -3,11 +3,10 @@ package com.wmstein.tourcount
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.Typeface
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
@@ -17,18 +16,22 @@ import android.os.Vibrator
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import com.google.android.material.snackbar.Snackbar
 import com.wmstein.egm.EarthGravitationalModel
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
@@ -46,7 +49,7 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-05-08
+ * last edited on 2025-06-28
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -91,17 +94,19 @@ class EditIndividualActivity : AppCompatActivity() {
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
     private var specName: String? = null
-    private var phase123: Boolean? =
-        null // true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
+
+    // phase123 is true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
+    private var phase123: Boolean? = null
     private var datestamp: String? = ""
     private var timestamp: String? = ""
     private var code: String? = ""
+    private var mesg: String? = null
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "104, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "109, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
@@ -110,6 +115,31 @@ class EditIndividualActivity : AppCompatActivity() {
         buttonVibPref = prefs.getBoolean("pref_button_vib", false)
         buttonSound = prefs.getString("button_sound", null).toString()
 
+        if (SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        {
+            enableEdgeToEdge()
+        }
+        setContentView(R.layout.activity_edit_individual)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.editIndividualScreen))
+        { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. This solution sets
+            // only the bottom, left, and right dimensions, but you can apply whichever
+            // insets are appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = insets.top
+                leftMargin = insets.left
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+
+            // Return CONSUMED if you don't want the window insets to keep passing
+            // down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
+
         // Set full brightness of screen
         if (brightPref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -117,7 +147,7 @@ class EditIndividualActivity : AppCompatActivity() {
             params.screenBrightness = 1.0f
             window.attributes = params
         }
-        setContentView(R.layout.activity_edit_individual)
+
         indivArea = findViewById(R.id.edit_individual)
 
         soundButtonSound()
@@ -170,7 +200,7 @@ class EditIndividualActivity : AppCompatActivity() {
         try {
             supportActionBar!!.title = specName
         } catch (_: NullPointerException) {
-            if (MyDebug.DLOG) Log.e(TAG, "173, NullPointerException: No species name!")
+            if (MyDebug.DLOG) Log.e(TAG, "203, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
@@ -284,7 +314,14 @@ class EditIndividualActivity : AppCompatActivity() {
             if (newstate in 0..6) {
                 individuals!!.state_1_6 = newstate
             } else {
-                showSnackbarRed(getString(R.string.valState))
+                mesg = getString(R.string.valState)
+                Toast.makeText(
+                    applicationContext,
+                    HtmlCompat.fromHtml(
+                        "<font color='red'><b>" + mesg + "</b></font>",
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    ), Toast.LENGTH_LONG
+                ).show()
                 return false
             }
         }
@@ -357,21 +394,19 @@ class EditIndividualActivity : AppCompatActivity() {
             individualsDataSource!!.saveIndividual(individuals)
         } else  // newcount is <= 0
         {
-            showSnackbarRed(getString(R.string.warnCount))
+            mesg = getString(R.string.warnCount)
+            Toast.makeText(
+                applicationContext,
+                HtmlCompat.fromHtml(
+                    "<font color='red'><b>" + mesg + "</b></font>",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                ), Toast.LENGTH_LONG
+            ).show()
             return false // forces input newcount > 0
         }
 
         tempDataSource!!.saveTempLoc(tmp!!)
         return true
-    }
-
-    private fun showSnackbarRed(str: String) {
-        val view = findViewById<View>(R.id.editIndividualScreen)
-        val sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG)
-        val tv = sB.view.findViewById<TextView>(R.id.snackbar_text)
-        tv.setTextColor(Color.RED)
-        tv.setTypeface(tv.typeface, Typeface.BOLD)
-        sB.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -473,9 +508,9 @@ class EditIndividualActivity : AppCompatActivity() {
                 else notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 r = RingtoneManager.getRingtone(applicationContext, notification)
                 r!!.play()
-                mHandler.postDelayed(Runnable { r!!.stop() }, 400)
+                mHandler.postDelayed({ r!!.stop() }, 400)
             } catch (e: java.lang.Exception) {
-                if (MyDebug.DLOG) Log.e(TAG, "478, could not play button sound.", e)
+                if (MyDebug.DLOG) Log.e(TAG, "513, could not play button sound.", e)
             }
         }
     }

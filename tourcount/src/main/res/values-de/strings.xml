@@ -66,7 +66,7 @@
     <string name="waitImport">Bitte warten, der Import läuft!</string>
 
     <!-- FileChooser -->
-    <string name="currentDir">Aktuelles Verz.</string>
+    <string name="importHead">Datenimport</string>
     <string name="fileSize">Größe</string>
     <string name="fileHeadlineDB">Liste der DB-Dateien</string>
     <string name="fileHeadlineCSV">Spezieslisten</string>
@@ -158,15 +158,12 @@
     <string name="initCharsL">Bitte 2 Buchst.</string>
 
     <!-- ChangeLog -->
-    <string name="changelog_full_title">App-Info</string>
+    <string name="changelog_full_title">App-Info (TourCount Ver.</string>
     <string name="changelog_title">Was ist neu?</string>
     <string name="changelog_show_full">mehr&#8230;</string>
 
-    <!-- ViewHelp -->
     <string name="viewhelp_full_title">Hilfe (TourCount Ver.</string>
-
-    <!-- ViewLicense -->
-    <string name="viewlicense_full_title">Lizenzen</string>
+    <string name="viewlicense_full_title">Lizenzen (TourCount Ver.</string>
 
     <!-- Preferences -->
     <string name="prefs_appearance">Aussehen</string>
@@ -242,7 +239,7 @@
     <string name="hintName">Name</string>
     <string name="notesHere">Tour-Bem.:</string>
     <string name="hintListNotes">Bemerkung zur Tour:</string>
-    <string name="getHelp">Datenbank-Problem! Bitte maile die exportierte \"tourcount_Tour_JJJJ-MM-TT_hhmmss.db\", falls Du Hilfe brauchst.</string>
+    <string name="getHelp">Datenbank-Problem! Falls Hilfe nötig, sende die problematische DB per E-Mail.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂|♀</string>
     <string name="countImagomHint">Falter ♂</string>
@@ -258,9 +255,8 @@
     <string name="app_settings">App-Einstellungen</string>
     <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
     <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Export der Ergebnisse.</string>
-    <string name="dialog_storage_hint">TourCount benötigt zum Datenim- und -export Speicherberechtigung, bitte diese im folgenden Dialog erteilen.</string>
-    <string name="storage_perm_cancel">TourCount benötigt zum Datenim- und -export Speicherberechtigung, bitte diese im Android-Berechtigungdialog erteilen.</string>
-    <string name="storage_perm_denied">Die Speicher-Berechtigung fehlt. Die Funktion wird benötigt für die Speicherung von DBs und Ergebnissen. </string>
+    <string name="storage_perm_cancel">Speicherproblem! Bitte die benötigte Speicherberechtigung für TourCount erteilen.</string>
+    <string name="storage_perm_denied">Die für TransektCount notwendige Speicher-Berechtigung fehlt.</string>
 
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>

@@ -12,6 +12,7 @@ import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.text.HtmlCompat
 
 /******************************************************************
  * LocationService provides the location data: latitude, longitude, height, uncertainty.
@@ -27,7 +28,7 @@ import androidx.core.app.ActivityCompat
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-01-26
+ * last edited on 2025-06-28
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -61,7 +62,14 @@ open class LocationService : Service, LocationListener {
             if (checkGPS || checkNetwork) {
                 canGetLocation = true
             } else {
-                Toast.makeText(mContext, getString(R.string.no_provider), Toast.LENGTH_SHORT).show()
+                val mesg = getString(R.string.no_provider)
+                Toast.makeText(
+                    mContext,
+                    HtmlCompat.fromHtml(
+                        "<font color='red'><b>" + mesg + "</b></font>",
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    ), Toast.LENGTH_LONG
+                ).show()
             }
 
             // if GPS is enabled get position using GPS Service
@@ -135,7 +143,7 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
             }
         } catch (e: Exception) {
-            if (MyDebug.DLOG) Log.e(TAG, "138, StopListener: $e")
+            if (MyDebug.DLOG) Log.e(TAG, "146, StopListener: $e")
         }
     }
 

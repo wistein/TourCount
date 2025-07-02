@@ -176,7 +176,7 @@
         <!-- count of individual -->
         <com.wmstein.tourcount.AutoFitText
             android:id="@+id/txtIndCnt"
-            style="@style/LineText"
+            style="@style/ListBoldText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"

@@ -2,6 +2,17 @@
 
 #### TourCount Copyright (C) 2016-2025, Wilhelm Stein
 
+#### Version 3.6.6 (2025-07-02)
+- Vibrator will only be used if Android Version is >= 8
+- Code adapted for Android 15 for now forced edge-to-edge layout
+- Some page layouts adapted for edge-to-edge layout
+- All Snackbars (pop-up notifications) changed to colored Toasts
+- Use dark navigation bar for TourCount when System setting "Dark theme" is off
+- Filename structure of exported data files changed
+- Filename of exported species list with language indicator (de or en)
+- Some code cleaning
+- Bug fixes
+
 #### Version 3.6.5 (2025-05-18)
 - Option to set the proximity Wakelock sensitivity (if supported by device)
 - Corrected message when there is no suitable file for import

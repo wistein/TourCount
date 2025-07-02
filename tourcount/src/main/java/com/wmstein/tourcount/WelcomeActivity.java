@@ -12,12 +12,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
@@ -26,13 +25,13 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -40,10 +39,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.text.HtmlCompat;
 import androidx.core.view.MenuCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.wmstein.changelog.ChangeLog;
+import com.wmstein.changelog.ViewHelp;
+import com.wmstein.changelog.ViewLicense;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -66,11 +72,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
-
-import sheetrock.panda.changelog.ChangeLog;
-import sheetrock.panda.changelog.ViewHelp;
-import sheetrock.panda.changelog.ViewLicense;
 
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
@@ -83,7 +86,7 @@ import sheetrock.panda.changelog.ViewLicense;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-05-19
+ * last edited on 2025-07-02
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -137,6 +140,7 @@ public class WelcomeActivity
 
     private String tourName = "";
     private View baseLayout;
+    private String mesg;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
     @Override
@@ -144,7 +148,7 @@ public class WelcomeActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "147, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "150, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -165,22 +169,54 @@ public class WelcomeActivity
         editor.putBoolean("enable_prox", prefProx);
         editor.apply();
 
+        // Set DarkMode when system is in BrightMode
+        int nightModeFlags = Configuration.UI_MODE_NIGHT_MASK;
+        int confUi = getResources().getConfiguration().uiMode;
+        if ((nightModeFlags & confUi) == Configuration.UI_MODE_NIGHT_NO)
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        // Use EdgeToEdge mode for Android 15+
+        if (SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        {
+            EdgeToEdge.enable(this);
+        }
+
         setContentView(R.layout.activity_welcome);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.baseLayout),
+                (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                    mlp.topMargin = insets.top;
+                    mlp.bottomMargin = insets.bottom;
+                    mlp.leftMargin = insets.left;
+                    mlp.rightMargin = insets.right;
+                    v.setLayoutParams(mlp);
+                    return WindowInsetsCompat.CONSUMED;
+                });
+
         baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.setBackgr());
 
         // Check initial storage permission state and provide dialog
         isStoragePermGranted();
-        if (!storagePermGranted)
+        if (!storagePermGranted) // in self permission
         {
-            // Ask necessary storage permission with info in Snackbar
-            showSnackbarPermission(getString(R.string.dialog_storage_hint));
+            PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                    PermissionsStorageDialogFragment.class.getName());
+
+            mesg = getString(R.string.storage_perm_denied);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
 
             // Prepare to ask foreground location permission only once
             editor.putBoolean("has_asked_foreground", false);
             editor.commit();
         }
-        if (MyDebug.DLOG) Log.d(TAG, "183, onCreate, storagePermGranted: " + storagePermGranted);
+        if (MyDebug.DLOG) Log.d(TAG, "220, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHandler = new DbHelper(this);
@@ -196,21 +232,24 @@ public class WelcomeActivity
         // Get tour name and check for DB integrity
         try
         {
-            if (MyDebug.DLOG) Log.i(TAG, "199, onCreate, try section");
+            if (MyDebug.DLOG) Log.i(TAG, "236, onCreate, try section");
             sectionDataSource.open();
             section = sectionDataSource.getSection();
             tourName = section.name;
-            if (MyDebug.DLOG) Log.i(TAG, "203, onCreate, tourName: " + tourName);
+            if (MyDebug.DLOG) Log.i(TAG, "240, onCreate, tourName: " + tourName);
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
             sectionDataSource.close();
-            showSnackbarRed(getString(R.string.corruptDb));
+            mesg = getString(R.string.corruptDb);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
 
             mHandler.postDelayed(this::finishAndRemoveTask, 2000);
         }
 
-        cl = new ChangeLog(this);
+        cl = new ChangeLog(this, prefs);
         vh = new ViewHelp(this);
         vl = new ViewLicense(this);
 
@@ -250,7 +289,7 @@ public class WelcomeActivity
     }
     // End of onCreate()
 
-    // Check for Navigation bar
+    // Check for Navigation bar (1-, 2- or 3-button mode)
     public int getNavBarMode()
     {
         Resources resources = this.getResources();
@@ -261,7 +300,7 @@ public class WelcomeActivity
 
         // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
         int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
-        if (MyDebug.DLOG) Log.i(TAG, "264, NavBarMode = " + iMode);
+        if (MyDebug.DLOG) Log.i(TAG, "307, NavBarMode = " + iMode);
         return iMode;
     }
 
@@ -289,7 +328,10 @@ public class WelcomeActivity
                 else
                 {
                     doubleBackToExitPressedTwice = true;
-                    showSnackbarBlue(getString(R.string.back_twice));
+                    mesg = getString(R.string.back_twice);
+                    Toast.makeText(getApplicationContext(),
+                            HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
                     m1Handler.postDelayed(r1, 1500);
                 }
             }
@@ -303,13 +345,13 @@ public class WelcomeActivity
         {
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storagePermGranted = Environment.isExternalStorageManager();
-            if (MyDebug.DLOG) Log.i(TAG, "306, ManageStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "352, ManageStoragePermission: " + storagePermGranted);
         }
         else
         {
             storagePermGranted = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (MyDebug.DLOG) Log.i(TAG, "312, ExtStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "358, ExtStoragePermission: " + storagePermGranted);
         }
     }
 
@@ -326,7 +368,7 @@ public class WelcomeActivity
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "329, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "375, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -341,10 +383,10 @@ public class WelcomeActivity
         individualsDataSource.open();
 
         // Set tour name as title
-        if (MyDebug.DLOG) Log.i(TAG, "344, onResume, get section");
+        if (MyDebug.DLOG) Log.i(TAG, "390, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
-        if (MyDebug.DLOG) Log.i(TAG, "347, tourName: " + tourName);
+        if (MyDebug.DLOG) Log.i(TAG, "393, tourName: " + tourName);
         try
         {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
@@ -357,7 +399,7 @@ public class WelcomeActivity
         //   Set flag fineLocationPermGranted from self permissions
         // Store flag 'hasAskedBackground = true' in SharedPreferences
         isFineLocationPermGranted();
-        if (MyDebug.DLOG) Log.i(TAG, "360, onCreate, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "406, onCreate, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // If not yet location permission is granted prepare and query for them
@@ -374,7 +416,8 @@ public class WelcomeActivity
             {
                 // Query foreground location permission first
                 // Ask necessary fine location permission after info in Snackbar
-                showSnackbarForegroundLocationPermission(getString(R.string.dialog_fine_location_hint));
+                PermissionsForegroundDialogFragment.newInstance().show(getSupportFragmentManager(),
+                        PermissionsForegroundDialogFragment.class.getName());
 
                 editor.putBoolean("has_asked_foreground", true);
                 editor.commit();
@@ -383,21 +426,22 @@ public class WelcomeActivity
 
         // Get location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
-        if (MyDebug.DLOG) Log.i(TAG, "386, onResume, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "433, onResume, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // Get flag 'has_asked_background'
         boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
-        if (MyDebug.DLOG) Log.i(TAG, "391, hasAskedBackgroundLocation: "
+        if (MyDebug.DLOG) Log.i(TAG, "438, hasAskedBackgroundLocation: "
             + hasAskedBackgroundLocation);
 
         // Get background location with permissions check only once and if storage and fine location
         //   permissions are granted
         if (storagePermGranted && fineLocationPermGranted && !hasAskedBackgroundLocation
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            && SDK_INT >= Build.VERSION_CODES.Q)
         {
             // Ask optional background location permission with info in Snackbar
-            showSnackbarBackgroundLocationPermission(getString(R.string.dialog_background_loc_hint));
+            PermissionsBackgroundDialogFragment.newInstance().show(getSupportFragmentManager(),
+                    PermissionsBackgroundDialogFragment.class.getName());
 
             // Store flag 'hasAskedBackground = true' in SharedPreferences
             editor.putBoolean("has_asked_background", true);
@@ -414,7 +458,7 @@ public class WelcomeActivity
         if (fineLocationPermGranted) // current location permission state granted
         {
             // Handle action here
-            if (MyDebug.DLOG) Log.i(TAG, "417, locationDispatcher, fineLocationPermGranted: true");
+            if (MyDebug.DLOG) Log.i(TAG, "465, locationDispatcher, fineLocationPermGranted: true");
             switch (locationDispatcherMode)
             {
                 case 1 ->
@@ -508,7 +552,16 @@ public class WelcomeActivity
             }
             else
             {
-                showSnackbarRed(getString(R.string.storage_perm_cancel));
+                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                        PermissionsStorageDialogFragment.class.getName());
+                if (storagePermGranted) {
+                    exportDb();
+                } else {
+                    mesg = getString(R.string.storage_perm_denied);
+                    Toast.makeText(this,
+                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                }
             }
             return true;
         }
@@ -520,7 +573,16 @@ public class WelcomeActivity
             }
             else
             {
-                showSnackbarRed(getString(R.string.storage_perm_cancel));
+                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                        PermissionsStorageDialogFragment.class.getName());
+                if (storagePermGranted) {
+                    exportDb2CSV();
+                } else {
+                    mesg = getString(R.string.storage_perm_denied);
+                    Toast.makeText(this,
+                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                }
             }
             return true;
         }
@@ -540,14 +602,48 @@ public class WelcomeActivity
                 }
                 else
                 {
-                    showSnackbarRed(getString(R.string.storage_perm_cancel));
+                    PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                            PermissionsStorageDialogFragment.class.getName());
+                    if (storagePermGranted) {
+                        exportBasisDb();
+                    } else {
+                        mesg = getString(R.string.storage_perm_denied);
+                        Toast.makeText(this,
+                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
             return true;
         }
         else if (id == R.id.exportSpeciesListMenu)
         {
-            exportSpeciesList();
+            if (storagePermGranted)
+            {
+                exportSpeciesList();
+            }
+            else
+            {
+                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                        PermissionsStorageDialogFragment.class.getName());
+                if (storagePermGranted)
+                {
+                    exportSpeciesList();
+                }
+                else
+                {
+                    PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                            PermissionsStorageDialogFragment.class.getName());
+                    if (storagePermGranted) {
+                        exportSpeciesList();
+                    } else {
+                        mesg = getString(R.string.storage_perm_denied);
+                        Toast.makeText(this,
+                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
             return true;
         }
         else if (id == R.id.importBasisMenu)
@@ -582,7 +678,7 @@ public class WelcomeActivity
         }
         else if (id == R.id.viewHelp)
         {
-            vh.getFullLogDialog().show();
+            vh.getDialog().show();
             return true;
         }
         else if (id == R.id.changeLog)
@@ -592,7 +688,7 @@ public class WelcomeActivity
         }
         else if (id == R.id.viewLicense)
         {
-            vl.getFullLogDialog().show();
+            vl.getDialog().show();
             return true;
         }
         else if (id == R.id.startCounting)
@@ -616,8 +712,10 @@ public class WelcomeActivity
         }
         else if (id == R.id.viewSpecies)
         {
-            Toast.makeText(getApplicationContext(), getString(R.string.wait),
-                Toast.LENGTH_SHORT).show(); // a Snackbar here comes incomplete
+            mesg = getString(R.string.wait);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
             // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
@@ -640,7 +738,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "643, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "745, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -658,7 +756,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "661, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "763, onStop");
         baseLayout.invalidate();
     }
 
@@ -667,7 +765,8 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "670, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "772, onDestroy");
+        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     // Handle button click "Counting" here
@@ -693,7 +792,10 @@ public class WelcomeActivity
     public void viewSpecies(View view)
     {
         // a Snackbar here comes incomplete
-        Toast.makeText(getApplicationContext(), getString(R.string.wait), Toast.LENGTH_SHORT).show();
+        mesg = getString(R.string.wait);
+        Toast.makeText(this,
+                HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
         // Trick: Pause for 100 msec to show toast
         mHandler.postDelayed(() ->
@@ -716,7 +818,7 @@ public class WelcomeActivity
      **********************************************************************************************/
     // Import the basic DB
     private void importBasisDb() {
-        if (MyDebug.DLOG) Log.d(TAG, "719, importBasicDBFile");
+        if (MyDebug.DLOG) Log.d(TAG, "825, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -765,7 +867,7 @@ public class WelcomeActivity
                         {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (MyDebug.DLOG)
-                                Log.i(TAG, "768, Selected file: " + selectedFile);
+                                Log.i(TAG, "874, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -773,9 +875,12 @@ public class WelcomeActivity
                                 inFile = null;
                         }
                     }
-                    else if ((result.getResultCode() == Activity.RESULT_FIRST_USER))
-                        showSnackbarRed(getString(R.string.noFile));
-
+                    else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
+                        mesg = getString(R.string.noFile);
+                        Toast.makeText(getApplicationContext(),
+                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    }
                     if (inFile != null)
                     {
                         // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
@@ -806,12 +911,16 @@ public class WelcomeActivity
                                 sectionDataSource.close();
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
-                                // Trick: Pause for 100 msec to accept the imported DB
-                                mHandler.postDelayed(() ->
-                                        showSnackbar(getString(R.string.importWin)), 100);
+                                mesg = getString(R.string.importWin);
+                                Toast.makeText(getApplicationContext(),
+                                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
                             } catch (IOException e)
                             {
-                                showSnackbarRed(getString(R.string.importFail));
+                                mesg = getString(R.string.importFail);
+                                Toast.makeText(getApplicationContext(),
+                                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                             }
                         });
                         builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
@@ -874,7 +983,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "877, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "990, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -883,9 +992,12 @@ public class WelcomeActivity
                     }
                 }
                 // RESULT_FIRST_USER is set in AdvFileChooser for no file
-                else if ((result.getResultCode() == Activity.RESULT_FIRST_USER))
-                    showSnackbarRed(getString(R.string.noFile));
-
+                else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
+                    mesg = getString(R.string.noFile);
+                    Toast.makeText(getApplicationContext(),
+                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                }
                 if (inFile != null)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
@@ -904,12 +1016,40 @@ public class WelcomeActivity
             }
         });
 
+    // Clear DB for import of external species list
+    private void clearDBforImport()
+    {
+        dbHandler = new DbHelper(this);
+        database = dbHandler.getWritableDatabase();
+
+        String sql = "DELETE FROM " + DbHelper.COUNT_TABLE;
+        database.execSQL(sql);
+
+        sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
+        database.execSQL(sql);
+
+        sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
+                + DbHelper.T_TEMP_LOC + " = '', "
+                + DbHelper.T_TEMP_CNT + " = 0;";
+        database.execSQL(sql);
+
+        dbHandler.close();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("item_Position", 0);
+        editor.putInt("count_id", 1);
+        editor.apply();
+    }
+
     private void readCSV(File inFile)
     {
         try
         {
             // Read exported species list and write items to table counts
-            Toast.makeText(getApplicationContext(), getString(R.string.waitImport), Toast.LENGTH_SHORT).show();
+            mesg = getString(R.string.waitImport);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             BufferedReader br = new BufferedReader(new FileReader(inFile));
             String csvLine;
             List<String> codeArray = new ArrayList<>();
@@ -928,10 +1068,16 @@ public class WelcomeActivity
                 i++;
             }
             br.close();
-            showSnackbar(getString(R.string.importList));
+            mesg = getString(R.string.importList);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
         } catch (Exception e)
         {
-            showSnackbarRed(getString(R.string.importListFail));
+            mesg = getString(R.string.importListFail);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         }
     }
     // End of importSpeciesList()
@@ -970,14 +1116,20 @@ public class WelcomeActivity
 
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // just verify path, result ignored
-        outFile = new File(path, "/tourcount0_" + tourName +".db");
+        if (Objects.equals(tourName, ""))
+            outFile = new File(path, "/tourcount0.db");
+        else
+            outFile = new File(path, "/tourcount0_" + tourName +".db");
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
 
         if (!mExternalStorageWriteable)
         {
-            showSnackbarRed(getString(R.string.noCard));
+            mesg = getString(R.string.noCard);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -1000,12 +1152,18 @@ public class WelcomeActivity
                 boolean d0 = tmpFile.delete();
                 if (d0)
                 {
-                    showSnackbar(getString(R.string.saveBasisDB));
+                    mesg = getString(R.string.saveBasisDB);
+                    Toast.makeText(this,
+                            HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1007, Failed to export Basic DB");
-                showSnackbarRed(getString(R.string.saveFail));
+                if (MyDebug.DLOG) Log.e(TAG, "1166, Failed to export Basic DB");
+                mesg = getString(R.string.saveFail);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1035,7 +1193,7 @@ public class WelcomeActivity
         if (Objects.equals(tourName, ""))
             outFile = new File(path, "/tourcount_" + getcurDate() + ".db");
         else
-            outFile = new File(path, "/tourcount_" + tourName + "_" + getcurDate() + ".db");
+            outFile = new File(path, "/tourcount_" + getcurDate() + "_" + tourName + ".db");
 
         // inFile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
         String inPath = getApplicationContext().getFilesDir().getPath();
@@ -1048,7 +1206,10 @@ public class WelcomeActivity
 
         if (!mExternalStorageWriteable)
         {
-            showSnackbarRed(getString(R.string.noCard));
+            mesg = getString(R.string.noCard);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -1056,10 +1217,16 @@ public class WelcomeActivity
             try
             {
                 copy(inFile, outFile);
-                showSnackbar(getString(R.string.saveDB));
+                mesg = getString(R.string.saveDB);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             } catch (IOException e)
             {
-                showSnackbarRed(getString(R.string.saveFail));
+                mesg = getString(R.string.saveFail);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1075,7 +1242,7 @@ public class WelcomeActivity
      */
     private void exportDb2CSV()
     {
-        // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyy-MM-dd_HHmmss.csv
+        // outFile -> /storage/emulated/0/Documents/TourCount/Tour_yyyyMMdd_HHmmss_tourname.csv
         //   and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
         if (SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
@@ -1095,7 +1262,7 @@ public class WelcomeActivity
         if (Objects.equals(tourName, ""))
             outFile = new File(path, "/Tour_" + getcurDate() + ".csv");
         else
-            outFile = new File(path, "/Tour_" + tourName + "_" + getcurDate() + ".csv");
+            outFile = new File(path, "/Tour_" + getcurDate() + "_" + tourName + ".csv");
 
         String sectName;
         String sectNotes;
@@ -1118,7 +1285,10 @@ public class WelcomeActivity
 
         if (!mExternalStorageWriteable)
         {
-            showSnackbarRed(getString(R.string.noCard));
+            mesg = getString(R.string.noCard);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -1582,7 +1752,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1585 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1759 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1659,11 +1829,17 @@ public class WelcomeActivity
                 csvWrite.close();
                 dbHandler.close();
 
-                showSnackbar(getString(R.string.savecsv));
+                mesg = getString(R.string.savecsv);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1665, Failed to export csv file");
-                showSnackbarRed(getString(R.string.saveFail));
+                mesg = getString(R.string.saveFail);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                if (MyDebug.DLOG) Log.e(TAG, "1847, Failed to export csv file");
             }
         }
     }
@@ -1698,7 +1874,10 @@ public class WelcomeActivity
 
         if (!mExternalStorageWriteable)
         {
-            showSnackbarRed(getString(R.string.noCard));
+            mesg = getString(R.string.noCard);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -1720,11 +1899,23 @@ public class WelcomeActivity
             if (pathTransect.exists() && pathTransect.isDirectory())
             {
                 pathTransect.mkdirs(); // Just verify pathTour, result ignored
-                if (Objects.equals(tourName, ""))
-                    outFileTransect = new File(pathTransect, "/species_Tour_" + getcurDate() + ".csv");
-                else
-                    outFileTransect = new File(pathTransect, "/species_Tour_" + tourName + "_" + getcurDate() + ".csv");
-
+                String language = Locale.getDefault().toString().substring(0, 2);
+                if (language.equals("de")) {
+                    if (Objects.equals(tourName, ""))
+                        outFileTransect = new File(pathTransect, "/species_Tour_de"
+                                + getcurDate() + ".csv");
+                    else
+                        outFileTransect = new File(pathTransect, "/species_Tour_de"
+                                + getcurDate() + "_" + tourName + ".csv");
+                }
+                else {
+                    if (Objects.equals(tourName, ""))
+                        outFileTransect = new File(pathTransect, "/species_Tour_en"
+                                + getcurDate() + ".csv");
+                    else
+                        outFileTransect = new File(pathTransect, "/species_Tour_en"
+                                + getcurDate() + "_" + tourName + ".csv");
+                    }
                 try
                 {
                     CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTransect));
@@ -1744,7 +1935,10 @@ public class WelcomeActivity
                     csvWrite.close();
                 } catch (Exception e)
                 {
-                    showSnackbarRed(getString(R.string.saveFailListTransect));
+                    mesg = getString(R.string.saveFailListTransect);
+                    Toast.makeText(this,
+                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -1755,7 +1949,7 @@ public class WelcomeActivity
                 if (Objects.equals(tourName, ""))
                     outFileTour = new File(pathTour, "/species_Tour_" + getcurDate() + ".csv");
                 else
-                    outFileTour = new File(pathTour, "/species_Tour_" + tourName + "_" + getcurDate() + ".csv");
+                    outFileTour = new File(pathTour, "/species_Tour_" + getcurDate() + "_" + tourName + ".csv");
                 CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTour));
 
                 int i = 0;
@@ -1771,10 +1965,16 @@ public class WelcomeActivity
                     csvWrite.writeNext(specLine);
                 }
                 csvWrite.close();
-                showSnackbar(getString(R.string.saveList));
+                mesg = getString(R.string.saveList);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             } catch (Exception e)
             {
-                showSnackbarRed(getString(R.string.saveFailList));
+                mesg = getString(R.string.saveFailList);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1794,7 +1994,10 @@ public class WelcomeActivity
             boolean r_ok = clearDBValues();
             if (r_ok)
             {
-                showSnackbar(getString(R.string.reset2basic));
+                mesg = getString(R.string.reset2basic);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             }
             Objects.requireNonNull(getSupportActionBar()).setTitle("");
         });
@@ -1864,130 +2067,16 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "1867, Failed to reset DB");
-            showSnackbarRed(getString(R.string.resetFail));
+            if (MyDebug.DLOG) Log.e(TAG, "2075, Failed to reset DB");
+            mesg = getString(R.string.resetFail);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
             dbHandler.close();
             r_ok = false;
         }
         return r_ok;
     }
     // End of resetToBasisDb()
-
-    // Clear DB for import of external species list
-    private void clearDBforImport()
-    {
-        dbHandler = new DbHelper(this);
-        database = dbHandler.getWritableDatabase();
-
-        String sql = "DELETE FROM " + DbHelper.COUNT_TABLE;
-        database.execSQL(sql);
-
-        sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
-        database.execSQL(sql);
-
-        sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-            + DbHelper.T_TEMP_LOC + " = '', "
-            + DbHelper.T_TEMP_CNT + " = 0;";
-        database.execSQL(sql);
-
-        dbHandler.close();
-
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("item_Position", 0);
-        editor.putInt("count_id", 1);
-        editor.apply();
-    }
-
-    // Green message to point something out
-    private void showSnackbar(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextColor(Color.GREEN);
-        tv.setGravity(Gravity.CENTER);
-        sB.show();
-    }
-
-    // Red warning message
-    private void showSnackbarRed(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        tv.setTextColor(Color.RED);
-        tv.setGravity(Gravity.CENTER);
-        sB.show();
-    }
-
-    // Cyan message to do something
-    private void showSnackbarBlue(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        tv.setTextColor(Color.CYAN);
-        tv.setGravity(Gravity.CENTER);
-        sB.show();
-    }
-
-    // Blue storage permission message with button before granting dialog
-    private void showSnackbarPermission(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_INDEFINITE);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        tv.setTextColor(Color.CYAN);
-        tv.setMaxLines(3);
-        tv.setGravity(Gravity.CENTER);
-        sB.setAction("Ok", View ->
-        {
-            sB.dismiss();
-            PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                PermissionsStorageDialogFragment.class.getName());
-        });
-        sB.show();
-    }
-
-    // Blue foreground location permission message with button before granting dialog
-    private void showSnackbarForegroundLocationPermission(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_INDEFINITE);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        tv.setTextColor(Color.CYAN);
-        tv.setMaxLines(7);
-        tv.setGravity(Gravity.CENTER);
-        sB.setAction("Ok", View ->
-        {
-            sB.dismiss();
-            PermissionsForegroundDialogFragment.newInstance().show(getSupportFragmentManager(),
-                PermissionsForegroundDialogFragment.class.getName());
-        });
-        sB.show();
-    }
-
-    // Blue background location permission message with button before granting dialog
-    private void showSnackbarBackgroundLocationPermission(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout);
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_INDEFINITE);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        tv.setTextColor(Color.CYAN);
-        tv.setMaxLines(5);
-        tv.setGravity(Gravity.CENTER);
-        sB.setAction("Ok", View ->
-        {
-            sB.dismiss();
-            PermissionsBackgroundDialogFragment.newInstance().show(getSupportFragmentManager(),
-                PermissionsBackgroundDialogFragment.class.getName());
-        });
-        sB.show();
-    }
 
 }

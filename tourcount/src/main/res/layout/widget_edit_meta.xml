@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/widgetDate2"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/widgetStartTm2"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -117,7 +117,7 @@
 
             <TextView
                 android:id="@+id/widgetEndTm2"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -196,7 +196,7 @@
 
             <EditText
                 android:id="@+id/widgetStartTemp"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
@@ -210,7 +210,7 @@
 
             <EditText
                 android:id="@+id/widgetStartWind"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
@@ -224,7 +224,7 @@
 
             <EditText
                 android:id="@+id/widgetStartClouds"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
@@ -247,7 +247,7 @@
 
             <EditText
                 android:id="@+id/widgetEndTemp"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
@@ -261,7 +261,7 @@
 
             <EditText
                 android:id="@+id/widgetEndWind"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"
@@ -275,7 +275,7 @@
 
             <EditText
                 android:id="@+id/widgetEndClouds"
-                style="@style/LineText"
+                style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/count_background"

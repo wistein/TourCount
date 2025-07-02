@@ -11,8 +11,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.CursorIndexOutOfBoundsException;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,6 +18,7 @@ import android.hardware.SensorManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -38,11 +38,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -75,7 +79,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2025-05-08
+ * last edited in Java on 2025-06-28
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -142,12 +146,13 @@ public class CountingActivity
     // Prepare proximity sensor usage
     private SensorManager mSensorManager;
     private Sensor mProximity;
+    private String mesg = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "150, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "155, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -173,6 +178,9 @@ public class CountingActivity
             getWindow().setAttributes(params);
         }
 
+        if (SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+            EdgeToEdge.enable(this);
+
         // Distinguish between left-/ right-handed counting page layout
         if (lhandPref) {
             setContentView(R.layout.activity_counting_lh);
@@ -181,13 +189,35 @@ public class CountingActivity
             count_area = findViewById(R.id.countCountiLayoutLH);
             notes_area1 = findViewById(R.id.sectionNotesLayoutLH);
             head_area2 = findViewById(R.id.countHead2LayoutLH);
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreenLH),
+                    (v, windowInsets) -> {
+                        Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                        mlp.topMargin = insets.top;
+                        mlp.bottomMargin = insets.bottom;
+                        mlp.leftMargin = insets.left;
+                        mlp.rightMargin = insets.right;
+                        v.setLayoutParams(mlp);
+                        return WindowInsetsCompat.CONSUMED;
+                    });
         } else {
             setContentView(R.layout.activity_counting);
-            LinearLayout counting_screen = findViewById(R.id.counting_screen);
+            LinearLayout counting_screen = findViewById(R.id.countingScreen);
             counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayout);
             notes_area1 = findViewById(R.id.sectionNotesLayout);
             head_area2 = findViewById(R.id.countHead2Layout);
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreen),
+                    (v, windowInsets) -> {
+                        Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                        mlp.topMargin = insets.top;
+                        mlp.bottomMargin = insets.bottom;
+                        mlp.leftMargin = insets.left;
+                        mlp.rightMargin = insets.right;
+                        v.setLayoutParams(mlp);
+                        return WindowInsetsCompat.CONSUMED;
+                    });
         }
 
         // Proximity sensor handling screen on/off
@@ -232,7 +262,7 @@ public class CountingActivity
                 public void handleOnBackPressed() {
                     disableProximitySensor();
 
-                    if (MyDebug.DLOG) Log.i(TAG, "235, handleOnBackPressed");
+                    if (MyDebug.DLOG) Log.i(TAG, "265, handleOnBackPressed");
                     finish();
                     remove();
                 }
@@ -271,9 +301,12 @@ public class CountingActivity
     protected void onResume() {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "274, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "304, onResume");
 
         mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+
+        // Prepare vibrator service
+        vibrator = getApplicationContext().getSystemService(Vibrator.class);
 
         // Get location with permissions check
         locationDispatcherMode = 1;
@@ -308,7 +341,10 @@ public class CountingActivity
         try {
             section = sectionDataSource.getSection();
         } catch (CursorIndexOutOfBoundsException e) {
-            showSnackbarRed(getString(R.string.getHelp));
+            mesg = getString(R.string.getHelp);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -380,9 +416,6 @@ public class CountingActivity
             }
         }
 
-        // Prepare vibrator service
-        vibrator = getApplicationContext().getSystemService(Vibrator.class);
-
         // Show head1: Species with spinner to select
         if (lhandPref) // if left-handed counting page
             spinner = findViewById(R.id.countHead1SpinnerLH);
@@ -425,7 +458,7 @@ public class CountingActivity
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (MyDebug.DLOG)
-                showSnackbarRed("Value0: " + event.values[0] + ", " + "Sensitivity: "
+                Log.d(TAG, "461 Value0: " + event.values[0] + ", " + "Sensitivity: "
                         + (sensorSensitivity));
 
             // if ([0|5] >= [-0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
@@ -484,9 +517,10 @@ public class CountingActivity
         else if (id == R.id.menuAddSpecies) {
             disableProximitySensor();
 
-            // Use toast as a Snackbar here comes incomplete
-            Toast.makeText(this, getString(R.string.wait), Toast.LENGTH_SHORT)
-                    .show();
+            mesg = getString(R.string.wait);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CountingActivity.this,
                     AddSpeciesActivity.class);
@@ -501,8 +535,10 @@ public class CountingActivity
         else if (id == R.id.menuDelSpecies) {
             disableProximitySensor();
 
-            // Use toast as a Snackbar here comes incomplete
-            Toast.makeText(this, getString(R.string.wait), Toast.LENGTH_SHORT).show();
+            mesg = getString(R.string.wait);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CountingActivity.this, DelSpeciesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -516,8 +552,10 @@ public class CountingActivity
         else if (id == R.id.menuEditSection) {
             disableProximitySensor();
 
-            // Use toast as a Snackbar here comes incomplete
-            Toast.makeText(this, getString(R.string.wait), Toast.LENGTH_SHORT).show();
+            mesg = getString(R.string.wait);
+            Toast.makeText(this,
+                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CountingActivity.this,
                     EditSpecListActivity.class);
@@ -545,7 +583,10 @@ public class CountingActivity
                     try {
                         startActivity(chooser);
                     } catch (Exception e) {
-                        showSnackbarRed(getString(R.string.noPhotoPermit));
+                        mesg = getString(R.string.noPhotoPermit);
+                        Toast.makeText(this,
+                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                     }
                 }
             } else {
@@ -584,7 +625,7 @@ public class CountingActivity
     protected void onPause() {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "587, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "628, onPause");
 
         disableProximitySensor();
 
@@ -618,7 +659,7 @@ public class CountingActivity
     public void onStop() {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "621, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "662, onStop");
 
         if (r != null)
             r.stop(); // stop media player
@@ -628,7 +669,7 @@ public class CountingActivity
     public void onDestroy() {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "631, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "672, onDestroy");
     }
 
     public void locationDispatcher() {
@@ -708,12 +749,12 @@ public class CountingActivity
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    if (MyDebug.DLOG) Log.d(TAG, "711, SpinnerListener, count id: "
+                    if (MyDebug.DLOG) Log.d(TAG, "752, SpinnerListener, count id: "
                             + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.DLOG) Log.e(TAG, "716, SpinnerListener: " + e);
+                    if (MyDebug.DLOG) Log.e(TAG, "757, SpinnerListener: " + e);
                 }
             }
 
@@ -726,7 +767,7 @@ public class CountingActivity
 
     // Show rest of widgets for counting screen
     private void countingScreen(Count count) {
-        if (MyDebug.DLOG) Log.i(TAG, "729, countingScreen");
+        if (MyDebug.DLOG) Log.i(TAG, "770, countingScreen");
 
         // 1. Species line is set by CountingWidgetHead1 in onResume, Spinner
         // 2. Head2 with species notes and edit button
@@ -772,9 +813,12 @@ public class CountingActivity
         return null;
     }
 
-    // The functions below are triggered by the count buttons
-    // on the righthand/lefthand (LH) views
-    // and start EditIndividualActivity when up-counting
+    /*****************************************************************
+     * The functions below are triggered by the count buttons
+     * on the righthand/lefthand (LH) views.
+     * <p>
+     * For up-counting they start EditIndividualActivity
+     */
     public void countUpf1i(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
@@ -787,7 +831,6 @@ public class CountingActivity
         disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -810,7 +853,6 @@ public class CountingActivity
         disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -832,7 +874,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f1i;
         if (specCnt > 0) {
@@ -842,7 +883,10 @@ public class CountingActivity
             // get last individual of category 1 (♂|♀)
             i_Id = individualsDataSource.getLastIndiv(count_id, 1);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -867,7 +911,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f1i;
         if (specCnt > 0) {
@@ -876,7 +919,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 1);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -906,7 +952,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -929,7 +974,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -951,7 +995,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f2i;
         if (specCnt > 0) {
@@ -960,7 +1003,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 2);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -985,7 +1031,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f2i;
         if (specCnt > 0) {
@@ -994,7 +1039,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 2);
             if (i_Id == -1) {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1022,7 +1070,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1045,7 +1092,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1067,7 +1113,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f3i;
         if (specCnt > 0) {
@@ -1076,7 +1121,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 3);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1101,7 +1149,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f3i;
         if (specCnt > 0) {
@@ -1110,7 +1157,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 3);
             if (i_Id == -1) {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1138,7 +1188,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1161,7 +1210,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1183,7 +1231,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_pi;
         if (specCnt > 0) {
@@ -1192,7 +1239,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 4);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1217,7 +1267,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_pi;
         if (specCnt > 0) {
@@ -1226,7 +1275,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 4);
             if (i_Id == -1) {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1254,7 +1306,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1277,7 +1328,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1299,7 +1349,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_li;
         if (specCnt > 0) {
@@ -1308,7 +1357,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 5);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1333,7 +1385,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_li;
         if (specCnt > 0) {
@@ -1342,7 +1393,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 5);
             if (i_Id == -1) {
-                Toast.makeText(this, getString(R.string.getHelp) + spec_name, Toast.LENGTH_SHORT).show();
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1370,7 +1424,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1394,7 +1447,6 @@ public class CountingActivity
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
@@ -1416,7 +1468,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidget widget = getCountFromId(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_ei;
         if (specCnt > 0) {
@@ -1425,7 +1476,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 6);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1450,7 +1504,6 @@ public class CountingActivity
         int count_id = Integer.parseInt(view.getTag().toString());
         CountingWidgetLH widget = getCountFromIdLH(count_id);
         assert Objects.requireNonNull(widget).count != null;
-        assert widget.count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_ei;
         if (specCnt > 0) {
@@ -1459,7 +1512,10 @@ public class CountingActivity
 
             i_Id = individualsDataSource.getLastIndiv(count_id, 6);
             if (i_Id == -1) {
-                showSnackbarRed(getString(R.string.getHelp) + spec_name);
+                mesg = getString(R.string.getHelp) + spec_name;
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1516,40 +1572,24 @@ public class CountingActivity
                 r.play();
                 mHandler.postDelayed(r::stop, 420);
             } catch (Exception e) {
-                if (MyDebug.DLOG) Log.e(TAG, "1519, could not play button sound.", e);
+                if (MyDebug.DLOG) Log.e(TAG, "1575, could not play button sound.", e);
             }
         }
     }
 
-    @SuppressWarnings("Deprecated")
     private void buttonVib() {
         if (buttonVibPref && vibrator.hasVibrator()) {
             if (SDK_INT >= 31) // S, Android 12
             {
                 vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
             } else {
-                if (SDK_INT >= 26)
+                if (SDK_INT >= 26) {
                     vibrator.vibrate(VibrationEffect.createOneShot(450,
                             VibrationEffect.DEFAULT_AMPLITUDE));
-                else
-                    vibrator.vibrate(450);
-                vibrator.cancel();
+                    vibrator.cancel();
+                }
             }
         }
-    }
-
-    private void showSnackbarRed(String str) {
-        View view;
-        if (lhandPref) // if left-handed counting page
-            view = findViewById(R.id.countingScreenLH);
-        else
-            view = findViewById(R.id.counting_screen);
-
-        Snackbar sB = Snackbar.make(view, str, Snackbar.LENGTH_LONG);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTextColor(Color.RED);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        sB.show();
     }
 
     /**

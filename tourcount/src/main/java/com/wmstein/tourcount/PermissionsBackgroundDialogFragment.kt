@@ -10,7 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
-/**********************************************************************
+/***********************************************************************
  * PermissionsBackgroundDialogFragment provides the permission handling, 
  * which is necessary since Android Android Q for
  * - ACCESS_BACKGROUND_LOCATION
@@ -19,7 +19,7 @@ import androidx.fragment.app.DialogFragment
  * licensed under the MIT License.
  *
  * Adopted for TourCount in Kotlin by wistein on 2025-02-22,
- * last edited on 2025-02-22
+ * last edited on 2025-06-28
  */
 class PermissionsBackgroundDialogFragment : DialogFragment() {
     private var context: Context? = null

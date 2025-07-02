@@ -1,0 +1,10 @@
+Version 3.6.6 (2025-07-02)
+- Vibrator will only be used if Android Version is >= 8
+- Code adapted for Android 15 for now forced edge-to-edge layout
+- Some page layouts adapted for edge-to-edge layout
+- All Snackbars (pop-up notifications) changed to colored Toasts
+- Use dark navigation bar for TourCount when System setting "Dark theme" is off
+- Filename structure of exported data files changed
+- Filename of exported species list with language indicator (de or en)
+- Some code cleaning
+- Bug fixes

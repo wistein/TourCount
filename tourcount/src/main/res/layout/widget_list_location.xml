@@ -44,7 +44,7 @@
 
             <TextView
                 android:id="@+id/widgetLCountryName"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -76,7 +76,7 @@
 
             <TextView
                 android:id="@+id/widgetState2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -118,7 +118,7 @@
 
             <TextView
                 android:id="@+id/widgetLCity2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -152,7 +152,7 @@
 
             <TextView
                 android:id="@+id/widgetLPlace2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -194,7 +194,7 @@
 
             <TextView
                 android:id="@+id/widgetLoc2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -226,7 +226,7 @@
 
             <TextView
                 android:id="@+id/widgetLPlz2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -268,7 +268,7 @@
 
             <TextView
                 android:id="@+id/widgetLdlo2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/list_background"
@@ -302,7 +302,7 @@
 
             <TextView
                 android:id="@+id/widgetLdla2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"
@@ -337,7 +337,7 @@
 
             <TextView
                 android:id="@+id/widgetLmuncert2"
-                style="@style/LineText"
+                style="@style/ListBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/list_background"

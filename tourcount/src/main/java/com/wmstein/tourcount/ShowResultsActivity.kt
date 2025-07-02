@@ -2,12 +2,18 @@ package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
 import android.database.Cursor
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.DbHelper
@@ -34,7 +40,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2025-05-19
+ * last edited on 2025-06-29
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -58,14 +64,36 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "61, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "68, onCreate")
 
         tourCount = application as TourCountApplication
 
         awakePref = prefs.getBoolean("pref_awake", true)
         outPref = prefs.getString("pref_sort_output", "names") // sort mode output
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        {
+            enableEdgeToEdge()
+        }
         setContentView(R.layout.activity_list_species)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.listSpecScreen)) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. This solution sets
+            // only the bottom, left, and right dimensions, but you can apply whichever
+            // insets are appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = insets.top
+                leftMargin = insets.left
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+
+            // Return CONSUMED if you don't want the window insets to keep passing
+            // down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
 
         countDataSource = CountDataSource(this)
         sectionDataSource = SectionDataSource(this)
@@ -77,14 +105,10 @@ class ShowResultsActivity : AppCompatActivity() {
 
         specArea = findViewById(R.id.listSpecLayout)
 
-        if (awakePref) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-
         // new onBackPressed logic
         val callback = object :  OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.DLOG) Log.i(TAG, "87, handleOnBackPressed")
+                if (MyDebug.DLOG) Log.i(TAG, "125, handleOnBackPressed")
                 finish()
                 remove()
             }
@@ -96,7 +120,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "99, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "137, onResume")
 
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -298,7 +322,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "301, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "339, onPause")
 
         // close the data sources
         headDataSource!!.close()
@@ -309,6 +333,12 @@ class ShowResultsActivity : AppCompatActivity() {
         if (awakePref) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        specArea = null
     }
 
     companion object {

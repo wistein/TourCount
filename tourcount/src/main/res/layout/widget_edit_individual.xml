@@ -46,7 +46,7 @@
 
                 <EditText
                     android:id="@+id/widget_Locality2"
-                    style="@style/LineText"
+                    style="@style/BoldText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -240,7 +240,7 @@
 
                 <EditText
                     android:id="@+id/widget_State2"
-                    style="@style/LineText"
+                    style="@style/BoldText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -274,7 +274,7 @@
 
                 <com.wmstein.tourcount.AutoFitEditText
                     android:id="@+id/widget_Count2"
-                    style="@style/LineText"
+                    style="@style/BoldText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
@@ -315,7 +315,7 @@
 
                 <EditText
                     android:id="@+id/widget_IndivNote2"
-                    style="@style/LineText"
+                    style="@style/BoldText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/count_background"
