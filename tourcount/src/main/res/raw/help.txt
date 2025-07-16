@@ -1,0 +1,162 @@
+<!-- User instructions --
+  Last edited on 2025-07-15
+ -->
+
+<h3><font color=#D9FDD9>1. Introduction</font></h3>
+TourCount should support you when recording butterflies.<br>
+It allows to register individuals species-specific, separated by sexus and metamorphic stages as well as individually with state and location in the field.<br>
+ It offers prepared data outputs and can substitute your field book and pencil, and if applicable a camera for documentary pictures.
+<br><br>
+Databases can be created individually per region and adapted regarding expected butterfly species. The internal database is tour-related, i.e. a new database instance is used for each tour.
+<br><br>
+The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into a butterfly registration system (e.g. on https://www.falterfunde.de/platform/s4y/falterfunde/index.do) or exported and transferred to a PC for your own processing, where they can be better read or edited.
+<br><br>
+The app is published with source code and documentation on https://github.com/wistein/TourCount. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services, but requires permits for its serviceable functions: Import of species lists and DB files, export of data and counting results to DB or CSV files, GPS access rights, internet access for inverse geocoding and wakelock to prevent the app from dimming or switching off.
+<br><br><br>
+<h3><font color=#D9FDD9>2. Setting up</font></h3>
+Before initial use you should adapt the app settings to your liking. (→ 4. Further Functions).
+<br><br>
+Then adapt the preliminary species list to the expected species in your region with the species list editing functions (Add, Remove or Edit).
+<br><br>
+To do this, click "Counting" on the Starting page and then use the “Add Species”, “Remove Species” or “Edit Terms” buttons in the header of the counting page.
+<br><br>
+All 3 editing pages offer a preselection to ease the selection of a distinguished species. Enter 2 initial letters of the genus name and then click the Search-button to limit the shown list.
+<br><br>
+On the "Add Species" page select species from the blue scroll-down list of not yet selected species. Changes take effect by the (+)-button in the head line (notice that the selected species disappear from the scroll-down list).
+<br><br>
+At the end of the scroll-down list, a placeholder for an indeterminate species (NN) can be adopted and edited later, if necessary after determination.
+<br><br>
+On the "Remove Species" page select species to remove on the red scroll-down list and tip on the Delete-button.
+<br><br>
+On the "Edit Terms" page you may edit the tour name, a remark for the tour and the terms of each species. (Scientific and local species names, codes generally five digits with leading zeros, as you can see in the following species list table excerpt).
+<br><br>
+(Part of a species list)<br>
+---------------------------------------------------<br>
+...<br>
+<font color=#bfffff>Pieris rapae ..................... 06998</font><br>
+<font color=#A7C2C2>Small white</font><br>
+<font color=#bfffff>Pieris napi ....................... 07000</font><br>
+<font color=#A7C2C2>Green-veined white</font><br>
+<font color=#bfffff>Pie. napi/rap. compl. ...... 07001*</font><br>
+<font color=#A7C2C2>Small whites compl.</font><br>
+...
+<br><br>
+The codes will be used as an option to sort the list and as a reference to show corresponding butterfly icons.<br>
+The codes derive from the numbering scheme of european butterflies by Karsholt/Razowski, as used e.g. in the German Lepiforum (https://lepiforum.org verwendet).
+<br><br>
+The *-sign attached to code 07001 in the table above indicates a complex of species that are difficult to distinguish. For sorting purposes, the larger code within the group should be used for such groups.
+<br><br>
+<font color=#FF0000><b>Caution:</b></font> A wrong code shows "N/A" or a wrong picture. If necessary, see the "List of Coded Butterflies.pdf" on<br>
+https://github.com/wistein/TourCount/tree/master/docs.
+<br><br>
+Then you should enter general parts of the master data under “Edit Meta Data”.<br>
+Location-related meta data derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”. Some of those could also manually edited or changed anytime later. Clicking the storage icon saves the data and finishes this function.
+<br><br>
+When you have created the counting list for all expected species and entered the meta data, the database is ready for export as a "Basic Database".
+<br><br>
+To do this, use the function "Export as Basic DB" in the main menu of the starting page.
+<br><br>
+By that you have a copy of the prepared empty database saved as "Basic Database" (tourcount0_tourname.db, with "tourname" from Meta Data, if provided) in the app's data directory (Documents/TourCount).<br>
+The app data directory got created during the first app call. When TourCount is uninstalled, the data in this directory is not deleted.
+<br><br>
+The file names of the Basic DBs always start with the string "tourcount0".
+<br><br>
+Exporting as Basic DB ignores all counts, notes and tour-related meta data. The Basic DB may be used as a template for further tour recordings in the region. Saving as a Basic DB ignores all inspection-specific counting data.
+<br><br>
+Alternatively you could import and adapt a self-created Basic DB. Or you may substitute the species list by importing a previously exported species list from TourCount or TransektCount (if installed). Examples from different European countries or regions are provided for downloading on<br>
+https://github.com/wistein/TourCount/tree/master/docs.
+<br><br>
+Copy them to the app’s data directory "Documents/TourCount" and import and edit them in TourCount suitably.
+<br><br><br>
+<h3><font color=#D9FDD9>3. Usage</font></h3>
+Start with "Edit Meta Data". Enter the specific meta date of the tour.<br>
+You may enter the current date and time by clicking the related field or enter any date and time by long pressing the related field. Finish with the store button.
+<br><br>
+Continue with "Counting". Select the species by clicking the species line to scroll down the species list.<br>
+To count just tip on the appropriate (+)-button of the category (♂|♀, ♂, ♀, Pupa, Larva, Ovo) of the species.
+<br><br>
+The counter will increment and a page opens to enter individual data. Location info, latitude, longitude, height as well as date and time will be added automatically.
+<br><br>
+Location may be edited and condition rating (state 0-6 with 0 = undefined, 1 = very good) as well as multiple counts may be applied here. Go back to the counting page by clicking the "Save" button.
+<br><br>
+The (-)-Buttons allow for corrections. Mind that the (-)-Buttons reduce the individuals list in a last-in-first-out-mode for the corresponding species category.
+<br><br>
+The Plus, Remove and Pencil buttons in the action bar of the counting page open the respective counting list editing pages for editing the list of species.
+<br><br>
+The Pencil Button on top of the counting field opens the species editing page that lets you add a remark for each species that will be shown aside of it.
+<br><br>
+Finally, the "Counting Results" page shows your results sorted either by species names or species codes according to the selected Output sort option. Beneath the meta data it shows the totals followed by a list of all counted species with their individual records (time, location, coordinates and species attributes), sorted by the recorded time.<br>
+You can enter this page from the Starting page with the "Show Results" button or the Eye-symbol in the app bar. It may take a second to show up.
+<br><br>
+To move back one page you can use the Back-Button or arrow in the left upper corner. To make sure to save edited content you should click the Add, Remove or Save button if the page has one.
+<br><br>
+Before closing TourCount after a tour you should complete the meta data with the ending values for time, temperature, wind and clouds. Then export the current tour data as .db (database) or .csv (comma delimited values text) file. It will be named with tour name, date and time as Tour_name_YYYYMMDD_hhmmss.db or .csv and saved in the directory Documents/TourCount.
+<br><br>
+With large amounts of data, the app's response can be somewhat delayed for e. g. import functions or when calling up the results page, as extensive calculations are running in the background. This is indicated by a short message "View gets calculated...".
+<br><br>
+If the message "TransectCount not responding" appears, please reply with "Wait".
+<br><br><br>
+<h3><font color=#D9FDD9>4. Further functions</font></h3>
+The system menu on the starting page has Settings, Reset, Import, Export, Info and Help functions.
+<br><br>
+In "Settings" you may adapt the look an feel in some aspects to your wishes, e.g. sorting order of lists and data export, left-/right-hand counting page or sounds and haptic button feedback.
+<br><br>
+Reverse Geocoding allows for automatic insertion of statements of place (postal code, city, place) into meta data and location data into the individual's record.<br>
+For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nominatim from OpenStreetMap is used.<br>
+A valid own email address is necessary for durably reliable queries of address data and to exclude abuse.<br>
+The mail address will be treated confidentially and will only be used to contact you in case of service problems.<br>
+For more info see https://wiki.openstreetmap.org/wiki/Nominatim.
+<br><br>
+For preparing a new tour you may use "Reset Data" to reset the tour-specific meta data and all count data. Alternatively you may import the Basic DB or any other tourcount-DB.
+<br><br>
+Android-specifically, TourCount stores the data in an internal SQlite DB in the app's own protected storage area that is not accessible by the user. Therefore, it is necessary to import/export data from/to files in a user accessible storage area.
+<br><br>
+Exporting the internal DB as empty Basic DB "tourcount0...db" (without inspection-related data) is reasonable, when lasting changes of the counting list have been made, e.g. new species added.
+<br><br>
+The "Import Basic DB" function lets you select and import a DB file that was exported as a template for a certain region. Its name begins with "tourcount0".
+<br><br>
+"Export Current DB" writes a copy of the DB with all currently contained data to "Documents/TourCount/tourcount_tourname_YYYYMMDD_hhmmss.db" with 'tourname' if a tour name has been entered into the meta data.
+<br><br>
+With "Import DB" any appropriately named TourCount DB can be read into TourCount.
+<br><br>
+<b><font color=#D9FDD9>Mind:</font></b> The db file name must always start with “tourcount_” (e.g. tourcount_Kottenforst.db), otherwise the file cannot be imported).
+<br><br>
+With "Export Species List" the current species list can be exported as a CSV file (CSV = Comma Separated Values text file) "species_Tour_name_YYYYMMDD_hhmmss.csv”.
+<br><br>
+The function “Import Species List” lets you select and import an available species list. If the TransektCount app is installed, the exported species lists can be imported mutually. The file manager can be used to rename these as required.
+<br><br>
+<b><font color=#D9FDD9>Mind:</font></b> The file name of a species list must always begin with "species_", otherwise the list cannot be imported.
+<br><br>
+The function "Export Data → CSV File" writes the meta data and the counting results into a pre-formatted spreadsheet-readable CSV file "Tour_tourname_YYYYMMDD_hhmmss.csv" to "Documents/TourCount". This file could be imported or edited by a spreadsheet app like Collabora (Open Source, based on LibreOffice and obtainable free of charge from e.g. the Collabora Office F-Droid Repo.
+<br><br>
+IT-affine users may transfer the exported ".db" or ".csv" files from "Documents/TourCount" to a PC.<br>
+With a free tool like "DB Browser for SQLite"
+<br>https://sqlitebrowser.org<br>
+you may examine and edit a .db-file manually or per SQL script. Some useful example SQL scripts are published in the docs directory of the GitHub TourCount project site<br>
+https://github.com/wistein/TourCount/tree/master/docs.
+<br><br>
+The exported .csv files (comma delimited text files) may be imported into a spreadsheet program on a PC for further processing ensuring that
+<br><br>
+- file origin is "Unicode UTF-8",<br>
+- delimiter is comma,<br>
+- quotations marks ("") for text field recognition and<br>
+- all columns get imported as text.<br><br>
+<br><br>
+The export of the table can be adapted by a sort option (sort by species names or codes) for a more easy data entry of the results into a monitoring web page like <br>
+https://www.falterfunde.de/platform/s4y/falterfunde/index.do.
+<br><br>
+Under "App Info" you may find general app info, the email address of the author and the history.
+<br><br>
+Under "Licenses" you find the license notes for code and figures.
+<br><br>
+The option menu of the counting page provides a "Photo" function to quickly take a photo and a "Share" function for sending notes using a standard app, like SMS or email.
+<br><br>
+Optionally, the counter view is temporarily turned off by means of the proximity sensor when the phone is pocketed or closely held to the body. This saves energy, prevents unwanted inputs and recalls the app into its normal state immediately when used again.
+<br><br><br>
+<h3><font color=#D9FDD9>5. Sources</h3>
+Source-Code: https://github.com/wistein/TourCount
+<br><br>
+Docs: https://github.com/wistein/TourCount/tree/master/docs
+<br><br>
+App: https://f-droid.org/en/packages/com.wmstein.TourCount
+<br><br>

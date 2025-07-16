@@ -21,7 +21,7 @@ import java.util.Locale;
 import androidx.preference.PreferenceManager;
 
 /************************************************************************
- * Based on ChangeLog.java, copyright (C) 2011-2013, Karsten Priegnitz
+ * Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
  * <p>
  * Permission to use, copy, modify, and distribute this piece of software
  * for any purpose with or without fee is hereby granted, provided that

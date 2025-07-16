@@ -64,7 +64,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "68, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "67, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -108,7 +108,7 @@ class ShowResultsActivity : AppCompatActivity() {
         // new onBackPressed logic
         val callback = object :  OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.DLOG) Log.i(TAG, "125, handleOnBackPressed")
+                if (MyDebug.DLOG) Log.i(TAG, "111, handleOnBackPressed")
                 finish()
                 remove()
             }
@@ -120,7 +120,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "137, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "123, onResume")
 
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -322,7 +322,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "339, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "325, onPause")
 
         // close the data sources
         headDataSource!!.close()

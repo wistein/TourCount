@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Wilhelm Stein, Bonn, Germany.
+ * Copyright © 2018-2024. Wilhelm Stein, Bonn, Germany.
  */
 package com.wmstein.tourcount.widgets
 
@@ -19,7 +19,7 @@ import com.wmstein.tourcount.database.Count
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-05-14
+ * last edited on 2024-07-15
  */
 class CountingWidgetHead1(
     context: Context,
@@ -36,10 +36,12 @@ class CountingWidgetHead1(
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
+    // Shows Spinner list
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getCustomView(position, parent)
     }
 
+    // Shows rest of counting page
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getCustomView(position, parent)
     }

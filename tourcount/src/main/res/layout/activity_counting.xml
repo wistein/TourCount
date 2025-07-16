@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2023, Wilhelm Stein, Bonn, Germany.
+  ~ Copyright © 2018-2025, Wilhelm Stein, Bonn, Germany.
     activity_counting.xml is used by CountingActivity.java 
 -->
 
@@ -15,6 +15,7 @@
         android:id="@+id/sectionNotesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:fillViewport="true"
         android:orientation="vertical" />
 

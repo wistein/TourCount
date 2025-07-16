@@ -228,7 +228,7 @@ class EditSpecListActivity : AppCompatActivity() {
             initChars = initChars.substring(0,2)
             searchEdit.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "230, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "231, initChars: $initChars")
 
             // Call DummyActivity to reenter EditSectionListActivity for reduced add list
             val intent = Intent(this@EditSpecListActivity, DummyActivity::class.java)
@@ -333,7 +333,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.DLOG) Log.d(TAG, "335, newName: $sectName")
+        if (MyDebug.DLOG) Log.d(TAG, "336, newName: $sectName")
 
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
@@ -355,7 +355,7 @@ class EditSpecListActivity : AppCompatActivity() {
         sectionDataSource!!.saveSection(section!!)
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
-        if (MyDebug.DLOG) Log.d(TAG, "357, childcount: $childcount")
+        if (MyDebug.DLOG) Log.d(TAG, "358, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -366,7 +366,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
                 retValue =
                     if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
-                        if (MyDebug.DLOG) Log.d(TAG, "368, esw: "
+                        if (MyDebug.DLOG) Log.d(TAG, "369, esw: "
                                     + esw.countId + ", " + esw.getCountName()
                         )
 
@@ -452,7 +452,7 @@ class EditSpecListActivity : AppCompatActivity() {
             name = esw.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.DLOG) Log.d(TAG, "454, Double name = $isDblName")
+                if (MyDebug.DLOG) Log.d(TAG, "455, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -473,7 +473,7 @@ class EditSpecListActivity : AppCompatActivity() {
             code = esw.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.DLOG) Log.d(TAG, "475, Double name = $isDblCode")
+                if (MyDebug.DLOG) Log.d(TAG, "476, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

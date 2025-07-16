@@ -164,7 +164,7 @@ class DelSpeciesActivity : AppCompatActivity() {
             initChars = initChars.substring(0,2)
             searchDel.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "166, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "167, initChars: $initChars")
 
             // Call DummyActivity to reenter DelSpeciesActivity for reduced add list
             val intent = Intent(this@DelSpeciesActivity, DummyActivity::class.java)
@@ -194,7 +194,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                     dsw.setSpecId(cnt.toString()) // Index in reduced list
                     cnt++
                     deleteArea!!.addView(dsw)
-                    if (MyDebug.DLOG) Log.d(TAG, "196, name: " + count.name)
+                    if (MyDebug.DLOG) Log.d(TAG, "197, name: " + count.name)
                 }
             }
         } else {
@@ -206,7 +206,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                 dsw.setPSpec(count)
                 dsw.setSpecId(count.id.toString()) // Index in complete list
                 deleteArea!!.addView(dsw)
-                if (MyDebug.DLOG) Log.d(TAG, "208, name: " + count.name)
+                if (MyDebug.DLOG) Log.d(TAG, "209, name: " + count.name)
             }
         }
     }
@@ -214,7 +214,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     // Mark the selected species and consider it for delete from the species counts list
     fun checkBoxDel(view: View) {
         val idToDel = view.tag as Int
-        if (MyDebug.DLOG) Log.d(TAG, "216, View.tag: $idToDel")
+        if (MyDebug.DLOG) Log.d(TAG, "217, View.tag: $idToDel")
         val dsw = deleteArea!!.getChildAt(idToDel) as DeleteSpeciesWidget
 
         val checked = dsw.getMarkSpec() // return boolean isChecked
@@ -224,14 +224,14 @@ class DelSpeciesActivity : AppCompatActivity() {
             listToDelete!!.add(dsw)
             if (MyDebug.DLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "226, mark delete code: $codeD")
+                Log.d(TAG, "227, mark delete code: $codeD")
             }
         } else {
             // Remove species previously added from add list
             listToDelete!!.remove(dsw)
             if (MyDebug.DLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "233 mark delete code: $codeD")
+                Log.d(TAG, "234 mark delete code: $codeD")
             }
         }
     }
@@ -241,7 +241,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         var i = 0 // index of species list to delete
         while (i < listToDelete!!.size) {
             specCode = listToDelete!![i].getSpecCode()
-            if (MyDebug.DLOG) Log.d(TAG, "243, delete code: $specCode")
+            if (MyDebug.DLOG) Log.d(TAG, "244, delete code: $specCode")
             try {
                 countDataSource!!.deleteCountByCode(specCode!!)
                 individualsDataSource!!.deleteIndividualsByCode(specCode!!)
@@ -297,7 +297,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "299, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "300, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -308,7 +308,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (MyDebug.DLOG) Log.d(TAG, "310, onDestroy")
+        if (MyDebug.DLOG) Log.d(TAG, "311, onDestroy")
 
         delHintArea!!.clearFocus()
     }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- activity_welcome.xml is used by WelcomeActivity.java
   ~ Shows starting page
-  ~ Copyright (c) 2016-2023, Wilhelm Stein, Bonn, Germany.
-  ~ Last edited on 2023-12-14.
+  ~ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
+  ~ Last edited on 2025-07-15.
   -->
 
 <LinearLayout
-    android:id="@+id/baseLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/baseLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,10 +24,11 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="50sp"
+                android:layout_width="70sp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_launcher"
+                android:layout_marginEnd="10sp"
+                android:src="@mipmap/ic_launcher_round"
                 tools:ignore="ContentDescription"/>
 
             <TextView
@@ -35,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="10sp"
-                android:layout_gravity="center"
+                android:gravity="center_vertical"
                 android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"/>
@@ -151,5 +152,13 @@
                 android:textSize="18sp"
                 tools:ignore="UsingOnClickInXml" />
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10sp"
+        android:layout_weight="1">
+    </LinearLayout>
 
 </LinearLayout>

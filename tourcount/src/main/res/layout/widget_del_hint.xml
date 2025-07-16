@@ -2,7 +2,7 @@
 <!--
     widget_del_hint.xml
     used by HintDelWidget.kt
-    Copyright (c) 2023 - 2024, Wilhelm Stein, Bonn, Germany.
+    Copyright © 2023-2024, Wilhelm Stein, Bonn, Germany.
     Last edited on 2024-10-14
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

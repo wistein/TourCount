@@ -21,7 +21,7 @@ TourCount is an Android app that supports species-specific and individually loca
 - Results are shown with meta data, totals, remarks, species results and individual data.
 - Results may be exported as SQLite-DB or in CSV-format (e.g. for transfer to a PC for processing in a spreadsheet).
 - The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
-- Help contains a detailed userguide.
+- Help contains a detailed user guide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
 
 ### Prerequisites
@@ -39,7 +39,7 @@ The app is usable with Android version 7.1 (Nougat) or newer.
 Documentation is provided under  
 https://github.com/wistein/TourCount/tree/master/docs.
 
-Please read the userguide (provided in German and English) or consult its contents in the app's help 
+Please read the user guide (provided in German and English) or consult its contents in the app's help 
 before using the app.  
 There are further documents e.g. for setting up and using the app as well as sample basic databases 
 (tourcount0.db and respective English version) provided under /docs. 
@@ -66,7 +66,7 @@ repository under the master branch https://github.com/wistein/TourCount/tree/mas
 
 ### Licenses
 
-Copyright 2016-2025 Wilhelm Stein
+© 2016-2025, Wilhelm Stein, Bonn, Germany
 
 TourCount is licensed under the Apache License, Version 2.0 (the "License");
 you may not use any of its files except in compliance with the License.
@@ -80,10 +80,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Pictures of this work by Wilhelm Stein may be used for scientific or other non-commercial purposes without prior permission.
-But it is not permitted to upload pictures to social media platforms, as most of here mentioned licenses do not comply with and I do not agree with the licensing terms of these platforms.
+Pictures of this work by Wilhelm Stein may be used for scientific or other non-commercial purposes.
 
-Please note that illustrations provided by other authors remain the copyright of those authors and should not be reproduced or distributed other than with their permission.
+Code and illustrations provided by other authors remain the copyright of those authors and should not be
+reproduced or distributed other than with their permission.
 
 For detailed Copyrights on external code and pictures see the separate document "License.txt" in TourCount/docs.
 

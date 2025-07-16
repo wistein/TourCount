@@ -5,16 +5,16 @@ plugins {
 
 android {
     namespace 'com.wmstein.tourcount'
-    compileSdk 35
+    compileSdk 36
 
     // targetSdk 35 changes drastically the screen layout and could only be used
     //  after complete redesign of all layouts
     defaultConfig {
         applicationId "com.wmstein.tourcount"
         minSdk 25
-        targetSdk 35
-        versionCode 366
-        versionName "3.6.6"
+        targetSdk 36
+        versionCode 367
+        versionName "3.6.7"
     }
 
     buildTypes {

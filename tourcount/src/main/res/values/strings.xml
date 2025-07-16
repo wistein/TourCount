@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-05-05 -->
+     last edited on 2025-07-02 -->
 
 <resources>
 
@@ -175,6 +175,9 @@
 
     <string name="viewhelp_full_title">Help (TourCount Ver.</string>
     <string name="viewlicense_full_title">Licenses (TourCount Ver. </string>
+
+    <string name="title_help_dialog">Help</string>
+    <string name="title_license_dialog">License</string>
 
     <!-- Preferences -->
     <string name="prefs_appearance">Appearance</string>

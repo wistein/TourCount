@@ -48,8 +48,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.wmstein.changelog.ChangeLog;
-import com.wmstein.changelog.ViewHelp;
-import com.wmstein.changelog.ViewLicense;
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -109,8 +107,6 @@ public class WelcomeActivity
     private double latitude, longitude, height, uncertainty;
 
     private ChangeLog cl;
-    private ViewHelp vh;
-    private ViewLicense vl;
     public boolean doubleBackToExitPressedTwice = false;
 
     // Import/export stuff
@@ -148,7 +144,7 @@ public class WelcomeActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "150, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "147, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -216,7 +212,7 @@ public class WelcomeActivity
             editor.putBoolean("has_asked_foreground", false);
             editor.commit();
         }
-        if (MyDebug.DLOG) Log.d(TAG, "220, onCreate, storagePermGranted: " + storagePermGranted);
+        if (MyDebug.DLOG) Log.d(TAG, "215, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHandler = new DbHelper(this);
@@ -232,11 +228,11 @@ public class WelcomeActivity
         // Get tour name and check for DB integrity
         try
         {
-            if (MyDebug.DLOG) Log.i(TAG, "236, onCreate, try section");
+            if (MyDebug.DLOG) Log.i(TAG, "231, onCreate, try section");
             sectionDataSource.open();
             section = sectionDataSource.getSection();
             tourName = section.name;
-            if (MyDebug.DLOG) Log.i(TAG, "240, onCreate, tourName: " + tourName);
+            if (MyDebug.DLOG) Log.i(TAG, "235, onCreate, tourName: " + tourName);
             sectionDataSource.close();
         } catch (SQLiteException e)
         {
@@ -250,8 +246,6 @@ public class WelcomeActivity
         }
 
         cl = new ChangeLog(this, prefs);
-        vh = new ViewHelp(this);
-        vl = new ViewLicense(this);
 
         // Show changelog for new version
         if (cl.firstRun())
@@ -300,7 +294,7 @@ public class WelcomeActivity
 
         // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
         int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
-        if (MyDebug.DLOG) Log.i(TAG, "307, NavBarMode = " + iMode);
+        if (MyDebug.DLOG) Log.i(TAG, "297, NavBarMode = " + iMode);
         return iMode;
     }
 
@@ -338,37 +332,13 @@ public class WelcomeActivity
         };
     }
 
-    // Check initial external storage permission and set 'storagePermGranted'
-    private void isStoragePermGranted()
-    {
-        if (SDK_INT >= Build.VERSION_CODES.R) // Android >= 11
-        {
-            // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
-            storagePermGranted = Environment.isExternalStorageManager();
-            if (MyDebug.DLOG) Log.i(TAG, "352, ManageStoragePermission: " + storagePermGranted);
-        }
-        else
-        {
-            storagePermGranted = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (MyDebug.DLOG) Log.i(TAG, "358, ExtStoragePermission: " + storagePermGranted);
-        }
-    }
-
-    // Check initial fine location permission
-    private void isFineLocationPermGranted()
-    {
-        fineLocationPermGranted = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
     @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
     @Override
     protected void onResume()
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "375, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "341, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -383,10 +353,10 @@ public class WelcomeActivity
         individualsDataSource.open();
 
         // Set tour name as title
-        if (MyDebug.DLOG) Log.i(TAG, "390, onResume, get section");
+        if (MyDebug.DLOG) Log.i(TAG, "356, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
-        if (MyDebug.DLOG) Log.i(TAG, "393, tourName: " + tourName);
+        if (MyDebug.DLOG) Log.i(TAG, "359, tourName: " + tourName);
         try
         {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
@@ -399,7 +369,7 @@ public class WelcomeActivity
         //   Set flag fineLocationPermGranted from self permissions
         // Store flag 'hasAskedBackground = true' in SharedPreferences
         isFineLocationPermGranted();
-        if (MyDebug.DLOG) Log.i(TAG, "406, onCreate, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "372, onCreate, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // If not yet location permission is granted prepare and query for them
@@ -426,12 +396,12 @@ public class WelcomeActivity
 
         // Get location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
-        if (MyDebug.DLOG) Log.i(TAG, "433, onResume, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "390, onResume, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // Get flag 'has_asked_background'
         boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
-        if (MyDebug.DLOG) Log.i(TAG, "438, hasAskedBackgroundLocation: "
+        if (MyDebug.DLOG) Log.i(TAG, "404, hasAskedBackgroundLocation: "
             + hasAskedBackgroundLocation);
 
         // Get background location with permissions check only once and if storage and fine location
@@ -452,13 +422,37 @@ public class WelcomeActivity
     }
     // End of onResume()
 
+    // Check initial external storage permission and set 'storagePermGranted'
+    private void isStoragePermGranted()
+    {
+        if (SDK_INT >= Build.VERSION_CODES.R) // Android >= 11
+        {
+            // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
+            storagePermGranted = Environment.isExternalStorageManager();
+            if (MyDebug.DLOG) Log.i(TAG, "432, ManageStoragePermission: " + storagePermGranted);
+        }
+        else
+        {
+            storagePermGranted = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            if (MyDebug.DLOG) Log.i(TAG, "438, ExtStoragePermission: " + storagePermGranted);
+        }
+    }
+
+    // Check initial fine location permission
+    private void isFineLocationPermGranted()
+    {
+        fineLocationPermGranted = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
     // Part of permission handling
     public void locationDispatcher()
     {
         if (fineLocationPermGranted) // current location permission state granted
         {
             // Handle action here
-            if (MyDebug.DLOG) Log.i(TAG, "465, locationDispatcher, fineLocationPermGranted: true");
+            if (MyDebug.DLOG) Log.i(TAG, "455, locationDispatcher, fineLocationPermGranted: true");
             switch (locationDispatcherMode)
             {
                 case 1 ->
@@ -537,6 +531,7 @@ public class WelcomeActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        Intent intent;
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
@@ -678,7 +673,9 @@ public class WelcomeActivity
         }
         else if (id == R.id.viewHelp)
         {
-            vh.getDialog().show();
+            intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
+            intent.putExtra("dialog", "help");
+            startActivity(intent);
             return true;
         }
         else if (id == R.id.changeLog)
@@ -688,13 +685,14 @@ public class WelcomeActivity
         }
         else if (id == R.id.viewLicense)
         {
-            vl.getDialog().show();
+            intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
+            intent.putExtra("dialog", "license");
+            startActivity(intent);
             return true;
         }
         else if (id == R.id.startCounting)
         {
             // Call CountingActivity
-            Intent intent;
             intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             intent.putExtra("Latitude", latitude);
             intent.putExtra("Longitude", longitude);
@@ -738,7 +736,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "745, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "739, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -756,7 +754,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "763, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "757, onStop");
         baseLayout.invalidate();
     }
 
@@ -765,7 +763,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "772, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "766, onDestroy");
         getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -818,7 +816,7 @@ public class WelcomeActivity
      **********************************************************************************************/
     // Import the basic DB
     private void importBasisDb() {
-        if (MyDebug.DLOG) Log.d(TAG, "825, importBasicDBFile");
+        if (MyDebug.DLOG) Log.d(TAG, "819, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -867,7 +865,7 @@ public class WelcomeActivity
                         {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (MyDebug.DLOG)
-                                Log.i(TAG, "874, Selected file: " + selectedFile);
+                                Log.i(TAG, "868, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -983,7 +981,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "990, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "984, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -1159,7 +1157,7 @@ public class WelcomeActivity
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1166, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1160, Failed to export Basic DB");
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
@@ -1752,7 +1750,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1759 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1753 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1839,7 +1837,7 @@ public class WelcomeActivity
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-                if (MyDebug.DLOG) Log.e(TAG, "1847, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1840, Failed to export csv file");
             }
         }
     }
@@ -2067,7 +2065,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "2075, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "2068, Failed to reset DB");
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
                     HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",

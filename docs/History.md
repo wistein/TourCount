@@ -1,6 +1,14 @@
 # History
 
-#### TourCount Copyright (C) 2016-2025, Wilhelm Stein
+#### TourCount Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
+
+#### Version 3.6.7 (2025-07-16)
+- Compiled for Android 16 (SDK 36)
+- Help and License info with new design
+- Adaptive app icon added for Android 16 (prevents white frame)
+- Some code and layout cleaning
+- Docs updated
+- Bug fixes
 
 #### Version 3.6.6 (2025-07-02)
 - Vibrator will only be used if Android Version is >= 8

@@ -1,0 +1,73 @@
+<!-- Lizenz Information --
+  Last edited on 2025-07-15
+ -->
+
+<h3><font color=#D9FDD9>1. Allgemeines</font></h3>
+Die App ist lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“). Nutzung dieser Datei nur in Übereinstimmung mit der Lizenz erlaubt. Eine Kopie der Lizenz erhalten Sie auf<br>
+https://www.apache.org/licenses/LICENSE-2.0
+<br><br>
+Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart, wird die Software unter der Lizenz so wie sie ist ("AS IS") OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNGSANSPRÜCHE übertragen. Siehe in Bezug auf die einzelnen Rechte und Einschränkungen die Bestimmungen des Lizenztexts.
+<br><br>
+<br>
+<h3><font color=#D9FDD9>2. Code von externen Quellen</font></h3>
+<b><font color=#D9FDD9>AutoFitEditText</font></b>, modifiziert, original Java-Code: Viktor Arsovski, 2015-10-29, MIT License,<br>https://github.com/viksaaskool/autofitedittext
+<br><br>
+<b><font color=#D9FDD9>AutoFitText</font></b>, modifiziert, original Java-Code: pheuschk, 18.04.2013, Open Source,<br>https://pastebin.com/raw/e6WyrwSN
+<br><br>
+<b><font color=#D9FDD9>ChangeLog</font></b>, modifiziert, original Java-Code: © 2011-2013, Karsten Priegnitz, Other Open Source,<br>https://github.com/koem/android-change-log
+<br><br>
+<b><font color=#D9FDD9>CSVWriter</font></b>, modifiziert, Original Java-Code: © 2015 Bytecode Pty Ltd., Apache License, Version 2.0
+<br><br>
+<b><font color=#D9FDD9>Filechooser</font></b> basiert auf Java-Code von android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
+<br><br>
+<b><font color=#D9FDD9>Grundlegende Zählerfunktionen</font></b> basieren auf BeeCount, © 2016 Milo Thurston (knirirr ), Apache License, Version 2.0,<br>https://github.com/knirirr/BeeCount
+<br><br>
+<br>
+<h3><font color=#D9FDD9>3. Abbildungen</font></h3>
+<b><font color=#D9FDD9>Adela paludicolella</font></b>, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
+<br><br>
+<b><font color=#D9FDD9>Crambus pascuella</font></b>, Autor: Olaf Leillinger, GNU Free Documentation License, erstellt aus<br>https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+<br><br>
+<b><font color=#D9FDD9>Cucullia verbasci</font></b>, derived from <br>https://en.wikipedia.org/wiki/Mullein_moth,<br>Autor: Dumi, GNU Free Documentation License, version 1.2
+<br><br>
+<b><font color=#D9FDD9>Deltote bankiana</font></b>, Autor: Andre den Ouden, lizensiert von <br>http://www.saxifraga.nl,<br>nicht-kommerzielle Verwendung erlaubt, erstellt aus <br>http://freenatureimages.eu
+<br><br>
+<b><font color=#D9FDD9>Evergestis extimalis</font></b>, Autor: Adam Furlepa, CC BY-SA 3.0, erstellt aus <br>https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
+<br><br>
+<b><font color=#D9FDD9>Hipparchia neomiris</font></b>, erstellt aus Abbildungen aus "Die Groß-Schmetterlinge der Erde",	Autor: Adalbert Seitz, 1909, Public Domain
+<br><br>
+<b><font color=#D9FDD9>Hyles gallii</font></b> (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus <br>https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
+<br><br>
+<b><font color=#D9FDD9>Hyles hippophaes</font></b> (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus <br>https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
+<br><br>
+<b><font color=#D9FDD9>Hyponephele lupinus</font></b> (Public Domain), erstellt aus <br>https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+<br><br>
+<b><font color=#D9FDD9>Jordanita globulariae</font></b>, Autor: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
+<br><br>
+<b><font color=#D9FDD9>Marumba quercus</font></b> (A.R. Pittaway, nicht-kommerzielle Verwendung erlaubt), erstellt aus <br>https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
+<br><br>
+<b><font color=#D9FDD9>Melanargia arge</font></b>, Autor: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, erstellt aus <br>https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+<br><br>
+<b><font color=#D9FDD9>Melitaea parthenoides</font></b>, Autor: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license, erstellt aus <br>https://en.wikipedia.org/wiki/Melitaea_parthenoides
+<br><br>
+<b><font color=#D9FDD9>Muschampia lavatherae</font></b>, Autor: Dumi, GNU Free Documentation License, version 1.2, erstellt aus <br>https://en.wikipedia.org/wiki/Muschampia_lavatherae
+<br><br>
+<b><font color=#D9FDD9>Nemaphora barbatellus</font></b>, erstellt aus Abbildungen in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten",	Autor: Rudolf Bryner, frei für nicht kommerzielle Zwecke in Lehre und Forschung sowie für die private Nutzung
+<br><br>
+<b><font color=#D9FDD9>Pediasia contaminella</font></b>, Autor: Ben Sale, Creative Commons Attribution 2.0 Generic License, erstellt aus <br>https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
+<br><br>
+<b><font color=#D9FDD9>Scopula rubiginata</font></b>, erstellt aus Abbildungen in <br>http://www.freenatureimages.eu/Animals/index.html, <br>Autor: Rob Felix, lizensiert von <br>http://www.saxifraga.nl<br> frei für nicht kommerzielle Zwecke
+<br><br>
+<b><font color=#D9FDD9>Scopula virgulata</font></b> derived from <br>http://www.freenatureimages.eu/Animals/index.html, <br>Autor: Zoran Bozovic, lizensiert von <br>http://www.saxifraga.nl <br>frei für nicht kommerzielle Zwecke
+<br><br>
+<b><font color=#D9FDD9>Sesia apiformis</font></b> derived from picture on <br>https://en.wikipedia.org/wiki/Hornet_moth, <br>Autor: Jyrki Lehto, freie Verwendung
+<br><br>
+<b><font color=#D9FDD9>Tiliacea aurago</font></b>, derived from <br>http://www.freenatureimages.eu/Animals/index.html,<br>Autor: Peter Gergely, lizensiert von <br>http://www.saxifraga.nl<br>frei für nicht kommerzielle Zwecke
+<br><br>
+<b><font color=#D9FDD9>Einige Icons</font></b> stammen von Google und sind unter der Creative Commons Attribution 4.0 License lizensiert.
+<br><br>
+Alle anderen Abbildungen sowie App-Icons und -Hintergrundbilder © 2016-2025, Wilhelm Stein, Bonn, Germany.<br>
+Abbildungen in diesem Werk von Wilhelm Stein dürfen für wissenschaftliche oder nicht-kommerzielle Zwecke genutzt werden.
+<br><br>
+Bitte beachten Sie bei Verwendung des Codes und der Abbildungen anderer Autoren deren jeweilige Copyright-Bedingungen.
+<br><br>

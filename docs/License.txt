@@ -2,7 +2,7 @@
  * **************************************************************************
  *  TourCount
  * **************************************************************************
- *  Copyright (c) 2016-2025 Wilhelm Stein
+ *  Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
  *  Author: Wilhelm Stein
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,16 +29,18 @@
  */ 
  
 Integrated code from external references:
- - Counting functions based on BeeCount, (C) 2016 Milo Thurston (knirirr), 
-   Apache License, Version 2.0, https://github.com/knirirr/BeeCount
+ - AutoFitEditText.java, modified, original code from author: Viktor Arsovski, 2015-10-29,
+   MIT License, https://github.com/viksaaskool/autofitedittext
  - AutoFitText.java, modified, original code from author: pheuschk, 18.04.2013, 
    Open Source, https://pastebin.com/raw/e6WyrwSN
- - ChangeLog.java, modified, original code (C) 2011-2013, Karsten Priegnitz, 
+ - ChangeLog.java, modified, original code © 2011-2013, Karsten Priegnitz,
    Other Open Source, https://github.com/koem/android-change-log/
- - CSVWriter.java, modified, original code (C) 2015 Bytecode Pty Ltd., 
+ - Counting functions based on BeeCount, © 2016 Milo Thurston (knirirr),
+   Apache License, Version 2.0, https://github.com/knirirr/BeeCount
+ - CSVWriter.java, modified, original code © 2015 Bytecode Pty Ltd.,
    Apache License, Version 2.0
  - filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- - egm derived from GeoTools, (C) 2006-2008, Open Source Geospatial Foundation, 
+ - egm derived from GeoTools, © 2006-2008, Open Source Geospatial Foundation,
    https://geotools.org/
 
 Butterfly pictures: 
@@ -90,5 +92,7 @@ Butterfly pictures:
  - Tiliacea aurago, Author: Peter Gergely, licensed by www.saxifraga.nl, free for non-commercial use,
    derived from http://www.freenatureimages.eu/Animals/index.html
 
- - All other pictures, app icon and background (C) Wilhelm Stein. 
-
+ - All other pictures, app icons and background © 2016-2025, Wilhelm Stein, Bonn, Germany.
+   Pictures of this work by Wilhelm Stein may be used for scientific or non-commercial purposes.
+   Code and illustrations provided by other authors remain the copyright of those authors
+   and should not be reproduced or distributed other than with their permission.

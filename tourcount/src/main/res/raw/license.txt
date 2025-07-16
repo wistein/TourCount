@@ -1,0 +1,74 @@
+<!-- License information --
+  Last edited on 2025-07-15
+ -->
+
+<h3><font color=#D9FDD9>1. General</font></h3>
+The app is licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at<br>
+https://www.apache.org/licenses/LICENSE-2.0
+<br><br>
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+<br><br><br>
+<h3><font color=#D9FDD9>2. Code from external references</font></h3>
+<b><font color=#D9FDD9>AutoFitEditText</font></b>, modified, original java code from author: Viktor Arsovski, 2015-10-29, MIT License, <br>https://github.com/viksaaskool/autofitedittext
+<br><br>
+<b><font color=#D9FDD9>AutoFitText</font></b>, modified, original java code from author: pheuschk, 18.04.2013, Open Source, <br>https://pastebin.com/raw/e6WyrwSN
+<br><br>
+<b><font color=#D9FDD9>ChangeLog</font></b>, modified, original code © 2011-2013, Karsten Priegnitz, Other Open Source, <br>https://github.com/koem/android-change-log
+<br><br>
+<b><font color=#D9FDD9>Counting functions</font></b> based on BeeCount, © 2016 Milo Thurston (knirirr ), Apache License, Version 2.0, <br>https://github.com/knirirr/BeeCount
+<br><br>
+<b><font color=#D9FDD9>CSVWriter</font></b>, modified, original java code © 2015 Bytecode Pty Ltd., Apache License, Version 2.0
+<br><br>
+<b><font color=#D9FDD9>Filechooser</font></b> based on java code from android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
+<br><br><br>
+<h3><font color=#D9FDD9>3. Images</font></h3>
+<b><font color=#D9FDD9>Adela paludicolella</font></b>, created from picture in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
+<br><br>
+<b><font color=#D9FDD9>Agriphila geniculea</font></b>, created from picture 'Agriphila geniculea lateral Bytom.jpg' by Adrian Tync, Poland, licensed under Creative Commons Attribution-Share Alike 4.0 International, derived from <br>https://commons.wikimedia.org/wiki/Category:Agriphila_geniculea
+<br><br>
+<b><font color=#D9FDD9>Crambus pascuella</font></b>, Author: Olaf Leillinger, GNU Free Documentation License, derived from <br>https://en.wikipedia.org/wiki/File:Crambus.pascuella.7563.jpg
+<br><br>
+<b><font color=#D9FDD9>Cucullia verbasci</font></b>, derived from <br>https://en.wikipedia.org/wiki/Mullein_moth,<br>Author: Dumi, GNU Free Documentation License, version 1.2
+<br><br>
+<b><font color=#D9FDD9>Deltote bankiana</font></b>, Author: Andre den Ouden, licensed by <br>http://www.saxifraga.nl/,<br>free for non-commercial use, derived from <br>http://freenatureimages.eu
+<br><br>
+<b><font color=#D9FDD9>Evergestis extimalis</font></b>, Author: Adam Furlepa, CC BY-SA 3.0, derived from <br>https://upload.wikimedia.org/wikipedia/commons/3/37/Evergestis_extimalis1.JPG
+<br><br>
+<b><font color=#D9FDD9>Hipparchia neomiris</font></b>, created from pictures of "Die Groß-Schmetterlinge der Erde", Author: Adalbert Seitz, 1909, Public Domain
+<br><br>
+<b><font color=#D9FDD9>Hyles gallii</font></b>, A.R. Pittaway, non-commercial use allowed, derived from <br>https://tpittaway.tripod.com/sphinx/h_gal_a3.jpg
+<br><br>
+<b><font color=#D9FDD9>Hyles hippophaes</font></b>, A.R. Pittaway, non-commercial use allowed, derived from <br>https://tpittaway.tripod.com/sphinx/h_hip_a2.jpg
+<br><br>
+<b><font color=#D9FDD9>Hyponephele lupinus</font></b>, Public Domain, derived from <br>https://upload.wikimedia.org/wikipedia/commons/0/07/Hyponephelelupinus.jpg
+<br><br>
+<b><font color=#D9FDD9>Jordanita globulariae</font></b>, Author: Reza Zahiri et al, Creative Commons Attribution License (CC BY 4.0), Wikimedia
+<br><br>
+<b><font color=#D9FDD9>Marumba quercus</font></b>, A.R. Pittaway, non-commercial use allowed, derived from <br>https://tpittaway.tripod.com/sphinx/m_que_a4.jpg
+<br><br>
+<b><font color=#D9FDD9>Melanargia arge</font></b>, Author: Notafly, Creative Commons Attribution-Share Alike 3.0 Unported license, derived from <br>https://en.wikipedia.org/wiki/File:Melanargiaarge.JPG
+<br><br>
+<b><font color=#D9FDD9>Melitaea parthenoides</font></b>, derived from <br>https://en.wikipedia.org/wiki/Melitaea_parthenoides,<br>Author: Didier Descouens, Creative Commons Attribution-Share Alike 4.0 International license
+<br><br>
+<b><font color=#D9FDD9>Muschampia lavatherae</font></b>, Author: Dumi, GNU Free Documentation License, version 1.2, derived from <br>https://en.wikipedia.org/wiki/Muschampia_lavatherae
+<br><br>
+<b><font color=#D9FDD9>Nemaphora barbatellus</font></b>, created from picture in "Adelidae (Lepidoptera) - Beitrag zur Kenntnis der Biologie und Bestimmungshilfe für die europäischen Arten", Author: Rudolf Bryner, free for non-commercial purposes in education and science and for private use
+<br><br>
+<b><font color=#D9FDD9>Pediasia contaminella</font></b>, Author: Ben Sale, Creative Commons Attribution 2.0 Generic License, derived from <br>https://upload.wikimedia.org/wikipedia/commons/f/f6/%281323%29_Pediasia_contaminella_%2833480878804%29.jpg
+<br><br>
+<b><font color=#D9FDD9>Phragmataecia castaneae</font></b>, derived from <br>https://species.wikimedia.org/wiki/Phragmataecia_castaneae,<br>Author: Dumi, GNU Free Documentation License, version 1.2
+<br><br>
+<b><font color=#D9FDD9>Scopula rubiginata</font></b>, derived from <br>http://www.freenatureimages.eu/Animals/index.html,<br>Author: Rob Felix, licensed by <br>http://www.saxifraga.nl<br> free for non-commercial use
+<br><br>
+<b><font color=#D9FDD9>Scopula virgulata</font></b>, derived from <br>http://www.freenatureimages.eu/Animals/index.html,<br>Author: Zoran Bozovic, licensed by <br>http://www.saxifraga.nl<br> free for non-commercial use
+<br><br>
+<b><font color=#D9FDD9>Sesia apiformis</font></b>, derived from picture on <br>https://en.wikipedia.org/wiki/Hornet_moth,<br>Author: Jyrki Lehto, free use
+<br><br>
+<b><font color=#D9FDD9>Tiliacea aurago</font></b>, derived from <br>http://www.freenatureimages.eu/Animals/index.html,<br>Author: Peter Gergely, licensed by <br>http://www.saxifraga.nl<br> free for non-commercial use
+<br><br>
+<b><font color=#D9FDD9>Some icons</font></b> are taken from Google, licensed under the Creative Commons Attribution 4.0 License.
+<br><br>
+All other pictures, app icons and background © 2016-2025, Wilhelm Stein, Bonn, Germany.<br>
+Pictures of this work by Wilhelm Stein may be used for scientific or non-commercial purposes.<br>
+Code and illustrations provided by other authors remain the copyright of those authors and should not be reproduced or distributed other than with their permission.
+<br><br>

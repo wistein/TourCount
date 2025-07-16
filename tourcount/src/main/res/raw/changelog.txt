@@ -41,7 +41,7 @@ _ Subtitle
   <body>
 
   % TourCount
-  _ Copyright (C) 2016-2025, Wilhelm Stein
+  _ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
   _
   _ email: stein.wm@web.de
   _
@@ -55,6 +55,16 @@ _ Subtitle
   _
   ! Suitable for Android 7.1 (Nougat) or newer
   _ 
+
+$ 3.6.7
+  % Version 3.6.7
+  _ 2025-07-16
+  * Compiled for Android 16 (SDK 36)
+  * Help and License info with new design
+  * Adaptive app icon added for Android 16 (prevents white frame)
+  * Some code and layout cleaning
+  * Docs updated
+  * Bug fixes
 
 $ 3.6.6
   % Version 3.6.6

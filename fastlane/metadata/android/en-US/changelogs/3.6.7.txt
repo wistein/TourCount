@@ -1,0 +1,6 @@
+Version 3.6.7 (2025-07-16)
+- Compiled for Android 16 (SDK 36)
+- Help and License info with new design
+- Adaptive app icon added for Android 16 (prevents white frame)
+- Some code and layout cleaning
+- Bug fixes

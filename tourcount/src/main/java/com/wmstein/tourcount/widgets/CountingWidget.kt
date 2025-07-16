@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2023. Wilhelm Stein, Bonn, Germany.
+ * Copyright © 2018 - 2025. Wilhelm Stein, Bonn, Germany.
  */
 package com.wmstein.tourcount.widgets
 
