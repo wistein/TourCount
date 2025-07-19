@@ -11,8 +11,8 @@
     <color name="SkyBlue">#4088FF</color>
     <color name="Navy">#002866</color>
     <color name="BrightGray">#A9A9A9</color>
-    <color name="DarkGray">#2F2F2F</color>
     <color name="DarkerGray">#404040</color>
+    <color name="DarkGray">#1a1a1a</color>
     <color name="Black">#000000</color>
     <color name="ic_launcher_background">#00FFFFFF</color> <!-- transparent -->
 </resources>

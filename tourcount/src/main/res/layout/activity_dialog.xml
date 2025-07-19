@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Last edited on 2025-07-15 -->
+<!-- Screen layout for ShowTextDialog.kt
+     Last edited on 2025-07-19 -->
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
