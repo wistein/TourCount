@@ -1,5 +1,5 @@
-<!-- License information --
-  Last edited on 2025-07-15
+<!-- TourCount license information --
+  Last edited on 2025-07-19
  -->
 
 <h3><font color=#D9FDD9>1. General</font></h3>
@@ -69,6 +69,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
 <b><font color=#D9FDD9>Some icons</font></b> are taken from Google, licensed under the Creative Commons Attribution 4.0 License.
 <br><br>
 All other pictures, app icons and background © 2016-2025, Wilhelm Stein, Bonn, Germany.<br>
-Pictures of this work by Wilhelm Stein may be used for scientific or non-commercial purposes.<br>
-Code and illustrations provided by other authors remain the copyright of those authors and should not be reproduced or distributed other than with their permission.
+Pictures of this work by Wilhelm Stein may only be used for scientific or non-commercial purposes.<br>
+Code and illustrations provided by other authors remain the copyright of those authors and should not be reproduced or distributed other than with their license.
 <br><br>

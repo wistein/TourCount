@@ -58,11 +58,13 @@ _ Subtitle
 
 $ 3.6.7
   % Version 3.6.7
-  _ 2025-07-16
+  _ 2025-07-19
   * Compiled for Android 16 (SDK 36)
   * Help and License info with new design
+  * App info with background adjusted to new design
   * Adaptive app icon added for Android 16 (prevents white frame)
   * Some code and layout cleaning
+  * Picture of Ennomos quercinaria added
   * Docs updated
   * Bug fixes
 

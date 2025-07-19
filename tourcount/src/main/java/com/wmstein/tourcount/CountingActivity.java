@@ -187,7 +187,7 @@ public class CountingActivity
             LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
             counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayoutLH);
-            notes_area1 = findViewById(R.id.sectionNotesLayoutLH);
+            notes_area1 = findViewById(R.id.tourNotesLayoutLH);
             head_area2 = findViewById(R.id.countHead2LayoutLH);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreenLH),
                     (v, windowInsets) -> {
@@ -205,7 +205,7 @@ public class CountingActivity
             LinearLayout counting_screen = findViewById(R.id.countingScreen);
             counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayout);
-            notes_area1 = findViewById(R.id.sectionNotesLayout);
+            notes_area1 = findViewById(R.id.tourNotesLayout);
             head_area2 = findViewById(R.id.countHead2Layout);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreen),
                     (v, windowInsets) -> {
@@ -444,7 +444,7 @@ public class CountingActivity
 
         // Set part of counting screen
         CountingWidgetHead1 adapter = new CountingWidgetHead1(this,
-                idArray, nameArray, codeArray, imageArray, nameArrayG);
+                idArray, nameArray, nameArrayG, codeArray, imageArray);
         spinner.setAdapter(adapter);
         spinner.setSelection(itemPosition);
         spinnerListener();

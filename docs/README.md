@@ -61,7 +61,7 @@ differently and so cannot be mutually updated.
 On GitHub you will find the published stable version when clicking the "master"-button and select 
 the Tag with the highest Branch number n.n.n. Then get the file tourcount-release_nnn.apk under apk. 
 
-The latest beta development version of 'tourcount-release_nnn.apk' is also provided in the GitHub 
+The latest development version of 'tourcount-release_nnn.apk' is also provided in the GitHub 
 repository under the master branch https://github.com/wistein/TourCount/tree/master/apk.
 
 ### Licenses
@@ -80,10 +80,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Pictures of this work by Wilhelm Stein may be used for scientific or other non-commercial purposes.
+Pictures of this work by Wilhelm Stein may only be used for scientific or other non-commercial purposes.
 
 Code and illustrations provided by other authors remain the copyright of those authors and should not be
-reproduced or distributed other than with their permission.
+reproduced or distributed other than with their license.
 
-For detailed Copyrights on external code and pictures see the separate document "License.txt" in TourCount/docs.
+For detailed copyrights on external code and pictures see the separate document "License.txt" in TourCount/docs.
 

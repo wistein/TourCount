@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.wmstein.tourcount.R
-import com.wmstein.tourcount.database.Count
 
 /****************************************************
  * Interface for widget_counting_head1.xml
@@ -19,22 +18,18 @@ import com.wmstein.tourcount.database.Count
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-07-15
+ * last edited on 2024-07-16
  */
 class CountingWidgetHead1(
     context: Context,
     private val idArray: Array<String?>,
     private val nameArray: Array<String?>,
+    private val nameArrayG: Array<String?>,
     private val codeArray: Array<String?>,
-    private val imageArray: Array<Int?>,
-    private val nameArrayG: Array<String?>
+    private val imageArray: Array<Int>
 ) : ArrayAdapter<String?>(context, R.layout.widget_counting_head1, R.id.countName, nameArray) {
-    var count: Count? = null
-    private val inflater: LayoutInflater
 
-    init {
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    }
+    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     // Shows Spinner list
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -57,7 +52,7 @@ class CountingWidgetHead1(
         val countCode = head1.findViewById<TextView>(R.id.countCode)
         countCode.text = codeArray[position]
         val pSpecies = head1.findViewById<ImageView>(R.id.pSpecies)
-        pSpecies.setImageResource(imageArray[position]!!)
+        pSpecies.setImageResource(imageArray[position])
         return head1
     }
 

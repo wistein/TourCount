@@ -1,13 +1,16 @@
 package com.wmstein.changelog;
 
+import static androidx.core.content.ContextCompat.getColor;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.webkit.WebView;
+
+import androidx.preference.PreferenceManager;
 
 import com.wmstein.tourcount.MyDebug;
 import com.wmstein.tourcount.R;
@@ -17,8 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
-
-import androidx.preference.PreferenceManager;
 
 /************************************************************************
  * Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
@@ -34,13 +35,13 @@ import androidx.preference.PreferenceManager;
  * Author: Karsten Priegnitz
  * See: <a href="https://code.google.com/p/android-change-log/">...</a>
  * <p>
- * Newly installed: Shows the history of TourCount.
- * Updated: Shows the last changes of TourCount.
+ * App newly installed: Shows the history of TourCount.
+ * App updated: Shows the last changes of TourCount.
  * <p>
  * Therefore retrieves the version names and stores the new version name in SharedPreferences
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2025-07-01
+ * last edited on 2025-07-19
  */
 public class ChangeLog
 {
@@ -118,7 +119,7 @@ public class ChangeLog
     {
         WebView wv = new WebView(this.context);
 
-        wv.setBackgroundColor(Color.BLACK);
+        wv.setBackgroundColor(getColor(context, R.color.DarkGray));
         wv.loadDataWithBaseURL(null, this.getLog(full), "text/html",
             "UTF-8", null);
 

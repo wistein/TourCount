@@ -40,7 +40,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2025-06-29
+ * last edited on 2025-07-17
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -215,7 +215,7 @@ class ShowResultsActivity : AppCompatActivity() {
         uc = round(uc / 2) + 20 // average uncertainty radius + default gps uncertainty
         if (uc <= uncer1) uc = uncer1
 
-        // 2. Display the location data
+        // 2. Display the average location data
         val llw = ListLocationWidget(this, null)
         llw.setLocationWidget(section)
         llw.setWidgetDla2(la)
@@ -279,6 +279,7 @@ class ShowResultsActivity : AppCompatActivity() {
         var iwidget: ListIndividualWidget
 
         for (spec in specs) {
+            val lnWidget = ListLineWidget(this, null)
             val widget = ListSpeciesWidget(this, null)
             widget.setCount(spec)
             specCntf1i = widget.getSpec_countf1i(spec)
@@ -312,10 +313,8 @@ class ShowResultsActivity : AppCompatActivity() {
                     }
                 }
             }
+            specArea!!.addView(lnWidget)
         }
-
-        val lwidget = ListLineWidget(this, null)
-        specArea!!.addView(lwidget)
     }
     // end of loadData()
 
@@ -342,7 +341,7 @@ class ShowResultsActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "ListSpeciesAct"
+        private const val TAG = "ListResultsAct"
     }
 
 }

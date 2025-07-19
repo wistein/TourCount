@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- widget_sum_species.xmls used by ListSpeciesWidget.kt and ShowResultsActivity.kt.
+<!-- widget_sum_species.xml used by ListSpeciesWidget.kt and ShowResultsActivity.kt.
      Shows totals of species counts
-     Copyright © 2017-2023, Wilhelm Stein, Bonn, Germany.
+     Copyright © 2017-2025, Wilhelm Stein, Bonn, Germany.
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +10,6 @@
               android:layout_height="wrap_content"
               android:baselineAligned="false"
               android:background="@drawable/corner"
-              android:orientation="horizontal"
               android:padding="3dp"
               tools:context=".ShowResultsActivity">
 
@@ -26,10 +25,10 @@
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:layout_marginBottom="10dp"
             android:paddingTop="2dp"
-            android:background="@android:color/white"/>
+            android:background="@color/BrightGray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,6 +103,15 @@
                 android:textSize="18sp"/>
 
         </LinearLayout>
+
+        <!-- Line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:paddingTop="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/BrightGray"/>
 
     </LinearLayout>
 </LinearLayout>

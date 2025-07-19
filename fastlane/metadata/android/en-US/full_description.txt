@@ -3,8 +3,10 @@ TourCount supports species-specific and individually GPS-localized registering o
 New in Version  3.6.7:
 - Compiled for Android 16 (SDK 36)
 - Help and License info with new design
+- App info with background adjusted to new design
 - Adaptive app icon added for Android 16 (prevents white frame)
 - Some code and layout cleaning
+- Picture of Ennomos quercinaria added
 - Docs updated
 - Bug fixes
 

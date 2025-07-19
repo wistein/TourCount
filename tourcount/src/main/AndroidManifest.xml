@@ -113,7 +113,7 @@
 
         <activity
             android:name="com.wmstein.tourcount.ShowResultsActivity"
-            android:label="@string/title_activity_list_species"
+            android:label="@string/title_activity_show_results"
             android:launchMode="singleTop"
             android:parentActivityName="com.wmstein.tourcount.WelcomeActivity"
             android:screenOrientation="portrait"

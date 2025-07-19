@@ -8,7 +8,7 @@
     <string name="app_name" translatable="false">TourCount</string>
     <string name="title_activity_meta" translatable="false">EditMetaActivity</string>
     <string name="title_activity_counting" translatable="false">CountingActivity</string>
-    <string name="title_activity_list_species" translatable="false">ListSpeciesActivity</string>
+    <string name="title_activity_show_results" translatable="false">ShowResultsActivity</string>
     <string name="title_activity_count_options" translatable="false">CountOptionsActivity</string>
     <string name="title_activity_edit_individual" translatable="false">EditIndividualActivity</string>
     <string name="title_activity_edit_section" translatable="false">EditSpecListActivity</string>

@@ -3,8 +3,10 @@ TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Re
 Neu in Version 3.6.7:
 - Compiliert für Android 16 (SDK 36)
 - Hilfe und Lizenz-Info in neuem Design
+- App-Info Hintergrund an neues Design angepasst
 - Adaptives App-Icon hinzugefügt für Android 16 (verhindert weiße Umrandung)
 - Einige Code- und Layout-Verbesserungen
+- Bild von Ennomos quercinaria hinzugefügt
 - Doku überarbeitet
 - Bugfixes
 

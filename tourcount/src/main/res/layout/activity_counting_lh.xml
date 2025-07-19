@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2018-2023, Wilhelm Stein, Bonn, Germany.
+  ~ Copyright © 2018-2025, Wilhelm Stein, Bonn, Germany.
     activity_counting_lh.xml is used by CountingActivity.java
 -->
 
@@ -10,37 +10,40 @@
               android:layout_height="match_parent"
 			  android:orientation="vertical">
 
-        <!-- insert the section notes in here -->
+    <!-- separating white line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/BrightGray"
+        android:paddingTop="1dp" />
+
+    <!-- insert the tour notes in here -->
         <LinearLayout
-            android:id="@+id/sectionNotesLayoutLH"
+            android:id="@+id/tourNotesLayoutLH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:orientation="vertical"
-            />
+            android:orientation="vertical" />
 
         <!-- separating white line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@android:color/white"
-            android:paddingTop="2dp"
-            />
+            android:layout_height="1dp"
+            android:background="@color/BrightGray"
+            android:paddingTop="1dp" />
 
         <!-- insert spinner widget_counting_head1LH here -->
         <Spinner
             android:id="@+id/countHead1SpinnerLH"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
 
         <!-- separating white line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@android:color/white"
-            android:paddingTop="2dp"
-            />
+            android:layout_height="1dp"
+            android:background="@color/BrightGray"
+            android:paddingTop="2dp" />
 
         <!-- insert head2 in here -->
         <LinearLayout
@@ -48,20 +51,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:orientation="vertical"
-            />
+            android:orientation="vertical" />
 
         <!-- separating white line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@android:color/white"
-            android:paddingTop="2dp"
-            />
+            android:layout_height="1dp"
+            android:background="@color/BrightGray"
+            android:paddingTop="2dp" />
 
         <ScrollView
             android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,10 +81,9 @@
                 <!-- separating white line -->
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@android:color/white"
-                    android:paddingTop="2dp"
-                    />
+                    android:layout_height="1dp"
+                    android:background="@color/BrightGray"
+                    android:paddingTop="2dp" />
 
             </LinearLayout>
         </ScrollView>

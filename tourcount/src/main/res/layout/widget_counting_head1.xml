@@ -15,7 +15,7 @@
     android:layout_marginLeft="2dp"
     android:layout_marginRight="2dp"
     android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="0dp"
     android:background="@drawable/rounded_corner"
     android:baselineAligned="false"
     android:paddingBottom="1dp"

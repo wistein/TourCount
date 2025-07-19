@@ -10,21 +10,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- insert the section notes in here -->
+    <!-- separating white line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/BrightGray"
+        android:paddingTop="1dp" />
+
+    <!-- insert the tour notes in here -->
     <LinearLayout
-        android:id="@+id/sectionNotesLayout"
+        android:id="@+id/tourNotesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:fillViewport="true"
         android:orientation="vertical" />
 
     <!-- separating white line -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/white"
-        android:paddingTop="2dp" />
+        android:layout_height="1dp"
+        android:background="@color/BrightGray"
+        android:paddingTop="1dp" />
 
     <!-- insert spinner widget_counting_head1 here -->
     <Spinner
@@ -35,8 +41,8 @@
     <!-- separating white line -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/white"
+        android:layout_height="1dp"
+        android:background="@color/BrightGray"
         android:paddingTop="2dp" />
 
     <!-- insert head2 in here: species remark and edit -->
@@ -50,8 +56,8 @@
     <!-- separating white line -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/white"
+        android:layout_height="1dp"
+        android:background="@color/BrightGray"
         android:paddingTop="2dp" />
 
     <ScrollView
@@ -74,8 +80,8 @@
             <!-- separating white line -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@android:color/white"
+                android:layout_height="1dp"
+                android:background="@color/BrightGray"
                 android:paddingTop="2dp" />
 
         </LinearLayout>

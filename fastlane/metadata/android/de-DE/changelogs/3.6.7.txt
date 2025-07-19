@@ -1,6 +1,9 @@
-Version 3.6.7 (16.07.2025)
+Version 3.6.7 (19.07.2025)
 - Compiliert für Android 16 (SDK 36)
 - Hilfe und Lizenz-Info in neuem Design
+- App-Info Hintergrund an neues Design angepasst
 - Adaptive App-Icon hinzugefügt für Android 16 (verhindert weiße Umrandung)
 - Einige Code- und Layout-Verbesserungen
+- Bild von Ennomos quercinaria hinzugefügt
+- Doku überarbeitet
 - Bugfixes
