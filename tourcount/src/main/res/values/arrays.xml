@@ -787,6 +787,7 @@
 		<item comment="10102">Noctua janthina</item>
 		<item comment="10397">Orgya antiqua</item>
 		<item comment="10483">Atolmis rubricollis</item>
+		<item comment="10489">Eilema lurideola</item>
 		<item comment="10493">Eilema caniola</item>
 		<item comment="10497">Eilema lutarella</item>
 		<item comment="10499">Eilema sororcula</item>
@@ -1318,6 +1319,7 @@
 		<item comment="10102">Langmaid\'s yellow underwing</item>
 		<item comment="10397">Vapourer</item>
 		<item comment="10483">Red-necked footman</item>
+		<item comment="10489">Common footman</item>
 		<item comment="10493">Hoary footman</item>
 		<item comment="10497">-</item>
 		<item comment="10499">Orange footman</item>
@@ -1849,6 +1851,7 @@
 		<item>10102</item>
 		<item>10397</item>
 		<item>10483</item>
+		<item>10489</item>
 		<item>10493</item>
 		<item>10497</item>
 		<item>10499</item>

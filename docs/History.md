@@ -2,15 +2,15 @@
 
 #### TourCount Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.6.7 (2025-07-19)
+#### Version 3.6.7 (2025-07-20)
 - Compiled for Android 16 (SDK 36)
 - Help and License info with new design
 - App info with background adjusted to new design
 - Adaptive app icon added for Android 16 (prevents white frame)
 - Some code and layout cleaning
-- Picture of Ennomos quercinaria added
+- Pictures of Ennomos quercinaria and Eilema lurideola added
 - Docs updated
-- Bug fixes
+- Bugfixes
 
 #### Version 3.6.6 (2025-07-02)
 - Vibrator will only be used if Android Version is >= 8
@@ -21,7 +21,7 @@
 - Filename structure of exported data files changed
 - Filename of exported species list with language indicator (de or en)
 - Some code cleaning
-- Bug fixes
+- Bugfixes
 
 #### Version 3.6.5 (2025-05-18)
 - Option to set the proximity Wakelock sensitivity (if supported by device)
@@ -65,7 +65,7 @@
 - Option to preselect species by initial letters for editing them in the counting list
 - App gets completely removed from memory when finished
 - Code improvements and Kotlin code adapted to Kotlin 2
-- Bug fixes
+- Bugfixes
 - Update Gradle -> 8.9
 - Update AGP dependency -> 8.7.1
 - Docs updated
@@ -74,7 +74,7 @@
 - Filenames of exported current DB and csv table files include tour name
 - Option to preselect species names by initial letters for adding them to the counting list
 - Option to preselect species names by initial letters for deleting them from the counting list
-- Bug fixes
+- Bugfixes
 - Docs updated
 
 #### Version 3.5.0 (2024-08-25)
@@ -203,7 +203,7 @@
 - Many minor code refinements
 - Docs updated
 - Location service fix for coarse location
-- Bug fix in button sound
+- Bugfix in button sound
 
 #### Version 3.1.5 (2020-02-26)
 - Project adaption for Android Studio 3.6 and Gradle 5.6.4
@@ -261,7 +261,7 @@
 - Adapted results page layout
 - More butterfly pictures added
 - Documentation adapted for Ver. 3.0
-- Bug fixes
+- Bugfixes
 
 #### Version 2.4.6 (2018-03-19)
 - Source Project restructured
@@ -274,7 +274,7 @@
 - Added additional prepared databases for Canaries and Madeira in <a href="https://github.com/wistein/TourCount/tree/master/docs" target="_blank">https://github.com/wistein/TourCount/tree/master/docs</a>
 - Documents: German Introductory presentation added
 - Documents updated
-- Bug fixes
+- Bugfixes
 
 #### Version 2.3.0 (2017-09-27)
 - Code adapted and compiled for Android 7.1
@@ -295,7 +295,7 @@
 - Additional butterfly pictures
 - Minor string improvements
 - Fix crash when counting using a database of old structure prior version 2.1.4
-- Bug fixes and minor code improvements
+- Bugfixes and minor code improvements
 
 #### Version 2.1.4 (2016-12-01)
 - Added pictures of species on counting and results page
@@ -318,7 +318,7 @@
 - DB structure adapted and improved
 - Input masks improved
 - Code improvement
-- Bug fixes
+- Bugfixes
 
 #### Version 2.0.2 (2016-05-27)
 - Sorted csv export

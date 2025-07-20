@@ -57,15 +57,15 @@ _
 
 $ 3.6.7
   % Version 3.6.7
-  _ 19.07.2025
+  _ 20.07.2025
   * Compiliert für Android 16 (SDK 36)
   * Hilfe und Lizenz-Info in neuem Design
   * App-Info Hintergrund an neues Design angepasst
   * Adaptives App-Icon hinzugefügt für Android 16 (verhindert weiße Umrandung)
   * Einige Code- und Layout-Verbesserungen
-  * Bild von Ennomos quercinaria hinzugefügt
+  * Bilder von Ennomos quercinaria und Eilema lurideola hinzugefügt
   * Doku überarbeitet
-  * Bugfixes
+  * Bug-Fixe
 
 $ 3.6.6
   % Version 3.6.6
@@ -78,7 +78,7 @@ $ 3.6.6
   * Dateinamen-Struktur der exportierten Datendateien geändert
   * Dateinamen der exportierten Spezieslisten mit Sprach-Indikator (de oder en)
   * Einige Code-Verbesserungen
-  * Bugfixes
+  * Bug-Fixe
 
 $ 3.6.5
   % Version 3.6.5
@@ -88,7 +88,7 @@ $ 3.6.5
   * Export einer Basis-DB schreibt nun den Tour-Namen in den Dateinamen
   * Importfunktion der Basis-DB mit Datei-Auswahl
   * Optionale Button-Vibration gefixt für Android Version > 11
-  * Weitere Bugfixes
+  * Weitere Bug-Fixe
   * Code-, Daten- und Layout-Verbesserungen
   * Doku überarbeitet
 
@@ -229,7 +229,7 @@ $ 3.3.3
   _ 25.10.2022
   * Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
   * Weitere Falterarten mit Abbildungen hinzugefügt
-  * Bugfix in arrays.xml
+  * Bug-Fix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9

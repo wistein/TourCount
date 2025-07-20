@@ -58,15 +58,15 @@ _ Subtitle
 
 $ 3.6.7
   % Version 3.6.7
-  _ 2025-07-19
+  _ 2025-07-20
   * Compiled for Android 16 (SDK 36)
   * Help and License info with new design
   * App info with background adjusted to new design
   * Adaptive app icon added for Android 16 (prevents white frame)
   * Some code and layout cleaning
-  * Picture of Ennomos quercinaria added
+  * Pictures of Ennomos quercinaria and Eilema lurideola added
   * Docs updated
-  * Bug fixes
+  * Bugfixes
 
 $ 3.6.6
   % Version 3.6.6
@@ -79,7 +79,7 @@ $ 3.6.6
   * Filename structure of exported data files changed
   * Filename of exported species list with language indicator (de or en)
   * Some code cleaning
-  * Bug fixes
+  * Bugfixes
 
 $ 3.6.5
   % Version 3.6.5
@@ -127,7 +127,7 @@ $ 3.6.0
   * Option to preselect species by initial letters also for editing them in the counting list
   * App gets completely removed from memory when finished
   * Code improvements
-  * Bug fixes
+  * Bugfixes
   * Docs updated
 
 $ 3.5.1
@@ -136,7 +136,7 @@ $ 3.5.1
   * Filenames of exported current DB and csv table files include tour name
   * Option to preselect species names by initial letters for adding them to the counting list
   * Option to preselect species names by initial letters for deleting them from the counting list
-  * Bug fixes
+  * Bugfixes
   * Docs updated
 
 $ 3.5.0
@@ -268,7 +268,7 @@ $ 3.2.3
   * Help text updated
   * Docs updated
   * Location service fix for coarse location
-  * Bug fix in button sound
+  * Bugfix in button sound
 
 $ 3.1.5
   % Version 3.1.5

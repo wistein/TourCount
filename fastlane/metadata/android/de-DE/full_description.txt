@@ -6,7 +6,7 @@ Neu in Version 3.6.7:
 - App-Info Hintergrund an neues Design angepasst
 - Adaptives App-Icon hinzugefügt für Android 16 (verhindert weiße Umrandung)
 - Einige Code- und Layout-Verbesserungen
-- Bild von Ennomos quercinaria hinzugefügt
+- Bilder von Ennomos quercinaria und Eilema lurideola hinzugefügt
 - Doku überarbeitet
 - Bugfixes
 

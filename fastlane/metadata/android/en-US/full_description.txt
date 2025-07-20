@@ -6,7 +6,7 @@ New in Version  3.6.7:
 - App info with background adjusted to new design
 - Adaptive app icon added for Android 16 (prevents white frame)
 - Some code and layout cleaning
-- Picture of Ennomos quercinaria added
+- Pictures of Ennomos quercinaria and Eilema lurideola added
 - Docs updated
 - Bug fixes
 
