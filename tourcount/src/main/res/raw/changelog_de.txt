@@ -55,6 +55,12 @@ _
 ! Geeignet für Android 7.1 (Nougat) oder neuer
 _
 
+$ 3.6.8
+  % Version 3.6.8
+  _ 03.08.2025
+  * Einige Code- und Text-Verbesserungen
+  * Bug-Fixe
+
 $ 3.6.7
   % Version 3.6.7
   _ 20.07.2025

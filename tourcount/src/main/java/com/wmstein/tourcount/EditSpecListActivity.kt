@@ -405,7 +405,7 @@ class EditSpecListActivity : AppCompatActivity() {
         }
 
         if (retValue) {
-            mesg = getString(R.string.sectSaving) + " " + section!!.name + "!"
+            mesg = getString(R.string.saving) + " " + section!!.name + "!"
             Toast.makeText(
                 applicationContext,
                 HtmlCompat.fromHtml(

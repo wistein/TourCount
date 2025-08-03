@@ -79,7 +79,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2025-06-28
+ * last edited in Java on 2025-07-22
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -312,8 +312,6 @@ public class CountingActivity
         locationDispatcherMode = 1;
         locationDispatcher();
 
-//        enableProximitySensor();
-
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         setPrefVariables(); // set prefs into their variables
@@ -458,7 +456,7 @@ public class CountingActivity
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (MyDebug.DLOG)
-                Log.d(TAG, "461 Value0: " + event.values[0] + ", " + "Sensitivity: "
+                Log.d(TAG, "459 Value0: " + event.values[0] + ", " + "Sensitivity: "
                         + (sensorSensitivity));
 
             // if ([0|5] >= [-0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
@@ -517,18 +515,10 @@ public class CountingActivity
         else if (id == R.id.menuAddSpecies) {
             disableProximitySensor();
 
-            mesg = getString(R.string.wait);
-            Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(CountingActivity.this,
                     AddSpeciesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            // Trick: Pause for 100 msec to show toast
-            mHandler.postDelayed(() ->
-                    startActivity(intent), 100);
+            startActivity(intent);
             return true;
         }
 
@@ -540,7 +530,8 @@ public class CountingActivity
                     HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
                             HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(CountingActivity.this, DelSpeciesActivity.class);
+            Intent intent = new Intent(CountingActivity.this,
+                    DelSpeciesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             // Trick: Pause for 100 msec to show toast
@@ -625,7 +616,7 @@ public class CountingActivity
     protected void onPause() {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "628, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "619, onPause");
 
         disableProximitySensor();
 
@@ -659,7 +650,7 @@ public class CountingActivity
     public void onStop() {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "662, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "653, onStop");
 
         if (r != null)
             r.stop(); // stop media player
@@ -669,7 +660,7 @@ public class CountingActivity
     public void onDestroy() {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "672, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "663, onDestroy");
     }
 
     public void locationDispatcher() {

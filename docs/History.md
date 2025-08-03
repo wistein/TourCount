@@ -2,6 +2,10 @@
 
 #### TourCount Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.6.8 (2025-08-03)
+- Some code and text improvements
+- Bugfixes
+
 #### Version 3.6.7 (2025-07-20)
 - Compiled for Android 16 (SDK 36)
 - Help and License info with new design

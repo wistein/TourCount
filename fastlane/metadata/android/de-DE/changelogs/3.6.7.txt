@@ -6,4 +6,4 @@ Version 3.6.7 (20.07.2025)
 - Einige Code- und Layout-Verbesserungen
 - Bild von Ennomos quercinaria und Eilema lurideola hinzugefügt
 - Doku überarbeitet
-- Bugfixes
+- Bug-Fixe

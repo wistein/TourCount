@@ -1,0 +1,3 @@
+Version 3.6.8 (03.08.2025)
+- Einige Code- und Text-Verbesserungen
+- Bug-Fixe

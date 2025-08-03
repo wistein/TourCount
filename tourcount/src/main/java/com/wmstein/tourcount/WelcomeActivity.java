@@ -84,7 +84,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-07-02
+ * last edited on 2025-07-24
  */
 public class WelcomeActivity
     extends AppCompatActivity
@@ -265,8 +265,10 @@ public class WelcomeActivity
         }
 
         // Create preliminary tourcount0.db if it does not exist
-        inFile = new File(path, "/tourcount0.db");
-        if (!inFile.exists())
+        inFile = new File(path, "/tourcount0.db"); // Initial basic DB
+        File inFile1 = new File(path, "/tourcount0_" + tourName + ".db");
+
+        if (!inFile.exists() && !inFile1.exists())
             exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
 
         // New onBackPressed logic
@@ -294,7 +296,7 @@ public class WelcomeActivity
 
         // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
         int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
-        if (MyDebug.DLOG) Log.i(TAG, "297, NavBarMode = " + iMode);
+        if (MyDebug.DLOG) Log.i(TAG, "299, NavBarMode = " + iMode);
         return iMode;
     }
 
@@ -338,7 +340,7 @@ public class WelcomeActivity
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "341, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "343, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -353,10 +355,10 @@ public class WelcomeActivity
         individualsDataSource.open();
 
         // Set tour name as title
-        if (MyDebug.DLOG) Log.i(TAG, "356, onResume, get section");
+        if (MyDebug.DLOG) Log.i(TAG, "358, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
-        if (MyDebug.DLOG) Log.i(TAG, "359, tourName: " + tourName);
+        if (MyDebug.DLOG) Log.i(TAG, "361, tourName: " + tourName);
         try
         {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
@@ -369,7 +371,7 @@ public class WelcomeActivity
         //   Set flag fineLocationPermGranted from self permissions
         // Store flag 'hasAskedBackground = true' in SharedPreferences
         isFineLocationPermGranted();
-        if (MyDebug.DLOG) Log.i(TAG, "372, onCreate, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "374, onCreate, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // If not yet location permission is granted prepare and query for them
@@ -396,12 +398,12 @@ public class WelcomeActivity
 
         // Get location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
-        if (MyDebug.DLOG) Log.i(TAG, "390, onResume, fineLocationPermGranted: "
+        if (MyDebug.DLOG) Log.i(TAG, "401, onResume, fineLocationPermGranted: "
             + fineLocationPermGranted);
 
         // Get flag 'has_asked_background'
         boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
-        if (MyDebug.DLOG) Log.i(TAG, "404, hasAskedBackgroundLocation: "
+        if (MyDebug.DLOG) Log.i(TAG, "406, hasAskedBackgroundLocation: "
             + hasAskedBackgroundLocation);
 
         // Get background location with permissions check only once and if storage and fine location
@@ -429,13 +431,13 @@ public class WelcomeActivity
         {
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storagePermGranted = Environment.isExternalStorageManager();
-            if (MyDebug.DLOG) Log.i(TAG, "432, ManageStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "434, ManageStoragePermission: " + storagePermGranted);
         }
         else
         {
             storagePermGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (MyDebug.DLOG) Log.i(TAG, "438, ExtStoragePermission: " + storagePermGranted);
+            if (MyDebug.DLOG) Log.i(TAG, "440, ExtStoragePermission: " + storagePermGranted);
         }
     }
 
@@ -452,7 +454,7 @@ public class WelcomeActivity
         if (fineLocationPermGranted) // current location permission state granted
         {
             // Handle action here
-            if (MyDebug.DLOG) Log.i(TAG, "455, locationDispatcher, fineLocationPermGranted: true");
+            if (MyDebug.DLOG) Log.i(TAG, "457, locationDispatcher, fineLocationPermGranted: true");
             switch (locationDispatcherMode)
             {
                 case 1 ->
@@ -535,8 +537,8 @@ public class WelcomeActivity
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            startActivity(new Intent(this, SettingsActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            intent = new Intent(WelcomeActivity.this, SettingsActivity.class);
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
         else if (id == R.id.exportMenu)
@@ -736,7 +738,7 @@ public class WelcomeActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "739, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "741, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -754,7 +756,7 @@ public class WelcomeActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "757, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "759, onStop");
         baseLayout.invalidate();
     }
 
@@ -763,7 +765,7 @@ public class WelcomeActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "766, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "768, onDestroy");
         getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -816,7 +818,7 @@ public class WelcomeActivity
      **********************************************************************************************/
     // Import the basic DB
     private void importBasisDb() {
-        if (MyDebug.DLOG) Log.d(TAG, "819, importBasicDBFile");
+        if (MyDebug.DLOG) Log.d(TAG, "821, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -865,7 +867,7 @@ public class WelcomeActivity
                         {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (MyDebug.DLOG)
-                                Log.i(TAG, "868, Selected file: " + selectedFile);
+                                Log.i(TAG, "870, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -981,7 +983,7 @@ public class WelcomeActivity
                     if (data != null)
                     {
                         selectedFile = data.getStringExtra("fileSelected");
-                        if (MyDebug.DLOG) Log.d(TAG, "984, File selected: " + selectedFile);
+                        if (MyDebug.DLOG) Log.d(TAG, "986, File selected: " + selectedFile);
 
                         if (selectedFile != null)
                             inFile = new File(selectedFile);
@@ -1084,7 +1086,8 @@ public class WelcomeActivity
      * The next four functions below are for exporting data files.
      * They've been put here because no database should be open at this point.
      **********************************************************************************************/
-    // Exports Basis DB to Documents/TourCount/tourcount0.db
+    // Exports Basis DB to Documents/TourCount/tourcount0_name.db
+    // hasNoName indicated initial creation of tourcount0.db if it does not exist
     private void exportBasisDb()
     {
         // inFile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
@@ -1097,7 +1100,6 @@ public class WelcomeActivity
         tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db";
         File tmpFile = new File(tmpPath);
 
-        // New data directory
         // outFile in Public Directory Documents/TourCount/
         // distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
@@ -1117,7 +1119,7 @@ public class WelcomeActivity
         if (Objects.equals(tourName, ""))
             outFile = new File(path, "/tourcount0.db");
         else
-            outFile = new File(path, "/tourcount0_" + tourName +".db");
+            outFile = new File(path, "/tourcount0_" + tourName + ".db");
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
@@ -1157,7 +1159,7 @@ public class WelcomeActivity
                 }
             } catch (IOException e)
             {
-                if (MyDebug.DLOG) Log.e(TAG, "1160, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1162, Failed to export Basic DB");
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
@@ -1750,7 +1752,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1753 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1755 longi " + longi);
                         if (frst == 0)
                         {
                             loMin = longi;
@@ -1837,7 +1839,7 @@ public class WelcomeActivity
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-                if (MyDebug.DLOG) Log.e(TAG, "1840, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1842, Failed to export csv file");
             }
         }
     }
@@ -2065,7 +2067,7 @@ public class WelcomeActivity
             dbHandler.close();
         } catch (Exception e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "2068, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "2070, Failed to reset DB");
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
                     HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",

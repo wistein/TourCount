@@ -321,7 +321,7 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "325, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "324, onPause")
 
         // close the data sources
         headDataSource!!.close()

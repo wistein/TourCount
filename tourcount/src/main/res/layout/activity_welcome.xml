@@ -50,7 +50,7 @@
             android:layout_weight="5"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="@string/hello"
+            android:text="@string/title"
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
 

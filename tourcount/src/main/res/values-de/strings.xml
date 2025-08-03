@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-07-02 -->
+     last edited on 2025-08-03 -->
 
 <resources>
 
@@ -8,7 +8,7 @@
     <string name="action_settings">Einstellungen</string>
 
     <!-- WelcomeActivity -->
-    <string name="hello">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
+    <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
     <string name="zlist">Zählliste</string>
     <string name="counting">Zählen</string>
     <string name="viewSpeciesButton">Ergebnis anzeigen</string>
@@ -123,7 +123,7 @@
     <string name="editDelSpecTitle">Arten löschen</string>
     <string name="editAddSpecTitle">Arten hinzufügen</string>
     <string name="saveCountsButton">Sichern</string>
-    <string name="sectSaving">Speichern </string>
+    <string name="saving">Speichern </string>
     <string name="editSectTitle">Liste bearbeiten</string>
     <string name="deleteButton">Löschen</string>
     <string name="action_share">Mitteilen</string>

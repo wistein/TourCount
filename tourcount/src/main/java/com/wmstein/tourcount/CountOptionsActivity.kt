@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -27,7 +28,7 @@ import com.wmstein.tourcount.widgets.EditSpNotesWidget
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-06-28
+ * last edited on 2025-07-22
  */
 class CountOptionsActivity : AppCompatActivity() {
     private var staticWidgetArea: LinearLayout? = null
@@ -43,7 +44,7 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "46, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "47, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
 
@@ -102,7 +103,7 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "105, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "106, onResume")
 
         // Clear any existing views
         staticWidgetArea!!.removeAllViews()
@@ -133,11 +134,11 @@ class CountOptionsActivity : AppCompatActivity() {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (MyDebug.DLOG) Log.i(TAG, "136, Home")
+            if (MyDebug.DLOG) Log.i(TAG, "137, Home")
             finish()
             return true
         } else if (id == R.id.menuSaveExit) {
-            if (MyDebug.DLOG) Log.i(TAG, "140, SaveExit")
+            if (MyDebug.DLOG) Log.i(TAG, "141, SaveExit")
             if (saveData())
                 finish()
             return true
@@ -148,7 +149,7 @@ class CountOptionsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "151, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "152, onPause")
 
         countDataSource!!.close()
     }
@@ -160,11 +161,16 @@ class CountOptionsActivity : AppCompatActivity() {
     }
 
     private fun saveData(): Boolean {
-        if (MyDebug.DLOG) Log.i(TAG, "163, saveData")
+        if (MyDebug.DLOG) Log.i(TAG, "164, saveData")
 
-        // Toast here, as snackbar doesn't show up
-        Toast.makeText(this@CountOptionsActivity, getString(R.string.sectSaving)
-                + " " + count!!.name + "!", Toast.LENGTH_SHORT).show()
+        val mesg = getString(R.string.saving) + " " + count!!.name + "!"
+        Toast.makeText(
+            this,
+            HtmlCompat.fromHtml(
+                "<font color='#008000'>$mesg</font>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            ),Toast.LENGTH_SHORT
+        ).show()
 
         count!!.notes = esw!!.spNotesName
 

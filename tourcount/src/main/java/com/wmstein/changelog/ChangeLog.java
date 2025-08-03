@@ -64,7 +64,7 @@ public class ChangeLog
         // get version numbers of lastVersion and thisVersion to compare
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (MyDebug.DLOG)
-            Log.d(TAG, "66, lastVersion: " + lastVersion);
+            Log.d(TAG, "67, lastVersion: " + lastVersion);
 
         try
         {
@@ -74,10 +74,10 @@ public class ChangeLog
         {
             this.thisVersion = NO_VERSION;
             if (MyDebug.DLOG)
-                Log.e(TAG, "76, could not get version name from manifest!", e);
+                Log.e(TAG, "77, could not get version name from manifest!", e);
         }
         if (MyDebug.DLOG)
-            Log.d(TAG, "79, appVersion: " + thisVersion);
+            Log.d(TAG, "80, appVersion: " + thisVersion);
     }
 
     /**
@@ -253,7 +253,7 @@ public class ChangeLog
             ins.close();
         } catch (IOException e)
         {
-            if (MyDebug.DLOG) Log.e(TAG, "255, could not read changelog.", e);
+            if (MyDebug.DLOG) Log.e(TAG, "256, could not read changelog.", e);
         }
 
         return sb.toString();
