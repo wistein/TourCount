@@ -1,7 +1,5 @@
 package com.wmstein.tourcount;
 
-import static android.os.Build.VERSION.SDK_INT;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -79,7 +77,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2025-07-22
+ * last edited in Java on 2025-09-08
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -107,12 +105,6 @@ public class CountingActivity
     // Location info handling
     private double latitude, longitude, height;
     LocationService locationService;
-
-    // locationDispatcherMode:
-    //  1 = use location service
-    //  2 = end location service
-    private int locationDispatcherMode;
-
     private boolean locServiceOn = false;
 
     // Proximity sensor handling screen on/off
@@ -121,6 +113,7 @@ public class CountingActivity
 
     // Preferences
     private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
     private boolean awakePref;
     private boolean brightPref;
     private String sortPref;
@@ -152,7 +145,7 @@ public class CountingActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "155, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "148, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -178,7 +171,7 @@ public class CountingActivity
             getWindow().setAttributes(params);
         }
 
-        if (SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
             EdgeToEdge.enable(this);
 
         // Distinguish between left-/ right-handed counting page layout
@@ -262,7 +255,7 @@ public class CountingActivity
                 public void handleOnBackPressed() {
                     disableProximitySensor();
 
-                    if (MyDebug.DLOG) Log.i(TAG, "265, handleOnBackPressed");
+                    if (MyDebug.DLOG) Log.i(TAG, "258, handleOnBackPressed");
                     finish();
                     remove();
                 }
@@ -301,7 +294,7 @@ public class CountingActivity
     protected void onResume() {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "304, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "297, onResume");
 
         mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -309,8 +302,7 @@ public class CountingActivity
         vibrator = getApplicationContext().getSystemService(Vibrator.class);
 
         // Get location with permissions check
-        locationDispatcherMode = 1;
-        locationDispatcher();
+        locationDispatcher(1);
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -423,7 +415,7 @@ public class CountingActivity
         // Get itemPosition of added species by specCode from sharedPreference
         if (!Objects.equals(prefs.getString("new_spec_code", ""), "")) {
             specCode = prefs.getString("new_spec_code", "");
-            SharedPreferences.Editor editor = prefs.edit();
+            editor = prefs.edit();
             editor.putString("new_spec_code", ""); // clear prefs value after use
             editor.apply();
         }
@@ -456,7 +448,7 @@ public class CountingActivity
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (MyDebug.DLOG)
-                Log.d(TAG, "459 Value0: " + event.values[0] + ", " + "Sensitivity: "
+                Log.d(TAG, "451 Value0: " + event.values[0] + ", " + "Sensitivity: "
                         + (sensorSensitivity));
 
             // if ([0|5] >= [-0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
@@ -616,12 +608,12 @@ public class CountingActivity
     protected void onPause() {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "619, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "611, onPause");
 
         disableProximitySensor();
 
         // save current count id in case it is lost on pause
-        SharedPreferences.Editor editor = prefs.edit();
+        editor = prefs.edit();
         editor.putInt("count_id", iid);
         editor.putInt("item_Position", itemPosition);
         editor.apply();
@@ -638,8 +630,7 @@ public class CountingActivity
         }
 
         // Stop location service with permissions check
-        locationDispatcherMode = 2;
-        locationDispatcher();
+        locationDispatcher(2);
 
         prefs.unregisterOnSharedPreferenceChangeListener(this);
         mSensorManager.unregisterListener(this);
@@ -650,7 +641,7 @@ public class CountingActivity
     public void onStop() {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "653, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "644, onStop");
 
         if (r != null)
             r.stop(); // stop media player
@@ -660,14 +651,25 @@ public class CountingActivity
     public void onDestroy() {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "663, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "654, onDestroy");
     }
 
-    public void locationDispatcher() {
+    // Control location service
+    // locationDispatcherMode:
+    //  1 = start and use location service
+    //  2 = end location service
+    public void locationDispatcher(int locationDispatcherMode) {
         if (isFineLocationPermGranted()) {
             switch (locationDispatcherMode) {
-                case 1 -> // get location
-                        getLoc();
+                case 1 -> // start location service and get location
+                {
+                    locationService = new LocationService(this);
+                    Intent sIntent = new Intent(this, LocationService.class);
+                    startService(sIntent);
+                    locServiceOn = true;
+
+                    getLoc();
+                }
                 case 2 -> // stop location service
                 {
                     if (locServiceOn) {
@@ -688,11 +690,6 @@ public class CountingActivity
 
     // Get the location data
     public void getLoc() {
-        locationService = new LocationService(this);
-        Intent sIntent = new Intent(this, LocationService.class);
-        startService(sIntent);
-        locServiceOn = true;
-
         if (locationService.canGetLocation()) {
             longitude = locationService.getLongitude();
             latitude = locationService.getLatitude();
@@ -740,12 +737,12 @@ public class CountingActivity
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    if (MyDebug.DLOG) Log.d(TAG, "752, SpinnerListener, count id: "
+                    if (MyDebug.DLOG) Log.d(TAG, "740, SpinnerListener, count id: "
                             + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.DLOG) Log.e(TAG, "757, SpinnerListener: " + e);
+                    if (MyDebug.DLOG) Log.e(TAG, "745, SpinnerListener: " + e);
                 }
             }
 
@@ -758,7 +755,7 @@ public class CountingActivity
 
     // Show rest of widgets for counting screen
     private void countingScreen(Count count) {
-        if (MyDebug.DLOG) Log.i(TAG, "770, countingScreen");
+        if (MyDebug.DLOG) Log.i(TAG, "758, countingScreen");
 
         // 1. Species line is set by CountingWidgetHead1 in onResume, Spinner
         // 2. Head2 with species notes and edit button
@@ -1563,18 +1560,18 @@ public class CountingActivity
                 r.play();
                 mHandler.postDelayed(r::stop, 420);
             } catch (Exception e) {
-                if (MyDebug.DLOG) Log.e(TAG, "1575, could not play button sound.", e);
+                if (MyDebug.DLOG) Log.e(TAG, "1563, could not play button sound.", e);
             }
         }
     }
 
     private void buttonVib() {
         if (buttonVibPref && vibrator.hasVibrator()) {
-            if (SDK_INT >= 31) // S, Android 12
+            if (Build.VERSION.SDK_INT >= 31) // S, Android 12
             {
                 vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
             } else {
-                if (SDK_INT >= 26) {
+                if (Build.VERSION.SDK_INT >= 26) {
                     vibrator.vibrate(VibrationEffect.createOneShot(450,
                             VibrationEffect.DEFAULT_AMPLITUDE));
                     vibrator.cancel();

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-08-03 -->
+     last edited on 2025-09-08 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Einstellungen</string>
+    <string name="outsideEurope">Achtung: Nur europäische Arten werden unterstützt!</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
@@ -264,7 +265,7 @@
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
     <string name="dialog_fine_location_hint">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen. Wird die Standort-Berechtigung verweigert, fehlen alle Standort-bezogenen Informationen in den Ergebnissen. Die Berechtigung kann danach nur noch in den Systemeinstellungen erteilt werden.</string>
-    <string name="dialog_background_loc_title">Berechtigung erwünscht</string>
+    <string name="dialog_background_loc_title">Optionale Berechtigung erwünscht</string>
     <string name="dialog_background_loc_message">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'.</string>
     <string name="dialog_background_loc_hint">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'. Diese kann im folgenden Dialog erteilt werden.</string>
     <string name="grant_perm_later">Die optionale Hintergrund-Standort-Berechtigung kann ggf. später in den Systemeinstellungen erteilt werden.</string>

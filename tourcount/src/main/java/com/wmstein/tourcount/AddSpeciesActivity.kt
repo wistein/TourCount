@@ -3,7 +3,6 @@ package com.wmstein.tourcount
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
-import android.os.Build.VERSION
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -40,7 +39,7 @@ import com.wmstein.tourcount.widgets.HintAddWidget
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2025-07-24
+ * last edited on 2025-09-08
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -82,7 +81,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "80, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "84, onCreate")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -134,7 +133,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         // new onBackPressed logic
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.DLOG) Log.i(TAG, "137, handleOnBackPressed")
+                if (MyDebug.DLOG) Log.i(TAG, "136, handleOnBackPressed")
 
                 countDataSource!!.close()
                 finish()
@@ -148,7 +147,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "151, onResume")
+        if (MyDebug.DLOG) Log.i(TAG, "150, onResume")
 
         countDataSource!!.open()
 
@@ -174,7 +173,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Toast hint for duration of list calculation
         val mesg = getString(R.string.wait)
-        if (VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             Toast.makeText(
                 applicationContext,
                 HtmlCompat.fromHtml(
@@ -215,7 +214,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             initChars = initChars.substring(0, 2)
             searchAdd.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "218, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "217, initChars: $initChars")
 
             // Call DummyActivity to re-enter AddSpeciesActivity for reduced add list
             countDataSource!!.close()
@@ -242,7 +241,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // 2. Build lists of all yet missing species
         val codesCountListSize = codesCountList.size
-        if (MyDebug.DLOG) Log.d(TAG, "245, codesCountListSize: $codesCountListSize")
+        if (MyDebug.DLOG) Log.d(TAG, "244, codesCountListSize: $codesCountListSize")
 
         // Reduce complete arraylists for already contained species
         for (i in 0 until codesCountListSize) {
@@ -251,15 +250,15 @@ class AddSpeciesActivity : AppCompatActivity() {
                 // Prerequisites: Exactly correlated arrays of selCodes, selSpecs and selSpecs_l
                 specCode = codesCountList[i]
                 posSpec = codesCompleteArrayList!!.indexOf(specCode)
-                if (MyDebug.DLOG) Log.d(TAG, "254, 1. specCode: $specCode, posSpec: $posSpec")
+                if (MyDebug.DLOG) Log.d(TAG, "253, 1. specCode: $specCode, posSpec: $posSpec")
                 namesCompleteArrayList!!.removeAt(posSpec)
                 namesLCompleteArrayList!!.removeAt(posSpec)
                 codesCompleteArrayList!!.removeAt(posSpec)
             }
         }
 
-        if (MyDebug.DLOG) Log.d(TAG, "261, initChars: $initChars")
-        if (MyDebug.DLOG) Log.d(TAG, "262, namesCompleteArrayListSize: "
+        if (MyDebug.DLOG) Log.d(TAG, "260, initChars: $initChars")
+        if (MyDebug.DLOG) Log.d(TAG, "261, namesCompleteArrayListSize: "
                     + namesCompleteArrayList!!.size)
 
         // Copy ...CompleteArrayLists to ...ReducedArrayLists

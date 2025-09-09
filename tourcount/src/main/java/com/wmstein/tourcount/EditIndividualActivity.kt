@@ -7,7 +7,6 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -49,7 +48,7 @@ import java.io.IOException
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-06-28
+ * last edited on 2025-09-08
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -84,12 +83,9 @@ class EditIndividualActivity : AppCompatActivity() {
     private var height = 0.0
     private var uncertainty: String? = ""
     private var locationService: LocationService? = null
+    private var locServiceOn = false
     private var sLocality: String? = ""
 
-    // locationDispatcherMode:
-    //  1 = use location service
-    //  2 = end location service
-    private var locationDispatcherMode = 0
     private var countId = 0
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
@@ -106,7 +102,7 @@ class EditIndividualActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "109, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "105, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
@@ -115,7 +111,7 @@ class EditIndividualActivity : AppCompatActivity() {
         buttonVibPref = prefs.getBoolean("pref_button_vib", false)
         buttonSound = prefs.getString("button_sound", null).toString()
 
-        if (SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
             enableEdgeToEdge()
         }
@@ -177,8 +173,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onResume()
 
         // Get location with permissions check
-        locationDispatcherMode = 1
-        locationDispatcher()
+        locationDispatcher(1)
 
         // Clear any existing views
         indivArea!!.removeAllViews()
@@ -200,7 +195,7 @@ class EditIndividualActivity : AppCompatActivity() {
         try {
             supportActionBar!!.title = specName
         } catch (_: NullPointerException) {
-            if (MyDebug.DLOG) Log.e(TAG, "203, NullPointerException: No species name!")
+            if (MyDebug.DLOG) Log.e(TAG, "198, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
@@ -266,8 +261,7 @@ class EditIndividualActivity : AppCompatActivity() {
         WorkManager.getInstance(this).cancelAllWork()
 
         // Stop location service with permissions check
-        locationDispatcherMode = 2
-        locationDispatcher()
+        locationDispatcher(2)
 
         if (r != null)
             r!!.stop() // stop media player
@@ -430,15 +424,25 @@ class EditIndividualActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun locationDispatcher() {
+    fun locationDispatcher(locationDispatcherMode: Int) {
         run {
             if (this.isFineLocationPermGranted) {
                 when (locationDispatcherMode) {
                     1 ->  // Get location
+                    {
+                        locationService = LocationService(this)
+                        locServiceOn = true
+
                         this.loc
+                    }
 
                     2 ->  // Stop location service
-                        locationService!!.stopListener()
+                    {
+                        if (locServiceOn) {
+                            locationService!!.stopListener()
+                            locServiceOn = false
+                        }
+                    }
                 }
             }
         }
@@ -451,7 +455,6 @@ class EditIndividualActivity : AppCompatActivity() {
     // Get the location data
     private val loc: Unit
         get() {
-            locationService = LocationService(this)
             if (locationService!!.canGetLocation()) {
                 longitude = locationService!!.getLongitude()
                 latitude = locationService!!.getLatitude()
@@ -510,16 +513,16 @@ class EditIndividualActivity : AppCompatActivity() {
                 r!!.play()
                 mHandler.postDelayed({ r!!.stop() }, 400)
             } catch (e: java.lang.Exception) {
-                if (MyDebug.DLOG) Log.e(TAG, "513, could not play button sound.", e)
+                if (MyDebug.DLOG) Log.e(TAG, "516, could not play button sound.", e)
             }
         }
     }
 
     private fun buttonVib() {
-        if (SDK_INT >= 31) {
+        if (Build.VERSION.SDK_INT >= 31) {
             vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
         } else {
-            if (SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 26) {
                 vibrator?.vibrate(
                     VibrationEffect.createOneShot(
                         200,

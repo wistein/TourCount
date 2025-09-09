@@ -23,7 +23,7 @@ import androidx.fragment.app.DialogFragment
  * Adopted for TourCount by wistein on 2018-06-20,
  * last edited in java on 2020-04-17,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-02-22
+ * last edited on 2025-08-18
  */
 class PermissionsStorageDialogFragment : DialogFragment() {
     private var context: Context? = null

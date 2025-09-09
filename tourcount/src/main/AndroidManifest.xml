@@ -7,16 +7,13 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2025-07-15
+     Last edited 2025-08-18
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-        -->
     <!-- Permissions used for exporting files to the public directory Documents/TourCount
          which are then readable by an external app (until Android SDK-version 29) -->
     <uses-permission
@@ -32,12 +29,11 @@
         android:minSdkVersion="30" />
 
     <!-- Permissions needed for location providers and getting location updates in background -->
-    <uses-permission
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-feature android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -210,14 +206,14 @@
             tools:ignore="LockedOrientationActivity">
         </activity>
 
+        <activity
+            android:name="com.wmstein.tourcount.ShowTextDialog">
+        </activity>
+
         <service android:name="com.wmstein.tourcount.LocationService"
             android:foregroundServiceType="location"
             android:exported="false">
         </service>
-
-        <activity
-            android:name="com.wmstein.tourcount.ShowTextDialog">
-        </activity>
 
     </application>
 

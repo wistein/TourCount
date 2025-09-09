@@ -1,3 +1,4 @@
-Version 3.6.8 (2025-08-03)
+Version 3.6.8 (2025-09-09)
+- Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
 - Some code and text improvements
 - Bugfixes

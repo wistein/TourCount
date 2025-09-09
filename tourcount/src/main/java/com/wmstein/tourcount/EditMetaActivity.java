@@ -48,7 +48,7 @@ import java.util.Objects;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2025-06-28
+ * last edit in Java on 2025-09-08
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -79,12 +79,6 @@ public class EditMetaActivity extends AppCompatActivity
     private double longitude;
 
     LocationService locationService;
-
-    // locationDispatcherMode:
-    //  1 = use location service
-    //  2 = end location service
-    int locationDispatcherMode;
-
     private boolean locServiceOn = false;
 
     @Override
@@ -92,7 +86,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "95, onCreate");
+        if (MyDebug.DLOG) Log.i(TAG, "89, onCreate");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -139,7 +133,7 @@ public class EditMetaActivity extends AppCompatActivity
             @Override
             public void handleOnBackPressed()
             {
-                if (MyDebug.DLOG) Log.i(TAG, "142, handleOnBackPressed");
+                if (MyDebug.DLOG) Log.i(TAG, "136, handleOnBackPressed");
                 finish();
                 remove();
             }
@@ -153,11 +147,10 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "156, onResume");
+        if (MyDebug.DLOG) Log.i(TAG, "150, onResume");
 
         // Get location with permissions check
-        locationDispatcherMode = 1;
-        locationDispatcher();
+        locationDispatcher(1);
 
         // Clear existing view
         head_area.removeAllViews();
@@ -333,13 +326,13 @@ public class EditMetaActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == android.R.id.home) // back button in actionBar
         {
-            if (MyDebug.DLOG) Log.d(TAG, "336, MenuItem home");
+            if (MyDebug.DLOG) Log.d(TAG, "329, MenuItem home");
             finish();
             return true;
         }
         else if (id == R.id.menuSaveExit)
         {
-            if (MyDebug.DLOG) Log.d(TAG, "342, MenuItem saveExit");
+            if (MyDebug.DLOG) Log.d(TAG, "335, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;
@@ -352,7 +345,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "355, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "348, onPause");
 
         headDataSource.close();
         sectionDataSource.close();
@@ -368,8 +361,7 @@ public class EditMetaActivity extends AppCompatActivity
         WorkManager.getInstance(this).cancelAllWork();
 
         // Stop location service with permissions check
-        locationDispatcherMode = 2;
-        locationDispatcher();
+        locationDispatcher(2);
     }
 
     @Override
@@ -377,7 +369,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "380, onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "372, onStop");
     }
 
     @Override
@@ -385,7 +377,7 @@ public class EditMetaActivity extends AppCompatActivity
     {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "388, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "380, onDestroy");
 
         head_area.clearFocus();
         head_area.removeAllViews();
@@ -393,7 +385,7 @@ public class EditMetaActivity extends AppCompatActivity
 
     private boolean saveData()
     {
-        if (MyDebug.DLOG) Log.i(TAG, "396, saveData");
+        if (MyDebug.DLOG) Log.i(TAG, "388, saveData");
 
         // Save head data
         head.observer = ett.getWidgetOName2();
@@ -477,14 +469,25 @@ public class EditMetaActivity extends AppCompatActivity
         return dform.format(date);
     }
 
-    public void locationDispatcher()
+    // Control location service
+    // locationDispatcherMode:
+    //  1 = use location service
+    //  2 = end location service
+    public void locationDispatcher(int locationDispatcherMode)
     {
         if (isFineLocationPermGranted())
         {
             switch (locationDispatcherMode)
             {
-                case 1 -> // Get location
+                case 1 -> // Start location service and get location
+                {
+                    locationService = new LocationService(this);
+                    Intent sIntent = new Intent(this, LocationService.class);
+                    startService(sIntent);
+                    locServiceOn = true;
+
                     getLoc();
+                }
                 case 2 -> // Stop location service
                 {
                     if (locServiceOn)
@@ -508,11 +511,6 @@ public class EditMetaActivity extends AppCompatActivity
     // Get the location data
     public void getLoc()
     {
-        locationService = new LocationService(this);
-        Intent sIntent = new Intent(this, LocationService.class);
-        startService(sIntent);
-        locServiceOn = true;
-
         if (locationService.canGetLocation())
         {
             longitude = locationService.getLongitude();

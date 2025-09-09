@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-08-03 -->
+     last edited on 2025-09-08 -->
 
 <resources>
 
@@ -17,6 +17,7 @@
     <string name="title_activity_add_species" translatable="false">AddSpeciesActivity</string>
     <string name="title_activity_dummy" translatable="false">DummyActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="outsideEurope">Note: Only European species are supported!</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Species-specific counting\n\nof butterflies on walks</string>
@@ -275,7 +276,7 @@
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
     <string name="dialog_fine_location_hint">Registering butterflies should be done with precise location data. If you deny location permission all location-related information will be missing in the results. Authorization can then only be granted in the system settings.</string>
-    <string name="dialog_background_loc_title">Permission wanted</string>
+    <string name="dialog_background_loc_title">Optional permission wanted</string>
     <string name="dialog_background_loc_message">Location data is more precise with the optional permission \'Allow all the time\'.</string>
     <string name="dialog_background_loc_hint">Location data is more precise with the optional permission \'Allow all the time\'. This can be granted in the following dialog.</string>
     <string name="grant_perm_later">You may grant the optional Background location permission in system settings later.</string>

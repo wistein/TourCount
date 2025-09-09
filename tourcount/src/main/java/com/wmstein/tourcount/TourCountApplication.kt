@@ -12,17 +12,17 @@ import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.Log
 import android.view.WindowManager
-import androidx.preference.PreferenceManager
-import java.lang.Exception
+import androidx.core.content.edit
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.preference.PreferenceManager
 
 /*********************************************************************
  * Handle background image and prefs
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2025-05-08
+ * last edit on 2025-09-07
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -47,6 +47,12 @@ class TourCountApplication : Application() {
         } catch (e: Exception) {
             if (MyDebug.DLOG) Log.e(TAG, "48, Error: $e")
         }
+
+        // Set pref 'isFirstLoc = true' for showing a hint message once
+        //   when location is outside Europe
+        prefs!!.edit(commit = true) {
+            putBoolean("is_first_loc", true)
+        }
     }
     // End of onCreate()
 
@@ -56,7 +62,7 @@ class TourCountApplication : Application() {
         bMapDraw = null
 
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
-        if (MyDebug.DLOG) Log.i(TAG, "59, Backgr.: $backgroundPref")
+        if (MyDebug.DLOG) Log.i(TAG, "65, Backgr.: $backgroundPref")
 
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
         if (Build.VERSION.SDK_INT >= 30) {
@@ -72,7 +78,7 @@ class TourCountApplication : Application() {
             width = size.x
             height = size.y
         }
-        if (MyDebug.DLOG) Log.d(TAG, "75, Width: $width Height: $height")
+        if (MyDebug.DLOG) Log.d(TAG, "81, Width: $width Height: $height")
 
         var bMap: Bitmap?
         if (backgroundPref == "none") {
