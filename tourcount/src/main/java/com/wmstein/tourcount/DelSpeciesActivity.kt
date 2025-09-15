@@ -1,6 +1,7 @@
 package com.wmstein.tourcount
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -32,7 +33,7 @@ import com.wmstein.tourcount.widgets.HintDelWidget
  * activity_del_species.xml, widget_edit_title.xml.
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2025-06-30
+ * last edited on 2025-09-15
  */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
@@ -59,7 +60,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "62, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "63, onCreate")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -96,7 +97,7 @@ class DelSpeciesActivity : AppCompatActivity() {
             window.attributes = params
         }
 
-        // Get value from DummyActivity respective getInitialChars()
+        // Get value from re-entering respective getInitialChars()
         val extras = intent.extras
         if (extras != null)
             initChars = extras.getString("init_Chars").toString()
@@ -125,7 +126,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.d(TAG, "128 onResume")
+        if (MyDebug.DLOG) Log.d(TAG, "129 onResume")
 
         sectionDataSource!!.open()
         countDataSource!!.open()
@@ -164,13 +165,14 @@ class DelSpeciesActivity : AppCompatActivity() {
             initChars = initChars.substring(0,2)
             searchDel.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "167, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "168, initChars: $initChars")
 
-            // Call DummyActivity to reenter DelSpeciesActivity for reduced add list
-            val intent = Intent(this@DelSpeciesActivity, DummyActivity::class.java)
+            // Re-enter DelSpeciesActivity for reduced add list
+            val intent = Intent(this@DelSpeciesActivity, DelSpeciesActivity::class.java)
             intent.putExtra("init_Chars", initChars)
-            intent.putExtra("is_Flag", "isDel")
+            intent.flags = FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
+            finish()
         }
     }
 
@@ -194,7 +196,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                     dsw.setSpecId(cnt.toString()) // Index in reduced list
                     cnt++
                     deleteArea!!.addView(dsw)
-                    if (MyDebug.DLOG) Log.d(TAG, "197, name: " + count.name)
+                    if (MyDebug.DLOG) Log.d(TAG, "199, name: " + count.name)
                 }
             }
         } else {
@@ -206,7 +208,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                 dsw.setPSpec(count)
                 dsw.setSpecId(count.id.toString()) // Index in complete list
                 deleteArea!!.addView(dsw)
-                if (MyDebug.DLOG) Log.d(TAG, "209, name: " + count.name)
+                if (MyDebug.DLOG) Log.d(TAG, "211, name: " + count.name)
             }
         }
     }
@@ -214,7 +216,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     // Mark the selected species and consider it for delete from the species counts list
     fun checkBoxDel(view: View) {
         val idToDel = view.tag as Int
-        if (MyDebug.DLOG) Log.d(TAG, "217, View.tag: $idToDel")
+        if (MyDebug.DLOG) Log.d(TAG, "219, View.tag: $idToDel")
         val dsw = deleteArea!!.getChildAt(idToDel) as DeleteSpeciesWidget
 
         val checked = dsw.getMarkSpec() // return boolean isChecked
@@ -224,14 +226,14 @@ class DelSpeciesActivity : AppCompatActivity() {
             listToDelete!!.add(dsw)
             if (MyDebug.DLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "227, mark delete code: $codeD")
+                Log.d(TAG, "229, mark delete code: $codeD")
             }
         } else {
             // Remove species previously added from add list
             listToDelete!!.remove(dsw)
             if (MyDebug.DLOG) {
                 val codeD = dsw.getSpecCode()
-                Log.d(TAG, "234 mark delete code: $codeD")
+                Log.d(TAG, "236 mark delete code: $codeD")
             }
         }
     }
@@ -241,7 +243,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         var i = 0 // index of species list to delete
         while (i < listToDelete!!.size) {
             specCode = listToDelete!![i].getSpecCode()
-            if (MyDebug.DLOG) Log.d(TAG, "244, delete code: $specCode")
+            if (MyDebug.DLOG) Log.d(TAG, "246, delete code: $specCode")
             try {
                 countDataSource!!.deleteCountByCode(specCode!!)
                 individualsDataSource!!.deleteIndividualsByCode(specCode!!)
@@ -297,7 +299,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "300, onPause")
+        if (MyDebug.DLOG) Log.i(TAG, "302, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -308,7 +310,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (MyDebug.DLOG) Log.d(TAG, "311, onDestroy")
+        if (MyDebug.DLOG) Log.d(TAG, "313, onDestroy")
 
         delHintArea!!.clearFocus()
     }

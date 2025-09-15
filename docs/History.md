@@ -2,9 +2,10 @@
 
 #### TourCount Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.6.8 (2025-09-09)
+#### Version 3.6.8 (2025-09-15)
 - Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
 - Some code, text and picture improvements
+- Docs updated
 - Bugfixes
 
 #### Version 3.6.7 (2025-07-20)

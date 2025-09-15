@@ -3,6 +3,7 @@ TourCount supports species-specific and individually GPS-localized registering o
 New in Version 3.6.8:
 - Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
 - Some code and text improvements
+- Docs updated
 - Bugfixes
 
 Features:

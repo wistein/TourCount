@@ -131,7 +131,7 @@ public class CountingActivity
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
 
-    private Ringtone r;
+    private Ringtone rTone;
 
     // Prepare vibrator service
     private Vibrator vibrator;
@@ -643,8 +643,8 @@ public class CountingActivity
 
         if (MyDebug.DLOG) Log.i(TAG, "644, onStop");
 
-        if (r != null)
-            r.stop(); // stop media player
+        if (rTone != null)
+            rTone.stop(); // stop media player
     }
 
     @Override
@@ -1556,9 +1556,9 @@ public class CountingActivity
                     notification = Uri.parse(buttonSoundMinus);
                 else
                     notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                r = RingtoneManager.getRingtone(this, notification);
-                r.play();
-                mHandler.postDelayed(r::stop, 420);
+                rTone = RingtoneManager.getRingtone(this, notification);
+                rTone.play();
+                mHandler.postDelayed(rTone::stop, 420);
             } catch (Exception e) {
                 if (MyDebug.DLOG) Log.e(TAG, "1563, could not play button sound.", e);
             }

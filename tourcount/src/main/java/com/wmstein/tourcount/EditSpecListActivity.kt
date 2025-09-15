@@ -1,6 +1,7 @@
 package com.wmstein.tourcount
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Build
 import android.os.Bundle
@@ -40,7 +41,7 @@ import com.wmstein.tourcount.widgets.HintEditWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-06-30
+ * last edited on 2025-09-15
  */
 class EditSpecListActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -77,7 +78,7 @@ class EditSpecListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "80, onCreate")
+        if (MyDebug.DLOG) Log.i(TAG, "81, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -228,13 +229,14 @@ class EditSpecListActivity : AppCompatActivity() {
             initChars = initChars.substring(0,2)
             searchEdit.error = null
 
-            if (MyDebug.DLOG) Log.d(TAG, "231, initChars: $initChars")
+            if (MyDebug.DLOG) Log.d(TAG, "232, initChars: $initChars")
 
-            // Call DummyActivity to reenter EditSectionListActivity for reduced add list
-            val intent = Intent(this@EditSpecListActivity, DummyActivity::class.java)
+            // Re-enter EditSpecListActivity for reduced add list
+            val intent = Intent(this@EditSpecListActivity, EditSpecListActivity::class.java)
             intent.putExtra("init_Chars", initChars)
-            intent.putExtra("is_Flag", "isEdit")
+            intent.flags = FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
+            finish()
         }
     }
 
@@ -333,7 +335,7 @@ class EditSpecListActivity : AppCompatActivity() {
 
         // Add title if the user has written one
         val sectName = ehw!!.spListName
-        if (MyDebug.DLOG) Log.d(TAG, "336, newName: $sectName")
+        if (MyDebug.DLOG) Log.d(TAG, "338, newName: $sectName")
 
         if (isNotEmpty(sectName)) {
             section!!.name = sectName
@@ -355,7 +357,7 @@ class EditSpecListActivity : AppCompatActivity() {
         sectionDataSource!!.saveSection(section!!)
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
-        if (MyDebug.DLOG) Log.d(TAG, "358, childcount: $childcount")
+        if (MyDebug.DLOG) Log.d(TAG, "360, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -366,7 +368,7 @@ class EditSpecListActivity : AppCompatActivity() {
                 val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesWidget
                 retValue =
                     if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
-                        if (MyDebug.DLOG) Log.d(TAG, "369, esw: "
+                        if (MyDebug.DLOG) Log.d(TAG, "371, esw: "
                                     + esw.countId + ", " + esw.getCountName()
                         )
 
@@ -452,7 +454,7 @@ class EditSpecListActivity : AppCompatActivity() {
             name = esw.getCountName()
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
-                if (MyDebug.DLOG) Log.d(TAG, "455, Double name = $isDblName")
+                if (MyDebug.DLOG) Log.d(TAG, "457, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -473,7 +475,7 @@ class EditSpecListActivity : AppCompatActivity() {
             code = esw.getCountCode()
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
-                if (MyDebug.DLOG) Log.d(TAG, "476, Double name = $isDblCode")
+                if (MyDebug.DLOG) Log.d(TAG, "478, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

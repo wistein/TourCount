@@ -460,14 +460,18 @@ public class WelcomeActivity
 
             // Show hint message 'outsideEurope' once after app start and when true
             boolean isFirstLoc = prefs.getBoolean("is_first_loc", false);
-            if (MyDebug.DLOG) Log.d(TAG, "563, isFirstLog: " + isFirstLoc);
+            if (MyDebug.DLOG) Log.d(TAG, "463, isFirstLog: " + isFirstLoc);
             if (isFirstLoc &&
                     (!(27.6 < latitude && latitude < 71.2) ||
                     !(-31.3 < longitude && longitude < 50.8))) {
-                mesg = getString(R.string.outsideEurope);
+                mesg = getString(R.string.outsideEurope1);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                mesg = getString(R.string.outsideEurope2);
+                Toast.makeText(this,
+                        HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
+                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             }
             if (isFirstLoc) {
                 editor = prefs.edit();
@@ -666,7 +670,7 @@ public class WelcomeActivity
     public void onPause() {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "669, onPause");
+        if (MyDebug.DLOG) Log.i(TAG, "673, onPause");
 
         headDataSource.close();
         individualsDataSource.close();
@@ -682,7 +686,7 @@ public class WelcomeActivity
     public void onStop() {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "685 onStop");
+        if (MyDebug.DLOG) Log.i(TAG, "689 onStop");
         baseLayout.invalidate();
     }
 
@@ -690,7 +694,7 @@ public class WelcomeActivity
     public void onDestroy() {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "693, onDestroy");
+        if (MyDebug.DLOG) Log.i(TAG, "697, onDestroy");
         getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -739,7 +743,7 @@ public class WelcomeActivity
      **********************************************************************************************/
     // Import the basic DB
     private void importBasisDb() {
-        if (MyDebug.DLOG) Log.d(TAG, "742, importBasicDBFile");
+        if (MyDebug.DLOG) Log.d(TAG, "746, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -784,7 +788,7 @@ public class WelcomeActivity
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (MyDebug.DLOG)
-                                Log.i(TAG, "787, Selected file: " + selectedFile);
+                                Log.i(TAG, "791, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -889,7 +893,7 @@ public class WelcomeActivity
                         Intent data = result.getData();
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
-                            if (MyDebug.DLOG) Log.d(TAG, "892, File selected: " + selectedFile);
+                            if (MyDebug.DLOG) Log.d(TAG, "896, File selected: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -1051,7 +1055,7 @@ public class WelcomeActivity
                                     HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
-                if (MyDebug.DLOG) Log.e(TAG, "1054, Failed to export Basic DB");
+                if (MyDebug.DLOG) Log.e(TAG, "1058, Failed to export Basic DB");
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
@@ -1612,7 +1616,7 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1615 longi " + longi);
+                        if (MyDebug.DLOG) Log.d(TAG, "1619 longi " + longi);
                         if (frst == 0) {
                             loMin = longi;
                             loMax = longi;
@@ -1691,7 +1695,7 @@ public class WelcomeActivity
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-                if (MyDebug.DLOG) Log.e(TAG, "1694, Failed to export csv file");
+                if (MyDebug.DLOG) Log.e(TAG, "1698, Failed to export csv file");
             }
         }
     }
@@ -1899,7 +1903,7 @@ public class WelcomeActivity
 
             dbHandler.close();
         } catch (Exception e) {
-            if (MyDebug.DLOG) Log.e(TAG, "1902, Failed to reset DB");
+            if (MyDebug.DLOG) Log.e(TAG, "1906, Failed to reset DB");
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
                     HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",

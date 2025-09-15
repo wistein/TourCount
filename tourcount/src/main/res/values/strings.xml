@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-09-08 -->
+     last edited on 2025-09-15 -->
 
 <resources>
 
@@ -15,9 +15,10 @@
     <string name="title_activity_file_chooser" translatable="false">AdvFileChooser</string>
     <string name="title_activity_del_species" translatable="false">DelSpeciesActivity</string>
     <string name="title_activity_add_species" translatable="false">AddSpeciesActivity</string>
-    <string name="title_activity_dummy" translatable="false">DummyActivity</string>
+
     <string name="action_settings">Settings</string>
-    <string name="outsideEurope">Note: Only European species are supported!</string>
+    <string name="outsideEurope1">No GPS fix yet or location is outside of Europe.</string>
+    <string name="outsideEurope2">Note: Only European species are supported!</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Species-specific counting\n\nof butterflies on walks</string>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-09-08 -->
+     last edited on 2025-09-15 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Einstellungen</string>
-    <string name="outsideEurope">Achtung: Nur europäische Arten werden unterstützt!</string>
+    <string name="outsideEurope1">Noch kein GPS-Fix oder Ort ist außerhalb Europas.</string>
+    <string name="outsideEurope2">Achtung: Nur europäische Arten werden unterstützt!</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>

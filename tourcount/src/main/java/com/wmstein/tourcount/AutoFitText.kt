@@ -26,7 +26,7 @@ import androidx.appcompat.widget.AppCompatTextView
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
  * last edited in Java on 2023-05-24,
  * converted to Kotlin on 2023-07-06
- * last edited on 2024-05-07,
+ * last edited on 2025-09-15,
  */
 class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: AttributeSet?) :
     AppCompatTextView(context, attrs) {
@@ -36,17 +36,17 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
      * We will use DisplayMetrics in the Constructor to get the value of the factor and then
      * calculate SP from pixel values
      */
-    private val mScaledDensityFactor: Float
+    private val mScaledDensityFactor: Float = context.resources.displayMetrics.density
 
     /**
      * A dummy [Paint] to test the text size without actually showing anything to the user
      */
-    private val mTestPaint: Paint
+    private val mTestPaint: Paint = Paint()
 
     /**
      * A dummy [TextView] to test the text size without actually showing anything to the user
      */
-    private val mTestView: TextView
+    private val mTestView: TextView = TextView(context)
 
     /**
      * Constructor for call without attributes --> invoke constructor with AttributeSet null
@@ -54,9 +54,6 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
     constructor(context: Context) : this(context, null)
 
     init {
-        mScaledDensityFactor = context.resources.displayMetrics.density
-        mTestView = TextView(context)
-        mTestPaint = Paint()
         mTestPaint.set(this.paint)
         this.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {

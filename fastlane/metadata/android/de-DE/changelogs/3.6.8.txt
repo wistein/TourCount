@@ -1,4 +1,5 @@
-Version 3.6.8 (09.09.2025)
+Version 3.6.8 (15.09.2025)
 - Zeigt eine einmalige Info, wenn die Position außerhalb Europas ist, da die App nur Codes und Abbildungen europäischer Spezies kennt
 - Einige Code- und Text-Verbesserungen
+- Doku überarbeitet
 - Bug-Fixe

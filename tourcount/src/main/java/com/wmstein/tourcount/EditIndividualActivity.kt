@@ -72,7 +72,7 @@ class EditIndividualActivity : AppCompatActivity() {
     private var buttonVibPref = false
 
     private val mHandler = Handler(Looper.getMainLooper())
-    private var r: Ringtone? = null
+    private var rTone: Ringtone? = null
 
     // Prepare vibrator service
     private var vibrator: Vibrator? = null
@@ -263,8 +263,8 @@ class EditIndividualActivity : AppCompatActivity() {
         // Stop location service with permissions check
         locationDispatcher(2)
 
-        if (r != null)
-            r!!.stop() // stop media player
+        if (rTone != null)
+            rTone!!.stop() // stop media player
     }
 
     private fun saveData(): Boolean {
@@ -509,9 +509,9 @@ class EditIndividualActivity : AppCompatActivity() {
                 if (buttonSound.isNotBlank()) notification =
                     buttonSound.toUri()
                 else notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-                r = RingtoneManager.getRingtone(applicationContext, notification)
-                r!!.play()
-                mHandler.postDelayed({ r!!.stop() }, 400)
+                rTone = RingtoneManager.getRingtone(applicationContext, notification)
+                rTone!!.play()
+                mHandler.postDelayed({ rTone!!.stop() }, 400)
             } catch (e: java.lang.Exception) {
                 if (MyDebug.DLOG) Log.e(TAG, "516, could not play button sound.", e)
             }
