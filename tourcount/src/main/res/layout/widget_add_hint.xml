@@ -37,6 +37,7 @@
         android:paddingEnd="10dp"
         android:importantForAutofill="no"
         android:inputType="textCapSentences"
+        android:textColorHint="@color/BrightGray"
         android:hint="@string/hintSearch"
         android:textSize="16sp"/>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-09-15 -->
+     last edited on 2025-10-08 -->
 
 <resources>
 
@@ -9,20 +9,21 @@
     <string name="title_activity_meta" translatable="false">EditMetaActivity</string>
     <string name="title_activity_counting" translatable="false">CountingActivity</string>
     <string name="title_activity_show_results" translatable="false">ShowResultsActivity</string>
-    <string name="title_activity_count_options" translatable="false">CountOptionsActivity</string>
+    <string name="title_activity_count_options" translatable="false">EditSpeciesNotesActivity</string>
+    <string name="title_activity_tour_options" translatable="false">EditTourNotesActivity</string>
     <string name="title_activity_edit_individual" translatable="false">EditIndividualActivity</string>
-    <string name="title_activity_edit_section" translatable="false">EditSpecListActivity</string>
+    <string name="title_activity_edit_section" translatable="false">EditSpeciesListActivity</string>
     <string name="title_activity_file_chooser" translatable="false">AdvFileChooser</string>
     <string name="title_activity_del_species" translatable="false">DelSpeciesActivity</string>
     <string name="title_activity_add_species" translatable="false">AddSpeciesActivity</string>
+    <string name="ringSound_attr_label" translatable="false">RingSound</string>
 
     <string name="action_settings">Settings</string>
-    <string name="outsideEurope1">No GPS fix yet or location is outside of Europe.</string>
-    <string name="outsideEurope2">Note: Only European species are supported!</string>
+    <string name="outsideEurope1">No GPS fix yet, or location is outside the European fauna area.</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Species-specific counting\n\nof butterflies on walks</string>
-    <string name="zlist">Counting List</string>
+    <string name="zList">Counting List</string>
     <string name="counting">Counting</string>
     <string name="viewSpeciesButton">Show Results</string>
     <string name="editMetaButton">Edit Meta Data</string>
@@ -35,13 +36,13 @@
     <string name="saveFailListTransect">Export to Documents/TransektCount failed!</string>
     <string name="saveBasisDB">Export BasisDB to Documents/TourCount</string>
     <string name="saveDB">Export internal DB to Documents/TourCount</string>
-    <string name="savecsv">Export CSV-file to Documents/TourCount</string>
+    <string name="saveCSV">Export CSV-file to Documents/TourCount</string>
     <string name="saveList">Species list exported.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
     <string name="exportMenu">Export Current DB</string>
     <string name="exportBasisMenu">Export Basic DB</string>
-    <string name="exportCSVMenu">Export Data -> CSV File</string>
+    <string name="exportCSVMenu">Export Results (csv)</string>
     <string name="exportSpeciesListMenu">Export Species List</string>
     <string name="resetDBMenu">Reset Data</string>
     <string name="importBasisMenu">Import Basic DB</string>
@@ -51,11 +52,9 @@
     <string name="importWin">Your database has been imported.</string>
     <string name="importList">The species list has been imported.</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
-    <string name="noDb">Please provide \'tourcount0.db\' in the directory \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
     <string name="individuals">Individuals</string>
     <string name="cancelButton">Cancel</string>
-    <string name="confirmBasisImport">Are you sure you want to import an Basic DB \'tourcount0.db\'? Your current data will be overwritten!</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
     <string name="confirmListImport">Are you sure you want to import a species list? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
@@ -77,6 +76,7 @@
     <string name="sort_codes">Species sorted by species codes</string>
     <string name="sort_time">Individuals sorted by registered time</string>
     <string name="waitImport">Please wait, import may take a while!</string>
+    <string name="missingEmail">Please enter a valid email address under Settings for reliable location detection.</string>
 
     <!-- FileChooser -->
     <string name="importHead">Data Import</string>
@@ -87,7 +87,7 @@
     <string name="fileHeadlineBasicDB">TransektCount Basic DB files</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlnotes">Tour Notes:</string>
+    <string name="zlNotes">Tour Notes:</string>
     <string name="speccode">Spec. Code:</string>
     <string name="cnts">Counts</string>
     <string name="bema">Spec. Notes:</string>
@@ -114,7 +114,7 @@
 
     <!-- EditIndividualActivity -->
     <string name="saveIndividualButton">Save</string>
-    <string name="indivdel">Deleted: Individual with ID:</string>
+    <string name="indivDel">Deleted: Individual with ID:</string>
     <string name="xcoord">Latitude:</string>
     <string name="ycoord">Longitude:</string>
     <string name="zcoord">Height (m):</string>
@@ -145,7 +145,7 @@
     <string name="chooserTitle">Select photo app</string>
 	<string name="takePhoto">Take Photo</string>
 
-    <!-- EditSpecListActivity -->
+    <!-- EditSpeciesListActivity -->
     <string name="editTitle">Edit Terms</string>
     <string name="labelDelSpecButton">Remove Species</string>
     <string name="labelAddSpecButton">Add Species</string>
@@ -155,11 +155,13 @@
     <string name="titleHint">Insert tour name here&#8230;</string>
     <string name="titleHintShort">Insert here&#8230;</string>
     <string name="notesHint">Type notes here&#8230;</string>
-    <string name="isdouble"> is double!</string>
+    <string name="specNotesHint">Type species notes here&#8230;</string>
+    <string name="isDouble"> is double!</string>
     <string name="presentSpecs">Species in list:</string>
-    <string name="isempt">Name or Code is empty!</string>
+    <string name="isEmpt">Name or Code is empty!</string>
     <string name="spname">Name</string>
-    <string name="orcode"> or code</string>
+    <string name="orCode"> or code</string>
+    <string name="hintNotYet">None</string>
 
     <!-- DelSpeciesActivity -->
     <string name="delTitle">Remove Species</string>
@@ -168,15 +170,12 @@
     <string name="addTitle">Add Species</string>
     <string name="specsToAdd">Further species:</string>
     <string name="hintSearch">Starting chars.</string>
-    <string name="initCharsL">Please, 2 chars.</string>
+    <string name="initCharsL">Please 2 chars.</string>
 
     <!-- ChangeLog -->
     <string name="changelog_full_title">App Info (TourCount Ver. </string>
     <string name="changelog_title">What\'s New?</string>
     <string name="changelog_show_full">more&#8230;</string>
-
-    <string name="viewhelp_full_title">Help (TourCount Ver.</string>
-    <string name="viewlicense_full_title">Licenses (TourCount Ver. </string>
 
     <string name="title_help_dialog">Help</string>
     <string name="title_license_dialog">License</string>
@@ -187,8 +186,6 @@
     <string name="pref_bg_summ">Choose default or no background image.</string>
     <string name="pref_sort_order">Sorting of Species</string>
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
-    <string name="pref_note_font">Notes Font</string>
-    <string name="pref_note_font_summ">Select this option to increase the notes font size on the counting screen.</string>
     <string name="pref_left_hand">Left-hander</string>
     <string name="pref_left_hand_summ">Show left-hander counter view.</string>
 
@@ -211,18 +208,19 @@
     <string name="pref_metadata_summ">When selected, tries to substitute the location meta data you entered by Reverse Geocoding</string>
     <string name="pref_email_string">Mail Address for OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and will only be used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="email_hint">Please, type in a valid email address here</string>
+    <string name="email_hint">Please type in a valid email address here</string>
 
     <string name="pref_proximity_dialog">Set the sensitivity for switching off the screen.</string>
     <string name="pref_proximity_title">Proximity Sensor</string>
 
-    <!-- CountOptionsActivity -->
+    <!-- EditSpeciesNotesActivity -->
     <string name="spec_Name">Name</string>
     <string name="spec_NameG">Local Name</string>
     <string name="countName">New Species</string>
     <string name="countNameG">New Species (English name)</string>
     <string name="countCode">Code</string>
-    <string name="notesSpecies">General species notes:</string>
+    <string name="titleNotesSpecies">Species Notes:</string>
+    <string name="notesSpecies">Species notes:</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Counting Results</string>
@@ -237,6 +235,7 @@
     <string name="txtSte">State:</string>
     <string name="txtLat">La.:</string>
     <string name="txtLon">Lo.:</string>
+    <string name="txtHt">H.:</string>
     <string name="rem_Sp">Sp.-Rem.:</string>
     <string name="rem_Ind">Ind.-Rem.:</string>
     <string name="txt_mf">♂|♀</string>
@@ -252,9 +251,9 @@
     <string name="countNameHint">Name of Species</string>
     <string name="countNameHintG">Name of Species (English)</string>
     <string name="hintTitle">Title:</string>
-    <string name="hintName">Name</string>
-    <string name="notesHere">Tour Notes:</string>
-    <string name="hintListNotes">Tour notes:</string>
+    <string name="hintName">Type Name here&#8230;</string>
+    <string name="titleTourNotes">Tour Notes:</string>
+    <string name="hintTourNotes">Tour notes:</string>
     <string name="getHelp">Database problem! Please mail your problematic DB if you need assistance.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Butterfly ♂|♀</string>
@@ -266,22 +265,18 @@
     <string name="warnCount">Only values between 1 … 999999 allowed!</string>
     <string name="no_provider">No Service Provider available!</string>
     <string name="ok_button">OK</string>
-    
+    <string name="cancel">Cancel</string>
+
     <!-- Permissions -->
     <string name="app_settings">App Settings</string>
     <string name="dialog_storage_title">Storage permission required</string>
     <string name="dialog_storage_message">Please grant storage permission for TourCount to be able to export data.</string>
-    <string name="storage_perm_cancel">Storage problem! Please grant TourCount the needed storage permission.</string>
     <string name="storage_perm_denied">Required storage permission for TransektCount is missing.</string>
 
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
-    <string name="dialog_fine_location_hint">Registering butterflies should be done with precise location data. If you deny location permission all location-related information will be missing in the results. Authorization can then only be granted in the system settings.</string>
     <string name="dialog_background_loc_title">Optional permission wanted</string>
     <string name="dialog_background_loc_message">Location data is more precise with the optional permission \'Allow all the time\'.</string>
-    <string name="dialog_background_loc_hint">Location data is more precise with the optional permission \'Allow all the time\'. This can be granted in the following dialog.</string>
     <string name="grant_perm_later">You may grant the optional Background location permission in system settings later.</string>
-
-    <string name="cancel">Cancel</string>
 
 </resources>

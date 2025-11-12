@@ -25,7 +25,7 @@ import kotlin.math.roundToInt
  * Modified for TourCount by wm.stein on 2023-09-18,
  * last edited in Java on 2023-09-18
  * converted to Kotlin on 2023-09-19
- * last edited on 2024-11-19.
+ * last edited on 2025-11-01.
  */
 class AutoFitEditText @JvmOverloads constructor(
     context: Context?, attrs: AttributeSet? = null,
@@ -79,7 +79,8 @@ class AutoFitEditText @JvmOverloads constructor(
                     textRect.bottom = paint!!.fontSpacing
                     textRect.right = paint!!.measureText(text)
                 } else {
-                    val sb = StaticLayout.Builder.obtain(text, 0, text.length, paint!!, widthLimit)
+                    val sb = StaticLayout.Builder.obtain(text, 0, text.length,
+                        paint!!, widthLimit)
                         .setAlignment(Layout.Alignment.ALIGN_NORMAL)
                         .setLineSpacing(spacingAdd, spacingMult)
                         .setIncludePad(true)
@@ -89,13 +90,14 @@ class AutoFitEditText @JvmOverloads constructor(
                     ) return 1
                     textRect.bottom = layout.height.toFloat()
                     var maxWidth = -1
-                    for (i in 0 until layout.lineCount) if (maxWidth < layout.getLineWidth(i)) maxWidth =
-                        layout.getLineWidth(i).toInt()
+                    for (i in 0 until layout.lineCount)
+                        if (maxWidth < layout.getLineWidth(i)) maxWidth =
+                            layout.getLineWidth(i).toInt()
                     textRect.right = maxWidth.toFloat()
                 }
                 textRect.offsetTo(0f, 0f)
-                return if (availableSpace.contains(textRect)) -1 else 1
-                // else, too big
+                return if (availableSpace.contains(textRect)) -1
+                else 1 // else, too big
             }
         }
         initiallized = true
@@ -202,4 +204,5 @@ class AutoFitEditText @JvmOverloads constructor(
         super.onSizeChanged(width, height, oldwidth, oldheight)
         if (width != oldwidth || height != oldheight) reAdjust()
     }
+
 }

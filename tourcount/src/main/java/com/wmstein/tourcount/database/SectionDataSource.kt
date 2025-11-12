@@ -12,12 +12,12 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-04-18,
  * last modified in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last modified on 2025-03-03
+ * last modified on 2025-11-12
  */
 class SectionDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
-    private val dbHandler: DbHelper
+    private val dbHelper: DbHelper = DbHelper(context)
     private val allColumns = arrayOf(
         DbHelper.S_ID,
         DbHelper.S_NAME,
@@ -39,17 +39,13 @@ class SectionDataSource(context: Context) {
         DbHelper.S_ST_LOCALITY
     )
 
-    init {
-        dbHandler = DbHelper(context)
-    }
-
     @Throws(SQLException::class)
     fun open() {
-        database = dbHandler.writableDatabase
+        database = dbHelper.writableDatabase
     }
 
     fun close() {
-        dbHandler.close()
+        dbHelper.close()
     }
 
     @SuppressLint("Range")

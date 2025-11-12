@@ -28,7 +28,7 @@ import androidx.core.text.HtmlCompat
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-06-28
+ * last edited on 2025-11-12
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -66,7 +66,7 @@ open class LocationService : Service, LocationListener {
                 Toast.makeText(
                     mContext,
                     HtmlCompat.fromHtml(
-                        "<font color='red'><b>" + mesg + "</b></font>",
+                        "<font color='red'><b>$mesg</b></font>",
                         HtmlCompat.FROM_HTML_MODE_LEGACY
                     ), Toast.LENGTH_LONG
                 ).show()
@@ -143,7 +143,8 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
             }
         } catch (e: Exception) {
-            if (MyDebug.DLOG) Log.e(TAG, "146, StopListener: $e")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.e(TAG, "147, StopListener: $e")
         }
     }
 
@@ -161,20 +162,19 @@ open class LocationService : Service, LocationListener {
         return lat
     }
 
-    val altitude: Double
-        get() {
-            if (location != null) {
-                height = location!!.altitude
-            }
-            return height
+    open fun getAltitude(): Double {
+        if (location != null) {
+            height = location!!.altitude
         }
-    val accuracy: Double
-        get() {
-            if (location != null) {
-                uncertainty = location!!.accuracy.toDouble()
-            }
-            return uncertainty
+        return height
+    }
+
+    open fun getAccuracy(): Double {
+        if (location != null) {
+            uncertainty = location!!.accuracy.toDouble()
         }
+        return uncertainty
+    }
 
     fun canGetLocation(): Boolean {
         return canGetLocation

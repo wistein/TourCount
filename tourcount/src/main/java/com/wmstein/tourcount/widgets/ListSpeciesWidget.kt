@@ -89,32 +89,32 @@ class ListSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout
     }
 
     //Parameter specCnt* for use in ShowResultsActivity
-    fun getSpec_countf1i(spec: Count): Int {
+    fun getSpecCountf1i(spec: Count): Int {
         return spec.count_f1i
     }
 
-    fun getSpec_countf2i(spec: Count): Int {
+    fun getSpecCountf2i(spec: Count): Int {
         return spec.count_f2i
     }
 
-    fun getSpec_countf3i(spec: Count): Int {
+    fun getSpecCountf3i(spec: Count): Int {
         return spec.count_f3i
     }
 
-    fun getSpec_countpi(spec: Count): Int {
+    fun getSpecCountpi(spec: Count): Int {
         return spec.count_pi
     }
 
-    fun getSpec_countli(spec: Count): Int {
+    fun getSpecCountli(spec: Count): Int {
         return spec.count_li
     }
 
-    fun getSpec_countei(spec: Count): Int {
+    fun getSpecCountei(spec: Count): Int {
         return spec.count_ei
     }
 
     //Parameter spec_name for use in ShowResultsActivity
-    fun getSpec_name(newcount: Count): String? {
+    fun getSpecname(newcount: Count): String? {
         return newcount.name
     }
 

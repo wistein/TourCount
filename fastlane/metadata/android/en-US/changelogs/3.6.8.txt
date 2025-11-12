@@ -1,5 +1,5 @@
 Version 3.6.8 (2025-09-15)
-- Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
+- Displays a one-time notification if no GPS fix has been established yet or if the location is outside the European faunal area.
 - Some code and text improvements
 - Docs updated
 - Bugfixes

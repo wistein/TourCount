@@ -1,8 +1,11 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.6.8:
-- Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
-- Some code and text improvements
+New in Version 3.6.9:
+- Counting page layout re-arranged
+- Now just only one font size for comments
+- Results page with dimmed "0"-values and minor layout changes
+- Picture of Nomophila noctuella (Rush veneer) added
+- Sound handling better adapted to Android 16 demands
 - Docs updated
 - Bugfixes
 

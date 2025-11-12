@@ -1,0 +1,12 @@
+Version 3.6.9 (2025-11-12)
+- Counting page layout re-arranged
+- Now just only one fix font size for comments
+- Results page with dimmed "0"-values and minor layout changes
+- Results page with height info for individuals
+- Location handling improved
+- Sound handling better adapted to Android 16 demands
+- Picture of Nomophila noctuella (Rush veneer) added
+- App specific and permanent debug support for Emulator in Android Studio
+- Docs updated
+- Some code cleaning
+- Bugfixes

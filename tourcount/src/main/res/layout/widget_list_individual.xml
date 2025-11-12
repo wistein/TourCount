@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- widget_list_individual.xml used by ListIndividualWidget.kt.
- Copyright © 2016-2024, Wilhelm Stein, Bonn, Germany.
+ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
  Shows individuals line of species -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,6 +41,7 @@
             android:layout_weight="0.8"
             android:layout_marginStart="5dp"
             android:gravity="start"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/txtSx"
             android:maxLines="1"
             android:padding="4sp"
@@ -65,6 +66,7 @@
             android:layout_weight="0.9"
             android:layout_marginStart="5dp"
             android:gravity="start"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/txtSt"
             android:maxLines="1"
             android:padding="4sp"
@@ -89,6 +91,7 @@
             android:layout_weight="0.9"
             android:layout_marginStart="5dp"
             android:gravity="start"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/txtSte"
             android:maxLines="1"
             android:padding="4sp"
@@ -119,6 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
             android:gravity="start|top"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/txt_time"
             android:padding="4sp"
             android:textColor="#FFFFFF"
@@ -132,6 +136,7 @@
             android:layout_weight="0.4"
             android:layout_marginStart="4dp"
             android:gravity="end"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/txtLon"
             android:maxLines="1"
             android:padding="4sp"
@@ -143,7 +148,7 @@
             android:id="@+id/txtIndLo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.95"
+            android:layout_weight="0.9"
             android:gravity="start|top"
             android:padding="4sp"
             android:textColor="#FFFFFF"
@@ -157,6 +162,7 @@
             android:layout_weight="0.4"
             android:layout_marginStart="8dp"
             android:gravity="end"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/txtLat"
             android:maxLines="1"
             android:padding="4sp"
@@ -167,7 +173,32 @@
             android:id="@+id/txtIndLa"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.95"
+            android:layout_weight="0.9"
+            android:gravity="start|top"
+            android:padding="4sp"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp" />
+
+        <!-- Height of individual -->
+        <TextView
+            android:id="@+id/txtIndHt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:layout_marginStart="8dp"
+            android:gravity="end"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/txtHt"
+            android:maxLines="1"
+            android:padding="4sp"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtIndHeight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:gravity="start|top"
             android:padding="4sp"
             android:textColor="#FFFFFF"

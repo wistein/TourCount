@@ -22,7 +22,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2025-09-07
+ * last edit on 2025-11-01
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -33,7 +33,7 @@ class TourCountApplication : Application() {
         super.onCreate()
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
-        if (MyDebug.DLOG) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
             Log.i(TAG, "37, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
@@ -45,7 +45,8 @@ class TourCountApplication : Application() {
         try {
             prefs = PreferenceManager.getDefaultSharedPreferences(this)
         } catch (e: Exception) {
-            if (MyDebug.DLOG) Log.e(TAG, "48, Error: $e")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.e(TAG, "49, Error: $e")
         }
 
         // Set pref 'isFirstLoc = true' for showing a hint message once
@@ -62,7 +63,8 @@ class TourCountApplication : Application() {
         bMapDraw = null
 
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
-        if (MyDebug.DLOG) Log.i(TAG, "65, Backgr.: $backgroundPref")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "67, Backgr.: $backgroundPref")
 
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
         if (Build.VERSION.SDK_INT >= 30) {
@@ -78,23 +80,28 @@ class TourCountApplication : Application() {
             width = size.x
             height = size.y
         }
-        if (MyDebug.DLOG) Log.d(TAG, "81, Width: $width Height: $height")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "84, Width: $width Height: $height")
 
         var bMap: Bitmap?
-        if (backgroundPref == "none") {
-            // black screen
-            bMap = createBitmap(width, height, Bitmap.Config.RGB_565)
-            bMap.eraseColor(Color.BLACK)
-        } else if (backgroundPref == "grey") {
-            bMap = createBitmap(width, height, Bitmap.Config.RGB_565)
-            bMap.eraseColor(-0xddddde)
-        } else {
-            if (height.toDouble() / width < 1.8) {
-                // normal screen
-                bMap = decodeBitmap(R.drawable.tourcount_picture_pn, width, height)
-            } else {
-                // long screen
-                bMap = decodeBitmap(R.drawable.tourcount_picture_pl, width, height)
+        when (backgroundPref) {
+            "none" -> {
+                // black screen
+                bMap = createBitmap(width, height, Bitmap.Config.RGB_565)
+                bMap.eraseColor(Color.BLACK)
+            }
+            "grey" -> {
+                bMap = createBitmap(width, height, Bitmap.Config.RGB_565)
+                bMap.eraseColor(-0xddddde)
+            }
+            else -> {
+                bMap = if (height.toDouble() / width < 1.8) {
+                    // normal screen
+                    decodeBitmap(R.drawable.tourcount_picture_pn, width, height)
+                } else {
+                    // long screen
+                    decodeBitmap(R.drawable.tourcount_picture_pl, width, height)
+                }
             }
         }
 
@@ -113,10 +120,10 @@ class TourCountApplication : Application() {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false
-        try {
-            return BitmapFactory.decodeResource(resources, resId, options)
+        return try {
+            BitmapFactory.decodeResource(resources, resId, options)
         } catch (_: OutOfMemoryError) {
-            return null
+            null
         }
     }
 

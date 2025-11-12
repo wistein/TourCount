@@ -8,12 +8,14 @@ import android.util.Log
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
+
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.DbHelper
@@ -30,6 +32,7 @@ import com.wmstein.tourcount.widgets.ListMetaWidget
 import com.wmstein.tourcount.widgets.ListSpeciesWidget
 import com.wmstein.tourcount.widgets.ListSumWidget
 import com.wmstein.tourcount.widgets.ListTitleWidget
+
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
@@ -40,7 +43,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2025-07-17
+ * last edited on 2025-11-01
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -64,7 +67,8 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "67, onCreate")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "71, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -108,7 +112,8 @@ class ShowResultsActivity : AppCompatActivity() {
         // new onBackPressed logic
         val callback = object :  OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (MyDebug.DLOG) Log.i(TAG, "111, handleOnBackPressed")
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.i(TAG, "116, handleOnBackPressed")
                 finish()
                 remove()
             }
@@ -120,7 +125,8 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "123, onResume")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "129, onResume")
 
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -176,8 +182,8 @@ class ShowResultsActivity : AppCompatActivity() {
         specArea!!.addView(ltw)
 
         // Calculate mean average values for coords and uncertainty
-        val dbHandler = DbHelper(this)
-        val database = dbHandler.writableDatabase
+        val dbHelper = DbHelper(this)
+        val database = dbHelper.writableDatabase
         val curAInd: Cursor = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE, null)
         while (curAInd.moveToNext()) {
             longi = curAInd.getDouble(4)
@@ -202,7 +208,7 @@ class ShowResultsActivity : AppCompatActivity() {
             }
         }
         curAInd.close()
-        dbHandler.close()
+        dbHelper.close()
 
         lo = (loMax + loMin) / 2 // average longitude
         la = (laMax + laMin) / 2 // average latitude
@@ -227,18 +233,17 @@ class ShowResultsActivity : AppCompatActivity() {
         val lmw = ListMetaWidget(this, null)
         lmw.setListMetaWidget(section)
 
-        lmw.setWidgetNotes1(getString(R.string.notesHere))
+        lmw.setWidgetNotes1(getString(R.string.hintTourNotes))
         lmw.setWidgetNotes2(section.notes)
         specArea!!.addView(lmw)
 
-        // load the species data
-        val specs: List<Count> // List of sorted species
-        if (outPref.equals("names")) {
+        // load the sorted list of species
+        val specs: List<Count> = if (outPref.equals("names")) {
             // sort criteria are name and code
-            specs = countDataSource!!.cntSpeciesSrtName
+            countDataSource!!.cntSpeciesSrtName
         } else {
             // sort criteria are name and section
-            specs = countDataSource!!.cntSpeciesSrtCode
+            countDataSource!!.cntSpeciesSrtCode
         }
 
         // calculate the totals
@@ -251,12 +256,12 @@ class ShowResultsActivity : AppCompatActivity() {
         for (spec in specs) {
             val widget = ListSpeciesWidget(this, null)
             widget.setCount(spec)
-            specCntf1i = widget.getSpec_countf1i(spec)
-            specCntf2i = widget.getSpec_countf2i(spec)
-            specCntf3i = widget.getSpec_countf3i(spec)
-            specCntpi = widget.getSpec_countpi(spec)
-            specCntli = widget.getSpec_countli(spec)
-            specCntei = widget.getSpec_countei(spec)
+            specCntf1i = widget.getSpecCountf1i(spec)
+            specCntf2i = widget.getSpecCountf2i(spec)
+            specCntf3i = widget.getSpecCountf3i(spec)
+            specCntpi = widget.getSpecCountpi(spec)
+            specCntli = widget.getSpecCountli(spec)
+            specCntei = widget.getSpecCountei(spec)
             summf += specCntf1i
             summ += specCntf2i
             sumf += specCntf3i
@@ -282,18 +287,18 @@ class ShowResultsActivity : AppCompatActivity() {
             val lnWidget = ListLineWidget(this, null)
             val widget = ListSpeciesWidget(this, null)
             widget.setCount(spec)
-            specCntf1i = widget.getSpec_countf1i(spec)
-            specCntf2i = widget.getSpec_countf2i(spec)
-            specCntf3i = widget.getSpec_countf3i(spec)
-            specCntpi = widget.getSpec_countpi(spec)
-            specCntli = widget.getSpec_countli(spec)
-            specCntei = widget.getSpec_countei(spec)
+            specCntf1i = widget.getSpecCountf1i(spec)
+            specCntf2i = widget.getSpecCountf2i(spec)
+            specCntf3i = widget.getSpecCountf3i(spec)
+            specCntpi = widget.getSpecCountpi(spec)
+            specCntli = widget.getSpecCountli(spec)
+            specCntei = widget.getSpecCountei(spec)
             specCnt = (specCntf1i + specCntf2i + specCntf3i + specCntpi + specCntli + specCntei)
 
             // fill widget only for counted species
             if (specCnt > 0) {
                 specArea!!.addView(widget)
-                val iName = widget.getSpec_name(spec)
+                val iName = widget.getSpecname(spec)
                 indivs = individualsDataSource!!.getIndividualsByName(iName!!)
                 for (indiv in indivs) {
                     iwidget = ListIndividualWidget(this, null)
@@ -321,7 +326,8 @@ class ShowResultsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (MyDebug.DLOG) Log.i(TAG, "324, onPause")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "330, onPause")
 
         // close the data sources
         headDataSource!!.close()
@@ -341,7 +347,7 @@ class ShowResultsActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "ListResultsAct"
+        private const val TAG = "ShowResultsAct"
     }
 
 }

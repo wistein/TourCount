@@ -45,15 +45,17 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.wmstein.changelog.ChangeLog;
-import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.DbHelper;
 import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
-import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 
@@ -83,7 +85,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-09-08
+ * last edited on 2025-11-12
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -94,9 +96,6 @@ public class WelcomeActivity
 
     LocationService locationService;
     private boolean locServiceOn = false;
-
-    // Location info handling
-    private double latitude, longitude, height, uncertainty;
 
     private ChangeLog cl;
     public boolean doubleBackToExitPressedTwice = false;
@@ -114,18 +113,18 @@ public class WelcomeActivity
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private String outPref;
-
+    private boolean metaPref;        // option for OSM reverse geocoding
     private boolean storagePermGranted = false;  // Storage permission state
     private boolean fineLocationPermGranted = false; // Foreground location permission state
+    private String emailString = ""; // mail address for OSM query
 
     // DB handling
     private SQLiteDatabase database;
-    private DbHelper dbHandler;
+    private DbHelper dbHelper;
     private SectionDataSource sectionDataSource;
     private Section section;
     private HeadDataSource headDataSource;
     private CountDataSource countDataSource;
-    private IndividualsDataSource individualsDataSource;
 
     private String tourName = "";
     private View baseLayout;
@@ -136,7 +135,8 @@ public class WelcomeActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "139, onCreate");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "139, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -184,9 +184,6 @@ public class WelcomeActivity
                     return WindowInsetsCompat.CONSUMED;
                 });
 
-        baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(tourCount.setBackgr());
-
         // Check initial storage permission state and provide dialog
         isStoragePermGranted();
         if (!storagePermGranted) // in self permission
@@ -203,26 +200,24 @@ public class WelcomeActivity
             editor.putBoolean("has_asked_foreground", false);
             editor.commit();
         }
-        if (MyDebug.DLOG) Log.d(TAG, "206, onCreate, storagePermGranted: " + storagePermGranted);
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "204, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
-        dbHandler = new DbHelper(this);
-        database = dbHandler.getWritableDatabase();
-        dbHandler.close();
+        dbHelper = new DbHelper(this);
+        database = dbHelper.getWritableDatabase();
+        dbHelper.close();
 
         // setup the data sources
         headDataSource = new HeadDataSource(this);
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
-        individualsDataSource = new IndividualsDataSource(this);
 
         // Get tour name and check for DB integrity
         try {
-            if (MyDebug.DLOG) Log.i(TAG, "221, onCreate, try section");
             sectionDataSource.open();
             section = sectionDataSource.getSection();
             tourName = section.name;
-            if (MyDebug.DLOG) Log.i(TAG, "225, onCreate, tourName: " + tourName);
             sectionDataSource.close();
         } catch (SQLiteException e) {
             sectionDataSource.close();
@@ -268,6 +263,8 @@ public class WelcomeActivity
             OnBackPressedCallback callback = getOnBackPressedCallback();
             getOnBackPressedDispatcher().addCallback(this, callback);
         }
+
+        locationService = new LocationService(this);
     }
     // End of onCreate()
 
@@ -279,10 +276,8 @@ public class WelcomeActivity
         int resourceId = resources.getIdentifier("config_navBarInteractionMode",
                 "integer", "android");
 
-        // iMode = 0: 3-button, = 1: 2-button, = 2: gesture
-        int iMode = resourceId > 0 ? resources.getInteger(resourceId) : 0;
-        if (MyDebug.DLOG) Log.i(TAG, "284, NavBarMode = " + iMode);
-        return iMode;
+        // navBarMode = 0: 3-button, = 1: 2-button, = 2: gesture
+        return resourceId > 0 ? resources.getInteger(resourceId) : 0;
     }
 
     // Use onBackPressed logic for button navigation
@@ -318,25 +313,28 @@ public class WelcomeActivity
     protected void onResume() {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "321, onResume");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "317, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
-        editor = prefs.edit();
         outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
+        locServiceOn = prefs.getBoolean("loc_srv_on", false);
+        emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
+        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
 
         isStoragePermGranted(); // set storagePermGranted from self permission
 
         headDataSource.open();
         sectionDataSource.open();
         countDataSource.open();
-        individualsDataSource.open();
+
+        baseLayout = findViewById(R.id.baseLayout);
+        baseLayout.setBackground(tourCount.setBackgr());
 
         // Set tour name as title
-        if (MyDebug.DLOG) Log.i(TAG, "336, onResume, get section");
         section = sectionDataSource.getSection();
         tourName = section.name;
-        if (MyDebug.DLOG) Log.i(TAG, "339, tourName: " + tourName);
         try {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
         } catch (NullPointerException e) {
@@ -345,14 +343,13 @@ public class WelcomeActivity
 
         // 1. Part of location permissions handling:
         //   Set flag fineLocationPermGranted from self permissions
-        // Store flag 'hasAskedBackground = true' in SharedPreferences
+        //   Store flag 'hasAskedBackground = true' in SharedPreferences
         isFineLocationPermGranted();
-        if (MyDebug.DLOG) Log.i(TAG, "358, onCreate, fineLocationPermGranted: "
-                + fineLocationPermGranted);
 
         // If not yet location permission is granted prepare and query for them
         if (storagePermGranted && !fineLocationPermGranted) {
             // Reset background location permission status in case it was set previously
+            editor = prefs.edit();
             editor.putBoolean("has_asked_background", false);
             editor.commit();
 
@@ -370,15 +367,15 @@ public class WelcomeActivity
             }
         }
 
-        // Get location self permission state
+        // Get new location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
-        if (MyDebug.DLOG) Log.i(TAG, "375, onResume, fineLocationPermGranted: "
-                + fineLocationPermGranted);
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "373, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Get flag 'has_asked_background'
         boolean hasAskedBackgroundLocation = prefs.getBoolean("has_asked_background", false);
-        if (MyDebug.DLOG) Log.i(TAG, "380, hasAskedBackgroundLocation: "
-                + hasAskedBackgroundLocation);
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "378, hasAskedBackgroundLocation: " + hasAskedBackgroundLocation);
 
         // Get background location with permissions check only once and if storage and fine location
         //   permissions are granted
@@ -402,11 +399,13 @@ public class WelcomeActivity
         {
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storagePermGranted = Environment.isExternalStorageManager();
-            if (MyDebug.DLOG) Log.i(TAG, "405, ManageStoragePermission: " + storagePermGranted);
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "403, ManageStoragePermission: " + storagePermGranted);
         } else {
             storagePermGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            if (MyDebug.DLOG) Log.i(TAG, "409, ExtStoragePermission: " + storagePermGranted);
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "408, ExtStoragePermission: " + storagePermGranted);
         }
     }
 
@@ -423,44 +422,57 @@ public class WelcomeActivity
     public void locationDispatcher(int locationDispatcherMode) {
         if (fineLocationPermGranted) // current location permission state granted
         {
+            editor = prefs.edit();
             // Handle action here
-            if (MyDebug.DLOG) Log.i(TAG, "427, locationDispatcher, fineLocationPermGranted: true");
             switch (locationDispatcherMode) {
                 case 1 -> {
                     // Get location data
-                    locationService = new LocationService(this);
-                    Intent sIntent = new Intent(this, LocationService.class);
-                    startService(sIntent);
-                    locServiceOn = true;
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "431, locationDispatcher 1");
+                    if (!locServiceOn) {
+                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
+                        startService(sIntent);
+                        locServiceOn = true;
 
+                        editor.putBoolean("loc_srv_on", true);
+                        editor.commit();
+                    }
                     getLoc();
                 }
                 case 2 -> {
                     // Stop location service
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "445, locationDispatcher 2");
                     if (locServiceOn) {
                         locationService.stopListener();
-                        Intent sIntent = new Intent(this, LocationService.class);
+                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
                         locServiceOn = false;
+
+                        editor.putBoolean("loc_srv_on", false);
+                        editor.commit();
                     }
                 }
             }
         }
     }
 
-    // Get the location data
+    // Get the location data and store location details to Section and Temp table
     public void getLoc() {
         if (locationService.canGetLocation()) {
-            longitude = locationService.getLongitude();
-            latitude = locationService.getLatitude();
-            height = locationService.getAltitude();
-            if (height != 0)
-                height = correctHeight(latitude, longitude, height);
-            uncertainty = locationService.getAccuracy();
+            double longitude = locationService.getLongitude();
+            // Location info handling
+            double latitude = locationService.getLatitude();
 
-            // Show hint message 'outsideEurope' once after app start and when true
+            // Show hint message 'outsideEurope' once after app start
+            //   isFirstLoc is set true in onCreate() of TourCountApplication
             boolean isFirstLoc = prefs.getBoolean("is_first_loc", false);
-            if (MyDebug.DLOG) Log.d(TAG, "463, isFirstLog: " + isFirstLoc);
+            if (isFirstLoc) {
+                editor = prefs.edit();
+                editor.putBoolean("is_first_loc", false);
+                editor.commit();
+            }
+
             if (isFirstLoc &&
                     (!(27.6 < latitude && latitude < 71.2) ||
                     !(-31.3 < longitude && longitude < 50.8))) {
@@ -468,40 +480,33 @@ public class WelcomeActivity
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-                mesg = getString(R.string.outsideEurope2);
+            }
+
+            if (isFirstLoc && Objects.equals(emailString, "")) {
+                mesg = getString(R.string.missingEmail);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
             }
-            if (isFirstLoc) {
-                editor = prefs.edit();
-                editor.putBoolean("is_first_loc", false);
-                editor.apply();
+
+            // Get reverse geocoding and store data to Section and Temp table
+            if (metaPref && (latitude != 0 || longitude != 0)) {
+                String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                        + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+
+                WorkRequest retrieveAddrWorkRequest =
+                        new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
+                                .setInputData(new Data.Builder()
+                                        .putString("URL_STRING", urlString)
+                                        .build()
+                                )
+                                .build();
+
+                WorkManager
+                        .getInstance(this)
+                        .enqueue(retrieveAddrWorkRequest);
             }
         }
-    }
-
-    // Correct height with geoid offset from simplified EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight) {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e) {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e) {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
     }
 
     @Override
@@ -516,11 +521,14 @@ public class WelcomeActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
-            intent = new Intent(WelcomeActivity.this, SettingsActivity.class);
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            // Call SettingsActivity
+            startActivity(new Intent(this, SettingsActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         } else if (id == R.id.exportMenu) {
+            // Call exportDb()
             if (storagePermGranted) {
                 exportDb();
             } else {
@@ -537,6 +545,7 @@ public class WelcomeActivity
             }
             return true;
         } else if (id == R.id.exportCSVMenu) {
+            // Call exportDb2CSV()
             if (storagePermGranted) {
                 exportDb2CSV();
             } else {
@@ -553,6 +562,7 @@ public class WelcomeActivity
             }
             return true;
         } else if (id == R.id.exportBasisMenu) {
+            // Call exportBasisDb()
             if (storagePermGranted) {
                 exportBasisDb();
             } else {
@@ -575,6 +585,7 @@ public class WelcomeActivity
             }
             return true;
         } else if (id == R.id.exportSpeciesListMenu) {
+            // Call exportSpeciesList()
             if (storagePermGranted) {
                 exportSpeciesList();
             } else {
@@ -597,55 +608,52 @@ public class WelcomeActivity
             }
             return true;
         } else if (id == R.id.importBasisMenu) {
-            headDataSource.close();
-            individualsDataSource.close();
-            countDataSource.close();
-            sectionDataSource.close();
-
+            // Call importBasisDb()
             importBasisDb();
             return true;
         } else if (id == R.id.importFileMenu) {
-            headDataSource.close();
-            individualsDataSource.close();
-            countDataSource.close();
-            sectionDataSource.close();
-
+            // Call  importDBFile()
             importDBFile();
             return true;
         } else if (id == R.id.resetDBMenu) {
+            // Call resetToBasisDb()
             resetToBasisDb();
             return true;
         } else if (id == R.id.importSpeciesListMenu) {
+            // Call importSpeciesList()
             importSpeciesList();
             return true;
         } else if (id == R.id.viewHelp) {
+            // Call ShowTextDialog with help text
             intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
             intent.putExtra("dialog", "help");
             startActivity(intent);
             return true;
         } else if (id == R.id.changeLog) {
+            // Call ChangeLog
             cl.getFullLogDialog().show();
             return true;
         } else if (id == R.id.viewLicense) {
+            // Call ShowTextDialog with license text
             intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
             intent.putExtra("dialog", "license");
             startActivity(intent);
             return true;
         } else if (id == R.id.startCounting) {
             // Call CountingActivity
+            locationDispatcher(2); // Stop location service
             intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-            intent.putExtra("Latitude", latitude);
-            intent.putExtra("Longitude", longitude);
-            intent.putExtra("Height", height);
-            intent.putExtra("Uncert", uncertainty);
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         } else if (id == R.id.editMeta) {
             // Call EditMetaActivity
-            startActivity(new Intent(this, EditMetaActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
+            // Trick: Pause for 500 msec to store results from RetrieveAddrWorker into DB
+            mHandler.postDelayed(() ->
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
             return true;
-        } else if (id == R.id.viewSpecies) {
+        } else if (id == R.id.showResults) {
+            // Call ShowResultsActivity
             mesg = getString(R.string.wait);
             Toast.makeText(this,
                     HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
@@ -667,17 +675,18 @@ public class WelcomeActivity
         outPref = prefs.getString("pref_sort_output", "names");
     }
 
+    @Override
     public void onPause() {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "673, onPause");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "683, onPause");
 
         headDataSource.close();
-        individualsDataSource.close();
         countDataSource.close();
         sectionDataSource.close();
 
-        locationDispatcher(2);
+        locationDispatcher(2); // Stop location service
 
         prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -686,7 +695,9 @@ public class WelcomeActivity
     public void onStop() {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "689 onStop");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "699 onStop");
+
         baseLayout.invalidate();
     }
 
@@ -694,29 +705,30 @@ public class WelcomeActivity
     public void onDestroy() {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "697, onDestroy");
-        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "709, onDestroy");
     }
 
     // Handle button click "Counting" here
     public void startCounting(View view) {
+        locationDispatcher(2); // Stop location service
         Intent intent;
         intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-        intent.putExtra("Latitude", latitude);
-        intent.putExtra("Longitude", longitude);
-        intent.putExtra("Height", height);
-        intent.putExtra("Uncert", uncertainty);
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     // Handle button click "Prepare Inspection" here
     public void editMeta(View view) {
-        startActivity(new Intent(this, EditMetaActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//        locationDispatcher(2); // Stop location service
+
+        Intent intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
+        // Trick: Pause for 500 msec to store results from RetrieveAddrWorker into DB
+        mHandler.postDelayed(() ->
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
     }
 
-    // Handle button click "Show Results" here
-    public void viewSpecies(View view) {
+    // Start ShowResultsActivity (by button)
+    public void showResults(View view) {
         // a Snackbar here comes incomplete
         mesg = getString(R.string.wait);
         Toast.makeText(this,
@@ -743,7 +755,8 @@ public class WelcomeActivity
      **********************************************************************************************/
     // Import the basic DB
     private void importBasisDb() {
-        if (MyDebug.DLOG) Log.d(TAG, "746, importBasicDBFile");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "759, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -787,8 +800,8 @@ public class WelcomeActivity
                         Intent data = result.getData();
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
-                            if (MyDebug.DLOG)
-                                Log.i(TAG, "791, Selected file: " + selectedFile);
+                            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                                Log.i(TAG, "804, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -823,10 +836,8 @@ public class WelcomeActivity
                                 editor.apply();
 
                                 // List tour name as title
-                                sectionDataSource.open();
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
-                                sectionDataSource.close();
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
                                 mesg = getString(R.string.importWin);
@@ -893,7 +904,8 @@ public class WelcomeActivity
                         Intent data = result.getData();
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
-                            if (MyDebug.DLOG) Log.d(TAG, "896, File selected: " + selectedFile);
+                            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                                Log.d(TAG, "908, File selected: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -927,8 +939,8 @@ public class WelcomeActivity
 
     // Clear DB for import of external species list
     private void clearDBforImport() {
-        dbHandler = new DbHelper(this);
-        database = dbHandler.getWritableDatabase();
+        dbHelper = new DbHelper(this);
+        database = dbHelper.getWritableDatabase();
 
         String sql = "DELETE FROM " + DbHelper.COUNT_TABLE;
         database.execSQL(sql);
@@ -941,7 +953,7 @@ public class WelcomeActivity
                 + DbHelper.T_TEMP_CNT + " = 0;";
         database.execSQL(sql);
 
-        dbHandler.close();
+        dbHelper.close();
 
         editor = prefs.edit();
         editor.putInt("item_Position", 0);
@@ -1055,7 +1067,8 @@ public class WelcomeActivity
                                     HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
-                if (MyDebug.DLOG) Log.e(TAG, "1058, Failed to export Basic DB");
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.e(TAG, "1071, Failed to export Basic DB");
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
@@ -1174,13 +1187,14 @@ public class WelcomeActivity
                     HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                             HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         } else {
-            // Sort mode species list
+            // Get sorting mode of species list
             String sortMode;
             if (outPref.equals("names")) {
                 sortMode = getString(R.string.sort_names);
             } else {
                 sortMode = getString(R.string.sort_codes);
             }
+
             // Export the purged count table to csv
             try {
                 // Export purged db as csv
@@ -1204,7 +1218,7 @@ public class WelcomeActivity
 
                 String[] arrHead =
                         {
-                                getString(R.string.zlist) + ":", // Count List:
+                                getString(R.string.zList) + ":", // Count List:
                                 sectName,          // Section name
                                 "", "",
                                 getString(R.string.inspector),     // Inspector:
@@ -1231,7 +1245,7 @@ public class WelcomeActivity
                                 getString(R.string.city),
                                 getString(R.string.place),
                                 getString(R.string.slocality),
-                                getString(R.string.zlnotes)
+                                getString(R.string.zlNotes)
                         };
                 csvWrite.writeNext(arrLocHead);
 
@@ -1320,8 +1334,8 @@ public class WelcomeActivity
                 csvWrite.writeNext(arrCntHead);
 
                 // Write counts data
-                dbHandler = new DbHelper(this);
-                database = dbHandler.getWritableDatabase();
+                dbHelper = new DbHelper(this);
+                database = dbHelper.getWritableDatabase();
 
                 Cursor curCSVCnt; // Cursor for Counts table
 
@@ -1369,7 +1383,6 @@ public class WelcomeActivity
                 String slct; // Recording time to sort individuals
 
                 Cursor curCSVInd; // Cursor for Individuals table
-
                 while (curCSVCnt.moveToNext()) {
                     spname = curCSVCnt.getString(7); // species name from count table
                     spcode = curCSVCnt.getString(8); // species code from count table
@@ -1616,7 +1629,8 @@ public class WelcomeActivity
 
                     if (longi != 0) // Has coordinates
                     {
-                        if (MyDebug.DLOG) Log.d(TAG, "1619 longi " + longi);
+                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                            Log.d(TAG, "1633 longi " + longi);
                         if (frst == 0) {
                             loMin = longi;
                             loMax = longi;
@@ -1684,9 +1698,9 @@ public class WelcomeActivity
                 csvWrite.writeNext(arrAvCoords);
 
                 csvWrite.close();
-                dbHandler.close();
+                dbHelper.close();
 
-                mesg = getString(R.string.savecsv);
+                mesg = getString(R.string.saveCSV);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
@@ -1695,7 +1709,8 @@ public class WelcomeActivity
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-                if (MyDebug.DLOG) Log.e(TAG, "1698, Failed to export csv file");
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.e(TAG, "1713, Failed to export csv file");
             }
         }
     }
@@ -1732,8 +1747,8 @@ public class WelcomeActivity
                             HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
         } else {
             // Export species list into species_yyyyMMdd_HHmmss.csv
-            dbHandler = new DbHelper(this);
-            database = dbHandler.getWritableDatabase();
+            dbHelper = new DbHelper(this);
+            database = dbHelper.getWritableDatabase();
 
             String[] codeArray;
             String[] nameArray;
@@ -1846,20 +1861,19 @@ public class WelcomeActivity
         alert.show();
     }
 
-    // Clear temp_loc in tmp
+    // Clear temp_loc in table tmp
     private void clear_loc() {
-        dbHandler = new DbHelper(this);
-        database = dbHandler.getWritableDatabase();
-
-        String sql = "UPDATE tmp SET temp_loc = '';";  // tmp is a table name!
+        dbHelper = new DbHelper(this);
+        database = dbHelper.getWritableDatabase();
+        String sql = "UPDATE tmp SET temp_loc = '';"; 
         database.execSQL(sql);
-        dbHandler.close();
+        dbHelper.close();
     }
 
     // Clear DB values for basic DB
     private boolean clearDBValues() {
-        dbHandler = new DbHelper(this);
-        database = dbHandler.getWritableDatabase();
+        dbHelper = new DbHelper(this);
+        database = dbHelper.getWritableDatabase();
         boolean r_ok = true;
 
         try {
@@ -1901,14 +1915,15 @@ public class WelcomeActivity
                     + DbHelper.T_TEMP_CNT + " = 0;";
             database.execSQL(sql);
 
-            dbHandler.close();
+            dbHelper.close();
         } catch (Exception e) {
-            if (MyDebug.DLOG) Log.e(TAG, "1906, Failed to reset DB");
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.e(TAG, "1921, Failed to reset DB");
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
                     HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                             HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-            dbHandler.close();
+            dbHelper.close();
             r_ok = false;
         }
         return r_ok;

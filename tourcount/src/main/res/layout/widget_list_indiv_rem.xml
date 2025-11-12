@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:gravity="start"
+            android:textColorHint="@color/BrightGray"
             android:hint="@string/rem_Ind"
             android:maxLines="1"
             android:padding="4sp"

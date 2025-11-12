@@ -12,12 +12,12 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-10-21
+ * last edited on 2025-11-01
  */
 class IndividualsDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
-    private val dbHandler: DbHelper
+    private val dbHelper: DbHelper = DbHelper(context)
     private val allColumns = arrayOf(
         DbHelper.I_ID,
         DbHelper.I_COUNT_ID,  // ID of table count
@@ -31,24 +31,20 @@ class IndividualsDataSource(context: Context) {
         DbHelper.I_LOCALITY,  // locality
         DbHelper.I_SEX,       // sexus
         DbHelper.I_STADIUM,   // stadium
-        DbHelper.I_STATE_1_6, // b_state
+        DbHelper.I_STATE_1_6, // state_1_6
         DbHelper.I_NOTES,     // notes
         DbHelper.I_ICOUNT,    // individual count
         DbHelper.I_CATEGORY,  // category (1-6)
         DbHelper.I_CODE       // code
     )
 
-    init {
-        dbHandler = DbHelper(context)
-    }
-
     @Throws(SQLException::class)
     fun open() {
-        database = dbHandler.writableDatabase
+        database = dbHelper.writableDatabase
     }
 
     fun close() {
-        dbHandler.close()
+        dbHelper.close()
     }
 
     fun createIndividuals(
@@ -164,13 +160,13 @@ class IndividualsDataSource(context: Context) {
     }
 
     // get last individual of category of species
-    fun getLastIndiv(c_Id: Int, categ: Int): Int {
+    fun getLastIndiv(cId: Int, categ: Int): Int {
         val individuals: Individuals
-        val c_IdStr = c_Id.toString()
+        val cIdStr = cId.toString()
         val categStr = categ.toString()
         val cursor = database!!.rawQuery(
             "select * from " + DbHelper.INDIVIDUALS_TABLE
-                    + " WHERE (" + DbHelper.I_COUNT_ID + " = " + c_IdStr + " AND "
+                    + " WHERE (" + DbHelper.I_COUNT_ID + " = " + cIdStr + " AND "
                     + DbHelper.I_CATEGORY + " = " + categStr + ")", null, null
         )
         cursor.moveToLast()
@@ -186,13 +182,13 @@ class IndividualsDataSource(context: Context) {
         }
     }
 
-    fun getIndividual(indiv_id: Int): Individuals {
+    fun getIndividual(indivId: Int): Individuals {
         val individuals: Individuals
         val cursor = database!!.query(
             DbHelper.INDIVIDUALS_TABLE,
             allColumns,
             DbHelper.I_ID + " = ?",
-            arrayOf(indiv_id.toString()),
+            arrayOf(indivId.toString()),
             null,
             null,
             null
@@ -203,11 +199,11 @@ class IndividualsDataSource(context: Context) {
         return individuals
     }
 
-    fun getIndividualCount(indiv_id: Int): Int {
+    fun getIndividualCount(indivId: Int): Int {
         val individuals: Individuals
         val cursor = database!!.query(
             DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID
-                    + " = ?", arrayOf(indiv_id.toString()), null, null, null
+                    + " = ?", arrayOf(indivId.toString()), null, null, null
         )
         cursor.moveToFirst()
         individuals = cursorToIndividuals(cursor)

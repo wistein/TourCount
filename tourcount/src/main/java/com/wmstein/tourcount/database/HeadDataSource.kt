@@ -10,28 +10,24 @@ import android.database.sqlite.SQLiteDatabase
 /**
  * Class HeadDataSource provides methods for table Head
  * Created by wmstein on 2016-03-31,
- * last edited on 2022-03-23
+ * last edited on 2025-11-01
  */
 class HeadDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
-    private val dbHandler: DbHelper
+    private val dbHelper: DbHelper = DbHelper(context)
     private val allColumns = arrayOf(
         DbHelper.H_ID,
         DbHelper.H_OBSERVER
     )
 
-    init {
-        dbHandler = DbHelper(context)
-    }
-
     @Throws(SQLException::class)
     fun open() {
-        database = dbHandler.writableDatabase
+        database = dbHelper.writableDatabase
     }
 
     fun close() {
-        dbHandler.close()
+        dbHelper.close()
     }
 
     fun saveHead(head: Head) {

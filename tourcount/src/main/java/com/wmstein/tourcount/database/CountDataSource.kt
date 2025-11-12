@@ -14,12 +14,12 @@ import com.wmstein.tourcount.database.DbHelper.Companion.COUNT_TABLE
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-03-15
+ * last edited on 2025-11-01
  */
 class CountDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
-    private val dbHandler: DbHelper
+    private val dbHelper: DbHelper = DbHelper(context)
     private val allColumns = arrayOf(
         DbHelper.C_ID,
         DbHelper.C_COUNT_F1I,
@@ -34,21 +34,17 @@ class CountDataSource(context: Context) {
         DbHelper.C_NAME_G
     )
 
-    init {
-        dbHandler = DbHelper(context)
-    }
-
     @Throws(SQLException::class)
     fun open() {
-        database = dbHandler.writableDatabase
+        database = dbHelper.writableDatabase
     }
 
     fun close() {
-        dbHandler.close()
+        dbHelper.close()
     }
 
     // Used by AddSpeciesActivity
-    fun createCount(name: String?, code: String?, name_g: String?) {
+    fun createCount(name: String?, code: String?, nameG: String?) {
         if (database!!.isOpen) {
             val values = ContentValues()
             values.put(DbHelper.C_NAME, name)
@@ -60,7 +56,7 @@ class CountDataSource(context: Context) {
             values.put(DbHelper.C_COUNT_EI, 0)
             values.put(DbHelper.C_CODE, code)
             values.put(DbHelper.C_NOTES, "")
-            values.put(DbHelper.C_NAME_G, name_g)
+            values.put(DbHelper.C_NAME_G, nameG)
             val insertId = database!!.insert(COUNT_TABLE, null, values).toInt()
             val cursor = database!!.query(COUNT_TABLE,
                 allColumns, DbHelper.C_ID + " = " + insertId, null, null, null, null)
@@ -152,7 +148,7 @@ class CountDataSource(context: Context) {
         database!!.update(COUNT_TABLE, dataToInsert, where, whereArgs)
     }
 
-    // Used by EditSpecListActivity
+    // Used by EditSpeciesListActivity
     fun updateCountItem(id: Int, name: String?, code: String?, nameG: String?) {
         if (database!!.isOpen) {
             val dataToInsert = ContentValues()
@@ -184,10 +180,10 @@ class CountDataSource(context: Context) {
         }
     }
 
-    fun getCountById(count_id: Int): Count {
+    fun getCountById(countId: Int): Count {
         val cursor = database!!.query(
             COUNT_TABLE, allColumns,
-            DbHelper.C_ID + " = " + count_id,
+            DbHelper.C_ID + " = " + countId,
             null, null, null, null
         )
         cursor.moveToFirst()
@@ -313,7 +309,7 @@ class CountDataSource(context: Context) {
         return uArray
     }
 
-    // Used by EditSpecListActivity
+    // Used by EditSpeciesListActivity
     val allSpecies: List<Count>
         get() {
             val speci: MutableList<Count> = ArrayList()
@@ -351,7 +347,7 @@ class CountDataSource(context: Context) {
             return cntSpec
         }
 
-    // Used by EditSpecListActivity
+    // Used by EditSpeciesListActivity
     val allSpeciesSrtName: List<Count>
         get() {
             val speci: MutableList<Count> = ArrayList()
@@ -369,7 +365,7 @@ class CountDataSource(context: Context) {
             return speci
         }
 
-    // Used by EditSpecListActivity and AddSpeciesActivity
+    // Used by EditSpeciesListActivity and AddSpeciesActivity
     val allSpeciesSrtCode: List<Count>
         get() {
             val speci: MutableList<Count> = ArrayList()

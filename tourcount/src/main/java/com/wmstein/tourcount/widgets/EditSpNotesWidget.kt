@@ -10,11 +10,11 @@ import com.wmstein.tourcount.R
 import java.util.Objects
 
 /**********************************
- * EditNotesWidget used by CountOptionsActivity
+ * EditSpNotesWidget used by EditSpeciesNotesActivity
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-11-25
+ * last edited on 2025-09-16
  */
 class EditSpNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val specNotesTitle: TextView
@@ -23,9 +23,9 @@ class EditSpNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_spnotes, this, true)
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_species_notes, this, true)
         specNotesTitle = findViewById(R.id.spNotesTitle)
-        specNotesName = findViewById(R.id.spNotesName)
+        specNotesName = findViewById(R.id.spNotesNotes)
     }
 
     fun setSpNotesTitle(title: String?) {
@@ -36,7 +36,7 @@ class EditSpNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
         specNotesName.hint = hint
     }
 
-    var spNotesName: String?
+    var spNotesNotes: String?
         get() = specNotesName.text.toString()
         set(name) {
             specNotesName.setText(name)

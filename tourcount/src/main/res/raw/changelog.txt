@@ -2,12 +2,13 @@
 
 <!--
 Formatting commands:
-% Title
-_ Subtitle
+% title
+_ subtitle
 ! free text
-& bold
+& bold text
 # numbered list item
 * bullet list item
+. blank line
 -->
 
   <head>
@@ -31,7 +32,6 @@ _ Subtitle
           color:#F0F0F0;
           font-size:1.2em;
           font-weight:bold;
-          margin-top:1em;
           margin-bottom:0.5em;
           text-align:start }
       div.list {
@@ -45,6 +45,15 @@ _ Subtitle
   _
   _ email: stein.wm@web.de
   _
+<!--
+  ! ----------
+  & Attention:
+  ! Google has announced that starting in 2026/2027, all apps on certified Android devices will only work if developers submit their personal identity data directly to Google. As the private developer of this privacy conform open-source app, I do not agree with this requirement. So unfortunately, this app will no longer work on certified Android devices after that date.
+  _
+  ! On Android devices with custom ROMS like GrapheneOS, LineageOS, etc., the app will continue to work as usual.
+  ! ----------
+  _
+-->
   ! TourCount supports species-specific and individually GPS-localized registering of butterflies.
   _ 
   ! TourCount is one of two apps for European butterfly monitoring.
@@ -53,13 +62,30 @@ _ Subtitle
   ! Source code and documentation published under:
   ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
-  ! Suitable for Android 7.1 (Nougat) or newer
-  _ 
+  ! Suitable for Android 7.1 (Nougat) or newer.
+  _
+  .
+  _
+
+$ 3.6.9
+  % Version 3.6.9
+  _ 2025-11-12
+  * Counting page layout re-arranged
+  * Now just only one fix font size for comments
+  * Results page with dimmed "0"-values and minor layout changes
+  * Results page with height info for individuals
+  * Location handling improved
+  * Sound handling better adapted to Android 16 demands
+  * Picture of Nomophila noctuella (Rush veneer) added
+  * App specific and permanent debug support for Emulator in Android Studio
+  * Docs updated
+  * Some code cleaning
+  * Bugfixes
 
 $ 3.6.8
   % Version 3.6.8
   _ 2025-09-15
-  * Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
+  * When counting with GPS support the app shows a one-time hint message if there is no GPS fix yet, or the location is outside of the European fauna area
   * Some code and text improvements
   * Docs updated
   * Bugfixes
@@ -410,6 +436,7 @@ $ 1.0.2
 $ 1.0.0
   % Version 1.0.0
   _ 2016-04-18
+  _
   & 1. Release.
   * TourCount derived from TransektCount 1.2.0 whose basic program structure and counting functionality originally derived partly from BeeCount by knirirr (https://github.com/knirirr/BeeCount.git)
   * Text and structure adaptation for butterfly registration in the field

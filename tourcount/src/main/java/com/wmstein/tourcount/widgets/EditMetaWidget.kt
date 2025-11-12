@@ -15,87 +15,87 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2024-11-25
+ * last edited on 2025-11-11
  */
 class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
-    private val widget_date1: TextView
-    private val widget_date2: TextView
+    private val widgetdate1: TextView
+    private val widgetdate2: TextView
 
     // start time
-    private val widget_startTm1: TextView
-    private val widget_startTm2: TextView
+    private val widgetstartTm1: TextView
+    private val widgetstartTm2: TextView
 
     // end time
-    private val widget_endTm1: TextView
-    private val widget_endTm2: TextView
+    private val widgetendTm1: TextView
+    private val widgetendTm2: TextView
 
     // temperature
-    private val widget_temp1: TextView
-    private val widget_temp2: EditText
-    private val widget_temp3: EditText
+    private val widgettemp1: TextView
+    private val widgettemp2: EditText
+    private val widgettemp3: EditText
 
     // wind
-    private val widget_wind1: TextView
-    private val widget_wind2: EditText
-    private val widget_wind3: EditText
+    private val widgetwind1: TextView
+    private val widgetwind2: EditText
+    private val widgetwind3: EditText
 
     // clouds
-    private val widget_clouds1: TextView
-    private val widget_clouds2: EditText
-    private val widget_clouds3: EditText
+    private val widgetclouds1: TextView
+    private val widgetclouds2: EditText
+    private val widgetclouds3: EditText
 
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
         Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_meta, this, true)
-        widget_date1 = findViewById(R.id.widgetDate1)
-        widget_date2 = findViewById(R.id.widgetDate2)
-        widget_startTm1 = findViewById(R.id.widgetStartTm1)
-        widget_startTm2 = findViewById(R.id.widgetStartTm2)
-        widget_endTm1 = findViewById(R.id.widgetEndTm1)
-        widget_endTm2 = findViewById(R.id.widgetEndTm2)
+        widgetdate1 = findViewById(R.id.widgetDate1)
+        widgetdate2 = findViewById(R.id.widgetDate2)
+        widgetstartTm1 = findViewById(R.id.widgetStartTm1)
+        widgetstartTm2 = findViewById(R.id.widgetStartTm2)
+        widgetendTm1 = findViewById(R.id.widgetEndTm1)
+        widgetendTm2 = findViewById(R.id.widgetEndTm2)
 
-        widget_temp1 = findViewById(R.id.widgetTemp1) // temperature
-        widget_temp2 = findViewById(R.id.widgetStartTemp)
-        widget_temp3 = findViewById(R.id.widgetEndTemp)
-        widget_wind1 = findViewById(R.id.widgetWind1) // wind
-        widget_wind2 = findViewById(R.id.widgetStartWind)
-        widget_wind3 = findViewById(R.id.widgetEndWind)
-        widget_clouds1 = findViewById(R.id.widgetClouds1) // clouds
-        widget_clouds2 = findViewById(R.id.widgetStartClouds)
-        widget_clouds3 = findViewById(R.id.widgetEndClouds)
+        widgettemp1 = findViewById(R.id.widgetTemp1) // temperature
+        widgettemp2 = findViewById(R.id.widgetStartTemp)
+        widgettemp3 = findViewById(R.id.widgetEndTemp)
+        widgetwind1 = findViewById(R.id.widgetWind1) // wind
+        widgetwind2 = findViewById(R.id.widgetStartWind)
+        widgetwind3 = findViewById(R.id.widgetEndWind)
+        widgetclouds1 = findViewById(R.id.widgetClouds1) // clouds
+        widgetclouds2 = findViewById(R.id.widgetStartClouds)
+        widgetclouds3 = findViewById(R.id.widgetEndClouds)
     }
 
     // Following the SETS of heads
     // temperature
-    fun setWidgetTemp1(title: String?) {
-        widget_temp1.text = title
-    }
-
-    // wind
-    fun setWidgetWind1(title: String?) {
-        widget_wind1.text = title
-    }
-
-    // clouds
-    fun setWidgetClouds1(title: String?) {
-        widget_clouds1.text = title
-    }
-
     // date
     fun setWidgetDate1(title: String?) {
-        widget_date1.text = title
+        widgetdate1.text = title
     }
 
     // start_tm
     fun setWidgetStartTm1(title: String?) {
-        widget_startTm1.text = title
+        widgetstartTm1.text = title
     }
 
     // end_tm
     fun setWidgetEndTm1(title: String?) {
-        widget_endTm1.text = title
+        widgetendTm1.text = title
+    }
+
+    fun setWidgetTemp1(title: String?) {
+        widgettemp1.text = title
+    }
+
+    // wind
+    fun setWidgetWind1(title: String?) {
+        widgetwind1.text = title
+    }
+
+    // clouds
+    fun setWidgetClouds1(title: String?) {
+        widgetclouds1.text = title
     }
 
     // plausi for numeric input
@@ -105,7 +105,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     // get temperature with plausi
     var widgetTemp2: Int
         get() {
-            val text = widget_temp2.text.toString()
+            val text = widgettemp2.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
@@ -119,12 +119,12 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         }
         @SuppressLint("SetTextI18n")
         set(name) {
-            widget_temp2.setText(name.toString())
+            if (name > 0 ) widgettemp2.setText(name.toString())
         }
 
     var widgetTemp3: Int
         get() {
-            val text = widget_temp3.text.toString()
+            val text = widgettemp3.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
@@ -138,13 +138,13 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         }
         @SuppressLint("SetTextI18n")
         set(name) {
-            widget_temp3.setText(name.toString())
+            if (name > 0 ) widgettemp3.setText(name.toString())
         }
 
     // get wind with plausi
     var widgetWind2: Int
         get() {
-            val text = widget_wind2.text.toString()
+            val text = widgetwind2.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
@@ -156,14 +156,15 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
                 }
             }
         }
+
         @SuppressLint("SetTextI18n")
         set(name) {
-            widget_wind2.setText(name.toString())
+            if (name > 0 ) widgetwind2.setText(name.toString())
         }
 
     var widgetWind3: Int
         get() {
-            val text = widget_wind3.text.toString()
+            val text = widgetwind3.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
@@ -177,13 +178,13 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         }
         @SuppressLint("SetTextI18n")
         set(name) {
-            widget_wind3.setText(name.toString())
+            if (name > 0 ) widgetwind3.setText(name.toString())
         }
 
     // get clouds with plausi
     var widgetClouds2: Int
         get() {
-            val text = widget_clouds2.text.toString()
+            val text = widgetclouds2.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 200
@@ -197,12 +198,12 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         }
         @SuppressLint("SetTextI18n")
         set(name) {
-            widget_clouds2.setText(name.toString())
+            if (name > 0 ) widgetclouds2.setText(name.toString())
         }
 
     var widgetClouds3: Int
         get() {
-            val text = widget_clouds3.text.toString()
+            val text = widgetclouds3.text.toString()
             return if (isEmpty(text)) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 200
@@ -216,23 +217,23 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         }
         @SuppressLint("SetTextI18n")
         set(name) {
-            widget_clouds3.setText(name.toString())
+            if (name > 0 ) widgetclouds3.setText(name.toString())
         }
 
     var widgetDate2: String?
-        get() = widget_date2.text.toString()
+        get() = widgetdate2.text.toString()
         set(name) {
-            widget_date2.text = name
+            widgetdate2.text = name
         }
     var widgetStartTm2: String?
-        get() = widget_startTm2.text.toString()
+        get() = widgetstartTm2.text.toString()
         set(name) {
-            widget_startTm2.text = name
+            widgetstartTm2.text = name
         }
     var widgetEndTm2: String?
-        get() = widget_endTm2.text.toString()
+        get() = widgetendTm2.text.toString()
         set(name) {
-            widget_endTm2.text = name
+            widgetendTm2.text = name
         }
 
     companion object {
@@ -250,7 +251,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
          * @return `true` if the CharSequence is empty or null
          */
         private fun isEmpty(cs: CharSequence?): Boolean {
-            return cs == null || cs.length == 0
+            return cs.isNullOrEmpty()
         }
     }
 

@@ -16,34 +16,34 @@ import java.util.Objects
  * last edited on 2025-05-12
  */
 class ListTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
-    private val list_title: TextView
-    private val list_name: TextView
-    private val widget_name1: TextView
-    private val widget_name2: TextView
+    private val listtitle: TextView
+    private val listname: TextView
+    private val widgetname1: TextView
+    private val widgetname2: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_title, this, true)
-        list_title = findViewById(R.id.listTitle)
-        list_name = findViewById(R.id.listName)
-        widget_name1 = findViewById(R.id.widgetName1)
-        widget_name2 = findViewById(R.id.widgetName2)
+        listtitle = findViewById(R.id.listTitle)
+        listname = findViewById(R.id.listName)
+        widgetname1 = findViewById(R.id.widgetName1)
+        widgetname2 = findViewById(R.id.widgetName2)
     }
 
     fun setListTitle(title: String?) {
-        list_title.text = title
+        listtitle.text = title
     }
 
     fun setListName(name: String?) {
-        list_name.text = name
+        listname.text = name
     }
 
     fun setWidgetName1(name: String?) {
-        widget_name1.text = name
+        widgetname1.text = name
     }
 
     fun setWidgetName2(name: String?) {
-        widget_name2.text = name
+        widgetname2.text = name
     }
 
 }

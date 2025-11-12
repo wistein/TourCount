@@ -17,11 +17,11 @@ import java.net.URL
 /**********************************************************************************************
  * Worker to get, parse and store address info from Nominatim Reverse Geocoder of OpenStreetMap
  *
- * Copyright 2018-2023 wmstein
+ * Copyright 2018-2025 wmstein
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-05-08
+ * last edited on 2025-11-01
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -55,18 +55,18 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     sb.append(line).append('\n')
                 }
             } catch (e: IOException) {
-                if (MyDebug.DLOG) Log.e(TAG, "58, Problem converting Stream to String: $e")
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.e(TAG, "59, Problem converting Stream to String: $e")
             } finally {
                 try {
                     iStream.close()
                     reader.close()
                 } catch (e: IOException) {
-                    if (MyDebug.DLOG) Log.e(TAG, "64, Problem closing InputStream: $e")
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.e(TAG, "66, Problem closing InputStream: $e")
                 }
             }
             xmlString = sb.toString()
-            // Log gzip-content of url
-            if (MyDebug.DLOG) Log.d(TAG, "69, xmlString: $xmlString")
 
             // Parse Geocoder string to write DB fields
             val sectionDataSource: SectionDataSource
@@ -83,14 +83,15 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 var sstart = xmlString.indexOf("<addressparts>") + 14
                 var send = xmlString.indexOf("</addressparts>")
                 xmlString = xmlString.substring(sstart, send)
-                if (MyDebug.DLOG) Log.d(TAG, "86, <addressparts>: $xmlString")
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.d(TAG, "87, <addressparts>: $xmlString")
 
                 val locality = StringBuilder()
                 val plz = StringBuilder()
                 val city = StringBuilder()
                 val place = StringBuilder() //
                 val country = StringBuilder() // Land
-                val b_state = StringBuilder() // Bundesland
+                val fedState = StringBuilder() // Bundesland
 
                 // 1. Get country
                 if (xmlString.contains("<country>")) {
@@ -106,9 +107,9 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     sstart = xmlString.indexOf("<state>") + 7
                     send = xmlString.indexOf("</state>")
                     val tstate = xmlString.substring(sstart, send)
-                    b_state.append(tstate)
+                    fedState.append(tstate)
                 }
-                sState = b_state.toString()
+                sState = fedState.toString()
 
                 // 3. Get city or town and village
                 if (xmlString.contains("<city>")) {
@@ -176,6 +177,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
 
                 sectionDataSource = SectionDataSource(applicationContext)
                 sectionDataSource.open()
+
                 val section: Section = sectionDataSource.section
 
                 // Save sCountry, sState, sCity, sPlace, sLocality, sPlz to DB Section table
@@ -229,8 +231,9 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                     }
                     sectionDataSource.storeEmptyPlz(section.id, section.plz)
                 }
-
                 sectionDataSource.close()
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.i(TAG, "236, sectionDataSource closed")
 
                 // Save sLocality to temp_loc in DB table Temp
                 tempDataSource = TempDataSource(applicationContext)
@@ -245,9 +248,12 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 tempDataSource.saveTempLoc(tmp)
 
                 tempDataSource.close()
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.i(TAG, "251, tempDataSource closed")
             }
         } catch (e: IOException) {
-            if (MyDebug.DLOG) Log.e(TAG, "250, Problem with address handling: $e")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.e(TAG, "255, Problem with address handling: $e")
         }
         return Result.success()
     }

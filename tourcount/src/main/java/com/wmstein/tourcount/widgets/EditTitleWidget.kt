@@ -14,7 +14,7 @@ import java.util.Objects
  * Adopted by wmstein for TourCount 2016-02-18,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-11-25
+ * last edited on 2025-11-12
  */
 class EditTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val widgetEditTitle: TextView
@@ -38,19 +38,19 @@ class EditTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
         widgetEditONotes2 = findViewById(R.id.widgetONotes2)
     }
 
-    // List name headline
+    // Tour name headline
     fun setWidgetTitle(title: String?) {
         widgetEditTitle.text = title
     }
 
-    // List name edittext
+    // Tour name edittext
     var widgetName: String?
         get() = widgetEditName.text.toString()
         set(name) {
             widgetEditName.setText(name)
         }
 
-    // Observer name headline
+    // Observer name
     fun setWidgetOName1(title: String?) {
         widgetEditOName1.text = title
     }
@@ -61,13 +61,9 @@ class EditTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(con
             widgetEditOName2.setText(name)
         }
 
-    // notes
+    // Notes
     fun setWidgetONotes1(title: String?) {
         widgetEditONotes1.text = title
-    }
-
-    fun setHintN(hint: String?) {
-        widgetEditONotes2.hint = hint
     }
 
     var widgetONotes2: String?

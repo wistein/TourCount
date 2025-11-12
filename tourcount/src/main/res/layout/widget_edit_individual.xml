@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
    widget_edit_individual.xml used by EditIndividualWidget.kt.
-   Copyright © 2016-2024, Wilhelm Stein, Bonn, Germany.
+   Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -61,7 +61,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.8"
+                android:layout_weight="1.6"
                 android:orientation="vertical"
                 android:paddingStart="5dp"
                 android:paddingTop="0dp"
@@ -250,6 +250,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     tools:ignore="Autofill,HardcodedText,LabelFor"
+                    android:textColorHint="@color/BrightGray"
                     android:hint="0" />
             </LinearLayout>
 
@@ -327,7 +328,8 @@
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     tools:ignore="Autofill,LabelFor"
-                    android:hint="@string/bemi" />
+                    android:textColorHint="@color/BrightGray"
+                    android:hint="@string/titleHintShort" />
             </LinearLayout>
 
 </LinearLayout>

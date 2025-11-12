@@ -5,7 +5,7 @@ package com.wmstein.tourcount.database
  * Created by wmstein for TourCount on 2016-04-20
  * Last edited in Java on 2022-03-25,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-08-23
+ * last edited on 2025-11-12
  */
 class Individuals {
     @JvmField
@@ -19,7 +19,7 @@ class Individuals {
     @JvmField
     var coord_y = 0.0 // longitude
     @JvmField
-    var coord_z = 0.0
+    var coord_z = 0.0 // height
     @JvmField
     var uncert: String? = null
     @JvmField

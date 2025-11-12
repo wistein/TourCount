@@ -16,7 +16,7 @@ import com.wmstein.tourcount.database.Count
 import java.util.Objects
 
 /****************************************************
- * Interface for widget_counting_i.xml
+ * Interface for widget_counting.xml
  * Created by wmstein 2016-12-18,
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
@@ -44,7 +44,7 @@ class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(co
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_i, this, true)
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting, this, true)
         namef1i = findViewById(R.id.f1iName)
         namef2i = findViewById(R.id.f2iName)
         namef3i = findViewById(R.id.f3iName)

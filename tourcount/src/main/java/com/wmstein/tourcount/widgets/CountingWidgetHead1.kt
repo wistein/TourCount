@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.wmstein.tourcount.R
 
 /****************************************************
- * Interface for widget_counting_head1.xml
+ * Interface for widget_counting_species_select.xml
  * used by CountingActivity
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
@@ -27,7 +27,7 @@ class CountingWidgetHead1(
     private val nameArrayG: Array<String?>,
     private val codeArray: Array<String?>,
     private val imageArray: Array<Int>
-) : ArrayAdapter<String?>(context, R.layout.widget_counting_head1, R.id.countName, nameArray) {
+) : ArrayAdapter<String?>(context, R.layout.widget_counting_species_select, R.id.countName, nameArray) {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -42,7 +42,7 @@ class CountingWidgetHead1(
     }
 
     private fun getCustomView(position: Int, parent: ViewGroup): View {
-        val head1 = inflater.inflate(R.layout.widget_counting_head1, parent, false)
+        val head1 = inflater.inflate(R.layout.widget_counting_species_select, parent, false)
         val countId = head1.findViewById<TextView>(R.id.countId)
         countId.text = idArray[position]
         val countName = head1.findViewById<TextView>(R.id.countName)

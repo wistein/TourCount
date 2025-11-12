@@ -16,7 +16,7 @@ import com.wmstein.tourcount.database.Count
 import java.util.Objects
 
 /**********************************
- * Interface for widget_counting_lhi.xml
+ * Interface for widget_counting_lh.xml
  * used by CountingActivity
  * Created by wmstein 2016-12-18,
  * modified for TourCount on 2018-03-31,
@@ -46,7 +46,7 @@ class CountingWidgetLH(context: Context, attrs: AttributeSet?) : RelativeLayout(
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lhi, this, true)
+        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lh, this, true)
         namef1i = findViewById(R.id.f1iNameLH)
         namef2i = findViewById(R.id.f2iNameLH)
         namef3i = findViewById(R.id.f3iNameLH)

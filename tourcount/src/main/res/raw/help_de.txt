@@ -1,5 +1,7 @@
+<html>
+
 <!-- Benutzeranleitung --
-  Last edited on 2025-07-15
+  Last edited on 2025-10-08
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -17,6 +19,7 @@ Die App ist veröffentlicht unter<br>
 https://github.com/wistein/TourCount<br>
 mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: Import von Spezieslisten und DB-Dateien, Export von Daten und der Zählergebnisse in DB- oder CSV-Dateien, GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung und Wakelock zwecks Verhinderung, dass die App sich dimmt oder abschaltet.
 <br><br><br>
+
 <h3><font color=#D9FDD9>2. Einrichtung</font></h3>
 Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden (→ 4. Weitere Funktionen).
 <br><br>
@@ -28,11 +31,11 @@ Alle 3 Editierseiten bieten eine Vorauswahl zur Erleichterung der Auswahl einer 
 <br><br>
 Unter "Arten hinzufügen" neue Arten in der blauen Scroll-Down-Liste per Checkbox markieren. Mit dem (+)-Button in der Kopfzeile die Änderungen übernehmen. (Die ausgewählten Arten verschwinden dann aus der Scroll-Down-Auswahlliste).
 <br><br>
-Am Ende der Scroll-Down-Liste kann ein Platzhalter für eine unbestimmte Art (NN) übernommen und später, ggf. nach Bestimmung editiert werden.
+Am Ende der Scroll-Down-Liste kann ein Platzhalter für eine vor Ort noch unbestimmte Art (NN) übernommen und später, ggf. nach Bestimmung editiert werden.
 <br><br>
 Auf der "Arten entfernen"-Seite die zu löschenden Arten in der roten Scroll-Down-Liste per Checkbox markieren und per Lösch-Button löschen.
 <br><br>
-Auf der "Bezeichnungen editieren"-Seite ggf. in der grünen Scroll-Down-Liste den Tour-Namen, eine Bemerkung zur Tour oder Artnamen und -Code anpassen. (Artnamen, wissenschaftlich und deutsch und Art-Code, 5-stellig, mit führenden Nullen, wie im folgenden Ausschnitt der Artenliste).
+Auf der "Bezeichnungen editieren"-Seite ggf. in der grünen Scroll-Down-Liste den Tour-Namen oder Artnamen und -Code anpassen. (Artnamen, wissenschaftlich und deutsch und Art-Code, 5-stellig, mit führenden Nullen, wie im folgenden Ausschnitt der Artenliste).
 <br><br>
 (Ausschnitt der Artenliste)<br>
 ---------------------------------------------------<br>
@@ -68,11 +71,12 @@ Alternativ kann auch eine selbst erstellte Basis-DB importiert und angepasst wer
 https://github.com/wistein/TourCount/tree/master/docs<br>
 heruntergeladen, in das App-Datenverzeichnis "Documents/TourCount" kopiert und von dort importiert und dann angepasst werden.
 <br><br><br>
+
 <h3><font color=#D9FDD9>3. Benutzung</font></h3>
 Beginne mit "Meta-Daten editieren". Gib die relevanten Meta-Daten der Tour ein. Das aktuelle Datum und die momentane Uhrzeit kann durch Antippen des jeweiligen Felds eingegeben werden.<br>
 Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe-Dialog genutzt werden. Mit dem Spechern-Button beenden.
 <br><br>
-Dann wähle "Zählen". Wähle die Art durch Antippen der Art-Zeile in der Scroll-Liste.<br>
+Dann wähle "Zählen". Wähle die Art in der Scroll-Liste nach Antippen der Art-Zeile.<br>
 Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Kategorie (♂|♀, ♂, ♀, Puppe, Raupe, Ei) der Art.<br>
 Der Zähler erhöht sich und es erscheint die Seite zur Eingabe der Individuum-Parameter. Lokalität, Breiten- und Längengrade sowie Datum und Uhrzeit werden automatisch hinzugefügt.
 <br><br>
@@ -97,6 +101,7 @@ Bei großen Datenmengen kann sich die Reaktion der App z. B. bei Import-Funktion
 <br><br>
 Auf eine ggf. auftauchende Meldung "TourCount reagiert nicht" bitte mit "Warten" antworten.
 <br><br><br>
+
 <h3><font color=#D9FDD9>4. Weitere Funktionen</font></h3>
 Das System-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen.
 <br><br>
@@ -157,12 +162,15 @@ Das Optionsmenü der Zählerseite hat eine Fotofunktion um die Kamera möglichst
 <br><br>
 In der Zähler-Ansicht wird die Anzeige optional temporär per Näherungssensors abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert versehentliche Eingaben und bringt die App augenblicklich zurück, wenn es wieder normal genutzt wird.
 <br><br><br>
+
 <h3><font color=#D9FDD9>5. Quellen</h3>
 Doku.: https://github.com/wistein/TourCount/tree/master/docs
 <br><br>
-Lizenzen: https://github.com/wistein/TourCount/blob/master/docs/Apache%20License-2.0.txt
+Lizenzen: https://github.com/wistein/TourCount/tree/master/docs/License.txt
 <br><br>
 App: https://f-droid.org/en/packages/com.wmstein.tourcount
 <br><br>
 Source-Code: https://github.com/wistein/TourCount
 <br><br>
+
+</html>

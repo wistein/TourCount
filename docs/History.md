@@ -2,8 +2,21 @@
 
 #### TourCount Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.6.9 (2025-11-12)
+- Counting page layout re-arranged
+- Now just only one fix font size for comments
+- Results page with dimmed "0"-values and minor layout changes
+- Results page with height info for individuals
+- Location handling improved
+- Sound handling better adapted to Android 16 demands
+- Picture of Nomophila noctuella (Rush veneer) added
+- App specific and permanent debug support for Emulator in Android Studio
+- Docs updated
+- Some code cleaning
+- Bugfixes
+
 #### Version 3.6.8 (2025-09-15)
-- Shows a one-time hint message, when counting outside of Europe, as the app has only codes and pictures of European species
+- When counting with GPS support the app shows a one-time hint message if there is no GPS fix yet, or the location is outside of the European fauna area
 - Some code, text and picture improvements
 - Docs updated
 - Bugfixes

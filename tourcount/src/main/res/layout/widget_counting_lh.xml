@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  - widget_counting_lh.xml (left-handed) is used by CountingWidgetLH.kt
+  - Copyright © 2016-2023, Wilhelm Stein, Bonn, Germany.
+  ~ Last edited on 2025-09-18
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="2dp"
+    android:background="@drawable/rounded_corner"
+    android:baselineAligned="false"
+    android:padding="10dp"
+    tools:ignore="ContentDescription,UsingOnClickInXml">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:paddingStart="5dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/buttonUpLHf1i"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:onClick="countUpLHf1i"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/buttonDownLHf1i"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.4"
+            android:onClick="countDownLHf1i"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <TextView
+            android:id="@+id/f1iNameLH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/countImagomfHint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#bfffff"
+            android:textSize="17sp" />
+
+        <com.wmstein.tourcount.AutoFitText
+            android:id="@+id/countCountLHf1i"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/count_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/charZero"
+            android:inputType="number"
+            android:paddingStart="1dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="1dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/buttonUpLHf2i"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:onClick="countUpLHf2i"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ImageButton
+            android:id="@+id/buttonDownLHf2i"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.4"
+            android:onClick="countDownLHf2i"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <TextView
+            android:id="@+id/f2iNameLH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/countImagomHint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#bfffff"
+            android:textSize="17sp" />
+
+        <com.wmstein.tourcount.AutoFitText
+            android:id="@+id/countCountLHf2i"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/count_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/charZero"
+            android:inputType="number"
+            android:paddingStart="1dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="1dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/buttonUpLHf3i"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:onClick="countUpLHf3i"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ImageButton
+            android:id="@+id/buttonDownLHf3i"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.4"
+            android:onClick="countDownLHf3i"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <TextView
+            android:id="@+id/f3iNameLH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/countImagofHint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#bfffff"
+            android:textSize="17sp" />
+
+        <com.wmstein.tourcount.AutoFitText
+            android:id="@+id/countCountLHf3i"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/count_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/charZero"
+            android:inputType="number"
+            android:paddingStart="1dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="1dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/buttonUpLHpi"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:onClick="countUpLHpi"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ImageButton
+            android:id="@+id/buttonDownLHpi"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.4"
+            android:onClick="countDownLHpi"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <TextView
+            android:id="@+id/piNameLH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/countPupaHint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#bfffff"
+            android:textSize="17sp" />
+
+        <com.wmstein.tourcount.AutoFitText
+            android:id="@+id/countCountLHpi"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/count_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/charZero"
+            android:inputType="number"
+            android:paddingStart="1dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="1dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/buttonUpLHli"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:onClick="countUpLHli"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ImageButton
+            android:id="@+id/buttonDownLHli"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.4"
+            android:onClick="countDownLHli"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <TextView
+            android:id="@+id/liNameLH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/countLarvaHint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#bfffff"
+            android:textSize="17sp" />
+
+        <com.wmstein.tourcount.AutoFitText
+            android:id="@+id/countCountLHli"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/count_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/charZero"
+            android:inputType="number"
+            android:paddingStart="1dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="1dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/buttonUpLHei"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:onClick="countUpLHei"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ImageButton
+            android:id="@+id/buttonDownLHei"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.4"
+            android:onClick="countDownLHei"
+            android:scaleType="fitCenter"
+            android:src="@drawable/minus"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml" />
+
+        <TextView
+            android:id="@+id/eiNameLH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/countOvoHint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#bfffff"
+            android:textSize="17sp" />
+
+        <com.wmstein.tourcount.AutoFitText
+            android:id="@+id/countCountLHei"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/count_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColorHint="@color/BrightGray"
+            android:hint="@string/charZero"
+            android:inputType="number"
+            android:paddingStart="1dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="1dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</LinearLayout>
+

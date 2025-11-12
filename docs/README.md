@@ -85,5 +85,5 @@ Pictures of this work by Wilhelm Stein may only be used for scientific or other 
 Code and illustrations provided by other authors remain the copyright of those authors and should not be
 reproduced or distributed other than with their license.
 
-For detailed copyrights on external code and pictures see the separate document "License.txt" in TourCount/docs.
-
+For detailed copyrights on external code and pictures see the separate document "License.txt" under
+https://github.com/wistein/TourCount/tree/master/docs.

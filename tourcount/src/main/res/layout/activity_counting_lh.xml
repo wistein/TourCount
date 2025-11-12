@@ -17,41 +17,13 @@
         android:background="@color/BrightGray"
         android:paddingTop="1dp" />
 
-    <!-- insert the tour notes in here -->
-        <LinearLayout
-            android:id="@+id/tourNotesLayoutLH"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:orientation="vertical" />
-
-        <!-- separating white line -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/BrightGray"
-            android:paddingTop="1dp" />
-
-        <!-- insert spinner widget_counting_head1LH here -->
+    <!-- insert spinner widget_counting_head1LH here -->
         <Spinner
             android:id="@+id/countHead1SpinnerLH"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- separating white line -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/BrightGray"
-            android:paddingTop="2dp" />
-
-        <!-- insert head2 in here -->
-        <LinearLayout
-            android:id="@+id/countHead2LayoutLH"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:orientation="vertical" />
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp" />
 
         <!-- separating white line -->
         <View
@@ -69,14 +41,48 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- insert the internal counts in here -->
+                <!-- insert the lh counts in here -->
                 <LinearLayout
                     android:id="@+id/countCountiLayoutLH"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fillViewport="true"
-                    android:orientation="vertical"
-                    />
+                    android:orientation="vertical"/>
+
+                <!-- separating white line -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/BrightGray"
+                    android:paddingTop="2dp" />
+
+                <!-- insert the species notes with edit button in here -->
+                <LinearLayout
+                    android:id="@+id/countHead2LayoutLH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="2dp"
+                    android:fillViewport="true"
+                    android:orientation="vertical" />
+
+                <!-- separating white line -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/BrightGray"
+                    android:paddingTop="2dp" />
+
+                <!-- insert the tour notes with edit button in here -->
+                <LinearLayout
+                    android:id="@+id/tourNotesLayoutLH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="2dp"
+                    android:autofillHints="Tour notes come here"
+                    android:fillViewport="true"
+                    android:orientation="vertical" />
 
                 <!-- separating white line -->
                 <View
@@ -86,5 +92,7 @@
                     android:paddingTop="2dp" />
 
             </LinearLayout>
+
         </ScrollView>
+
 </LinearLayout>

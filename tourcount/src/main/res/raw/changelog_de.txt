@@ -2,12 +2,13 @@
 
 <!--
 Formatting commands:
-% Title
-_ Subtitle
+% title
+_ subtitle
 ! free text
 & bold
 # numbered list item
 * bullet list item
+. blank line
 -->
 
   <head>
@@ -31,7 +32,6 @@ _ Subtitle
           color:#F0F0F0;
           font-size:1.2em;
           font-weight:bold;
-          margin-top:1em;
           margin-bottom:0.5em;
           text-align:start }
       div.list     { color:#C0C0F0 }
@@ -39,26 +39,52 @@ _ Subtitle
   </head>
   <body>
 
-% TourCount
-_ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
-_
-_ email: stein.wm@web.de
-_
-! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
-_
-! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
-! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
- _
-! Quellcode und Dokumentation veröffentlicht unter:
-! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
-_
-! Geeignet für Android 7.1 (Nougat) oder neuer
-_
+  % TourCount
+  _ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
+  _
+  _ email: stein.wm@web.de
+  _
+<!--
+  ! --------
+  & Achtung:
+  ! Google hat angekündigt, dass ab 2026/2027 alle Apps auf zertifizierten Android-Geräten nur noch funktionieren, wenn die Entwickler ihre persönlichen Identitätsdaten direkt an Google übermitteln. Als privater Entwickler dieser datenschutzkonformen Open-Source-App stimme ich dieser Anforderung von Google nicht zu. Deshalb wird leider diese App ab diesem Zeitpunkt auf zertifizierten Android-Geräten nicht mehr funktionieren.
+  _
+  ! Auf Android-Geräten mit Custom ROMS wie GrapheneOS, LineageOS, usw. wird die App weiterhin wie gewohnt funktionieren.
+  ! --------
+  _
+-->
+  ! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
+  _
+  ! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
+  ! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
+   _
+  ! Quellcode und Dokumentation veröffentlicht unter:
+  ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
+  _
+  ! Geeignet für Android 7.1 (Nougat) oder neuer.
+  _
+  .
+  _
+
+$ 3.6.9
+  % Version 3.6.9
+  _ 12.11.2025
+  * Layout der Zählerseite verbessert
+  * Nur noch eine feste Schriftgröße für Bemerkungen
+  * Ergebnisseite mit ausgegrauten "0"-Werten und kleinen Layout-Änderungen
+  * Ergebnisseite mit Höhenangabe pro Individuum
+  * Code zur Ortsbestimmung verbessert
+  * Sound-Erzeugung besser an Erfordernisse von Android 16 angepasst
+  * Abbildung von Nomophila noctuella (Wanderzünsler) ergänzt
+  * App-spezifische Debug-Unterstützung dauerhaft für den Emulator in Android Studio
+  * Doku überarbeitet
+  * Einige Code-Verbesserungen
+  * Bug-Fixe
 
 $ 3.6.8
   % Version 3.6.8
   _ 15.09.2025
-  * Zeigt eine einmalige Info, wenn die Position außerhalb Europas ist, da die App nur Codes und Abbildungen europäischer Spezies kennt
+  * Wenn GPS benutzt wird, erfolgt eine einmalige Hinweismeldung, wenn noch kein GPS-Fix erfolgt ist oder der Ort außerhalb des europäischen Faunengebiets liegt
   * Einige Code- und Text-Verbesserungen
   * Doku überarbeitet
   * Bug-Fixe
@@ -408,17 +434,18 @@ $ 1.0.2
 $ 1.0.0
   % Version 1.0.0
   _ 18.04.2016
-  ! 1. Release.
+  _
+  & 1. Release.
   * TourCount basiert auf TransektCount, dessen Programmstruktur und Zählfunktionalität ursprünglich auf Teilen von BeeCount von knirirr basiert (https://github.com/knirirr/BeeCount.git)
   * Text- und Struktur-Anpassung für Tagfalterregistrierung unterwegs
   _
-  ! Andere Quellen:
+  & Andere Quellen:
   * Angepasste AutoFitText.java, Autor: pheuschk (Open source code from stackoverflow)
   * Angepasste ChangeLog.java, Autor: Karsten Priegnitz (Open source code from code.google.com)
   * Angepasste CSVWriter.java, Bytecode Pty Ltd. (Apache License 2.0)
   * Angepasster File Chooser Dialog, Google Code Archive, GNU GPL v3
   _
-  ! Features:
+  & Features:
   * Eingabeseite für Meta-Daten
   * Zählseite
   * Editor für Zähl-Optionen

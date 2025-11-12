@@ -11,7 +11,7 @@ import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
  * Created by wmstein on 2020-04-17
  * last edited in Java on 2020-04-18,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-04-29
+ * last edited on 2025-11-01
  */
 class SettingsFragment : PreferenceFragmentCompat() {
     private var prefs: SharedPreferences? = null
@@ -26,12 +26,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // Set proximity option visible if available in device
         val prefProx: Boolean = prefs!!.getBoolean("enable_prox", false)
         val proxPref: ListPreference? = findPreference("pref_prox")
-        if (prefProx) {
-            proxPref?.isEnabled = true
-        }
-        else {
-            proxPref?.isEnabled = false
-        }
+        proxPref?.isEnabled = prefProx
     }
 
 }

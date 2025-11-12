@@ -1,5 +1,7 @@
+<html>
+
 <!-- User instructions --
-  Last edited on 2025-07-15
+  Last edited on 2025-10-08
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -13,6 +15,7 @@ The recorded data (meta-data, counts and remarks) may either be read on the smar
 <br><br>
 The app is published with source code and documentation on https://github.com/wistein/TourCount. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services, but requires permits for its serviceable functions: Import of species lists and DB files, export of data and counting results to DB or CSV files, GPS access rights, internet access for inverse geocoding and wakelock to prevent the app from dimming or switching off.
 <br><br><br>
+
 <h3><font color=#D9FDD9>2. Setting up</font></h3>
 Before initial use you should adapt the app settings to your liking. (→ 4. Further Functions).
 <br><br>
@@ -24,11 +27,11 @@ All 3 editing pages offer a preselection to ease the selection of a distinguishe
 <br><br>
 On the "Add Species" page select species from the blue scroll-down list of not yet selected species. Changes take effect by the (+)-button in the head line (notice that the selected species disappear from the scroll-down list).
 <br><br>
-At the end of the scroll-down list, a placeholder for an indeterminate species (NN) can be adopted and edited later, if necessary after determination.
+At the end of the scroll-down list, a placeholder for an momentarily indeterminate species (NN) can be adopted and edited later, if necessary after determination.
 <br><br>
 On the "Remove Species" page select species to remove on the red scroll-down list and tip on the Delete-button.
 <br><br>
-On the "Edit Terms" page you may edit the tour name, a remark for the tour and the terms of each species. (Scientific and local species names, codes generally five digits with leading zeros, as you can see in the following species list table excerpt).
+On the "Edit Terms" page you may edit the tour name and the terms of each species. (Scientific and local species names, codes generally five digits with leading zeros, as you can see in the following species list table excerpt).
 <br><br>
 (Part of a species list)<br>
 ---------------------------------------------------<br>
@@ -68,6 +71,7 @@ https://github.com/wistein/TourCount/tree/master/docs.
 <br><br>
 Copy them to the app’s data directory "Documents/TourCount" and import and edit them in TourCount suitably.
 <br><br><br>
+
 <h3><font color=#D9FDD9>3. Usage</font></h3>
 Start with "Edit Meta Data". Enter the specific meta date of the tour.<br>
 You may enter the current date and time by clicking the related field or enter any date and time by long pressing the related field. Finish with the store button.
@@ -96,6 +100,7 @@ With large amounts of data, the app's response can be somewhat delayed for e. g.
 <br><br>
 If the message "TransectCount not responding" appears, please reply with "Wait".
 <br><br><br>
+
 <h3><font color=#D9FDD9>4. Further functions</font></h3>
 The system menu on the starting page has Settings, Reset, Import, Export, Info and Help functions.
 <br><br>
@@ -153,10 +158,15 @@ The option menu of the counting page provides a "Photo" function to quickly take
 <br><br>
 Optionally, the counter view is temporarily turned off by means of the proximity sensor when the phone is pocketed or closely held to the body. This saves energy, prevents unwanted inputs and recalls the app into its normal state immediately when used again.
 <br><br><br>
+
 <h3><font color=#D9FDD9>5. Sources</h3>
-Source-Code: https://github.com/wistein/TourCount
-<br><br>
 Docs: https://github.com/wistein/TourCount/tree/master/docs
+<br><br>
+Licenses: https://github.com/wistein/TourCount/tree/master/docs/License.txt
 <br><br>
 App: https://f-droid.org/en/packages/com.wmstein.TourCount
 <br><br>
+Source-Code: https://github.com/wistein/TourCount
+<br><br>
+
+</html>

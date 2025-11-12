@@ -13,7 +13,7 @@ import java.io.Serializable
 import java.util.Objects
 
 /************************************************
- * Used by EditSpecListActivity
+ * Used by EditSpeciesListActivity
  * shows line with species name, code and delete button
  * Adopted for TourCount by wmstein on 2016-02-18
  * last edited in Java on 2020-10-17,

@@ -1,0 +1,12 @@
+Version 3.6.9 (12.11.2025)
+- Layout der Zählerseite verbessert
+- Nur noch eine feste Schriftgröße für Bemerkungen
+- Ergebnisseite mit ausgegrauten "0"-Werten und kleinen Layout-Änderungen
+- Ergebnisseite mit Höhenangabe pro Individuum
+- Code zur Ortsbestimmung verbessert
+- Sound-Erzeugung besser an Erfordernisse von Android 16 angepasst
+- Abbildung von Nomophila noctuella (Wanderzünsler) ergänzt
+- App-spezifische Debug-Unterstützung dauerhaft für den Emulator in Android Studio
+- Doku überarbeitet
+- Einige Code-Verbesserungen
+- Bug-Fixe

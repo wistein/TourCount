@@ -29,13 +29,6 @@
         
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/baseline_format_size_48"
-            android:key="pref_note_font"
-            android:summary="@string/pref_note_font_summ"
-            android:title="@string/pref_note_font"/>
-        
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
             android:icon="@drawable/outline_back_hand_48"
             android:key="pref_left_hand"
             android:summary="@string/pref_left_hand_summ"
@@ -117,6 +110,7 @@
     </PreferenceCategory>
 
     <EditTextPreference
+        android:textColorHint="@color/BrightGray"
         android:hint="@string/email_hint"
         android:icon="@drawable/outline_email_48"
         android:key="email_String"

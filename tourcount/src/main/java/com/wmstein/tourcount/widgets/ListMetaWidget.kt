@@ -15,102 +15,102 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-05-12
+ * last edited on 2025-11-10
  */
 class ListMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
-    private val widget_ldate1: TextView
-    private val widget_ldate2: TextView
+    private val widgetdate1: TextView
+    private val widgetdate2: TextView
 
     // start_tm
-    private val widget_lstartTm1: TextView
-    private val widget_lstartTm2: TextView
+    private val widgetstartTm1: TextView
+    private val widgetstartTm2: TextView
 
     // end_tm
-    private val widget_lendTm1: TextView
-    private val widget_lendTm2: TextView
+    private val widgetendTm1: TextView
+    private val widgetendTm2: TextView
 
     // temperature
-    private val widget_ltemp1: TextView
-    private val widget_lstarttemp2: TextView
-    private val widget_lendtemp2: TextView
+    private val widgettemp1: TextView
+    private val widgetstarttemp2: TextView
+    private val widgetendtemp2: TextView
 
     // wind
-    private val widget_lwind1: TextView
-    private val widget_lstartwind2: TextView
-    private val widget_lendwind2: TextView
+    private val widgetwind1: TextView
+    private val widgetstartwind2: TextView
+    private val widgetendwind2: TextView
 
     // clouds
-    private val widget_lclouds1: TextView
-    private val widget_lstartclouds2: TextView
-    private val widget_lendclouds2: TextView
+    private val widgetclouds1: TextView
+    private val widgetstartclouds2: TextView
+    private val widgetendclouds2: TextView
 
-    private val widget_notes1: TextView
-    private val widget_notes2: TextView
+    private val widgetnotes1: TextView
+    private val widgetnotes2: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_meta, this, true)
-        widget_ldate1 = findViewById(R.id.widgetLDate1)
-        widget_ldate2 = findViewById(R.id.widgetLDate2)
+        widgetdate1 = findViewById(R.id.widgetLDate1)
+        widgetdate2 = findViewById(R.id.widgetLDate2)
 
-        widget_lstartTm1 = findViewById(R.id.widgetLStartTm1)
-        widget_lstartTm2 = findViewById(R.id.widgetLStartTm2)
+        widgetstartTm1 = findViewById(R.id.widgetLStartTm1)
+        widgetstartTm2 = findViewById(R.id.widgetLStartTm2)
 
-        widget_lendTm1 = findViewById(R.id.widgetLEndTm1)
-        widget_lendTm2 = findViewById(R.id.widgetLEndTm2)
+        widgetendTm1 = findViewById(R.id.widgetLEndTm1)
+        widgetendTm2 = findViewById(R.id.widgetLEndTm2)
 
-        widget_ltemp1 = findViewById(R.id.widgetLTemp1)
-        widget_lstarttemp2 = findViewById(R.id.widgetLStartTemp2)
-        widget_lendtemp2 = findViewById(R.id.widgetLEndTemp2)
+        widgettemp1 = findViewById(R.id.widgetLTemp1)
+        widgetstarttemp2 = findViewById(R.id.widgetLStartTemp2)
+        widgetendtemp2 = findViewById(R.id.widgetLEndTemp2)
 
-        widget_lwind1 = findViewById(R.id.widgetLWind1)
-        widget_lstartwind2 = findViewById(R.id.widgetLStartWind2)
-        widget_lendwind2 = findViewById(R.id.widgetLEndWind2)
+        widgetwind1 = findViewById(R.id.widgetLWind1)
+        widgetstartwind2 = findViewById(R.id.widgetLStartWind2)
+        widgetendwind2 = findViewById(R.id.widgetLEndWind2)
 
-        widget_lclouds1 = findViewById(R.id.widgetLClouds1)
-        widget_lstartclouds2 = findViewById(R.id.widgetLStartClouds2)
-        widget_lendclouds2 = findViewById(R.id.widgetLEndClouds2)
+        widgetclouds1 = findViewById(R.id.widgetLClouds1)
+        widgetstartclouds2 = findViewById(R.id.widgetLStartClouds2)
+        widgetendclouds2 = findViewById(R.id.widgetLEndClouds2)
 
-        widget_notes1 = findViewById(R.id.widgetNotes1)
-        widget_notes2 = findViewById(R.id.widgetNotes2)
+        widgetnotes1 = findViewById(R.id.widgetNotes1)
+        widgetnotes2 = findViewById(R.id.widgetNotes2)
 
     }
 
     // Following the SETS
     @SuppressLint("SetTextI18n")
     fun setListMetaWidget(section: Section) {
-        widget_ldate1.setText(R.string.date)
-        widget_ldate2.text = section.date
+        widgetdate1.setText(R.string.date)
+        widgetdate2.text = section.date
 
-        widget_lstartTm1.setText(R.string.starttm)
-        widget_lstartTm2.text = section.start_tm
+        widgetstartTm1.setText(R.string.starttm)
+        widgetstartTm2.text = section.start_tm
 
-        widget_lendTm1.setText(R.string.endtm)
-        widget_lendTm2.text = section.end_tm
+        widgetendTm1.setText(R.string.endtm)
+        widgetendTm2.text = section.end_tm
 
         // temperature
-        widget_ltemp1.setText(R.string.temperature)
-        widget_lstarttemp2.text = section.tmp.toString()
-        widget_lendtemp2.text = section.tmp_end.toString()
+        widgettemp1.setText(R.string.temperature)
+        if (section.tmp > 0) widgetstarttemp2.text = section.tmp.toString()
+        if (section.tmp_end > 0) widgetendtemp2.text = section.tmp_end.toString()
 
         // wind
-        widget_lwind1.setText(R.string.wind)
-        widget_lstartwind2.text = section.wind.toString()
-        widget_lendwind2.text = section.wind_end.toString()
+        widgetwind1.setText(R.string.wind)
+        if (section.wind > 0) widgetstartwind2.text = section.wind.toString()
+        if (section.wind_end > 0) widgetendwind2.text = section.wind_end.toString()
 
         // clouds
-        widget_lclouds1.setText(R.string.clouds)
-        widget_lstartclouds2.text = section.clouds.toString()
-        widget_lendclouds2.text = section.clouds_end.toString()
+        widgetclouds1.setText(R.string.clouds)
+        if (section.clouds > 0) widgetstartclouds2.text = section.clouds.toString()
+        if (section.clouds_end > 0) widgetendclouds2.text = section.clouds_end.toString()
     }
 
     fun setWidgetNotes1(name: String?) {
-        widget_notes1.text = name
+        widgetnotes1.text = name
     }
 
     fun setWidgetNotes2(name: String?) {
-        widget_notes2.text = name
+        widgetnotes2.text = name
     }
 
 

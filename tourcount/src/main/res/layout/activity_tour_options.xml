@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_tour_options.xml is used by EditTourNotesActivity.kt -->
+<LinearLayout android:id="@+id/tour_options"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:background="@color/DarkGreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/tour_widget_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
+</LinearLayout>

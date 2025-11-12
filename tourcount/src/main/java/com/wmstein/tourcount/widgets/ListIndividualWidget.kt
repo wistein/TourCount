@@ -16,7 +16,7 @@ import java.util.Objects
  * used by ShowResultsActivity
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-01-20
+ * last edited on 2025-11-12
  */
 class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -25,6 +25,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
     private val txtIndStad: TextView
     private val txtIndLa: TextView
     private val txtIndLo: TextView
+    private val txtIndHeight: TextView
     private val txtIndTm: TextView
     private val txtIndStat: TextView
     val txtIndCnt: AutoFitText
@@ -38,6 +39,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
         txtIndStad = findViewById(R.id.txtIndStad)
         txtIndLa = findViewById(R.id.txtIndLa)
         txtIndLo = findViewById(R.id.txtIndLo)
+        txtIndHeight = findViewById(R.id.txtIndHeight)
         txtIndTm = findViewById(R.id.txtIndTm)
         txtIndStat = findViewById(R.id.txtIndStat)
         txtIndCnt = findViewById(R.id.txtIndCnt)
@@ -84,6 +86,18 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
             }
         }
 
+        // Height
+        if (individual.coord_z == 0.0) {
+            txtIndHeight.text = ""
+        } else {
+            slen = individual.coord_z.toInt().toString().length
+            if (slen > 4) {
+                txtIndHeight.text = individual.coord_z.toInt().toString().substring(0, 4)
+            } else {
+                txtIndHeight.text = individual.coord_z.toInt().toString()
+            }
+        }
+
         // Time
         txtIndTm.text = individual.time_stamp.toString()
 
@@ -96,7 +110,7 @@ class ListIndividualWidget(context: Context, attrs: AttributeSet?) :
 
         // Individual count
         val text = individual.icount.toString()
-        txtIndCnt.setText(text) // In Kotlin EditText requires text as Editable?, not as String
+        txtIndCnt.text = text // In Kotlin EditText requires text as Editable?, not as String
     }
 
     fun getIndNotes(individual: Individuals): String? {

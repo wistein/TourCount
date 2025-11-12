@@ -26,7 +26,7 @@ import androidx.appcompat.widget.AppCompatTextView
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
  * last edited in Java on 2023-05-24,
  * converted to Kotlin on 2023-07-06
- * last edited on 2025-09-15,
+ * last edited on 2025-11-01,
  */
 class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: AttributeSet?) :
     AppCompatTextView(context, attrs) {
@@ -102,7 +102,7 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
 
         // Converging only a single line
         var testSize: Float
-        while (upperTextSize - lowerTextSize > mThreshold) {
+        while (upperTextSize - lowerTextSize > MTHRESHOLD) {
 
             // Go to the mean value...
             testSize = (upperTextSize + lowerTextSize) / 2
@@ -154,7 +154,7 @@ class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: A
          * Defines how close we want to be to the factual size of the Text-field. Lower values mean
          * higher precision but also exponentially higher computing cost (more loop runs)
          */
-        const val mThreshold = 0.5f // original was 0.5f
+        const val MTHRESHOLD = 0.5f // original was 0.5f
     }
 
 }

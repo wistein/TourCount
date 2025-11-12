@@ -20,7 +20,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
-import com.wmstein.tourcount.MyDebug
+import com.wmstein.tourcount.BuildConfig
+import com.wmstein.tourcount.IsRunningOnEmulator
 import com.wmstein.tourcount.R
 import java.io.File
 import java.io.FileFilter
@@ -34,7 +35,7 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-05-30
+ * last edited on 2025-10-22
  */
 class AdvFileChooser : AppCompatActivity() {
     private var currentDir: File? = null
@@ -48,7 +49,8 @@ class AdvFileChooser : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "51, onCreate")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "53, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -183,7 +185,8 @@ class AdvFileChooser : AppCompatActivity() {
         val intent = Intent()
         intent.putExtra("fileSelected", fileSelected.absolutePath)
         setResult(RESULT_OK, intent)
-        if (MyDebug.DLOG) Log.i(TAG, "186, Selected file: $fileSelected")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "189, Selected file: $fileSelected")
         finish()
     }
 

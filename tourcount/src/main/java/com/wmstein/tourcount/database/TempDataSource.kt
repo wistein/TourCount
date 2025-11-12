@@ -12,29 +12,25 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-05-15,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-05-14.
+ * last edited on 2025-11-01.
  */
 class TempDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
-    private val dbHandler: DbHelper
+    private val dbHelper: DbHelper = DbHelper(context)
     private val allColumns = arrayOf(
         DbHelper.T_ID,
         DbHelper.T_TEMP_LOC,
         DbHelper.T_TEMP_CNT
     )
 
-    init {
-        dbHandler = DbHelper(context)
-    }
-
     @Throws(SQLException::class)
     fun open() {
-        database = dbHandler.writableDatabase
+        database = dbHelper.writableDatabase
     }
 
     fun close() {
-        dbHandler.close()
+        dbHelper.close()
     }
 
     fun saveTempLoc(tmp: Temp) {

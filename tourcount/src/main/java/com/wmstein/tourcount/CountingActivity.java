@@ -13,7 +13,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.Ringtone;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -44,6 +44,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
@@ -53,9 +57,9 @@ import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
 import com.wmstein.tourcount.widgets.CountingWidgetHead1;
-import com.wmstein.tourcount.widgets.CountingWidgetHead2;
+import com.wmstein.tourcount.widgets.CountingWidgetSpeciesNotes;
 import com.wmstein.tourcount.widgets.CountingWidgetLH;
-import com.wmstein.tourcount.widgets.NotesWidget;
+import com.wmstein.tourcount.widgets.CountingWidgetTourNotes;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -69,7 +73,7 @@ import java.util.Objects;
 /***************************************************************************************
  * CountingActivity is the central activity of TourCount.
  * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
- * starts EditSpecListActivity, switches screen off when device is pocketed
+ * starts EditSpeciesListActivity, switches screen off when device is pocketed
  * and allows taking pictures and sending notes.
  <p>
  * CountingActivity uses CountingWidget.kt, CountingWidgetLH.kt, NotesWidget.kt,
@@ -77,7 +81,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2025-09-08
+ * last edited in Java on 2025-11-12
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -85,10 +89,11 @@ public class CountingActivity
     private static final String TAG = "CountAct";
 
     private int iid = 1;
+    private LinearLayout counting_screen;
     private LinearLayout count_area;
 
     private LinearLayout head_area2;
-    private LinearLayout notes_area1;
+    private LinearLayout tour_notes_area;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     // Data
@@ -104,6 +109,7 @@ public class CountingActivity
 
     // Location info handling
     private double latitude, longitude, height;
+    private String uncertainty;
     LocationService locationService;
     private boolean locServiceOn = false;
 
@@ -117,21 +123,23 @@ public class CountingActivity
     private boolean awakePref;
     private boolean brightPref;
     private String sortPref;
-    private boolean fontPref;
     private boolean lhandPref;       // true for left hand mode of counting screen
     private boolean buttonSoundPref;
-    private String buttonSoundMinus; // buttonSound is handled in EditIndividualActivity
+    private String buttonSoundMinus; // (+)-buttonSound is handled in EditIndividualActivity
     private boolean buttonVibPref;
     private String specCode = "";
     private String proxSensorPref;
     private double sensorSensitivity = 0.0;
+    private boolean metaPref;        // option for OSM reverse geocoding
+    private String emailString = ""; // mail address for OSM query
 
     // Data sources
     private SectionDataSource sectionDataSource;
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
 
-    private Ringtone rTone;
+    private Context audioAttributionContext;
+    private MediaPlayer rToneM;
 
     // Prepare vibrator service
     private Vibrator vibrator;
@@ -145,31 +153,20 @@ public class CountingActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MyDebug.DLOG) Log.i(TAG, "148, onCreate");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "157, onCreate");
+
+        audioAttributionContext = (Build.VERSION.SDK_INT >= 30) ?
+                createAttributionContext("ringSound") :
+                this;
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
         setPrefVariables(); // set all stored preferences into their variables
 
-        // get parameters from WelcomeActivity
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            latitude = extras.getDouble("Latitude");
-            longitude = extras.getDouble("Longitude");
-            height = extras.getDouble("Height");
-        }
-
         sectionDataSource = new SectionDataSource(this);
         countDataSource = new CountDataSource(this);
         individualsDataSource = new IndividualsDataSource(this);
-
-        // Set full brightness of screen
-        if (brightPref) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.screenBrightness = 1.0f;
-            getWindow().setAttributes(params);
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
             EdgeToEdge.enable(this);
@@ -177,10 +174,10 @@ public class CountingActivity
         // Distinguish between left-/ right-handed counting page layout
         if (lhandPref) {
             setContentView(R.layout.activity_counting_lh);
-            LinearLayout counting_screen = findViewById(R.id.countingScreenLH);
+            counting_screen = findViewById(R.id.countingScreenLH);
             counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayoutLH);
-            notes_area1 = findViewById(R.id.tourNotesLayoutLH);
+            tour_notes_area = findViewById(R.id.tourNotesLayoutLH);
             head_area2 = findViewById(R.id.countHead2LayoutLH);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreenLH),
                     (v, windowInsets) -> {
@@ -195,10 +192,10 @@ public class CountingActivity
                     });
         } else {
             setContentView(R.layout.activity_counting);
-            LinearLayout counting_screen = findViewById(R.id.countingScreen);
+            counting_screen = findViewById(R.id.countingScreen);
             counting_screen.setBackground(tourCount.setBackgr());
             count_area = findViewById(R.id.countCountiLayout);
-            notes_area1 = findViewById(R.id.tourNotesLayout);
+            tour_notes_area = findViewById(R.id.tourNotesLayout);
             head_area2 = findViewById(R.id.countHead2Layout);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreen),
                     (v, windowInsets) -> {
@@ -255,7 +252,8 @@ public class CountingActivity
                 public void handleOnBackPressed() {
                     disableProximitySensor();
 
-                    if (MyDebug.DLOG) Log.i(TAG, "258, handleOnBackPressed");
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "256, handleOnBackPressed");
                     finish();
                     remove();
                 }
@@ -268,9 +266,11 @@ public class CountingActivity
     // Check for Navigation bar 1-, 2- or 3-button mode
     public int getNavBarMode() {
         Resources resources = this.getResources();
+
         @SuppressLint("DiscouragedApi")
         int resourceId = resources.getIdentifier("config_navBarInteractionMode",
                 "integer", "android");
+
         return resourceId > 0 ? resources.getInteger(resourceId) : 0;
     }
 
@@ -279,7 +279,6 @@ public class CountingActivity
         awakePref = prefs.getBoolean("pref_awake", true);      // stay awake while counting
         brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
         sortPref = prefs.getString("pref_sort_sp", "none");    // sorted species list on counting page
-        fontPref = prefs.getBoolean("pref_note_font", false);  // larger font for remarks
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
@@ -287,6 +286,9 @@ public class CountingActivity
         itemPosition = prefs.getInt("item_Position", 0);        // spinner pos.
         iid = prefs.getInt("count_id", 1);                      // species id
         proxSensorPref = prefs.getString("pref_prox", "Off");
+        locServiceOn = prefs.getBoolean("loc_srv_on", false);
+        emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
+        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
     }
 
     @SuppressLint("DiscouragedApi")
@@ -294,32 +296,46 @@ public class CountingActivity
     protected void onResume() {
         super.onResume();
 
-        if (MyDebug.DLOG) Log.i(TAG, "297, onResume");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "300, onResume");
 
         mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Prepare vibrator service
         vibrator = getApplicationContext().getSystemService(Vibrator.class);
 
-        // Get location with permissions check
-        locationDispatcher(1);
-
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         setPrefVariables(); // set prefs into their variables
 
+        // Get location with permissions check
+        locationDispatcher(1);
+
         // Set full brightness of screen
         if (brightPref) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             WindowManager.LayoutParams params = getWindow().getAttributes();
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
 
+        if (awakePref)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // Prepare button sounds
+        if (buttonSoundPref) {
+            Uri uriM;
+            if (isNotBlank(buttonSoundMinus) && buttonSoundMinus != null)
+                uriM = Uri.parse(buttonSoundMinus);
+            else
+                uriM = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (rToneM == null)
+                rToneM = MediaPlayer. create (audioAttributionContext, uriM);
+        }
+
         // build the counting screen
         // clear any existing views
         count_area.removeAllViews();
-        notes_area1.removeAllViews();
+        tour_notes_area.removeAllViews();
         head_area2.removeAllViews();
 
         // Setup the data sources
@@ -396,16 +412,6 @@ public class CountingActivity
         countingWidgets = new ArrayList<>();
         countingWidgetsLH = new ArrayList<>();
 
-        // Display list notes
-        if (section.notes != null) {
-            if (!section.notes.isEmpty()) {
-                NotesWidget section_notes = new NotesWidget(this, null);
-                section_notes.setNotes(section.notes);
-                section_notes.setFont(fontPref);
-                notes_area1.addView(section_notes);
-            }
-        }
-
         // Show head1: Species with spinner to select
         if (lhandPref) // if left-handed counting page
             spinner = findViewById(R.id.countHead1SpinnerLH);
@@ -438,17 +444,14 @@ public class CountingActivity
         spinner.setAdapter(adapter);
         spinner.setSelection(itemPosition);
         spinnerListener();
-
-        if (awakePref)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
     // End of onResume()
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-            if (MyDebug.DLOG)
-                Log.d(TAG, "451 Value0: " + event.values[0] + ", " + "Sensitivity: "
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.d(TAG, "454, Prox.Sensor Value0: " + event.values[0] + ", " + "Sensitivity: "
                         + (sensorSensitivity));
 
             // if ([0|5] >= [-0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
@@ -502,9 +505,7 @@ public class CountingActivity
 
             finish();
             return true;
-        }
-
-        else if (id == R.id.menuAddSpecies) {
+        } else if (id == R.id.menuAddSpecies) {
             disableProximitySensor();
 
             Intent intent = new Intent(CountingActivity.this,
@@ -512,9 +513,7 @@ public class CountingActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return true;
-        }
-
-        else if (id == R.id.menuDelSpecies) {
+        } else if (id == R.id.menuDelSpecies) {
             disableProximitySensor();
 
             mesg = getString(R.string.wait);
@@ -530,9 +529,7 @@ public class CountingActivity
             mHandler.postDelayed(() ->
                     startActivity(intent), 100);
             return true;
-        }
-
-        else if (id == R.id.menuEditSection) {
+        } else if (id == R.id.menuEditSection) {
             disableProximitySensor();
 
             mesg = getString(R.string.wait);
@@ -541,16 +538,14 @@ public class CountingActivity
                             HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CountingActivity.this,
-                    EditSpecListActivity.class);
+                    EditSpeciesListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
                     startActivity(intent), 100);
             return true;
-        }
-
-        else if (id == R.id.menuTakePhoto) {
+        } else if (id == R.id.menuTakePhoto) {
             Intent camIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
 
             PackageManager packageManager = getPackageManager();
@@ -577,9 +572,7 @@ public class CountingActivity
                 startActivity(camIntent);
             }
             return true;
-        }
-
-        else if (id == R.id.action_share) {
+        } else if (id == R.id.action_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, "TourCount");
@@ -593,9 +586,16 @@ public class CountingActivity
     }
     // End of onOptionsItemSelected()
 
-    // Edit count options by CountOptionsActivity by button in widget_counting_head2.xml
+    // Edit count options by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
     public void editOptions(View view) {
-        Intent intent = new Intent(CountingActivity.this, CountOptionsActivity.class);
+        Intent intent = new Intent(CountingActivity.this, EditSpeciesNotesActivity.class);
+        intent.putExtra("count_id", iid);
+        startActivity(intent);
+    }
+
+    // Edit count options by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
+    public void editTourNotes(View view) {
+        Intent intent = new Intent(CountingActivity.this, EditTourNotesActivity.class);
         intent.putExtra("count_id", iid);
         startActivity(intent);
     }
@@ -608,7 +608,8 @@ public class CountingActivity
     protected void onPause() {
         super.onPause();
 
-        if (MyDebug.DLOG) Log.i(TAG, "611, onPause");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "612, onPause");
 
         disableProximitySensor();
 
@@ -641,17 +642,28 @@ public class CountingActivity
     public void onStop() {
         super.onStop();
 
-        if (MyDebug.DLOG) Log.i(TAG, "644, onStop");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "646, onStop");
 
-        if (rTone != null)
-            rTone.stop(); // stop media player
+        counting_screen.invalidate();
+
+        if (buttonSoundPref) {
+            if (rToneM != null) {
+                if (rToneM.isPlaying()) {
+                    rToneM.stop();
+                }
+                rToneM.release();
+                rToneM = null;
+            }
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        if (MyDebug.DLOG) Log.i(TAG, "654, onDestroy");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "666, onDestroy");
     }
 
     // Control location service
@@ -660,23 +672,31 @@ public class CountingActivity
     //  2 = end location service
     public void locationDispatcher(int locationDispatcherMode) {
         if (isFineLocationPermGranted()) {
+            editor = prefs.edit();
             switch (locationDispatcherMode) {
                 case 1 -> // start location service and get location
                 {
-                    locationService = new LocationService(this);
-                    Intent sIntent = new Intent(this, LocationService.class);
-                    startService(sIntent);
-                    locServiceOn = true;
+                    if (!locServiceOn) {
+                        locationService = new LocationService(this);
+                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
+                        startService(sIntent);
+                        locServiceOn = true;
 
+                        editor.putBoolean("loc_srv_on", true);
+                        editor.commit();
+                    }
                     getLoc();
                 }
                 case 2 -> // stop location service
                 {
                     if (locServiceOn) {
                         locationService.stopListener();
-                        Intent sIntent = new Intent(this, LocationService.class);
+                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
                         locServiceOn = false;
+
+                        editor.putBoolean("loc_srv_on", false);
+                        editor.commit();
                     }
                 }
             }
@@ -689,17 +709,37 @@ public class CountingActivity
     }
 
     // Get the location data
+    @SuppressLint("DefaultLocale")
     public void getLoc() {
         if (locationService.canGetLocation()) {
             longitude = locationService.getLongitude();
             latitude = locationService.getLatitude();
             height = locationService.getAltitude();
-            if (height != 0)
+            if (height != 0.0)
                 height = correctHeight(latitude, longitude, height);
+            uncertainty = String.format("%f", locationService.getAccuracy());
+        }
+
+        // Get reverse geocoding and store data to Section and Temp table
+        if (metaPref && (latitude != 0 || longitude != 0)) {
+            String urlString = "https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                    + "&format=xml&lat=" + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
+
+            WorkRequest retrieveAddrWorkRequest =
+                    new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
+                            .setInputData(new Data.Builder()
+                                    .putString("URL_STRING", urlString)
+                                    .build()
+                            )
+                            .build();
+
+            WorkManager
+                    .getInstance(this)
+                    .enqueue(retrieveAddrWorkRequest);
         }
     }
 
-    // Correct height with geoid offset from EarthGravitationalModel
+    // Correct height with geoid offset from simplified EarthGravitationalModel
     private double correctHeight(double latitude, double longitude, double gpsHeight) {
         double corrHeight;
         double nnHeight;
@@ -730,6 +770,7 @@ public class CountingActivity
                 try {
                     head_area2.removeAllViews();
                     count_area.removeAllViews();
+                    tour_notes_area.removeAllViews();
 
                     String sid = ((TextView) view.findViewById(R.id.countId)).getText().toString();
                     iid = Integer.parseInt(sid); // get species id
@@ -737,12 +778,14 @@ public class CountingActivity
 
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
-                    if (MyDebug.DLOG) Log.d(TAG, "740, SpinnerListener, count id: "
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.d(TAG, "782, SpinnerListener, count id: "
                             + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
-                    if (MyDebug.DLOG) Log.e(TAG, "745, SpinnerListener: " + e);
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.e(TAG, "788, SpinnerListener: " + e);
                 }
             }
 
@@ -755,28 +798,34 @@ public class CountingActivity
 
     // Show rest of widgets for counting screen
     private void countingScreen(Count count) {
-        if (MyDebug.DLOG) Log.i(TAG, "758, countingScreen");
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "802, countingScreen");
 
-        // 1. Species line is set by CountingWidgetHead1 in onResume, Spinner
-        // 2. Head2 with species notes and edit button
-        CountingWidgetHead2 head2 = new CountingWidgetHead2(this, null);
-        head2.setCountHead2(count);
-        head2.setFont(fontPref);
-        head_area2.addView(head2);
+        // 1. Species line with Spinner is set by CountingWidgetHead1 in onResume
 
-        // 3. counts
+        // 2. counts
         if (lhandPref) // if left-handed counting page
         {
-            CountingWidgetLH widgeti = new CountingWidgetLH(this, null);
-            widgeti.setCount(count);
-            countingWidgetsLH.add(widgeti);
-            count_area.addView(widgeti);
+            CountingWidgetLH widgetc = new CountingWidgetLH(this, null);
+            widgetc.setCount(count);
+            countingWidgetsLH.add(widgetc);
+            count_area.addView(widgetc);
         } else {
-            CountingWidget widgeti = new CountingWidget(this, null);
-            widgeti.setCount(count);
-            countingWidgets.add(widgeti);
-            count_area.addView(widgeti);
+            CountingWidget widgetc = new CountingWidget(this, null);
+            widgetc.setCount(count);
+            countingWidgets.add(widgetc);
+            count_area.addView(widgetc);
         }
+
+        // 3. Species notes with edit button
+        CountingWidgetSpeciesNotes widgets = new CountingWidgetSpeciesNotes(this, null);
+        widgets.setCountHead2(count);
+        head_area2.addView(widgets);
+
+        // 4. Tour notes with edit button
+        CountingWidgetTourNotes widgett = new CountingWidgetTourNotes(this, null);
+        widgett.setTourNotes(section);
+        tour_notes_area.addView(widgett);
     }
     // End of countingScreen
 
@@ -816,6 +865,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf1i();
 
+        locationDispatcher(1); // update location
         disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
@@ -828,6 +878,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -838,6 +892,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHf1i();
 
+        locationDispatcher(1); // update location
         disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
@@ -850,6 +905,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -937,6 +996,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf2i();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -949,6 +1009,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -959,6 +1023,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHf2i();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -971,6 +1036,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1055,6 +1124,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf3i();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1067,6 +1137,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1077,6 +1151,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHf3i();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1089,6 +1164,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1173,6 +1252,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUppi();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1185,6 +1265,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1195,6 +1279,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHpi();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1207,6 +1292,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1291,6 +1380,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpli();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1303,6 +1393,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1313,6 +1407,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHli();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1325,6 +1420,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1409,6 +1508,7 @@ public class CountingActivity
         if (widget != null)
             widget.countUpei();
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1421,6 +1521,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1432,6 +1536,7 @@ public class CountingActivity
             widget.countUpLHei();
         }
 
+        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1444,6 +1549,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
+        intent.putExtra("cLatitude", latitude);
+        intent.putExtra("cLongitude", longitude);
+        intent.putExtra("cHeight", height);
+        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
@@ -1522,7 +1631,8 @@ public class CountingActivity
 
     // Delete individual for count_id
     private void deleteIndividual(int id) {
-        System.out.println(getString(R.string.indivdel) + " " + id);
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "1635, " + getString(R.string.indivDel) + " " + id);
         individualsDataSource.deleteIndividualById(id);
     }
 
@@ -1550,18 +1660,11 @@ public class CountingActivity
 
     private void soundButtonSoundMinus() {
         if (buttonSoundPref) {
-            try {
-                Uri notification;
-                if (isNotBlank(buttonSoundMinus) && buttonSoundMinus != null)
-                    notification = Uri.parse(buttonSoundMinus);
-                else
-                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                rTone = RingtoneManager.getRingtone(this, notification);
-                rTone.play();
-                mHandler.postDelayed(rTone::stop, 420);
-            } catch (Exception e) {
-                if (MyDebug.DLOG) Log.e(TAG, "1563, could not play button sound.", e);
+            if (rToneM.isPlaying()) {
+                rToneM.stop();
+                rToneM.release();
             }
+            rToneM.start();
         }
     }
 
@@ -1590,8 +1693,10 @@ public class CountingActivity
      * isNotBlank("  bob  ") = true
      *
      * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is
+     * @return true if the CharSequence is
      * not empty and not null and not whitespace
+     * <p>
+     * Derived from package org.apache.commons.lang3/StringUtils
      */
     private static boolean isNotBlank(final CharSequence cs) {
         return !isBlank(cs);

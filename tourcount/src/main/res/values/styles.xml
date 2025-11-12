@@ -32,11 +32,6 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="SimpleText">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">17sp</item>
-    </style>
-
     <style name="SmallText">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">17sp</item>

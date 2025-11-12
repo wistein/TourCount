@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-09-15 -->
+     last edited on 2025-10-07 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Einstellungen</string>
-    <string name="outsideEurope1">Noch kein GPS-Fix oder Ort ist außerhalb Europas.</string>
-    <string name="outsideEurope2">Achtung: Nur europäische Arten werden unterstützt!</string>
+    <string name="outsideEurope1">Noch kein GPS-Fix oder Ort ist außerhalb des europäischen Faunengebiets.</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
-    <string name="zlist">Zählliste</string>
+    <string name="zList">Zählliste</string>
     <string name="counting">Zählen</string>
     <string name="viewSpeciesButton">Ergebnis anzeigen</string>
     <string name="editMetaButton">Meta-Daten editieren</string>
@@ -24,12 +23,12 @@
     <string name="saveFailListTransect">Export nach Documents/TransektCount schlug fehl!</string>
     <string name="saveBasisDB">Export der BasisDB nach Documents/TourCount</string>
     <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
-    <string name="savecsv">Export der CSV-Datei nach Documents/TourCount</string>
+    <string name="saveCSV">Export der CSV-Datei nach Documents/TourCount</string>
     <string name="saveList">Export der Speziesliste.</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
-    <string name="exportCSVMenu">Export Daten -> CSV-Datei</string>
+    <string name="exportCSVMenu">Export d. Ergebnisse (csv)</string>
     <string name="exportSpeciesListMenu">Export Speziesliste</string>
     <string name="resetDBMenu">Reset Daten</string>
     <string name="importFileMenu">Import DB</string>
@@ -40,11 +39,9 @@
     <string name="importWin">Die Datenbank wurde importiert.</string>
     <string name="importList">Die Speziesliste wurde importiert.</string>
     <string name="corruptDb">DB-Fehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
-    <string name="noDb">Bitte kopiere \"tourcount0.db\" in das Verzeichnis \'Documents/TourCount\'.</string>
     <string name="importButton">Import</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="individuals">Individuen</string>
-    <string name="confirmBasisImport">Willst Du wirklich die leere Basis-Datenbank \"tourcount0.db\" importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmListImport">Willst Du wirklich eine Speziesliste importieren? Deine aktuellen Daten werden überschrieben!</string>
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
@@ -66,6 +63,7 @@
     <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
     <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
     <string name="waitImport">Bitte warten, der Import läuft!</string>
+    <string name="missingEmail">Bitte unter Einstellungen eine gültige E-Mail-Adresse für zuverlässige Ortserkennung eingeben.</string>
 
     <!-- FileChooser -->
     <string name="importHead">Datenimport</string>
@@ -76,7 +74,7 @@
     <string name="fileHeadlineBasicDB">TransektCount Basis-DB-Dateien</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlnotes">Bem. zur Tour:</string>
+    <string name="zlNotes">Bem. zur Tour:</string>
     <string name="speccode">Spez.-Code:</string>
     <string name="cnts">Anzahl</string>
     <string name="bema">Bem. zur Art:</string>
@@ -103,7 +101,7 @@
 
     <!-- EditIndividualActivity -->
     <string name="saveIndividualButton">Speichern</string>
-    <string name="indivdel">Gelöscht: Individuum mit ID:</string>
+    <string name="indivDel">Gelöscht: Individuum mit ID:</string>
     <string name="xcoord">Breitengrad:</string>
     <string name="ycoord">Längengrad:</string>
     <string name="zcoord">Höhe (m):</string>
@@ -134,7 +132,7 @@
     <string name="chooserTitle">Wähle eine Foto-App</string>
 	<string name="takePhoto">Foto aufnehmen</string>
 
-    <!-- EditSpecListActivity -->
+    <!-- EditSpeciesListActivity -->
     <string name="editTitle">Bezeichnungen editieren</string>
     <string name="labelAddSpecButton">Arten hinzufügen</string>
     <string name="labelDelSpecButton">Arten entfernen</string>
@@ -144,11 +142,13 @@
     <string name="titleHint">Tour-Bezeichnung hier einfügen&#8230;</string>
     <string name="titleHintShort">Hier einfügen&#8230;</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
-    <string name="isdouble"> ist doppelt!</string>
+    <string name="specNotesHint">Art-Bem. hier einfügen&#8230;</string>
+    <string name="isDouble"> ist doppelt!</string>
     <string name="presentSpecs">Arten der Zählliste:</string>
-    <string name="isempt">Name oder Code fehlt!</string>
+    <string name="isEmpt">Name oder Code fehlt!</string>
     <string name="spname">Name</string>
-    <string name="orcode"> oder Code</string>
+    <string name="orCode"> oder Code</string>
+    <string name="hintNotYet">Keine</string>
 
     <!-- DelSpeciesActivity -->
     <string name="delTitle">Arten entfernen</string>
@@ -164,9 +164,6 @@
     <string name="changelog_title">Was ist neu?</string>
     <string name="changelog_show_full">mehr&#8230;</string>
 
-    <string name="viewhelp_full_title">Hilfe (TourCount Ver.</string>
-    <string name="viewlicense_full_title">Lizenzen (TourCount Ver.</string>
-
     <string name="title_help_dialog">Hilfe</string>
     <string name="title_license_dialog">Lizenzen</string>
 
@@ -176,8 +173,6 @@
     <string name="pref_bg_summ">Wähle Standard- oder kein Hintergrundbild.</string>
     <string name="pref_sort_order">Sortierung der Arten</string>
     <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
-    <string name="pref_note_font">Anmerkungs-Font</string>
-    <string name="pref_note_font_summ">Wähle diese Option um die Schriftgröße der Bemerkungen anzuheben.</string>
     <string name="pref_left_hand">Linkshänder</string>
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
 
@@ -205,13 +200,14 @@
     <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
     <string name="pref_proximity_title">Näherungsensor</string>
 
-    <!-- CountOptionsActivity -->
+    <!-- EditSpeciesNotesActivity -->
     <string name="spec_Name">Name</string>
     <string name="spec_NameG">Deutscher Name</string>
     <string name="countName">Neue Art</string>
     <string name="countNameG">Neue Art (deutscher Name)</string>
     <string name="countCode">Code</string>
-    <string name="notesSpecies">Allg. Bem. zur Art:</string>
+    <string name="titleNotesSpecies">Bemerkung zur Art:</string>
+    <string name="notesSpecies">Bemerkung zur Art:</string>
 
     <!-- ListViewSpecies -->
     <string name="viewSpecTitle">Zählergebnis</string>
@@ -226,6 +222,7 @@
     <string name="txtSte">Zust.:</string>
     <string name="txtLat">La.:</string>
     <string name="txtLon">Lo.:</string>
+    <string name="txtHt">H.:</string>
     <string name="rem_Sp">Art-Bem.:</string>
     <string name="rem_Ind">Ind.-Bem.:</string>
     <string name="txt_mf">♂|♀</string>
@@ -241,9 +238,9 @@
     <string name="countNameHint">Art-Name</string>
     <string name="countNameHintG">Art-Name (deutsch)</string>
     <string name="hintTitle">Titel:</string>
-    <string name="hintName">Name</string>
-    <string name="notesHere">Tour-Bem.:</string>
-    <string name="hintListNotes">Bemerkung zur Tour:</string>
+    <string name="hintName">Name einfügen&#8230;</string>
+    <string name="titleTourNotes">Bemerkung zur Tour:</string>
+    <string name="hintTourNotes">Tour-Bem.:</string>
     <string name="getHelp">Datenbank-Problem! Falls Hilfe nötig, sende die problematische DB per E-Mail.</string>
     <string name="countCodeHint">Code</string>
     <string name="countImagomfHint">Falter ♂|♀</string>
@@ -255,22 +252,18 @@
     <string name="warnCount">Nur Werte zwischen 1 … 999999 erlaubt!</string>
     <string name="no_provider">Kein Service-Provider verfügbar!</string>
     <string name="ok_button">OK</string>
+    <string name="cancel">Abbrechen</string>
 
     <!-- Permissions -->
     <string name="app_settings">App-Einstellungen</string>
     <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
     <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Export der Ergebnisse.</string>
-    <string name="storage_perm_cancel">Speicherproblem! Bitte die benötigte Speicherberechtigung für TourCount erteilen.</string>
     <string name="storage_perm_denied">Die für TransektCount notwendige Speicher-Berechtigung fehlt.</string>
 
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
-    <string name="dialog_fine_location_hint">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen. Wird die Standort-Berechtigung verweigert, fehlen alle Standort-bezogenen Informationen in den Ergebnissen. Die Berechtigung kann danach nur noch in den Systemeinstellungen erteilt werden.</string>
     <string name="dialog_background_loc_title">Optionale Berechtigung erwünscht</string>
     <string name="dialog_background_loc_message">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'.</string>
-    <string name="dialog_background_loc_hint">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'. Diese kann im folgenden Dialog erteilt werden.</string>
     <string name="grant_perm_later">Die optionale Hintergrund-Standort-Berechtigung kann ggf. später in den Systemeinstellungen erteilt werden.</string>
-
-    <string name="cancel">Abbrechen</string>
 
 </resources>

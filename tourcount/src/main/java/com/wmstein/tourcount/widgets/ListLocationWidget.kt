@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.wmstein.tourcount.R
@@ -17,97 +16,97 @@ import kotlin.math.roundToInt
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-02-25
+ * last edited on 2025-11-01
  */
 class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
-    private val widget_co1: TextView
-    private val widget_co2: TextView
+    private val widgetCoT: TextView
+    private val widgetCoN: TextView
 
     // state
-    private val widget_state1: TextView
-    private val widget_state2: TextView
+    private val widgetstate1: TextView
+    private val widgetstate2: TextView
 
     // plz
-    private val widget_plz1: TextView
-    private val widget_plz2: TextView
+    private val widgetplz1: TextView
+    private val widgetplz2: TextView
 
     // city
-    private val widget_city1: TextView
-    private val widget_city2: TextView
+    private val widgetcity1: TextView
+    private val widgetcity2: TextView
 
     // place
-    private val widget_place1: TextView
-    private val widget_place2: TextView
+    private val widgetplace1: TextView
+    private val widgetplace2: TextView
 
     // locality
-    private val widget_locality1: TextView
-    private val widget_locality2: TextView
+    private val widgetlocality1: TextView
+    private val widgetlocality2: TextView
 
     // average longitude
-    private val widget_dlo1: TextView
-    private val widget_dlo2: TextView
+    private val widgetdlo1: TextView
+    private val widgetdlo2: TextView
 
     // average latitude
-    private val widget_dla1: TextView
-    private val widget_dla2: TextView
+    private val widgetdla1: TextView
+    private val widgetdla2: TextView
 
     // mean uncertainty
-    private val widget_muncert1: TextView
-    private val widget_muncert2: TextView
+    private val widgetuncert1: TextView
+    private val widgetuncert2: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_location, this, true)
-        widget_co1 = findViewById(R.id.widgetLCountryTitle) // Country
-        widget_co2 = findViewById(R.id.widgetLCountryName)
-        widget_state1 = findViewById(R.id.widgetState1)
-        widget_state2 = findViewById(R.id.widgetState2)
-        widget_plz1 = findViewById(R.id.widgetLPlz1) // plz
-        widget_plz2 = findViewById(R.id.widgetLPlz2)
-        widget_city1 = findViewById(R.id.widgetLCity1) // city
-        widget_city2 = findViewById(R.id.widgetLCity2)
-        widget_place1 = findViewById(R.id.widgetLPlace1) // place
-        widget_place2 = findViewById(R.id.widgetLPlace2)
-        widget_locality1 = findViewById(R.id.widgetLoc1)
-        widget_locality2 = findViewById(R.id.widgetLoc2)
-        widget_dlo1 = findViewById(R.id.widgetLdlo1) // lon
-        widget_dlo2 = findViewById(R.id.widgetLdlo2)
-        widget_dla1 = findViewById(R.id.widgetLdla1) // lat
-        widget_dla2 = findViewById(R.id.widgetLdla2)
-        widget_muncert1 = findViewById(R.id.widgetLmuncert1) // uncert
-        widget_muncert2 = findViewById(R.id.widgetLmuncert2)
+        widgetCoT = findViewById(R.id.widgetLCountryTitle) // Country
+        widgetCoN = findViewById(R.id.widgetLCountryName)
+        widgetstate1 = findViewById(R.id.widgetState1)
+        widgetstate2 = findViewById(R.id.widgetState2)
+        widgetplz1 = findViewById(R.id.widgetLPlz1) // plz
+        widgetplz2 = findViewById(R.id.widgetLPlz2)
+        widgetcity1 = findViewById(R.id.widgetLCity1) // city
+        widgetcity2 = findViewById(R.id.widgetLCity2)
+        widgetplace1 = findViewById(R.id.widgetLPlace1) // place
+        widgetplace2 = findViewById(R.id.widgetLPlace2)
+        widgetlocality1 = findViewById(R.id.widgetLoc1)
+        widgetlocality2 = findViewById(R.id.widgetLoc2)
+        widgetdlo1 = findViewById(R.id.widgetLdlo1) // lon
+        widgetdlo2 = findViewById(R.id.widgetLdlo2)
+        widgetdla1 = findViewById(R.id.widgetLdla1) // lat
+        widgetdla2 = findViewById(R.id.widgetLdla2)
+        widgetuncert1 = findViewById(R.id.widgetLmuncert1) // uncert
+        widgetuncert2 = findViewById(R.id.widgetLmuncert2)
     }
 
     // Following the SETS
     fun setLocationWidget(section: Section) {
-        widget_co1.setText(R.string.country)
-        widget_co2.text = section.country
-        widget_state1.setText(R.string.bstate)
-        widget_state2.text = section.b_state
+        widgetCoT.setText(R.string.country)
+        widgetCoN.text = section.country
+        widgetstate1.setText(R.string.bstate)
+        widgetstate2.text = section.b_state
 
-        widget_city1.setText(R.string.city)
-        widget_city2.text = section.city
-        widget_place1.setText(R.string.place)
-        widget_place2.text = section.place
+        widgetcity1.setText(R.string.city)
+        widgetcity2.text = section.city
+        widgetplace1.setText(R.string.place)
+        widgetplace2.text = section.place
 
-        widget_locality1.setText(R.string.slocality)
-        widget_locality2.text = section.st_locality
-        widget_plz1.setText(R.string.plz)
-        widget_plz2.text = section.plz
+        widgetlocality1.setText(R.string.slocality)
+        widgetlocality2.text = section.st_locality
+        widgetplz1.setText(R.string.plz)
+        widgetplz2.text = section.plz
 
-        widget_dlo1.setText(R.string.dLo)
-        widget_dla1.setText(R.string.dLa)
-        widget_muncert1.setText(R.string.mUncert)
+        widgetdlo1.setText(R.string.dLo)
+        widgetdla1.setText(R.string.dLa)
+        widgetuncert1.setText(R.string.mUncert)
     }
 
     @SuppressLint("SetTextI18n")
     fun setWidgetDla2(name: Double) {
         val slen = name.toString().length
         if (slen > 8) {
-            widget_dla2.text = name.toString().substring(0, 8)
+            widgetdla2.text = name.toString().substring(0, 8)
         } else {
-            widget_dla2.text = name.toString()
+            widgetdla2.text = name.toString()
         }
     }
 
@@ -115,14 +114,14 @@ class ListLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
     fun setWidgetDlo2(name: Double) {
         val slen = name.toString().length
         if (slen > 8) {
-            widget_dlo2.text = name.toString().substring(0, 8)
+            widgetdlo2.text = name.toString().substring(0, 8)
         } else {
-            widget_dlo2.text = name.toString()
+            widgetdlo2.text = name.toString()
         }
     }
 
     fun setWidgetMuncert2(name: Double) {
-        widget_muncert2.text = String.format("%s m", name.roundToInt())
+        widgetuncert2.text = String.format("%s m", name.roundToInt())
     }
 
 }

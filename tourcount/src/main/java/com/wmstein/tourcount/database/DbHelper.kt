@@ -5,7 +5,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.wmstein.tourcount.MyDebug
+import com.wmstein.tourcount.BuildConfig
+import com.wmstein.tourcount.IsRunningOnEmulator
 import com.wmstein.tourcount.R
 
 /**************************************************
@@ -17,7 +18,7 @@ import com.wmstein.tourcount.R
  * updated to version 8 on 2025-02-25,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-03-15
+ * last edited on 2025-11-01
  *
  * ************************************************************************
  * ATTENTION!
@@ -29,7 +30,8 @@ class DbHelper (private val mContext: Context) :
 
     // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
-        if (MyDebug.DLOG) Log.d(TAG, "32, Creating database: $DATABASE_NAME")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "34, Creating database: $DATABASE_NAME")
 
         var sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
@@ -118,7 +120,8 @@ class DbHelper (private val mContext: Context) :
 
         // Create initial data for COUNT_TABLE
         initialCounts(db)
-        if (MyDebug.DLOG) Log.d(TAG, "121, Success!")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "124, Success!")
     }
 
     // Initial data for COUNT_TABLE
@@ -144,7 +147,7 @@ class DbHelper (private val mContext: Context) :
     }
 
     // **********************************************************************************
-    // Called with 1. call of dbHandler.getWritableDatabase() if newVersion != oldVersion
+    // Called with 1. call of dbHelper.getWritableDatabase() if newVersion != oldVersion
     // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion == 7) {
@@ -194,13 +197,12 @@ class DbHelper (private val mContext: Context) :
     /*** V2 ***/
     // Version 2: New extra column icount added to INDIVIDUALS_TABLE
     private fun version2(db: SQLiteDatabase) {
-        val sql: String
 
         // Add new extra column icount to table individuals
-        sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
+        val sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
         db.execSQL(sql)
 
-        if (MyDebug.DLOG) Log.d(TAG, "203, Upgraded database to version 2")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "203, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -214,12 +216,12 @@ class DbHelper (private val mContext: Context) :
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F2I int"
             db.execSQL(sql)
-            if (MyDebug.DLOG) Log.d(TAG, "217, Missing count_f2i column added to counts!")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "217, Missing count_f2i column added to counts!")
         } catch (e: Exception) {
-            if (MyDebug.DLOG) Log.e(TAG, "219, Column already present: $e")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.e(TAG, "219, Column already present: $e")
             colExist = true
         }
-        if (MyDebug.DLOG) Log.d(TAG, "222, Upgraded database to version 3")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "222, Upgraded database to version 3")
 
         sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
         db.execSQL(sql)
@@ -235,9 +237,9 @@ class DbHelper (private val mContext: Context) :
             sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                     + " int default 1")
             db.execSQL(sql)
-            if (MyDebug.DLOG) Log.d(TAG, "238, Missing icategory column added to individuals!")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "238, Missing icategory column added to individuals!")
         } catch (e: Exception) {
-            if (MyDebug.DLOG) Log.e(TAG, "240, Column I_CATEGORY already present: $e")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.e(TAG, "240, Column I_CATEGORY already present: $e")
             colCatExist = true
         }
 
@@ -245,7 +247,7 @@ class DbHelper (private val mContext: Context) :
         if (!colCatExist) {
             sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
             db.execSQL(sql)
-            if (MyDebug.DLOG) Log.d(TAG, "248, I_SEX filled with '-'")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "248, I_SEX filled with '-'")
         }
 
         // Copy old data into new structure
@@ -283,7 +285,7 @@ class DbHelper (private val mContext: Context) :
             db.execSQL(sql)
             sql = "DROP TABLE counts_backup"
             db.execSQL(sql)
-            if (MyDebug.DLOG) Log.d(TAG, "286, Upgraded database to version 3")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "286, Upgraded database to version 3")
         }
     }
 
@@ -292,7 +294,7 @@ class DbHelper (private val mContext: Context) :
     private fun version4(db: SQLiteDatabase) {
         val sql = "alter table $COUNT_TABLE add column $C_NAME_G text"
         db.execSQL(sql)
-        if (MyDebug.DLOG) Log.d(TAG, "295, Upgraded database to version 4")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "295, Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -344,7 +346,8 @@ class DbHelper (private val mContext: Context) :
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (MyDebug.DLOG) Log.d(TAG, "347, Upgraded database to version 5")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "347, Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -398,7 +401,7 @@ class DbHelper (private val mContext: Context) :
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (MyDebug.DLOG) Log.d(TAG, "401, Upgraded database to version 6")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "401, Upgraded database to version 6")
     }
 
     /*** V7 ***/
@@ -417,13 +420,13 @@ class DbHelper (private val mContext: Context) :
                 "$C_COUNT_PI = 0, $C_COUNT_LI = 0, $C_COUNT_EI = 0, $C_NOTES = ''"
         db.execSQL(sql)
 
-        if (MyDebug.DLOG) Log.d(TAG, "420, Upgraded database to version 7")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "420, Upgraded database to version 7")
     }
 
     /*** V8 ***/
     // Version 8: Add fields S_STATE and S_ST_LOCALITY to SECTION_TABLE
     private fun version8(db: SQLiteDatabase) {
-        if (MyDebug.DLOG) Log.d(TAG, "426, Upgrade to database version 8")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "426, Upgrade to database version 8")
 
         var sql = "alter table $SECTION_TABLE add column $S_STATE text"
         db.execSQL(sql)
@@ -431,7 +434,7 @@ class DbHelper (private val mContext: Context) :
         sql = "alter table $SECTION_TABLE add column $S_ST_LOCALITY text"
         db.execSQL(sql)
 
-        if (MyDebug.DLOG) Log.d(TAG, "434, Upgraded database to version 8")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "434, Upgraded database to version 8")
     }
 
     companion object {
@@ -444,7 +447,7 @@ class DbHelper (private val mContext: Context) :
         //DATABASE_VERSION 3: New extra columns for sexes and stadiums added to COUNT_TABLE
         //DATABASE_VERSION 2: New extra column icount added to INDIVIDUALS_TABLE
 
-        private const val TAG = "DBHelper"
+        private const val TAG = "DbHelper"
         private const val DATABASE_NAME = "tourcount.db"
 
         // tables

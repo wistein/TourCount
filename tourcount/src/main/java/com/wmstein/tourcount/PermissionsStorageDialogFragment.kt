@@ -23,7 +23,7 @@ import androidx.fragment.app.DialogFragment
  * Adopted for TourCount by wistein on 2018-06-20,
  * last edited in java on 2020-04-17,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-08-18
+ * last edited on 2025-10-22
  */
 class PermissionsStorageDialogFragment : DialogFragment() {
     private var context: Context? = null
@@ -40,7 +40,8 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (MyDebug.DLOG) Log.i(TAG, "43, onCreate")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "44, onCreate")
 
         setStyle(STYLE_NO_TITLE, R.style.PermissionsDialogFragmentStyle)
         isCancelable = false
@@ -53,11 +54,13 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     private fun requestStoragePermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) { //  (Android <11)
             val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            if (MyDebug.DLOG) Log.i(TAG, "56, permission $permission")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "58, permission $permission")
             permissionLauncherStorage.launch(permission)
         } else { // Android >= 11
             val permission = Manifest.permission.MANAGE_EXTERNAL_STORAGE
-            if (MyDebug.DLOG) Log.i(TAG, "60, permission $permission")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "63, permission $permission")
             permissionLauncherStorage.launch(permission)
         }
     }
@@ -68,7 +71,8 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     )
     { isGranted ->
         shouldResolve = true
-        if (MyDebug.DLOG) Log.d(TAG, "71, isGranted: $isGranted")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "75, isGranted: $isGranted")
 
         if (isGranted) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
@@ -83,22 +87,26 @@ class PermissionsStorageDialogFragment : DialogFragment() {
             } else {
                 externalGrant30Needed = true
             }
-            if (MyDebug.DLOG) Log.d(TAG, "86, externalGrantNeeded: true")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.d(TAG, "91, externalGrantNeeded: true")
         }
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (MyDebug.DLOG) Log.i(TAG, "93, onResume")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "99, onResume")
 
         if (shouldResolve) {
             if (externalGrantNeeded) {
-                if (MyDebug.DLOG) Log.d(TAG, "97, onResume: externalGrantNeeded: true")
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.d(TAG, "104, onResume: externalGrantNeeded: true")
                 showAppSettingsStorageDialog() // accept or deny WRITE_EXTERNAL_STORAGE permission
             }
             if (externalGrant30Needed) {
-                if (MyDebug.DLOG) Log.d(TAG, "101, onResume: externalGrant30Needed: true")
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.d(TAG, "109, onResume: externalGrant30Needed: true")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30
                     showAppSettingsManageStorageDialog() // accept or deny MANAGE_EXTERNAL_STORAGE permission
                 }
@@ -108,7 +116,8 @@ class PermissionsStorageDialogFragment : DialogFragment() {
 
     // Query missing external storage permission
     private fun showAppSettingsStorageDialog() {
-        if (MyDebug.DLOG) Log.d(TAG, "111, onResume: StorSettingsDlg")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "120, onResume: StorSettingsDlg")
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_storage_title))
             .setMessage(getString(R.string.dialog_storage_message))
@@ -130,7 +139,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     // Query missing manage storage permission for API >= 30
     private fun showAppSettingsManageStorageDialog() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30
-            if (MyDebug.DLOG) Log.d(TAG, "133, onResume: StorSettings30Dlg")
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "133, onResume: StorSettings30Dlg")
 
             val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
             val uri = Uri.fromParts("package", "com.wmstein.tourcount", null)
@@ -143,7 +152,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     override fun onDetach() {
         super.onDetach()
 
-        if (MyDebug.DLOG) Log.i(TAG, "146, onDetach")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.i(TAG, "146, onDetach")
         context = null
     }
 

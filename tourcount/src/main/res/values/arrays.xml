@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- last edited 2025-07-19 -->
+<!-- last edited 2025-11-08 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="pref_bg_entries">
@@ -15,8 +15,8 @@
 
     <string-array name="pref_sort_sp_entries">
         <item>None</item>
-        <item>By species Names, alphab.</item>
-        <item>By species Codes</item>
+        <item>By species names, alphab.</item>
+        <item>By species codes</item>
     </string-array>
     <string-array name="pref_sort_sp_values">
         <item>none</item>
@@ -356,6 +356,7 @@
 		<item comment="06623">Sitochroa palealis</item>
 		<item comment="06658">Anania hortulata</item>
 		<item comment="06667">Patania ruralis</item>
+		<item comment="06719">Nomophila noctuella</item>
 		<item comment="06720a">Cydalima perspectalis</item>
 		<item comment="06752">Lasiocampa quercus</item>
 		<item comment="06755">Macrothylacia rubi</item>
@@ -888,6 +889,7 @@
 		<item comment="06623">Sulphur Pearl</item>
 		<item comment="06658">Small magpie</item>
 		<item comment="06667">Mother of pearl</item>
+		<item comment="06719">Rush veneer</item>
 		<item comment="06720a">Box tree moth</item>
 		<item comment="06752">Oak eggar</item>
 		<item comment="06755">Fox moth</item>
@@ -1420,6 +1422,7 @@
 		<item>06623</item>
 		<item>06658</item>
 		<item>06667</item>
+		<item>06719</item>
 		<item>06720a</item>
 		<item>06752</item>
 		<item>06755</item>
