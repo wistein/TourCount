@@ -1,12 +1,16 @@
-Version 3.6.9 (2025-11-12)
-- Counting page layout re-arranged
-- Now just only one fix font size for comments
-- Results page with dimmed "0"-values and minor layout changes
-- Results page with height info for individuals
+Version 3.6.9 (2025-12-28)
+- Location background permission removed
+- The option to change the font size for comments removed
 - Location handling improved
+- Option to set GPS polling intervall between 2 and 20 sec added
+- A toast message and a beep inform about the first GPS (location) fix and possibly about the location not being in the European fauna area
+- Counting page layout slightly improved
+- On relevant pages the number fields show dimmed "0"-values for better readability
+- Results page with height info for individuals
 - Sound handling better adapted to Android 16 demands
-- Picture of Nomophila noctuella (Rush veneer) added
-- App specific and permanent debug support for Emulator in Android Studio
+- Picture and data of Nomophila noctuella (Rush veneer) added
+- Some messages worded more clearly
+- App specific debugging support for Android Studio's emulator was added
+- Some code and picture improvements
 - Docs updated
-- Some code cleaning
 - Bugfixes

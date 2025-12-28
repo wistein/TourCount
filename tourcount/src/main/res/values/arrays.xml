@@ -44,7 +44,20 @@
 		<item>High</item>
 	</string-array>
 
-	<string-array name="initSpecs">
+    <string-array name="pref_sel_interval_entries">
+        <item>2 sec</item>
+        <item>5 sec</item>
+        <item>10 sec</item>
+        <item>20 sec</item>
+    </string-array>
+    <string-array name="pref_sel_interval_values">
+        <item>2000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>20000</item>
+    </string-array>
+
+    <string-array name="initSpecs">
         <item comment="03998">Zygaena filipendulae</item>
 		<item comment="06605">Pyrausta purpuralis</item>
 		<item comment="06788">Aglia tau</item>

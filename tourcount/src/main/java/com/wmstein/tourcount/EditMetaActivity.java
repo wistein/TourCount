@@ -42,7 +42,7 @@ import java.util.Objects;
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2025-11-12
+ * last edit in Java on 2025-11-14
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -50,7 +50,6 @@ public class EditMetaActivity extends AppCompatActivity
 
     // Preferences
     private final SharedPreferences prefs = TourCountApplication.getPrefs();
-    private boolean awakePref;
 
     // Database
     private Head head;
@@ -95,7 +94,6 @@ public class EditMetaActivity extends AppCompatActivity
 
         // Option for full bright screen
         boolean brightPref = prefs.getBoolean("pref_bright", true);
-        awakePref = prefs.getBoolean("pref_awake", true);
 
         // Set full brightness of screen
         if (brightPref)
@@ -104,9 +102,6 @@ public class EditMetaActivity extends AppCompatActivity
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
         }
-
-        if (awakePref)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         head_area = findViewById(R.id.edit_head);
 
@@ -367,10 +362,6 @@ public class EditMetaActivity extends AppCompatActivity
             Log.i(TAG, "367, onStop");
 
         head_area = null;
-
-        if (awakePref) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
     }
 
     @Override

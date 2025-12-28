@@ -7,7 +7,7 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2025-11-10
+     Last edited 2025-12-20
 -->
 
 <manifest
@@ -28,11 +28,9 @@
         tools:ignore="AllFilesAccessPolicy,ScopedStorage"
         android:minSdkVersion="30" />
 
-    <!-- Permissions needed for location providers and getting location updates in background -->
+    <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
-        tools:ignore="BackgroundLocationPolicy" />
     <uses-feature android:name="android.hardware.location.gps"
         android:required="false" />
 
@@ -46,10 +44,14 @@
     <!-- VIBRATE permission -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- Attribution tag needed for ringtone events since sdk >= 30 -->
+    <!-- Attribution tags needed for events (ringtone, location) since sdk >= 30 -->
     <attribution
         android:label="@string/ringSound_attr_label"
         android:tag="ringSound" />
+
+    <attribution
+        android:label="@string/location_attr_label"
+        android:tag="locationCheck" />
 
     <!-- android:largeHeap="true" (doesn't make a difference for ListSection problem) -->
     <application

@@ -3,11 +3,11 @@ package com.wmstein.tourcount
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -38,7 +38,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-11-12
+ * last edited on 2025-12-23
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -144,7 +144,7 @@ class EditIndividualActivity : AppCompatActivity() {
 
         indivArea = findViewById(R.id.edit_individual)
 
-        soundButtonSound()
+        soundButtonSound() // sound for (+)-button
 
         // Prepare vibrator service
         vibrator = applicationContext.getSystemService(Vibrator::class.java)
@@ -452,7 +452,7 @@ class EditIndividualActivity : AppCompatActivity() {
             val rtUri = if (buttonSound.isNotBlank())
                 buttonSound.toUri()
             else
-                Settings.System.DEFAULT_RINGTONE_URI
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
             rToneP = MediaPlayer.create(audioAttributionContext, rtUri)
             if (rToneP!!.isPlaying) {

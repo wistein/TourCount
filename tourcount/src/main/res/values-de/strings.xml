@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-10-07 -->
+     last edited on 2025-12-23 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Einstellungen</string>
-    <string name="outsideEurope1">Noch kein GPS-Fix oder Ort ist außerhalb des europäischen Faunengebiets.</string>
+    <string name="newLock">GPS hat Position!</string>
+    <string name="outsideEurope">GPS hat Position! Aber Ort ist außerhalb des europäischen Faunengebiets.</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
@@ -38,7 +39,7 @@
     <string name="importListFail">Die Speziesliste konnte nicht importiert werden!</string>
     <string name="importWin">Die Datenbank wurde importiert.</string>
     <string name="importList">Die Speziesliste wurde importiert.</string>
-    <string name="corruptDb">DB-Fehler! Falls Problem nach wiederholtem Start bleibt und auch nicht durch Import einer anderen TourCount-DB behoben werden kann, bitte App deinstallieren und neu installieren.</string>
+    <string name="corruptDb">DB-Fehler! Falls Problem nach Re-Start und nach Import einer anderen TourCount-DB bleibt, bitte App deinstallieren und neu installieren.</string>
     <string name="importButton">Import</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="individuals">Individuen</string>
@@ -78,7 +79,6 @@
     <string name="speccode">Spez.-Code:</string>
     <string name="cnts">Anzahl</string>
     <string name="bema">Bem. zur Art:</string>
-    <string name="bemi">Indiv.-Bemerkung hier einfügen&#8230;</string>
     <string name="editHeadTitle">Meta-Daten</string>
     <string name="country">Land:</string>
     <string name="bstate">Bundesland:</string>
@@ -123,7 +123,6 @@
     <string name="editDelSpecTitle">Arten löschen</string>
     <string name="editAddSpecTitle">Arten hinzufügen</string>
     <string name="saveCountsButton">Sichern</string>
-    <string name="saving">Speichern </string>
     <string name="editSectTitle">Liste bearbeiten</string>
     <string name="deleteButton">Löschen</string>
     <string name="action_share">Mitteilen</string>
@@ -142,7 +141,6 @@
     <string name="titleHint">Tour-Bezeichnung hier einfügen&#8230;</string>
     <string name="titleHintShort">Hier einfügen&#8230;</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
-    <string name="specNotesHint">Art-Bem. hier einfügen&#8230;</string>
     <string name="isDouble"> ist doppelt!</string>
     <string name="presentSpecs">Arten der Zählliste:</string>
     <string name="isEmpt">Name oder Code fehlt!</string>
@@ -180,11 +178,14 @@
     <string name="pref_csv_output_title">Sortierung der Ergebnisse</string>
     <string name="pref_csv_output_dialog">Sortierung der Ergebnisse und der exportierten csv-Tabelle</string>
 
-    <string name="prefs_sound">Sound/Vibration</string>
+    <string name="prefs_sound">Töne/Vibration</string>
+    <string name="pref_alert_sound">Hinweis-Sound</string>
+    <string name="pref_alert_sound_summ">Erzeuge einen Sound wenn eine wichtige Information angezeigt wird.</string>
     <string name="pref_button_sound">Button-Sound</string>
-    <string name="pref_button_sound_summary">Erzeuge einen Sound wenn ein Zähl-Button getippt wird.</string>
+    <string name="pref_button_sound_summary">Erzeuge einen kurzen Sound wenn ein Button getippt wird.</string>
     <string name="pref_button_vib">Button-Vibration</string>
     <string name="pref_button_vib_summary">Erzeuge eine Vibration wenn ein Zähl-Button getippt wird.</string>
+
     <string name="prefs_counting">Zählen</string>
     <string name="pref_awake">Lass Bildschirm an</string>
     <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
@@ -199,6 +200,8 @@
 
     <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
     <string name="pref_proximity_title">Näherungsensor</string>
+
+    <string name="pref_interval_title">GPS-Abfrageinterval</string>
 
     <!-- EditSpeciesNotesActivity -->
     <string name="spec_Name">Name</string>
@@ -252,7 +255,6 @@
     <string name="warnCount">Nur Werte zwischen 1 … 999999 erlaubt!</string>
     <string name="no_provider">Kein Service-Provider verfügbar!</string>
     <string name="ok_button">OK</string>
-    <string name="cancel">Abbrechen</string>
 
     <!-- Permissions -->
     <string name="app_settings">App-Einstellungen</string>
@@ -262,8 +264,4 @@
 
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
-    <string name="dialog_background_loc_title">Optionale Berechtigung erwünscht</string>
-    <string name="dialog_background_loc_message">Ortsangaben sind präziser mit der optionalen Berechtigung \'Immer zulassen\'.</string>
-    <string name="grant_perm_later">Die optionale Hintergrund-Standort-Berechtigung kann ggf. später in den Systemeinstellungen erteilt werden.</string>
-
 </resources>

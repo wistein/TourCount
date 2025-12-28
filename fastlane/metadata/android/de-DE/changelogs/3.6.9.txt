@@ -1,12 +1,16 @@
-Version 3.6.9 (12.11.2025)
-- Layout der Zählerseite verbessert
-- Nur noch eine feste Schriftgröße für Bemerkungen
-- Ergebnisseite mit ausgegrauten "0"-Werten und kleinen Layout-Änderungen
-- Ergebnisseite mit Höhenangabe pro Individuum
+Version 3.6.9 (28.12.2028)
+- Hintergrund-Standort-Berechtigung entfernt
+- Option Nur noch eine Schriftgröße für Bemerkungen
 - Code zur Ortsbestimmung verbessert
+- Option zur Auswahl des GPS-Abfrage-Intervalls zwischen 2 und 20 sec hinzugefügt
+- Nach App-Start informiert eine einmalige Kurzmeldung mit Signalton über den ersten GPS-Fix und ggf. darüber, dass der Ort außerhalb des europäischen Faunengebiets liegt.
+- Layout der Zählerseite verbessert
+- Lesbarkeit relevanter Seiten mit ausgegrauten "0"-Werten verbessert
+- Ergebnisseite mit Höhenangabe pro Individuum
 - Sound-Erzeugung besser an Erfordernisse von Android 16 angepasst
-- Abbildung von Nomophila noctuella (Wanderzünsler) ergänzt
-- App-spezifische Debug-Unterstützung dauerhaft für den Emulator in Android Studio
-- Doku überarbeitet
+- Abbildung und Daten von Nomophila noctuella (Wanderzünsler) ergänzt
+- Einige Meldungen verständlicher formuliert
+- App-spezifische Debug-Unterstützung für den Emulator in Android Studio hinzugefügt
 - Einige Code-Verbesserungen
+- Doku überarbeitet
 - Bug-Fixe

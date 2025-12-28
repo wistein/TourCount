@@ -47,9 +47,9 @@ _ subtitle
 <!--
   ! --------
   & Achtung:
-  ! Google hat angekündigt, dass ab 2026/2027 alle Apps auf zertifizierten Android-Geräten nur noch funktionieren, wenn die Entwickler ihre persönlichen Identitätsdaten direkt an Google übermitteln. Als privater Entwickler dieser datenschutzkonformen Open-Source-App stimme ich dieser Anforderung von Google nicht zu. Deshalb wird leider diese App ab diesem Zeitpunkt auf zertifizierten Android-Geräten nicht mehr funktionieren.
+  ! Google hat angekündigt, dass ab 2026/2027 alle Apps auf zertifizierten Android-Geräten nur noch funktionieren, wenn die Entwickler ihre persönlichen Identitätsdaten direkt an Google übermitteln. Als privater Entwickler dieser datenschutzkonformen Open-Source-App stimme ich dieser Anforderung von Google nicht zu. Deshalb wird leider diese App ab diesem Zeitpunkt auf zertifizierten Android-Geräten möglicherweise nicht mehr funktionieren.
   _
-  ! Auf Android-Geräten mit Custom ROMS wie GrapheneOS, LineageOS, usw. wird die App weiterhin wie gewohnt funktionieren.
+  ! Auf Android-Geräten mit Custom ROMS wie GrapheneOS, LineageOS, /e/OS, usw. wird die App weiterhin wie gewohnt funktionieren.
   ! --------
   _
 -->
@@ -68,17 +68,21 @@ _ subtitle
 
 $ 3.6.9
   % Version 3.6.9
-  _ 12.11.2025
-  * Layout der Zählerseite verbessert
-  * Nur noch eine feste Schriftgröße für Bemerkungen
-  * Ergebnisseite mit ausgegrauten "0"-Werten und kleinen Layout-Änderungen
-  * Ergebnisseite mit Höhenangabe pro Individuum
+  _ 28.12.2025
+  * Hintergrund-Standort-Berechtigung entfernt
+  * Option zur Änderung der Schriftgröße für Bemerkungen entfernt
   * Code zur Ortsbestimmung verbessert
-  * Sound-Erzeugung besser an Erfordernisse von Android 16 angepasst
-  * Abbildung von Nomophila noctuella (Wanderzünsler) ergänzt
-  * App-spezifische Debug-Unterstützung dauerhaft für den Emulator in Android Studio
-  * Doku überarbeitet
+  * Option zur Auswahl des GPS-Abfrage-Intervalls zwischen 2 und 20 sec hinzugefügt
+  * Nach App-Start informiert eine einmalige Kurzmeldung mit Signalton über den ersten GPS-Fix und ggf. darüber, dass der Ort außerhalb des europäischen Faunengebiets liegt.
+  * Layout der Zählerseite verbessert
+  * Lesbarkeit relevanter Seiten mit ausgegrauten "0"-Werten verbessert
+  * Ergebnisseite mit Höhenangabe pro Individuum
+  * Sound-Erzeugung und Ortungsfuntion an Erfordernisse von Android 16 angepasst
+  * Abbildung und Daten von Nomophila noctuella (Wanderzünsler) ergänzt
+  * Einige Meldungen verständlicher formuliert
+  * App-spezifische Debug-Unterstützung für den Emulator in Android Studio hinzugefügt
   * Einige Code-Verbesserungen
+  * Doku überarbeitet
   * Bug-Fixe
 
 $ 3.6.8

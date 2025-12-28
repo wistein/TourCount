@@ -12,7 +12,6 @@ import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.Log
 import android.view.WindowManager
-import androidx.core.content.edit
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.PreferenceManager
@@ -22,7 +21,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2025-11-01
+ * last edit on 2025-12-23
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -34,7 +33,7 @@ class TourCountApplication : Application() {
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "37, StrictMode.setVmPolicy")
+            Log.i(TAG, "36, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
@@ -46,13 +45,7 @@ class TourCountApplication : Application() {
             prefs = PreferenceManager.getDefaultSharedPreferences(this)
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "49, Error: $e")
-        }
-
-        // Set pref 'isFirstLoc = true' for showing a hint message once
-        //   when location is outside Europe
-        prefs!!.edit(commit = true) {
-            putBoolean("is_first_loc", true)
+                Log.e(TAG, "48, Error: $e")
         }
     }
     // End of onCreate()
@@ -64,7 +57,7 @@ class TourCountApplication : Application() {
 
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "67, Backgr.: $backgroundPref")
+            Log.i(TAG, "60, Backgr.: $backgroundPref")
 
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
         if (Build.VERSION.SDK_INT >= 30) {
@@ -81,7 +74,7 @@ class TourCountApplication : Application() {
             height = size.y
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "84, Width: $width Height: $height")
+            Log.d(TAG, "77, Width: $width Height: $height")
 
         var bMap: Bitmap?
         when (backgroundPref) {
@@ -161,6 +154,11 @@ class TourCountApplication : Application() {
         fun getPrefs(): SharedPreferences {
             return prefs!!
         }
+
+        @JvmField
+        var isFirstLoc: Boolean = true // true for showing a hint message after 1. GPS lock
+        @JvmField
+        var isFirstStart: Boolean = true // true for showing an initial hint message once
     }
 
 }

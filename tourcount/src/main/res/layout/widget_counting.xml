@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   - widget_counting.xml is used by CountingWidget.kt
   ~ Copyright © 2016-2023, Wilhelm Stein, Bonn, Germany.
-  ~ Last edited on 2025-09-18
+  ~ Last edited on 2025-12-27
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +48,6 @@
             android:layout_weight="2"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"
-            android:textColorHint="@color/BrightGray"
             android:hint="@string/charZero"
             android:inputType="number"
             android:maxLines="1"
@@ -57,7 +56,8 @@
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/BrightGray" />
 
         <ImageButton
             android:id="@+id/buttonDownf1i"
@@ -117,7 +117,6 @@
             android:layout_weight="2"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"
-            android:textColorHint="@color/BrightGray"
             android:hint="@string/charZero"
             android:inputType="number"
             android:maxLines="1"
@@ -126,7 +125,8 @@
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/BrightGray" />
 
         <ImageButton
             android:id="@+id/buttonDownf2i"
@@ -186,7 +186,6 @@
             android:layout_weight="2"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"
-            android:textColorHint="@color/BrightGray"
             android:hint="@string/charZero"
             android:inputType="number"
             android:maxLines="1"
@@ -195,7 +194,8 @@
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/BrightGray" />
 
         <ImageButton
             android:id="@+id/buttonDownf3i"
@@ -255,7 +255,6 @@
             android:layout_weight="2"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"
-            android:textColorHint="@color/BrightGray"
             android:hint="@string/charZero"
             android:inputType="number"
             android:maxLines="1"
@@ -264,7 +263,8 @@
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/BrightGray" />
 
         <ImageButton
             android:id="@+id/buttonDownpi"
@@ -324,7 +324,6 @@
             android:layout_weight="2"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"
-            android:textColorHint="@color/BrightGray"
             android:hint="@string/charZero"
             android:inputType="number"
             android:maxLines="1"
@@ -333,7 +332,8 @@
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/BrightGray" />
 
         <ImageButton
             android:id="@+id/buttonDownli"
@@ -394,7 +394,6 @@
             android:layout_weight="2"
             android:background="@drawable/count_background"
             android:gravity="center_vertical|center_horizontal"
-            android:textColorHint="@color/BrightGray"
             android:hint="@string/charZero"
             android:inputType="number"
             android:maxLines="1"
@@ -403,7 +402,8 @@
             android:paddingEnd="1dp"
             android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/BrightGray" />
 
         <ImageButton
             android:id="@+id/buttonDownei"

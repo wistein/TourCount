@@ -1,13 +1,13 @@
 <html>
 
-<!-- Benutzeranleitung --
-  Last edited on 2025-10-08
+<!-- TourCount Benutzeranleitung --
+  Last edited on 2025-12-25
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
 TourCount soll bei der Erfassung von europäischen Schmetterlingen unterstützen.<br>
 Mit der App können Individuen vor Ort artspezifisch, getrennt nach Geschlecht und Entwicklungsstadien sowie individuell lokalisiert erfasst werden.<br>
-Sie bietet aufbereitete Datenausgaben und kann Ihr Feldbuch Ihren Bleistift und ggf. auch eine Kamera für Belegfotos ersetzen.
+Sie bietet aufbereitete Datenausgaben und kann das Feldbuch, den Bleistift und ggf. auch eine Kamera für Belegfotos ersetzen.
 <br><br>
 Datenbankdateien können Tour-bezogen und entsprechend den zu erwartenden Schmetterlingsarten angelegt werden. D. h. pro Tour wird eine neue Datenbank-Instanz verwendet.
 <br><br>
@@ -17,8 +17,13 @@ entweder von der Ergebnisseite geordnet abgelesen oder in eine Tabelle exportier
 <br><br>
 Die App ist veröffentlicht unter<br>
 https://github.com/wistein/TourCount<br>
-mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: Import von Spezieslisten und DB-Dateien, Export von Daten und der Zählergebnisse in DB- oder CSV-Dateien, GPS-Zugriffsrechte sowie Internetzugang für inverse Geokodierung und Wakelock zwecks Verhinderung, dass die App sich dimmt oder abschaltet.
-<br><br><br>
+mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: <br>
+- Speicherzugriff zwecks Import von DB-Dateien und Spezieslisten, Export von Daten und der Zählergebnisse in DB- oder CSV-Dateien,<br>
+- GPS-Zugriffsrechte sowie<br>
+- Internetzugang für inverse Geokodierung und
+- Wakelock, das verhindert, dass sich die App selbständig dimmt oder abschaltet, aber trotzdem beim Einstecken des Smartphones den Bildschirm nebst Berührungsempfindlichkeit abschaltet bis es wieder benutzt wird.
+<br><br>
+<br>
 
 <h3><font color=#D9FDD9>2. Einrichtung</font></h3>
 Vor der erstmaligen Verwendung sollten die App-Einstellungen den eigenen Wünschen angepasst werden (→ 4. Weitere Funktionen).
@@ -70,7 +75,8 @@ Die Basis-DB enthält keine Zähldaten, Bemerkungen und Tour-spezifischen Meta-D
 Alternativ kann auch eine selbst erstellte Basis-DB importiert und angepasst werden. Oder die Speziesliste kann durch eine zuvor exportierte Speziesliste aus TourCount oder TransektCount (falls installiert) per Import ersetzt werden. Beispieldateien, teilweise aus dem europäischen Ausland, können aus <br>
 https://github.com/wistein/TourCount/tree/master/docs<br>
 heruntergeladen, in das App-Datenverzeichnis "Documents/TourCount" kopiert und von dort importiert und dann angepasst werden.
-<br><br><br>
+<br><br>
+<br>
 
 <h3><font color=#D9FDD9>3. Benutzung</font></h3>
 Beginne mit "Meta-Daten editieren". Gib die relevanten Meta-Daten der Tour ein. Das aktuelle Datum und die momentane Uhrzeit kann durch Antippen des jeweiligen Felds eingegeben werden.<br>
@@ -100,7 +106,8 @@ Eine Ebene zurück in der App gelangt man jeweils mit dem Zurück-Button oder de
 Bei großen Datenmengen kann sich die Reaktion der App z. B. bei Import-Funktionen oder beim Aufruf der Ergebnisseite etwas verzögern, da hier im Hintergrund umfangreiche Berechnungen laufen. Das wird durch einen kurzen Hinweis "Liste wird berechnet..." angezeigt.
 <br><br>
 Auf eine ggf. auftauchende Meldung "TourCount reagiert nicht" bitte mit "Warten" antworten.
-<br><br><br>
+<br><br>
+<br>
 
 <h3><font color=#D9FDD9>4. Weitere Funktionen</font></h3>
 Das System-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen.
@@ -160,8 +167,9 @@ Unter "Lizenzen" sind die Lizenzbestimmungen zum Code und den Abbildungen beschr
 <br><br>
 Das Optionsmenü der Zählerseite hat eine Fotofunktion um die Kamera möglichst schnell zu starten, ohne TourCount zu verlassen. Dort lässt sich auch eine Mitteilungsfunktion aufrufen, um eine TourCount-spezifische Nachricht über SMS oder E-Mail versenden zu können.
 <br><br>
-In der Zähler-Ansicht wird die Anzeige optional temporär per Näherungssensors abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert versehentliche Eingaben und bringt die App augenblicklich zurück, wenn es wieder normal genutzt wird.
-<br><br><br>
+In der Zähler-Ansicht wird die Anzeige optional temporär per Näherungssensor abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert versehentliche Eingaben und bringt die App augenblicklich zurück, wenn es wieder normal genutzt wird.
+<br><br>
+<br>
 
 <h3><font color=#D9FDD9>5. Quellen</h3>
 Doku.: https://github.com/wistein/TourCount/tree/master/docs

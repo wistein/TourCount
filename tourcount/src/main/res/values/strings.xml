@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2025-10-08 -->
+     last edited on 2025-12-23 -->
 
 <resources>
 
@@ -17,9 +17,11 @@
     <string name="title_activity_del_species" translatable="false">DelSpeciesActivity</string>
     <string name="title_activity_add_species" translatable="false">AddSpeciesActivity</string>
     <string name="ringSound_attr_label" translatable="false">RingSound</string>
+    <string name="location_attr_label" translatable="false">LocationCheck</string>
 
     <string name="action_settings">Settings</string>
-    <string name="outsideEurope1">No GPS fix yet, or location is outside the European fauna area.</string>
+    <string name="newLock">GPS has position!</string>
+    <string name="outsideEurope">GPS has position! But location is outside the European fauna area.</string>
 
     <!-- WelcomeActivity -->
     <string name="title">Species-specific counting\n\nof butterflies on walks</string>
@@ -91,7 +93,6 @@
     <string name="speccode">Spec. Code:</string>
     <string name="cnts">Counts</string>
     <string name="bema">Spec. Notes:</string>
-    <string name="bemi">Type indiv. notes here&#8230;</string>
     <string name="editHeadTitle">Meta Data</string>
     <string name="country">Country:</string>
     <string name="bstate">State:</string>
@@ -136,7 +137,6 @@
     <string name="editDelSpecTitle">Remove Species</string>
     <string name="editAddSpecTitle">Add Species</string>
     <string name="saveCountsButton">Save &amp; Exit</string>
-    <string name="saving">Saving </string>
     <string name="editSectTitle">Edit List</string>
     <string name="deleteButton">Remove</string>
     <string name="action_share">Share</string>
@@ -155,7 +155,6 @@
     <string name="titleHint">Insert tour name here&#8230;</string>
     <string name="titleHintShort">Insert here&#8230;</string>
     <string name="notesHint">Type notes here&#8230;</string>
-    <string name="specNotesHint">Type species notes here&#8230;</string>
     <string name="isDouble"> is double!</string>
     <string name="presentSpecs">Species in list:</string>
     <string name="isEmpt">Name or Code is empty!</string>
@@ -194,10 +193,13 @@
     <string name="pref_csv_output_dialog">Sort order of the results and exported csv-table</string>
 
     <string name="prefs_sound">Sound/Vibration</string>
-    <string name="pref_button_sound">Button Sounds</string>
-    <string name="pref_button_sound_summary">Make a sound upon pressing a count button.</string>
+    <string name="pref_alert_sound">Info Sound</string>
+    <string name="pref_alert_sound_summ">Make a sound when an important information is shown.</string>
+    <string name="pref_button_sound">Button Sound</string>
+    <string name="pref_button_sound_summary">Make a short sound for a button pressed.</string>
     <string name="pref_button_vib">Button Vibration</string>
     <string name="pref_button_vib_summary">Make a vibration upon pressing a count button.</string>
+
     <string name="prefs_counting">Counting</string>
     <string name="pref_awake">Keep Screen On</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
@@ -212,6 +214,8 @@
 
     <string name="pref_proximity_dialog">Set the sensitivity for switching off the screen.</string>
     <string name="pref_proximity_title">Proximity Sensor</string>
+
+    <string name="pref_interval_title">GPS polling interval</string>
 
     <!-- EditSpeciesNotesActivity -->
     <string name="spec_Name">Name</string>
@@ -265,7 +269,6 @@
     <string name="warnCount">Only values between 1 … 999999 allowed!</string>
     <string name="no_provider">No Service Provider available!</string>
     <string name="ok_button">OK</string>
-    <string name="cancel">Cancel</string>
 
     <!-- Permissions -->
     <string name="app_settings">App Settings</string>
@@ -275,8 +278,4 @@
 
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
-    <string name="dialog_background_loc_title">Optional permission wanted</string>
-    <string name="dialog_background_loc_message">Location data is more precise with the optional permission \'Allow all the time\'.</string>
-    <string name="grant_perm_later">You may grant the optional Background location permission in system settings later.</string>
-
 </resources>

@@ -48,7 +48,8 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_meta, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_meta, this, true)
         widgetdate1 = findViewById(R.id.widgetDate1)
         widgetdate2 = findViewById(R.id.widgetDate2)
         widgetstartTm1 = findViewById(R.id.widgetStartTm1)
@@ -68,7 +69,6 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     }
 
     // Following the SETS of heads
-    // temperature
     // date
     fun setWidgetDate1(title: String?) {
         widgetdate1.text = title
@@ -84,6 +84,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         widgetendTm1.text = title
     }
 
+    // temperature
     fun setWidgetTemp1(title: String?) {
         widgettemp1.text = title
     }

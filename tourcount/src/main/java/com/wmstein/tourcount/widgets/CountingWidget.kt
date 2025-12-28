@@ -21,7 +21,7 @@ import java.util.Objects
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2024-11-25
+ * last edited on 2025-12-27
  */
 @SuppressLint("SetTextI18n")
 class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
@@ -69,12 +69,18 @@ class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(co
         nameli.text = context.getString(R.string.countLarvaHint)
         nameei.text = context.getString(R.string.countOvoHint)
 
-        countCountf1i.text = count!!.count_f1i.toString()
-        countCountf2i.text = count!!.count_f2i.toString()
-        countCountf3i.text = count!!.count_f3i.toString()
-        countCountpi.text = count!!.count_pi.toString()
-        countCountli.text = count!!.count_li.toString()
-        countCountei.text = count!!.count_ei.toString()
+        if (count!!.count_f1i > 0)
+            countCountf1i.text = count!!.count_f1i.toString()
+        if (count!!.count_f2i > 0)
+            countCountf2i.text = count!!.count_f2i.toString()
+        if (count!!.count_f3i > 0)
+            countCountf3i.text = count!!.count_f3i.toString()
+        if (count!!.count_pi > 0)
+            countCountpi.text = count!!.count_pi.toString()
+        if (count!!.count_li > 0)
+            countCountli.text = count!!.count_li.toString()
+        if (count!!.count_ei > 0)
+            countCountei.text = count!!.count_ei.toString()
 
         val countUpf1iButton = findViewById<ImageButton>(R.id.buttonUpf1i)
         countUpf1iButton.tag = count!!.id

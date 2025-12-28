@@ -22,7 +22,7 @@ import androidx.core.view.updateLayoutParams
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2025-06-30
+ * last edited on 2025-12-23
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -84,6 +84,11 @@ class SettingsActivity : AppCompatActivity() {
         super.onPause()
 
         var ringtone: String
+
+        val alertSoundUri =
+            ("android.resource://com.wmstein.tourcount/" + R.raw.alert).toUri()
+        ringtone = alertSoundUri.toString()
+        editor?.putString("alert_sound", ringtone)
 
         val buttonSoundUri =
             ("android.resource://com.wmstein.tourcount/" + R.raw.button).toUri()

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- used by SettingsActivity.java
+     last edited 2025-12-25 -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     app:useSimpleSummaryProvider="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -52,10 +56,17 @@
     <PreferenceCategory
         android:title="@string/prefs_sound">
         android:key="key_prefs_sound">
-        
+
+        <SwitchPreferenceCompat
+            android:key="pref_alert_sound"
+            android:defaultValue="false"
+            android:icon="@drawable/outline_notifications_48"
+            android:summary="@string/pref_alert_sound_summ"
+            android:title="@string/pref_alert_sound" />
+
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/outline_music_video_48"
+            android:icon="@drawable/ic_music_video_black_48dp"
             android:key="pref_button_sound"
             android:summary="@string/pref_button_sound_summary"
             android:title="@string/pref_button_sound"/>
@@ -107,7 +118,6 @@
             android:key="pref_metadata"
             android:summary="@string/pref_metadata_summ"
             android:title="@string/pref_metadata"/>
-    </PreferenceCategory>
 
     <EditTextPreference
         android:textColorHint="@color/BrightGray"
@@ -117,4 +127,13 @@
         android:summary="@string/pref_email_string_summ"
         android:title="@string/pref_email_string"/>
 
+    <ListPreference
+        android:defaultValue="5000"
+        android:entries="@array/pref_sel_interval_entries"
+        android:entryValues="@array/pref_sel_interval_values"
+        android:icon="@drawable/ic_refresh_black_48dp"
+        android:key="pref_time_interval"
+        android:title="@string/pref_interval_title"
+        app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

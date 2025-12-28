@@ -28,7 +28,7 @@ import com.wmstein.tourcount.widgets.ListIndivNoteWidget
 import com.wmstein.tourcount.widgets.ListIndividualWidget
 import com.wmstein.tourcount.widgets.ListLineWidget
 import com.wmstein.tourcount.widgets.ListLocationWidget
-import com.wmstein.tourcount.widgets.ListMetaWidget
+import com.wmstein.tourcount.widgets.ResultsMetaWidget
 import com.wmstein.tourcount.widgets.ListSpeciesWidget
 import com.wmstein.tourcount.widgets.ListSumWidget
 import com.wmstein.tourcount.widgets.ListTitleWidget
@@ -230,7 +230,7 @@ class ShowResultsActivity : AppCompatActivity() {
         specArea!!.addView(llw)
 
         // 3. Display the date, time, temperature, wind and clouds data
-        val lmw = ListMetaWidget(this, null)
+        val lmw = ResultsMetaWidget(this, null)
         lmw.setListMetaWidget(section)
 
         lmw.setWidgetNotes1(getString(R.string.hintTourNotes))

@@ -44,7 +44,7 @@
 		<item>High</item>
 	</string-array>
 
-	<string-array name="initSpecs_g">
+    <string-array name="initSpecs_g">
 		<item comment="03998">Sechsfleck-Widderchen</item>
 		<item comment="06605">Purpurroter Zünsler</item>
 		<item comment="06788">Nagelfleck</item>
