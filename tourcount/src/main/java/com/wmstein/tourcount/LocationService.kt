@@ -35,7 +35,7 @@ import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
  * Adopted for TourCount by wmstein since 2018-07-26,
  * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-12-27
+ * last edited on 2025-12-31
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -68,27 +68,22 @@ open class LocationService : Service, LocationListener {
     }
 
     private fun getLocation() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "73, getLocation")
+
         audioAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
                 mContext!!.createAttributionContext("ringSound")
-            else this
+            else mContext
         locationAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
                 mContext!!.createAttributionContext("locationCheck")
-            else this
+            else mContext
 
         prefs = TourCountApplication.getPrefs()
         selTimeInterval = prefs!!.getString("pref_time_interval", "5000")!!.toLong()
         alertSoundPref = prefs!!.getBoolean("pref_alert_sound", false)
         alertSound = prefs!!.getString("alert_sound", null).toString()
-
-        if (alertSoundPref) {
-            val uriB = if (alertSound.isNotBlank())
-                alertSound.toUri()
-            else
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            rToneP = MediaPlayer.create(audioAttributionContext, uriB)
-        }
 
         try {
             locationManager = mContext!!.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -167,7 +162,7 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "170, StopListener: $e")
+                Log.e(TAG, "165, StopListener: $e")
         }
     }
 
@@ -179,17 +174,17 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "182, StopListener: Should stop GPS service.")
+                    Log.i(TAG, "177, StopListener: Should stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "186, StopListener: $e")
+                Log.e(TAG, "181, StopListener: $e")
         }
 
         if (alertSoundPref) {
             if (rToneP != null) {
                 if (rToneP!!.isPlaying) {
-                    rToneP!!.stop()
+                    rToneP!!.stop() // stop media player
                 }
                 rToneP!!.release()
                 rToneP = null
@@ -277,6 +272,12 @@ open class LocationService : Service, LocationListener {
 
     private fun soundAlertSound() {
         if (alertSoundPref) {
+            val uriB = if (alertSound.isNotBlank())
+                alertSound.toUri()
+            else
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+            rToneP = MediaPlayer.create(audioAttributionContext, uriB)
             if (rToneP!!.isPlaying) {
                 rToneP!!.stop()
                 rToneP!!.release()

@@ -38,7 +38,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-12-23
+ * last edited on 2025-12-31
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -147,9 +147,8 @@ class EditIndividualActivity : AppCompatActivity() {
         soundButtonSound() // sound for (+)-button
 
         // Prepare vibrator service
-        vibrator = applicationContext.getSystemService(Vibrator::class.java)
-
-        if (buttonVibPref && vibrator!!.hasVibrator()) {
+        if (buttonVibPref) {
+            vibrator = applicationContext.getSystemService(Vibrator::class.java)
             buttonVib()
         }
 
@@ -195,7 +194,7 @@ class EditIndividualActivity : AppCompatActivity() {
             supportActionBar!!.title = specName
         } catch (_: NullPointerException) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "198, NullPointerException: No species name!")
+                Log.e(TAG, "197, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
@@ -204,7 +203,12 @@ class EditIndividualActivity : AppCompatActivity() {
         eiw!!.setWidgetLocality1(getString(R.string.locality) + ":")
         eiw!!.widgetLocality2 = sLocality!!
         eiw!!.setWidgetZCoord1(getString(R.string.zcoord))
-        eiw!!.setWidgetZCoord2(String.format("%.0f", height)) // set string with integer value from double
+        eiw!!.setWidgetZCoord2(
+            String.format(
+                "%.0f",
+                height
+            )
+        ) // set string with integer value from double
         eiw!!.setWidgetStadium1(getString(R.string.stadium) + ":")
         when (indivAttr) {
             1, 2, 3 -> {
@@ -253,8 +257,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "256, onPause"
-        )
+            Log.i(TAG, "260, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
@@ -266,12 +269,12 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "269, onStop")
+            Log.i(TAG, "272, onStop")
 
         if (buttonSoundPref) {
             if (rToneP != null) {
                 if (rToneP!!.isPlaying) {
-                    rToneP!!.stop()
+                    rToneP!!.stop() // stop media player
                 }
                 rToneP!!.release()
                 rToneP = null
@@ -287,7 +290,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "290, onDestroy")
+            Log.i(TAG, "293, onDestroy")
     }
 
     private fun saveData(): Boolean {

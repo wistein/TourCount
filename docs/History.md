@@ -2,6 +2,10 @@
 
 #### TourCount Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.0 (2025-12-31)
+- Code improvement: Gray-out preference item "Button Vibration" when not available in device
+- Bugfix for sound-related crash under Android versions 7.1 - 10
+
 #### Version 3.6.9 (2025-12-28)
 - Location background permission removed
 - The option to change the font size for comments removed

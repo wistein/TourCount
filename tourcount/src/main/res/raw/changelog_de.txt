@@ -66,6 +66,12 @@ _ subtitle
   .
   _
 
+$ 3.7.0
+  % Version 3.7.0
+  _ 31.12.2025
+  * Code-Verbesserung: Einstellung "Button-Vibration" ausgegraut, wenn im Gerät nicht vorhanden
+  * Bug-Fix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10
+
 $ 3.6.9
   % Version 3.6.9
   _ 28.12.2025

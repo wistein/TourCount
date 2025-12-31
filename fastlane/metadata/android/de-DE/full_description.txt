@@ -1,21 +1,8 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.6.9:
-- Hintergrund-Standort-Berechtigung entfernt
-- Option Nur noch eine Schriftgröße für Bemerkungen
-- Code zur Ortsbestimmung verbessert
-- Option zur Auswahl des GPS-Abfrage-Intervalls zwischen 2 und 20 sec hinzugefügt
-- Nach App-Start informiert eine einmalige Kurzmeldung mit Signalton über den ersten GPS-Fix und ggf. darüber, dass der Ort außerhalb des europäischen Faunengebiets liegt.
-- Layout der Zählerseite verbessert
-- Lesbarkeit relevanter Seiten mit ausgegrauten "0"-Werten verbessert
-- Ergebnisseite mit Höhenangabe pro Individuum
-- Sound-Erzeugung besser an Erfordernisse von Android 16 angepasst
-- Abbildung und Daten von Nomophila noctuella (Wanderzünsler) ergänzt
-- Einige Meldungen verständlicher formuliert
-- App-spezifische Debug-Unterstützung für den Emulator in Android Studio hinzugefügt
-- Einige Code-Verbesserungen
-- Doku überarbeitet
-- Bug-Fixe
+Neu in Version 3.7.0:
+- Code-Verbesserung: Einstellung "Button-Vibration" ausgegraut, wenn im Gerät nicht vorhanden
+- Bug-Fix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
@@ -52,4 +39,4 @@ https://github.com/wistein/TourCount/tree/master/docs.
 TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge. 
 Die 2. App, TransektCount, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
 
-Beide Apps verwenden die Kodierung der Europäischen Schmetterlinge nach Karsholt/Razowski und beinhalten somit nur europäische Schmetterlingsabbildungen.
+Beide Apps verwenden die Kodierung der Europäischen Schmetterlinge nach Karsholt/Razowski und berücksichtigen somit nur europäische Schmetterlinge.

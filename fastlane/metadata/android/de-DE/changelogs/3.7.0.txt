@@ -1,0 +1,3 @@
+Version 3.7.0 (31.12.2025)
+- Code-Verbesserung: Einstellung "Button-Vibration" ausgegraut, wenn im Gerät nicht vorhanden
+- Bug-Fix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10

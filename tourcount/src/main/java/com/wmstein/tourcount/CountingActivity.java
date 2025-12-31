@@ -81,7 +81,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2025-12-24
+ * last edited in Java on 2025-12-31
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -303,7 +303,8 @@ public class CountingActivity
         mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Prepare vibrator service
-        vibrator = getApplicationContext().getSystemService(Vibrator.class);
+        if (buttonVibPref)
+            vibrator = getApplicationContext().getSystemService(Vibrator.class);
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -329,8 +330,9 @@ public class CountingActivity
                 uriM = Uri.parse(buttonSoundMinus);
             else
                 uriM = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
             if (rToneM == null)
-                rToneM = MediaPlayer. create (audioAttributionContext, uriM);
+                rToneM = MediaPlayer.create(audioAttributionContext, uriM);
         }
 
         // build the counting screen
@@ -452,7 +454,7 @@ public class CountingActivity
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "455, Prox.Sensor Value0: " + event.values[0] + ", " + "Sensitivity: "
+                Log.d(TAG, "457, Prox.Sensor Value0: " + event.values[0] + ", " + "Sensitivity: "
                         + (sensorSensitivity));
 
             // if ([0|5] >= [-0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
@@ -610,7 +612,7 @@ public class CountingActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "613, onPause");
+            Log.i(TAG, "615, onPause");
 
         disableProximitySensor();
 
@@ -644,14 +646,14 @@ public class CountingActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "647, onStop");
+            Log.i(TAG, "649, onStop");
 
         counting_screen.invalidate();
 
         if (buttonSoundPref) {
             if (rToneM != null) {
                 if (rToneM.isPlaying()) {
-                    rToneM.stop();
+                    rToneM.stop(); // stop media player
                 }
                 rToneM.release();
                 rToneM = null;
@@ -664,7 +666,7 @@ public class CountingActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "667, onDestroy");
+            Log.i(TAG, "669, onDestroy");
     }
 
     // Control location service
@@ -679,7 +681,7 @@ public class CountingActivity
                 {
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "682, locationDispatcher 1");
+                            Log.i(TAG, "684, locationDispatcher 1");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -693,7 +695,7 @@ public class CountingActivity
                 {
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "696, locationDispatcher 2");
+                            Log.i(TAG, "698, locationDispatcher 2");
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
@@ -731,8 +733,7 @@ public class CountingActivity
                 urlString = "https://nominatim.openstreetmap.org/reverse?" +
                         "email=test@temp.test" + "format=xml&lat="
                         + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-            }
-            else {
+            } else {
                 urlString = "https://nominatim.openstreetmap.org/reverse?" +
                         "email=" + emailString + "&format=xml&lat="
                         + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
@@ -788,13 +789,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "791, SpinnerListener, count id: "
-                            + count.id + ", code: " + count.code + ", name: " + count.name);
+                        Log.d(TAG, "792, SpinnerListener, count id: "
+                                + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG, "797, SpinnerListener: " + e);
+                        Log.e(TAG, "798, SpinnerListener: " + e);
                 }
             }
 
@@ -808,7 +809,7 @@ public class CountingActivity
     // Show rest of widgets for counting screen
     private void countingScreen(Count count) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "811, countingScreen");
+            Log.i(TAG, "812, countingScreen");
 
         // 1. Species line with Spinner is set by CountingWidgetHead1 in onResume
 
@@ -1641,7 +1642,7 @@ public class CountingActivity
     // Delete individual for count_id
     private void deleteIndividual(int id) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1644, " + getString(R.string.indivDel) + " " + id);
+            Log.i(TAG, "1645, " + getString(R.string.indivDel) + " " + id);
         individualsDataSource.deleteIndividualById(id);
     }
 
@@ -1678,7 +1679,7 @@ public class CountingActivity
     }
 
     private void buttonVib() {
-        if (buttonVibPref && vibrator.hasVibrator()) {
+        if (buttonVibPref) {
             if (Build.VERSION.SDK_INT >= 31) // S, Android 12
             {
                 vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
