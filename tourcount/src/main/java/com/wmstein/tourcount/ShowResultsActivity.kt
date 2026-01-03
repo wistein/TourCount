@@ -39,11 +39,12 @@ import kotlin.math.sqrt
 
 /*********************************************************
  * ShowResultsActivity shows list of counting results
+ * Copyright 2016-2026 wmstein
  * Created by wmstein on 2016-03-15 as ListSpeciesActivity,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2025-11-01
+ * last edited on 2026-01-01
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null

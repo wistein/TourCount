@@ -40,7 +40,7 @@ _ subtitle
   <body>
 
   % TourCount
-  _ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
+  _ Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
   _
   _ email: stein.wm@web.de
   _
@@ -68,8 +68,8 @@ _ subtitle
 
 $ 3.7.0
   % Version 3.7.0
-  _ 31.12.2025
-  * Code-Verbesserung: Einstellung "Button-Vibration" ausgegraut, wenn im Gerät nicht vorhanden
+  _ 03.01.2026
+  * Code-Verbesserung: Unter Einstellungen "Button-Vibration" und "Näherungssensor" ausgegraut, wenn im Gerät nicht vorhanden
   * Bug-Fix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10
 
 $ 3.6.9

@@ -73,7 +73,6 @@
 
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:icon="@drawable/outline_vibration_48"
             android:key="pref_button_vib"
             android:summary="@string/pref_button_vib_summary"
             android:title="@string/pref_button_vib"/>
@@ -103,7 +102,6 @@
             android:dialogTitle="@string/pref_proximity_dialog"
             android:entries="@array/pref_prox_entries"
             android:entryValues="@array/pref_prox_values"
-            android:icon="@drawable/ic_speaker_phone_black_48dp"
             android:title="@string/pref_proximity_title"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>

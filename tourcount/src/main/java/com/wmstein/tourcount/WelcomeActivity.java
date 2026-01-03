@@ -87,14 +87,16 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2025-12-31
+ * last edited on 2026-01-03
  */
 public class WelcomeActivity
         extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final String TAG = "WelcomeAct";
+    private final String TAG = "WelcomeAct";
 
     private TourCountApplication tourCount;
+
+    private View baseLayout;
 
     LocationService locationService;
     private boolean locServiceOn = false;
@@ -108,8 +110,6 @@ public class WelcomeActivity
     private boolean mExternalStorageWriteable = false;
     private final String sState = Environment.getExternalStorageState();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-
-    private AlertDialog alert;
 
     // Preferences
     private SharedPreferences prefs;
@@ -129,8 +129,9 @@ public class WelcomeActivity
     private CountDataSource countDataSource;
 
     private String tourName = "";
-    private View baseLayout;
     private String mesg;
+
+    private AlertDialog alert;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
     @Override
@@ -138,7 +139,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "141, onCreate");
+            Log.i(TAG, "142, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -148,11 +149,11 @@ public class WelcomeActivity
         prefs = TourCountApplication.getPrefs();
 
         // Proximity sensor handling in preferences menu
-        SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
-        // Grey out preferences menu item pref_prox when max. proximity sensitivity = null
-        boolean prefProx = mProximity != null;
+        // Check for Proximity and Ambient Light sensor
+        boolean prefProx = proximitySensor != null; // true if proximity sensor is available
 
         // Grey out preferences menu item pref_button_vib when device has no vibrator
         Vibrator vibrator = getApplicationContext().getSystemService(Vibrator.class);
@@ -208,7 +209,7 @@ public class WelcomeActivity
             editor.commit();
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "211, onCreate, storagePermGranted: " + storagePermGranted);
+            Log.d(TAG, "212, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -321,7 +322,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "324, onResume");
+            Log.i(TAG, "325, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -383,7 +384,7 @@ public class WelcomeActivity
         // Get new location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "386, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "387, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         locationDispatcher(1);
     }
@@ -396,12 +397,12 @@ public class WelcomeActivity
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storageGranted = Environment.isExternalStorageManager();
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "399, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "400, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "404, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "405, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -426,7 +427,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "429, locationDispatcher 1");
+                            Log.i(TAG, "430, locationDispatcher 1");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -440,7 +441,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "443, locationDispatcher 2");
+                            Log.i(TAG, "444, locationDispatcher 2");
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
@@ -645,7 +646,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "648, onPause");
+            Log.i(TAG, "649, onPause");
 
         headDataSource.close();
         countDataSource.close();
@@ -661,7 +662,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "664 onStop");
+            Log.i(TAG, "665 onStop");
 
         baseLayout.invalidate();
     }
@@ -671,7 +672,7 @@ public class WelcomeActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "674, onDestroy");
+            Log.i(TAG, "675, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -719,7 +720,7 @@ public class WelcomeActivity
     // Import the basic DB
     private void importBasisDb() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "722, importBasicDBFile");
+            Log.d(TAG, "723, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -764,7 +765,7 @@ public class WelcomeActivity
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                Log.i(TAG, "767, Selected file: " + selectedFile);
+                                Log.i(TAG, "768, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -868,7 +869,7 @@ public class WelcomeActivity
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                Log.d(TAG, "871, File selected: " + selectedFile);
+                                Log.d(TAG, "872, File selected: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -1031,7 +1032,7 @@ public class WelcomeActivity
                 }
             } catch (IOException e) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "1034, Failed to export Basic DB");
+                    Log.e(TAG, "1035, Failed to export Basic DB");
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
@@ -1593,7 +1594,7 @@ public class WelcomeActivity
                     if (longi != 0) // Has coordinates
                     {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.d(TAG, "1596 longi " + longi);
+                            Log.d(TAG, "1597 longi " + longi);
                         if (frst == 0) {
                             loMin = longi;
                             loMax = longi;
@@ -1673,7 +1674,7 @@ public class WelcomeActivity
                         HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
                                 HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "1676, Failed to export csv file");
+                    Log.e(TAG, "1677, Failed to export csv file");
             }
         }
     }
@@ -1881,7 +1882,7 @@ public class WelcomeActivity
             dbHelper.close();
         } catch (Exception e) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "1884, Failed to reset DB");
+                Log.e(TAG, "1885, Failed to reset DB");
 
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,

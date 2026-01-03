@@ -34,11 +34,11 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an
  * individual's data record
- * Copyright 2016-2023 wmstein
+ * Copyright 2016-2026 wmstein
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-12-31
+ * last edited on 2026-01-02
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null

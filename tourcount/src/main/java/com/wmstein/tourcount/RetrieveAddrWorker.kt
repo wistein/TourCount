@@ -17,11 +17,11 @@ import java.net.URL
 /**********************************************************************************************
  * Worker to get, parse and store address info from Nominatim Reverse Geocoder of OpenStreetMap
  *
- * Copyright 2018-2025 wmstein
+ * Copyright 2018-2026 wmstein
  * created on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-12-24
+ * last edited on 2026-01-01
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {

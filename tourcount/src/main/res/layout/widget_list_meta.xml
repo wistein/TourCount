@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  - widget_list_meta.xml used by ShowResultsActivity.kt
-  ~ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
+  widget_list_meta.xml used by ShowResultsActivity.kt
+  Last edited on 2026-01-01
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

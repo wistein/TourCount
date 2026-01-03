@@ -2,7 +2,7 @@
  * **************************************************************************
  *  TourCount
  * **************************************************************************
- *  Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
+ *  Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
  *  Author: Wilhelm Stein
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,7 +92,7 @@ Butterfly pictures:
  - Tiliacea aurago, Author: Peter Gergely, licensed by www.saxifraga.nl, free for non-commercial use,
    derived from http://www.freenatureimages.eu/Animals/index.html
 
- - All other pictures, app icons and background © 2016-2025, Wilhelm Stein, Bonn, Germany.
+ - All other pictures, app icons and background © 2016-2026, Wilhelm Stein, Bonn, Germany.
    Pictures of this work by Wilhelm Stein may be used for scientific or non-commercial purposes.
    Code and illustrations provided by other authors remain the copyright of those authors
    and should not be reproduced or distributed other than with their permission.

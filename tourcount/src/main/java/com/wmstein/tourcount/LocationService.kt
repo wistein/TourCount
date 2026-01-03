@@ -32,10 +32,10 @@ import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
  * uses minimal distance for updates: 10 m (default),
  *      minimal time between updates: 10 sec (default).
  *
- * Adopted for TourCount by wmstein since 2018-07-26,
+ * Adopted and adapted for TourCount by wmstein since 2018-07-26,
  * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-12-31
+ * last edited on 2026-01-02
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -69,7 +69,7 @@ open class LocationService : Service, LocationListener {
 
     private fun getLocation() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "73, getLocation")
+            Log.i(TAG, "72, getLocation")
 
         audioAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)

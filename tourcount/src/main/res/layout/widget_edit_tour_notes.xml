@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-    widget_edit_tour_notes.xml
-    used by EditTourNotesWidget.kt
-    Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
+    widget_edit_tour_notes.xml is used by EditTourNotesWidget.kt
+    Last edited on 2026-01-01
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

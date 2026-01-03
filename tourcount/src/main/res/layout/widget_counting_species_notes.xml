@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ used by CountingWidgetSpeciesNotes.kt
   ~ shows line with edit button and species notes on Counting Screen
-  ~ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
-  ~ Last edited on 2025-09-22.
+  ~ Last edited on 2026-01-01.
   -->
 
 <TableLayout

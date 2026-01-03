@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!-- activity_welcome.xml is used by WelcomeActivity.java
   ~ Shows starting page
-  ~ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany.
-  ~ Last edited on 2025-12-30.
+  ~ Last edited on 2026-01-01.
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

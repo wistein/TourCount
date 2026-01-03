@@ -66,7 +66,7 @@ repository under the master branch https://github.com/wistein/TourCount/tree/mas
 
 ### Licenses
 
-© 2016-2025, Wilhelm Stein, Bonn, Germany
+Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
 TourCount is licensed under the Apache License, Version 2.0 (the "License");
 you may not use any of its files except in compliance with the License.

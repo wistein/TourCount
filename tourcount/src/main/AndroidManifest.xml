@@ -7,7 +7,7 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2025-12-20
+     Last edited 2026-01-03
 -->
 
 <manifest
@@ -36,7 +36,7 @@
 
     <!-- Permission needed for screen set on/off -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    
+
     <!-- Permission needed for Nominatim OSM reverse geocoding -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>

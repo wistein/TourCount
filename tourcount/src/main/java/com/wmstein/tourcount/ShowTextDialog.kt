@@ -26,8 +26,8 @@ import java.util.Locale
  * ShowTextDialog.kt
  * Custom class for displaying the Help and License Dialogs
  *
- * Adopted 2025 by wistein for TourCount and TransektCount,
- * last edited on 2025-07-15
+ * Created 2025-07-08 by wistein for TourCount and TransektCount,
+ * last edited on 2026-01-02
  */
 class ShowTextDialog : AppCompatActivity () {
     @SuppressLint("SourceLockedOrientationActivity")

@@ -41,7 +41,7 @@ _ subtitle
   <body>
 
   % TourCount
-  _ Copyright © 2016-2025, Wilhelm Stein, Bonn, Germany
+  _ Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
   _
   _ email: stein.wm@web.de
   _
@@ -69,8 +69,8 @@ _ subtitle
 
 $ 3.7.0
   % Version 3.7.0
-  _ 2025-12-31
-  * Code improvement: Gray-out preference item "Button Vibration" when not available in device
+  _ 2026-01-03
+  * Code improvement: Gray-out preference items "Button Vibration" and "Proximity Sensor" when not available in device
   * Bugfix for sound-related crash under Android versions 7.1 - 10
 
 $ 3.6.9
