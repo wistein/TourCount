@@ -17,8 +17,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
-import androidx.core.text.HtmlCompat
 import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
+import com.wmstein.tourcount.Utils.fromHtml
 
 /**************************************************************************************
  * LocationService provides the location data: latitude, longitude, height, uncertainty
@@ -35,7 +35,7 @@ import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
  * Adopted and adapted for TourCount by wmstein since 2018-07-26,
  * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-01-02
+ * last edited on 2026-01-15
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -98,10 +98,8 @@ open class LocationService : Service, LocationListener {
                 val mesg = getString(R.string.no_provider)
                 Toast.makeText(
                     mContext,
-                    HtmlCompat.fromHtml(
-                        "<font color='red'><b>$mesg</b></font>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ), Toast.LENGTH_LONG
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
                 ).show()
             }
 
@@ -162,7 +160,7 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "165, StopListener: $e")
+                Log.e(TAG, "163, StopListener: $e")
         }
     }
 
@@ -174,11 +172,11 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "177, StopListener: Should stop GPS service.")
+                    Log.i(TAG, "175, StopListener: Should stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "181, StopListener: $e")
+                Log.e(TAG, "179, StopListener: $e")
         }
 
         if (alertSoundPref) {
@@ -241,20 +239,15 @@ open class LocationService : Service, LocationListener {
                 mesg = mContext!!.getString(R.string.newLock) // in green
                 Toast.makeText(
                     mContext!!,
-                    HtmlCompat.fromHtml(
-                        "<bold><font color='#008000'>$mesg</font></bold>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ),
+                    fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 mesg = mContext!!.getString(R.string.outsideEurope) // in blue
                 Toast.makeText(
                     mContext!!,
-                    HtmlCompat.fromHtml(
-                        "<font color='blue'>$mesg</font>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ), Toast.LENGTH_LONG
+                    fromHtml("<font color='blue'>$mesg</font>"),
+                    Toast.LENGTH_LONG
                 ).show()
             }
 

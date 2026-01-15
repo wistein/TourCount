@@ -1,5 +1,7 @@
 package com.wmstein.tourcount;
 
+import static com.wmstein.tourcount.Utils.fromHtml;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -20,7 +22,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
-import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -43,7 +44,7 @@ import java.util.Objects;
  * EditMetaActivity collects meta info for the current tour
  * Copyright 2016-2026 wmstein
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-01-01
+ * last edit in Java on 2026-01-15
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -73,7 +74,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "76, onCreate");
+            Log.i(TAG, "77, onCreate");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -117,7 +118,7 @@ public class EditMetaActivity extends AppCompatActivity
                 @Override
                 public void handleOnBackPressed() {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "125, handleOnBackPressed");
+                        Log.i(TAG, "121, handleOnBackPressed");
                     finish();
                     remove();
                 }
@@ -142,7 +143,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "149, onResume");
+            Log.i(TAG, "144, onResume");
 
         // Setup data sources
         headDataSource.open();
@@ -317,14 +318,14 @@ public class EditMetaActivity extends AppCompatActivity
         if (id == android.R.id.home) // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "324, MenuItem home");
+                Log.d(TAG, "321, MenuItem home");
             finish();
             return true;
         }
         else if (id == R.id.menuSaveExit)
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "331, MenuItem saveExit");
+                Log.d(TAG, "328, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;
@@ -338,7 +339,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "345, onPause");
+            Log.i(TAG, "342, onPause");
 
         headDataSource.close();
         sectionDataSource.close();
@@ -360,7 +361,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "367, onStop");
+            Log.i(TAG, "364, onStop");
 
         head_area = null;
     }
@@ -371,13 +372,13 @@ public class EditMetaActivity extends AppCompatActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "382, onDestroy");
+            Log.i(TAG, "375, onDestroy");
     }
 
     private boolean saveData()
     {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "388, saveData");
+            Log.i(TAG, "381, saveData");
 
         // Save head data
         head.observer = ett.getWidgetOName2();
@@ -402,8 +403,8 @@ public class EditMetaActivity extends AppCompatActivity
         {
             mesg = getString(R.string.valTemp);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -413,8 +414,8 @@ public class EditMetaActivity extends AppCompatActivity
         {
             mesg = getString(R.string.valWind);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -424,8 +425,8 @@ public class EditMetaActivity extends AppCompatActivity
         {
             mesg = getString(R.string.valClouds);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
             return false;
         }
 

@@ -15,20 +15,22 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
+
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.Temp
 import com.wmstein.tourcount.database.TempDataSource
+import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.widgets.EditIndividualWidget
 
 /*******************************************************************************************
@@ -38,7 +40,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-01-02
+ * last edited on 2026-01-15
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -92,7 +94,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "95, onCreate")
+            Log.i(TAG, "97, onCreate")
 
         audioAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
@@ -194,7 +196,7 @@ class EditIndividualActivity : AppCompatActivity() {
             supportActionBar!!.title = specName
         } catch (_: NullPointerException) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "197, NullPointerException: No species name!")
+                Log.e(TAG, "199, NullPointerException: No species name!")
         }
         counts = countDataSource!!.getCountById(countId)
 
@@ -257,7 +259,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "260, onPause")
+            Log.i(TAG, "262, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
@@ -269,7 +271,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "272, onStop")
+            Log.i(TAG, "274, onStop")
 
         if (buttonSoundPref) {
             if (rToneP != null) {
@@ -290,7 +292,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "293, onDestroy")
+            Log.i(TAG, "295, onDestroy")
     }
 
     private fun saveData(): Boolean {
@@ -337,10 +339,8 @@ class EditIndividualActivity : AppCompatActivity() {
                 mesg = getString(R.string.valState)
                 Toast.makeText(
                     applicationContext,
-                    HtmlCompat.fromHtml(
-                        "<font color='red'><b>$mesg</b></font>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    ), Toast.LENGTH_LONG
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
                 ).show()
                 return false
             }
@@ -417,10 +417,8 @@ class EditIndividualActivity : AppCompatActivity() {
             mesg = getString(R.string.warnCount)
             Toast.makeText(
                 this,
-                HtmlCompat.fromHtml(
-                    "<font color='red'><b>$mesg</b></font>",
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                ), Toast.LENGTH_LONG
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
             ).show()
             return false // forces input newCount > 0
         }

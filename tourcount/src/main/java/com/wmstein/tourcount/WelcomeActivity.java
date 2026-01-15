@@ -1,6 +1,7 @@
 package com.wmstein.tourcount;
 
 import static com.wmstein.tourcount.TourCountApplication.isFirstStart;
+import static com.wmstein.tourcount.Utils.fromHtml;
 import static java.lang.Math.sqrt;
 
 import android.Manifest;
@@ -43,7 +44,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
-import androidx.core.text.HtmlCompat;
 import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -87,7 +87,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-01-03
+ * last edited on 2026-01-15
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -201,8 +201,8 @@ public class WelcomeActivity
 
             mesg = getString(R.string.storage_perm_denied);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
 
             // Prepare to ask foreground location permission only once
             editor.putBoolean("has_asked_foreground", false);
@@ -231,9 +231,8 @@ public class WelcomeActivity
             sectionDataSource.close();
             mesg = getString(R.string.corruptDb);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
-
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
             mHandler.postDelayed(this::finishAndRemoveTask, 2000);
         }
 
@@ -308,8 +307,8 @@ public class WelcomeActivity
                     doubleBackToExitPressedTwice = true;
                     mesg = getString(R.string.back_twice);
                     Toast.makeText(getApplicationContext(),
-                            HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                            fromHtml("<font color='blue'>" + mesg + "</font>"),
+                            Toast.LENGTH_SHORT).show();
                     m1Handler.postDelayed(r1, 1500);
                 }
             }
@@ -322,7 +321,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "325, onResume");
+            Log.i(TAG, "324, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -339,8 +338,8 @@ public class WelcomeActivity
             if (metaPref && Objects.equals(emailString, "")) {
                 mesg = getString(R.string.missingEmail);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='blue'>" + mesg + "</font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                        fromHtml("<font color='blue'>" + mesg + "</font>"),
+                        Toast.LENGTH_SHORT).show();
             }
             isFirstStart = false;
         }
@@ -384,7 +383,7 @@ public class WelcomeActivity
         // Get new location self permission state
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "387, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "386, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         locationDispatcher(1);
     }
@@ -397,12 +396,12 @@ public class WelcomeActivity
             // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
             storageGranted = Environment.isExternalStorageManager();
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "400, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "399, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "405, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "404, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -427,7 +426,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "430, locationDispatcher 1");
+                            Log.i(TAG, "429, locationDispatcher 1");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -441,7 +440,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "444, locationDispatcher 2");
+                            Log.i(TAG, "443, locationDispatcher 2");
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
@@ -517,8 +516,8 @@ public class WelcomeActivity
                 } else {
                     mesg = getString(R.string.storage_perm_denied);
                     Toast.makeText(this,
-                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                            Toast.LENGTH_LONG).show();
                 }
             }
             return true;
@@ -534,8 +533,8 @@ public class WelcomeActivity
                 } else {
                     mesg = getString(R.string.storage_perm_denied);
                     Toast.makeText(this,
-                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                            Toast.LENGTH_LONG).show();
                 }
             }
             return true;
@@ -551,8 +550,8 @@ public class WelcomeActivity
                 } else {
                     mesg = getString(R.string.storage_perm_denied);
                     Toast.makeText(this,
-                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                            Toast.LENGTH_LONG).show();
                 }
             }
             return true;
@@ -568,8 +567,8 @@ public class WelcomeActivity
                 } else {
                     mesg = getString(R.string.storage_perm_denied);
                     Toast.makeText(this,
-                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                            Toast.LENGTH_LONG).show();
                 }
             }
             return true;
@@ -622,9 +621,8 @@ public class WelcomeActivity
             // Call ShowResultsActivity
             mesg = getString(R.string.wait);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
-
+                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                    Toast.LENGTH_SHORT).show();
             // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
                     startActivity(new Intent(getApplicationContext(), ShowResultsActivity
@@ -646,7 +644,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "649, onPause");
+            Log.i(TAG, "647, onPause");
 
         headDataSource.close();
         countDataSource.close();
@@ -662,7 +660,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "665 onStop");
+            Log.i(TAG, "663 onStop");
 
         baseLayout.invalidate();
     }
@@ -672,7 +670,7 @@ public class WelcomeActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "675, onDestroy");
+            Log.i(TAG, "673, onDestroy");
     }
 
     // Handle button click "Counting" here
@@ -696,9 +694,8 @@ public class WelcomeActivity
         // a Snackbar here comes incomplete
         mesg = getString(R.string.wait);
         Toast.makeText(this,
-                HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
-
+                fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                Toast.LENGTH_SHORT).show();
         // Trick: Pause for 100 msec to show toast
         mHandler.postDelayed(() ->
                 startActivity(new Intent(getApplicationContext(), ShowResultsActivity.class)
@@ -720,7 +717,7 @@ public class WelcomeActivity
     // Import the basic DB
     private void importBasisDb() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "723, importBasicDBFile");
+            Log.d(TAG, "720, importBasicDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount0";
@@ -765,7 +762,7 @@ public class WelcomeActivity
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                Log.i(TAG, "768, Selected file: " + selectedFile);
+                                Log.i(TAG, "765, Selected file: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -775,8 +772,8 @@ public class WelcomeActivity
                     } else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
                         mesg = getString(R.string.noFile);
                         Toast.makeText(getApplicationContext(),
-                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                                fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                                Toast.LENGTH_LONG).show();
                     }
                     if (inFile != null) {
                         // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
@@ -806,13 +803,13 @@ public class WelcomeActivity
 
                                 mesg = getString(R.string.importWin);
                                 Toast.makeText(getApplicationContext(),
-                                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                                        Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
                                 mesg = getString(R.string.importFail);
                                 Toast.makeText(getApplicationContext(),
-                                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                                        Toast.LENGTH_LONG).show();
                             }
                         });
                         builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
@@ -869,7 +866,7 @@ public class WelcomeActivity
                         if (data != null) {
                             selectedFile = data.getStringExtra("fileSelected");
                             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                Log.d(TAG, "872, File selected: " + selectedFile);
+                                Log.d(TAG, "869, File selected: " + selectedFile);
 
                             if (selectedFile != null)
                                 inFile = new File(selectedFile);
@@ -881,8 +878,8 @@ public class WelcomeActivity
                     else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
                         mesg = getString(R.string.noFile);
                         Toast.makeText(getApplicationContext(),
-                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                                fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                                Toast.LENGTH_LONG).show();
                     }
                     if (inFile != null) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
@@ -930,8 +927,8 @@ public class WelcomeActivity
             // Read exported species list and write items to table counts
             mesg = getString(R.string.waitImport);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                    Toast.LENGTH_SHORT).show();
             BufferedReader br = new BufferedReader(new FileReader(inFile));
             String csvLine;
             List<String> codeArray = new ArrayList<>();
@@ -952,13 +949,13 @@ public class WelcomeActivity
             br.close();
             mesg = getString(R.string.importList);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                    Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             mesg = getString(R.string.importListFail);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
         }
     }
     // End of importSpeciesList()
@@ -1005,8 +1002,8 @@ public class WelcomeActivity
         if (!mExternalStorageWriteable) {
             mesg = getString(R.string.noCard);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
         } else {
             // Export the basic db
             try {
@@ -1027,16 +1024,16 @@ public class WelcomeActivity
                 if (d0) {
                     mesg = getString(R.string.saveBasisDB);
                     Toast.makeText(this,
-                            HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                            fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                            Toast.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "1035, Failed to export Basic DB");
+                    Log.e(TAG, "1032, Failed to export Basic DB");
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1077,21 +1074,21 @@ public class WelcomeActivity
         if (!mExternalStorageWriteable) {
             mesg = getString(R.string.noCard);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
         } else {
             // Export the db
             try {
                 copy(inFile, outFile);
                 mesg = getString(R.string.saveDB);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                        Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1148,8 +1145,8 @@ public class WelcomeActivity
         if (!mExternalStorageWriteable) {
             mesg = getString(R.string.noCard);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
         } else {
             // Get sorting mode of species list
             String sortMode;
@@ -1594,7 +1591,7 @@ public class WelcomeActivity
                     if (longi != 0) // Has coordinates
                     {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.d(TAG, "1597 longi " + longi);
+                            Log.d(TAG, "1594 longi " + longi);
                         if (frst == 0) {
                             loMin = longi;
                             loMax = longi;
@@ -1666,15 +1663,15 @@ public class WelcomeActivity
 
                 mesg = getString(R.string.saveCSV);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                        Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 mesg = getString(R.string.saveFail);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "1677, Failed to export csv file");
+                    Log.e(TAG, "1674, Failed to export csv file");
             }
         }
     }
@@ -1707,8 +1704,8 @@ public class WelcomeActivity
         if (!mExternalStorageWriteable) {
             mesg = getString(R.string.noCard);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
         } else {
             // Export species list into species_yyyyMMdd_HHmmss.csv
             dbHelper = new DbHelper(this);
@@ -1761,8 +1758,8 @@ public class WelcomeActivity
                 } catch (Exception e) {
                     mesg = getString(R.string.saveFailListTransect);
                     Toast.makeText(this,
-                            HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                    HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -1789,13 +1786,13 @@ public class WelcomeActivity
                 csvWrite.close();
                 mesg = getString(R.string.saveList);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                        Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 mesg = getString(R.string.saveFailList);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1815,8 +1812,8 @@ public class WelcomeActivity
             if (r_ok) {
                 mesg = getString(R.string.reset2basic);
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                        Toast.LENGTH_SHORT).show();
             }
             Objects.requireNonNull(getSupportActionBar()).setTitle("");
         });
@@ -1882,12 +1879,12 @@ public class WelcomeActivity
             dbHelper.close();
         } catch (Exception e) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "1885, Failed to reset DB");
+                Log.e(TAG, "1882, Failed to reset DB");
 
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
             dbHelper.close();
             r_ok = false;
         }

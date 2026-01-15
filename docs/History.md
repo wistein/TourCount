@@ -2,6 +2,9 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.1 (2026-01-15)
+- Html formatting for app messages improved for different Android versions
+
 #### Version 3.7.0 (2026-01-03)
 - Code improvement: Gray-out preference items "Button Vibration" and "Proximity Sensor" when not available in device
 - Bugfix for sound-related crash under Android versions 7.1 - 10

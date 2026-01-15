@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 import android.widget.TextView
+
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.Utils.fromHtml
+
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

@@ -1,5 +1,7 @@
 package com.wmstein.tourcount;
 
+import static com.wmstein.tourcount.Utils.fromHtml;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -41,7 +43,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
-import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.work.Data;
@@ -81,7 +82,7 @@ import java.util.Objects;
  <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-01-03
+ * last edited in Java on 2026-01-15
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -354,8 +355,8 @@ public class CountingActivity
         } catch (CursorIndexOutOfBoundsException e) {
             mesg = getString(R.string.getHelp);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -527,8 +528,8 @@ public class CountingActivity
 
             mesg = getString(R.string.wait);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                    Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CountingActivity.this,
                     DelSpeciesActivity.class);
@@ -543,8 +544,8 @@ public class CountingActivity
 
             mesg = getString(R.string.wait);
             Toast.makeText(this,
-                    HtmlCompat.fromHtml("<font color='#008000'>" + mesg + "</font>",
-                            HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show();
+                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                    Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CountingActivity.this,
                     EditSpeciesListActivity.class);
@@ -572,8 +573,8 @@ public class CountingActivity
                     } catch (Exception e) {
                         mesg = getString(R.string.noPhotoPermit);
                         Toast.makeText(this,
-                                HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                        HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                                fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             } else {
@@ -948,8 +949,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -984,8 +985,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1078,8 +1079,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1114,8 +1115,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1206,8 +1207,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1242,8 +1243,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1334,8 +1335,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1370,8 +1371,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1462,8 +1463,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1498,8 +1499,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1591,8 +1592,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
@@ -1627,8 +1628,8 @@ public class CountingActivity
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
-                        HtmlCompat.fromHtml("<font color='red'><b>" + mesg + "</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);

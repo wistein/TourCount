@@ -25,7 +25,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // Get preferences
         prefs = getPrefs()
 
-        // Set proximity or ambien light option visible if available in device
+        // Set proximity option visible if available in device
         val prefProx: Boolean = prefs!!.getBoolean("enable_prox", false)
         val proxPref: ListPreference? = findPreference("pref_prox")
         proxPref?.isEnabled = prefProx

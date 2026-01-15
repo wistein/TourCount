@@ -15,15 +15,17 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
-import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.database.CountDataSource
+import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.widgets.EditSpeciesWidget
 import com.wmstein.tourcount.widgets.HintEditWidget
 
@@ -38,7 +40,7 @@ import com.wmstein.tourcount.widgets.HintEditWidget
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-11-12
+ * last edited on 2026-01-15
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
@@ -71,7 +73,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "74, onCreate")
+            Log.i(TAG, "76, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -195,7 +197,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             searchEdit.error = null
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "198, initChars: $initChars")
+                Log.d(TAG, "200, initChars: $initChars")
 
             // Re-enter EditSpeciesListActivity for reduced add list
             val intent = Intent(this@EditSpeciesListActivity, EditSpeciesListActivity::class.java)
@@ -307,7 +309,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
 
         val childcount: Int = editingCountsArea!!.childCount //No. of species in list
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "310, childcount: $childcount")
+            Log.d(TAG, "312, childcount: $childcount")
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
@@ -319,7 +321,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
                 retValue =
                     if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.d(TAG, "322, esw: " + esw.countId + ", " + esw.getCountName()
+                            Log.d(TAG, "324, esw: " + esw.countId + ", " + esw.getCountName()
                         )
 
                         // Update species names and code
@@ -334,10 +336,8 @@ class EditSpeciesListActivity : AppCompatActivity() {
                         mesg = getString(R.string.isEmpt)
                         Toast.makeText(
                             applicationContext,
-                            HtmlCompat.fromHtml(
-                                "<font color='red'><b>$mesg</b></font>",
-                                HtmlCompat.FROM_HTML_MODE_LEGACY
-                            ), Toast.LENGTH_LONG
+                            fromHtml("<font color='red'><b>$mesg</b></font>"),
+                            Toast.LENGTH_LONG
                         ).show()
                         false
                     }
@@ -348,10 +348,8 @@ class EditSpeciesListActivity : AppCompatActivity() {
                     " " + getString(R.string.isDouble)
             Toast.makeText(
                 applicationContext,
-                HtmlCompat.fromHtml(
-                    "<font color='red'><b>$mesg</b></font>",
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                ), Toast.LENGTH_LONG
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
             ).show()
             retValue = false
         }
@@ -370,10 +368,8 @@ class EditSpeciesListActivity : AppCompatActivity() {
             mesg = isDbl + " " + getString(R.string.isDouble) + " " + getString(R.string.duplicate)
             Toast.makeText(
                 applicationContext,
-                HtmlCompat.fromHtml(
-                    "<font color='red'><b>$mesg</b></font>",
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                ), Toast.LENGTH_LONG
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
             ).show()
             retValue = false
         }
@@ -394,7 +390,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "397, Double name = $isDblName")
+                    Log.d(TAG, "393, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -416,7 +412,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "419, Double name = $isDblCode")
+                    Log.d(TAG, "415, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

@@ -1,8 +1,7 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.7.0:
-- Code-Verbesserung: Unter Einstellungen "Button-Vibration" und "Näherungssensor" ausgegraut, wenn im Gerät nicht vorhanden
-- Bug-Fix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10
+Neu in Version 3.7.1:
+- Html-Formatierung für App-Meldungen für verschiedene Android-Versionen verbessert
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

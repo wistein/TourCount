@@ -1,5 +1,5 @@
 // Build file where you can add configuration options for the module.
-// Last edited on 2025-12-31
+// Last edited on 2026-01-15
 
 plugins {
     id 'com.android.application'
@@ -14,8 +14,8 @@ android {
         applicationId "com.wmstein.tourcount"
         minSdk = 25
         targetSdk = 36
-        versionCode = 370
-        versionName = "3.7.0"
+        versionCode = 371
+        versionName = "3.7.1"
     }
 
     buildTypes {

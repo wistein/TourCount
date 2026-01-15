@@ -1,8 +1,7 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.0:
-- Code improvement: Gray-out preference items "Button Vibration" and "Proximity Sensor" when not available in device
-- Bugfix for sound-related crash under Android versions 7.1 - 10
+New in Version 3.7.1:
+- Html formatting for app messages improved for different Android versions
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.
