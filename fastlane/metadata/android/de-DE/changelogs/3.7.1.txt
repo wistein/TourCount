@@ -1,3 +1,4 @@
 Version 3.7.1 (24.01.2026)
 - Html-Formatierung für App-Meldungen für verschiedene Android-Versionen verbessert
-- Code-Verbesserungen
+- Farben der Meldungen: Fehler rot, Warnung orange, Achtung blau, Info grün
+- Code- und Text-Verbesserungen

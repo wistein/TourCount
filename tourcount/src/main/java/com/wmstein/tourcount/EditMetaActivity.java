@@ -44,7 +44,7 @@ import java.util.Objects;
  * EditMetaActivity collects meta info for the current tour
  * Copyright 2016-2026 wmstein
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-01-15
+ * last edit in Java on 2026-01-24
  */
 public class EditMetaActivity extends AppCompatActivity
 {

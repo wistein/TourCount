@@ -78,7 +78,7 @@ class AdvFileChooser : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
-            setStatusBarColor(window, "#404040".toColorInt())
+            setStatusBarColor(window, "#303030".toColorInt()) // DarkerGray
         }
 
         val extras = intent.extras

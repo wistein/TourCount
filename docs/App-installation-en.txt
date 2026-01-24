@@ -6,7 +6,7 @@ Two options:
 
 1. From F-Droid store (released versions)
 
-   Apps, without docs or Basic database (Basic-DB) but with updates by the F-Droid app store:
+   Apps, without docs or Basic database (Basic DB) but with updates by the F-Droid app store:
 
    https://f-droid.org/en/packages/com.wmstein.transektcount/
    https://f-droid.org/en/packages/com.wmstein.tourcount
@@ -41,7 +41,7 @@ Two options:
    before Installation.
 
    After downloading, install the app by clicking on its apk-file in the download folder.
-   Copy the Basic-DB and relevant sample DBs from the download folder into the APP data directory 
+   Copy the Basic DB and relevant sample DBs from the download folder into the APP data directory
    (Documents/TransektCount respective Documents/TourCount).
 
    Important: Finally deactivate the option "Unknown source"!

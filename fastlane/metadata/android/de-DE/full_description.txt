@@ -2,7 +2,8 @@ TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Re
 
 Neu in Version 3.7.1:
 - Html-Formatierung für App-Meldungen für verschiedene Android-Versionen verbessert
-- Code-Verbesserungen
+- Farben der Meldungen: Fehler rot, Warnung orange, Achtung blau, Info grün
+- Code- und Text-Verbesserungen
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

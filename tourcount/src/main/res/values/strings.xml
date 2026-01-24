@@ -36,9 +36,9 @@
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveFailList">The species list could not be exported!</string>
     <string name="saveFailListTransect">Export to Documents/TransektCount failed!</string>
-    <string name="saveBasisDB">Export BasisDB to Documents/TourCount</string>
-    <string name="saveDB">Export internal DB to Documents/TourCount</string>
-    <string name="saveCSV">Export CSV-file to Documents/TourCount</string>
+    <string name="saveBasisDB">Exporting Basic DB to Documents/TourCount</string>
+    <string name="saveDB">Exporting internal DB to Documents/TourCount</string>
+    <string name="saveCSV">Exporting CSV-file to Documents/TourCount</string>
     <string name="saveList">Species list exported.</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="importFileMenu">Import DB</string>
@@ -274,7 +274,7 @@
     <string name="app_settings">App Settings</string>
     <string name="dialog_storage_title">Storage permission required</string>
     <string name="dialog_storage_message">Please grant storage permission for TourCount to be able to export data.</string>
-    <string name="storage_perm_denied">Required storage permission for TransektCount is missing.</string>
+    <string name="storage_perm_denied">Required storage permission for TourCount is missing.</string>
 
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>

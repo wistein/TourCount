@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Color collection to be used in xml files-->
+<!-- Color collection to be used in xml files.
+     In java or kotlin files colors are inserted as values.
+     Last edited on 2026-01-24
+-->
 
 <resources>
     <color name="DarkerRed">#52001C</color>
@@ -8,7 +11,7 @@
     <color name="DarkerGreen">#005000</color>
     <color name="Navy">#002866</color>
     <color name="BrightGray">#A9A9A9</color>
-    <color name="DarkerGray">#404040</color>
+    <color name="DarkerGray">#303030</color>
     <color name="DarkGray">#1a1a1a</color>
     <color name="Black">#000000</color>
     <color name="ic_launcher_background">#00FFFFFF</color> <!-- transparent -->

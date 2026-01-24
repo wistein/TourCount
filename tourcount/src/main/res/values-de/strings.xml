@@ -22,7 +22,7 @@
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
     <string name="saveFailListTransect">Export nach Documents/TransektCount schlug fehl!</string>
-    <string name="saveBasisDB">Export der BasisDB nach Documents/TourCount</string>
+    <string name="saveBasisDB">Export der Basis-DB nach Documents/TourCount</string>
     <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
     <string name="saveCSV">Export der CSV-Datei nach Documents/TourCount</string>
     <string name="saveList">Export der Speziesliste.</string>
@@ -260,7 +260,7 @@
     <string name="app_settings">App-Einstellungen</string>
     <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
     <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Export der Ergebnisse.</string>
-    <string name="storage_perm_denied">Die für TransektCount notwendige Speicher-Berechtigung fehlt.</string>
+    <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt.</string>
 
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>

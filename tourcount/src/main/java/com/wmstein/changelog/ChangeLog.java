@@ -22,26 +22,26 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 
 /************************************************************************
- * Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
- * <p>
- * Permission to use, copy, modify, and distribute this piece of software
- * for any purpose with or without fee is hereby granted, provided that
- * the above copyright notice and this permission notice appear in the
- * source code of all copies.
- * <p>
- * It would be appreciated if you mention the author in your change log,
- * contributors list or the like.
- * <p>
- * Author: Karsten Priegnitz
- * See: <a href="https://code.google.com/p/android-change-log/">...</a>
- * <p>
- * App newly installed: Shows the history of TourCount.
- * App updated: Shows the last changes of TourCount.
- * <p>
- * Therefore retrieves the version names and stores the new version name in SharedPreferences
- * <p>
- * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2026-01-24
+ Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
+
+ Permission to use, copy, modify, and distribute this piece of software
+ for any purpose with or without fee is hereby granted, provided that
+ the above copyright notice and this permission notice appear in the
+ source code of all copies.
+
+ It would be appreciated if you mention the author in your change log,
+ contributors list or the like.
+
+ Author: Karsten Priegnitz
+ See: <a href="https://code.google.com/p/android-change-log/">...</a>
+
+ App newly installed: Shows the history of TourCount.
+ App updated: Shows the last changes of TourCount.
+
+ Therefore retrieves the version names and stores the new version name in SharedPreferences
+
+ Adaptation for TourCount by wm.stein on 2016-04-18,
+ last edited on 2026-01-24
  */
 public class ChangeLog {
     private static final String TAG = "ChangeLog";
@@ -110,7 +110,7 @@ public class ChangeLog {
     private AlertDialog getDialog(boolean full) {
         WebView wv = new WebView(this.context);
 
-        wv.setBackgroundColor(Color.parseColor("#1a1a1a"));
+        wv.setBackgroundColor(Color.parseColor("#1a1a1a")); // DarkGray
         wv.loadDataWithBaseURL(null, this.getLog(full), "text/html",
                 "UTF-8", null);
 

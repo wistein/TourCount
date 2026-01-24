@@ -2,7 +2,8 @@ TourCount supports species-specific and individually GPS-localized registering o
 
 New in Version 3.7.1:
 - Html formatting for app messages improved for different Android versions
-- Code improvements
+- Messages colors: Error red, warning orange, attention blue, info green
+- Code and text improvements
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

@@ -184,9 +184,9 @@ class AddSpeciesActivity : AppCompatActivity() {
         // Toast hint for duration of list calculation
         val mesg = getString(R.string.wait)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Toast.makeText( // bright green
+            Toast.makeText(
                 applicationContext,
-                fromHtml("<font color='#008800'>$mesg</font>"),
+                fromHtml("<font color='blue'>$mesg</font>"),
                 Toast.LENGTH_SHORT
             ).show()
         } else

@@ -65,7 +65,7 @@ class ShowTextDialog : AppCompatActivity () {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
-            setStatusBarColor(window, "#404040".toColorInt())
+            setStatusBarColor(window, "#303030".toColorInt()) // DarkerGray
         }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -94,7 +94,7 @@ class ShowTextDialog : AppCompatActivity () {
                 tvText.text = fromHtml(readRawTextFile(R.raw.license, this))
             }
         }
-        tvText.setLinkTextColor("#4068ff".toColorInt()) // format the links within the text blueish
+        tvText.setLinkTextColor("#4068ff".toColorInt()) // format the links within the text SkyBlue
         Linkify.addLinks(tvText, Linkify.WEB_URLS)
     }
 

@@ -35,7 +35,7 @@ import com.wmstein.tourcount.Utils.fromHtml
  * Adopted and adapted for TourCount by wmstein since 2018-07-26,
  * last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-01-15
+ * last edited on 2026-01-24
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -238,14 +238,14 @@ open class LocationService : Service, LocationListener {
             if ((27.6 < lat && lat < 71.2) && (-31.3 < lon && lon < 50.8)) {
                 mesg = mContext!!.getString(R.string.newLock) // in green
                 Toast.makeText( // bright green
-                    mContext!!,
+                    mContext,
                     fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 mesg = mContext!!.getString(R.string.outsideEurope) // in blue
                 Toast.makeText( // orange
-                    mContext!!,
+                    mContext,
                     fromHtml("<font color='#ff6000'>$mesg</font>"),
                     Toast.LENGTH_LONG
                 ).show()

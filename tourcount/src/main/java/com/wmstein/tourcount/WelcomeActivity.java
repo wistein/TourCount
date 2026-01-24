@@ -258,7 +258,7 @@ public class WelcomeActivity
         File inFile1 = new File(path, "/tourcount0_" + tourName + ".db");
 
         if (!inFile.exists() && !inFile1.exists())
-            exportBasisDb(); // create directory and copy internal DB-data to initial Basis DB-file
+            exportBasisDb(); // create directory and copy internal DB-data to initial Basic DB-file
 
         // New onBackPressed logic
         // Different Navigation Bar modes and layouts:
@@ -620,8 +620,8 @@ public class WelcomeActivity
         } else if (id == R.id.showResults) {
             // Call ShowResultsActivity
             mesg = getString(R.string.wait);
-            Toast.makeText(this, // bright green
-                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+            Toast.makeText(this,
+                    fromHtml("<font color='blue'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
             // Trick: Pause for 100 msec to show toast
             mHandler.postDelayed(() ->
@@ -693,8 +693,8 @@ public class WelcomeActivity
     public void showResults(View view) {
         // a Snackbar here comes incomplete
         mesg = getString(R.string.wait);
-        Toast.makeText(this, // bright green
-                fromHtml("<font color='#008000'>" + mesg + "</font>"),
+        Toast.makeText(this,
+                fromHtml("<font color='blue'>" + mesg + "</font>"),
                 Toast.LENGTH_SHORT).show();
         // Trick: Pause for 100 msec to show toast
         mHandler.postDelayed(() ->
@@ -926,8 +926,8 @@ public class WelcomeActivity
         try {
             // Read exported species list and write items to table counts
             mesg = getString(R.string.waitImport);
-            Toast.makeText(this, // bright green
-                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
+            Toast.makeText(this,
+                    fromHtml("<font color='blue'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
             BufferedReader br = new BufferedReader(new FileReader(inFile));
             String csvLine;
@@ -964,7 +964,7 @@ public class WelcomeActivity
      * The next four functions below are for exporting data files.
      * They've been put here because no database should be open at this point.
      **********************************************************************************************/
-    // Exports Basis DB to Documents/TourCount/tourcount0_name.db
+    // Exports Basic DB to Documents/TourCount/tourcount0_name.db
     // hasNoName indicated initial creation of tourcount0.db if it does not exist
     private void exportBasisDb() {
         // inFile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
@@ -1013,7 +1013,7 @@ public class WelcomeActivity
                 // Clear DB values for basic DB
                 clearDBValues();
 
-                // Write Basis DB
+                // Write Basic DB
                 copy(inFile, outFile);
 
                 // Restore actual db from tmpFile
@@ -1081,8 +1081,8 @@ public class WelcomeActivity
             try {
                 copy(inFile, outFile);
                 mesg = getString(R.string.saveDB);
-                Toast.makeText(this, // bright green
-                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                Toast.makeText(this,
+                        fromHtml("<font color='blue'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 mesg = getString(R.string.saveFail);
@@ -1662,8 +1662,8 @@ public class WelcomeActivity
                 dbHelper.close();
 
                 mesg = getString(R.string.saveCSV);
-                Toast.makeText(this, // bright green
-                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                Toast.makeText(this,
+                        fromHtml("<font color='blue'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 mesg = getString(R.string.saveFail);
@@ -1785,8 +1785,8 @@ public class WelcomeActivity
                 }
                 csvWrite.close();
                 mesg = getString(R.string.saveList);
-                Toast.makeText(this, // bright green
-                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
+                Toast.makeText(this,
+                        fromHtml("<font color='blue'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 mesg = getString(R.string.saveFailList);
@@ -1876,18 +1876,14 @@ public class WelcomeActivity
                     + DbHelper.T_TEMP_CNT + " = 0;";
             database.execSQL(sql);
 
-            dbHelper.close();
         } catch (Exception e) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "1882, Failed to reset DB");
-
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
                     fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
                     Toast.LENGTH_LONG).show();
-            dbHelper.close();
             r_ok = false;
         }
+        dbHelper.close();
         return r_ok;
     }
     // End of resetToBasisDb()
