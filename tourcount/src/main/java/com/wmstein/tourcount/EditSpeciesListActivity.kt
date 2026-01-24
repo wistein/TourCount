@@ -346,9 +346,9 @@ class EditSpeciesListActivity : AppCompatActivity() {
             mesg = getString(R.string.spname) + " " + isDblName +
                     " " + getString(R.string.orCode) + " " + isDblCode +
                     " " + getString(R.string.isDouble)
-            Toast.makeText(
+            Toast.makeText( // orange
                 applicationContext,
-                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                 Toast.LENGTH_LONG
             ).show()
             retValue = false
@@ -366,9 +366,9 @@ class EditSpeciesListActivity : AppCompatActivity() {
         val isDbl: String = compCountNames()
         if (isDbl != "") {
             mesg = isDbl + " " + getString(R.string.isDouble) + " " + getString(R.string.duplicate)
-            Toast.makeText(
+            Toast.makeText( // orange
                 applicationContext,
-                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                 Toast.LENGTH_LONG
             ).show()
             retValue = false

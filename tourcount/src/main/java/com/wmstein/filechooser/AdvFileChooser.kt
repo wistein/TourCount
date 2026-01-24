@@ -16,7 +16,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-10-22
+ * last edited on 2026-01-24
  */
 class AdvFileChooser : AppCompatActivity() {
     private var currentDir: File? = null
@@ -78,8 +78,7 @@ class AdvFileChooser : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
-            setStatusBarColor(window, ContextCompat.getColor(applicationContext,
-                R.color.DarkerGray))
+            setStatusBarColor(window, "#404040".toColorInt())
         }
 
         val extras = intent.extras
@@ -106,7 +105,7 @@ class AdvFileChooser : AppCompatActivity() {
         fileHead.text = fileHd
 
         // currentDir = /storage/emulated/0/Documents/TourCount/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android (>= 10+) -> >= 11 todo?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android >= 10+
         {
             currentDir = Environment.getExternalStorageDirectory()
             currentDir = File("$currentDir/Documents/TourCount")
@@ -186,7 +185,7 @@ class AdvFileChooser : AppCompatActivity() {
         intent.putExtra("fileSelected", fileSelected.absolutePath)
         setResult(RESULT_OK, intent)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "189, Selected file: $fileSelected")
+            Log.i(TAG, "188, Selected file: $fileSelected")
         finish()
     }
 

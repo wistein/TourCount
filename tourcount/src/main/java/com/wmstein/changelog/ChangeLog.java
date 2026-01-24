@@ -1,11 +1,10 @@
 package com.wmstein.changelog;
 
-import static androidx.core.content.ContextCompat.getColor;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.webkit.WebView;
@@ -42,7 +41,7 @@ import java.util.Locale;
  * Therefore retrieves the version names and stores the new version name in SharedPreferences
  * <p>
  * Adaptation for TourCount by wm.stein on 2016-04-18,
- * last edited on 2025-10-22
+ * last edited on 2026-01-24
  */
 public class ChangeLog {
     private static final String TAG = "ChangeLog";
@@ -63,7 +62,7 @@ public class ChangeLog {
         // get version numbers of lastVersion and thisVersion to compare
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "66, lastVersion: " + lastVersion);
+            Log.d(TAG, "65, lastVersion: " + lastVersion);
 
         try {
             this.thisVersion = context.getPackageManager().getPackageInfo(
@@ -71,10 +70,10 @@ public class ChangeLog {
         } catch (NameNotFoundException e) {
             this.thisVersion = NO_VERSION;
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "74, could not get version name from manifest!", e);
+                Log.e(TAG, "73, could not get version name from manifest!", e);
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "77, appVersion: " + thisVersion);
+            Log.d(TAG, "76, appVersion: " + thisVersion);
     }
 
     /**
@@ -111,7 +110,7 @@ public class ChangeLog {
     private AlertDialog getDialog(boolean full) {
         WebView wv = new WebView(this.context);
 
-        wv.setBackgroundColor(getColor(context, R.color.DarkGray));
+        wv.setBackgroundColor(Color.parseColor("#1a1a1a"));
         wv.loadDataWithBaseURL(null, this.getLog(full), "text/html",
                 "UTF-8", null);
 
@@ -232,7 +231,7 @@ public class ChangeLog {
             ins.close();
         } catch (IOException e) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "235, could not read changelog.", e);
+                Log.e(TAG, "234, could not read changelog.", e);
         }
 
         return sb.toString();

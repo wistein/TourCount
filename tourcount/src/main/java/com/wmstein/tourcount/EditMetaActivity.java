@@ -402,8 +402,8 @@ public class EditMetaActivity extends AppCompatActivity
         if (section.tmp > 50 || section.tmp_end > 50 || section.tmp < 0 || section.tmp_end < 0)
         {
             mesg = getString(R.string.valTemp);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+            Toast.makeText(this, //orange
+                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
                     Toast.LENGTH_LONG).show();
             return false;
         }
@@ -413,8 +413,8 @@ public class EditMetaActivity extends AppCompatActivity
         if (section.wind > 4 || section.wind_end > 4 || section.wind < 0 || section.wind_end < 0)
         {
             mesg = getString(R.string.valWind);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+            Toast.makeText(this, // orange
+                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
                     Toast.LENGTH_LONG).show();
             return false;
         }
@@ -424,8 +424,8 @@ public class EditMetaActivity extends AppCompatActivity
         if (section.clouds > 100 || section.clouds_end > 100 || section.clouds < 0 || section.clouds_end < 0)
         {
             mesg = getString(R.string.valClouds);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+            Toast.makeText(this, // orange
+                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
                     Toast.LENGTH_LONG).show();
             return false;
         }

@@ -527,7 +527,7 @@ public class CountingActivity
             disableProximitySensor();
 
             mesg = getString(R.string.wait);
-            Toast.makeText(this,
+            Toast.makeText(this, // bright green
                     fromHtml("<font color='#008000'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
 
@@ -543,7 +543,7 @@ public class CountingActivity
             disableProximitySensor();
 
             mesg = getString(R.string.wait);
-            Toast.makeText(this,
+            Toast.makeText(this, // bright green
                     fromHtml("<font color='#008000'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
 

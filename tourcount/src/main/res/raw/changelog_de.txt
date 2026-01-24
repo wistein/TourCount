@@ -68,8 +68,9 @@ _ subtitle
 
 $ 3.7.1
   % Version 3.7.1
-  _ 15.01.2026
+  _ 24.01.2026
   * Html-Formatierung für App-Meldungen für verschiedene Android-Versionen verbessert
+  * Code-Verbesserungen
 
 $ 3.7.0
   % Version 3.7.0

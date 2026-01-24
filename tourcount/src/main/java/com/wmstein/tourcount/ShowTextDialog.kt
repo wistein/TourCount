@@ -9,17 +9,14 @@ import android.view.MenuItem
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 import android.widget.TextView
-
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
-
 import com.wmstein.tourcount.Utils.fromHtml
-
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -30,7 +27,7 @@ import java.util.Locale
  * Custom class for displaying the Help and License Dialogs
  *
  * Created 2025-07-08 by wistein for TourCount and TransektCount,
- * last edited on 2026-01-02
+ * last edited on 2026-01-24
  */
 class ShowTextDialog : AppCompatActivity () {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -68,8 +65,7 @@ class ShowTextDialog : AppCompatActivity () {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
-            setStatusBarColor(window, ContextCompat.getColor(applicationContext,
-                R.color.DarkerGray))
+            setStatusBarColor(window, "#404040".toColorInt())
         }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -98,7 +94,7 @@ class ShowTextDialog : AppCompatActivity () {
                 tvText.text = fromHtml(readRawTextFile(R.raw.license, this))
             }
         }
-        tvText.setLinkTextColor(getColor(R.color.SkyBlue)) // format the links within the text
+        tvText.setLinkTextColor("#4068ff".toColorInt()) // format the links within the text blueish
         Linkify.addLinks(tvText, Linkify.WEB_URLS)
     }
 

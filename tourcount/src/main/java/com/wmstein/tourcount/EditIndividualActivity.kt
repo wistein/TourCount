@@ -40,7 +40,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * created on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-01-15
+ * last edited on 2026-01-24
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -337,9 +337,9 @@ class EditIndividualActivity : AppCompatActivity() {
                 individuals!!.state_1_6 = newState
             } else {
                 mesg = getString(R.string.valState)
-                Toast.makeText(
+                Toast.makeText( // orange
                     applicationContext,
-                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                     Toast.LENGTH_LONG
                 ).show()
                 return false
@@ -415,9 +415,9 @@ class EditIndividualActivity : AppCompatActivity() {
         } else  // newCount is <= 0
         {
             mesg = getString(R.string.warnCount)
-            Toast.makeText(
+            Toast.makeText( // orange
                 this,
-                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                 Toast.LENGTH_LONG
             ).show()
             return false // forces input newCount > 0

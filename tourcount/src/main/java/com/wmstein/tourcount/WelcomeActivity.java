@@ -87,7 +87,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-01-15
+ * last edited on 2026-01-24
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -337,8 +337,8 @@ public class WelcomeActivity
             //   Info about the first GPS lock is handled in LocationService onLocationChanged().
             if (metaPref && Objects.equals(emailString, "")) {
                 mesg = getString(R.string.missingEmail);
-                Toast.makeText(this,
-                        fromHtml("<font color='blue'>" + mesg + "</font>"),
+                Toast.makeText(this, // orange
+                        fromHtml("<font color='#ff6000'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             }
             isFirstStart = false;
@@ -620,7 +620,7 @@ public class WelcomeActivity
         } else if (id == R.id.showResults) {
             // Call ShowResultsActivity
             mesg = getString(R.string.wait);
-            Toast.makeText(this,
+            Toast.makeText(this, // bright green
                     fromHtml("<font color='#008000'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
             // Trick: Pause for 100 msec to show toast
@@ -693,7 +693,7 @@ public class WelcomeActivity
     public void showResults(View view) {
         // a Snackbar here comes incomplete
         mesg = getString(R.string.wait);
-        Toast.makeText(this,
+        Toast.makeText(this, // bright green
                 fromHtml("<font color='#008000'>" + mesg + "</font>"),
                 Toast.LENGTH_SHORT).show();
         // Trick: Pause for 100 msec to show toast
@@ -771,8 +771,8 @@ public class WelcomeActivity
                         }
                     } else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
                         mesg = getString(R.string.noFile);
-                        Toast.makeText(getApplicationContext(),
-                                fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.makeText(getApplicationContext(), // orange
+                                fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
                                 Toast.LENGTH_LONG).show();
                     }
                     if (inFile != null) {
@@ -802,7 +802,7 @@ public class WelcomeActivity
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
                                 mesg = getString(R.string.importWin);
-                                Toast.makeText(getApplicationContext(),
+                                Toast.makeText(getApplicationContext(), // bright green
                                         fromHtml("<font color='#008000'>" + mesg + "</font>"),
                                         Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
@@ -877,8 +877,8 @@ public class WelcomeActivity
                     // RESULT_FIRST_USER is set in AdvFileChooser for no file
                     else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
                         mesg = getString(R.string.noFile);
-                        Toast.makeText(getApplicationContext(),
-                                fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.makeText(getApplicationContext(), // orange
+                                fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
                                 Toast.LENGTH_LONG).show();
                     }
                     if (inFile != null) {
@@ -926,7 +926,7 @@ public class WelcomeActivity
         try {
             // Read exported species list and write items to table counts
             mesg = getString(R.string.waitImport);
-            Toast.makeText(this,
+            Toast.makeText(this, // bright green
                     fromHtml("<font color='#008000'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
             BufferedReader br = new BufferedReader(new FileReader(inFile));
@@ -948,7 +948,7 @@ public class WelcomeActivity
             }
             br.close();
             mesg = getString(R.string.importList);
-            Toast.makeText(this,
+            Toast.makeText(this, // bright green
                     fromHtml("<font color='#008000'>" + mesg + "</font>"),
                     Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
@@ -1023,7 +1023,7 @@ public class WelcomeActivity
                 boolean d0 = tmpFile.delete();
                 if (d0) {
                     mesg = getString(R.string.saveBasisDB);
-                    Toast.makeText(this,
+                    Toast.makeText(this, // bright green
                             fromHtml("<font color='#008000'>" + mesg + "</font>"),
                             Toast.LENGTH_SHORT).show();
                 }
@@ -1081,7 +1081,7 @@ public class WelcomeActivity
             try {
                 copy(inFile, outFile);
                 mesg = getString(R.string.saveDB);
-                Toast.makeText(this,
+                Toast.makeText(this, // bright green
                         fromHtml("<font color='#008000'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
@@ -1662,7 +1662,7 @@ public class WelcomeActivity
                 dbHelper.close();
 
                 mesg = getString(R.string.saveCSV);
-                Toast.makeText(this,
+                Toast.makeText(this, // bright green
                         fromHtml("<font color='#008000'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
@@ -1785,7 +1785,7 @@ public class WelcomeActivity
                 }
                 csvWrite.close();
                 mesg = getString(R.string.saveList);
-                Toast.makeText(this,
+                Toast.makeText(this, // bright green
                         fromHtml("<font color='#008000'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
@@ -1811,7 +1811,7 @@ public class WelcomeActivity
             boolean r_ok = clearDBValues();
             if (r_ok) {
                 mesg = getString(R.string.reset2basic);
-                Toast.makeText(this,
+                Toast.makeText(this, // bright green
                         fromHtml("<font color='#008000'>" + mesg + "</font>"),
                         Toast.LENGTH_SHORT).show();
             }

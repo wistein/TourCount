@@ -69,8 +69,9 @@ _ subtitle
 
 $ 3.7.1
   % Version 3.7.1
-  _ 2026-01-15
+  _ 2026-01-24
   * Html formatting for app messages improved for different Android versions
+  * Code improvements
 
 $ 3.7.0
   % Version 3.7.0

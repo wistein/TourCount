@@ -237,16 +237,16 @@ open class LocationService : Service, LocationListener {
             var mesg: String
             if ((27.6 < lat && lat < 71.2) && (-31.3 < lon && lon < 50.8)) {
                 mesg = mContext!!.getString(R.string.newLock) // in green
-                Toast.makeText(
+                Toast.makeText( // bright green
                     mContext!!,
                     fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 mesg = mContext!!.getString(R.string.outsideEurope) // in blue
-                Toast.makeText(
+                Toast.makeText( // orange
                     mContext!!,
-                    fromHtml("<font color='blue'>$mesg</font>"),
+                    fromHtml("<font color='#ff6000'>$mesg</font>"),
                     Toast.LENGTH_LONG
                 ).show()
             }

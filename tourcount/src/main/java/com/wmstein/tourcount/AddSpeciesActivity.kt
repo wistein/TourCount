@@ -42,7 +42,7 @@ import com.wmstein.tourcount.widgets.HintAddWidget
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-01-15
+ * last edited on 2026-01-24
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -184,14 +184,14 @@ class AddSpeciesActivity : AppCompatActivity() {
         // Toast hint for duration of list calculation
         val mesg = getString(R.string.wait)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Toast.makeText(
+            Toast.makeText( // bright green
                 applicationContext,
                 fromHtml("<font color='#008800'>$mesg</font>"),
                 Toast.LENGTH_SHORT
             ).show()
         } else
         {
-            Toast.makeText(
+            Toast.makeText( // bright green
                 applicationContext,
                 fromHtml("<font color='#008800'>$mesg</font>"),
                 Toast.LENGTH_LONG
