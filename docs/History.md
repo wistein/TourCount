@@ -2,10 +2,11 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.7.1 (2026-01-24)
+#### Version 3.7.1 (2026-01-30)
 - Html formatting for app messages improved for different Android versions
 - Messages colors: Error red, warning orange, attention blue, info green
 - Code and text improvements
+- Docs updated
 
 #### Version 3.7.0 (2026-01-03)
 - Code improvement: Gray-out preference items "Button Vibration" and "Proximity Sensor" when not available in device

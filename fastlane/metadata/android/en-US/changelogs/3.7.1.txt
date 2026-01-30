@@ -1,4 +1,5 @@
-Version 3.7.1 (2026-01-24)
+Version 3.7.1 (2026-01-30)
 - Html formatting for app messages improved for different Android versions
 - Messages colors: Error red, warning orange, attention blue, info green
 - Code and text improvements
+- Docs updated

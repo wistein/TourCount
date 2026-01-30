@@ -23,13 +23,14 @@ TourCount is an Android app that supports species-specific and individually loca
 - The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
 - Help contains a detailed user guide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
+- TourCount supports counting in German or English language.
 
 ### Prerequisites
 The app demands for 
 - storage access permit which is needed for exporting the counting data, 
 - the permit to read location data for coordinates and location info per count, 
-- internet access for OpenStreetMap reverse geocoding, 
-- the permit to keep the device awake and
+- internet access for OpenStreetMap reverse geocoding and 
+- the permit to keep the device awake
 
 The device screen should have a minimum resolution of 1920 x 1024 pixels.  
 The app is usable with Android version 7.1 (Nougat) or newer.

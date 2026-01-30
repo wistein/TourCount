@@ -1,7 +1,7 @@
 <html>
 
 <!-- TourCount Benutzeranleitung --
-  Last edited on 2026-01-01
+  Last edited on 2026-01-30
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -20,7 +20,7 @@ https://github.com/wistein/TourCount<br>
 mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: <br>
 - Speicherzugriff zwecks Import von DB-Dateien und Spezieslisten, Export von Daten und der Zählergebnisse in DB- oder CSV-Dateien,<br>
 - GPS-Zugriffsrechte sowie<br>
-- Internetzugang für inverse Geokodierung und
+- Internetzugang für inverse Geokodierung und<br>
 - Wakelock, das verhindert, dass sich die App selbständig dimmt oder abschaltet, aber trotzdem beim Einstecken des Smartphones den Bildschirm nebst Berührungsempfindlichkeit abschaltet bis es wieder benutzt wird.
 <br><br>
 <br>
@@ -169,7 +169,12 @@ Das Optionsmenü der Zählerseite hat eine Fotofunktion um die Kamera möglichst
 <br><br>
 In der Zähler-Ansicht wird die Anzeige optional temporär per Näherungssensor abgeschaltet, wenn das Handy eingesteckt oder nahe am Körper gehalten wird. Das spart Energie, verhindert versehentliche Eingaben und bringt die App augenblicklich zurück, wenn es wieder normal genutzt wird.
 <br><br>
-<br>
+In der App erscheinen verschiedene, eingefärbte Kurz-Meldungen in 4 Kategorien:<br>
+- Fehler (z. B. Bei einem Datenbank-Problem) in rot.<br>
+- Warnung (z. B. bei einer unzulässigen Eingabe) in orange.<br>
+- Hinweis (z. B. wenn etwas länger dauert) in blau.<br>
+- Info (z. B. nach erfolgreichem Vorgang) in grün.
+<br><br><br>
 
 <h3><font color=#D9FDD9>5. Quellen</h3>
 Doku.: https://github.com/wistein/TourCount/tree/master/docs

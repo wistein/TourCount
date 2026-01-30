@@ -1,7 +1,7 @@
 <html>
 
 <!-- User instructions --
-  Last edited on 2026-01-01
+  Last edited on 2026-01-30
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -13,7 +13,11 @@ Databases can be created individually per region and adapted regarding expected 
 <br><br>
 The recorded data (meta-data, counts and remarks) may either be read on the smartphone for transfer into a butterfly registration system (e.g. on https://www.falterfunde.de/platform/s4y/falterfunde/index.do) or exported and transferred to a PC for your own processing, where they can be better read or edited.
 <br><br>
-The app is published with source code and documentation on https://github.com/wistein/TourCount. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services, but requires permits for its serviceable functions: Import of species lists and DB files, export of data and counting results to DB or CSV files, GPS access rights, internet access for inverse geocoding and wakelock to prevent the app from dimming or switching off.
+The app is published with source code and documentation on https://github.com/wistein/TourCount. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services, but requires permits for its serviceable functions:<br>
+- Import of species lists and DB files, export of data and counting results to DB or CSV files,<br>
+- GPS access rights,<br>
+- internet access for inverse geocoding and<br>
+- wakelock to prevent the app from being dimmed or switched off by the system.
 <br><br><br>
 
 <h3><font color=#D9FDD9>2. Setting up</font></h3>
@@ -157,6 +161,12 @@ Under "Licenses" you find the license notes for code and figures.
 The option menu of the counting page provides a "Photo" function to quickly take a photo and a "Share" function for sending notes using a standard app, like SMS or email.
 <br><br>
 Optionally, the counter view is temporarily turned off by means of the proximity sensor when the phone is pocketed or closely held to the body. This saves energy, prevents unwanted inputs and recalls the app into its normal state immediately when used again.
+<br><br>
+The app shows several short pop-up messages in 4 categories:<br>
+- Error (e.g. with a database problem) in red.<br>
+- Warning (e.g. in the event of an invalid entry) in orange.<br>
+- Note (e.g. if an action might last longer) in blue.<br>
+- Info (e.g. after a successful process) in green.
 <br><br><br>
 
 <h3><font color=#D9FDD9>5. Sources</h3>
