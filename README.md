@@ -23,7 +23,7 @@ TourCount is an Android app that supports species-specific and individually loca
 - The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
 - Help contains a detailed user guide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
-- TourCount supports counting in German or English language.
+- TourCount supports counting in German, English, French, Italian and Spanish language and provides locale species names in these languages.
 
 ### Prerequisites
 The app demands for 
