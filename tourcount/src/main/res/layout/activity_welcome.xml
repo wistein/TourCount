@@ -127,7 +127,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/viewSpeciesButton"
+            android:id="@+id/showResultsButton"
             android:layout_width="50sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -136,7 +136,7 @@
             tools:ignore="ContentDescription,UsingOnClickInXml" />
 
         <TextView
-            android:id="@+id/viewSpeciesButtonText"
+            android:id="@+id/showResultsButtonText"
             android:layout_width="200sp"
             android:layout_height="30sp"
             android:layout_gravity="center_vertical"
@@ -144,7 +144,7 @@
             android:textStyle="bold"
             android:backgroundTint="#333333"
             android:onClick="showResults"
-            android:text="@string/viewSpeciesButton"
+            android:text="@string/showResultsButton"
             android:textSize="18sp"
             tools:ignore="UsingOnClickInXml" />
     </LinearLayout>

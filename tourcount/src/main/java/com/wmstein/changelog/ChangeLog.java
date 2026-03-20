@@ -38,10 +38,10 @@ import java.util.Locale;
  App newly installed: Shows the history of TourCount.
  App updated: Shows the last changes of TourCount.
 
- Therefore retrieves the version names and stores the new version name in SharedPreferences
+ Therefore, retrieves the version names and stores the new version name in SharedPreferences
 
- Adaptation for TourCount by wm.stein on 2016-04-18,
- last edited on 2026-01-24
+ Adaptation for TourCount by wmstein on 2016-04-18,
+ last edited on 2026-03-13
  */
 public class ChangeLog {
     private static final String TAG = "ChangeLog";
@@ -159,10 +159,11 @@ public class ChangeLog {
         try {
             String language = Locale.getDefault().toString().substring(0, 2);
             InputStream ins;
-            if (language.equals("de"))
+            if (language.equals("de")) {
                 ins = context.getResources().openRawResource(R.raw.changelog_de);
-            else
+            } else {
                 ins = context.getResources().openRawResource(R.raw.changelog);
+            }
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
             boolean advanceToEOVS = false; // if true: ignore further version sections
             String line;
@@ -194,7 +195,7 @@ public class ChangeLog {
                             sb.append("<div class='boldtext'>").append(line.substring(1).trim()).append("</div>\n");
                         }
                         case '_' -> {
-                            // line contains version title
+                            // line contains version subtitle
                             this.closeList();
                             sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
                         }

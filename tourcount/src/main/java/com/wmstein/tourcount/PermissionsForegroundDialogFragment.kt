@@ -21,10 +21,10 @@ import androidx.fragment.app.DialogFragment
  * Based on RuntimePermissionsExample-master created by tylerjroach on 8/31/16,
  * licensed under the MIT License.
  *
- * Adopted for TourCount by wistein on 2019-02-08,
+ * Adopted for TourCount by wmstein on 2019-02-08,
  * last edited in java on 2024-09-30,
  * converted to Kotlin on 2025-01-22,
- * last edited on 2025-12-23
+ * last edited on 2026-03-20
  */
 class PermissionsForegroundDialogFragment : DialogFragment() {
     private var context: Context? = null
@@ -47,7 +47,7 @@ class PermissionsForegroundDialogFragment : DialogFragment() {
         // Request foreground location permission
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "50, $permission")
+            Log.i(TAG, "50, Manifest location permission: $permission")
         permissionLauncherForeground.launch(permission)
     }
 

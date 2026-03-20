@@ -5,7 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+    <style name="AppTheme.Dark"
+        parent="Theme.AppCompat">
         <!-- Customize dark theme attributes here -->
     </style>
 

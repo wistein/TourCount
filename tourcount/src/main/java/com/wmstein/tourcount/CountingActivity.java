@@ -15,9 +15,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,10 +54,10 @@ import com.wmstein.tourcount.database.IndividualsDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
 import com.wmstein.tourcount.widgets.CountingWidget;
-import com.wmstein.tourcount.widgets.CountingWidgetHead1;
-import com.wmstein.tourcount.widgets.CountingWidgetSpeciesNotes;
-import com.wmstein.tourcount.widgets.CountingWidgetLH;
-import com.wmstein.tourcount.widgets.CountingWidgetTourNotes;
+import com.wmstein.tourcount.widgets.CountingHead1Widget;
+import com.wmstein.tourcount.widgets.CountingSpeciesNotesWidget;
+import com.wmstein.tourcount.widgets.CountingLHWidget;
+import com.wmstein.tourcount.widgets.CountingTourNotesWidget;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -76,13 +73,13 @@ import java.util.Objects;
  * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
  * starts EditSpeciesListActivity, switches screen off when device is pocketed
  * and allows taking pictures and sending notes.
- <p>
- * CountingActivity uses CountingWidget.kt, CountingWidgetLH.kt, NotesWidget.kt,
+ * <p>
+ * CountingActivity uses CountingWidget.kt, CountingLHWidget.kt, NotesWidget.kt,
  * activity_counting.xml and activity_counting_lh.xml
- <p>
+ * <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-01-15
+ * last edited in Java on 2026-03-20
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -101,7 +98,7 @@ public class CountingActivity
     private Count count;
     private Section section;
     private List<CountingWidget> countingWidgets;
-    private List<CountingWidgetLH> countingWidgetsLH;
+    private List<CountingLHWidget> countingWidgetsLH;
     private Spinner spinner;
     private int itemPosition = 0;
     private int i_Id = 0; // Individuals id
@@ -112,6 +109,7 @@ public class CountingActivity
     private double latitude, longitude, height;
     private String uncertainty;
     LocationService locationService;
+    SoundService soundService;
     private boolean locServiceOn = false;
 
     // Proximity sensor handling screen on/off
@@ -128,7 +126,7 @@ public class CountingActivity
     private String sortPref;
     private boolean lhandPref;       // true for left hand mode of counting screen
     private boolean buttonSoundPref;
-    private String buttonSoundMinus; // (+)-buttonSound is handled in EditIndividualActivity
+    private boolean alertSoundPref;
     private boolean buttonVibPref;
     private String specCode = "";
     private String proxSensorPref;
@@ -141,9 +139,6 @@ public class CountingActivity
     private CountDataSource countDataSource;
     private IndividualsDataSource individualsDataSource;
 
-    private Context audioAttributionContext;
-    private MediaPlayer rToneM;
-
     // Prepare vibrator service
     private Vibrator vibrator;
 
@@ -154,11 +149,7 @@ public class CountingActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "156, onCreate");
-
-        audioAttributionContext = (Build.VERSION.SDK_INT >= 30) ?
-                createAttributionContext("ringSound") :
-                this;
+            Log.i(TAG, "152, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -218,8 +209,7 @@ public class CountingActivity
         if (powerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
             proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
                     "TourCount:WAKELOCK");
-        }
-        else {
+        } else {
             proximityWakeLock = null;
         }
 
@@ -254,9 +244,6 @@ public class CountingActivity
                 @Override
                 public void handleOnBackPressed() {
                     disableProximitySensor();
-
-                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "258, handleOnBackPressed");
                     finish();
                     remove();
                 }
@@ -264,6 +251,8 @@ public class CountingActivity
             getOnBackPressedDispatcher().addCallback(this, callback);
         }
         locationService = new LocationService(getApplicationContext());
+        if (buttonSoundPref)
+            soundService = new SoundService(getApplicationContext());
     }
     // End of onCreate()
 
@@ -285,8 +274,8 @@ public class CountingActivity
         sortPref = prefs.getString("pref_sort_sp", "none");    // sort mode of species list
         lhandPref = prefs.getBoolean("pref_left_hand", false);  // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
+        alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
-        buttonSoundMinus = prefs.getString("button_sound_minus", null); // use deeper button sound
         itemPosition = prefs.getInt("item_Position", 0);        // item position in spinner
         iid = prefs.getInt("count_id", 1);                      // species id
         proxSensorPref = prefs.getString("pref_prox", "Off");
@@ -301,7 +290,7 @@ public class CountingActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "303, onResume");
+            Log.i(TAG, "293, onResume");
 
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -326,25 +315,13 @@ public class CountingActivity
         if (awakePref)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Prepare button sounds
-        if (buttonSoundPref) {
-            Uri uriM;
-            if (isNotBlank(buttonSoundMinus) && buttonSoundMinus != null)
-                uriM = Uri.parse(buttonSoundMinus);
-            else
-                uriM = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-            if (rToneM == null)
-                rToneM = MediaPlayer.create(audioAttributionContext, uriM);
-        }
-
         // build the counting screen
         // clear any existing views
         count_area.removeAllViews();
         tour_notes_area.removeAllViews();
         head_area2.removeAllViews();
 
-        // Setup the data sources
+        // Set up the data sources
         sectionDataSource.open();
         countDataSource.open();
         individualsDataSource.open();
@@ -445,7 +422,7 @@ public class CountingActivity
         }
 
         // Set part of counting screen
-        CountingWidgetHead1 adapter = new CountingWidgetHead1(this,
+        CountingHead1Widget adapter = new CountingHead1Widget(this,
                 idArray, nameArray, nameArrayG, codeArray, imageArray);
         spinner.setAdapter(adapter);
         spinner.setSelection(itemPosition);
@@ -459,9 +436,6 @@ public class CountingActivity
         if (proximitySensor != null) {
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 float sensi = event.values[0];
-                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "462, Prox.Sensor Value0: " + sensi + ", " + "Sensitivity: "
-                            + sensorSensitivity);
 
                 // if ([0|5] >= [0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
                 if (sensi >= -sensorSensitivity && sensi < sensorSensitivity) {
@@ -612,6 +586,18 @@ public class CountingActivity
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         setPrefVariables();
+
+        // Stop sound service when denied in settings
+        if (!buttonSoundPref) {
+            editor = prefs.edit();
+            editor.putBoolean("snd_srv_on", false);
+            editor.commit();
+        }
+
+        // Stop sound service when denied in settings
+        if (!alertSoundPref) {
+            locationService.stopSoundA();
+        }
     }
 
     @Override
@@ -619,7 +605,7 @@ public class CountingActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "621, onPause");
+            Log.i(TAG, "608, onPause");
 
         disableProximitySensor();
 
@@ -653,18 +639,19 @@ public class CountingActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "655, onStop");
+            Log.i(TAG, "642, onStop");
 
         counting_screen.invalidate();
 
+        // Stop sound service when denied in settings
         if (buttonSoundPref) {
-            if (rToneM != null) {
-                if (rToneM.isPlaying()) {
-                    rToneM.stop(); // stop media player
-                }
-                rToneM.release();
-                rToneM = null;
-            }
+            soundService.releaseSoundM();
+            soundService.releaseSoundP();
+        }
+
+        // Stop alert sound in locationService when denied in settings
+        if (alertSoundPref) {
+            locationService.stopSoundA();
         }
     }
 
@@ -673,7 +660,7 @@ public class CountingActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "675, onDestroy");
+            Log.i(TAG, "663, onDestroy");
     }
 
     // Control location service
@@ -688,7 +675,7 @@ public class CountingActivity
                 {
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "690 locationDispatcher 1");
+                            Log.i(TAG, "678 locationDispatcher 1");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -702,7 +689,8 @@ public class CountingActivity
                 {
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "704, locationDispatcher 2");
+                            Log.i(TAG, "692, locationDispatcher 2");
+                        locationService.releaseSoundA();
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
@@ -796,13 +784,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "798, SpinnerListener, count id: "
+                        Log.d(TAG, "787, SpinnerListener, count id: "
                                 + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG, "804, SpinnerListener: " + e);
+                        Log.e(TAG, "793, SpinnerListener: " + e);
                 }
             }
 
@@ -815,15 +803,12 @@ public class CountingActivity
 
     // Show rest of widgets for counting screen
     private void countingScreen(Count count) {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "818, countingScreen");
-
-        // 1. Species line with Spinner is set by CountingWidgetHead1 in onResume
+        // 1. Species line with Spinner is set by CountingHead1Widget in onResume
 
         // 2. counts
         if (lhandPref) // if left-handed counting page
         {
-            CountingWidgetLH widgetc = new CountingWidgetLH(this, null);
+            CountingLHWidget widgetc = new CountingLHWidget(this, null);
             widgetc.setCount(count);
             countingWidgetsLH.add(widgetc);
             count_area.addView(widgetc);
@@ -835,12 +820,12 @@ public class CountingActivity
         }
 
         // 3. Species notes with edit button
-        CountingWidgetSpeciesNotes widgets = new CountingWidgetSpeciesNotes(this, null);
+        CountingSpeciesNotesWidget widgets = new CountingSpeciesNotesWidget(this, null);
         widgets.setCountHead2(count);
         head_area2.addView(widgets);
 
         // 4. Tour notes with edit button
-        CountingWidgetTourNotes widgett = new CountingWidgetTourNotes(this, null);
+        CountingTourNotesWidget widgett = new CountingTourNotesWidget(this, null);
         widgett.setTourNotes(section);
         tour_notes_area.addView(widgett);
     }
@@ -858,8 +843,8 @@ public class CountingActivity
     }
 
     // CountingWidget (left-handed)
-    private CountingWidgetLH getCountFromIdLH(int id) {
-        for (CountingWidgetLH widget : countingWidgetsLH) {
+    private CountingLHWidget getCountFromIdLH(int id) {
+        for (CountingLHWidget widget : countingWidgetsLH) {
             assert widget.count != null;
             if (widget.count.id == id)
                 return widget;
@@ -867,18 +852,19 @@ public class CountingActivity
         return null;
     }
 
-    /*****************************************************************
+    /********************************************************
      * The functions below are triggered by the count buttons
      * on the righthand/lefthand (LH) views.
      * <p>
-     * For up-counting they start EditIndividualActivity
+     * For up-counting they start EditIndividualActivity,
+     * down-counting is done directly
      */
     public void countUpf1i(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         if (widget != null)
             widget.countUpf1i();
 
@@ -889,7 +875,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -904,8 +890,8 @@ public class CountingActivity
 
     public void countUpLHf1i(View view) {
         int iAtt = 1;
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         if (widget != null)
             widget.countUpLHf1i();
 
@@ -916,7 +902,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -929,14 +915,15 @@ public class CountingActivity
         startActivity(intent);
     }
 
-    // Triggered by count down button
-    // deletes last count
+    // Triggered by count down button for
+    // decreases count if > 0
     public void countDownf1i(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f1i;
@@ -945,7 +932,7 @@ public class CountingActivity
             countDataSource.saveCountf1i(count);
 
             // get last individual of category 1 (♂|♀)
-            i_Id = individualsDataSource.getLastIndiv(count_id, 1);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 1);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -967,13 +954,14 @@ public class CountingActivity
     }
 
     // Triggered by count down button from left-hand view
-    // deletes last count
+    // decreases count if > 0
     public void countDownLHf1i(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f1i;
@@ -981,7 +969,7 @@ public class CountingActivity
             widget.countDownLHf1i();
             countDataSource.saveCountf1i(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 1);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 1);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1008,8 +996,8 @@ public class CountingActivity
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         if (widget != null)
             widget.countUpf2i();
 
@@ -1020,7 +1008,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1035,8 +1023,8 @@ public class CountingActivity
 
     public void countUpLHf2i(View view) {
         int iAtt = 2;
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         if (widget != null)
             widget.countUpLHf2i();
 
@@ -1047,7 +1035,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1061,21 +1049,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button
-    // deletes last count
+    // decreases count if > 0
     public void countDownf2i(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f2i;
+
         if (specCnt > 0) {
             widget.countDownf2i();
             countDataSource.saveCountf2i(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 2);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 2);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1097,21 +1087,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button from left-hand view
-    // deletes last count
+    // decreases count if > 0
     public void countDownLHf2i(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f2i;
+
         if (specCnt > 0) {
             widget.countDownLHf2i();
             countDataSource.saveCountf2i(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 2);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 2);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1136,8 +1128,8 @@ public class CountingActivity
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         if (widget != null)
             widget.countUpf3i();
 
@@ -1148,7 +1140,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1163,8 +1155,8 @@ public class CountingActivity
 
     public void countUpLHf3i(View view) {
         int iAtt = 3;
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         if (widget != null)
             widget.countUpLHf3i();
 
@@ -1175,7 +1167,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1189,21 +1181,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button
-    // deletes last count
+    // decreases count if > 0
     public void countDownf3i(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f3i;
+
         if (specCnt > 0) {
             widget.countDownf3i();
             countDataSource.saveCountf3i(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 3);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 3);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1225,21 +1219,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button from left-hand view
-    // deletes last count
+    // decreases count if > 0
     public void countDownLHf3i(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_f3i;
+
         if (specCnt > 0) {
             widget.countDownLHf3i();
             countDataSource.saveCountf3i(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 3);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 3);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1264,8 +1260,8 @@ public class CountingActivity
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         if (widget != null)
             widget.countUppi();
 
@@ -1276,7 +1272,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1291,8 +1287,8 @@ public class CountingActivity
 
     public void countUpLHpi(View view) {
         int iAtt = 4;
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         if (widget != null)
             widget.countUpLHpi();
 
@@ -1303,7 +1299,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1317,21 +1313,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button
-    // deletes last count
+    // decreases count if > 0
     public void countDownpi(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_pi;
+
         if (specCnt > 0) {
             widget.countDownpi();
             countDataSource.saveCountpi(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 4);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 4);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1353,21 +1351,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button from left-hand view
-    // deletes last count
+    // decreases count if > 0
     public void countDownLHpi(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_pi;
+
         if (specCnt > 0) {
             widget.countDownLHpi();
             countDataSource.saveCountpi(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 4);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 4);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1392,8 +1392,8 @@ public class CountingActivity
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         if (widget != null)
             widget.countUpli();
 
@@ -1404,7 +1404,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1419,8 +1419,8 @@ public class CountingActivity
 
     public void countUpLHli(View view) {
         int iAtt = 5;
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         if (widget != null)
             widget.countUpLHli();
 
@@ -1431,7 +1431,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1445,21 +1445,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button
-    // deletes last count
+    // decreases count if > 0
     public void countDownli(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_li;
+
         if (specCnt > 0) {
             widget.countDownli();
             countDataSource.saveCountli(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 5);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 5);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1481,21 +1483,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button from left-hand view
-    // deletes last count
+    // decreases count if > 0
     public void countDownLHli(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_li;
+
         if (specCnt > 0) {
             widget.countDownLHli();
             countDataSource.saveCountli(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 5);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 5);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1520,8 +1524,8 @@ public class CountingActivity
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         if (widget != null)
             widget.countUpei();
 
@@ -1532,7 +1536,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1547,8 +1551,8 @@ public class CountingActivity
 
     public void countUpLHei(View view) {
         int iAtt = 6;
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         if (widget != null) {
             widget.countUpLHei();
         }
@@ -1560,7 +1564,7 @@ public class CountingActivity
 
         // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", count_id);
+        intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
         intent.putExtra("SCode", widget.count.code);
         intent.putExtra("date", getcurDate());
@@ -1574,21 +1578,23 @@ public class CountingActivity
     }
 
     // Triggered by count down button
-    // deletes last count
+    // decreases count if > 0
     public void countDownei(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+        CountingWidget widget = getCountFromId(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_ei;
+
         if (specCnt > 0) {
             widget.countDownei();
             countDataSource.saveCountei(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 6);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 6);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1610,21 +1616,25 @@ public class CountingActivity
     }
 
     // Triggered by count down button from left-hand view
-    // deletes last count
+    // decreases count if > 0
     public void countDownLHei(View view) {
-        soundMinusButtonSound();
+        if (buttonSoundPref)
+            soundService.soundMinusButtonSound();
         buttonVib();
 
-        int count_id = Integer.parseInt(view.getTag().toString());
-        CountingWidgetLH widget = getCountFromIdLH(count_id);
+        int tempCountId = Integer.parseInt(view.getTag().toString());
+
+        CountingLHWidget widget = getCountFromIdLH(tempCountId);
         assert Objects.requireNonNull(widget).count != null;
+
         spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
         specCnt = widget.count.count_ei;
+
         if (specCnt > 0) {
             widget.countDownLHei();
             countDataSource.saveCountei(count);
 
-            i_Id = individualsDataSource.getLastIndiv(count_id, 6);
+            i_Id = individualsDataSource.getLastIndiv(tempCountId, 6);
             if (i_Id == -1) {
                 mesg = getString(R.string.getHelp) + spec_name;
                 Toast.makeText(this,
@@ -1648,8 +1658,6 @@ public class CountingActivity
 
     // Delete individual for count_id
     private void deleteIndividual(int id) {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1651, " + getString(R.string.indivDel) + " " + id);
         individualsDataSource.deleteIndividualById(id);
     }
 
@@ -1660,10 +1668,12 @@ public class CountingActivity
         DateFormat dform;
         String lng = Locale.getDefault().toString().substring(0, 2);
 
-        if (lng.equals("de"))
-            dform = new SimpleDateFormat("dd.MM.yyyy");
-        else
+        if (lng.equals("en"))
             dform = new SimpleDateFormat("yyyy-MM-dd");
+        else if (lng.equals("de"))
+            dform = new SimpleDateFormat("dd.MM.yyyy");
+        else // for fr, it and es
+            dform = new SimpleDateFormat("dd/MM/yyyy");
         return dform.format(date);
     }
 
@@ -1673,16 +1683,6 @@ public class CountingActivity
         @SuppressLint("SimpleDateFormat")
         DateFormat dform = new SimpleDateFormat("HH:mm:ss");
         return dform.format(date);
-    }
-
-    private void soundMinusButtonSound() {
-        if (buttonSoundPref) {
-            if (rToneM.isPlaying()) {
-                rToneM.stop();
-                rToneM.release();
-            }
-            rToneM.start();
-        }
     }
 
     private void buttonVib() {
@@ -1700,35 +1700,5 @@ public class CountingActivity
         }
     }
 
-    /**
-     * Checks if a CharSequence is not empty (""), not null and not whitespace only.
-     * <p>
-     * isNotBlank(null)      = false
-     * isNotBlank("")        = false
-     * isNotBlank(" ")       = false
-     * isNotBlank("bob")     = true
-     * isNotBlank("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return true if the CharSequence is
-     * not empty and not null and not whitespace
-     * <p>
-     * Derived from package org.apache.commons.lang3/StringUtils
-     */
-    private static boolean isNotBlank(final CharSequence cs) {
-        return !isBlank(cs);
-    }
-
-    private static boolean isBlank(final CharSequence cs) {
-        int strLen;
-        if (cs == null || (strLen = cs.length()) == 0)
-            return true;
-
-        for (int i = 0; i < strLen; i++) {
-            if (!Character.isWhitespace(cs.charAt(i)))
-                return false;
-        }
-        return true;
-    }
-
 }
+

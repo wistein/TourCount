@@ -7,10 +7,13 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 
-/**
+/******************************************************
  * Class HeadDataSource provides methods for table Head
- * Created by wmstein on 2016-03-31,
- * last edited on 2025-11-01
+ *
+ * Created by wmstein on 2016-03-31.
+ * Last edited in Java on 2022-04-26,
+ * converted to Kotlin on 2023-06-26,
+ * last edited on 2026-03-20
  */
 class HeadDataSource(context: Context) {
     // Database fields
@@ -18,7 +21,7 @@ class HeadDataSource(context: Context) {
     private val dbHelper: DbHelper = DbHelper(context)
     private val allColumns = arrayOf(
         DbHelper.H_ID,
-        DbHelper.H_OBSERVER
+        DbHelper.H_OBSERVER,
     )
 
     @Throws(SQLException::class)
@@ -45,14 +48,14 @@ class HeadDataSource(context: Context) {
         return head
     }
 
-    // Make sure to close the cursor
+    // getHead()
     val head: Head
         get() {
             val head: Head
             val cursor = database!!.query(
                 DbHelper.HEAD_TABLE,
                 allColumns,
-                1.toString(),
+                DbHelper.H_ID + " = 1",
                 null,
                 null,
                 null,
@@ -60,7 +63,6 @@ class HeadDataSource(context: Context) {
             )
             cursor.moveToFirst()
             head = cursorToHead(cursor)
-            // Make sure to close the cursor
             cursor.close()
             return head
         }

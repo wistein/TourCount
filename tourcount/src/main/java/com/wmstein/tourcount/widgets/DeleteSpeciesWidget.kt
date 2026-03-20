@@ -13,12 +13,12 @@ import com.wmstein.tourcount.database.Count
 import java.io.Serializable
 import java.util.Objects
 
-/************************************************
+/****************************************************************************
  * Used by DelSpeciesActivity
  * shows list of selectable species with name, code, picture and add checkbox
  *
  * Created for TourCount by wmstein on 2024-08-22,
- * last edited on 2025-05-02
+ * last edited on 2026-03-02
  */
 class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {

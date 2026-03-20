@@ -2,4 +2,4 @@ Version 3.6.8 (15.09.2025)
 - Zeigt eine einmalige Hinweismeldung, wenn noch kein GPS-Fix erfolgt ist oder der Ort außerhalb des europäischen Faunengebiets liegt
 - Einige Code- und Text-Verbesserungen
 - Doku überarbeitet
-- Bug-Fixe
+- Bugfixe

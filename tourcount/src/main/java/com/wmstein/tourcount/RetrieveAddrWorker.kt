@@ -17,11 +17,10 @@ import java.net.URL
 /**********************************************************************************************
  * Worker to get, parse and store address info from Nominatim Reverse Geocoder of OpenStreetMap
  *
- * Copyright 2018-2026 wmstein
- * created on 2018-03-10,
+ * Created by wmstein on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-01-01
+ * last edited on 2026-03-20
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -51,14 +50,14 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             val iStream = urlConnection.inputStream
 
             val reader = BufferedReader(InputStreamReader(iStream))
-            var line: String?
+            var line: String? = ""
             try {
                 while (reader.readLine().also { line = it } != null) {
                     sb.append(line).append('\n')
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "61, Problem converting Stream to String: $e")
+                    Log.e(TAG, "60, Problem converting Stream to String: $e")
             } finally {
                 iStream.close()
                 reader.close()
@@ -235,8 +234,6 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 sectionDataSource.storeEmptyPlz(section.id, section.plz)
             }
             sectionDataSource.close()
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "238, sectionDataSource closed")
 
             // Save sLocality to temp_loc in DB table Temp
             tempDataSource = TempDataSource(applicationContext)
@@ -251,8 +248,6 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             tempDataSource.saveTempLoc(tmp)
 
             tempDataSource.close()
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "254, tempDataSource closed")
         }
         return Result.success()
     }

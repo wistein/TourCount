@@ -44,10 +44,10 @@ import kotlin.math.sqrt
  * @version $Id$
  * @since 2.3
  *
- * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
+ * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last edit in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edit on 2024-11-19
+ * last edit on 2026-02-28
  */
 // Maximum degree and order attained.
 class EarthGravitationalModel @JvmOverloads constructor(
@@ -62,7 +62,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
     // Even zonal coefficient.
     private val c2 = 108262.9989050e-8
 
-    // WGS 84 Earth's Gravitational Constant w/ atmosphere.
+    // WGS 84 Earth Gravitational Constant.
     private val rkm = 3.986004418e+14
 
     // Theoretical (Normal) Gravity at the Equator (on the Ellipsoid).
@@ -87,7 +87,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
     private val `as`: DoubleArray
 
     /**
-     * Temporary buffer for use by heightOffset only. Allocated once for ever
+     * Temporary buffer for use by heightOffset only. Allocated once
      * for avoiding too many objects creation / destruction.
      */
     private val cr: DoubleArray
@@ -126,7 +126,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
      * Loads the coefficients from the specified ASCII file and initialize the internal
      * clenshaw arrays.
      *
-     * Note: ASCII may looks like an unefficient format for binary distribution.
+     * Note: ASCII may look like an unefficient format for binary distribution.
      * A binary file with coefficient values read by java.io.DataInput readDouble would
      * be more compact than an uncompressed ASCII file. However, binary files are hard to
      * compress by the ZIP algorithm. Our experience show that a 675 kb uncompressed ASCII file
@@ -147,8 +147,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
                  * Note: we use 'parseShort' instead of 'parseInt' as an easy way to ensure that
                  *       the values are in some reasonable range. The range is typically [0..180].
                  *       We don't check that, but at least 'parseShort' disallows values greater
-                 *       than 32767. Additional note: we real all lines in all cases even if we
-                 *       discard some of them, in order to check the file format.
+                 *       than 32767.
                  */
                 val n = tokens.nextToken().toShort().toInt()
                 val m = tokens.nextToken().toShort().toInt()
@@ -175,8 +174,8 @@ class EarthGravitationalModel @JvmOverloads constructor(
 
     /**
      * Computes the clenshaw arrays after all coefficients have been read.
-     * We performs this step in a separated method than {from} in case we wish
-     * to read the coefficient from an other source than an ASCII file in some future
+     * We perform this step in a separated method than {from} in case we wish
+     * to read the coefficient from another source than an ASCII file in some future
      * version.
      */
     private fun initialize() {
@@ -228,7 +227,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
      */
     public override fun heightOffset(longitude: Double, latitude: Double, height: Double): Double {
         /**
-         * Note: no need to ensure that longitude is in [-180..+180°] range, because its value
+         * Note: no need to ensure that longitude is in [-180...+180°] range, because its value
          * is used only in trigonometric functions (sin / cos), which roll it as we would expect.
          * Latitude is used only in trigonometric functions as well.
          */

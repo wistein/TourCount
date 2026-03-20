@@ -1,10 +1,22 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.7.1:
-- Html-Formatierung für App-Meldungen für verschiedene Android-Versionen verbessert
-- Farben der Meldungen: Fehler rot, Warnung orange, Achtung blau, Info grün
-- Code- und Text-Verbesserungen
+Neu in Version 3.7.2:
+- Französische, italienische und spanische Sprache hinzugefügt
+- Französische, italienische und spanische Spezies-Beispiel-Listen in GitHub-Docs hinzugefügt
+- Problem bei "Arten hinzufügen" gelöst, wenn die Systemsprache nicht der Sprache der lokalen Speziesnamen entspricht
+- Sprach-Einstellung für Daten (lokale Speziesnamen) von der Systemsprache abgekoppelt
+- Spezieslisten mit einem Eintrag für die automatische Erkennung der Datensprache ergänzt. Für ältere vorhandene Spezieslistendateien kann die Sprache der enthaltenen Daten manuell unter den Einstellungen der App gesetzt werden
+- Neue Einstellungsoption für die Wahl der Sprache der lokalen Speziesnamen, falls diese nicht automatisch erkannt wird (bei alter Spezieslistversion)
+- Arten hinzugefügt: Adela reaumurella, Borbo borbonica, Zerynthia cassandra, Zegris eupheme, Colotis evagore, Lysandra hispana, Coenonympha dorus, Satyrus actaea, Cucullia artemisiae und Litosia quadra
+- Eine eingefügte "0" (Null) in der Art-Bemerkung weist eine Art auch ohne Zählung im Ergebnis aus
+- Der Export der aktuellen DB und der Ergebnisexport benennt die .db- bzw. .csv-Dateien nun mit dem Datum und der Startzeit der Tour (falls eingegeben) anstelle mit der aktuellen Zeit
+- CSV-Export für Zahlendarstellung in linksbündigen Text-Spalten verbessert
+- Check für unzulässige Zeichen bei der internen Erstellung von Dateinamen, die den Tournamen enthalten
+- Sound-Erzeugung mittels Service
+- Einige Daten- und Text-Korrekturen
+- Einige Code-Verbesserungen
 - Doku überarbeitet
+- Bugfixe
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

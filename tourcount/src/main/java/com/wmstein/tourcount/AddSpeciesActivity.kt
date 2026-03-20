@@ -16,7 +16,6 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
-
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,12 +23,12 @@ import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
-
+import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
-import com.wmstein.tourcount.Utils.fromHtml
+import com.wmstein.tourcount.widgets.AddSpeciesHintWidget
 import com.wmstein.tourcount.widgets.AddSpeciesWidget
-import com.wmstein.tourcount.widgets.HintAddWidget
+import java.util.Locale
 
 /**********************************************************************
  * AddSpeciesActivity lets you insert new species into the species list
@@ -42,7 +41,7 @@ import com.wmstein.tourcount.widgets.HintAddWidget
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-01-24
+ * last edited on 2026-03-20
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -63,9 +62,9 @@ class AddSpeciesActivity : AppCompatActivity() {
     private var codesCompleteArrayList: ArrayList<String?>? = null
     private var codesReducedArrayList: ArrayList<String?>? = null
 
-    private var specName: String? = null
-    private var specNameG: String? = null
-    private var specCode: String? = null
+    private var specName: String? = ""
+    private var specNameG: String? = ""
+    private var specCode: String? = ""
     private var posSpec: Int = 0
 
     // 2 initial characters to limit selection
@@ -81,6 +80,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     private var prefs = TourCountApplication.getPrefs()
     private var brightPref = false
     private var awakePref = false
+    private var dataLanguage: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +111,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             WindowInsetsCompat.CONSUMED
         }
 
-        // get value from re-entering respective getInitialChars()
+        // Get value from re-entering respective getAddInitialChars()
         val extras = intent.extras
         if (extras != null)
             initChars = extras.getString("init_Chars").toString()
@@ -121,16 +121,12 @@ class AddSpeciesActivity : AppCompatActivity() {
         addHintArea = findViewById(R.id.showHintAddLayout)
         addArea = findViewById(R.id.addSpecLayout)
 
-        // setup the data sources
+        // Set up the data sources
         countDataSource = CountDataSource(this)
 
-        // new onBackPressed logic
+        // New onBackPressed logic
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "131, handleOnBackPressed")
-
-                countDataSource!!.close()
                 finish()
                 remove()
             }
@@ -143,13 +139,12 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "146, onResume")
-
-        countDataSource!!.open()
+            Log.i(TAG, "142, onResume")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
+        dataLanguage = prefs.getString("pref_sel_data_lang", "de")
 
         // Set full brightness of screen
         if (brightPref) {
@@ -161,10 +156,26 @@ class AddSpeciesActivity : AppCompatActivity() {
         if (awakePref)
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        countDataSource!!.open()
+
         // Load complete species ArrayList from arrays.xml (lists are sorted by code)
         namesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs)))
-        namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_l)))
         codesCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selCodes)))
+        when (dataLanguage) {
+            "de" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_de)))
+            "en" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_en)))
+            "fr" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_fr)))
+            "it" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_it)))
+            "es" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_es)))
+            else -> {
+                val mesg = "Please select the appropriate common species language in Settings"
+                Toast.makeText(
+                    this,
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
         // clear any existing views
         addArea!!.removeAllViews()
@@ -174,7 +185,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         // Display hint: Further available species
-        val haw = HintAddWidget(this, null)
+        val haw = AddSpeciesHintWidget(this, null)
         if (initChars.length == 2)
             haw.setSearchA(initChars)
         else
@@ -204,8 +215,8 @@ class AddSpeciesActivity : AppCompatActivity() {
     // End of onResume()
 
     // Get initial 2 characters of species to select by search button
-    // View is necessary for function call
-    fun getInitialChars(view: View) {
+    // Parameter view is necessary for function call
+    fun getAddInitialChars(view: View) {
         // Read EditText searchAdd from widget_add_hint.xml
         val searchAdd: EditText = findViewById(R.id.searchA)
         searchAdd.findFocus()
@@ -219,11 +230,10 @@ class AddSpeciesActivity : AppCompatActivity() {
             initChars = initChars.substring(0, 2)
             searchAdd.error = null
 
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "223, initChars: $initChars")
+            searchAdd.clearFocus()
+            searchAdd.invalidate()
 
             // Re-enter AddSpeciesActivity for reduced add list
-            countDataSource!!.close()
             val intent = Intent(this@AddSpeciesActivity, AddSpeciesActivity::class.java)
             intent.putExtra("init_Chars", initChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
@@ -236,39 +246,31 @@ class AddSpeciesActivity : AppCompatActivity() {
     //   and optionally reduce it further by initChar selection
     private fun constructAddList() {
         // 1. Build list of codes of contained species in counting list
-        val codesCountList = ArrayList<String?>()
+        val specCodesContainedList = ArrayList<String?>()
 
         // Get sorted species of the counting list
         countsCodesSortList = countDataSource!!.allSpeciesSrtCode
 
         // build ArrayList of codes of already contained species
         for (count in countsCodesSortList) {
-            codesCountList.add(count.code)
+            specCodesContainedList.add(count.code)
         }
 
         // 2. Build lists of all yet missing species
-        val codesCountListSize = codesCountList.size
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "252, codesCountListSize: $codesCountListSize")
+        val specCodesContainedListSize = specCodesContainedList.size
 
         // Reduce complete arraylists for already contained species
-        for (i in 0 until codesCountListSize) {
-            if (codesCompleteArrayList!!.contains(codesCountList[i])) {
+        for (i in 0 until specCodesContainedListSize) {
+            if (codesCompleteArrayList!!.contains(specCodesContainedList[i])) {
                 // Remove species with specCode[i] from missing species lists.
                 // Prerequisites: Exactly correlated arrays of selCodes, selSpecs and selSpecs_l
-                specCode = codesCountList[i]
+                specCode = specCodesContainedList[i]
                 posSpec = codesCompleteArrayList!!.indexOf(specCode)
-                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "262, 1. specCode: $specCode, posSpec: $posSpec")
+
                 namesCompleteArrayList!!.removeAt(posSpec)
                 namesLCompleteArrayList!!.removeAt(posSpec)
                 codesCompleteArrayList!!.removeAt(posSpec)
             }
-        }
-
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.d(TAG, "270, initChars: $initChars, namesCompleteArrayListSize: "
-                    + namesCompleteArrayList!!.size)
         }
 
         // Copy ...CompleteArrayLists to ...ReducedArrayLists
@@ -278,6 +280,8 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // 3. Further, optionally reduce the complete Arraylists for all but initChar species
         if (initChars.length == 2) {
+            initChars = initChars.uppercase(Locale.getDefault()) //Compare initChars in uppercase
+
             // Empty ...ReducedArrayLists
             namesReducedArrayList = arrayListOf()
             namesLReducedArrayList = arrayListOf()
@@ -285,12 +289,10 @@ class AddSpeciesActivity : AppCompatActivity() {
 
             // Check NamesCompleteArrayList for InitChars
             for (i in 0 until namesCompleteArrayList!!.size) {
-                if (namesCompleteArrayList!![i].substring(0, 2) == initChars) {
+                if (namesCompleteArrayList!![i].substring(0, 2).uppercase(Locale.getDefault()) == initChars) {
                     specName = namesCompleteArrayList!![i]
                     specNameG = namesLCompleteArrayList!![i]
                     specCode = codesCompleteArrayList!![i]
-                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "293, 2. specName: $specName, specCode: $specCode")
 
                     // Assemble remaining ReducedArrayLists for all Species with initChars
                     namesReducedArrayList!!.add(specName!!)
@@ -302,15 +304,13 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Create remainingIdArrayList with IDs of remaining species
         remainingIdArrayList = arrayOfNulls(codesReducedArrayList!!.size)
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "306, remainingIdArrayListSize: " + remainingIdArrayList.size)
         var i = 0
         while (i < codesReducedArrayList!!.size) {
             remainingIdArrayList[i] = (i + 1).toString()
             i++
         }
 
-        // load the data of remaining species into the widgets
+        // load the data of remaining species into the AddSpeciesWidget
         i = 0
         while (i < codesReducedArrayList!!.size) {
             val asw = AddSpeciesWidget(this, null)
@@ -332,8 +332,6 @@ class AddSpeciesActivity : AppCompatActivity() {
     // Mark the selected species and consider it for the species counts list
     fun checkBoxAdd(view: View) {
         val idToAdd = view.tag as Int
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "336, View.tag: $idToAdd")
         val asw = addArea!!.getChildAt(idToAdd) as AddSpeciesWidget
 
         val checked = asw.getMarkSpec() // return boolean isChecked
@@ -341,17 +339,9 @@ class AddSpeciesActivity : AppCompatActivity() {
         // put species on add list
         if (checked) {
             listToAdd!!.add(asw)
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-                val codeA = asw.getSpecCode()
-                Log.d(TAG, "346, addCount, code: $codeA")
-            }
         } else {
             // remove species previously added from add list
             listToAdd!!.remove(asw)
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-                val codeA = asw.getSpecCode()
-                Log.d(TAG, "353, removeCount, code: $codeA")
-            }
         }
     }
 
@@ -364,9 +354,6 @@ class AddSpeciesActivity : AppCompatActivity() {
             specName = listToAdd!![i].getSpecName()
             specCode = listToAdd!![i].getSpecCode()
             specNameG = listToAdd!![i].getSpecNameG()
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-                Log.d(TAG, "368, addSpecs, code: $specCode")
-            }
             try {
                 countDataSource!!.createCount(specName, specCode, specNameG)
             } catch (_: Exception) {
@@ -387,7 +374,6 @@ class AddSpeciesActivity : AppCompatActivity() {
         }
 
         // Re-enter AddSpeciesActivity to rebuild the species list
-        countDataSource!!.close()
         val intent = Intent(this@AddSpeciesActivity, AddSpeciesActivity::class.java)
         intent.putExtra("init_Chars", "")
         intent.flags = FLAG_ACTIVITY_CLEAR_TOP
@@ -395,23 +381,14 @@ class AddSpeciesActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString("new_spec_code", specCode)
-        super.onSaveInstanceState(outState)
-    }
-
-    public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        if (savedInstanceState.getString("new_spec_code")!!.isNotBlank())
-            specCode = savedInstanceState.getString("new_spec_code")
-        super.onRestoreInstanceState(savedInstanceState)
-    }
-
+    // Inflate the menu; this adds items to the action bar if it is present.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.add_species, menu)
         return true
     }
 
+    // Handle action bar item clicks here.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here
         val id = item.itemId
@@ -430,26 +407,35 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "433, onPause")
+            Log.i(TAG, "410, onPause")
 
         countDataSource!!.close()
 
         if (awakePref) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+            addArea!!.clearFocus()
+            addArea!!.removeAllViews()
+            addHintArea!!.clearFocus()
+            addHintArea!!.removeAllViews()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "428, onStop")
+
+        addArea = null
+        addHintArea = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "446, onDestroy")
-
-        addArea!!.removeAllViews()
-        addArea = null
-        addHintArea!!.clearFocus()
-        addHintArea!!.removeAllViews()
-        addHintArea = null
+            Log.d(TAG, "438, onDestroy")
     }
 
     companion object {

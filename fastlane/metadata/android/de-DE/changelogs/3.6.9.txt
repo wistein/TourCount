@@ -13,4 +13,4 @@ Version 3.6.9 (28.12.2028)
 - App-spezifische Debug-Unterstützung für den Emulator in Android Studio hinzugefügt
 - Einige Code-Verbesserungen
 - Doku überarbeitet
-- Bug-Fixe
+- Bugfixe

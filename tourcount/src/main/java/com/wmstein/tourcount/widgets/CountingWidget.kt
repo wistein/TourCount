@@ -1,6 +1,3 @@
-/*
- * Copyright © 2018 - 2025. Wilhelm Stein, Bonn, Germany.
- */
 package com.wmstein.tourcount.widgets
 
 import android.annotation.SuppressLint
@@ -15,13 +12,14 @@ import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
 import java.util.Objects
 
-/****************************************************
+/*****************************************************
  * Interface for widget_counting.xml
- * Created by wmstein 2016-12-18,
+ *
+ * Created by wmstein for TransektCount on 2016-12-18,
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2025-12-27
+ * last edited on 2026-02-28
  */
 @SuppressLint("SetTextI18n")
 class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {

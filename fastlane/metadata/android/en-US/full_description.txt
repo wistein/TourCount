@@ -1,10 +1,22 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.1:
-- Html formatting for app messages improved for different Android versions
-- Messages colors: Error red, warning orange, attention blue, info green
-- Code and text improvements
+New in Version 3.7.2:
+- French, Italian and Spanish languages added
+- French, Italian and Spanish species list file examples added in GitHub Docs
+- Problem fixed for "Add species" when system language differs from language of common species names
+- Language handling for data (common species names) and system separated
+- Species list supplemented with a data language field for automatic data language recognition. For older existing species list files the data language can be manually set in settings
+- New settings option for selecting the data language for common butterfly names if not automatically recognized for old species list version
+- Added species: Adela reaumurella, Borbo borbonica, Zerynthia cassandra, Zegris eupheme, Colotis evagore, Lysandra hispana, Coenonympha dorus, Satyrus actaea, Cucullia artemisiae and Litosia quadra
+- A "0"-character (zero) in the species remark puts the species into the results despite a 0 count
+- Exporting current DB or results creates the .db- and the .csv-file names with date and time of the inspection start (if entered) instead of the current time
+- Improved CSV export for numbers in left-aligned text fields
+- Check for forbidden characters when the app creates a file name including the tour title
+- Sounds produced by service
+- Some data and text corrections
+- Some code cleaning
 - Docs updated
+- Bugfixes
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

@@ -25,16 +25,16 @@ package com.wmstein.egm
  * transform classes can be easily derived. In addition, `AbstractMathTransform` implements
  * methods required by the {MathTransform2D} interface, but **does not**
  * implements `MathTransform2D`. Subclasses must declare `implements MathTransform2D`
- * themself if they know to maps two-dimensional coordinate systems.
+ * themselves if they know to maps two-dimensional coordinate systems.
  *
  * @author Martin Desruisseaux (IRD)
  * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters
  * @since 2.0
  *
- * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
+ * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last change in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-10-01.
+ * last edited on 2026-02-28.
  */
 // Constructs a math transform.
 abstract class AbstractMathTransform internal constructor() {

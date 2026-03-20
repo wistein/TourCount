@@ -17,11 +17,12 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.PreferenceManager
 
 /*********************************************************************
- * Handle background image and prefs
+ * Provide global app data and handle background image and prefs
+ *
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2025-12-23
+ * last edit on 2026-03-20
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -33,7 +34,7 @@ class TourCountApplication : Application() {
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "36, StrictMode.setVmPolicy")
+            Log.i(TAG, "37, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
@@ -45,7 +46,7 @@ class TourCountApplication : Application() {
             prefs = PreferenceManager.getDefaultSharedPreferences(this)
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "48, Error: $e")
+                Log.e(TAG, "49, Error: $e")
         }
     }
     // End of onCreate()
@@ -56,10 +57,8 @@ class TourCountApplication : Application() {
         bMapDraw = null
 
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "60, Backgr.: $backgroundPref")
-
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
+
         if (Build.VERSION.SDK_INT >= 30) {
             val metrics = wm.currentWindowMetrics
             width = metrics.bounds.right + metrics.bounds.left
@@ -74,7 +73,7 @@ class TourCountApplication : Application() {
             height = size.y
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "77, Width: $width Height: $height")
+            Log.d(TAG, "76, Width: $width Height: $height")
 
         var bMap: Bitmap?
         when (backgroundPref) {

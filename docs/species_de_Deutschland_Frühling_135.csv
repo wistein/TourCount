@@ -1,3 +1,4 @@
+nocode,language,de
 01348,Yponomeuta padella,Pflaumen-Gespinstmotte
 01350,Yponomeuta cagnagella,Pfaffenhütchen-Gespinstmotte
 03956,Adscita statices,Ampfer-Grünwidderchen
@@ -66,9 +67,9 @@
 07173,Lysandra coridon,Coridon-Bläuling
 07202,Argynnis paphia,Kaisermantel
 07204,Speyeria aglaja,Großer Perlmuttfalter
-07205,Argynnis adippe,Feuriger Perlmuttfalter
-07206,Fabriciana adippe,Mittlerer Perlmuttfalter
-07210,Fabriciana niobe,Kleiner Perlmuttfalter
+07205,Fabriciana adippe,Feuriger Perlmuttfalter
+07206,Fabriciana niobe,Mittlerer Perlmuttfalter
+07210,Issoria lathonia,Kleiner Perlmuttfalter
 07213,Brenthis ino,Mädesüß-Perlmuttfalter
 07214,Brenthis daphne,Brombeer-Perlmutterfalter
 07218,Boloria eunomia,Randring-Perlmuttfalter
@@ -126,8 +127,7 @@
 09051,Macdunnoughia confusa,Schafgarben-Silbereule
 09056,Autographa gamma,Gammaeule
 09338,Panemeria tenebrata,Hornkraut-Tageulchen
-10517,Amata phegea,Weißfleck-Widderchen
-10535,Utetheisa pulchella,Punktbär
+10517,Syntomis phegea,Weißfleck-Widderchen
 10572,Diaphora mendica,Grauer Fleckleibbär
 10603,Callimorpha dominula,Schönbär
 10605,Euplagia quadripunctaria,Spanische Flagge

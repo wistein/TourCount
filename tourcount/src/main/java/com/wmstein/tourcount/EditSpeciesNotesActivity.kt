@@ -18,21 +18,22 @@ import androidx.core.view.updateLayoutParams
 
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
-import com.wmstein.tourcount.widgets.EditSpNotesWidget
+import com.wmstein.tourcount.widgets.EditSpeciesNotesWidget
 
-/**********************************************************
+/*************************************************************
  * EditSpeciesNotesActivity
  * Edit notes for a counted species
- * uses EditSpNotesWidget.kt and activity_count_options.xml
+ * uses EditSpeciesNotesWidget.kt and activity_count_options.xml
+ *
  * Based on EditSpeciesNotesActivity.kt by milo on 05/05/2014.
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-10-22
+ * last edited on 2026-03-20
  */
 class EditSpeciesNotesActivity : AppCompatActivity() {
     private var speciesWidgetArea: LinearLayout? = null
-    private var esw: EditSpNotesWidget? = null
+    private var esw: EditSpeciesNotesWidget? = null
     private var count: Count? = null
     private var countId = 0
     private var countDataSource: CountDataSource? = null
@@ -46,7 +47,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "49, onCreate")
+            Log.i(TAG, "50, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
@@ -109,7 +110,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "112, onResume")
+            Log.i(TAG, "113, onResume")
 
         // Clear any existing views
         speciesWidgetArea!!.removeAllViews()
@@ -122,7 +123,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         // Set the widget for species notes
-        esw = EditSpNotesWidget(this, null)
+        esw = EditSpeciesNotesWidget(this, null)
         esw!!.spNotesNotes = count!!.notes
         esw!!.setSpNotesTitle(getString(R.string.titleNotesSpecies))
         esw!!.setHint(getString(R.string.notesHint))
@@ -140,13 +141,9 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "144, Home")
             finish()
             return true
         } else if (id == R.id.menuSaveExit) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "149, SaveExit")
             if (saveData())
                 finish()
             return true
@@ -158,7 +155,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "161, onPause")
+            Log.i(TAG, "158, onPause")
 
         countDataSource!!.close()
     }
@@ -180,9 +177,6 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
     }
 
     private fun saveData(): Boolean {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "184, saveData")
-
         // Add species notes if the user has written some...
         val notesName = esw!!.spNotesNotes
         if (isNotEmpty(notesName))

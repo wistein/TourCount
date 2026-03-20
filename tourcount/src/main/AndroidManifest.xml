@@ -7,7 +7,7 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2026-01-03
+     Last edited 2026-02-26
 -->
 
 <manifest
@@ -224,7 +224,13 @@
 
         <service android:name="com.wmstein.tourcount.LocationService"
             android:foregroundServiceType="location"
-            android:exported="false">
+            android:exported="false"
+            android:stopWithTask="true">
+        </service>
+
+        <service android:name="com.wmstein.tourcount.SoundService"
+            android:exported="false"
+            android:stopWithTask="true">
         </service>
 
     </application>

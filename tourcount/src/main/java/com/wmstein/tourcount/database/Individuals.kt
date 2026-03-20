@@ -5,7 +5,7 @@ package com.wmstein.tourcount.database
  * Created by wmstein for TourCount on 2016-04-20
  * Last edited in Java on 2022-03-25,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-11-12
+ * last edited on 2026-02-24
  */
 class Individuals {
     @JvmField
@@ -13,7 +13,7 @@ class Individuals {
     @JvmField
     var count_id = 0 // deprecated -> code (String)
     @JvmField
-    var name: String? = null
+    var name: String? = ""
     @JvmField
     var coord_x = 0.0 // latitude
     @JvmField
@@ -21,25 +21,25 @@ class Individuals {
     @JvmField
     var coord_z = 0.0 // height
     @JvmField
-    var uncert: String? = null
+    var uncert: String? = ""
     @JvmField
-    var date_stamp: String? = null
+    var date_stamp: String? = ""
     @JvmField
-    var time_stamp: String? = null
+    var time_stamp: String? = ""
     @JvmField
-    var locality: String? = null
+    var locality: String? = ""
     @JvmField
-    var sex: String? = null
+    var sex: String? = ""
     @JvmField
-    var stadium: String? = null
+    var stadium: String? = ""
     @JvmField
     var state_1_6 = 0 // takes numbers 0-6 with 0 translated to "-"
     @JvmField
-    var notes: String? = null
+    var notes: String? = ""
     @JvmField
     var icount = 0
     @JvmField
     var icategory = 0 // 1=♂|♀, 2=♂, 3=♀, 4=pupa, 5=larva, 6=egg
     @JvmField
-    var code: String? = null
+    var code: String? = ""
 }

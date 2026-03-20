@@ -9,5 +9,5 @@ Version 3.4.5 (15.12.2023)
 - Fehlende Abbildungen ergänzt
 - Doku überarbeitet
 - Code-Verbesserungen
-- Bug-Fixes
+- Bugfixes
 - Code-Anpassungen für Android 13

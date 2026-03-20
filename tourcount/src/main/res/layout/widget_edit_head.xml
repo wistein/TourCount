@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
     widget_edit_head.xml
-    used by EditHeadWidget.kt
+    used by EditSpeciesListHeadWidget.kt
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"

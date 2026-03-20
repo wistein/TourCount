@@ -34,7 +34,8 @@ _ subtitle
           font-weight:bold;
           margin-bottom:0.5em;
           text-align:start }
-      div.list     { color:#C0C0F0 }
+      div.list     {
+          color:#C0C0F0 }
     </style>
   </head>
   <body>
@@ -57,7 +58,7 @@ _ subtitle
   _
   ! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
   ! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
-   _
+  _
   ! Quellcode und Dokumentation veröffentlicht unter:
   ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
@@ -66,8 +67,28 @@ _ subtitle
   .
   _
 
+$ 3.7.2
+  % Version 3.7.2
+  _ 20.03.2026
+  * Französische, italienische und spanische Sprache hinzugefügt
+  * Französische, italienische und spanische Spezies-Beispiel-Listen in GitHub-Docs hinzugefügt
+  * Problem bei "Arten hinzufügen" gelöst, wenn die Systemsprache nicht der Sprache der lokalen Speziesnamen entspricht
+  * Sprach-Einstellung für Daten (lokale Speziesnamen) von der Systemsprache abgekoppelt
+  * Spezieslisten mit einem Eintrag für die automatische Erkennung der Datensprache ergänzt. Für ältere vorhandene Spezieslistendateien kann die Sprache der enthaltenen Daten manuell unter den Einstellungen der App gesetzt werden
+  * Neue Einstellungsoption für die Wahl der Sprache der lokalen Speziesnamen, falls diese nicht automatisch erkannt wird (bei alter Spezieslistversion)
+  * Arten hinzugefügt: Adela reaumurella, Borbo borbonica, Zerynthia cassandra, Zegris eupheme, Colotis evagore, Lysandra hispana, Coenonympha dorus, Satyrus actaea, Cucullia artemisiae und Litosia quadra
+  * Eine eingefügte "0" (Null) in der Art-Bemerkung weist eine Art auch ohne Zählung im Ergebnis aus
+  * Der Export der aktuellen DB und der Ergebnisexport benennt die .db- bzw. .csv-Dateien nun mit dem Datum und der Startzeit der Tour (falls eingegeben) anstelle mit der aktuellen Zeit
+  * CSV-Export für Zahlendarstellung in linksbündigen Text-Spalten verbessert
+  * Check für unzulässige Zeichen bei der internen Erstellung von Dateinamen, die den Tournamen enthalten
+  * Sound-Erzeugung mittels Service
+  * Einige Daten- und Text-Korrekturen
+  * Einige Code-Verbesserungen
+  * Doku überarbeitet
+  * Bugfixe
+
 $ 3.7.1
-  % Version 3.7.1
+% Version 3.7.1
   _ 30.01.2026
   * Html-Formatierung für App-Meldungen für verschiedene Android-Versionen verbessert
   * Farben der Meldungen: Fehler rot, Warnung orange, Achtung blau, Info grün
@@ -78,7 +99,7 @@ $ 3.7.0
   % Version 3.7.0
   _ 03.01.2026
   * Code-Verbesserung: Unter Einstellungen "Button-Vibration" und "Näherungssensor" ausgegraut, wenn im Gerät nicht vorhanden
-  * Bug-Fix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10
+  * Bugfix für Sound-bezogenen Crash unter den Android-Versionen 7.1 - 10
 
 $ 3.6.9
   % Version 3.6.9
@@ -97,7 +118,7 @@ $ 3.6.9
   * App-spezifische Debug-Unterstützung für den Emulator in Android Studio hinzugefügt
   * Einige Code-Verbesserungen
   * Doku überarbeitet
-  * Bug-Fixe
+  * Bugfixe
 
 $ 3.6.8
   % Version 3.6.8
@@ -105,7 +126,7 @@ $ 3.6.8
   * Wenn GPS benutzt wird, erfolgt eine einmalige Hinweismeldung, wenn noch kein GPS-Fix erfolgt ist oder der Ort außerhalb des europäischen Faunengebiets liegt
   * Einige Code- und Text-Verbesserungen
   * Doku überarbeitet
-  * Bug-Fixe
+  * Bugfixe
 
 $ 3.6.7
   % Version 3.6.7
@@ -117,7 +138,7 @@ $ 3.6.7
   * Einige Code- und Layout-Verbesserungen
   * Bilder von Ennomos quercinaria und Eilema lurideola hinzugefügt
   * Doku überarbeitet
-  * Bug-Fixe
+  * Bugfixe
 
 $ 3.6.6
   % Version 3.6.6
@@ -130,7 +151,7 @@ $ 3.6.6
   * Dateinamen-Struktur der exportierten Datendateien geändert
   * Dateinamen der exportierten Spezieslisten mit Sprach-Indikator (de oder en)
   * Einige Code-Verbesserungen
-  * Bug-Fixe
+  * Bugfixe
 
 $ 3.6.5
   % Version 3.6.5
@@ -140,7 +161,7 @@ $ 3.6.5
   * Export einer Basis-DB schreibt nun den Tour-Namen in den Dateinamen
   * Importfunktion der Basis-DB mit Datei-Auswahl
   * Optionale Button-Vibration gefixt für Android Version > 11
-  * Weitere Bug-Fixe
+  * Weitere Bugfixe
   * Code-, Daten- und Layout-Verbesserungen
   * Doku überarbeitet
 
@@ -178,7 +199,7 @@ $ 3.6.0
   * Option der Vorauswahl mit 2 Anfangsbuchstaben auch für das Editieren von Arten in der Zählliste
   * Bei Beenden der App wird sie komplett aus dem Arbeitsspeicher entfernt
   * Code-Verbesserungen
-  * Bug-Fixe
+  * Bugfixe
   * Doku überarbeitet
 
 $ 3.5.1
@@ -187,7 +208,7 @@ $ 3.5.1
   * Dateinamen von exportierter aktueller DB und csv-Tabelle mit Tour-Bezeichnung
   * Hinzufügen von Arten in die Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
   * Löschen von Arten aus der Zählliste mit Option der Vorauswahl mit 2 Anfangsbuchstaben
-  * Bug-Fixe
+  * Bugfixe
   * Doku-Update
 
 $ 3.5.0
@@ -207,7 +228,7 @@ $ 3.4.9
   * Zusätzliche Sortier-Option für die Ergebnisseite und den csv-Export (Namen oder Codes)
   * Beim csv-Export Individuen nach Erfassungszeit sortiert
   * Lizenzentext separiert und unter eigenem Menüpunkt aufrufbar
-  * Bug-Fix: Löschen einer Art löscht nun auch zugehörige Individuen-Einträge
+  * Bugfix: Löschen einer Art löscht nun auch zugehörige Individuen-Einträge
   * Doku-Update
 
 $ 3.4.8
@@ -281,7 +302,7 @@ $ 3.3.3
   _ 25.10.2022
   * Viele Falterabbildungen überarbeitet (Anzeige v. Ober- und Unterseite)
   * Weitere Falterarten mit Abbildungen hinzugefügt
-  * Bug-Fix in arrays.xml
+  * Bugfix in arrays.xml
 
 $ 3.2.9
   % Version 3.2.9

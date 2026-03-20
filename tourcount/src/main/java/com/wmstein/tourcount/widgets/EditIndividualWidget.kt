@@ -11,12 +11,13 @@ import com.wmstein.tourcount.AutoFitEditText
 import com.wmstein.tourcount.R
 import java.util.Objects
 
-/***************************************************************
+/*************************************************************
  * EditIndividualWidget.kt used by EditIndividualActivity.kt
+ *
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2025-11-12
+ * last edited on 2026-02-28
  */
 class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // locality

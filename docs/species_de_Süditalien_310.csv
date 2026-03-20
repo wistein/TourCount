@@ -1,3 +1,4 @@
+nocode,language,de
 00063,Triodia sylvina,Ampfer-Wurzelbohrer
 00067,Korscheltellus lupulina,Kleiner Hopfen-Wurzelbohrer
 00069,Korscheltellus fusconebulosa,Adlerfarn-Wurzelbohrer
@@ -11,7 +12,7 @@
 03943,Jordanita globulariae,Flockenblumen-Grünwidderchen
 03948,Adscita geryon,Sonnenröschen-Grünwidderchen
 03951,Adscita mannii,Südwestdeutsches Grünwidderchen
-03955a,Adscita italica,-
+03955,Adscita alpina,-
 03956,Adscita statices,Ampfer-Grünwidderchen
 03959,Aglaope infausta,Trauerwidderchen
 03963,Zygaena sarpedon,-
@@ -39,6 +40,7 @@
 03999,Zygaena lonicerae,Großes Fünffleck-Widderchen
 04000,Zygaena trifolii,Sumpfhornklee-Widderchen
 04013b,Paysandisia archon,-
+04030,Sesia apiformis,Hornissen-Glasflügler
 04044,Synanthedon scoliaeformis,Großer Birken-Glasflügler
 04151,Cossus cossus,Weidenbohrer
 05562,Thyris fenestrella,Waldreben-Fensterfleckchen
@@ -293,11 +295,13 @@
 10000,Mythimna conigera,Weißfleck-Graseule
 10099,Noctua comes,Breitflügelige Bandeule
 10483,Atolmis rubricollis,Rotkragen-Flechtenbärchen
+10485,Lithosia quadra,Vierpunkt-Flechtenbärchen
 10497,Eilema lutarella,Dunkelstirniges Flechtenbärchen
 10499,Eilema sororcula,Dottergelbes Flechtenbärchen
 10509,Setina irrorella,Trockenrasen-Flechtenbärchen
 10514,Setina roscida,Felshalden-Flechtenbär
 10517,Amata phegea,Weißfleck-Widderchen
+10519,Syntomis marjana,Ähnliches Weißfleckwidderchen
 10521,Dysauxes ancilla,Braunfleck-Widderchen
 10526,Spiris striata,Gestreifter Grasbär
 10535,Utetheisa pulchella,Punktbär

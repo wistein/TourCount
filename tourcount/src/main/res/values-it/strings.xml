@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings.xml Italian strings,
+     last edited 2026-02-17 -->
+
+<resources>
+
+    <!-- generic -->
+    <string name="action_settings">Impostazioni</string>
+    <string name="newLock">GPS ha individuato la posizione!</string>
+    <string name="outsideEurope">GPS ha individuato la posizione! Ma il luogo si trova al di fuori dell\'area faunistica europea.</string>
+
+    <!-- WelcomeActivity -->
+    <string name="avCoords">Coordinate medie:</string>
+    <string name="back_twice">Premere nuovamente per uscire</string>
+    <string name="bema">Nota spec.:</string>
+    <string name="bems">Nota indiv.:</string>
+    <string name="cancelButton">Annulla</string>
+    <string name="changeLogTitle">App-Info</string>
+    <string name="cntse">Numero uova</string>
+    <string name="cntsf">Numero ♀</string>
+    <string name="cntsl">Numero bruco</string>
+    <string name="cntsm">Numero ♂</string>
+    <string name="cntsmf">Numero ♂|♀</string>
+    <string name="cntsp">Numero cris.</string>
+    <string name="confirmDBImport">Vuoi davvero importare un database? I tuoi dati attuali verranno sovrascritti!</string>
+    <string name="confirmListImport">Vuoi davvero importare un elenco di specie? I tuoi dati attuali verranno sovrascritti! L\'operazione potrebbe richiedere più tempo in caso di elenchi di grandi dimensioni.</string>
+    <string name="confirmResetDB">Vuoi davvero ripristinare il database? I tuoi dati di conteggio attuali verranno cancellati!</string>
+    <string name="corruptDb">Errore DB! Se il problema persiste anche dopo aver riavviato l\'applicazione e non può essere risolto importando un altro database TourCount, disinstallare l\'applicazione e reinstallarla.</string>
+    <string name="counting">Contare</string>
+    <string name="editMetaButton">Modifica dei metadati</string>
+    <string name="exportBasisMenu">Esporta DB di base</string>
+    <string name="exportCSVMenu">Export dei risultati (csv)</string>
+    <string name="exportMenu">Esporta DB attuale</string>
+    <string name="exportSpeciesListMenu">Esporta lista delle specie</string>
+    <string name="importBasisMenu">Imposta DB di base</string>
+    <string name="importButton">Import</string>
+    <string name="importDB">Il database è stato importato.</string>
+    <string name="importFail">Impossibile importare il database!</string>
+    <string name="importFileMenu">Import DB</string>
+    <string name="importList">La lista delle specie è stata importata.</string>
+    <string name="importListFail">Impossibile importare la lista delle specie!</string>
+    <string name="importSpeciesListMenu">Importa lista delle specie</string>
+    <string name="individuals">Individui</string>
+    <string name="missingEmail">In Impostazioni, inserisci un indirizzo e-mail valido per garantire un rilevamento affidabile della posizione.</string>
+    <string name="name_spec">Nome della specie:</string>
+    <string name="noCard">Non è possibile utilizzare la directory Documents/TourCount!</string>
+    <string name="reset2basic">Il database è stato ripristinato.</string>
+    <string name="resetDBMenu">Reset dati</string>
+    <string name="resetFail">Impossibile ripristinare il database!</string>
+    <string name="saveBasisDB">Esporre il database di base in Documents/TourCount</string>
+    <string name="saveCSV">Esporre il file csv in Documents/TourCount</string>
+    <string name="saveDB">Esporre il database interno in Documents/TourCount</string>
+    <string name="saveFail">Impossibile esportare il database!</string>
+    <string name="saveFailList">Impossibile esportare la lista delle specie!</string>
+    <string name="saveFailListTransect">Esportazione in \‘Documents/TransektCount\’ non riuscita!</string>
+    <string name="saveList">Esportazione lista specie</string>
+    <string name="showResultsButton">Mostra risultato</string>
+    <string name="sort_codes">Specie ordinate per codice specie</string>
+    <string name="sort_names">Specie ordinate per nome della specie</string>
+    <string name="sort_time">Individui ordinati in base alla data di registrazione</string>
+    <string name="sum">Totali (interni):</string>
+    <string name="sumSpec">Specie:</string>
+    <string name="sum_total">Totale (totale):</string>
+    <string name="title">Registro specifico delle specie di\n\nfarfalle nei tratti di transetto</string>
+    <string name="viewHelpTitle">Aiuto</string>
+    <string name="viewLicenseTitle">Licenze</string>
+    <string name="waitImport">Attendere, l\'importazione è in corso!</string>
+    <string name="zList">Lista di conteggio</string>
+
+    <!-- FileChooser -->
+    <string name="fileHeadlineBasicDB">File DB di base TourCount</string>
+    <string name="fileHeadlineCSV">Lista delle specie TourCount</string>
+    <string name="fileHeadlineDB">File DB TourCount</string>
+    <string name="fileSize">Dimensioni</string>
+    <string name="importHead">Importazione dati</string>
+    <string name="noFile">Nessun file disponibile!</string>
+
+    <!-- EditMetaActivity -->
+    <string name="bstate">Stato federale:</string>
+    <string name="city">Città:</string>
+    <string name="clouds">Nuvolosità (%):</string>
+    <string name="cnts">Numero</string>
+    <string name="country">Stato:</string>
+    <string name="date">Data:</string>
+    <string name="editHeadTitle">Metadati relativi all\'ispezione</string>
+    <string name="endtm">fino a:</string>
+    <string name="hinttap">Clicca qui</string>
+    <string name="place">Luogo:</string>
+    <string name="plz">CAP:</string>
+    <string name="slocality">Località (inizio):</string>
+    <string name="inspector">Cartografo/a:</string>
+    <string name="speccode">Codice specie</string>
+    <string name="starttm">Ora di inizio:</string>
+    <string name="temperature">Temp. (°C):</string>
+    <string name="tm">Tempo:</string>
+    <string name="valClouds">Controllare le nuvole!</string>
+    <string name="valTemp">Temperatura irrealistica!</string>
+    <string name="valWind">Controllare il vento!</string>
+    <string name="wind">Vento (0–4):</string>
+    <string name="zlNotes">Note sul tour:</string>
+
+    <!-- EditIndividualActivity -->
+    <string name="count1">Num.</string>
+    <string name="indivDel">Cancellato: individuo con ID:</string>
+    <string name="locality">Località</string>
+    <string name="note">Nota sull\'individuo</string>
+    <string name="saveIndividualButton">Salvare</string>
+    <string name="sex">Sesso</string>
+    <string name="stadium">Stadio</string>
+    <string name="stadium_1">Imago</string>
+    <string name="stadium_2">Crisalide</string>
+    <string name="stadium_3">Bruco</string>
+    <string name="stadium_4">Uovo</string>
+    <string name="status123">Cond. (0–6)</string>
+    <string name="time">Tempo</string>
+    <string name="uncerti">Incertezza (m):</string>
+    <string name="valState">Controllare lo stato!</string>
+    <string name="xcoord">Latitudine:</string>
+    <string name="ycoord">Longitudine:</string>
+    <string name="zcoord">Altezza (m):</string>
+
+    <!-- CountingActivity -->
+    <string name="action_share">Comunicare</string>
+    <string name="chooserTitle">Scegli un\'app per le foto</string>
+    <string name="deleteButton">Elimina</string>
+    <string name="editAddSpecTitle">Aggiungi specie</string>
+    <string name="editDelSpecTitle">Elimina specie</string>
+    <string name="editSectTitle">Modifica lista specie</string>
+    <string name="noPhotoPermit">È necessaria l\'autorizzazione per la fotocamera.</string>
+    <string name="saveCountsButton">Salvare</string>
+    <string name="send_to">Inviare</string>
+    <string name="takePhoto">Scattare foto</string>
+
+
+    <!-- EditSectionListActivity -->
+    <string name="duplicate">Tutti gli inserimenti devono essere diversi!</string>
+    <string name="editTitle">Modifica delle denominazioni</string>
+    <string name="hintNotYet">Nessuna</string>
+    <string name="isDouble"> è doppio!</string>
+    <string name="isEmpt">Manca il nome della sezione!</string>
+    <string name="savedChange">Modifiche sono state salvate</string>
+    <string name="labelEditSpecButton">Modifica lista</string>
+    <string name="notesHint">Inserisci una nota&#8230;</string>
+    <string name="orCode"> o codice</string>
+    <string name="presentSpecs">Specie nella lista:</string>
+    <string name="spname">Nome</string>
+    <string name="titleEdit">Nome della tour</string>
+    <string name="titleHint">Inserire qui il nome del tour&#8230;</string>
+    <string name="titleHintShort">Inserisci qui&#8230;</string>
+
+    <!-- DelSpeciesActivity -->
+    <string name="delTitle">Rimuovi specie</string>
+    <string name="labelDelSpecButton">Rimuovi specie</string>
+
+    <!-- AddSpeciesActivity -->
+    <string name="addTitle">Aggiungi specie</string>
+    <string name="hintSearch">Iniziali</string>
+    <string name="initCharsL">2 lettere, per favore</string>
+    <string name="labelAddSpecButton">Aggiungi specie</string>
+    <string name="specsToAdd">Altre specie:</string>
+    <string name="specsCommonLang">Selezionare la lingua appropriata per l\'elenco delle specie in “Impostazioni”.</string>
+
+    <!-- ChangeLog/ShowTextDialog -->
+    <string name="changelog_full_title">Info app (TourCount Ver.</string>
+    <string name="changelog_show_full">più&#8230;</string>
+    <string name="changelog_title">Cosa c\'è di nuovo</string>
+    <string name="title_help_dialog">Aiuto</string>
+    <string name="title_license_dialog">Licenze</string>
+
+    <!-- Preferences -->
+    <string name="email_hint">Inserisci un indirizzo e-mail valido</string>
+    <string name="pref_alert_sound">Suono evento</string>
+    <string name="pref_alert_sound_summ">Genera un suono quando viene attivato un evento</string>
+    <string name="pref_awake">Lascia lo schermo acceso</string>
+    <string name="pref_awake_summ">Impedisci la sospensione durante il conteggio</string>
+    <string name="pref_bg">Sfondo</string>
+    <string name="pref_bg_summ">Scegli uno sfondo standard o nessun¸\'immagine di sfondo</string>
+    <string name="pref_bright">Display luminoso</string>
+    <string name="pref_bright_summ">Imposta le pagine TourCount per il conteggio e la modifica su chiaro</string>
+    <string name="pref_button_sound">Suono pulsante</string>
+    <string name="pref_button_sound_summary">Genera un suono quando si preme un pulsante di conteggio</string>
+    <string name="pref_button_vib">Vibrazione pulsante</string>
+    <string name="pref_button_vib_summary">Crea una vibrazione quando si preme un pulsante di conteggio</string>
+    <string name="pref_csv_output_dialog">Ordinamento dei risultati e della tabella csv esportata</string>
+    <string name="pref_csv_output_title">Ordinamento dei risultati</string>
+    <string name="pref_email_string">Indirizzo e-mail per OSM Geocoder</string>
+    <string name="pref_email_string_summ">Necessario per la ricerca affidabile dei dati dell\'indirizzo tramite OSM-Nominatim-Reverse-Geocoder.\nL\'indirizzo e-mail sarà trattato in modo confidenziale e utilizzato solo per contattarti in caso di problemi. Vedi https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="pref_interval_title">Intervallo di interrogazione GPS</string>
+    <string name="pref_left_hand">Mancino</string>
+    <string name="pref_left_hand_summ">Mostra visualizzazione conteggio per mancini</string>
+    <string name="pref_metadata">Geocodifica inversa GPS</string>
+    <string name="pref_metadata_summ">Seleziona questa opzione se desideri che le informazioni sulla posizione vengano determinate tramite geocodifica inversa e sovrascritte.</string>
+    <string name="pref_proximity_dialog">Seleziona la sensibilità per spegnere lo screen.</string>
+    <string name="pref_proximity_title">Sensore di prossimità</string>
+    <string name="pref_data_language">Data language</string>
+    <string name="pref_data_language_Summ">Seleziona la lingua per i nomi comuni delle farfalle.</string>
+    <string name="pref_sort_order">Ordinamento delle specie</string>
+    <string name="pref_sort_order_sp_summ">Ordinamento della lista delle specie</string>
+    <string name="prefs_appearance">Aspetto</string>
+    <string name="prefs_data">Dati</string>
+    <string name="prefs_counting">Contare</string>
+    <string name="prefs_csv_output_title">Emissione</string>
+    <string name="prefs_metadata">Metadati</string>
+    <string name="prefs_sound_vib">Suono/Vibrazione</string>
+
+    <!-- EditSpeciesNotesActivity -->
+    <string name="countCode">Codice</string>
+    <string name="countName">Nuova specie</string>
+    <string name="countNameG">Nuova specie (nome comune)</string>
+    <string name="notesSpecies">Nota sulla specie:</string>
+    <string name="spec_Name">Nome</string>
+    <string name="spec_NameG">Nome comune</string>
+    <string name="titleNotesSpecies">Nota sulla specie</string>
+
+    <!-- ListViewSpecies -->
+    <string name="dLa">Ø-Latitud.:</string>
+    <string name="dLo">Ø-Longitud.:</string>
+    <string name="mUncert">Deviazione:</string>
+    <string name="rem_Ind">Nota ind.:</string>
+    <string name="rem_Sp">Nota spec.:</string>
+    <string name="txtHt">A.:</string>
+    <string name="txtIndividuals">Totale degli individui contati: </string>
+    <string name="txtLat">La.:</string>
+    <string name="txtLon">Lo.:</string>
+    <string name="txtSpecies">Diverse specie registrate: </string>
+    <string name="txtSt">Stad.:</string>
+    <string name="txtSte">Stato:</string>
+    <string name="txtSx">Gen.:</string>
+    <string name="txt_e">Uovo</string>
+    <string name="txt_f">♀</string>
+    <string name="txt_l">Bruco</string>
+    <string name="txt_m">♂</string>
+    <string name="txt_mf">♂|♀</string>
+    <string name="txt_p">Crisal.</string>
+    <string name="txt_time">Tempo</string>
+    <string name="viewSpecTitle">Risultato del conteggio</string>
+    <string name="wait">Lista in fase di calcolo&#8230;</string>
+
+    <!-- other stuff -->
+    <string name="charZero">0</string>
+    <string name="countCodeHint">Codice</string>
+    <string name="countImagofHint">Imago ♀</string>
+    <string name="countImagomHint">Imago ♂</string>
+    <string name="countImagomfHint">Imago ♂|♀</string>
+    <string name="countLarvaHint">Bruco</string>
+    <string name="countNameHint">Nome della specie</string>
+    <string name="countNameHintG">Nome della specie (comune)</string>
+    <string name="countOvoHint">Uovo</string>
+    <string name="countPupaHint">Crisalide</string>
+    <string name="getHelp">Problema con il database! Se hai bisogno di aiuto, invia il database problematico via e-mail.</string>
+    <string name="hintName">Inserisci nome&#8230;</string>
+    <string name="hintTitle">Titolo</string>
+    <string name="hintTourNotes">Nota tour:</string>
+    <string name="no_provider">Servizio GPS non disponibile!</string>
+    <string name="ok_button">OK</string>
+    <string name="titleTourNotes">Nota sul tour:</string>
+    <string name="warnCount">Sono ammessi solo valori compresi tra 1 e 999999!</string>
+
+    <!-- Permissions -->
+    <string name="app_settings">Impostazioni di sistema</string>
+    <string name="dialog_fine_location_message">Il riconoscimento dei tratti di transetto richiede la massima precisione possibile.</string>
+    <string name="dialog_fine_location_title">Consenti la localizzazione precisa.</string>
+    <string name="dialog_storage_message">Concedi l\'autorizzazione di archiviazione a TourCount per l\'importazione e l\'esportazione dei dati.</string>
+    <string name="dialog_storage_title">Autorizzazione di archiviazione richiesta</string>
+    <string name="storage_perm_denied">Manca l\'autorizzazione di salvataggio necessaria per TourCount, non è possibile salvare.</string>
+
+</resources>

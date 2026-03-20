@@ -12,10 +12,11 @@ import java.util.Objects
 
 /*************************************************************
  * ResultsMetaWidget.kt used by ShowResultsActivity.kt
+ *
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-11-15
+ * last edited on 2026-02-28
  */
 class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- arrays.xml Italian array strings,
+     last edited 2026-03-17 -->
+
+<resources>
+
+    <string-array name="pref_bg_entries">
+        <item>Nero</item>
+        <item>Grigio</item>
+        <item>TourCount (Standard)</item>
+    </string-array>
+
+	<string-array name="pref_sel_language_entries">
+		<item>Tedesco</item>
+		<item>Inglese</item>
+		<item>Francese</item>
+		<item>Italiano</item>
+		<item>Spagnolo</item>
+	</string-array>
+
+  <string-array name="pref_sort_sp_entries">
+        <item>Non ordinato</item>
+        <item>Per nome della specie</item>
+        <item>Per codice</item>
+    </string-array>
+
+    <string-array name="pref_sort_output_entries">
+        <item>Per nome della specie</item>
+        <item>Per codice</item>
+    </string-array>
+
+    <string-array name="pref_prox_entries">
+        <item>Spento</item>
+        <item>Medio</item>
+        <item>Alto</item>
+    </string-array>
+
+</resources>

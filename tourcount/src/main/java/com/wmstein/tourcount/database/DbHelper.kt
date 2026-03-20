@@ -8,17 +8,19 @@ import android.util.Log
 import com.wmstein.tourcount.BuildConfig
 import com.wmstein.tourcount.IsRunningOnEmulator
 import com.wmstein.tourcount.R
+import java.util.Locale
 
-/**************************************************
- * Basic structure by milo on 05/05/2014.
- * Created by wmstein on 2016-04-19,
- * updated to version 2 on 2017-09-09,
- * updated to version 3 on 2018-03-31,
- * updated to version 4 on 2019-03-25,
- * updated to version 8 on 2025-02-25,
+/********************************************************************************
+ * DbHelper.kt is the database helper class for SQLite functionality of TourCount
+ * onUpgrade is called with 1. call of dbHelper.getWritableDatabase()
+ *   if newVersion != oldVersion
+ *
+ * Basic structure of DbHelper.java by milo on 05/05/2014.
+ * Adopted for TourCount by wmstein on 2016-04-19,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-11-01
+ * updated to version 8 on 2025-02-25,
+ * last edited on 2026-03-20
  *
  * ************************************************************************
  * ATTENTION!
@@ -27,11 +29,13 @@ import com.wmstein.tourcount.R
  */
 class DbHelper (private val mContext: Context) :
     SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
+    // Initial data language = current system language
+    var initDataLanguage = Locale.getDefault().toString().substring(0, 2)
 
     // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "34, Creating database: $DATABASE_NAME")
+            Log.d(TAG, "38, Creating database: $DATABASE_NAME")
 
         var sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
@@ -99,19 +103,19 @@ class DbHelper (private val mContext: Context) :
                 + I_CODE + " text)")
         db.execSQL(sql)
 
-        // Create empty row for SECTION_TABLE
+        // Create SECTION_TABLE with 1 empty row
         var values1 = ContentValues()
         values1.put(S_ID, 1)
         values1.put(S_NAME, "")
         db.insert(SECTION_TABLE, null, values1)
 
-        // Create empty row for HEAD_TABLE
+        // Create HEAD_TABLE with 1 empty row
         values1 = ContentValues()
         values1.put(H_ID, 1)
         values1.put(H_OBSERVER, "")
         db.insert(HEAD_TABLE, null, values1)
 
-        // Create empty row for TEMP_TABLE
+        // Create TEMP_TABLE with 1 empty row
         values1 = ContentValues()
         values1.put(T_ID, 1)
         values1.put(T_TEMP_LOC, "")
@@ -121,15 +125,23 @@ class DbHelper (private val mContext: Context) :
         // Create initial data for COUNT_TABLE
         initialCounts(db)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "124, Success!")
+            Log.d(TAG, "130, Success!")
     }
 
-    // Initial data for COUNT_TABLE
+    // Initial data for COUNT_TABLE with current system language
     private fun initialCounts(db: SQLiteDatabase) {
         val specs: Array<String> = mContext.resources.getStringArray(R.array.initSpecs)
         val codes: Array<String> = mContext.resources.getStringArray(R.array.initCodes)
-        val specsG: Array<String> = mContext.resources.getStringArray(R.array.initSpecs_g)
-        for (i in 1 until specs.size) {
+        val specsG: Array<String> = when (initDataLanguage) {
+            "de" -> mContext.resources.getStringArray(R.array.initSpecs_de)
+            "en" -> mContext.resources.getStringArray(R.array.initSpecs_en)
+            "fr" -> mContext.resources.getStringArray(R.array.initSpecs_fr)
+            "it" -> mContext.resources.getStringArray(R.array.initSpecs_it)
+            "es" -> mContext.resources.getStringArray(R.array.initSpecs_es)
+            else -> mContext.resources.getStringArray(R.array.initSpecs_de)
+        }
+
+        for (i in 0 until specs.size) { // changed i in 1 -> i in 0
             val values4 = ContentValues()
             values4.put(C_ID, i)
             values4.put(C_NAME, specs[i])
@@ -146,10 +158,14 @@ class DbHelper (private val mContext: Context) :
         }
     }
 
-    // **********************************************************************************
+    // *********************************************************************************
     // Called with 1. call of dbHelper.getWritableDatabase() if newVersion != oldVersion
-    // https://www.androidpit.de/forum/472061/sqliteopenhelper-mit-upgrade-beispielen-und-zentraler-instanz
+    //   and if a database already exists on disk with the same DATABASE_NAME.
+    // see https://guides.codepath.org/android/local-databases-with-sqliteopenhelper
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "168, upGrade")
+
         if (oldVersion == 7) {
             version8(db)
         }
@@ -202,7 +218,8 @@ class DbHelper (private val mContext: Context) :
         val sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
         db.execSQL(sql)
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "203, Upgraded database to version 2")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "233, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -216,12 +233,9 @@ class DbHelper (private val mContext: Context) :
         try {
             sql = "alter table $COUNT_TABLE add column $C_COUNT_F2I int"
             db.execSQL(sql)
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "217, Missing count_f2i column added to counts!")
-        } catch (e: Exception) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.e(TAG, "219, Column already present: $e")
+        } catch (_: Exception) {
             colExist = true
         }
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "222, Upgraded database to version 3")
 
         sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
         db.execSQL(sql)
@@ -237,9 +251,7 @@ class DbHelper (private val mContext: Context) :
             sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
                     + " int default 1")
             db.execSQL(sql)
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "238, Missing icategory column added to individuals!")
-        } catch (e: Exception) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.e(TAG, "240, Column I_CATEGORY already present: $e")
+        } catch (_: Exception) {
             colCatExist = true
         }
 
@@ -247,7 +259,6 @@ class DbHelper (private val mContext: Context) :
         if (!colCatExist) {
             sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
             db.execSQL(sql)
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "248, I_SEX filled with '-'")
         }
 
         // Copy old data into new structure
@@ -285,7 +296,9 @@ class DbHelper (private val mContext: Context) :
             db.execSQL(sql)
             sql = "DROP TABLE counts_backup"
             db.execSQL(sql)
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "286, Upgraded database to version 3")
+
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.d(TAG, "312, Upgraded database to version 3")
         }
     }
 
@@ -294,7 +307,9 @@ class DbHelper (private val mContext: Context) :
     private fun version4(db: SQLiteDatabase) {
         val sql = "alter table $COUNT_TABLE add column $C_NAME_G text"
         db.execSQL(sql)
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "295, Upgraded database to version 4")
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "323, Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -347,7 +362,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "347, Upgraded database to version 5")
+            Log.d(TAG, "376, Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -397,11 +412,12 @@ class DbHelper (private val mContext: Context) :
                 + S_NOTES + " FROM section_backup")
         db.execSQL(sql)
 
-        // Delete section_backup
+        // Delete table section_backup
         sql = "DROP TABLE section_backup"
         db.execSQL(sql)
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "401, Upgraded database to version 6")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "431, Upgraded database to version 6")
     }
 
     /*** V7 ***/
@@ -420,21 +436,21 @@ class DbHelper (private val mContext: Context) :
                 "$C_COUNT_PI = 0, $C_COUNT_LI = 0, $C_COUNT_EI = 0, $C_NOTES = ''"
         db.execSQL(sql)
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "420, Upgraded database to version 7")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "451, Upgraded database to version 7")
     }
 
     /*** V8 ***/
     // Version 8: Add fields S_STATE and S_ST_LOCALITY to SECTION_TABLE
     private fun version8(db: SQLiteDatabase) {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "426, Upgrade to database version 8")
-
         var sql = "alter table $SECTION_TABLE add column $S_STATE text"
         db.execSQL(sql)
 
         sql = "alter table $SECTION_TABLE add column $S_ST_LOCALITY text"
         db.execSQL(sql)
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.d(TAG, "434, Upgraded database to version 8")
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "464, Upgraded database to version 8")
     }
 
     companion object {

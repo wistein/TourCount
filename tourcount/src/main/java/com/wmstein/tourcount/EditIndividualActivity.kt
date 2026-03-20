@@ -1,9 +1,6 @@
 package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.media.MediaPlayer
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
@@ -15,32 +12,28 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
-
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
-
+import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.Temp
 import com.wmstein.tourcount.database.TempDataSource
-import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.widgets.EditIndividualWidget
 
 /*******************************************************************************************
  * EditIndividualActivity is called from CountingActivity and collects additional info to an
  * individual's data record
- * Copyright 2016-2026 wmstein
- * created on 2016-05-15,
+ *
+ * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-01-24
+ * last edited on 2026-03-13
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -60,11 +53,11 @@ class EditIndividualActivity : AppCompatActivity() {
     private var brightPref = false // option for full bright screen
     private var metaPref = false // option for reverse geocoding
     private var emailString: String? = "" // mail address for OSM query
-    private var buttonSound: String = ""
     private var buttonSoundPref = false
     private var buttonVibPref = false
 
-    private var rToneP: MediaPlayer? = null
+    // Prepare sound service
+    private var soundService: SoundService? = null
 
     // Prepare vibrator service
     private var vibrator: Vibrator? = null
@@ -79,27 +72,21 @@ class EditIndividualActivity : AppCompatActivity() {
     private var countId = 0
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
-    private var specName: String? = null
+    private var specName: String? = ""
 
     // phase123 is true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
     private var phase123: Boolean? = null
     private var dateStamp: String? = ""
     private var timeStamp: String? = ""
     private var code: String? = ""
-    private var mesg: String? = null
-    private var audioAttributionContext: Context = this
+    private var mesg: String? = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "97, onCreate")
-
-        audioAttributionContext =
-            if (Build.VERSION.SDK_INT >= 30)
-                ContextCompat.createAttributionContext(this, "ringSound")
-            else this
+            Log.i(TAG, "89, onCreate")
 
         awakePref = prefs.getBoolean("pref_awake", true)
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -107,7 +94,6 @@ class EditIndividualActivity : AppCompatActivity() {
         emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
         buttonVibPref = prefs.getBoolean("pref_button_vib", false)
-        buttonSound = prefs.getString("button_sound", null).toString()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -146,7 +132,11 @@ class EditIndividualActivity : AppCompatActivity() {
 
         indivArea = findViewById(R.id.edit_individual)
 
-        soundButtonSound() // sound for (+)-button
+        // Make (+)-button sound
+        if (buttonSoundPref) {
+            soundService = SoundService(applicationContext)
+            soundService!!.soundPlusButtonSound() // sound for (+)-button
+        }
 
         // Prepare vibrator service
         if (buttonVibPref) {
@@ -158,7 +148,8 @@ class EditIndividualActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             countId = extras.getInt("count_id")
-            specName = extras.getString("SName")
+            if (extras.getString("SName") != "")
+                specName = extras.getString("SName")
             code = extras.getString("SCode")
             dateStamp = extras.getString("date")
             timeStamp = extras.getString("time")
@@ -171,14 +162,14 @@ class EditIndividualActivity : AppCompatActivity() {
     }
     // End of onCreate()
 
-    @SuppressLint("LongLogTag", "DefaultLocale")
+    @SuppressLint("DefaultLocale")
     override fun onResume() {
         super.onResume()
 
         // Clear any existing views
         indivArea!!.removeAllViews()
 
-        // setup the data sources
+        // Set up the data sources
         individualsDataSource = IndividualsDataSource(this)
         individualsDataSource!!.open()
 
@@ -192,12 +183,8 @@ class EditIndividualActivity : AppCompatActivity() {
         countDataSource!!.open()
 
         // Set title
-        try {
-            supportActionBar!!.title = specName
-        } catch (_: NullPointerException) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "199, NullPointerException: No species name!")
-        }
+        supportActionBar!!.title = specName
+
         counts = countDataSource!!.getCountById(countId)
 
         // Display the editable data
@@ -259,7 +246,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "262, onPause")
+            Log.i(TAG, "249, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
@@ -271,17 +258,10 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "274, onStop")
+            Log.i(TAG, "261, onStop")
 
-        if (buttonSoundPref) {
-            if (rToneP != null) {
-                if (rToneP!!.isPlaying) {
-                    rToneP!!.stop() // stop media player
-                }
-                rToneP!!.release()
-                rToneP = null
-            }
-        }
+        if (buttonSoundPref)
+            soundService!!.releaseSoundP()
 
         if (awakePref) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -292,7 +272,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "295, onDestroy")
+            Log.i(TAG, "275, onDestroy")
     }
 
     private fun saveData(): Boolean {
@@ -353,7 +333,7 @@ class EditIndividualActivity : AppCompatActivity() {
             when (indivAttr) {
                 1 -> {
                     // ♂|♀
-                    counts!!.count_f1i = counts!!.count_f1i + newCount
+                    counts!!.count_f1i += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "-"
                     individuals!!.icategory = 1
@@ -362,7 +342,7 @@ class EditIndividualActivity : AppCompatActivity() {
 
                 2 -> {
                     // ♂
-                    counts!!.count_f2i = counts!!.count_f2i + newCount
+                    counts!!.count_f2i += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "m"
                     individuals!!.icategory = 2
@@ -371,7 +351,7 @@ class EditIndividualActivity : AppCompatActivity() {
 
                 3 -> {
                     // ♀
-                    counts!!.count_f3i = counts!!.count_f3i + newCount
+                    counts!!.count_f3i += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "f"
                     individuals!!.icategory = 3
@@ -380,7 +360,7 @@ class EditIndividualActivity : AppCompatActivity() {
 
                 4 -> {
                     // Pupa
-                    counts!!.count_pi = counts!!.count_pi + newCount
+                    counts!!.count_pi += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "-"
                     individuals!!.icategory = 4
@@ -389,7 +369,7 @@ class EditIndividualActivity : AppCompatActivity() {
 
                 5 -> {
                     // Larva
-                    counts!!.count_li = counts!!.count_li + newCount
+                    counts!!.count_li += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "-"
                     individuals!!.icategory = 5
@@ -398,7 +378,7 @@ class EditIndividualActivity : AppCompatActivity() {
 
                 6 -> {
                     // Eggs
-                    counts!!.count_ei = counts!!.count_ei + newCount
+                    counts!!.count_ei += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "-"
                     individuals!!.icategory = 6
@@ -446,22 +426,6 @@ class EditIndividualActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun soundButtonSound() {
-        if (buttonSoundPref) {
-            val rtUri = if (buttonSound.isNotBlank())
-                buttonSound.toUri()
-            else
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-            rToneP = MediaPlayer.create(audioAttributionContext, rtUri)
-            if (rToneP!!.isPlaying) {
-                rToneP!!.stop()
-                rToneP!!.release()
-            }
-            rToneP!!.start()
-        }
     }
 
     private fun buttonVib() {

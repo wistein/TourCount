@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     widget_del_hint.xml
-    used by HintDelWidget.kt
+    used by DeleteSpeciesHintWidget.kt
     Copyright © 2023-2024, Wilhelm Stein, Bonn, Germany.
     Last edited on 2024-10-14
   -->
@@ -50,9 +50,9 @@
         android:paddingEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
-        android:onClick="getInitialChars"
+        android:onClick="getDelInitialChars"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_search_black_24dp"
+        android:src="@drawable/ic_search_black_48dp"
         tools:ignore="ContentDescription,UsingOnClickInXml" />
 
 </LinearLayout>

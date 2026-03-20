@@ -1,3 +1,4 @@
+nocode,language,en
 03956,Adscita statices,Forester
 03974,Zygaena purpuralis,Transparent burnet
 03980,Zygaena carniolica,Crepuscular burnet
@@ -116,8 +117,7 @@
 07299,Apatura iris,Purple emperor
 07307,Pararge aegeria,Speckled wood
 07309,Lasiommata megera,Wall brown
-07312,Lasiommata maera,"Large wall
-"
+07312,Lasiommata maera,Large wall
 07315,Lopinga achine,Woodland brown
 07321,Coenonympha tullia,Large heath
 07325,Coenonympha arcania,Pearly heath
@@ -152,7 +152,7 @@
 08969,Euclidia glyphica,Burnet companion
 08994,Hypena proboscidalis,Snout
 09056,Autographa gamma,Silver Y
-10517,Amata phegea,Nine spotted
+10517,Syntomis phegea,Nine spotted
 10535,Utetheisa pulchella,Crimson-speckled flunkey
 10572,Diaphora mendica,Muslin moth
 10603,Callimorpha dominula,Scarlet tiger

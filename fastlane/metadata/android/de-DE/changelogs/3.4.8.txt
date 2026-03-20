@@ -3,5 +3,5 @@ Version 3.4.8 (02.07.2024)
 - Checkboxen zum mehrfachen Hinzufügen weiterer Arten zur Zählliste bei 'Arten hinzufügen'
 - Code-Verbesserungen
 - Veraltete (deprecated) Funktion ersetzt
-- Bug-Fixes
+- Bugfixes
 - Doku-Update

@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -28,17 +27,19 @@ import com.wmstein.tourcount.Utils.fromHtml
  * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
  * licensed under the MIT License.
  *
- * In companion object
- * uses minimal distance for updates: 10 m (default),
- *      minimal time between updates: 10 sec (default).
+ * Part of that code was adopted for TourCount by wmstein since 2018-07-26.
  *
- * Adopted and adapted for TourCount by wmstein since 2018-07-26,
- * last edited in Java on 2023-05-30,
+ * In companion object:
+ * Sets the minimal distance for updates (MIN_DISTANCE_FOR_UPDATES): 10 m (default).
+ *
+ * Last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-01-24
+ * last edited on 2026-03-20
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
+    private var locationAttributionContext: Context? = null
+    private var audioAttributionContext: Context? = null
     private var checkGPS = false
     private var checkNetwork = false
     private var canGetLocation = false
@@ -49,18 +50,16 @@ open class LocationService : Service, LocationListener {
     private var uncertainty = 0.0
     private var locationManager: LocationManager? = null
     private var exactLocation = false
-    private var locationAttributionContext: Context? = null
-    private var audioAttributionContext: Context? = null
-    private var rToneP: MediaPlayer? = null
+    private var rToneA: MediaPlayer? = null
 
     // prefs
-    private var prefs: SharedPreferences? = null
+    private var prefs = TourCountApplication.getPrefs()
     private var alertSoundPref = false
     private var alertSound: String = ""
     private var selTimeInterval: Long = 3000 // Default time interval for updates
 
     // Default constructor is demanded for service declaration in AndroidManifest.xml
-    constructor() {}
+    constructor() // not to be removed!
 
     constructor(mContext: Context?) {
         this.mContext = mContext
@@ -80,10 +79,9 @@ open class LocationService : Service, LocationListener {
                 mContext!!.createAttributionContext("locationCheck")
             else mContext
 
-        prefs = TourCountApplication.getPrefs()
-        selTimeInterval = prefs!!.getString("pref_time_interval", "5000")!!.toLong()
-        alertSoundPref = prefs!!.getBoolean("pref_alert_sound", false)
-        alertSound = prefs!!.getString("alert_sound", null).toString()
+        selTimeInterval = prefs.getString("pref_time_interval", "5000")!!.toLong()
+        alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
+        alertSound = prefs.getString("alert_sound", null).toString()
 
         try {
             locationManager = mContext!!.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -160,7 +158,7 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "163, StopListener: $e")
+                Log.e(TAG, "162, StopListener: $e")
         }
     }
 
@@ -172,20 +170,20 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "175, StopListener: Should stop GPS service.")
+                    Log.i(TAG, "173, StopListener: Should stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "179, StopListener: $e")
+                Log.e(TAG, "177, StopListener: $e")
         }
 
         if (alertSoundPref) {
-            if (rToneP != null) {
-                if (rToneP!!.isPlaying) {
-                    rToneP!!.stop() // stop media player
+            if (rToneA != null) {
+                if (rToneA!!.isPlaying) {
+                    rToneA!!.stop() // stop media player
                 }
-                rToneP!!.release()
-                rToneP = null
+                rToneA!!.release()
+                rToneA = null
             }
         }
     }
@@ -270,19 +268,49 @@ open class LocationService : Service, LocationListener {
             else
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-            rToneP = MediaPlayer.create(audioAttributionContext, uriB)
-            if (rToneP!!.isPlaying) {
-                rToneP!!.stop()
-                rToneP!!.release()
+            rToneA = MediaPlayer.create(audioAttributionContext, uriB)
+            if (rToneA!!.isPlaying) {
+                rToneA!!.stop()
+                rToneA!!.release()
             }
-            rToneP!!.start()
+            rToneA!!.start()
         }
     }
 
-    companion object {
-        private const val TAG = "TourCountLocSrv"
+    // Release alert sound, called by WelcomeActivity
+    fun releaseSoundA() {
+        if (alertSoundPref && rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+    }
 
-        private const val MIN_DISTANCE_FOR_UPDATES: Long = 5 // default: 10 (m)
+    // Stop alert sound, called by WelcomeActivity when denied in settings
+    fun stopSoundA() {
+        if (rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+    }
+
+    override fun onDestroy() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "300, onDestroy")
+
+        if (alertSoundPref && rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+        super.onDestroy()
+    }
+
+    companion object {
+        private const val TAG = "LocationService"
+
+        private const val MIN_DISTANCE_FOR_UPDATES: Long = 10 // for tests: 5, default: 10 (m)
     }
 
 }

@@ -6,5 +6,5 @@ Version 3.4.7 (28.05.2024)
 - Zusätzliche Erfassung von Temperatur, Wind und Wolken am Ende der Tour
 - Layout beim CSV-Export für die neu erfassten Werte ergänzt
 - Verbesserungen bei Code und Bildschirm-Layout
-- Bug-Fixes
+- Bugfixes
 - Doku-Update

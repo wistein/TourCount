@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- widget_sum_species.xml used by ListSpeciesWidget.kt and ShowResultsActivity.kt.
+<!-- widget_sum_species.xml used by ResultsSpeciesWidget.kt and ShowResultsActivity.kt.
      Shows totals of species counts
      Last edited on 2026-01-01.
   -->

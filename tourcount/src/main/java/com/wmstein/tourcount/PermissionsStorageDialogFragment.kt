@@ -20,10 +20,10 @@ import androidx.fragment.app.DialogFragment
  * Based on RuntimePermissionsExample-master created by tylerjroach on 8/31/16,
  * licensed under the MIT License.
  *
- * Adopted for TourCount by wistein on 2018-06-20,
+ * Adopted for TourCount by wmstein on 2018-06-20,
  * last edited in java on 2020-04-17,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2025-12-23
+ * last edited on 2026-03-20
  */
 class PermissionsStorageDialogFragment : DialogFragment() {
     private var context: Context? = null
@@ -47,12 +47,12 @@ class PermissionsStorageDialogFragment : DialogFragment() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) { //  (Android <11)
             val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "50, $permission")
+                Log.i(TAG, "50, Manifest storage permission <11: $permission")
             permissionLauncherStorage.launch(permission)
         } else { // Android >= 11
             val permission = Manifest.permission.MANAGE_EXTERNAL_STORAGE
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "55, $permission")
+                Log.i(TAG, "55, Manifest storage permission >10: $permission")
             permissionLauncherStorage.launch(permission)
         }
     }

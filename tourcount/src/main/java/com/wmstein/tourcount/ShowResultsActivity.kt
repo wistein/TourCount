@@ -24,27 +24,27 @@ import com.wmstein.tourcount.database.HeadDataSource
 import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.SectionDataSource
-import com.wmstein.tourcount.widgets.ListIndivNoteWidget
-import com.wmstein.tourcount.widgets.ListIndividualWidget
-import com.wmstein.tourcount.widgets.ListLineWidget
-import com.wmstein.tourcount.widgets.ListLocationWidget
+import com.wmstein.tourcount.widgets.ResultsIndivNoteWidget
+import com.wmstein.tourcount.widgets.ResultsIndividualWidget
+import com.wmstein.tourcount.widgets.ResultsLineWidget
+import com.wmstein.tourcount.widgets.ResultsLocationWidget
 import com.wmstein.tourcount.widgets.ResultsMetaWidget
-import com.wmstein.tourcount.widgets.ListSpeciesWidget
-import com.wmstein.tourcount.widgets.ListSumWidget
-import com.wmstein.tourcount.widgets.ListTitleWidget
+import com.wmstein.tourcount.widgets.ResultsSpeciesWidget
+import com.wmstein.tourcount.widgets.ResultsSumWidget
+import com.wmstein.tourcount.widgets.ResultsTitleWidget
 
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
-/*********************************************************
+/**********************************************************
  * ShowResultsActivity shows list of counting results
- * Copyright 2016-2026 wmstein
+ *
  * Created by wmstein on 2016-03-15 as ListSpeciesActivity,
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2026-01-01
+ * last edited on 2026-03-20
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -56,20 +56,20 @@ class ShowResultsActivity : AppCompatActivity() {
     private var sectionDataSource: SectionDataSource? = null
     private var headDataSource: HeadDataSource? = null
     private var individualsDataSource: IndividualsDataSource? = null
-    var head: Head? = null
-    private var lsw: ListSumWidget? = null
+    private var head: Head? = null
+    private var lsw: ResultsSumWidget? = null
 
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
     private var awakePref = false
-    private var outPref: String? = null
+    private var outPref: String? = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "71, onCreate")
+            Log.i(TAG, "72, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -110,11 +110,9 @@ class ShowResultsActivity : AppCompatActivity() {
 
         specArea = findViewById(R.id.listSpecLayout)
 
-        // new onBackPressed logic
+        // New onBackPressed logic
         val callback = object :  OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "116, handleOnBackPressed")
                 finish()
                 remove()
             }
@@ -127,25 +125,25 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "129, onResume")
+            Log.i(TAG, "128, onResume")
 
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
-        // setup the data sources
+        // Set up the data sources
         headDataSource!!.open()
         sectionDataSource!!.open()
         countDataSource!!.open()
         individualsDataSource!!.open()
 
-        // build Show Results screen
+        // Build Show Results screen
         specArea!!.removeAllViews()
         loadData()
     }
     // End of onResume()
 
-    // fill ListSpeciesWidget with relevant counts and sections data
+    // Fill ResultsSpeciesWidget with relevant counts and sections data
     private fun loadData() {
         var summf = 0
         var summ = 0
@@ -168,13 +166,13 @@ class ShowResultsActivity : AppCompatActivity() {
         var uc: Double
         var uncer1 = 0.0
 
-        //load head and meta data from DB
+        // Load head and metadata from DB
         head = headDataSource!!.head
         val section = sectionDataSource!!.section
 
         // Build the screen
-        // 1. Display list name and observer name by ListTitleWidget
-        val ltw = ListTitleWidget(this, null)
+        // 1. Display list name and observer name by ResultsTitleWidget
+        val ltw = ResultsTitleWidget(this, null)
         ltw.setListTitle(getString(R.string.titleEdit))
         ltw.setListName(section.name)
 
@@ -223,7 +221,7 @@ class ShowResultsActivity : AppCompatActivity() {
         if (uc <= uncer1) uc = uncer1
 
         // 2. Display the average location data
-        val llw = ListLocationWidget(this, null)
+        val llw = ResultsLocationWidget(this, null)
         llw.setLocationWidget(section)
         llw.setWidgetDla2(la)
         llw.setWidgetDlo2(lo)
@@ -238,7 +236,7 @@ class ShowResultsActivity : AppCompatActivity() {
         lmw.setWidgetNotes2(section.notes)
         specArea!!.addView(lmw)
 
-        // load the sorted list of species
+        // Load the sorted list of species
         val specs: List<Count> = if (outPref.equals("names")) {
             // sort criteria are name and code
             countDataSource!!.cntSpeciesSrtName
@@ -247,7 +245,7 @@ class ShowResultsActivity : AppCompatActivity() {
             countDataSource!!.cntSpeciesSrtCode
         }
 
-        // calculate the totals
+        // Calculate the totals
         var specCntf1i: Int
         var specCntf2i: Int
         var specCntf3i: Int
@@ -255,7 +253,7 @@ class ShowResultsActivity : AppCompatActivity() {
         var specCntli: Int
         var specCntei: Int
         for (spec in specs) {
-            val widget = ListSpeciesWidget(this, null)
+            val widget = ResultsSpeciesWidget(this, null)
             widget.setCount(spec)
             specCntf1i = widget.getSpecCountf1i(spec)
             specCntf2i = widget.getSpecCountf2i(spec)
@@ -274,42 +272,44 @@ class ShowResultsActivity : AppCompatActivity() {
             sumsp += 1 // sum of counted species
         }
 
-        // display line and the totals
-        lsw = ListSumWidget(this, null)
+        // Display line and the totals
+        lsw = ResultsSumWidget(this, null)
         lsw!!.setSum(sumsp, sumind)
         specArea!!.addView(lsw)
 
-        // display all individuals by adding them to listSpecies layout
+        // Display all individuals by adding them to listSpecies layout
         var specCnt: Int
         var indivs: List<Individuals> // List of individuals
-        var iwidget: ListIndividualWidget
+        var iwidget: ResultsIndividualWidget
 
         for (spec in specs) {
-            val lnWidget = ListLineWidget(this, null)
-            val widget = ListSpeciesWidget(this, null)
-            widget.setCount(spec)
+            var specNotes: String
+            val lnWidget = ResultsLineWidget(this, null)
+            val widget = ResultsSpeciesWidget(this, null)
+            widget.setCount(spec) // fill in the species data
             specCntf1i = widget.getSpecCountf1i(spec)
             specCntf2i = widget.getSpecCountf2i(spec)
             specCntf3i = widget.getSpecCountf3i(spec)
             specCntpi = widget.getSpecCountpi(spec)
             specCntli = widget.getSpecCountli(spec)
             specCntei = widget.getSpecCountei(spec)
+            specNotes = widget.getSpecNotes(spec)
             specCnt = (specCntf1i + specCntf2i + specCntf3i + specCntpi + specCntli + specCntei)
 
-            // fill widget only for counted species
-            if (specCnt > 0) {
+            // Fill widget only for counted species
+            if ((specCnt > 0) || (specNotes == "0")) {
                 specArea!!.addView(widget)
                 val iName = widget.getSpecname(spec)
                 indivs = individualsDataSource!!.getIndividualsByName(iName!!)
                 for (indiv in indivs) {
-                    iwidget = ListIndividualWidget(this, null)
+                    iwidget = ResultsIndividualWidget(this, null)
 
-                    // load the individuals data
+                    // Load the individuals data
                     iwidget.setIndividual(indiv)
                     specArea!!.addView(iwidget)
 
-                    // show individual notes only when provided
-                    val rwidget = ListIndivNoteWidget(this, null)
+                    // Show individual notes only when provided
+                    val rwidget = ResultsIndivNoteWidget(this, null)
                     val tRem: String? =
                         if (iwidget.getIndNotes(indiv) == null) ""
                         else iwidget.getIndNotes(indiv)
@@ -322,15 +322,15 @@ class ShowResultsActivity : AppCompatActivity() {
             specArea!!.addView(lnWidget)
         }
     }
-    // end of loadData()
+    // End of loadData()
 
     override fun onPause() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "330, onPause")
+            Log.i(TAG, "331, onPause")
 
-        // close the data sources
+        // Close the data sources
         headDataSource!!.close()
         sectionDataSource!!.close()
         countDataSource!!.close()

@@ -20,13 +20,14 @@ import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
 import com.wmstein.tourcount.widgets.EditTourNotesWidget
 
-/**********************************************************
+/***********************************************************
  * EditTourNotesActivity
  * Edit notes for the tour
  * uses EditTourNotetwidget.kt and activity_tour_options.xml
+ *
  * Based on EditSpeciesNotesActivity.kt.
  * Changed by wmstein on 16.09.2025,
- * last edited on 2025-10-22
+ * last edited on 2026-03-20
  */
 class EditTourNotesActivity : AppCompatActivity() {
     private var tourWidgetArea: LinearLayout? = null
@@ -43,7 +44,7 @@ class EditTourNotesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "46, onCreate")
+            Log.i(TAG, "47, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
@@ -101,7 +102,7 @@ class EditTourNotesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "104, onResume")
+            Log.i(TAG, "105, onResume")
 
         // Clear any existing views
         tourWidgetArea!!.removeAllViews()
@@ -132,13 +133,9 @@ class EditTourNotesActivity : AppCompatActivity() {
         // Handle action bar item clicks here.
         val id = item.itemId
         if (id == android.R.id.home) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "136, Home")
             finish()
             return true
         } else if (id == R.id.menuSaveExit) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "141, SaveExit")
             if (saveData())
                 finish()
             return true
@@ -172,9 +169,6 @@ class EditTourNotesActivity : AppCompatActivity() {
     }
 
     private fun saveData(): Boolean {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "176, saveData")
-
         // Add tour notes if the user has written some...
         val tourName = etw!!.trNotesName
         if (isNotEmpty(tourName))

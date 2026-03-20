@@ -29,9 +29,9 @@ import com.wmstein.tourcount.database.Head;
 import com.wmstein.tourcount.database.HeadDataSource;
 import com.wmstein.tourcount.database.Section;
 import com.wmstein.tourcount.database.SectionDataSource;
-import com.wmstein.tourcount.widgets.EditLocationWidget;
+import com.wmstein.tourcount.widgets.EditMetaLocationWidget;
 import com.wmstein.tourcount.widgets.EditMetaWidget;
-import com.wmstein.tourcount.widgets.EditTitleWidget;
+import com.wmstein.tourcount.widgets.EditMetaTitleWidget;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,9 +42,9 @@ import java.util.Objects;
 
 /**********************************************************
  * EditMetaActivity collects meta info for the current tour
- * Copyright 2016-2026 wmstein
+ * <p>
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-01-24
+ * last edit in Java on 2026-03-04
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -53,7 +53,7 @@ public class EditMetaActivity extends AppCompatActivity
     // Preferences
     private final SharedPreferences prefs = TourCountApplication.getPrefs();
 
-    // Database
+    // Data from DB tables
     private Head head;
     private Section section;
     private HeadDataSource headDataSource;
@@ -64,8 +64,8 @@ public class EditMetaActivity extends AppCompatActivity
     private LinearLayout head_area;
     private TextView sDate, sTime, eTime;
 
-    private EditTitleWidget ett;
-    private EditLocationWidget elw;
+    private EditMetaTitleWidget ett;
+    private EditMetaLocationWidget elw;
     private EditMetaWidget emw;
 
     @Override
@@ -98,8 +98,7 @@ public class EditMetaActivity extends AppCompatActivity
         boolean brightPref = prefs.getBoolean("pref_bright", true);
 
         // Set full brightness of screen
-        if (brightPref)
-        {
+        if (brightPref) {
             WindowManager.LayoutParams params = getWindow().getAttributes();
             params.screenBrightness = 1.0f;
             getWindow().setAttributes(params);
@@ -149,6 +148,7 @@ public class EditMetaActivity extends AppCompatActivity
         headDataSource.open();
         sectionDataSource.open();
 
+        // Build the Edit Metadata screen
         // Clear existing view
         head_area.removeAllViews();
 
@@ -156,8 +156,8 @@ public class EditMetaActivity extends AppCompatActivity
         head = headDataSource.getHead();
         section = sectionDataSource.getSection();
 
-        // Display editable list title, observer name and notes by EditTitleWidget
-        ett = new EditTitleWidget(getApplicationContext(), null);
+        // Display editable list title, observer name and notes by EditMetaTitleWidget
+        ett = new EditMetaTitleWidget(this, null);
         ett.setWidgetTitle(getString(R.string.titleEdit));
         ett.setWidgetName(section.name);
         ett.setWidgetOName1(getString(R.string.inspector));
@@ -166,8 +166,8 @@ public class EditMetaActivity extends AppCompatActivity
         ett.setWidgetONotes2(section.notes);
         head_area.addView(ett);
 
-        // Display the editable location data by EditLocationWidget
-        elw = new EditLocationWidget(getApplicationContext(), null);
+        // Display the editable location data by EditMetaLocationWidget
+        elw = new EditMetaLocationWidget(this, null);
         elw.setWidgetCo1(getString(R.string.country));
         elw.setWidgetCo2(section.country);
         elw.setWidgetState1(getString(R.string.bstate));
@@ -182,8 +182,8 @@ public class EditMetaActivity extends AppCompatActivity
         elw.setWidgetLocality2(section.st_locality);
         head_area.addView(elw);
 
-        // Display the editable meta data by EditMetaWidget
-        emw = new EditMetaWidget(getApplicationContext(), null);
+        // Display the editable metadata by EditMetaWidget
+        emw = new EditMetaWidget(this, null);
         emw.setWidgetDate1(getString(R.string.date));
         emw.setWidgetDate2(section.date);
         emw.setWidgetStartTm1(getString(R.string.starttm));
@@ -445,13 +445,12 @@ public class EditMetaActivity extends AppCompatActivity
         String lng = Locale.getDefault().toString().substring(0, 2);
 
         if (lng.equals("de"))
-        {
             dform = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        }
-        else
-        {
+        else if (lng.equals("en"))
             dform = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        }
+        else // for fr, it and es
+            dform = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+
         return dform.format(date);
     }
 

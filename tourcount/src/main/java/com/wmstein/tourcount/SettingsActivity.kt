@@ -18,11 +18,12 @@ import androidx.core.view.updateLayoutParams
 
 /**********************************************************
  * Set the Settings parameters for TourCount
+ *
  * Based on SettingsActivity created by milo on 05/05/2014.
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2026-01-24
+ * last edited on 2026-03-20
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null

@@ -5,21 +5,21 @@ package com.wmstein.tourcount.database
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-02-25
+ * last edited on 2026-02-24
  */
 class Section {
     @JvmField
     var id = 0
     @JvmField
-    var name: String? = null
+    var name: String? = ""
     @JvmField
-    var country: String? = null
+    var country: String? = ""
     @JvmField
-    var plz: String? = null
+    var plz: String? = ""
     @JvmField
-    var city: String? = null
+    var city: String? = ""
     @JvmField
-    var place: String? = null
+    var place: String? = ""
     @JvmField
     var tmp = 0
     @JvmField
@@ -33,15 +33,15 @@ class Section {
     @JvmField
     var clouds_end = 0
     @JvmField
-    var date: String? = null
+    var date: String? = ""
     @JvmField
-    var start_tm: String? = null
+    var start_tm: String? = ""
     @JvmField
-    var end_tm: String? = null
+    var end_tm: String? = ""
     @JvmField
-    var notes: String? = null
+    var notes: String? = ""
     @JvmField
-    var b_state: String? = null
+    var b_state: String? = ""
     @JvmField
-    var st_locality: String? = null
+    var st_locality: String? = ""
 }

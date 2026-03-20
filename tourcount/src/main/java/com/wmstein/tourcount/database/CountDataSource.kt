@@ -390,6 +390,7 @@ class CountDataSource(context: Context) {
             val cursor = database!!.rawQuery(
                 "select * from " + COUNT_TABLE
                         + " WHERE ("
+                        + DbHelper.C_NOTES + " = '0' or "
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
                         + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
@@ -412,6 +413,7 @@ class CountDataSource(context: Context) {
             val cursor = database!!.rawQuery(
                 "select * from " + COUNT_TABLE
                         + " WHERE " + " ("
+                        + DbHelper.C_NOTES + " = '0' or "
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
                         + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
@@ -432,7 +434,7 @@ class CountDataSource(context: Context) {
         var sql = "alter table 'counts' rename to 'counts_backup'"
         database!!.execSQL(sql)
 
-        // create new counts table
+        // Create new counts table
         sql = ("create table counts("
                 + DbHelper.C_ID + " integer primary key, "
                 + DbHelper.C_COUNT_F1I + " int, "
@@ -447,7 +449,7 @@ class CountDataSource(context: Context) {
                 + DbHelper.C_NAME_G + " text)")
         database!!.execSQL(sql)
 
-        // insert the whole COUNT_TABLE data sorted into counts
+        // Insert the whole COUNT_TABLE data sorted into counts
         sql = ("INSERT INTO 'counts' (" +
                 "'count_f1i', 'count_f2i', 'count_f3i', 'count_pi', 'count_li', 'count_ei', " +
                 "'name', 'code', 'notes', 'name_g') " +

@@ -1,73 +1,65 @@
 Installation von TransektCount und TourCount
 
 
-Zwei Optionen:  
+1. Apps vom F-Droid-Store installieren (freigegebene Versionen, empfohlen)
+-------------------------------------------------------------------------
 
-
-1. Von F-Droid (freigegebene Versionen)
-
-   Apps, ohne Doku und Basis-Datenbank (Basis-DB) aber mit Updates über F-Droid-App-Store:
+   Hole die Apps, ohne Doku und Spezieslisten aber mit Updates vom F-Droid-App-Store:
  
      https://f-droid.org/de/packages/com.wmstein.transektcount/
      https://f-droid.org/de/packages/com.wmstein.tourcount
  
-   Nach der Installation per F-Droid-Store sollten noch Doku und Basis-DB (und ggf. regionale oder 
-   saisonale Bespiel-DBs von den GitHub-Seiten des Autors (s.u.) geladen werden. 
-   Diese in das Verzeichnis Documents/TransektCount bzw Documents/TourCount kopieren, welches beim 
-   1. Start jeder App angelegt wird. 
+Anmerkung zu F-Droid:
+   Der Bezug von Apps aus F-Droid ist mindestens so sicher wie der Bezug durch den Google Play Store.
+   Alle Apps werden im Gegensatz zum Play Store auch datenschutzmäßig überprüft und durch F-Droid
+   selbst kompiliert. Falls eine App nicht alle Anforderungen von F-Droid hinsichtlich unerwünschter Merkmale erfüllt, ist es vermerkt.
 
-   Da bei F-Droid veröffentlichte Apps mit deren Signatur durch F-Droid kompiliert werden, 
-   sind diese nicht gegenseitig updatebar von oder mit den entsprechenden Entwickler-Versionen .
+   Die Quellcodes der F-Droid-Apps sind generell veröffentlicht und mit einer Open-Source-Lizenz lizenziert.
 
 
-2. Von den GitHub-Projektseiten des Autors (aktueller Bearbeitungsstand)
+2. App von den GitHub-Projektseiten des Autors laden (aktueller Entwicklungsstand)
+----------------------------------------------------------------------------------
 
-   App, Quellcode, Doku mit Basis- und Beispiel-DBs:
-   
-   - TransektCount-App, apk-Datei:
+   Apps:
+   - TransektCount-App, apk-Datei (transektcount_release_nnn.apk):
 	   https://github.com/wistein/TransektCount/tree/master/apk
-
-     Doku und DBs:
-       https://github.com/wistein/TransektCount/tree/master/docs
-
-
-   - TourCount-App, apk-Datei: 
+   - TourCount-App, apk-Datei (tourcount_release_nnn.apk):
        https://github.com/wistein/TourCount/tree/master/apk
 
-     Doku und DBs:
+   Die .apk-Datei von der o.a. GitHub-Seite ins Downloads-Verzeichnis kopieren.
+   Im Smartphone vor der Installation die Android-Option "Unbekannte Herkunft" unter
+   "Einstellungen -> Sicherheit" aktivieren. Dann im Dateimanager per Doppelklick auf die
+   .apk-Datei die App installieren.
+
+   Wichtig: Nach der Installation die Option "Unbekannte Herkunft" wieder deaktivieren!
+
+
+3. Einrichtung der App
+----------------------
+
+   Nach der Installation die App einmalig starten, damit das erforderliche Datenverzeichnis
+   Documents/TransektCount bzw. Documents/TourCount angelegt wird.
+   Danach sollten noch Doku und relevante Beispiel-Spezieslisten von der GitHub-Seite des Autors
+
+   - TransektCount-Doku und Bespiel-Spezieslisten:
+       https://github.com/wistein/TransektCount/tree/master/docs
+   - TourCount-Doku und Bespiel-Spezieslisten:
        https://github.com/wistein/TourCount/tree/master/docs
 
-   Im Smartphone die Android-Option "Unbekannte Herkunft" unter "Einstellungen -> Sicherheit" vor 
-   der Installation aktivieren.
-
-   Nach Download die App mittels Klick auf die apk-Datei im Download-Verzeichnis installieren.
-   Basis-DB und relevante Beispiel-DBs aus dem Download-Verzeichnis ins APP-Datenverzeichnis 
-   (Documents/TransektCount bzw. Documents/TourCount) kopieren.
-
-   Wichtig: Die Option "Unbekannte Herkunft" wieder deaktivieren!
+   geladen werden. Diese in das entsprechende, neue Datenverzeichnis kopieren.
+   Nun kann die App erneut gestartet und fertig konfiguriert werden.
 
 
-Anmerkung zu F-Droid:
+4. Anmerkungen zu Updates
+-------------------------
 
-   Der Bezug von Apps aus F-Droid ist mindestens so sicher wie der Bezug durch den Google Play Store.
-   Alle Apps werden im Gegensatz zum Play Store auch datenschutzmäßig überprüft und durch F-Droid 
-   selbst kompiliert. 
+   Leider sind die beiden o.g. Installationswege nicht gegenseitig updatefähig, da die .apk-Dateien
+   zwar von identischem Quellcode erzeugt, aber mit unterschiedlichen Schlüsseln signiert sind.
 
-   Falls eine App nicht alle Anforderungen von F-Droid hinsichtlich unerwünschter Merkmale erfüllt, 
-   ist es vermerkt.
-
-   Die Quellcodes der F-Droid-Apps sind veröffentlicht und als Open Source lizenziert.
-
-
-Anmerkung zu Updates:
-
-   Bei größeren Versionssprüngen mit funktionalen Ergänzungen können Strukturänderungen in der 
+   Bei größeren Versionssprüngen mit funktionalen Ergänzungen können Strukturänderungen in der
    internen Datenbank einer App vorgenommen worden sein. Nach einer solchen Änderung wird die 
    Datenbank-Version inkrementiert. Das wird von der App erkannt und die aktuell genutzte DB 
    intern strukturell angepasst.
    
-   Eine Nutzung der aktuell angepassten DB ist aber nach einem Down-Grade zu einer Vorgänger-
-   App-Version nicht mehr verwendbar.
-   
-   Die Beispiel-DBs sind in der aktuellen Struktur verfasst und veröffentlicht. 
-   
+   Die Nutzung einer neu versionierten DB ist aber nach einem Down-Grade zu einer Vorgänger-
+   App-Version nicht mehr möglich.

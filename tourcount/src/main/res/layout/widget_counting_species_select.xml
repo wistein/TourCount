@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ widget_counting_species_select.xml used by CountingWidgetHead1.kt
+  ~ widget_counting_species_select.xml used by CountingHead1Widget.kt
   ~ shows line of the selected species
   ~ Copyright © 2016-2024, Wilhelm Stein, Bonn, Germany.
   ~ Last edited on 2024-08-25.

@@ -26,10 +26,10 @@ package com.wmstein.egm
  * @version $Id$
  * @since 2.3
  *
- * Code adaptation for use by TourCount by wm.stein on 2017-08-22,
+ * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last edited in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2024-10-01.
+ * last edited on 2026-02-28.
  */
 // Creates a new instance of VerticalTransform.
 abstract class VerticalTransform internal constructor() : AbstractMathTransform() {

@@ -2,6 +2,24 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.2 (2026-03-20)
+- French, Italian and Spanish languages added
+- French, Italian and Spanish species list file examples added in GitHub Docs
+- Problem fixed for "Add species" when system language differs from language of common species names
+- Language handling for data (common species names) and system separated
+- Species list supplemented with a data language field for automatic data language recognition. For older existing species list files the data language can be manually set in settings
+- New settings option for selecting the data language for common butterfly names if not automatically recognized for old species list version
+- Added species: Adela reaumurella, Borbo borbonica, Zerynthia cassandra, Zegris eupheme, Colotis evagore, Lysandra hispana, Coenonympha dorus, Satyrus actaea, Cucullia artemisiae and Litosia quadra
+- A "0"-character (zero) in the species remark puts the species into the results despite a 0 count
+- Exporting current DB or results creates the .db- and the .csv-file names with date and time of the inspection start (if entered) instead of the current time
+- Improved CSV export for numbers in left-aligned text fields
+- Check for forbidden characters when the app creates a file name including the tour title
+- Sounds produced by service
+- Some data and text corrections
+- Some code cleaning
+- Docs updated
+- Bugfixes
+
 #### Version 3.7.1 (2026-01-30)
 - Html formatting for app messages improved for different Android versions
 - Messages colors: Error red, warning orange, attention blue, info green
@@ -30,7 +48,7 @@
 - Bugfixes
 
 #### Version 3.6.8 (2025-09-15)
-- When counting with GPS support the app shows a one-time hint message if there is no GPS fix yet, or the location is outside of the European fauna area
+- When counting with GPS support the app shows a one-time hint message if there is no GPS fix yet, or the location is outside the European fauna area
 - Some code, text and picture improvements
 - Docs updated
 - Bugfixes
@@ -298,7 +316,7 @@
 
 #### Version 2.4.6 (2018-03-19)
 - Source Project restructured
-- OSM Reverse Geocoding by Nominatim Service of OpenStreetMap for meta data and individual location
+- OSM Reverse Geocoding by Nominatim Service of OpenStreetMap for metadata and individual location
 - Added a camera button in counting menu
 - Results page improved (average coordinates, listing of individual counts with data)
 - Diverse improvements of details
@@ -314,7 +332,7 @@
 - Correct height with geoid offset from EarthGravitationalModel EGM96
 - Write system log only in MyDebug mode
 - Added links in App Info and Help pages
-- Improved layout of results page
+- Improved layout of the results page
 - Added database version control to be compatible with old database structure prior version 2.1.4
 - Added Option to switch between portrait and landscape mode
 - Show correct headline immediately after loading/resetting DB
@@ -323,7 +341,7 @@
 - Finishing individual input now has button sound
 - Database structure adapted to enhanced individuals data export 
 - Press back button twice to exit
-- Additional support for coarse location from Wifi and Network
+- Additional support for coarse location from Wi-Fi and Network
 - Results page with totals
 - Additional butterfly pictures
 - Minor string improvements
@@ -380,10 +398,10 @@ Other sources:
 - Modified File Chooser dialog, Google Code Archive, GNU GPL v3
 
 Main features:
-- Input page for meta data
+- Input page for metadata
 - Counting page
 - Page to edit counting options
-- Results page with meta data
+- Results page with metadata
 - Settings page
 - Detailed Help page
 - In German and English language

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2025-12-23 -->
+     last edited on 2026-03-13 -->
 
 <resources>
 
@@ -10,104 +10,101 @@
     <string name="outsideEurope">GPS hat Position! Aber Ort ist außerhalb des europäischen Faunengebiets.</string>
 
     <!-- WelcomeActivity -->
-    <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
-    <string name="zList">Zählliste</string>
-    <string name="counting">Zählen</string>
-    <string name="viewSpeciesButton">Ergebnis anzeigen</string>
-    <string name="editMetaButton">Meta-Daten editieren</string>
-    <string name="changeLogTitle">App-Info</string>
-    <string name="viewHelpTitle">Hilfe</string>
-    <string name="viewLicenseTitle">Lizenzen</string>
-    <string name="noCard">Kann nicht ins Documents-Verzeichnis schreiben!</string>
-    <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
-    <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
-    <string name="saveFailListTransect">Export nach Documents/TransektCount schlug fehl!</string>
-    <string name="saveBasisDB">Export der Basis-DB nach Documents/TourCount</string>
-    <string name="saveDB">Export der internen DB nach Documents/TourCount</string>
-    <string name="saveCSV">Export der CSV-Datei nach Documents/TourCount</string>
-    <string name="saveList">Export der Speziesliste.</string>
-    <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
-    <string name="exportMenu">Export akt. DB</string>
-    <string name="exportBasisMenu">Export Basis-DB</string>
-    <string name="exportCSVMenu">Export d. Ergebnisse (csv)</string>
-    <string name="exportSpeciesListMenu">Export Speziesliste</string>
-    <string name="resetDBMenu">Reset Daten</string>
-    <string name="importFileMenu">Import DB</string>
-    <string name="importBasisMenu">Import Basis-DB</string>
-    <string name="importSpeciesListMenu">Import Speziesliste</string>
-    <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
-    <string name="importListFail">Die Speziesliste konnte nicht importiert werden!</string>
-    <string name="importWin">Die Datenbank wurde importiert.</string>
-    <string name="importList">Die Speziesliste wurde importiert.</string>
-    <string name="corruptDb">DB-Fehler! Falls Problem nach Re-Start und nach Import einer anderen TourCount-DB bleibt, bitte App deinstallieren und neu installieren.</string>
-    <string name="importButton">Import</string>
+    <string name="avCoords">Mittlere Koordinaten:</string>
+    <string name="back_twice">Zum Beenden erneut drücken</string>
+    <string name="bema">Bem. zur Art:</string>
+    <string name="bems">Bem. zum Ind.:</string>
     <string name="cancelButton">Abbrechen</string>
-    <string name="individuals">Individuen</string>
+    <string name="changeLogTitle">App-Info</string>
+    <string name="cntse">Anzahl Ei</string>
+    <string name="cntsf">Anzahl ♀</string>
+    <string name="cntsl">Anzahl Ra.</string>
+    <string name="cntsm">Anzahl ♂</string>
+    <string name="cntsmf">Anzahl ♂|♀</string>
+    <string name="cntsp">Anzahl Pu.</string>
     <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
     <string name="confirmListImport">Willst Du wirklich eine Speziesliste importieren? Deine aktuellen Daten werden überschrieben!</string>
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
-    <string name="name_spec">Spezies-Name:</string>
-    <string name="name_spec_g">Deutscher Name:</string>
-    <string name="cntsmf">Anzahl ♂|♀</string>
-    <string name="cntsm">Anzahl ♂</string>
-    <string name="cntsf">Anzahl ♀</string>
-    <string name="cntsp">Anzahl Pu.</string>
-    <string name="cntsl">Anzahl Ra.</string>
-    <string name="cntse">Anzahl Ei</string>
-    <string name="sum">Summen:</string>
-    <string name="sum_total">Gesamtsumme:</string>
-    <string name="sumSpec">Anzahl Arten:</string>
-    <string name="avCoords">Mittlere Koordinaten:</string>
-    <string name="back_twice">Zum Beenden erneut drücken</string>
-    <string name="resetFail">Die Datenbank konnte nicht zurückgesetzt werden!</string>
-    <string name="sort_names">Spezies sortiert nach Spezies-Namen</string>
-    <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
-    <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
-    <string name="waitImport">Bitte warten, der Import läuft!</string>
+    <string name="corruptDb">DB-Fehler! Falls Problem nach Re-Start und nach Import einer anderen TourCount-DB bleibt, bitte App deinstallieren und neu installieren.</string>
+    <string name="counting">Zählen</string>
+    <string name="editMetaButton">Metadaten editieren</string>
+    <string name="exportBasisMenu">Export Basis-DB</string>
+    <string name="exportCSVMenu">Export d. Ergebnisse (csv)</string>
+    <string name="exportMenu">Export akt. DB</string>
+    <string name="exportSpeciesListMenu">Export Speziesliste</string>
+    <string name="importBasisMenu">Import Basis-DB</string>
+    <string name="importButton">Import</string>
+    <string name="importDB">Die Datenbank wurde importiert.</string>
+    <string name="importFail">Die Datenbank konnte nicht importiert werden!</string>
+    <string name="importFileMenu">Import DB</string>
+    <string name="importList">Die Speziesliste wurde importiert.</string>
+    <string name="importListFail">Die Speziesliste konnte nicht importiert werden!</string>
+    <string name="importSpeciesListMenu">Import Speziesliste</string>
+    <string name="individuals">Individuen</string>
     <string name="missingEmail">Bitte unter Einstellungen eine gültige E-Mail-Adresse für zuverlässige Ortserkennung eingeben.</string>
+    <string name="name_spec">Spezies-Name:</string>
+    <string name="noCard">Kann nicht ins \'Documents\'-Verzeichnis schreiben!</string>
+    <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
+    <string name="resetDBMenu">Reset Daten</string>
+    <string name="resetFail">Die Datenbank konnte nicht zurückgesetzt werden!</string>
+    <string name="saveBasisDB">Export der Basis-DB nach \'Documents/TourCount\'</string>
+    <string name="saveCSV">Export der CSV-Datei nach \'Documents/TourCount\'</string>
+    <string name="saveDB">Export der internen DB nach \'Documents/TourCount\'</string>
+    <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
+    <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
+    <string name="saveFailListTransect">Export nach \'Documents/TransektCount\' schlug fehl!</string>
+    <string name="saveList">Export der Speziesliste.</string>
+    <string name="showResultsButton">Ergebnis anzeigen</string>
+    <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
+    <string name="sort_names">Spezies sortiert nach Spezies-Namen</string>
+    <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
+    <string name="sum">Summen:</string>
+    <string name="sumSpec">Anzahl Arten:</string>
+    <string name="sum_total">Gesamtsumme:</string>
+    <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
+    <string name="viewHelpTitle">Hilfe</string>
+    <string name="viewLicenseTitle">Lizenzen</string>
+    <string name="waitImport">Bitte warten, der Import läuft!</string>
+    <string name="zList">Zählliste</string>
 
     <!-- FileChooser -->
-    <string name="importHead">Datenimport</string>
-    <string name="fileSize">Größe</string>
-    <string name="fileHeadlineDB">Liste der DB-Dateien</string>
+    <string name="fileHeadlineBasicDB">TourCount Basis-DB-Dateien</string>
     <string name="fileHeadlineCSV">Spezieslisten</string>
+    <string name="fileHeadlineDB">Liste der DB-Dateien</string>
+    <string name="fileSize">Größe</string>
+    <string name="importHead">Datenimport</string>
     <string name="noFile">Keine Datei vorhanden!</string>
-    <string name="fileHeadlineBasicDB">TransektCount Basis-DB-Dateien</string>
 
     <!-- EditMetaActivity -->
-    <string name="zlNotes">Bem. zur Tour:</string>
-    <string name="speccode">Spez.-Code:</string>
-    <string name="cnts">Anzahl</string>
-    <string name="bema">Bem. zur Art:</string>
-    <string name="editHeadTitle">Meta-Daten</string>
-    <string name="country">Land:</string>
     <string name="bstate">Bundesland:</string>
     <string name="city">Stadt:</string>
-    <string name="place">Ort:</string>
-    <string name="slocality">Lokalität (Start):</string>
-    <string name="plz">PLZ:</string>
-    <string name="inspector">Melder(in):</string>
-    <string name="temperature">Temp. (°C):</string>
-    <string name="wind">Wind (0–4):</string>
     <string name="clouds">Wolken (%):</string>
+    <string name="cnts">Anzahl</string>
+    <string name="country">Land:</string>
+    <string name="date">Datum:</string>
+    <string name="editHeadTitle">Metadaten</string>
+    <string name="endtm">bis:</string>
     <string name="hinttap">Tippe hier</string>
+    <string name="inspector">Melder(in):</string>
+    <string name="place">Ort:</string>
+    <string name="plz">PLZ:</string>
+    <string name="slocality">Lokalität (Start):</string>
+    <string name="speccode">Spez.-Code:</string>
+    <string name="starttm">Zeit von:</string>
+    <string name="temperature">Temp. (°C):</string>
+    <string name="tm">Zeit:</string>
+    <string name="valClouds">Wolken überprüfen!</string>
     <string name="valTemp">Unrealistische Temperatur!</string>
     <string name="valWind">Wind überprüfen!</string>
-    <string name="valClouds">Wolken überprüfen!</string>
-    <string name="date">Datum:</string>
-    <string name="tm">Zeit:</string>
-    <string name="starttm">Zeit von:</string>
-    <string name="endtm">bis:</string>
+    <string name="wind">Wind (0–4):</string>
+    <string name="zlNotes">Bem. zur Tour:</string>
 
     <!-- EditIndividualActivity -->
-    <string name="saveIndividualButton">Speichern</string>
+    <string name="count1">Anz.</string>
     <string name="indivDel">Gelöscht: Individuum mit ID:</string>
-    <string name="xcoord">Breitengrad:</string>
-    <string name="ycoord">Längengrad:</string>
-    <string name="zcoord">Höhe (m):</string>
-    <string name="uncerti">Unsicherheit (m):</string>
-    <string name="time">Zeit</string>
     <string name="locality">Lokalität</string>
+    <string name="note">Bemerkung zum Individuum</string>
+    <string name="saveIndividualButton">Speichern</string>
     <string name="sex">Geschlecht</string>
     <string name="stadium">Stadium</string>
     <string name="stadium_1">Falter</string>
@@ -115,153 +112,155 @@
     <string name="stadium_3">Raupe</string>
     <string name="stadium_4">Ei</string>
     <string name="status123">Zust. (0–6)</string>
-    <string name="count1">Anz.</string>
+    <string name="time">Zeit</string>
+    <string name="uncerti">Unsicherheit (m):</string>
     <string name="valState">Zustand überprüfen!</string>
-    <string name="note">Bemerkung zum Individuum</string>
+    <string name="xcoord">Breitengrad:</string>
+    <string name="ycoord">Längengrad:</string>
+    <string name="zcoord">Höhe (m):</string>
 
     <!-- CountingActivity -->
-    <string name="editDelSpecTitle">Arten löschen</string>
-    <string name="editAddSpecTitle">Arten hinzufügen</string>
-    <string name="saveCountsButton">Sichern</string>
-    <string name="editSectTitle">Liste bearbeiten</string>
-    <string name="deleteButton">Löschen</string>
     <string name="action_share">Mitteilen</string>
-    <string name="send_to">Versenden</string>
-    <string name="noPhotoPermit">Kamera-Berechtigung ist erforderlich.</string>
     <string name="chooserTitle">Wähle eine Foto-App</string>
-	<string name="takePhoto">Foto aufnehmen</string>
+    <string name="deleteButton">Löschen</string>
+    <string name="editAddSpecTitle">Arten hinzufügen</string>
+    <string name="editDelSpecTitle">Arten löschen</string>
+    <string name="editSectTitle">Liste bearbeiten</string>
+    <string name="noPhotoPermit">Kamera-Berechtigung ist erforderlich.</string>
+    <string name="saveCountsButton">Sichern</string>
+    <string name="send_to">Versenden</string>
+    <string name="takePhoto">Foto aufnehmen</string>
 
     <!-- EditSpeciesListActivity -->
-    <string name="editTitle">Bezeichnungen editieren</string>
-    <string name="labelAddSpecButton">Arten hinzufügen</string>
-    <string name="labelDelSpecButton">Arten entfernen</string>
-    <string name="labelEditSpecButton">Liste editieren</string>
     <string name="duplicate">Alle Einträge müssen verschieden sein!</string>
+    <string name="editTitle">Bezeichnungen editieren</string>
+    <string name="hintNotYet">Keine</string>
+    <string name="isDouble"> ist doppelt!</string>
+    <string name="isEmpt">Name oder Code fehlt!</string>
+    <string name="savedChange">Änderungen wurden gespeichert</string>
+    <string name="labelEditSpecButton">Liste editieren</string>
+    <string name="notesHint">Bemerkung einfügen&#8230;</string>
+    <string name="orCode"> oder Code</string>
+    <string name="presentSpecs">Arten der Zählliste:</string>
+    <string name="spname">Name</string>
     <string name="titleEdit">Tour-Name:</string>
     <string name="titleHint">Tour-Bezeichnung hier einfügen&#8230;</string>
     <string name="titleHintShort">Hier einfügen&#8230;</string>
-    <string name="notesHint">Bemerkung einfügen&#8230;</string>
-    <string name="isDouble"> ist doppelt!</string>
-    <string name="presentSpecs">Arten der Zählliste:</string>
-    <string name="isEmpt">Name oder Code fehlt!</string>
-    <string name="spname">Name</string>
-    <string name="orCode"> oder Code</string>
-    <string name="hintNotYet">Keine</string>
 
     <!-- DelSpeciesActivity -->
     <string name="delTitle">Arten entfernen</string>
+    <string name="labelDelSpecButton">Arten entfernen</string>
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Arten hinzufügen</string>
-    <string name="specsToAdd">Weitere Arten:</string>
     <string name="hintSearch">Anfangsbuchst.</string>
     <string name="initCharsL">Bitte 2 Buchst.</string>
+    <string name="labelAddSpecButton">Arten hinzufügen</string>
+    <string name="specsToAdd">Weitere Arten:</string>
+    <string name="specsCommonLang">Bitte unter \'Einstellungen\' die Sprache der Speziesliste auswählen.</string>
 
-    <!-- ChangeLog -->
+    <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">App-Info (TourCount Ver.</string>
-    <string name="changelog_title">Was ist neu?</string>
     <string name="changelog_show_full">mehr&#8230;</string>
-
+    <string name="changelog_title">Was ist neu?</string>
     <string name="title_help_dialog">Hilfe</string>
     <string name="title_license_dialog">Lizenzen</string>
 
     <!-- Preferences -->
-    <string name="prefs_appearance">Aussehen</string>
-    <string name="pref_bg">Hintergrund</string>
-    <string name="pref_bg_summ">Wähle Standard- oder kein Hintergrundbild.</string>
-    <string name="pref_sort_order">Sortierung der Arten</string>
-    <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
-    <string name="pref_left_hand">Linkshänder</string>
-    <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
-
-    <string name="prefs_csv_output_title">Ausgabe</string>
-    <string name="pref_csv_output_title">Sortierung der Ergebnisse</string>
-    <string name="pref_csv_output_dialog">Sortierung der Ergebnisse und der exportierten csv-Tabelle</string>
-
-    <string name="prefs_sound">Töne/Vibration</string>
+    <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
     <string name="pref_alert_sound">Hinweis-Sound</string>
     <string name="pref_alert_sound_summ">Erzeuge einen Sound wenn eine wichtige Information angezeigt wird.</string>
+    <string name="pref_awake">Lass Bildschirm an</string>
+    <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
+    <string name="pref_bg">Hintergrund</string>
+    <string name="pref_bg_summ">Wähle Standard- oder kein Hintergrundbild.</string>
+    <string name="pref_bright">Bildschirm hell</string>
+    <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
     <string name="pref_button_sound">Button-Sound</string>
     <string name="pref_button_sound_summary">Erzeuge einen kurzen Sound wenn ein Button getippt wird.</string>
     <string name="pref_button_vib">Button-Vibration</string>
     <string name="pref_button_vib_summary">Erzeuge eine Vibration wenn ein Zähl-Button getippt wird.</string>
-
-    <string name="prefs_counting">Zählen</string>
-    <string name="pref_awake">Lass Bildschirm an</string>
-    <string name="pref_awake_summ">Verhindert den Ruhezustand beim Zählen.</string>
-    <string name="pref_bright">Bildschirm hell</string>
-    <string name="pref_bright_summ">Setzt die TourCount-Seiten zum Zählen und Editieren hell.</string>
-    <string name="prefs_metadata">Meta-Daten</string>
-    <string name="pref_metadata">GPS Reverse-Geocoding</string>
-    <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Reverse-Geocoding ermittelt und überschrieben werden sollen</string>
+    <string name="pref_csv_output_dialog">Sortierung der Ergebnisse und der exportierten csv-Tabelle</string>
+    <string name="pref_csv_output_title">Sortierung der Ergebnisse</string>
     <string name="pref_email_string">Mail-Adresse für OSM-Geocoder</string>
     <string name="pref_email_string_summ">Erforderlich für die zuverlässige Abfrage der Adressdaten per OSM-Nominatim-Reverse-Geocoder.\nDie Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="email_hint">Bitte eine gültige E-Mail-Adresse eingeben</string>
-
+    <string name="pref_interval_title">GPS-Abfrageinterval</string>
+    <string name="pref_left_hand">Linkshänder</string>
+    <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
+    <string name="pref_metadata">GPS Reverse-Geocoding</string>
+    <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Reverse-Geocoding ermittelt und überschrieben werden sollen.</string>
     <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
     <string name="pref_proximity_title">Näherungsensor</string>
-
-    <string name="pref_interval_title">GPS-Abfrageinterval</string>
+    <string name="pref_data_language">Sprache der Daten</string>
+    <string name="pref_data_language_Summ">Wähle die Sprache für die Lokal-Namen der Schmetterlinge.</string>
+    <string name="pref_sort_order">Sortierung der Arten</string>
+    <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
+    <string name="prefs_appearance">Aussehen</string>
+    <string name="prefs_data">Daten</string>
+    <string name="prefs_counting">Zählen</string>
+    <string name="prefs_csv_output_title">Ausgabe</string>
+    <string name="prefs_metadata">Metadaten</string>
+    <string name="prefs_sound_vib">Töne/Vibration</string>
 
     <!-- EditSpeciesNotesActivity -->
-    <string name="spec_Name">Name</string>
-    <string name="spec_NameG">Deutscher Name</string>
-    <string name="countName">Neue Art</string>
-    <string name="countNameG">Neue Art (deutscher Name)</string>
     <string name="countCode">Code</string>
-    <string name="titleNotesSpecies">Bemerkung zur Art:</string>
+    <string name="countName">Neue Art</string>
+    <string name="countNameG">Neue Art (lokaler Name)</string>
     <string name="notesSpecies">Bemerkung zur Art:</string>
+    <string name="spec_Name">Name</string>
+    <string name="spec_NameG">Lokaler Name</string>
+    <string name="titleNotesSpecies">Bemerkung zur Art</string>
 
     <!-- ListViewSpecies -->
-    <string name="viewSpecTitle">Zählergebnis</string>
-    <string name="wait">Liste wird berechnet&#8230;</string>
     <string name="dLa">Ø-Breitengr.:</string>
     <string name="dLo">Ø-Längengr.:</string>
     <string name="mUncert">Abweichung:</string>
-    <string name="txtSpecies">Verschiedene gezählte Arten: </string>
+    <string name="rem_Ind">Ind.-Bem.:</string>
+    <string name="rem_Sp">Art-Bem.:</string>
+    <string name="txtHt">H.:</string>
     <string name="txtIndividuals">Summe der gezählten Individuen: </string>
-    <string name="txtSx">Sex.:</string>
-    <string name="txtSt">Stad.:</string>
-    <string name="txtSte">Zust.:</string>
     <string name="txtLat">La.:</string>
     <string name="txtLon">Lo.:</string>
-    <string name="txtHt">H.:</string>
-    <string name="rem_Sp">Art-Bem.:</string>
-    <string name="rem_Ind">Ind.-Bem.:</string>
-    <string name="txt_mf">♂|♀</string>
-    <string name="txt_m">♂</string>
-    <string name="txt_f">♀</string>
-    <string name="txt_p">Puppe</string>
-    <string name="txt_l">Raupe</string>
+    <string name="txtSpecies">Verschiedene gezählte Arten: </string>
+    <string name="txtSt">Stad.:</string>
+    <string name="txtSte">Zust.:</string>
+    <string name="txtSx">Sex.:</string>
     <string name="txt_e">Ei</string>
+    <string name="txt_f">♀</string>
+    <string name="txt_l">Raupe</string>
+    <string name="txt_m">♂</string>
+    <string name="txt_mf">♂|♀</string>
+    <string name="txt_p">Puppe</string>
     <string name="txt_time">Zeit</string>
+    <string name="viewSpecTitle">Zählergebnis</string>
+    <string name="wait">Liste wird berechnet&#8230;</string>
 
     <!-- other stuff -->
     <string name="charZero">0</string>
-    <string name="countNameHint">Art-Name</string>
-    <string name="countNameHintG">Art-Name (deutsch)</string>
-    <string name="hintTitle">Titel:</string>
-    <string name="hintName">Name einfügen&#8230;</string>
-    <string name="titleTourNotes">Bemerkung zur Tour:</string>
-    <string name="hintTourNotes">Tour-Bem.:</string>
-    <string name="getHelp">Datenbank-Problem! Falls Hilfe nötig, sende die problematische DB per E-Mail.</string>
     <string name="countCodeHint">Code</string>
-    <string name="countImagomfHint">Falter ♂|♀</string>
-    <string name="countImagomHint">Falter ♂</string>
     <string name="countImagofHint">Falter ♀</string>
-    <string name="countPupaHint">Puppe</string>
+    <string name="countImagomHint">Falter ♂</string>
+    <string name="countImagomfHint">Falter ♂|♀</string>
     <string name="countLarvaHint">Raupe</string>
+    <string name="countNameHint">Art-Name</string>
+    <string name="countNameHintG">Art-Name (lokal)</string>
     <string name="countOvoHint">Ei</string>
-    <string name="warnCount">Nur Werte zwischen 1 … 999999 erlaubt!</string>
+    <string name="countPupaHint">Puppe</string>
+    <string name="getHelp">Datenbank-Problem! Falls Hilfe nötig, sende die problematische DB per E-Mail.</string>
+    <string name="hintName">Name einfügen&#8230;</string>
+    <string name="hintTitle">Titel:</string>
+    <string name="hintTourNotes">Tour-Bem.:</string>
     <string name="no_provider">Kein Service-Provider verfügbar!</string>
     <string name="ok_button">OK</string>
+    <string name="titleTourNotes">Bemerkung zur Tour:</string>
+    <string name="warnCount">Nur Werte zwischen 1 … 999999 erlaubt!</string>
 
     <!-- Permissions -->
-    <string name="app_settings">App-Einstellungen</string>
-    <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
-    <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Export der Ergebnisse.</string>
-    <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt.</string>
-
-    <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
+    <string name="app_settings">System-Einstellungen</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
+    <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
+    <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Import und Export der Daten.</string>
+    <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
+    <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt, Speichern ist nicht möglich.</string>
+
 </resources>

@@ -35,15 +35,15 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-01-24
+ * last edited on 2026-03-20
  */
 class AdvFileChooser : AppCompatActivity() {
     private var currentDir: File? = null
     private var adapter: FileArrayAdapter? = null
     private var fileExtension: String = ""
-    private var fileNameStart: String? = null
+    private var fileNameStart: String? = ""
     private var fileFilter: FileFilter? = null
-    private var fileHd: String? = null
+    private var fileHd: String? = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {

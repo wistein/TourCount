@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
     widget_edit_title.xml
-    used by EditTitleWidget.kt
-    Copyright © 2016-2024, Wilhelm Stein, Bonn, Germany.
+    used by EditMetaTitleWidget.kt
+    Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,19 +19,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
         android:orientation="horizontal"
         android:paddingStart="5dp"
         android:paddingTop="10dp"
-        android:paddingEnd="5dp">
+        android:paddingEnd="5dp"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingEnd="5dp"
-            tools:ignore="RtlSymmetry">
+            android:paddingEnd="5dp">
 
             <TextView
                 android:id="@+id/widgetTitle"

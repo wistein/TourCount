@@ -22,14 +22,14 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.Locale
 
-/****************************************************************
+/*******************************************************************
  * ShowTextDialog.kt
  * Custom class for displaying the Help and License Dialogs
  *
- * Created 2025-07-08 by wistein for TourCount and TransektCount,
- * last edited on 2026-01-24
+ * Created by wmstein for TourCount and TransektCount on 2025-07-08,
+ * last edited on 2026-03-12
  */
-class ShowTextDialog : AppCompatActivity () {
+class ShowTextDialog : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     public override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
@@ -41,7 +41,6 @@ class ShowTextDialog : AppCompatActivity () {
         setTheme(R.style.AppTheme_Dark)
 
         val dialog = intent.getStringExtra("dialog")
-
         val language = Locale.getDefault().toString().substring(0, 2)
 
         setContentView(R.layout.activity_dialog)
@@ -72,26 +71,50 @@ class ShowTextDialog : AppCompatActivity () {
 
         val tvHead = findViewById<TextView>(R.id.help_head)
         val tvText = findViewById<TextView>(R.id.help_text)
+
         // Help dialog
         if (dialog == "help") {
             supportActionBar!!.setTitle(R.string.title_help_dialog)
-            if (language == "de") {
-                tvHead.text = fromHtml(readRawTextFile(R.raw.help_head_de, this))
-                tvText.text = fromHtml(readRawTextFile(R.raw.help_de, this))
-            } else {
-                tvHead.text = fromHtml(readRawTextFile(R.raw.help_head, this))
-                tvText.text = fromHtml(readRawTextFile(R.raw.help, this))
+            when (language) {
+                "de" -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.help_head_de, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.help_de, this))
+                }
+
+                else -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.help_head, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.help, this))
+                }
             }
         }
         // License dialog
         else if (dialog == "license") {
             supportActionBar!!.setTitle(R.string.title_license_dialog)
-            if (language == "de") {
-                tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_de, this))
-                tvText.text = fromHtml(readRawTextFile(R.raw.license_de, this))
-            } else {
-                tvHead.text = fromHtml(readRawTextFile(R.raw.license_head, this))
-                tvText.text = fromHtml(readRawTextFile(R.raw.license, this))
+            when (language) {
+                "de" -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_de, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.license_de, this))
+                }
+
+                "fr" -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_fr, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.license_fr, this))
+                }
+
+                "it" -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_it, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.license_it, this))
+                }
+
+                "es" -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_es, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.license_es, this))
+                }
+
+                else -> {
+                    tvHead.text = fromHtml(readRawTextFile(R.raw.license_head, this))
+                    tvText.text = fromHtml(readRawTextFile(R.raw.license, this))
+                }
             }
         }
         tvText.setLinkTextColor("#4068ff".toColorInt()) // format the links within the text SkyBlue
