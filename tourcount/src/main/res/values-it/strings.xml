@@ -192,7 +192,7 @@
     <string name="pref_metadata_summ">Seleziona questa opzione se desideri che le informazioni sulla posizione vengano determinate tramite geocodifica inversa e sovrascritte.</string>
     <string name="pref_proximity_dialog">Seleziona la sensibilità per spegnere lo screen.</string>
     <string name="pref_proximity_title">Sensore di prossimità</string>
-    <string name="pref_data_language">Data language</string>
+    <string name="pref_data_language">Lingua dei dati</string>
     <string name="pref_data_language_Summ">Seleziona la lingua per i nomi comuni delle farfalle.</string>
     <string name="pref_sort_order">Ordinamento delle specie</string>
     <string name="pref_sort_order_sp_summ">Ordinamento della lista delle specie</string>

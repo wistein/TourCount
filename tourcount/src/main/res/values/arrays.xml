@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- arrays.xml English array strings and butterflies in 5 languages
-     last edited 2026-03-18 -->
+<!-- arrays.xml English array strings and butterflies in 6 languages
+     last edited 2026-03-21 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="pref_bg_entries">

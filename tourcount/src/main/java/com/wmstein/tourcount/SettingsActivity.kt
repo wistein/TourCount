@@ -23,7 +23,7 @@ import androidx.core.view.updateLayoutParams
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2026-03-20
+ * last edited on 2026-03-21
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -71,6 +71,7 @@ class SettingsActivity : AppCompatActivity() {
             .commit()
         editor = prefs.edit() // will be committed on pause
     }
+    // End of onCreate()
 
     @RequiresApi(Build.VERSION_CODES.R)
     fun setStatusBarColor(window: Window, color: Int) {

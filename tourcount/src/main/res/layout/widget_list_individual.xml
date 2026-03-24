@@ -13,103 +13,8 @@
     android:background="@drawable/corner"
     android:baselineAligned="false"
     android:orientation="vertical"
-    android:padding="3dp"
+    android:padding="2dp"
     tools:context=".ShowResultsActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30sp"
-        android:orientation="horizontal">
-
-        <!-- Locality of individual -->
-        <TextView
-            android:id="@+id/txtIndLoc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.8"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:padding="4sp"
-            android:singleLine="true"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <!-- Sexus of individual -->
-        <TextView
-            android:id="@+id/txtIndSx"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:layout_marginStart="5dp"
-            android:gravity="start"
-            android:textColorHint="@color/BrightGray"
-            android:hint="@string/txtSx"
-            android:maxLines="1"
-            android:padding="4sp"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtIndSex"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="start"
-            android:padding="4sp"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <!-- Stadium of individual -->
-        <TextView
-            android:id="@+id/txtIndStd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            android:layout_marginStart="5dp"
-            android:gravity="start"
-            android:textColorHint="@color/BrightGray"
-            android:hint="@string/txtSt"
-            android:maxLines="1"
-            android:padding="4sp"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtIndStad"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:gravity="start"
-            android:padding="4sp"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <!-- State of individual -->
-        <TextView
-            android:id="@+id/txtIndSte"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            android:layout_marginStart="5dp"
-            android:gravity="start"
-            android:textColorHint="@color/BrightGray"
-            android:hint="@string/txtSte"
-            android:maxLines="1"
-            android:padding="4sp"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtIndStat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:layout_marginEnd="3dp"
-            android:gravity="start"
-            android:padding="4sp"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,7 +30,9 @@
             android:gravity="start|top"
             android:textColorHint="@color/BrightGray"
             android:hint="@string/txt_time"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textColor="#FFFFFF"
             android:textSize="13sp" />
 
@@ -140,7 +47,9 @@
             android:textColorHint="@color/BrightGray"
             android:hint="@string/txtLon"
             android:maxLines="1"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -151,7 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.9"
             android:gravity="start|top"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textColor="#FFFFFF"
             android:textSize="13sp" />
 
@@ -166,7 +77,9 @@
             android:textColorHint="@color/BrightGray"
             android:hint="@string/txtLat"
             android:maxLines="1"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -176,7 +89,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.9"
             android:gravity="start|top"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textColor="#FFFFFF"
             android:textSize="13sp" />
 
@@ -191,7 +106,9 @@
             android:textColorHint="@color/BrightGray"
             android:hint="@string/txtHt"
             android:maxLines="1"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -201,9 +118,120 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:gravity="start|top"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
+            android:paddingTop="1sp"
             android:textColor="#FFFFFF"
             android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Locality of individual -->
+            <TextView
+                android:id="@+id/txtIndLoc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.8"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:singleLine="true"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <!-- Sexus of individual -->
+            <TextView
+                android:id="@+id/txtIndSx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:layout_marginStart="5dp"
+                android:gravity="start"
+                android:textColorHint="@color/BrightGray"
+                android:hint="@string/txtSx"
+                android:maxLines="1"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtIndSex"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="start"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <!-- Stadium of individual -->
+            <TextView
+                android:id="@+id/txtIndStd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:layout_marginStart="5dp"
+                android:gravity="start"
+                android:textColorHint="@color/BrightGray"
+                android:hint="@string/txtSt"
+                android:maxLines="1"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtIndStad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <!-- State of individual -->
+            <TextView
+                android:id="@+id/txtIndSte"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:layout_marginStart="5dp"
+                android:gravity="start"
+                android:textColorHint="@color/BrightGray"
+                android:hint="@string/txtSte"
+                android:maxLines="1"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtIndStat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:layout_marginEnd="3dp"
+                android:gravity="start"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                android:paddingBottom="1sp"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
         <!-- count of individual -->
         <com.wmstein.tourcount.AutoFitText
@@ -220,11 +248,9 @@
             android:inputType="number"
             android:maxLines="1"
             android:paddingStart="1dp"
-            android:paddingTop="1dp"
             android:paddingEnd="1dp"
-            android:paddingBottom="1dp"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#BFFFFF"/>
     </LinearLayout>
 
 </LinearLayout>

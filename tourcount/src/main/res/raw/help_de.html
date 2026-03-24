@@ -1,9 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
+
+<meta charset="UTF-8" content="">
 <html lang="de">
 
 <!-- TourCount Benutzeranleitung help_de.html --
-  Last edited on 2026-03-20
+     Last edited on 2026-03-24
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -22,7 +24,7 @@ https://github.com/wistein/TourCount<br>
 mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: <br>
 - Speicherzugriff zwecks Import von DB-Dateien und Spezieslisten, Export von Daten und der Zählergebnisse in DB- oder CSV-Dateien,<br>
 - GPS-Zugriffsrechte sowie<br>
-- Internetzugang für inverse Geokodierung und<br>
+- optional Internetzugang für inverse Geokodierung (Anzeige detaillierter Ortsdaten) durch den Nominatim-Dienst von OpenStreetMap und<br>
 - Wakelock, zwecks Verhinderung, dass die App sich selbständig dimmt oder abschaltet, aber beim
 Einstecken in die Jackentasche oder beim Halten dicht am Körper den Bildschirm und dessen
 Berührungsempfindlichkeit so lange ausschaltet, bis das Gerät wieder benutzt wird.
@@ -93,7 +95,7 @@ mit<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tourname bereinigt für Dateinamenskonformität,<br>
 - <b>StartDatum</b> =<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Datum (mit Zeit 4-stellig) des Tourstarts.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Wenn nicht angegeben, aktuelles Speicherdatum,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Wenn nicht angegeben, aktuelles Speicherdatum<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(mit Zeit 6-stellig),<br>
 - <b>aktDatum</b> =<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aktuelles Speicherdatum (mit Zeit 6-stellig)
@@ -134,7 +136,7 @@ Das System-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Ex
 Unter <b>„Einstellungen“</b> können das Aussehen und Verhalten der App dem eigenen Geschmack angepasst werden, z.B. Sortierreihenfolge für Listen und Datenexport, Rechts-/ Linkshänder-Darstellung der Zählerseite oder Sounds und haptisches Button-Feedback.
 <br><br>
 Mittels <b>inverser Geokodierung</b> lassen sich Ortsangaben (PLZ, Stadt, Ort) in die Metadaten und Lokalität in die Individuen-Daten automatisch einfügen.<br>
-Zur inversen Geokodierung (Erzeugung von Adressdaten aus GPS-Koordinaten) wird der kostenlose Nominatim-Dienst von OpenStreetMap verwendet.<br>
+Zur inversen Geokodierung (Erzeugung von Adressdaten aus GPS-Koordinaten) wird der kostenlose Nominatim-Dienst von OpenStreetMap verwendet (seit 2026 limitiert auf 1 Aufruf pro Sekunde pro App).<br>
 Für eine auf Dauer zuverlässige Abfrage der Adressdaten und zwecks Ausschluss von Missbrauch ist eine eigene, gültige E-Mail-Adresse erforderlich.<br>
 Die Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe<br>
  https://wiki.openstreetmap.org/wiki/Nominatim.
@@ -155,7 +157,7 @@ Mit <b>„Import DB“</b> kann eine exportierte oder eine ggf. entsprechend ben
 <b>„Export akt. DB“</b> schreibt eine Kopie der DB mit allen momentan enthaltenen Daten in die Datei „tourcount_ds_Tourname_JJJJMMTT_hhmm.db“ ins Verzeichnis Documents/TourCount. Dabei wird der Tourname eingefügt, falls er unter Metadaten existiert und ggf. um Zeichen bereinigt, die den Dateinamen-Konventionen widersprechen.
 <br><br>
 Mit <b>„Import Speziesliste“</b> kann eine vorhandene Spezieslistendatei ausgewählt und importiert werden. Beim Import bleiben die Metadaten erhalten, jedoch werden alle Zähldaten gelöscht. Falls die App TransektCount installiert ist, können die exportierten Spezieslisten wechselseitig importiert werden.<br>
-Ab App-Version 3.7.2 ist die Struktur der Speziesliste um die Angabe der Datensprache ergänzt worden. Als Datensprache können Deutsch, Englisch, Französisch, Italienisch oder Spanisch genutzt werden. Soweit lokale Artnamen aufgefunden werden konnten, sind sie für die in der App vorhandenen Arten enthalten.<br>
+Ab App-Version 3.7.2 wurde die Struktur der Speziesliste um die Angabe der Datensprache ergänzt. Als Datensprache können Deutsch, Englisch, Französisch, Italienisch oder Spanisch genutzt werden. Soweit lokale Artnamen aufgefunden werden konnten, sind sie für die in der App vorhandenen Arten enthalten.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der Dateiname einer Speziesliste muss immer mit „species_“ beginnen, sonst kann die Datei nicht importiert werden.
 <br><br>
 Mit <b>„Export Speziesliste“</b> kann die aktuelle Speziesliste als CSV-Datei (CSV = Comma Separated Values Textdatei) „species_ds_Tour_Tourname_JJJJMMTT_hhmmss.csv“ exportiert werden. Dabei wird auch hier der Tourname eingefügt, falls er unter Metadaten existiert und ggf. um Zeichen bereinigt, die den Dateinamen-Konventionen widersprechen.<br>

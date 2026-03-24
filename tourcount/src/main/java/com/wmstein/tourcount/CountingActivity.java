@@ -79,7 +79,7 @@ import java.util.Objects;
  * <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-03-20
+ * last edited in Java on 2026-03-24
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -269,19 +269,19 @@ public class CountingActivity
 
     // Load preferences at start, and also when a change is detected
     private void setPrefVariables() {
-        awakePref = prefs.getBoolean("pref_awake", true);       // keep screen on while counting
-        brightPref = prefs.getBoolean("pref_bright", true);     // bright counting page
-        sortPref = prefs.getString("pref_sort_sp", "none");    // sort mode of species list
-        lhandPref = prefs.getBoolean("pref_left_hand", false);  // left-handed counting page
+        awakePref = prefs.getBoolean("pref_awake", true);      // keep screen on while counting
+        brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
+        sortPref = prefs.getString("pref_sort_sp", "none");   // sort mode of species list
+        lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
-        itemPosition = prefs.getInt("item_Position", 0);        // item position in spinner
-        iid = prefs.getInt("count_id", 1);                      // species id
+        itemPosition = prefs.getInt("item_Position", 0);       // item position in spinner
+        iid = prefs.getInt("count_id", 1);                     // species id
         proxSensorPref = prefs.getString("pref_prox", "Off");
         locServiceOn = prefs.getBoolean("loc_srv_on", false);
-        emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
-        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "");   // for reliable query of Nominatim service
+        metaPref = prefs.getBoolean("pref_metadata", false);  // use Reverse Geocoding
     }
 
     @SuppressLint("DiscouragedApi")
@@ -302,8 +302,8 @@ public class CountingActivity
         if (buttonVibPref)
             vibrator = getApplicationContext().getSystemService(Vibrator.class);
 
-        // Get location with permissions check
-        locationDispatcher(1);
+        // Get location with permissions check without using Nominatim service
+        locationDispatcher(0);
 
         // Set full brightness of screen
         if (brightPref) {
@@ -663,6 +663,12 @@ public class CountingActivity
             Log.i(TAG, "663, onDestroy");
     }
 
+    // Check location permission
+    private boolean isFineLocationPermGranted() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
     // Control location service
     // locationDispatcherMode:
     //  1 = start and use location service
@@ -671,11 +677,11 @@ public class CountingActivity
         if (isFineLocationPermGranted()) {
             editor = prefs.edit();
             switch (locationDispatcherMode) {
-                case 1 -> // start location service and get location
+                case 0 -> // Start location service and just get the location
                 {
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "678 locationDispatcher 1");
+                            Log.i(TAG, "684 locationDispatcher 1");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -683,13 +689,28 @@ public class CountingActivity
                         editor.putBoolean("loc_srv_on", true);
                         editor.commit();
                     }
-                    getLoc();
+                    getLoc(); // Get position
+                }
+                case 1 -> // Start location service, get location and get address with Nominatim data
+                {
+                    if (!locServiceOn) {
+                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                            Log.i(TAG, "698 locationDispatcher 1");
+                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
+                        startService(sIntent);
+                        locServiceOn = true;
+
+                        editor.putBoolean("loc_srv_on", true);
+                        editor.commit();
+                    }
+                    getLoc();  // Get position
+                    getAddr(); // Get data from OpenStreetMap Nominatim service
                 }
                 case 2 -> // stop location service
                 {
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "692, locationDispatcher 2");
+                            Log.i(TAG, "713, locationDispatcher 2");
                         locationService.releaseSoundA();
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -704,12 +725,7 @@ public class CountingActivity
         }
     }
 
-    private boolean isFineLocationPermGranted() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED;
-    }
-
-    // Get the location data
+    // Get the location data without Nominatim service
     @SuppressLint("DefaultLocale")
     public void getLoc() {
         if (locationService.canGetLocation()) {
@@ -720,13 +736,18 @@ public class CountingActivity
                 height = correctHeight(latitude, longitude, height);
             uncertainty = String.format("%f", locationService.getAccuracy());
         }
+    }
 
-        // Get reverse geocoding and store data to Section and Temp table
+    // Get the address data by reverse geocoding from Nominatim service
+    @SuppressLint("DefaultLocale")
+    public void getAddr() {
         if (metaPref && latitude != 0) {
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "746, RetrieveAddr");
             String urlString;
             if (Objects.equals(emailString, "")) {
                 urlString = "https://nominatim.openstreetmap.org/reverse?" +
-                        "email=test@temp.test" + "format=xml&lat="
+                        "email=stein.test@temp.test" + "&format=xml&lat="
                         + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
             } else {
                 urlString = "https://nominatim.openstreetmap.org/reverse?" +
@@ -784,13 +805,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "787, SpinnerListener, count id: "
+                        Log.d(TAG, "808, SpinnerListener, count id: "
                                 + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG, "793, SpinnerListener: " + e);
+                        Log.e(TAG, "814, SpinnerListener: " + e);
                 }
             }
 
@@ -942,7 +963,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -979,7 +1000,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1075,7 +1096,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1113,7 +1134,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1207,7 +1228,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1245,7 +1266,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1339,7 +1360,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1377,7 +1398,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1471,7 +1492,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1509,7 +1530,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1604,7 +1625,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1644,7 +1665,7 @@ public class CountingActivity
             }
             int icount = individualsDataSource.getIndividualCount(i_Id);
             if (i_Id > 0 && icount < 2) {
-                deleteIndividual(i_Id);
+                individualsDataSource.deleteIndividualById(i_Id);
                 i_Id--;
                 return;
             }
@@ -1655,11 +1676,6 @@ public class CountingActivity
         }
     }
     // End of counters
-
-    // Delete individual for count_id
-    private void deleteIndividual(int id) {
-        individualsDataSource.deleteIndividualById(id);
-    }
 
     // Date for date_stamp
     @SuppressLint("SimpleDateFormat")

@@ -13,7 +13,8 @@ Neu in Version 3.7.2:
 - CSV-Export für Zahlendarstellung in linksbündigen Text-Spalten verbessert
 - Check für unzulässige Zeichen bei der internen Erstellung von Dateinamen, die den Tournamen enthalten
 - Sound-Erzeugung mittels Service
-- Einige Daten- und Text-Korrekturen
+- Code-Anpassung an die neuen Anforderungen des Nominatim-Dienstes von OpenStreetMap zwecks Erhalt der örtlichen Detaildaten
+- Einige Layout, Daten- und Text-Verbesserungen
 - Einige Code-Verbesserungen
 - Doku überarbeitet
 - Bugfixe

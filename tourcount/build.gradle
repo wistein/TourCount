@@ -1,9 +1,8 @@
 // Build file where you can add configuration options for the module.
-// Last edited on 2026-03-20
+// Last edited on 2026-03-21
 
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
 }
 
 android {

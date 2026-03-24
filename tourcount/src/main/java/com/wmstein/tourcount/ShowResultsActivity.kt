@@ -44,7 +44,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2026-03-20
+ * last edited on 2026-03-23
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -228,7 +228,7 @@ class ShowResultsActivity : AppCompatActivity() {
         llw.setWidgetMuncert2(uc)
         specArea!!.addView(llw)
 
-        // 3. Display the date, time, temperature, wind and clouds data
+        // 3. Display the date, time, temperature, wind, clouds and notes data
         val lmw = ResultsMetaWidget(this, null)
         lmw.setListMetaWidget(section)
 
@@ -272,19 +272,18 @@ class ShowResultsActivity : AppCompatActivity() {
             sumsp += 1 // sum of counted species
         }
 
-        // Display line and the totals
+        // 4. Display line and the totals
         lsw = ResultsSumWidget(this, null)
         lsw!!.setSum(sumsp, sumind)
         specArea!!.addView(lsw)
 
-        // Display all individuals by adding them to listSpecies layout
+        // 5. Display all individuals by adding them to listSpecies layout
         var specCnt: Int
         var indivs: List<Individuals> // List of individuals
         var iwidget: ResultsIndividualWidget
 
         for (spec in specs) {
             var specNotes: String
-            val lnWidget = ResultsLineWidget(this, null)
             val widget = ResultsSpeciesWidget(this, null)
             widget.setCount(spec) // fill in the species data
             specCntf1i = widget.getSpecCountf1i(spec)
@@ -302,6 +301,7 @@ class ShowResultsActivity : AppCompatActivity() {
                 val iName = widget.getSpecname(spec)
                 indivs = individualsDataSource!!.getIndividualsByName(iName!!)
                 for (indiv in indivs) {
+                    val lnWidget1 = ResultsLineWidget(this, null)
                     iwidget = ResultsIndividualWidget(this, null)
 
                     // Load the individuals data
@@ -317,9 +317,9 @@ class ShowResultsActivity : AppCompatActivity() {
                         rwidget.setRem(indiv)
                         specArea!!.addView(rwidget)
                     }
+                    specArea!!.addView(lnWidget1)
                 }
             }
-            specArea!!.addView(lnWidget)
         }
     }
     // End of loadData()
@@ -343,6 +343,9 @@ class ShowResultsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "348, onDestroy")
 
         specArea = null
     }

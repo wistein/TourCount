@@ -1,9 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
+
+<meta charset="UTF-8" content="">
 <html lang="en">
 
 <!-- User instructions help.html --
-  Last edited on 2026-03-20
+     Last edited on 2026-03-24
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -18,7 +20,7 @@ The recorded data (metadata, counts and remarks) may either be read on the smart
 The app is published on https://github.com/wistein/TourCount with source code and documentation. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services. It demands only for permits which are needed for recording and managing the data:<br>
 - Access rights for storage,<br>
 - location service with GPS,<br>
-- optional internet access for reverse geocoding (address data derived from GPS coordinates by Nominatim service of OpenStreetMap.) <br>
+- optional internet access for reverse geocoding (to show detailed address data) by Nominatim service of OpenStreetMap and <br>
 - wakelock to prevent the app from self dimming or turning off, but turns off the screen and its touch
 sensitivity when held close to the body or in a jacket pocket until the device is used again.
 <br><br><br>
@@ -87,7 +89,7 @@ with<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tourname filtered for filename conformity,<br>
 - <b>StartDate</b> =<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date (with time 4-digits) of the tour start.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If not present the current date is used,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If not present the current date is used<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(with time 6-digits),<br>
 - <b>curDatum</b> =<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current date of storage (with time 6-digits)
@@ -129,7 +131,7 @@ The system menu on the starting page has Settings, Reset, Import, Export, Info a
 In <b>"Settings"</b> you may adapt the look an feel in some aspects to your wishes, e.g. sorting order of lists and data export, left-/right-hand counting page or sounds and haptic button feedback.
 <br><br>
 <b>Reverse Geocoding</b> allows for automatic insertion of statements of place (postal code, city, place) into metadata and location data into the individual's record.<br>
-For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nominatim from OpenStreetMap is used.<br>
+For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nominatim from OpenStreetMap is used (since 2026 limited to 1 request per second per app).<br>
 A valid own email address is necessary for durably reliable queries of address data and to exclude abuse.<br>
 The mail address will be treated confidentially and will only be used to contact you in case of service problems.<br>
 For more info see<br>

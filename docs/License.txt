@@ -29,19 +29,21 @@
  */ 
  
 Integrated code from external references:
+ - Basic counting functions derived from BeeCount, © 2016 Milo Thurston (knirirr),
+   Apache License, Version 2.0, https://github.com/knirirr/BeeCount
+ - EarthGravitationalModel derived from GeoTools - The Open Source Java GIS Toolkit, © 2006-2008, Open Source Geospatial Foundation (OSGeo), GNU Lesser General Public License, Version 2.1, https://geotools.org
  - AutoFitEditText.java, modified, original code from author: Viktor Arsovski, 2015-10-29,
    MIT License, https://github.com/viksaaskool/autofitedittext
  - AutoFitText.java, modified, original code from author: pheuschk, 18.04.2013, 
    Open Source, https://pastebin.com/raw/e6WyrwSN
  - ChangeLog.java, modified, original code © 2011-2013, Karsten Priegnitz,
-   Other Open Source, https://github.com/koem/android-change-log/
- - Counting functions based on BeeCount, © 2016 Milo Thurston (knirirr),
-   Apache License, Version 2.0, https://github.com/knirirr/BeeCount
+   Other Open Source, https://github.com/koem/android-change-log
  - CSVWriter.java, modified, original code © 2015 Bytecode Pty Ltd.,
    Apache License, Version 2.0
  - filechooser based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- - egm derived from GeoTools, © 2006-2008, Open Source Geospatial Foundation,
-   https://geotools.org/
+
+Data from external sources:
+- Data from the Nominatim service by © OpenStreetMap for reverse geocoding is licensed under the Open Database License.
 
 Butterfly pictures: 
  - Adela paludicolella, created from picture in

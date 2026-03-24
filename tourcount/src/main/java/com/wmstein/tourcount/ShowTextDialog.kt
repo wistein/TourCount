@@ -27,7 +27,7 @@ import java.util.Locale
  * Custom class for displaying the Help and License Dialogs
  *
  * Created by wmstein for TourCount and TransektCount on 2025-07-08,
- * last edited on 2026-03-12
+ * last edited on 2026-03-21
  */
 class ShowTextDialog : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -80,7 +80,6 @@ class ShowTextDialog : AppCompatActivity() {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.help_head_de, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.help_de, this))
                 }
-
                 else -> {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.help_head, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.help, this))
@@ -95,22 +94,18 @@ class ShowTextDialog : AppCompatActivity() {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_de, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.license_de, this))
                 }
-
                 "fr" -> {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_fr, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.license_fr, this))
                 }
-
                 "it" -> {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_it, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.license_it, this))
                 }
-
                 "es" -> {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.license_head_es, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.license_es, this))
                 }
-
                 else -> {
                     tvHead.text = fromHtml(readRawTextFile(R.raw.license_head, this))
                     tvText.text = fromHtml(readRawTextFile(R.raw.license, this))

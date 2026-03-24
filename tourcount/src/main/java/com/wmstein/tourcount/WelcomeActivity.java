@@ -47,10 +47,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.wmstein.changelog.ChangeLog;
 import com.wmstein.filechooser.AdvFileChooser;
@@ -86,7 +82,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-03-20
+ * last edited on 2026-03-24
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -94,7 +90,6 @@ public class WelcomeActivity
     private final String TAG = "WelcomeAct";
 
     private TourCountApplication tourCount;
-
     private View baseLayout;
 
     LocationService locationService;
@@ -118,11 +113,9 @@ public class WelcomeActivity
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private String outPref;
-    private boolean metaPref;        // option for OSM reverse geocoding
     private boolean buttonSoundPref;
     private boolean storagePermGranted = false;  // Storage permission state
     private boolean fineLocationPermGranted = false; // Foreground location permission state
-    private String emailString = ""; // mail address for OSM query
     private String dataLanguage = "";
 
     // DB handling
@@ -147,7 +140,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "150, onCreate");
+            Log.i(TAG, "143, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -229,7 +222,7 @@ public class WelcomeActivity
             editor.commit();
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "232, onCreate, storagePermGranted: " + storagePermGranted);
+            Log.d(TAG, "225, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -365,7 +358,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "368, onResume");
+            Log.i(TAG, "361, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -374,8 +367,10 @@ public class WelcomeActivity
         outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
         locServiceOn = prefs.getBoolean("loc_srv_on", false);
         sndServiceOn = prefs.getBoolean("snd_srv_on", false);
-        emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
-        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        // mail address for OSM query
+        String emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
+        // option for OSM reverse geocoding
+        boolean metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
         dataLanguage = prefs.getString("pref_sel_data_lang", "de");
 
         storagePermGranted = isStoragePermGranted(); // set storagePermGranted from self permission
@@ -392,7 +387,6 @@ public class WelcomeActivity
             isFirstStart = false;
         }
 
-        headDataSource.open();
         sectionDataSource.open();
         countDataSource.open();
 
@@ -440,10 +434,10 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "443, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "437, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         locServiceOn = false;
-        locationDispatcher(1);
+        locationDispatcher(0);
     }
     // End of onResume()
 
@@ -455,13 +449,13 @@ public class WelcomeActivity
             storageGranted = Environment.isExternalStorageManager();
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "458, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "452, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "464, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "458, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -474,21 +468,21 @@ public class WelcomeActivity
 
     // Control location service
     // locationDispatcherMode:
-    //  1 = start and use location service
-    //  2 = end location service
+    //  0 = start location service just to get a fix as early as possible
+    //  2 = end location service for WelcomeActivity
     public void locationDispatcher(int locationDispatcherMode) {
         if (fineLocationPermGranted) // current location permission state granted
         {
             editor = prefs.edit();
             // Handle action here
             switch (locationDispatcherMode) {
-                case 1 -> {
+                case 0 -> {
                     // Get location data
                     if (!locServiceOn) {
                         locationService = new LocationService(getApplicationContext());
 
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "491, locationDispatcher 1");
+                            Log.i(TAG, "485, locationDispatcher 0");
 
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
@@ -497,13 +491,12 @@ public class WelcomeActivity
                         editor.putBoolean("loc_srv_on", true);
                         editor.commit();
                     }
-                    getLoc();
                 }
                 case 2 -> {
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "506, locationDispatcher 2");
+                            Log.i(TAG, "499, locationDispatcher 2");
 
                         locationService.releaseSoundA();
                         locationService.stopListener();
@@ -515,37 +508,6 @@ public class WelcomeActivity
                         editor.commit();
                     }
                 }
-            }
-        }
-    }
-
-    // Get the location data and use RetrieveAddrWorker to store location details
-    //   to Section and Temp tables
-    public void getLoc() {
-        if (locationService.canGetLocation()) {
-            double longitude = locationService.getLongitude();
-            double latitude = locationService.getLatitude();
-
-            // Get reverse geocoding and store data to Section and Temp table
-            if (metaPref && latitude != 0.0) {
-                String urlString;
-                if (Objects.equals(emailString, "")) {
-                    urlString = "https://nominatim.openstreetmap.org/reverse?" +
-                            "email=test@temp.test" + "format=xml&lat="
-                            + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                } else {
-                    urlString = "https://nominatim.openstreetmap.org/reverse?" +
-                            "email=" + emailString + "&format=xml&lat="
-                            + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-                }
-                WorkRequest retrieveAddrWorkRequest =
-                        new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
-                                .setInputData(new Data.Builder()
-                                        .putString("URL_STRING", urlString)
-                                        .build()
-                                )
-                                .build();
-                WorkManager.getInstance(this).enqueue(retrieveAddrWorkRequest);
             }
         }
     }
@@ -721,9 +683,8 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "724, onPause");
+            Log.i(TAG, "686, onPause");
 
-        headDataSource.close();
         countDataSource.close();
         sectionDataSource.close();
 
@@ -737,7 +698,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "740, onStop");
+            Log.i(TAG, "701, onStop");
 
         baseLayout.invalidate();
 
@@ -764,7 +725,7 @@ public class WelcomeActivity
         }
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "767, onDestroy, sndServiceOn: " + sndServiceOn);
+            Log.i(TAG, "728, onDestroy, sndServiceOn: " + sndServiceOn);
     }
 
     // Handle button click "Counting" here
@@ -1037,7 +998,7 @@ public class WelcomeActivity
             while ((csvLine = br.readLine()) != null) // for each csvLine
             {
                 String [] specLine = csvLine.split(",");
-                // 1. line contains 0: String "nocode", 1: String "language", 2: String "de"|"en"|"fr"|"it"|"es"
+                // 1. line fields contain String[0]: "nocode", [1]: "language", [2]: "de"|"en"|"fr"|"it"|"es"
                 if (Objects.equals(specLine[0], "nocode")) {
                     dataLanguage = specLine[2];
                     editor = prefs.edit();
@@ -1382,8 +1343,10 @@ public class WelcomeActivity
                 place = "\"" + section.place + "\"";
                 locality = "\"" + section.st_locality + "\"";
 
+                headDataSource.open();
                 head = headDataSource.getHead();
                 inspecName = "\"" + head.observer + "\"";
+                headDataSource.close();
 
                 String[] arrHead =
                         {
@@ -1885,8 +1848,8 @@ public class WelcomeActivity
     //  /Documents/TransektCount/species_ll_tour_YYYYMMDD_hhmmss.csv and
     //  /Documents/TourCount/species_ll_tour_YYYYMMDD_hhmmss.csv
     private void exportSpeciesList() {
-        // outFileTour -> /storage/emulated/0/Documents/TourCount/species_yyyyMMdd_HHmmss.csv
-        // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_yyyyMMdd_HHmmss.csv
+        // outFileTour -> /storage/emulated/0/Documents/TourCount/species_ll_Tour_tourname_yyyyMMdd_HHmmss.csv
+        // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_ll_Tour_tourname_yyyyMMdd_HHmmss.csv
         File pathTour, outFileTour, pathTransect, outFileTransect;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
         {
@@ -1940,12 +1903,12 @@ public class WelcomeActivity
                     }
                     case "en" -> {
                         if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_en_tour_"
+                            outFileTransect = new File(pathTransect, "/species_en_Tour_"
                                     + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_en_Tour_"
                                     + getcurDate() + ".csv");
                         } else {
-                            outFileTransect = new File(pathTransect, "/species_en_tour_"
+                            outFileTransect = new File(pathTransect, "/species_en_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_en_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
@@ -1953,12 +1916,12 @@ public class WelcomeActivity
                     }
                     case "fr" -> {
                         if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_fr_tour_"
+                            outFileTransect = new File(pathTransect, "/species_fr_Tour_"
                                     + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_fr_Tour_"
                                     + getcurDate() + ".csv");
                         } else {
-                            outFileTransect = new File(pathTransect, "/species_fr_tour_"
+                            outFileTransect = new File(pathTransect, "/species_fr_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_fr_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
@@ -1966,12 +1929,12 @@ public class WelcomeActivity
                     }
                     case "it" -> {
                         if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_it_tour_"
+                            outFileTransect = new File(pathTransect, "/species_it_Tour_"
                                     + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_it_Tour_"
                                     + getcurDate() + ".csv");
                         } else {
-                            outFileTransect = new File(pathTransect, "/species_it_tour_"
+                            outFileTransect = new File(pathTransect, "/species_it_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_it_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
@@ -1979,25 +1942,26 @@ public class WelcomeActivity
                     }
                     case "es" -> {
                         if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_es_tour_"
+                            outFileTransect = new File(pathTransect, "/species_es_Tour_"
                                     + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_es_Tour_"
                                     + getcurDate() + ".csv");
                         } else {
-                            outFileTransect = new File(pathTransect, "/species_es_tour_"
+                            outFileTransect = new File(pathTransect, "/species_es_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_es_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
                         }
                     }
                     default -> {
+                        // No data language given
                         if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_tour_"
+                            outFileTransect = new File(pathTransect, "/species_Tour_"
                                     + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_Tour_"
                                     + getcurDate() + ".csv");
                         } else {
-                            outFileTransect = new File(pathTransect, "/species_tour_"
+                            outFileTransect = new File(pathTransect, "/species_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
                             outFileTour = new File(pathTour, "/species_Tour_"
                                     + tourNameDir + "_" + getcurDate() + ".csv");
@@ -2067,7 +2031,6 @@ public class WelcomeActivity
                             Toast.LENGTH_LONG).show();
                 }
             }
-            dbHelper.close();
         }
     }
     // End of exportSpeciesList()

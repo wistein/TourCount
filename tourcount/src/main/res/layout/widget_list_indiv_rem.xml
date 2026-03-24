@@ -11,7 +11,7 @@
     android:background="@drawable/corner"
     android:baselineAligned="false"
     android:orientation="horizontal"
-    android:padding="3dp"
+    android:padding="1dp"
     tools:context=".ShowResultsActivity">
 
         <TextView
@@ -23,7 +23,8 @@
             android:textColorHint="@color/BrightGray"
             android:hint="@string/rem_Ind"
             android:maxLines="1"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -34,7 +35,8 @@
             android:layout_marginStart="5dp"
             android:layout_weight="0.75"
             android:gravity="start|top"
-            android:padding="4sp"
+            android:paddingStart="4sp"
+            android:paddingEnd="4sp"
             android:textColor="#FFFFFF"
             android:textSize="14sp" />
 

@@ -1,4 +1,4 @@
-Version 3.7.2 (20.03.2026)
+Version 3.7.2 (24.03.2026)
 - Französische, italienische und spanische Sprache hinzugefügt
 - Französische, italienische und spanische Spezies-Beispiel-Listen in GitHub-Docs hinzugefügt
 - Problem bei "Arten hinzufügen" gelöst, wenn die Systemsprache nicht der Sprache der lokalen Speziesnamen entspricht
@@ -11,7 +11,8 @@ Version 3.7.2 (20.03.2026)
 - CSV-Export für Zahlendarstellung in linksbündigen Text-Spalten verbessert
 - Check für unzulässige Zeichen bei der internen Erstellung von Dateinamen, die den Tournamen enthalten
 - Sound-Erzeugung mittels Service
-- Einige Daten- und Text-Korrekturen
+- Code-Anpassung an die neuen Anforderungen des Nominatim-Dienstes von OpenStreetMap zwecks Erhalt der örtlichen Detaildaten
+- Einige Layout, Daten- und Text-Verbesserungen
 - Einige Code-Verbesserungen
 - Doku überarbeitet
 - Bugfixe

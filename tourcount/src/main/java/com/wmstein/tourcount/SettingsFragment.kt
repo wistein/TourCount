@@ -13,18 +13,19 @@ import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
  * Created by wmstein on 2020-04-17
  * last edited in Java on 2020-04-18,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-03-17
+ * last edited on 2026-03-24
  */
+// Load the preferences from preferences.xml
 class SettingsFragment : PreferenceFragmentCompat() {
     private var prefs = getPrefs()
-    private var dataLanguage: String? = "de"
+    private var dataLanguage: String? = ""
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         // Load the preferences from preferences.xml
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         // Set language icon
-        dataLanguage = prefs.getString("pref_sel_data_lang", "de")
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")
         val langPref: ListPreference? = findPreference("pref_sel_data_lang") // key
 
         when (dataLanguage) {
@@ -33,6 +34,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             "fr" -> langPref?.setIcon(R.drawable.alpha_fr)
             "it" -> langPref?.setIcon(R.drawable.alpha_it)
             "es" -> langPref?.setIcon(R.drawable.alpha_es)
+            "" -> langPref?.setIcon(R.drawable.alpha_xx)
         }
 
         // Set proximity option visible if available in device
@@ -61,7 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onDisplayPreferenceDialog(langPref: Preference) {
         super.onDisplayPreferenceDialog(langPref)
 
-        dataLanguage = prefs.getString("pref_sel_data_lang", "de")
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")
         val langPref: ListPreference? = findPreference("pref_sel_data_lang") // key
 
         when (dataLanguage) {
@@ -70,6 +72,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             "fr" -> langPref?.setIcon(R.drawable.alpha_fr)
             "it" -> langPref?.setIcon(R.drawable.alpha_it)
             "es" -> langPref?.setIcon(R.drawable.alpha_es)
+            "" -> langPref?.setIcon(R.drawable.alpha_xx)
         }
     }
 

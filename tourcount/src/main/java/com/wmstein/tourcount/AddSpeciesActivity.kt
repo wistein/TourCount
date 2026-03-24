@@ -41,7 +41,7 @@ import java.util.Locale
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-03-20
+ * last edited on 2026-03-24
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -144,7 +144,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
-        dataLanguage = prefs.getString("pref_sel_data_lang", "de")
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")
 
         // Set full brightness of screen
         if (brightPref) {
@@ -168,6 +168,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             "it" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_it)))
             "es" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_es)))
             else -> {
+                namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_de)))
                 val mesg = "Please select the appropriate common species language in Settings"
                 Toast.makeText(
                     this,
@@ -407,7 +408,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "410, onPause")
+            Log.i(TAG, "411, onPause")
 
         countDataSource!!.close()
 
@@ -425,7 +426,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "428, onStop")
+            Log.i(TAG, "429, onStop")
 
         addArea = null
         addHintArea = null
@@ -435,7 +436,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "438, onDestroy")
+            Log.d(TAG, "439, onDestroy")
     }
 
     companion object {

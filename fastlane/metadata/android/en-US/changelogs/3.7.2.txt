@@ -1,4 +1,4 @@
-Version 3.7.2 (2026-03-20)
+Version 3.7.2 (2026-03-24)
 - French, Italian and Spanish languages added
 - French, Italian and Spanish species list file examples added in GitHub Docs
 - Problem fixed for "Add species" when system language differs from language of common species names
@@ -11,7 +11,8 @@ Version 3.7.2 (2026-03-20)
 - Improved CSV export for numbers in left-aligned text fields
 - Check for forbidden characters when the app creates a file name including the tour title
 - Sounds produced by service
-- Some data and text corrections
+- Code adapted to new demands of Nominatim service from OpenStreetMap to get location detail data
+- Some layout, data and text improvements
 - Some code cleaning
 - Docs updated
 - Bugfixes

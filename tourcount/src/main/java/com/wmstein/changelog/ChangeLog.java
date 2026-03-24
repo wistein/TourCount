@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
-/************************************************************************
+/**********************************************************************
  Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
 
  Permission to use, copy, modify, and distribute this piece of software
@@ -38,10 +38,11 @@ import java.util.Locale;
  App newly installed: Shows the history of TourCount.
  App updated: Shows the last changes of TourCount.
 
- Therefore, retrieves the version names and stores the new version name in SharedPreferences
+ Therefore, retrieves the version names and stores the new version
+ name in SharedPreferences
 
  Adaptation for TourCount by wmstein on 2016-04-18,
- last edited on 2026-03-13
+ last edited on 2026-03-24
  */
 public class ChangeLog {
     private static final String TAG = "ChangeLog";
@@ -59,7 +60,7 @@ public class ChangeLog {
     public ChangeLog(Context context, SharedPreferences prefs) {
         this.context = context;
 
-        // get version numbers of lastVersion and thisVersion to compare
+        // Get version numbers of lastVersion and thisVersion to compare
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
             Log.d(TAG, "65, lastVersion: " + lastVersion);
@@ -164,6 +165,7 @@ public class ChangeLog {
             } else {
                 ins = context.getResources().openRawResource(R.raw.changelog);
             }
+
             BufferedReader br = new BufferedReader(new InputStreamReader(ins));
             boolean advanceToEOVS = false; // if true: ignore further version sections
             String line;

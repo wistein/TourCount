@@ -11,8 +11,8 @@ import com.wmstein.tourcount.database.TempDataSource
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 /**********************************************************************************************
  * Worker to get, parse and store address info from Nominatim Reverse Geocoder of OpenStreetMap
@@ -20,34 +20,58 @@ import java.net.URL
  * Created by wmstein on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-03-20
+ * last edited on 2026-03-24
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
+    private var prefs = TourCountApplication.getPrefs()
+
     override fun doWork(): Result {
-        var xmlString: String
+        var xmlString: String // Constructed string from Nominatim response
         val sb = StringBuilder()
-        val url: URL
 
-        // get parameters from calling Activity
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "34, doWork")
+
+        // Get parameters from calling Activity
         val urlString = inputData.getString("URL_STRING") ?: return Result.failure()
-        try {
-            url = URL(urlString)
-            val urlConnection = url.openConnection() as HttpURLConnection
-            urlConnection.readTimeout = 10000
-            urlConnection.connectTimeout = 15000
-            urlConnection.requestMethod = "GET"
-            urlConnection.doInput = true
-            urlConnection.connect()
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "39, urlString: $urlString")
 
+        // Get app version number for User-Agent (requested parameter for Nominatim service)
+        val lastVersion = prefs.getString("PREFS_VERSION_KEY", "")
+        val userAgent = "TourCount $lastVersion"
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "45, User-Agent: $userAgent")
+
+        // Prepare request for Nominatim Reverse Geocoder of OpenStreetMap
+        val url = URL(urlString)
+        val urlConnection = url.openConnection() as HttpsURLConnection
+        urlConnection.readTimeout = 10000    // 10000
+        urlConnection.connectTimeout = 10000 // 15000
+        urlConnection.requestMethod = "GET"
+        urlConnection.setRequestProperty("User-Agent", userAgent)
+        urlConnection.doInput = true
+
+        // Connect with Nominatim Reverse Geocoder of OpenStreetMap
+        try {
+            urlConnection.connect()
             val status = urlConnection.responseCode
-            if (status >= 400) // Error
+
+            // Handle connection error
+            if (status != HttpsURLConnection.HTTP_OK)
             {
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.i(TAG, "65, URL responseCode: $status")
+
+                urlConnection.disconnect()
                 return Result.failure()
             }
 
-            // get the XML from input stream
+            // Get the XML from input stream of Nominatim
             val iStream = urlConnection.inputStream
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "74, iStream: $iStream")
 
             val reader = BufferedReader(InputStreamReader(iStream))
             var line: String? = ""
@@ -57,20 +81,22 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "60, Problem converting Stream to String: $e")
+                    Log.e(TAG, "84, Problem converting Stream to String: $e")
             } finally {
-                iStream.close()
                 reader.close()
+                iStream.close()
             }
         } catch (e: IOException) {
             // SocketTimeoutException without email
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "68, Problem with internet address handling: $e")
+                Log.e(TAG, "92, Problem with internet address handling: $e")
+        } finally {
+            urlConnection.disconnect()
         }
 
         xmlString = sb.toString()
 
-        // Parse Geocoder string to write DB fields
+        // Prepare Geocoder result strings to write into DB fields
         val sectionDataSource: SectionDataSource
         val tempDataSource: TempDataSource
         val sLocality: String
@@ -80,20 +106,20 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
         val sCountry: String
         val sState: String
 
-        // parse the XML content
+        // Parse the XML content
         if (xmlString.contains("<addressparts>")) {
             var sstart = xmlString.indexOf("<addressparts>") + 14
             var send = xmlString.indexOf("</addressparts>")
             xmlString = xmlString.substring(sstart, send)
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "89, <addressparts>: $xmlString")
+                Log.i(TAG, "115, <addressparts>: $xmlString")
 
-            val locality = StringBuilder()
-            val plz = StringBuilder()
+            val locality = StringBuilder() // quarter, road or street
+            val plz = StringBuilder()      // postal code
             val city = StringBuilder()
-            val place = StringBuilder() //
-            val country = StringBuilder() // Land
-            val fedState = StringBuilder() // Bundesland
+            val place = StringBuilder()    // suburb
+            val country = StringBuilder()
+            val fedState = StringBuilder() // federal state
 
             // 1. Get country
             if (xmlString.contains("<country>")) {
@@ -249,6 +275,9 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
 
             tempDataSource.close()
         }
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "279, doWork: success")
+
         return Result.success()
     }
 

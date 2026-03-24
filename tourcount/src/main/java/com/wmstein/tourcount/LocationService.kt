@@ -34,7 +34,7 @@ import com.wmstein.tourcount.Utils.fromHtml
  *
  * Last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-03-20
+ * last edited on 2026-03-23
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null

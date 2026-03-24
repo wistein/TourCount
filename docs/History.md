@@ -2,12 +2,12 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.7.2 (2026-03-20)
+#### Version 3.7.2 (2026-03-24)
 - French, Italian and Spanish languages added
 - French, Italian and Spanish species list file examples added in GitHub Docs
 - Problem fixed for "Add species" when system language differs from language of common species names
 - Language handling for data (common species names) and system separated
-- Species list supplemented with a data language field for automatic data language recognition. For older existing species list files the data language can be manually set in settings
+- Species list supplemented with a data language field for automatic data language recognition
 - New settings option for selecting the data language for common butterfly names if not automatically recognized for old species list version
 - Added species: Adela reaumurella, Borbo borbonica, Zerynthia cassandra, Zegris eupheme, Colotis evagore, Lysandra hispana, Coenonympha dorus, Satyrus actaea, Cucullia artemisiae and Litosia quadra
 - A "0"-character (zero) in the species remark puts the species into the results despite a 0 count
@@ -15,7 +15,8 @@
 - Improved CSV export for numbers in left-aligned text fields
 - Check for forbidden characters when the app creates a file name including the tour title
 - Sounds produced by service
-- Some data and text corrections
+- Code adapted to new demands of Nominatim service from OpenStreetMap to get location detail data
+- Some layout, data and text improvements
 - Some code cleaning
 - Docs updated
 - Bugfixes
