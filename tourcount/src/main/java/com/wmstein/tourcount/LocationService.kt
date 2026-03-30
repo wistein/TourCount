@@ -16,6 +16,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
 import com.wmstein.tourcount.Utils.fromHtml
 
@@ -34,7 +38,7 @@ import com.wmstein.tourcount.Utils.fromHtml
  *
  * Last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-03-23
+ * last edited on 2026-03-27
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -57,6 +61,8 @@ open class LocationService : Service, LocationListener {
     private var alertSoundPref = false
     private var alertSound: String = ""
     private var selTimeInterval: Long = 3000 // Default time interval for updates
+    private var metaPref: Boolean = false
+    private var emailString: String = ""
 
     // Default constructor is demanded for service declaration in AndroidManifest.xml
     constructor() // not to be removed!
@@ -68,7 +74,7 @@ open class LocationService : Service, LocationListener {
 
     private fun getLocation() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "72, getLocation")
+            Log.i(TAG, "77, getLocation")
 
         audioAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
@@ -82,6 +88,8 @@ open class LocationService : Service, LocationListener {
         selTimeInterval = prefs.getString("pref_time_interval", "5000")!!.toLong()
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
         alertSound = prefs.getString("alert_sound", null).toString()
+        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
+        emailString = prefs.getString("email_String", "").toString()
 
         try {
             locationManager = mContext!!.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -158,7 +166,7 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "162, StopListener: $e")
+                Log.e(TAG, "169, Error in getLocation: $e")
         }
     }
 
@@ -170,11 +178,11 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "173, StopListener: Should stop GPS service.")
+                    Log.i(TAG, "181, StopListener: Stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "177, StopListener: $e")
+                Log.e(TAG, "185, Error in StopListener: $e")
         }
 
         if (alertSoundPref) {
@@ -249,6 +257,9 @@ open class LocationService : Service, LocationListener {
                 ).show()
             }
 
+            // Get initial location data from Nominatim for metadata
+            getAddress()
+
             isFirstLoc = false
         }
     }
@@ -259,6 +270,33 @@ open class LocationService : Service, LocationListener {
 
     override fun onProviderDisabled(s: String) {
         // do nothing
+    }
+
+    // Get the address data by reverse geocoding from Nominatim service
+    fun getAddress() {
+        if (metaPref && lat != 0.0) {
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG,"279, initial getAddress, lat = $lat")
+            val urlString: String?
+            if (emailString == "") {
+                urlString = ("https://nominatim.openstreetmap.org/reverse?" +
+                        "email=stein.test@temp.test" + "&format=xml&lat="
+                        + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
+            } else {
+                urlString = ("https://nominatim.openstreetmap.org/reverse?" +
+                        "email=" + emailString + "&format=xml&lat="
+                        + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
+            }
+            val retrieveAddrWorkRequest: WorkRequest =
+                OneTimeWorkRequest.Builder(RetrieveAddrWorker::class.java)
+                    .setInputData(
+                        Data.Builder()
+                            .putString("URL_STRING", urlString)
+                            .build()
+                    )
+                    .build()
+            WorkManager.getInstance(this).enqueue(retrieveAddrWorkRequest)
+        }
     }
 
     private fun soundAlertSound() {
@@ -297,7 +335,7 @@ open class LocationService : Service, LocationListener {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "300, onDestroy")
+            Log.i(TAG, "338, onDestroy")
 
         if (alertSoundPref && rToneA != null) {
             rToneA!!.reset()

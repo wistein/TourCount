@@ -65,3 +65,6 @@ Note on F-Droid:
    
    However, the currently adapted DB version cannot be used after a downgrade to a 
    previous app which uses a previous DB version. 
+
+   All sample DBs are published in the current version. 
+   

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-03-11 -->
+     last edited on 2026-03-26 -->
 
 <resources>
 
@@ -23,7 +23,7 @@
     <string name="cntsmf">Nombre ♂|♀</string>
     <string name="cntsp">Nombre cr.</string>
     <string name="confirmDBImport">Voulez-vous vraiment importer une BD ? Vos données actuelles seront écrasées !</string>
-    <string name="confirmListImport">Voulez-vous vraiment importer une liste d\'espèces ? Vos données actuelles seront écrasées !</string>
+    <string name="confirmListImport">Voulez-vous vraiment importer la liste d\'espèces ? Vos données actuelles seront écrasées !</string>
     <string name="confirmResetDB">Voulez-vous vraiment réinitialiser la BD ? Vos données de comptage actuelles seront supprimées !</string>
     <string name="corruptDb">Erreur BD ! Si le problème persiste après le redémarrage et l\'importation d\'un autre TourCount-BD, veuillez désinstaller l\'application et la réinstaller.</string>
     <string name="counting">Compter</string>
@@ -57,6 +57,7 @@
     <string name="sort_codes">Espèces classées par codes d\'espèces</string>
     <string name="sort_names">Espèces classées par nom d\'espèce</string>
     <string name="sort_time">Individus classés par date d\'enregistrement</string>
+    <string name="specsCommonLang">Attention, ancien format de liste ! Pour utiliser correctement les noms communs, il faut sélectionner la langue des données dans « Paramètres ».</string>
     <string name="sum">Sommes:</string>
     <string name="sumSpec">Nombre espèces:</string>
     <string name="sum_total">Total:</string>
@@ -74,6 +75,7 @@
     <string name="fileSize">Taille</string>
     <string name="importHead">Importer de données</string>
     <string name="noFile">Aucun fichier disponible !</string>
+    <string name="br_Error">Il y a un problème avec le fichier sélectionné !</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">Province:</string>
@@ -157,7 +159,7 @@
     <string name="initCharsL">2 lettres, svp.</string>
     <string name="labelAddSpecButton">Ajouter des espèces</string>
     <string name="specsToAdd">Autres espèces:</string>
-    <string name="specsCommonLang">Veuillez sélectionner la langue appropriée pour la liste des espèces dans « Paramètres ».</string>
+    <string name="specsCommonLangMissing">La langue locale des données n\'est pas définie ! Les noms allemands seront utilisés.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">App-Info (TourCount Ver.</string>

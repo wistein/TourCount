@@ -1,0 +1,8 @@
+Version 3.7.3 (30.03.2026)
+- Import von alter Version der Spezieslisten verbessert
+- Ortsdaten werden beim 1. Fix des GPS übernommen
+- Code-Verbesserungen
+- App-Meldungen und Daten verbessert
+- Hilfe überarbeitet
+- Doku überarbeitet
+- Bugfix

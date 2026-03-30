@@ -2,6 +2,15 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.3 (2026-03-30)
+- Importing old version of species lists improved
+- Get locality data with 1. fix of GPS
+- Code refinements
+- App messages and data improved
+- Help improved
+- Docs updated
+- Bugfix
+
 #### Version 3.7.2 (2026-03-24)
 - French, Italian and Spanish languages added
 - French, Italian and Spanish species list file examples added in GitHub Docs
@@ -383,7 +392,7 @@
 - Count buttons activate an individuals page to get data per individual count
 - Table "individuals" with time, coordinates, gender, stadium, remarks added to DB
 - Meta data (date, time) added
-- Plausi control for meta data
+- Plausi control for metadata
 - Prepared for GPS recording
     
 #### Version 1.0.0 (2016-04-18)

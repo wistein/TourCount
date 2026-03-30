@@ -1,27 +1,17 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.2:
-- French, Italian and Spanish languages added
-- French, Italian and Spanish species list file examples added in GitHub Docs
-- Problem fixed for "Add species" when system language differs from language of common species names
-- Language handling for data (common species names) and system separated
-- Species list supplemented with a data language field for automatic data language recognition
-- New settings option for selecting the data language for common butterfly names if not automatically recognized for old species list version
-- Added species: Adela reaumurella, Borbo borbonica, Zerynthia cassandra, Zegris eupheme, Colotis evagore, Lysandra hispana, Coenonympha dorus, Satyrus actaea, Cucullia artemisiae and Litosia quadra
-- A "0"-character (zero) in the species remark puts the species into the results despite a 0 count
-- Exporting current DB or results creates the .db- and the .csv-file names with date and time of the inspection start (if entered) instead of the current time
-- Improved CSV export for numbers in left-aligned text fields
-- Check for forbidden characters when the app creates a file name including the tour title
-- Sounds produced by service
-- Code adapted to new demands of Nominatim service from OpenStreetMap to get location detail data
-- Some layout, data and text improvements
-- Some code cleaning
+New in Version 3.7.3:
+- Importing old version of species lists improved
+- Get locality data with 1. fix of GPS
+- Code refinements
+- App messages and data improved
+- Help improved
 - Docs updated
-- Bugfixes
+- Bugfix
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.
-- Databases can be individually created and adapted within the app regarding meta data and expected butterfly species.
+- Databases can be individually created and adapted within the app regarding metadata and expected butterfly species.
 - The app has an internal pool of many European species and comes with a prepared basic database with the most common species in Europe as a starting point for direct use.
 - Separate counters for ♂-♀-indeterminate, ♂, ♀, pupa, larva or egg.
 - You may use an individual species list per region.

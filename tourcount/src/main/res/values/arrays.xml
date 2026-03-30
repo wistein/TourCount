@@ -384,7 +384,7 @@
 	<string-array name="initSpecs_it">
 		<item comment="03998">Zigena della filipendula</item>
 		<item comment="06605">-</item>
-		<item comment="06788">-</item>
+        <item comment="06788">L\'imperatore tau</item>
 		<item comment="06843">Sfinge colibrì</item>
 		<item comment="06919">Palemone</item>
 		<item comment="06923">Atteone lineato minore</item>
@@ -461,7 +461,7 @@
 	<string-array name="initSpecs_es">
 		<item comment="03998">Zigena de los seis puntos</item>
 		<item comment="06605">-</item>
-		<item comment="06788">Hacha</item>
+        <item comment="06788">Tau emperador</item>
 		<item comment="06843">Esfinge colibrí</item>
 		<item comment="06919">Fronteriza</item>
 		<item comment="06923">Dorada línea corta</item>
@@ -2871,7 +2871,7 @@
 		<item comment="06752">Bombice della quercia</item>
 		<item comment="06755">Bombice del rovo</item>
 		<item comment="06784">Bombice variopinto</item>
-		<item comment="06788">-</item>
+		<item comment="06788">L\'imperatore tau</item>
 		<item comment="06791">-</item>
 		<item comment="06793">-</item>
 		<item comment="06794">-</item>
@@ -2910,7 +2910,7 @@
 		<item comment="06887">Esperide del marrubio</item>
 		<item comment="06891">Sertorio</item>
 		<item comment="06893">Esperide sardo-corsa</item>
-		<item comment="06895">Falso pirgo meridionale/Esperide del Mt. alto</item>
+        <item comment="06895">Esperide meridionale/del Mt. alto</item>
 		<item comment="06899">Pirgo del cartamo</item>
 		<item comment="06902">Pirgo della cacalia</item>
 		<item comment="06904">Esperia della malva</item>
@@ -3385,10 +3385,10 @@
 		<item comment="04000*">Zig. 5-puntos compl.</item>
 		<item comment="04013b">Oruga de las palmeras</item>
 		<item comment="04030">Abejilla</item>
-		<item comment="04044">Synanthedon scoliaeformis</item>
+		<item comment="04044">-</item>
 		<item comment="04151">Mariposa de taladro rojo</item>
 		<item comment="04176">Mariposa de taladro amarillo</item>
-		<item comment="04178">Phragmataecia castaneae</item>
+		<item comment="04178">-</item>
 		<item comment="04731">-</item>
 		<item comment="05562">-</item>
 		<item comment="05751">-</item>
@@ -3414,16 +3414,16 @@
 		<item comment="06752">Bómbix de la encina</item>
 		<item comment="06755">Macrothylacia rubi</item>
 		<item comment="06784">Endromis de los sauces</item>
-		<item comment="06788">Hacha</item>
+		<item comment="06788">Tau emperador</item>
 		<item comment="06791">Mariposa isabelina</item>
 		<item comment="06793">Gran pavón</item>
-		<item comment="06794">-</item>
+		<item comment="06794">Pequeño pavón</item>
 		<item comment="06794a">-</item>
 		<item comment="06795">-</item>
 		<item comment="06797">-</item>
-		<item comment="06802">-</item>
+		<item comment="06802">Mariposa de seda del Ailanto</item>
 		<item comment="06811">-</item>
-		<item comment="06817">-</item>
+		<item comment="06817">Esfinge del roble</item>
 		<item comment="06819">Esfinge del tilo</item>
 		<item comment="06822">Esfinge ocelada</item>
 		<item comment="06824">Esfinge del chopo</item>
@@ -3444,7 +3444,7 @@
 		<item comment="06860">Esfinge rayada</item>
 		<item comment="06862">Esfinge mayor de la vid</item>
 		<item comment="06863">Esfinge menor de la vid</item>
-		<item comment="06865">Esfinge rayada</item>
+		<item comment="06865">Esfinge de banda plateada</item>
 		<item comment="06879">Cervantes</item>
 		<item comment="06882">Piquitos de las malvas</item>
 		<item comment="06883">Piquitos africana</item>
@@ -3514,7 +3514,7 @@
 		<item comment="06993">Blanca del majuelo</item>
 		<item comment="06995">Blanca de la col</item>
 		<item comment="06995a">Mariposa capuchina canaria</item>
-		<item comment="06995b">Pieris wollastoni</item>
+		<item comment="06995b">Blanca de la col de Madera</item>
 		<item comment="06997">Blanca de Mann</item>
 		<item comment="06998">Blanquita de la col</item>
 		<item comment="06999">Blanca escasa</item>
@@ -3523,7 +3523,7 @@
 		<item comment="07001*">Pie. napi/rap. compl.</item>
 		<item comment="07004">Blanquiverdosa alpina</item>
 		<item comment="07005">Blanquiverdosa</item>
-		<item comment="07005a">Pontia edusa</item>
+		<item comment="07005a">-</item>
 		<item comment="07008">Alcaparrera</item>
 		<item comment="07011">Colias alpina</item>
 		<item comment="07013">-</item>
@@ -3745,7 +3745,7 @@
 		<item comment="07433">-</item>
 		<item comment="07434">-</item>
 		<item comment="07436">Sátiro rubio</item>
-		<item comment="07436a">-</item>
+		<item comment="07436a">Sátiro de Madera</item>
 		<item comment="07440a">-</item>
 		<item comment="07441">Sátiro gris</item>
 		<item comment="07441a">Sátiro de Tenerife</item>

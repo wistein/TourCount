@@ -1,6 +1,6 @@
 # TourCount
 
-TourCount is an Android app that supports species-specific and individually localized registering of butterflies.
+TourCount is an Android app that supports species-specific and individually localized registering of butterflies on walks.
 
 ### Features
 
@@ -11,14 +11,14 @@ TourCount is an Android app that supports species-specific and individually loca
 - You may use an individual species list per region.
 - The app contains editors 
   - to setup or adapt the current species list with add and delete species functions,
-  -  to prepare the meta data for a tour and
+  -  to prepare the metadata for a tour and
   -  for individual species data of a count (e.g. status, remark or bulk count entry).
 - The counting page has a scroll-list to select a species by picture and name.
 - Separate counters for ♂|♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
   location data by reverse OSM-geocoding from OpenStreetMap when GPS and internet access are granted.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
-- Results are shown with meta data, totals, remarks, species results and individual data.
+- Results are shown with metadata, totals, remarks, species results and individual data.
 - Results may be exported as SQLite-DB or in CSV-format (e.g. for transfer to a PC for processing in a spreadsheet).
 - The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
 - Help contains a detailed user guide.
@@ -27,8 +27,8 @@ TourCount is an Android app that supports species-specific and individually loca
 
 ### Prerequisites
 The app demands for 
-- storage access permit which is needed for exporting the counting data, 
-- the permit to read location data for coordinates and location info per count, 
+- storage access permit which is needed for im-/exporting the counting data (databases, results or species lists,
+- the permit to read location data by GPS for coordinates and location info per count, 
 - internet access for OpenStreetMap reverse geocoding and 
 - the permit to keep the device awake
 
@@ -42,10 +42,9 @@ https://github.com/wistein/TourCount/tree/master/docs.
 
 Please read the user guide (provided in German and English) or consult its contents in the app's help 
 before using the app.  
-There are further documents e.g. for setting up and using the app as well as sample basic databases 
-(tourcount0.db and respective English version) provided under /docs. 
+There are further documents e.g. for setting up and using the app as well as sample species lists for different regions and in different languages or basic databases (tourcount0_de_xxx.db) provided under /docs. 
 
-The development history is listed in History.md in /docs.
+The complete development history is listed in History.md in /docs.
 
 Source file structure is for compilation by Android Studio.
 
@@ -86,5 +85,5 @@ Pictures of this work by Wilhelm Stein may only be used for scientific or other 
 Code and illustrations provided by other authors remain the copyright of those authors and should not be
 reproduced or distributed other than with their license.
 
-For detailed copyrights on external code and pictures see the separate document "License.txt" under
+For detailed copyrights on external code and pictures see "Licenses" in the app's main menu or the separate document "License.txt" under 
 https://github.com/wistein/TourCount/tree/master/docs.

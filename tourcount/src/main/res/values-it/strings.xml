@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-02-17 -->
+     last edited 2026-02-26 -->
 
 <resources>
 
@@ -23,7 +23,7 @@
     <string name="cntsmf">Numero ♂|♀</string>
     <string name="cntsp">Numero cris.</string>
     <string name="confirmDBImport">Vuoi davvero importare un database? I tuoi dati attuali verranno sovrascritti!</string>
-    <string name="confirmListImport">Vuoi davvero importare un elenco di specie? I tuoi dati attuali verranno sovrascritti! L\'operazione potrebbe richiedere più tempo in caso di elenchi di grandi dimensioni.</string>
+    <string name="confirmListImport">Vuoi davvero importare la lista di specie? I tuoi dati attuali verranno sovrascritti! L\'operazione potrebbe richiedere più tempo in caso di elenchi di grandi dimensioni.</string>
     <string name="confirmResetDB">Vuoi davvero ripristinare il database? I tuoi dati di conteggio attuali verranno cancellati!</string>
     <string name="corruptDb">Errore DB! Se il problema persiste anche dopo aver riavviato l\'applicazione e non può essere risolto importando un altro database TourCount, disinstallare l\'applicazione e reinstallarla.</string>
     <string name="counting">Contare</string>
@@ -58,6 +58,7 @@
     <string name="sort_codes">Specie ordinate per codice specie</string>
     <string name="sort_names">Specie ordinate per nome della specie</string>
     <string name="sort_time">Individui ordinati in base alla data di registrazione</string>
+    <string name="specsCommonLang">Attenzione: vecchio formato della lista! Per utilizzare correttamente i nomi comuni, è necessario selezionare la lingua dei dati in «Impostazioni».</string>
     <string name="sum">Totali (interni):</string>
     <string name="sumSpec">Specie:</string>
     <string name="sum_total">Totale (totale):</string>
@@ -74,6 +75,7 @@
     <string name="fileSize">Dimensioni</string>
     <string name="importHead">Importazione dati</string>
     <string name="noFile">Nessun file disponibile!</string>
+    <string name="br_Error">C\'è un problema con il file selezionato!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">Stato federale:</string>
@@ -158,7 +160,7 @@
     <string name="initCharsL">2 lettere, per favore</string>
     <string name="labelAddSpecButton">Aggiungi specie</string>
     <string name="specsToAdd">Altre specie:</string>
-    <string name="specsCommonLang">Selezionare la lingua appropriata per l\'elenco delle specie in “Impostazioni”.</string>
+    <string name="specsCommonLangMissing">La lingua dei dati locali non è stata definita! Verranno utilizzati i nomi in tedesco.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">Info app (TourCount Ver.</string>

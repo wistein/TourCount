@@ -82,7 +82,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-03-24
+ * last edited on 2026-03-27
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -205,6 +205,12 @@ public class WelcomeActivity
                     return WindowInsetsCompat.CONSUMED;
                 });
 
+        cl = new ChangeLog(this, prefs);
+
+        // Show changelog for new version
+        if (cl.firstRun())
+            cl.getLogDialog().show();
+
         // Check initial storage permission state and provide dialog
         storagePermGranted = isStoragePermGranted();
         if (!storagePermGranted) // in self permission
@@ -222,7 +228,7 @@ public class WelcomeActivity
             editor.commit();
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "225, onCreate, storagePermGranted: " + storagePermGranted);
+            Log.d(TAG, "231, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -258,12 +264,6 @@ public class WelcomeActivity
         else {
             tourNameDir = tourNameDir.replaceAll(regexFilename, "");
         }
-
-        cl = new ChangeLog(this, prefs);
-
-        // Show changelog for new version
-        if (cl.firstRun())
-            cl.getLogDialog().show();
 
         // Test for existence of file /storage/emulated/0/Documents/TourCount/tourcount0.db
         storagePermGranted = isStoragePermGranted();
@@ -404,9 +404,8 @@ public class WelcomeActivity
 
         // Prepare modified tourName to be part of a filename
         tourNameDir = tourName;
-        if (Objects.equals(tourNameDir, ""))
-            return;
-        else {
+        if (!Objects.equals(tourNameDir, "")) {
+            assert tourNameDir != null;
             tourNameDir = tourNameDir.replaceAll(regexFilename, "");
         }
 
@@ -434,7 +433,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "437, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "436, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         locServiceOn = false;
         locationDispatcher(0);
@@ -449,13 +448,13 @@ public class WelcomeActivity
             storageGranted = Environment.isExternalStorageManager();
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "452, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "451, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "458, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "457, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -478,11 +477,10 @@ public class WelcomeActivity
             switch (locationDispatcherMode) {
                 case 0 -> {
                     // Get location data
+                    locationService = new LocationService(getApplicationContext());
                     if (!locServiceOn) {
-                        locationService = new LocationService(getApplicationContext());
-
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "485, locationDispatcher 0");
+                            Log.i(TAG, "483, locationDispatcher 0");
 
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
@@ -496,7 +494,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "499, locationDispatcher 2");
+                            Log.i(TAG, "497, locationDispatcher 2");
 
                         locationService.releaseSoundA();
                         locationService.stopListener();
@@ -683,7 +681,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "686, onPause");
+            Log.i(TAG, "684, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -698,7 +696,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "701, onStop");
+            Log.i(TAG, "699, onStop");
 
         baseLayout.invalidate();
 
@@ -725,7 +723,7 @@ public class WelcomeActivity
         }
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "728, onDestroy, sndServiceOn: " + sndServiceOn);
+            Log.i(TAG, "726, onDestroy, sndServiceOn: " + sndServiceOn);
     }
 
     // Handle button click "Counting" here
@@ -937,16 +935,40 @@ public class WelcomeActivity
                                 Toast.LENGTH_LONG).show();
                     }
                     if (inFile != null) {
+                        String csvLine;
+                        boolean brError = false;
+
+                        // Check for old version of species list
+                        try {
+                            BufferedReader br = new BufferedReader(new FileReader(inFile));
+                            csvLine = br.readLine(); // Read 1. line only
+                            String[] specLine = csvLine.split(",");
+                            if (Objects.equals(specLine[0], "nocode"))
+                                mesg = getString(R.string.confirmListImport);
+                            else
+                                mesg = getString(R.string.specsCommonLang) + "\n\n" + getString(R.string.confirmListImport);
+                            br.close();
+                        } catch (Exception e) {
+                            mesg = getString(R.string.br_Error);
+                            brError = true;
+                        }
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
                         builder.setIcon(android.R.drawable.ic_dialog_alert);
-                        builder.setMessage(R.string.confirmListImport);
-                        builder.setCancelable(false);
-                        builder.setPositiveButton(R.string.importButton, (dialog, id) ->
-                        {
-                            clearDBforImport();
-                            readSpeciesCSV(inFile);
-                        });
-                        builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+                        builder.setMessage(mesg);
+                        if (brError) {
+                            builder.setCancelable(true);
+                            builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+                        } else {
+
+                            builder.setCancelable(false);
+                            builder.setPositiveButton(R.string.importButton, (dialog, id) ->
+                            {
+                                clearDBforImport();
+                                readSpeciesCSV(inFile);
+                            });
+                            builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+                        }
                         alert = builder.create();
                         alert.show();
                     }
@@ -979,7 +1001,6 @@ public class WelcomeActivity
 
     // Read an exported species list and write items to table counts
     private void readSpeciesCSV(File inFile) {
-        BufferedReader br;
         try {
             mesg = getString(R.string.waitImport);
             Toast.makeText(this,
@@ -991,22 +1012,34 @@ public class WelcomeActivity
             List<String> nameArray = new ArrayList<>();
             List<String> nameGArray = new ArrayList<>();
 
+            BufferedReader br = new BufferedReader(new FileReader(inFile));
+            boolean newList372 = true;
+
+            csvLine = br.readLine(); // Read 1. line only
+            String[] specLine = csvLine.split(",");
+            if (Objects.equals(specLine[0], "nocode")) {
+                dataLanguage = specLine[2];
+                editor = prefs.edit();
+                editor.putString("pref_sel_data_lang", dataLanguage);
+                editor.apply();
+            } else
+                newList372 = false;
+
+            br.close();
+
             br = new BufferedReader(new FileReader(inFile));
 
             int i = 0;       // index of imported list
             int iCounts = 1; // index of id in table counts
             while ((csvLine = br.readLine()) != null) // for each csvLine
             {
-                String [] specLine = csvLine.split(",");
+                specLine = csvLine.split(",");
                 // 1. line fields contain String[0]: "nocode", [1]: "language", [2]: "de"|"en"|"fr"|"it"|"es"
                 if (Objects.equals(specLine[0], "nocode")) {
-                    dataLanguage = specLine[2];
-                    editor = prefs.edit();
-                    editor.putString("pref_sel_data_lang", dataLanguage);
-                    editor.apply();
-
-                    iCounts--;
-                    i--;
+                    if (newList372) {
+                        iCounts--;
+                        i--;
+                    }
                 }
                 else {
                     // comma-separated 0:code, 1:name, 2:nameL
@@ -1998,7 +2031,7 @@ public class WelcomeActivity
                 }
             }
 
-            // If TourCount is installed export to /Documents/TourCount
+            // Export to /Documents/TourCount
             if (pathTour.exists() && pathTour.isDirectory()) {
                 try {
                     CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTour));

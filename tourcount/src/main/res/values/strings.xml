@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2026-03-11 -->
+     last edited on 2026-03-26 -->
 
 <resources>
 
@@ -38,7 +38,7 @@
     <string name="cntsmf">Counts ♂|♀</string>
     <string name="cntsp">Counts Pu.</string>
     <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
-    <string name="confirmListImport">Are you sure you want to import a species list? Your current data will be overwritten!</string>
+    <string name="confirmListImport">Are you sure you want to import the species list? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
     <string name="counting">Counting</string>
@@ -72,6 +72,7 @@
     <string name="sort_codes">Species sorted by species codes</string>
     <string name="sort_names">Species sorted by species names</string>
     <string name="sort_time">Individuals sorted by registered time</string>
+    <string name="specsCommonLang">Note: This is the old list format! To ensure common names are displayed correctly, you must select the data language under “Settings.”.</string>
     <string name="sum">Totals:</string>
     <string name="sumSpec">Diff. Species:</string>
     <string name="sum_total">Sum Total:</string>
@@ -89,6 +90,7 @@
     <string name="fileSize">Size</string>
     <string name="importHead">Data Import</string>
     <string name="noFile">No file available!</string>
+    <string name="br_Error">There is a problem with the selected file!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">State:</string>
@@ -172,7 +174,7 @@
     <string name="initCharsL">Please 2 chars.</string>
     <string name="labelAddSpecButton">Add Species</string>
     <string name="specsToAdd">Further species:</string>
-    <string name="specsCommonLang">Please select the appropriate species list language in \'Settings\'</string>
+    <string name="specsCommonLangMissing">Local data language is not defined! German names will be used.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">App Info (TourCount Ver. </string>
@@ -184,7 +186,7 @@
     <!-- Preferences -->
     <string name="email_hint">Please type in a valid email address here</string>
     <string name="pref_alert_sound">Info Sound</string>
-    <string name="pref_alert_sound_summ">Make a sound when an important information is shown.</string>
+    <string name="pref_alert_sound_summ">Make a sound when important information is shown.</string>
     <string name="pref_awake">Keep Screen On</string>
     <string name="pref_awake_summ">Prevent screen from sleeping whilst counting.</string>
     <string name="pref_bg">Background</string>

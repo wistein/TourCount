@@ -1,0 +1,8 @@
+Version 3.7.2 (2026-03-30)
+- Importing old version of species lists improved
+- Get locality data with 1. fix of GPS
+- Code refinements
+- App messages and data improved
+- Help improved
+- Docs updated
+- Bugfix

@@ -169,7 +169,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             "es" -> namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_es)))
             else -> {
                 namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_de)))
-                val mesg = "Please select the appropriate common species language in Settings"
+                val mesg = getString(R.string.specsCommonLang)
                 Toast.makeText(
                     this,
                     fromHtml("<font color='red'><b>$mesg</b></font>"),

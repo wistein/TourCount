@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-03-13 -->
+     last edited on 2026-03-26 -->
 
 <resources>
 
@@ -23,7 +23,7 @@
     <string name="cntsmf">Núm. ♂|♀</string>
     <string name="cntsp">Núm. cri.</string>
     <string name="confirmDBImport">¿De verdad quieres importar una BD? ¡Se sobrescribirán tus datos actuales!</string>
-    <string name="confirmListImport">¿De verdad quieres importar una lista de especies? ¡Se sobrescribirán tus datos actuales!</string>
+    <string name="confirmListImport">¿De verdad quieres importar la lista de especies? ¡Se sobrescribirán tus datos actuales!</string>
     <string name="confirmResetDB">¿De verdad quieres restablecer la BD? ¡Se borrarán tus datos actuales!</string>
     <string name="corruptDb">¡Error de BD! Si el problema persiste tras reiniciar el dispositivo e importar otra BD de TourCount, desinstala la aplicación y vuelve a instalarla.</string>
     <string name="counting">Contar</string>
@@ -42,22 +42,23 @@
     <string name="importSpeciesListMenu">Importar lista de especies</string>
     <string name="individuals">Individuos</string>
     <string name="missingEmail">Introduce una dirección de correo electrónico válida en la sección «Configuración» para garantizar una localización precisa.</string>
-    <string name="name_spec">Nombre de la especie:</string>
+    <string name="name_spec">Nombre de especie:</string>
     <string name="noCard">¡No se puede escribir en el directorio «Documents»!</string>
     <string name="reset2basic">La base de datos se ha restablecido.</string>
     <string name="resetDBMenu">Restablecer datos</string>
     <string name="resetFail">¡No se ha podido restablecer la base de datos!</string>
-    <string name="saveBasisDB">Exportar la BD básica a «Documents/TourCount»</string>
-    <string name="saveCSV">Exportar el fichero CSV a «Documentos/TourCount»</string>
-    <string name="saveDB">Exportar la BD interna a «Documents/TourCount»</string>
-    <string name="saveFail">¡No se ha podido exportar la base de datos!</string>
+    <string name="saveBasisDB">Exportar la BD básica a Documents/TourCount</string>
+    <string name="saveCSV">Exportar el fichero CSV a Documentos/TourCount</string>
+    <string name="saveDB">Exportar la BD interna a Documents/TourCount</string>
+    <string name="saveFail">¡No se ha podido exportar la BD!</string>
     <string name="saveFailList">¡No se ha podido exportar la lista de especies!</string>
-    <string name="saveFailListTransect">¡La exportación a «Documents/TransektCount» ha fallado!</string>
+    <string name="saveFailListTransect">¡La exportación a Documents/TransektCount ha fallado!</string>
     <string name="saveList">Exportar la lista de especies.</string>
     <string name="showResultsButton">Mostrar resultado</string>
     <string name="sort_codes">Especies ordenadas por códigos de especie</string>
     <string name="sort_names">Especies ordenadas por nombre de especie</string>
     <string name="sort_time">Individuos ordenados por fecha de registro</string>
+    <string name="specsCommonLang">¡Atención, formato de lista antiguo! Para utilizar correctamente los nombres comunes, hay que seleccionar el idioma de los datos en «Configuración».</string>
     <string name="sum">Totales:</string>
     <string name="sumSpec">Núm. de especies:</string>
     <string name="sum_total">Total:</string>
@@ -70,10 +71,11 @@
     <!-- FileChooser -->
     <string name="fileHeadlineBasicDB">Ficheros de BD básica de TourCount</string>
     <string name="fileHeadlineCSV">Listas de especies</string>
-    <string name="fileHeadlineDB">Lista de ficheros DB</string>
+    <string name="fileHeadlineDB">Ficheros DB de TourCount</string>
     <string name="fileSize">Tamaño</string>
     <string name="importHead">Importación de datos</string>
     <string name="noFile">¡No hay ningún fichero!</string>
+    <string name="br_Error">¡Hay un problema con el archivo seleccionado!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">Estado federado:</string>
@@ -157,7 +159,7 @@
     <string name="initCharsL">Por favor, 2 letras</string>
     <string name="labelAddSpecButton">Añadir especies</string>
     <string name="specsToAdd">Otras especies:</string>
-    <string name="specsCommonLang">Selecciona el idioma de la lista de especies en «Configuración».</string>
+    <string name="specsCommonLangMissing">¡No se ha definido el idioma local de los datos! Se utilizarán los nombres en alemán.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">App-Info (TourCount Ver.</string>
@@ -259,7 +261,7 @@
     <string name="app_settings">Configuración del sistema</string>
     <string name="dialog_fine_location_message">El registro de las mariposas debe realizarse indicando la ubicación con la mayor precisión posible.</string>
     <string name="dialog_fine_location_title">Permite que se registre tu ubicación exacta.</string>
-    <string name="dialog_storage_message">Por favor, concede a TourCount permiso de almacenamiento para importar y exportar los datos.</string>
+    <string name="dialog_storage_message">Por favor, concede a TourCount permiso de almacenamiento para poder importar y exportar los datos.</string>
     <string name="dialog_storage_title">Se requiere permiso de almacenamiento</string>
     <string name="storage_perm_denied">Falta el permiso de almacenamiento necesario para TourCount; no es posible guardar.</string>
 

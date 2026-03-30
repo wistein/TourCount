@@ -152,7 +152,7 @@ public class EditMetaActivity extends AppCompatActivity
         // Clear existing view
         head_area.removeAllViews();
 
-        // Load head and meta data
+        // Load head and metadata
         head = headDataSource.getHead();
         section = sectionDataSource.getSection();
 

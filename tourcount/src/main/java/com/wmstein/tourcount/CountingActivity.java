@@ -42,10 +42,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
@@ -79,7 +75,7 @@ import java.util.Objects;
  * <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-03-24
+ * last edited in Java on 2026-03-30
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -131,8 +127,6 @@ public class CountingActivity
     private String specCode = "";
     private String proxSensorPref;
     private double sensorSensitivity = 0.0;
-    private boolean metaPref;        // option for OSM reverse geocoding
-    private String emailString = ""; // mail address for OSM query
 
     // Data sources
     private SectionDataSource sectionDataSource;
@@ -149,7 +143,7 @@ public class CountingActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "152, onCreate");
+            Log.i(TAG, "146, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -280,8 +274,6 @@ public class CountingActivity
         iid = prefs.getInt("count_id", 1);                     // species id
         proxSensorPref = prefs.getString("pref_prox", "Off");
         locServiceOn = prefs.getBoolean("loc_srv_on", false);
-        emailString = prefs.getString("email_String", "");   // for reliable query of Nominatim service
-        metaPref = prefs.getBoolean("pref_metadata", false);  // use Reverse Geocoding
     }
 
     @SuppressLint("DiscouragedApi")
@@ -290,7 +282,7 @@ public class CountingActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "293, onResume");
+            Log.i(TAG, "285, onResume");
 
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -605,7 +597,7 @@ public class CountingActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "608, onPause");
+            Log.i(TAG, "600, onPause");
 
         disableProximitySensor();
 
@@ -639,7 +631,7 @@ public class CountingActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "642, onStop");
+            Log.i(TAG, "634, onStop");
 
         counting_screen.invalidate();
 
@@ -660,7 +652,7 @@ public class CountingActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "663, onDestroy");
+            Log.i(TAG, "655, onDestroy");
     }
 
     // Check location permission
@@ -681,7 +673,7 @@ public class CountingActivity
                 {
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "684 locationDispatcher 1");
+                            Log.i(TAG, "676 locationDispatcher 0");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -695,7 +687,7 @@ public class CountingActivity
                 {
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "698 locationDispatcher 1");
+                            Log.i(TAG, "690 locationDispatcher 1");
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
                         locServiceOn = true;
@@ -704,13 +696,14 @@ public class CountingActivity
                         editor.commit();
                     }
                     getLoc();  // Get position
-                    getAddr(); // Get data from OpenStreetMap Nominatim service
+                    if (latitude != 0)
+                        locationService.getAddress(); // Get data from OpenStreetMap Nominatim service
                 }
                 case 2 -> // stop location service
                 {
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "713, locationDispatcher 2");
+                            Log.i(TAG, "706, locationDispatcher 2");
                         locationService.releaseSoundA();
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -735,33 +728,6 @@ public class CountingActivity
             if (height != 0.0)
                 height = correctHeight(latitude, longitude, height);
             uncertainty = String.format("%f", locationService.getAccuracy());
-        }
-    }
-
-    // Get the address data by reverse geocoding from Nominatim service
-    @SuppressLint("DefaultLocale")
-    public void getAddr() {
-        if (metaPref && latitude != 0) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "746, RetrieveAddr");
-            String urlString;
-            if (Objects.equals(emailString, "")) {
-                urlString = "https://nominatim.openstreetmap.org/reverse?" +
-                        "email=stein.test@temp.test" + "&format=xml&lat="
-                        + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-            } else {
-                urlString = "https://nominatim.openstreetmap.org/reverse?" +
-                        "email=" + emailString + "&format=xml&lat="
-                        + latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1";
-            }
-            WorkRequest retrieveAddrWorkRequest =
-                    new OneTimeWorkRequest.Builder(RetrieveAddrWorker.class)
-                            .setInputData(new Data.Builder()
-                                    .putString("URL_STRING", urlString)
-                                    .build()
-                            )
-                            .build();
-            WorkManager.getInstance(this).enqueue(retrieveAddrWorkRequest);
         }
     }
 
@@ -805,13 +771,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "808, SpinnerListener, count id: "
+                        Log.d(TAG, "774, SpinnerListener, count id: "
                                 + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG, "814, SpinnerListener: " + e);
+                        Log.e(TAG, "780, SpinnerListener: " + e);
                 }
             }
 

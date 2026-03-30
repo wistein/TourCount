@@ -1,5 +1,5 @@
 // Build file where you can add configuration options for the module.
-// Last edited on 2026-03-21
+// Last edited on 2026-03-30
 
 plugins {
     id 'com.android.application'
@@ -13,8 +13,8 @@ android {
         applicationId "com.wmstein.tourcount"
         minSdk = 25
         targetSdk = 36
-        versionCode = 372
-        versionName = "3.7.2"
+        versionCode = 373
+        versionName = "3.7.3"
     }
 
     buildTypes {
@@ -59,6 +59,6 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.work:work-runtime:2.11.1'
+    implementation 'androidx.work:work-runtime:2.11.2'
     implementation 'com.google.android.material:material:1.13.0'
 }

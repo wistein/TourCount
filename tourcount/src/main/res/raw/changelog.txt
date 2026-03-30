@@ -67,6 +67,17 @@ _ subtitle
   .
   _
 
+$ 3.7.3
+  % Version 3.7.3
+  _ 2026-03-30
+  * Importing old version of species lists improved
+  * Get locality data with 1. fix of GPS
+  * Code refinements
+  * App messages and data improved
+  * Help improved
+  * Docs updated
+  * Bugfix
+
 $ 3.7.2
   % Version 3.7.2
   _ 2026-03-24
@@ -402,7 +413,7 @@ $ 2.4.6
   % Version 2.4.6
   _ 2018-03-19
   * Source Project restructured
-  * OSM Reverse Geocoding by Nominatim Service of OpenStreetMap for meta data and individual location
+  * OSM Reverse Geocoding by Nominatim Service of OpenStreetMap for metadata and individual location
   * Added a camera button in counting menu
   * Results page improved (average coordinates, listing of individual counts with data)
   * Diverse improvements of details
@@ -469,7 +480,7 @@ $ 1.0.2
   * Count buttons activate an individuals page to get data per individual count
   * Table "individuals" with time, coordinates, sexus, stadium, notes added to DB
   * Meta data (date, time) added
-  * Plausi control for meta data
+  * Plausi control for metadata
   * Prepared for GPS recording
     
 $ 1.0.0
@@ -487,10 +498,10 @@ $ 1.0.0
   * Modified File Chooser Dialog, Google Code Archive, GNU GPL v3
   _
   & Main Features:
-  * Input page for meta data
+  * Input page for metadata
   * Counting page
   * Page to edit counting options
-  * Results page with meta data
+  * Results page with metadata
   * Settings page
   * Detailed Help page
   * In German and English language
