@@ -2,6 +2,12 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.4 (2026-03-31)
+- Data language only changeable when not automatically detected (after import of old version of species list)
+- Code improvements
+- Translations corrected
+- Bugfix for lost locality after import of a species list
+
 #### Version 3.7.3 (2026-03-30)
 - Importing old version of species lists improved
 - Get locality data with 1. fix of GPS

@@ -33,7 +33,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-03-13
+ * last edited on 2026-03-31
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -51,8 +51,6 @@ class EditIndividualActivity : AppCompatActivity() {
     private val prefs = TourCountApplication.getPrefs()
     private var awakePref = false
     private var brightPref = false // option for full bright screen
-    private var metaPref = false // option for reverse geocoding
-    private var emailString: String? = "" // mail address for OSM query
     private var buttonSoundPref = false
     private var buttonVibPref = false
 
@@ -90,8 +88,6 @@ class EditIndividualActivity : AppCompatActivity() {
 
         awakePref = prefs.getBoolean("pref_awake", true)
         brightPref = prefs.getBoolean("pref_bright", true)
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        emailString = prefs.getString("email_String", "") // for reliable query of Nominatim service
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
         buttonVibPref = prefs.getBoolean("pref_button_vib", false)
 

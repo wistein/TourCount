@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-03-26 -->
+     last edited on 2026-03-31 -->
 
 <resources>
 
@@ -193,7 +193,8 @@
     <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Reverse-Geocoding ermittelt und überschrieben werden sollen.</string>
     <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
     <string name="pref_proximity_title">Näherungsensor</string>
-    <string name="pref_data_language">Sprache der Daten</string>
+    <string name="pref_data_language">Wahl der Datensprache</string>
+    <string name="pref_data_language_ok">Datensprache (automatisch erkannt)</string>
     <string name="pref_data_language_Summ">Wähle die Sprache für die Lokal-Namen der Schmetterlinge.</string>
     <string name="pref_sort_order">Sortierung der Arten</string>
     <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>

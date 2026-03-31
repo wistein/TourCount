@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-03-26 -->
+     last edited on 2026-03-31 -->
 
 <resources>
 
@@ -193,7 +193,8 @@
     <string name="pref_metadata_summ">Sélectionnez cette option si les informations de localisation doivent être déterminées et remplacées par géocodage inversé.</string>
     <string name="pref_proximity_dialog">Sélectionnez la sensibilité pour éteindre l\'écran.</string>
     <string name="pref_proximity_title">Sonde de proximité</string>
-    <string name="pref_data_language">Data language</string>
+    <string name="pref_data_language">Sélectionnez la langue des données</string>
+    <string name="pref_data_language_ok">Langue des données (détectée automatiquement)</string>
     <string name="pref_data_language_Summ">Sélectionnez la langue pour les noms communs des papillons.</string>
     <string name="pref_sort_order">Tri des espèces</string>
     <string name="pref_sort_order_sp_summ">Ordre de la liste des espèces.</string>

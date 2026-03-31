@@ -960,7 +960,6 @@ public class WelcomeActivity
                             builder.setCancelable(true);
                             builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
                         } else {
-
                             builder.setCancelable(false);
                             builder.setPositiveButton(R.string.importButton, (dialog, id) ->
                             {
@@ -987,7 +986,6 @@ public class WelcomeActivity
         database.execSQL(sql);
 
         sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-                + DbHelper.T_TEMP_LOC + " = '', "
                 + DbHelper.T_TEMP_CNT + " = 0;";
         database.execSQL(sql);
 
@@ -1024,6 +1022,10 @@ public class WelcomeActivity
                 editor.apply();
             } else
                 newList372 = false;
+
+            editor = prefs.edit();
+            editor.putBoolean("new_list_372", newList372); // controls data language setting
+            editor.apply();
 
             br.close();
 

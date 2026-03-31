@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-03-26 -->
+     last edited on 2026-03-31 -->
 
 <resources>
 
@@ -193,7 +193,8 @@
     <string name="pref_metadata_summ">Selecciona esta opción si deseas que los datos de ubicación se determinen mediante geocodificación inversa y se sobrescriban.</string>
     <string name="pref_proximity_dialog">Selecciona la sensibilidad para que se apague la pantalla.</string>
     <string name="pref_proximity_title">Sensor de proximidad</string>
-    <string name="pref_data_language">Lengua de los Datos</string>
+    <string name="pref_data_language">Selecciona el idioma de los datos</string>
+    <string name="pref_data_language_ok">Idioma de los Datos (detectado automático)</string>
     <string name="pref_data_language_Summ">Selecciona el lenguaje para los nombres locales de las mariposas.</string>
     <string name="pref_sort_order">Ordenación de las especies</string>
     <string name="pref_sort_order_sp_summ">Ordenación de la lista de especies.</string>
