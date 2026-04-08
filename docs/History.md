@@ -2,11 +2,16 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.7.4 (2026-03-31)
-- Data language only changeable when not automatically detected (after import of old version of species list)
+#### Version 3.7.4 (2026-04-06)
+- Data language recognition also while importing DBs (depending on new data language field in DB)
+- Data language changeable in 'Settings' when not automatically detected (for old versions of species lists and DBs)
+- Added local language chars to filename of initial Basic DB  
+- Result sorting modes marked within the exported .csv-filename (by name: _n, code: _c)
 - Code improvements
-- Translations corrected
+- Some translated strings corrected
 - Bugfix for lost locality after import of a species list
+- Docs updated
+- Other bugfixes
 
 #### Version 3.7.3 (2026-03-30)
 - Importing old version of species lists improved

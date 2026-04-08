@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-03-31 -->
+     last edited on 2026-04-07 -->
 
 <resources>
 
@@ -22,7 +22,7 @@
     <string name="cntsm">Nombre ♂</string>
     <string name="cntsmf">Nombre ♂|♀</string>
     <string name="cntsp">Nombre cr.</string>
-    <string name="confirmDBImport">Voulez-vous vraiment importer une BD ? Vos données actuelles seront écrasées !</string>
+    <string name="confirmDBImport">Voulez-vous vraiment importer une BD ? Vos données actuelles seront écrasées !\nAttention ! Veuillez vérifier ensuite dans les « Paramètres » si la langue des données est bien sélectionnée.</string>
     <string name="confirmListImport">Voulez-vous vraiment importer la liste d\'espèces ? Vos données actuelles seront écrasées !</string>
     <string name="confirmResetDB">Voulez-vous vraiment réinitialiser la BD ? Vos données de comptage actuelles seront supprimées !</string>
     <string name="corruptDb">Erreur BD ! Si le problème persiste après le redémarrage et l\'importation d\'un autre TourCount-BD, veuillez désinstaller l\'application et la réinstaller.</string>

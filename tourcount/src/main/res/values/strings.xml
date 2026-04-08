@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2026-03-31 -->
+     last edited on 2026-04-07 -->
 
 <resources>
 
@@ -37,7 +37,7 @@
     <string name="cntsm">Counts ♂</string>
     <string name="cntsmf">Counts ♂|♀</string>
     <string name="cntsp">Counts Pu.</string>
-    <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!</string>
+    <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!\nNote! Please, check afterwards in "Settings" if the data language is set.</string>
     <string name="confirmListImport">Are you sure you want to import the species list? Your current data will be overwritten!</string>
     <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>

@@ -1,0 +1,10 @@
+Version 3.7.4 (2026-04-07)
+- Data language recognition also while importing DBs (depending on new data language field in DB)
+- Data language changeable in 'Settings' when not automatically detected (for old versions of species lists and DBs)
+- Added local language chars to filename of initial Basic DB
+- Result sorting modes marked within the exported .csv-filename (by name: _n, code: _c)
+- Code improvements
+- Some translated strings corrected
+- Bugfix for lost locality after import of a species list
+- Docs updated
+- Other bugfixes

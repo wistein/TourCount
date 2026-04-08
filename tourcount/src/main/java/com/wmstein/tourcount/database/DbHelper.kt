@@ -20,7 +20,7 @@ import java.util.Locale
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
  * updated to version 8 on 2025-02-25,
- * last edited on 2026-03-20
+ * last edited on 2026-04-06
  *
  * ************************************************************************
  * ATTENTION!
@@ -29,8 +29,8 @@ import java.util.Locale
  */
 class DbHelper (private val mContext: Context) :
     SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
-    // Initial data language = current system language
-    var initDataLanguage = Locale.getDefault().toString().substring(0, 2)
+    // initDataLanguage = current system language
+    private var initDataLanguage = Locale.getDefault().toString().substring(0, 2)
 
     // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
@@ -74,7 +74,8 @@ class DbHelper (private val mContext: Context) :
 
         sql = ("create table " + HEAD_TABLE + " ("
                 + H_ID + " integer primary key, "
-                + H_OBSERVER + " text)")
+                + H_OBSERVER + " text, "
+                + H_DATALANGUAGE + " text)")
         db.execSQL(sql)
 
         sql = ("create table " + TEMP_TABLE + " ("
@@ -113,6 +114,7 @@ class DbHelper (private val mContext: Context) :
         values1 = ContentValues()
         values1.put(H_ID, 1)
         values1.put(H_OBSERVER, "")
+        values1.put(H_DATALANGUAGE, "")
         db.insert(HEAD_TABLE, null, values1)
 
         // Create TEMP_TABLE with 1 empty row
@@ -124,16 +126,20 @@ class DbHelper (private val mContext: Context) :
 
         // Create initial data for COUNT_TABLE
         initialCounts(db)
+
+        // Create initial data for HEAD_TABLE
+        initialHead(db)
+
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "130, Success!")
+            Log.d(TAG, "134, Success!")
     }
 
-    // Initial data for COUNT_TABLE with current system language
+    // Initial data for COUNT_TABLE
     private fun initialCounts(db: SQLiteDatabase) {
         val specs: Array<String> = mContext.resources.getStringArray(R.array.initSpecs)
         val codes: Array<String> = mContext.resources.getStringArray(R.array.initCodes)
-        val specsG: Array<String> = when (initDataLanguage) {
-            "de" -> mContext.resources.getStringArray(R.array.initSpecs_de)
+        // Initial local species name entries comprise initial species in the current system language
+        val specsL: Array<String> = when (initDataLanguage) {
             "en" -> mContext.resources.getStringArray(R.array.initSpecs_en)
             "fr" -> mContext.resources.getStringArray(R.array.initSpecs_fr)
             "it" -> mContext.resources.getStringArray(R.array.initSpecs_it)
@@ -153,36 +159,49 @@ class DbHelper (private val mContext: Context) :
             values4.put(C_COUNT_LI, 0)
             values4.put(C_COUNT_EI, 0)
             values4.put(C_NOTES, "")
-            values4.put(C_NAME_G, specsG[i])
+            values4.put(C_NAME_G, specsL[i])
             db.insert(COUNT_TABLE, null, values4)
         }
     }
 
+    private fun initialHead(db: SQLiteDatabase) {
+        // Enter current system language as initial data language
+        val sql = "UPDATE $HEAD_TABLE SET $H_DATALANGUAGE = '$initDataLanguage'"
+        db.execSQL(sql)
+    }
+    
     // *********************************************************************************
     // Called with 1. call of dbHelper.getWritableDatabase() if newVersion != oldVersion
     //   and if a database already exists on disk with the same DATABASE_NAME.
     // see https://guides.codepath.org/android/local-databases-with-sqliteopenhelper
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "168, upGrade")
+            Log.d(TAG, "179, upGrade")
 
+        if (oldVersion == 8) {
+            version9(db)
+        }
         if (oldVersion == 7) {
             version8(db)
+            version9(db)
         }
         if (oldVersion == 6) {
             version7(db)
             version8(db)
+            version9(db)
         }
         if (oldVersion == 5) {
             version6(db)
             version7(db)
             version8(db)
+            version9(db)
         }
         if (oldVersion == 4) {
             version5(db)
             version6(db)
             version7(db)
             version8(db)
+            version9(db)
         }
         if (oldVersion == 3) {
             version4(db)
@@ -190,6 +209,7 @@ class DbHelper (private val mContext: Context) :
             version6(db)
             version7(db)
             version8(db)
+            version9(db)
         }
         if (oldVersion == 2) {
             version3(db)
@@ -198,6 +218,7 @@ class DbHelper (private val mContext: Context) :
             version6(db)
             version7(db)
             version8(db)
+            version9(db)
         }
         if (oldVersion == 1) {
             version2(db)
@@ -207,6 +228,7 @@ class DbHelper (private val mContext: Context) :
             version6(db)
             version7(db)
             version8(db)
+            version9(db)
         }
     }
 
@@ -219,7 +241,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "233, Upgraded database to version 2")
+            Log.d(TAG, "244, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -298,7 +320,7 @@ class DbHelper (private val mContext: Context) :
             db.execSQL(sql)
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "312, Upgraded database to version 3")
+                Log.d(TAG, "323, Upgraded database to version 3")
         }
     }
 
@@ -309,7 +331,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "323, Upgraded database to version 4")
+            Log.d(TAG, "334, Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -362,7 +384,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "376, Upgraded database to version 5")
+            Log.d(TAG, "387, Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -417,7 +439,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "431, Upgraded database to version 6")
+            Log.d(TAG, "442, Upgraded database to version 6")
     }
 
     /*** V7 ***/
@@ -437,7 +459,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "451, Upgraded database to version 7")
+            Log.d(TAG, "462, Upgraded database to version 7")
     }
 
     /*** V8 ***/
@@ -450,11 +472,27 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "464, Upgraded database to version 8")
+            Log.d(TAG, "475, Upgraded database to version 8")
+    }
+
+    /*** V9 ***/
+    // Version 9: New extra column datalanguage added to HEAD_TABLE
+    private fun version9(db: SQLiteDatabase) {
+        // Add new extra column datalanguage to table head
+        var sql = "alter table head add column datalanguage text"
+        db.execSQL(sql)
+
+        // Enter empty dataLanguage
+        sql = "UPDATE head SET datalanguage = ''"
+        db.execSQL(sql)
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.d(TAG, "490, Upgraded database to version 9")
     }
 
     companion object {
-        private const val DATABASE_VERSION = 8
+        private const val DATABASE_VERSION = 9
+        //DATABASE_VERSION 9: Add field H_DATALANGUAGE to HEAD_TABLE
         //DATABASE_VERSION 8: Add fields S_STATE and S_ST_LOCALITY to SECTION_TABLE
         //DATABASE_VERSION 7: Add field I_CODE to INDIVIDUALS_TABLE and clear count data
         //DATABASE_VERSION 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to TEMP_TABLE
@@ -467,11 +505,16 @@ class DbHelper (private val mContext: Context) :
         private const val DATABASE_NAME = "tourcount.db"
 
         // tables
+        const val HEAD_TABLE = "head"
         const val SECTION_TABLE = "sections"
         const val COUNT_TABLE = "counts"
-        const val HEAD_TABLE = "head"
         const val INDIVIDUALS_TABLE = "individuals"
         const val TEMP_TABLE = "tmp"
+
+        // Fields of table head
+        const val H_ID = "_id"
+        const val H_OBSERVER = "observer"
+        const val H_DATALANGUAGE = "datalanguage"
 
         // fields of table sections
         const val S_ID = "_id"
@@ -508,10 +551,6 @@ class DbHelper (private val mContext: Context) :
         const val C_NOTES = "notes"
         const val C_NAME_G = "name_g"
         private const val C_COUNT = "count" // eliminated in Version 3
-
-        // Fields of table head
-        const val H_ID = "_id"
-        const val H_OBSERVER = "observer"
 
         // Fields of table individuals
         const val I_ID = "_id"

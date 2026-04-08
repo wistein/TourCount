@@ -1,13 +1,15 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.3:
-- Importing old version of species lists improved
-- Get locality data with 1. fix of GPS
-- Code refinements
-- App messages and data improved
-- Help improved
+New in Version 3.7.4:
+- Data language recognition also while importing DBs (depending on new data language field in DB)
+- Data language changeable in 'Settings' when not automatically detected (for old versions of species lists and DBs)
+- Added local language chars to filename of initial Basic DB
+- Result sorting modes marked within the exported .csv-filename (by name: _n, code: _c)
+- Code improvements
+- Some translated strings corrected
+- Bugfix for lost locality after import of a species list
 - Docs updated
-- Bugfix
+- Other bugfixes
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

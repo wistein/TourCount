@@ -69,6 +69,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**********************************************************************
@@ -82,7 +83,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-03-27
+ * last edited on 2026-04-06
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -105,6 +106,7 @@ public class WelcomeActivity
     // Import/export stuff
     private File inFile;
     private File outFile;
+    private String localLanguage = "";
     private boolean mExternalStorageWriteable = false;
     private final String sState = Environment.getExternalStorageState();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -140,7 +142,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "143, onCreate");
+            Log.i(TAG, "145, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -228,7 +230,7 @@ public class WelcomeActivity
             editor.commit();
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "231, onCreate, storagePermGranted: " + storagePermGranted);
+            Log.d(TAG, "233, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -259,11 +261,8 @@ public class WelcomeActivity
 
         // Prepare tourName to be part of a filename
         tourNameDir = tourName;
-        if (Objects.equals(tourNameDir, ""))
-            return;
-        else {
+        if (!Objects.equals(tourNameDir, ""))
             tourNameDir = tourNameDir.replaceAll(regexFilename, "");
-        }
 
         // Test for existence of file /storage/emulated/0/Documents/TourCount/tourcount0.db
         storagePermGranted = isStoragePermGranted();
@@ -277,12 +276,20 @@ public class WelcomeActivity
                 path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
                 path = new File(path + "/TourCount");
             }
-        
-        // Create preliminary tourcount0.db if it does not exist
-        inFile = new File(path, "/tourcount0.db"); // Initial basic DB
 
-        if (!inFile.exists())
-            exportBasisDb(0); // create directory and create initial tourcount0.db file, 0: short name, no message
+            // Delete old preliminary tourcount0.db if it does exist
+            inFile = new File(path, "/tourcount0.db"); // old initial basic DB
+            if (inFile.exists())
+                //noinspection ResultOfMethodCallIgnored
+                inFile.delete();
+
+            // Create directory TourCount and write initial tourcount0_ll.db file
+            localLanguage = Locale.getDefault().toString().substring(0, 2);
+            inFile = new File(path, "/tourcount0_" + localLanguage + ".db"); // new initial basic DB
+            if (!inFile.exists()) {
+                // parameter 0: short name, local language and don't show a message
+                exportBasisDb(0);
+            }
         }
 
         // New onBackPressed logic
@@ -358,7 +365,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "361, onResume");
+            Log.i(TAG, "368, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -371,7 +378,7 @@ public class WelcomeActivity
         String emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
         // option for OSM reverse geocoding
         boolean metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
-        dataLanguage = prefs.getString("pref_sel_data_lang", "de");
+        dataLanguage = prefs.getString("pref_sel_data_lang", "");
 
         storagePermGranted = isStoragePermGranted(); // set storagePermGranted from self permission
 
@@ -404,10 +411,8 @@ public class WelcomeActivity
 
         // Prepare modified tourName to be part of a filename
         tourNameDir = tourName;
-        if (!Objects.equals(tourNameDir, "")) {
-            assert tourNameDir != null;
+        if (!Objects.equals(tourNameDir, ""))
             tourNameDir = tourNameDir.replaceAll(regexFilename, "");
-        }
 
         // Location permissions handling:
         //   Get flag fineLocationPermGranted from self permissions
@@ -433,7 +438,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "436, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "441, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         locServiceOn = false;
         locationDispatcher(0);
@@ -448,13 +453,13 @@ public class WelcomeActivity
             storageGranted = Environment.isExternalStorageManager();
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "451, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "456, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "457, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "462, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -480,7 +485,7 @@ public class WelcomeActivity
                     locationService = new LocationService(getApplicationContext());
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "483, locationDispatcher 0");
+                            Log.i(TAG, "488, locationDispatcher 0");
 
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
@@ -494,7 +499,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "497, locationDispatcher 2");
+                            Log.i(TAG, "502, locationDispatcher 2");
 
                         locationService.releaseSoundA();
                         locationService.stopListener();
@@ -681,7 +686,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "684, onPause");
+            Log.i(TAG, "689, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -696,7 +701,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "699, onStop");
+            Log.i(TAG, "704, onStop");
 
         baseLayout.invalidate();
 
@@ -723,7 +728,7 @@ public class WelcomeActivity
         }
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "726, onDestroy, sndServiceOn: " + sndServiceOn);
+            Log.i(TAG, "731, onDestroy, sndServiceOn: " + sndServiceOn);
     }
 
     // Handle button click "Counting" here
@@ -807,6 +812,7 @@ public class WelcomeActivity
                 public void onActivityResult(ActivityResult result) {
                     String selectedFile;
                     inFile = null;
+
                     if (result.getResultCode() == Activity.RESULT_OK) // has a file
                     {
                         Intent data = result.getData();
@@ -817,12 +823,15 @@ public class WelcomeActivity
                             else
                                 inFile = null;
                         }
-                    } else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
-                        mesg = getString(R.string.noFile);
-                        Toast.makeText(getApplicationContext(), // orange
-                                fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
-                                Toast.LENGTH_LONG).show();
+                    } else {
+                        if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
+                            mesg = getString(R.string.noFile);
+                            Toast.makeText(getApplicationContext(), // orange
+                                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
+
                     if (inFile != null) {
                         // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
                         String destPath = getApplicationContext().getFilesDir().getPath();
@@ -836,39 +845,66 @@ public class WelcomeActivity
                         builder.setPositiveButton(R.string.importButton, (dialog, id) ->
                         {
                             try {
+                                countDataSource.close();
+                                sectionDataSource.close();
+
                                 copy(inFile, outFile);
+
+                                sectionDataSource.open();
+                                countDataSource.open();
+                                headDataSource.open();
+
+                                Head head = headDataSource.getHead();
+                                String headLanguage = head.datalanguage;
+                                headDataSource.close();
+                                boolean hasDataLang = true;
+
+                                if (!Objects.equals(headLanguage, "")) {
+                                    assert headLanguage != null;
+                                    headLanguage = headLanguage.substring(0, 2);
+                                } else
+                                    hasDataLang = false;
+
+                                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                                    Log.i(TAG, "869, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
                                 editor.putInt("count_id", 1);
                                 editor.putInt("item_Position", 0);
+                                editor.putString("pref_sel_data_lang", headLanguage);
+                                editor.putBoolean("has_data_lang", hasDataLang); // controls data language setting
                                 editor.apply();
 
                                 // List tour name as title
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
+                                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                                    Log.i(TAG, "883, ImportFile, Tourname: " + tourName);
+
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
                                 // Prepare new tourName to be part of a filename
                                 tourNameDir = tourName;
-                                if (Objects.equals(tourNameDir, ""))
-                                    return;
-                                else {
+                                if (!Objects.equals(tourNameDir, ""))
                                     tourNameDir = tourNameDir.replaceAll(regexFilename, "");
-                                }
 
                                 mesg = getString(R.string.importDB);
                                 Toast.makeText(getApplicationContext(), // bright green
                                         fromHtml("<font color='#008000'>" + mesg + "</font>"),
                                         Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
+                                sectionDataSource.open();
+                                countDataSource.open();
+
                                 mesg = getString(R.string.importFail);
                                 Toast.makeText(getApplicationContext(),
                                         fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
                                         Toast.LENGTH_LONG).show();
                             }
                         });
-                        builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
+                        builder.setNegativeButton(R.string.cancelButton, (dialog, id) ->
+                                dialog.cancel());
                         alert = builder.create();
                         alert.show();
                     }
@@ -917,6 +953,7 @@ public class WelcomeActivity
                 public void onActivityResult(ActivityResult result) {
                     String selectedFile;
                     inFile = null;
+
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
@@ -934,6 +971,7 @@ public class WelcomeActivity
                                 fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
                                 Toast.LENGTH_LONG).show();
                     }
+
                     if (inFile != null) {
                         String csvLine;
                         boolean brError = false;
@@ -1011,20 +1049,20 @@ public class WelcomeActivity
             List<String> nameGArray = new ArrayList<>();
 
             BufferedReader br = new BufferedReader(new FileReader(inFile));
-            boolean newList372 = true;
+            boolean hasDataLang = true;
 
+            editor = prefs.edit();
             csvLine = br.readLine(); // Read 1. line only
             String[] specLine = csvLine.split(",");
             if (Objects.equals(specLine[0], "nocode")) {
                 dataLanguage = specLine[2];
-                editor = prefs.edit();
                 editor.putString("pref_sel_data_lang", dataLanguage);
-                editor.apply();
-            } else
-                newList372 = false;
+            } else {
+                hasDataLang = false;
+                editor.putString("pref_sel_data_lang", "");
+            }
 
-            editor = prefs.edit();
-            editor.putBoolean("new_list_372", newList372); // controls data language setting
+            editor.putBoolean("has_data_lang", hasDataLang); // controls data language setting
             editor.apply();
 
             br.close();
@@ -1038,12 +1076,11 @@ public class WelcomeActivity
                 specLine = csvLine.split(",");
                 // 1. line fields contain String[0]: "nocode", [1]: "language", [2]: "de"|"en"|"fr"|"it"|"es"
                 if (Objects.equals(specLine[0], "nocode")) {
-                    if (newList372) {
+                    if (hasDataLang) {
                         iCounts--;
                         i--;
                     }
-                }
-                else {
+                } else {
                     // comma-separated 0:code, 1:name, 2:nameL
                     codeArray.add(i, specLine[0]);
                     nameArray.add(i, specLine[1]);
@@ -1101,9 +1138,9 @@ public class WelcomeActivity
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // just verify path, result ignored
         if (i == 0)
-            outFile = new File(path, "/tourcount0.db");
+            outFile = new File(path, "/tourcount0_" + localLanguage + ".db");
         else if (i >= 0) {
-            dataLanguage = prefs.getString("pref_sel_data_lang", "de");
+            dataLanguage = prefs.getString("pref_sel_data_lang", "");
 
             if (Objects.equals(tourNameDir, ""))
                 outFile = new File(path, "/tourcount0_" + dataLanguage + ".db");
@@ -1168,44 +1205,53 @@ public class WelcomeActivity
         }
 
         String date, start_tm;
+
+        // Open Section table for date and start_tm
         section = sectionDataSource.getSection();
         date = section.date;
         start_tm = section.start_tm;
-        String dbDate, dbTime;
 
-        dataLanguage = prefs.getString("pref_sel_data_lang", "de");
+        if (date == null)
+            date = "";
+        if (start_tm == null)
+            start_tm = "";
 
-        if (date != null && !date.isEmpty()) {
-            String dbDateEU, dbDateEN;
+        boolean engl = false;
+        boolean hasDate = true;
+
+        // Get year from date
+        if (!Objects.equals(date, "")) {
+            // "-" at position 4 of the date means EN
+            if (Objects.equals(date.substring(4, 5), "-"))
+                engl = true;
+        } else
+            hasDate = false;
+
+        // Create date for filename as YYYYMMDD from any format
+        String dbDate = "", dbTime;
+        String dbDateEN, dbDateEU;
+
+        if (!date.isEmpty()) {
             dbDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
             dbDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
-            if (dataLanguage.equals("de") || dataLanguage.equals("fr")
-                    || dataLanguage.equals("it") || dataLanguage.equals("es")) {
-                try {
-                    dbDate = dbDateEU;
-                } catch (Exception e) {
-                    dbDate = dbDateEN;
-                }
-            } else {
-                try {
-                    dbDate = dbDateEN;
-                } catch (Exception e) {
-                    dbDate = dbDateEU;
-                }
-            }
-        } else
-            dbDate = "";
+            if (engl)
+                dbDate = dbDateEN;
+            else
+                dbDate = dbDateEU;
+        }
 
-        if (start_tm != null && !start_tm.isEmpty()) {
+        if (!Objects.equals(start_tm, "")) {
             dbTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
 
-            if (!dbDate.isEmpty())
+            if (hasDate)
                 dbDate = dbDate + "_" + dbTime; // yyyymmdd_hhmm
         } else
-            dbDate = "";
+            dbDate = ""; // has only a value when both date and start time are given
 
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // Just verify path, result ignored
+
+        dataLanguage = prefs.getString("pref_sel_data_lang", "");
 
         // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyyMMdd_HHmm.db
         if (Objects.equals(tourNameDir, "") && Objects.equals(dbDate, ""))
@@ -1286,34 +1332,38 @@ public class WelcomeActivity
         start_tm = section.start_tm;
         end_tm = section.end_tm;
 
-        dataLanguage = prefs.getString("pref_sel_data_lang", "de");
+        if (date == null)
+            date = "";
+        if (start_tm == null)
+            start_tm = "";
 
-        String csvDate, csvTime;
+        boolean engl = false;
+        boolean hasDate = true;
 
-        if (date != null && !date.isEmpty()) {
-            String csvDateEU, csvDateEN;
-            csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
-            csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
-            if (dataLanguage.equals("de") || dataLanguage.equals("fr")
-                    || dataLanguage.equals("it") || dataLanguage.equals("es")) {
-                try {
-                    csvDate = csvDateEU;
-                } catch (Exception e) {
-                    csvDate = csvDateEN;
-                }
-            } else {
-                try {
-                    csvDate = csvDateEN;
-                } catch (Exception e) {
-                    csvDate = csvDateEU;
-                }
-            }
+        // Get year from date
+        if (!Objects.equals(date, "")) {
+            // "-" at position 4 of the date means EN
+            if (Objects.equals(date.substring(4, 5), "-"))
+                engl = true;
         } else
-            csvDate = "";
+            hasDate = false;
 
-        if (start_tm != null && !start_tm.isEmpty()) {
+        // Create date for filename as YYYYMMDD from any format
+        String csvDate, csvTime;
+        String csvDateEU, csvDateEN;
+
+        csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
+        csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+        if (engl) {
+            csvDate = csvDateEN;
+        } else {
+            csvDate = csvDateEU;
+        }
+
+        if (!Objects.equals(start_tm, "")) {
             csvTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
-            if (!csvDate.isEmpty())
+
+            if (hasDate)
                 csvDate = csvDate + "_" + csvTime; // yyyymmdd_hhmm
         } else
             csvDate = ""; // has only a value when both date and start time are given
@@ -1321,14 +1371,23 @@ public class WelcomeActivity
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // Just verify path, result ignored
 
+        String sortIdent;
+        if (outPref.equals("names")) {
+            sortIdent = "n";
+        } else {
+            sortIdent = "c";
+        }
+
+        dataLanguage = prefs.getString("pref_sel_data_lang", "");
+
         if (Objects.equals(tourNameDir, "") && Objects.equals(csvDate, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + ".csv");
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".csv");
         else if (Objects.equals(tourNameDir, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + csvDate + ".csv");
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + csvDate + "_" + sortIdent + ".csv");
         else if (Objects.equals(csvDate, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + ".csv");
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + "_" + sortIdent + ".csv");
         else
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + csvDate + ".csv");
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + csvDate + "_" + sortIdent + ".csv");
 
         String sectName;
         String sectNotes;
@@ -1387,10 +1446,10 @@ public class WelcomeActivity
                         {
                                 getString(R.string.zList) + ":", // Count List:
                                 sectName,          // Section name
-                                "", "",
+                                "",
                                 getString(R.string.inspector),     // Inspector:
                                 inspecName,        // Inspector name
-                                "", "", "",
+                                "", "", "", "",
                                 sortMode
                         };
                 csvWrite.writeNext(arrHead);
@@ -1628,7 +1687,10 @@ public class WelcomeActivity
                         strcntse = "";
 
                     String sp_notes;   // species notes
-                    sp_notes = "\"" + curCSVCnt.getString(9) + "\"";
+                    sp_notes = curCSVCnt.getString(9);
+                    if (sp_notes == null)
+                        sp_notes = "";
+                    sp_notes = "\"" + sp_notes + "\"";
 
                     // Species table
                     String[] arrStr =
@@ -1698,8 +1760,8 @@ public class WelcomeActivity
                 // Write total sum
                 String[] arrSum =
                         {
-                                getString(R.string.sumSpec),
-                                Integer.toString(sumSpec),
+                                "",
+                                getString(R.string.sumSpec) + " " + (sumSpec),
                                 getString(R.string.sum),
                                 sumMF,
                                 sumM,
@@ -1773,6 +1835,11 @@ public class WelcomeActivity
                         latit = String.valueOf(lati);
                     }
 
+                    String iNotes = curCSVInd.getString(13);
+                    if (iNotes == null)
+                        iNotes = "";
+                    iNotes = "\"" + iNotes + "\"";
+
                     String[] arrIndividual =
                             {
                                     curCSVInd.getString(2),                // species name
@@ -1787,7 +1854,7 @@ public class WelcomeActivity
                                     curCSVInd.getString(10),              // sexus
                                     curCSVInd.getString(11),              // phase
                                     "\"" + spstate0 + "\"",                  // status
-                                    "\"" + curCSVInd.getString(13) + "\"" // indiv. notes
+                                    iNotes                                   // indiv. notes
                             };
                     csvWrite.writeNext(arrIndividual);
 
@@ -1907,7 +1974,7 @@ public class WelcomeActivity
                     Toast.LENGTH_LONG).show();
         } else {
             // Export species list into species_ll_tour_Tourname_yyyyMMdd_HHmmss.csv
-            dataLanguage = prefs.getString("pref_sel_data_lang", "de");
+            dataLanguage = prefs.getString("pref_sel_data_lang", "");
 
             String[] codeArray;
             String[] nameArray;
@@ -1922,87 +1989,87 @@ public class WelcomeActivity
             pathTransect.mkdirs(); // Just verify pathTransect, result ignored
             pathTour.mkdirs(); // Just verify pathTour, result ignored
 
-                switch (dataLanguage) {
-                    case "de" -> {
-                        if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_de_Tour_"
-                                    + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_de_Tour_"
-                                    + getcurDate() + ".csv");
-                        } else {
-                            outFileTransect = new File(pathTransect, "/species_de_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_de_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                        }
-                    }
-                    case "en" -> {
-                        if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_en_Tour_"
-                                    + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_en_Tour_"
-                                    + getcurDate() + ".csv");
-                        } else {
-                            outFileTransect = new File(pathTransect, "/species_en_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_en_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                        }
-                    }
-                    case "fr" -> {
-                        if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_fr_Tour_"
-                                    + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_fr_Tour_"
-                                    + getcurDate() + ".csv");
-                        } else {
-                            outFileTransect = new File(pathTransect, "/species_fr_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_fr_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                        }
-                    }
-                    case "it" -> {
-                        if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_it_Tour_"
-                                    + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_it_Tour_"
-                                    + getcurDate() + ".csv");
-                        } else {
-                            outFileTransect = new File(pathTransect, "/species_it_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_it_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                        }
-                    }
-                    case "es" -> {
-                        if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_es_Tour_"
-                                    + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_es_Tour_"
-                                    + getcurDate() + ".csv");
-                        } else {
-                            outFileTransect = new File(pathTransect, "/species_es_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_es_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                        }
-                    }
-                    default -> {
-                        // No data language given
-                        if (Objects.equals(tourNameDir, "")) {
-                            outFileTransect = new File(pathTransect, "/species_Tour_"
-                                    + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_Tour_"
-                                    + getcurDate() + ".csv");
-                        } else {
-                            outFileTransect = new File(pathTransect, "/species_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                            outFileTour = new File(pathTour, "/species_Tour_"
-                                    + tourNameDir + "_" + getcurDate() + ".csv");
-                        }
+            switch (dataLanguage) {
+                case "de" -> {
+                    if (Objects.equals(tourNameDir, "")) {
+                        outFileTransect = new File(pathTransect, "/species_de_Tour_"
+                                + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_de_Tour_"
+                                + getcurDate() + ".csv");
+                    } else {
+                        outFileTransect = new File(pathTransect, "/species_de_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_de_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
                     }
                 }
+                case "en" -> {
+                    if (Objects.equals(tourNameDir, "")) {
+                        outFileTransect = new File(pathTransect, "/species_en_Tour_"
+                                + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_en_Tour_"
+                                + getcurDate() + ".csv");
+                    } else {
+                        outFileTransect = new File(pathTransect, "/species_en_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_en_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                    }
+                }
+                case "fr" -> {
+                    if (Objects.equals(tourNameDir, "")) {
+                        outFileTransect = new File(pathTransect, "/species_fr_Tour_"
+                                + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_fr_Tour_"
+                                + getcurDate() + ".csv");
+                    } else {
+                        outFileTransect = new File(pathTransect, "/species_fr_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_fr_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                    }
+                }
+                case "it" -> {
+                    if (Objects.equals(tourNameDir, "")) {
+                        outFileTransect = new File(pathTransect, "/species_it_Tour_"
+                                + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_it_Tour_"
+                                + getcurDate() + ".csv");
+                    } else {
+                        outFileTransect = new File(pathTransect, "/species_it_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_it_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                    }
+                }
+                case "es" -> {
+                    if (Objects.equals(tourNameDir, "")) {
+                        outFileTransect = new File(pathTransect, "/species_es_Tour_"
+                                + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_es_Tour_"
+                                + getcurDate() + ".csv");
+                    } else {
+                        outFileTransect = new File(pathTransect, "/species_es_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_es_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                    }
+                }
+                default -> {
+                    // No data language given
+                    if (Objects.equals(tourNameDir, "")) {
+                        outFileTransect = new File(pathTransect, "/species_Tour_"
+                                + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_Tour_"
+                                + getcurDate() + ".csv");
+                    } else {
+                        outFileTransect = new File(pathTransect, "/species_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTour = new File(pathTour, "/species_Tour_"
+                                + tourNameDir + "_" + getcurDate() + ".csv");
+                    }
+                }
+            }
 
             // If TransektCount is installed export to /Documents/TransektCount
             if (pathTransect.exists() && pathTransect.isDirectory()) {

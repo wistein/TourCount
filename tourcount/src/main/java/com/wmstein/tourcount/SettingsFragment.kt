@@ -13,16 +13,15 @@ import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
  * Created by wmstein on 2020-04-17
  * last edited in Java on 2020-04-18,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-03-31
+ * last edited on 2026-04-07
  */
 // Load the preferences from preferences.xml
 class SettingsFragment : PreferenceFragmentCompat() {
     private var prefs = getPrefs()
     private var dataLanguage: String = ""
-    private var newList372: Boolean = false
+    private var hasDataLang: Boolean = false
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        // Load the preferences from preferences.xml
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         // Set language icon
@@ -30,14 +29,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val langPref: ListPreference? = findPreference("pref_sel_data_lang") // key
 
         // Set data language option visible if species in unknown language was imported
-        newList372 = prefs.getBoolean("new_list_372", true)
-        langPref?.isEnabled = !newList372 // enabled only fpr imported old species list
-        if (newList372)
+        hasDataLang = prefs.getBoolean("has_data_lang", true)
+        langPref?.isEnabled = !hasDataLang // enabled only fpr imported old DB or species list
+        if (hasDataLang)
             langPref?.title = getString(R.string.pref_data_language_ok)
         else
             langPref?.title = getString(R.string.pref_data_language)
 
-        if (!newList372) { // old species list: option on to select
+        if (!hasDataLang) { // old species list: option on to select
             when (dataLanguage) {
                 "de" -> langPref?.setIcon(R.drawable.alpha_de)
                 "en" -> langPref?.setIcon(R.drawable.alpha_en)
@@ -86,7 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         dataLanguage = prefs.getString("pref_sel_data_lang", "").toString()
         val langPref: ListPreference? = findPreference("pref_sel_data_lang") // key
 
-        if (!newList372) {
+        if (!hasDataLang) {
             when (dataLanguage) {
                 "de" -> langPref?.setIcon(R.drawable.alpha_de)
                 "en" -> langPref?.setIcon(R.drawable.alpha_en)
@@ -105,10 +104,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 else -> langPref?.setIcon(R.drawable.alpha_xx)
             }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-03-31 -->
+     last edited on 2026-04-07 -->
 
 <resources>
 
@@ -22,7 +22,7 @@
     <string name="cntsm">Anzahl ♂</string>
     <string name="cntsmf">Anzahl ♂|♀</string>
     <string name="cntsp">Anzahl Pu.</string>
-    <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!</string>
+    <string name="confirmDBImport">Willst Du wirklich eine DB importieren? Deine aktuellen Zähldaten werden überschrieben!\nAchtung! Bitte anschließend unter „Einstellungen“ überprüfen, ob die Datensprache eingestellt ist.</string>
     <string name="confirmListImport">Willst Du wirklich die Speziesliste importieren? Deine aktuellen Daten werden überschrieben!</string>
     <string name="confirmResetDB">Willst Du wirklich die Datenbank zurücksetzen? Deine aktuellen Zähldaten werden gelöscht!</string>
     <string name="corruptDb">DB-Fehler! Falls Problem nach Re-Start und nach Import einer anderen TourCount-DB bleibt, bitte App deinstallieren und neu installieren.</string>

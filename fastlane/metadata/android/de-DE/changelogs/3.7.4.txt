@@ -1,0 +1,10 @@
+Version 3.7.4 (07.04.2026)
+- Die Datensprache wird auch beim Import einer DB anhand eines neuen Datensprachenfelds in DB erkannt
+- Die Datensprache kann unter 'Einstellungen' angepasst werden, wenn sie beim Import einer alten Version der Speziesliste nicht erkannt wird
+- Der Dateiname der initialen Basis-DB enthält nun auch ein Sprachkürzel
+- Die .csv-Dateinamen der Ergebnisse wurden mit einem zusätzlichen Kürzel versehen, das den Sortiermodus anzeigt (nach Name: _n, Code: _c)
+- Einige Code-Verbesserungen
+- Einige übersetzte Texte verbessert
+- Bugfix für den Verlust der Lokalitätsdaten nach Import einer Speziesliste
+- Doku ergänzt
+- Bugfixe

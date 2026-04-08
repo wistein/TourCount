@@ -5,7 +5,7 @@
 <html lang="de">
 
 <!-- TourCount Benutzeranleitung help_de.html --
-     Last edited on 2026-03-26
+     Last edited on 2026-04-07
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -146,6 +146,8 @@ Alternativ können eine vorhandene Basis-DB, eine andere tourcount-DB oder eine 
 <br><br>
 TourCount arbeitet Android-spezifisch intern mit einer SQLite-Datenbank im App-eigenen, für den Anwender gesperrten Speicherbereich. Dadurch sind externe Anwenderdaten nur per Import für die App nutzbar und DB-Daten bzw. Ergebnisse nur per Export zur weiteren Verwendung durch den Anwender erreichbar.
 <br><br>
+Ab App-Version 3.7.4 werden die DB-Dateien mit einem Feld zur Erkennung der Datensprache für lokale Artnamen (Deutsch, Englisch, Französisch, Italienisch oder Spanisch) exportiert. Für eine früher erzeugte DB-Datei sollte nach deren Import zwecks korrekter Weiterverarbeitung per "Einstellungen" die korrekte Datensprache gewählt werden.
+<br><br>
 Mit <b>„Import Basis-DB“</b> kann eine vorhandene Basis-DB-Datei ausgewählt und eingelesen werden, die als Vorlage für eine neue Tour dient.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der Dateiname muss dazu immer mit der exakten Zeichenfolge „tourcount0“ beginnen (z. B.: „tourcount0_de_Kottenforst.db“), sonst kann die Datei nicht als Basis-DB importiert werden.
 <br><br>
@@ -154,7 +156,7 @@ Mit <b>„Export Basis-DB“</b> kann die interne DB als Basis-DB-Datei „tourc
 Mit <b>„Import DB“</b> kann eine exportierte oder eine ggf. entsprechend benannte TourCount-DB, die Zähldaten enthält, ausgewählt und in die App geladen werden.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der DB-Dateiname muss dazu immer mit der exakten Zeichenfolge „tourcount_“ beginnen (z. B.: „tourcount_de_Kottenforst_20250815.db“), ansonsten kann die Datei nicht als normale DB importiert werden.
 <br><br>
-<b>„Export akt. DB“</b> schreibt eine Kopie der DB mit allen momentan enthaltenen Daten in die Datei „tourcount_ds_Tourname_JJJJMMTT_hhmm.db“ ins Verzeichnis Documents/TourCount. Falls in den Metadaten vorhanden, wird das Datum und die Startzeit der Tour eingefügt. Anderenfalls wird das aktuelle Datum verwendet.
+<b>„Export akt. DB“</b> schreibt eine Kopie der DB mit allen momentan enthaltenen Daten in die Datei „tourcount_ds_Tourname_JJJJMMTT_hhmm.db“ ins Verzeichnis Documents/TourCount. Falls in den Metadaten vorhanden, wird das Datum und die Startzeit der Tour in den Dateinamen eingefügt. Anderenfalls wird das aktuelle Datum verwendet.
 Der Tourname wird eingefügt, falls er unter Metadaten existiert und ggf. um Zeichen bereinigt, die den Dateinamen-Konventionen widersprechen.
 <br><br>
 Mit <b>„Import Speziesliste“</b> kann eine vorhandene Speziesliste ausgewählt und importiert werden. Beim Import bleiben die Metadaten erhalten, jedoch werden alle Zähldaten gelöscht. Falls die App TransektCount installiert ist, können die exportierten Spezieslisten wechselseitig importiert werden.<br>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-02-31 -->
+     last edited 2026-04-07 -->
 
 <resources>
 
@@ -22,7 +22,7 @@
     <string name="cntsm">Numero ♂</string>
     <string name="cntsmf">Numero ♂|♀</string>
     <string name="cntsp">Numero cris.</string>
-    <string name="confirmDBImport">Vuoi davvero importare un database? I tuoi dati attuali verranno sovrascritti!</string>
+    <string name="confirmDBImport">Vuoi davvero importare un database? I tuoi dati attuali verranno sovrascritti!\nAttenzione! Ti preghiamo di verificare successivamente in “Impostazioni” se la lingua dei dati è stata impostata.</string>
     <string name="confirmListImport">Vuoi davvero importare la lista di specie? I tuoi dati attuali verranno sovrascritti! L\'operazione potrebbe richiedere più tempo in caso di elenchi di grandi dimensioni.</string>
     <string name="confirmResetDB">Vuoi davvero ripristinare il database? I tuoi dati di conteggio attuali verranno cancellati!</string>
     <string name="corruptDb">Errore DB! Se il problema persiste anche dopo aver riavviato l\'applicazione e non può essere risolto importando un altro database TourCount, disinstallare l\'applicazione e reinstallarla.</string>

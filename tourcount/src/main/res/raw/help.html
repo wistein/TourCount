@@ -5,7 +5,7 @@
 <html lang="en">
 
 <!-- User instructions help.html --
-     Last edited on 2026-03-26
+     Last edited on 2026-04-07
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -139,6 +139,8 @@ For preparing a new tour you may use <b>"Reset Data"</b> to reset the tour-speci
 <br><br>
 Android-specifically, TourCount stores the data in an internal SQlite DB in the app's own protected storage area that is not accessible by the user. Therefore, it is necessary to import/export data from/to files in a user accessible storage area.
 <br><br>
+Starting with app version 3.7.4, DB files are exported with a field for identifying the data language for local species names (German, English, French, Italian, and Spanish). For imported DB files created prior to this update, the correct data language should be selected via “Settings” to ensure proper processing.
+<br><br>
 With <b>"Import Basic DB"</b> you can select and import an existing Basic DB file that was exported as a template for a regional tour and begins with “tourcount0”.<br>
 <b><font color=#2C87FD>Note:</font></b> The file name must always begin with the exact character string “tourcount0” (e.g., “tourcount0_en_Kottenforest.db”), otherwise the file cannot be imported as a Basic DB.
 <br><br>
@@ -147,7 +149,7 @@ With <b>“Export Basic DB”</b> you may export the current internal DB without
 With <b>"Import DB"</b> any appropriately named TourCount DB can be read into TourCount.<br>
 <b><font color=#2C87FD>Note:</font></b> The db file name must always start with “tourcount_” (e.g. tourcount_en_Kottenforest.db), otherwise the file cannot be imported).
 <br><br>
-<b>"Export Current DB"</b> writes a copy of the DB with all currently contained data as "tourcount_dl_tourname_YYYYMMDD_hhmm.db" into Documents/TourCount with the date and start time of the tour if they were inserted into the metadata. Otherwise, the current date and time are inserted. The tourname, if necessary, is cleaned up to remove characters that violate file naming conventions.
+<b>"Export Current DB"</b> writes a copy of the DB with all currently contained data as "tourcount_dl_tourname_YYYYMMDD_hhmm.db" into Documents/TourCount with the date and start time of the tour if they were inserted into the metadata. Otherwise, the current date and time are inserted into the filename. The tourname, if necessary, is cleaned up to remove characters that violate file naming conventions.
 <br><br>
 The function <b>“Import Species List”</b> lets you select and import an available species list. The metadata is retained during import, but all counting data is deleted. If the TransektCount app is installed, the exported species lists can be imported mutually. <br>
 Starting with app version 3.7.2, the species list has been updated to include the data language. The available data languages are German, English, French, Italian, and Spanish. When local species names were available, they have been included for the species listed in the app.<br>

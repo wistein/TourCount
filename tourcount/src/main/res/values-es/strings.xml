@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-03-31 -->
+     last edited on 2026-04-07 -->
 
 <resources>
 
@@ -22,7 +22,7 @@
     <string name="cntsm">Núm. ♂</string>
     <string name="cntsmf">Núm. ♂|♀</string>
     <string name="cntsp">Núm. cri.</string>
-    <string name="confirmDBImport">¿De verdad quieres importar una BD? ¡Se sobrescribirán tus datos actuales!</string>
+    <string name="confirmDBImport">¿De verdad quieres importar una BD? ¡Se sobrescribirán tus datos actuales!\n¡Atención! Comprueba después en «Configuración» si se ha seleccionado el idioma de los datos.</string>
     <string name="confirmListImport">¿De verdad quieres importar la lista de especies? ¡Se sobrescribirán tus datos actuales!</string>
     <string name="confirmResetDB">¿De verdad quieres restablecer la BD? ¡Se borrarán tus datos actuales!</string>
     <string name="corruptDb">¡Error de BD! Si el problema persiste tras reiniciar el dispositivo e importar otra BD de TourCount, desinstala la aplicación y vuelve a instalarla.</string>
