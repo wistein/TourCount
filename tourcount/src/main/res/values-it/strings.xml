@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-04-07 -->
+     last edited 2026-04-15 -->
 
 <resources>
 
@@ -22,8 +22,8 @@
     <string name="cntsm">Numero ♂</string>
     <string name="cntsmf">Numero ♂|♀</string>
     <string name="cntsp">Numero cris.</string>
-    <string name="confirmDBImport">Vuoi davvero importare un database? I tuoi dati attuali verranno sovrascritti!\nAttenzione! Ti preghiamo di verificare successivamente in “Impostazioni” se la lingua dei dati è stata impostata.</string>
-    <string name="confirmListImport">Vuoi davvero importare la lista di specie? I tuoi dati attuali verranno sovrascritti! L\'operazione potrebbe richiedere più tempo in caso di elenchi di grandi dimensioni.</string>
+    <string name="confirmDBImport">Vuoi davvero importare un database? I tuoi dati attuali verranno sovrascritti!\n\nAttenzione! Se si tratta di una versione precedente del file, vai poi su «Impostazioni» e verifica che sia impostata la lingua dei dati corretta.</string>
+    <string name="confirmListImport">Vuoi davvero importare la lista di specie? I tuoi dati di conteggio attuali verranno cancellati! L\'operazione potrebbe richiedere più tempo in caso di elenchi di grandi dimensioni.</string>
     <string name="confirmResetDB">Vuoi davvero ripristinare il database? I tuoi dati di conteggio attuali verranno cancellati!</string>
     <string name="corruptDb">Errore DB! Se il problema persiste anche dopo aver riavviato l\'applicazione e non può essere risolto importando un altro database TourCount, disinstallare l\'applicazione e reinstallarla.</string>
     <string name="counting">Contare</string>
@@ -58,7 +58,7 @@
     <string name="sort_codes">Specie ordinate per codice specie</string>
     <string name="sort_names">Specie ordinate per nome della specie</string>
     <string name="sort_time">Individui ordinati in base alla data di registrazione</string>
-    <string name="specsCommonLang">Attenzione: vecchio formato della lista! Per utilizzare correttamente i nomi comuni, è necessario selezionare la lingua dei dati in «Impostazioni».</string>
+    <string name="specsCommonLangMissing">Attenzione! La lingua dei dati locali non è definita nel vecchio elenco. Selezionarla in “Impostazioni”. In caso contrario, verranno utilizzati i nomi delle specie in tedesco.</string>
     <string name="sum">Totali (interni):</string>
     <string name="sumSpec">Specie:</string>
     <string name="sum_total">Totale (totale):</string>
@@ -159,8 +159,8 @@
     <string name="hintSearch">Iniziali</string>
     <string name="initCharsL">2 lettere, per favore</string>
     <string name="labelAddSpecButton">Aggiungi specie</string>
+    <string name="specsCommonLang">Attenzione: vecchio formato del database o lista delle specie! Per utilizzare correttamente i nomi comuni, è necessario selezionare la lingua dei dati in «Impostazioni».</string>
     <string name="specsToAdd">Altre specie:</string>
-    <string name="specsCommonLangMissing">La lingua dei dati locali non è stata definita! Verranno utilizzati i nomi in tedesco.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">Info app (TourCount Ver.</string>
@@ -185,6 +185,7 @@
     <string name="pref_button_vib_summary">Crea una vibrazione quando si preme un pulsante di conteggio</string>
     <string name="pref_csv_output_dialog">Ordinamento dei risultati e della tabella csv esportata</string>
     <string name="pref_csv_output_title">Ordinamento dei risultati</string>
+    <string name="pref_distance_title">Distanza minima per l\'aggiornamento GPS</string>
     <string name="pref_email_string">Indirizzo e-mail per OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessario per la ricerca affidabile dei dati dell\'indirizzo tramite OSM-Nominatim-Reverse-Geocoder.\nL\'indirizzo e-mail sarà trattato in modo confidenziale e utilizzato solo per contattarti in caso di problemi. Vedi https://wiki.openstreetmap.org/wiki/Nominatim.</string>
     <string name="pref_interval_title">Intervallo di interrogazione GPS</string>
@@ -258,6 +259,7 @@
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Nota sul tour:</string>
     <string name="warnCount">Sono ammessi solo valori compresi tra 1 e 999999!</string>
+    <string name="not_available">Non disponibile!</string>
 
     <!-- Permissions -->
     <string name="app_settings">Impostazioni di sistema</string>

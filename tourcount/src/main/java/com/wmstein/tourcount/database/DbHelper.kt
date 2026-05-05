@@ -20,7 +20,7 @@ import java.util.Locale
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
  * updated to version 8 on 2025-02-25,
- * last edited on 2026-04-06
+ * last edited on 2026-04-16
  *
  * ************************************************************************
  * ATTENTION!
@@ -78,6 +78,7 @@ class DbHelper (private val mContext: Context) :
                 + H_DATALANGUAGE + " text)")
         db.execSQL(sql)
 
+        // TEMP_TABLE is obsolete since ver. 3.7.5
         sql = ("create table " + TEMP_TABLE + " ("
                 + T_ID + " integer primary key, "
                 + T_TEMP_LOC + " text, "
@@ -131,7 +132,7 @@ class DbHelper (private val mContext: Context) :
         initialHead(db)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "134, Success!")
+            Log.d(TAG, "135, Success!")
     }
 
     // Initial data for COUNT_TABLE
@@ -176,7 +177,7 @@ class DbHelper (private val mContext: Context) :
     // see https://guides.codepath.org/android/local-databases-with-sqliteopenhelper
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "179, upGrade")
+            Log.d(TAG, "180, upGrade -> DB Ver. 9")
 
         if (oldVersion == 8) {
             version9(db)

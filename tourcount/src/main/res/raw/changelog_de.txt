@@ -67,6 +67,18 @@ _ subtitle
   .
   _
 
+$ 3.7.5
+  % Version 3.7.5
+  _ 05.05.2026
+  * GPS-Parameter "Min. Distanz für GPS-Update" in Einstellungen hinzugefügt
+  * Einige Meldungen verbessert
+  * Code-Verbesserungen
+  * Doku und Beispieldateien aktualisiert
+  * Bugfixes:
+    - In "Einstellungen" gewählte Datensprache wurde nicht in die DB geschrieben
+    - Registrierte Individuen hatten alle dieselben Ortsdaten (seit Version 3.7.4)
+    - Sprach-abhängige Datumsformatierung für Dateinamen korrigiert
+
 $ 3.7.4
   % Version 3.7.4
   _ 07.04.2026

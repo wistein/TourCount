@@ -89,7 +89,7 @@ class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
 
         // Height
         if (individual.coord_z == 0.0) {
-            txtIndHeight.text = ""
+            txtIndHeight.text = "-"
         } else {
             slen = individual.coord_z.toInt().toString().length
             if (slen > 4) {

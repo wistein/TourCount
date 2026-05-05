@@ -14,17 +14,26 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
 import androidx.work.Data
-import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
-import androidx.work.WorkRequest
+
+import com.wmstein.egm.EarthGravitationalModel
+import com.wmstein.tourcount.TourCountApplication.Companion.heightNN
 import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
+import com.wmstein.tourcount.TourCountApplication.Companion.lat
+import com.wmstein.tourcount.TourCountApplication.Companion.lon
+import com.wmstein.tourcount.TourCountApplication.Companion.uncertainty
 import com.wmstein.tourcount.Utils.fromHtml
 
-/**************************************************************************************
- * LocationService provides the location data: latitude, longitude, height, uncertainty
+import java.io.IOException
+
+/*****************************************************************************************
+ * LocationService provides the location data: latitude, longitude, heightGPS, uncertainty
  * on request. Its data may be read by most TourCount activities.
  *
  * Based on LocationSrv created by anupamchugh on 28/11/16, published under
@@ -33,12 +42,9 @@ import com.wmstein.tourcount.Utils.fromHtml
  *
  * Part of that code was adopted for TourCount by wmstein since 2018-07-26.
  *
- * In companion object:
- * Sets the minimal distance for updates (MIN_DISTANCE_FOR_UPDATES): 10 m (default).
- *
  * Last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-03-27
+ * last edited on 2026-05-05
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -46,21 +52,18 @@ open class LocationService : Service, LocationListener {
     private var audioAttributionContext: Context? = null
     private var checkGPS = false
     private var checkNetwork = false
-    private var canGetLocation = false
+    var canGetLocation: Boolean = false // must be public
     private var location: Location? = null
-    private var lat = 0.0
-    private var lon = 0.0
-    private var height = 0.0
-    private var uncertainty = 0.0
+    private var heightGPS = 0.0
     private var locationManager: LocationManager? = null
     private var exactLocation = false
     private var rToneA: MediaPlayer? = null
 
     // prefs
-    private var prefs = TourCountApplication.getPrefs()
     private var alertSoundPref = false
     private var alertSound: String = ""
-    private var selTimeInterval: Long = 3000 // Default time interval for updates
+    private var selTimeInterval: Long = 5000 // Default time interval for updates
+    private var minDistanceM: Long = 10 // No movement between updates necessary
     private var metaPref: Boolean = false
     private var emailString: String = ""
 
@@ -72,9 +75,9 @@ open class LocationService : Service, LocationListener {
         getLocation()
     }
 
-    private fun getLocation() {
+    fun getLocation() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "77, getLocation")
+            Log.i(TAG, "80, getLocation")
 
         audioAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
@@ -85,21 +88,26 @@ open class LocationService : Service, LocationListener {
                 mContext!!.createAttributionContext("locationCheck")
             else mContext
 
+        val prefs = TourCountApplication.getPrefs()
         selTimeInterval = prefs.getString("pref_time_interval", "5000")!!.toLong()
+        minDistanceM = prefs.getString("pref_distance", "10")!!.toLong()
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
         alertSound = prefs.getString("alert_sound", null).toString()
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
         emailString = prefs.getString("email_String", "").toString()
 
         try {
-            locationManager = mContext!!.getSystemService(LOCATION_SERVICE) as LocationManager
-            assert(locationManager != null)
+            locationManager =
+                locationAttributionContext!!.getSystemService(LOCATION_SERVICE) as LocationManager
+
+            // get GPS status
             checkGPS = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
             // get network provider status
             checkNetwork = locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
             if (checkGPS || checkNetwork) {
-                canGetLocation = true
+                this.canGetLocation = true
             } else {
                 val mesg = getString(R.string.no_provider)
                 Toast.makeText(
@@ -114,21 +122,24 @@ open class LocationService : Service, LocationListener {
                 if (ActivityCompat.checkSelfPermission(
                         mContext!!,
                         Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                    == PackageManager.PERMISSION_GRANTED
+                    ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     locationManager!!.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
                         selTimeInterval,
-                        MIN_DISTANCE_FOR_UPDATES.toFloat(), this
+                        minDistanceM.toFloat(), this
                     )
+
                     if (locationManager != null) {
                         location =
                             locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                         if (location != null) {
                             lat = location!!.latitude
                             lon = location!!.longitude
-                            height = location!!.altitude
+                            // set heightNN
+                            heightGPS = location!!.altitude
+                            if (heightGPS != 0.0)
+                                correctHeight(lat, lon, heightGPS)
                             uncertainty = location!!.accuracy.toDouble()
                             exactLocation = true
                         }
@@ -142,21 +153,21 @@ open class LocationService : Service, LocationListener {
                     if (ActivityCompat.checkSelfPermission(
                             mContext!!,
                             Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
-                        == PackageManager.PERMISSION_GRANTED
+                        ) == PackageManager.PERMISSION_GRANTED
                     ) {
                         locationManager!!.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             selTimeInterval,
-                            MIN_DISTANCE_FOR_UPDATES.toFloat(), this
+                            minDistanceM.toFloat(), this
                         )
+
                         if (locationManager != null) {
                             location =
                                 locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                             if (location != null) {
                                 lat = location!!.latitude
                                 lon = location!!.longitude
-                                height = location!!.altitude // 0
+                                heightNN = 0.0
                                 uncertainty = location!!.accuracy.toDouble() // 200
                                 exactLocation = false
                             }
@@ -166,8 +177,29 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "169, Error in getLocation: $e")
+                Log.e(TAG, "177, Error in getLocation: $e")
         }
+    }
+
+    // Correct height with geoid offset from simplified EarthGravitationalModel
+    private fun correctHeight(latitude: Double, longitude: Double, gpsHeight: Double) {
+        var corrHeight = 0.0
+
+        val gh = EarthGravitationalModel()
+        try {
+            gh.load(locationAttributionContext!!) // load the WGS84 correction coefficient table egm180.txt
+        } catch (_: IOException) {
+            // nothing
+        }
+
+        // Calculate the offset between the ellipsoid and geoid
+        try {
+            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight)
+        } catch (_: java.lang.Exception) {
+            // nothing
+        }
+
+        heightNN = gpsHeight + corrHeight
     }
 
     // Stop location service
@@ -175,14 +207,15 @@ open class LocationService : Service, LocationListener {
         try {
             if (locationManager != null) {
                 locationManager!!.removeUpdates(this@LocationService)
+                stopSelf()
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "181, StopListener: Stop GPS service.")
+                    Log.i(TAG, "214, StopListener: Stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "185, Error in StopListener: $e")
+                Log.e(TAG, "218, Error in StopListener: $e")
         }
 
         if (alertSoundPref) {
@@ -196,44 +229,49 @@ open class LocationService : Service, LocationListener {
         }
     }
 
-    fun getLongitude(): Double {
+    fun getLongitude() {
         if (location != null) {
             lon = location!!.longitude
         }
-        return lon
     }
 
-    fun getLatitude(): Double {
+    fun getLatitude() {
         if (location != null) {
             lat = location!!.latitude
         }
-        return lat
     }
 
-    fun getAltitude(): Double {
+    fun getAltitude() {
         if (location != null) {
-            height = location!!.altitude
+            heightGPS = location!!.altitude
+            // Write corrected height to global var heightNN
+            if (heightGPS != 0.0) correctHeight(lat, lon, heightGPS)
         }
-        return height
     }
 
-    fun getAccuracy(): Double {
+    fun getAccuracy() {
         if (location != null) {
             uncertainty = location!!.accuracy.toDouble()
         }
-        return uncertainty
     }
 
     fun canGetLocation(): Boolean {
-        return canGetLocation
+        return this.canGetLocation
     }
 
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
+    // Get locality info on first lock
     override fun onLocationChanged(location: Location) {
-        // Show info about first lock
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "269, onLocationChanged")
+        getLatitude()
+        getLongitude()
+        getAltitude()
+        getAccuracy()
+
         if (isFirstLoc && lat != 0.0) {
             soundAlertSound()
 
@@ -256,12 +294,12 @@ open class LocationService : Service, LocationListener {
                     Toast.LENGTH_LONG
                 ).show()
             }
-
-            // Get initial location data from Nominatim for metadata
-            getAddress()
-
             isFirstLoc = false
         }
+
+        // Get location data from Nominatim
+        if (metaPref)
+            getAddressL()
     }
 
     override fun onProviderEnabled(s: String) {
@@ -273,29 +311,32 @@ open class LocationService : Service, LocationListener {
     }
 
     // Get the address data by reverse geocoding from Nominatim service
-    fun getAddress() {
-        if (metaPref && lat != 0.0) {
+    private fun getAddressL() {
+        if (lat != 0.0 || lon != 0.0) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG,"279, initial getAddress, lat = $lat")
+                Log.i(TAG,"317, getAddressL, lat = $lat")
             val urlString: String?
             if (emailString == "") {
                 urlString = ("https://nominatim.openstreetmap.org/reverse?" +
-                        "email=stein.test@temp.test" + "&format=xml&lat="
+                        "email=test@temp.test" + "&format=xml&lat="
                         + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
             } else {
                 urlString = ("https://nominatim.openstreetmap.org/reverse?" +
                         "email=" + emailString + "&format=xml&lat="
                         + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
             }
-            val retrieveAddrWorkRequest: WorkRequest =
-                OneTimeWorkRequest.Builder(RetrieveAddrWorker::class.java)
+
+            // Start RetrieveAddrWorker immediately (with setExpedited())
+            val retrieveAddrWorkRequest =
+                OneTimeWorkRequestBuilder<RetrieveAddrWorker>()
                     .setInputData(
                         Data.Builder()
                             .putString("URL_STRING", urlString)
                             .build()
                     )
+                    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                     .build()
-            WorkManager.getInstance(this).enqueue(retrieveAddrWorkRequest)
+            WorkManager.getInstance(mContext!!).enqueue(retrieveAddrWorkRequest)
         }
     }
 
@@ -335,7 +376,7 @@ open class LocationService : Service, LocationListener {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "338, onDestroy")
+            Log.i(TAG, "379, onDestroy")
 
         if (alertSoundPref && rToneA != null) {
             rToneA!!.reset()
@@ -347,8 +388,6 @@ open class LocationService : Service, LocationListener {
 
     companion object {
         private const val TAG = "LocationService"
-
-        private const val MIN_DISTANCE_FOR_UPDATES: Long = 10 // for tests: 5, default: 10 (m)
     }
 
 }

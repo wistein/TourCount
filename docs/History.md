@@ -2,6 +2,16 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.5 (2026-05-05)
+- GPS parameter "Min. distance for GPS update" added in Settings
+- Some messages improved
+- Code improvements
+- Docs and example files updated
+- Bugfixes:
+  * Data language changed in 'Settings' was not written to DB
+  * Individuals all had the same locality data (since version 3.7.4)
+  * Language dependent date formatting for filenames corrected
+
 #### Version 3.7.4 (2026-04-06)
 - Data language recognition also while importing DBs (depending on new data language field in DB)
 - Data language changeable in 'Settings' when not automatically detected (for old versions of species lists and DBs)

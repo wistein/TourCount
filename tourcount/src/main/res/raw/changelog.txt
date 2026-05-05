@@ -67,6 +67,18 @@ _ subtitle
   .
   _
 
+$ 3.7.5
+  % Version 3.7.5
+  _ 2026-05-05
+  * GPS parameter "Min. distance for GPS update" added in Settings
+  * Some messages improved
+  * Code improvements
+  * Docs and example files updated
+  * Bugfixes:
+    - Data language changed in 'Settings' was not written to DB
+    - Individuals all had the same locality data (since version 3.7.4)
+    - Language dependent date formatting for filenames corrected
+
 $ 3.7.4
   % Version 3.7.4
   _ 2026-04-07

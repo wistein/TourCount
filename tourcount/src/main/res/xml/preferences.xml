@@ -27,7 +27,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_data">
-        android:key="key_prefs_csv_output_title">
+        android:key="key_prefs_data_language">
 
         <ListPreference
             android:defaultValue="de"
@@ -131,6 +131,15 @@
             android:summary="@string/pref_email_string_summ"
             android:textColorHint="@color/BrightGray"
             android:title="@string/pref_email_string" />
+
+        <ListPreference
+            android:defaultValue="5"
+            android:entries="@array/pref_sel_dist_max_entries"
+            android:entryValues="@array/pref_sel_dist_max_values"
+            android:icon="@drawable/ic_dist_max_black_48dp"
+            android:key="pref_distance"
+            android:title="@string/pref_distance_title"
+            app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             android:defaultValue="5000"

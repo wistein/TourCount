@@ -27,7 +27,7 @@ import com.wmstein.tourcount.widgets.EditTourNotesWidget
  *
  * Based on EditSpeciesNotesActivity.kt.
  * Changed by wmstein on 16.09.2025,
- * last edited on 2026-03-20
+ * last edited on 2026-04-19
  */
 class EditTourNotesActivity : AppCompatActivity() {
     private var tourWidgetArea: LinearLayout? = null
@@ -147,7 +147,7 @@ class EditTourNotesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "153, onPause")
+            Log.i(TAG, "150, onPause")
 
         sectionDataSource!!.close()
     }

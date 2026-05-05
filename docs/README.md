@@ -55,7 +55,7 @@ https://f-droid.org/packages/com.wmstein.tourcount/.
 All versions of the apk-file 'tourcount-release_nnn.apk' are provided in the GitHub repository under 
 https://github.com/wistein/TourCount.
 
-Please note that both F-Droid and GitHub versions are compiled from the same sources but signed 
+Please note that both apk versions (F-Droid and GitHub) are compiled from the same sources but signed 
 differently and so cannot be mutually updated.
 
 On GitHub you will find the published stable version when clicking the "master"-button and select 

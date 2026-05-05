@@ -2,7 +2,6 @@ package com.wmstein.tourcount;
 
 import static com.wmstein.tourcount.Utils.fromHtml;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -38,12 +37,10 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.wmstein.egm.EarthGravitationalModel;
 import com.wmstein.tourcount.database.Count;
 import com.wmstein.tourcount.database.CountDataSource;
 import com.wmstein.tourcount.database.IndividualsDataSource;
@@ -55,7 +52,6 @@ import com.wmstein.tourcount.widgets.CountingSpeciesNotesWidget;
 import com.wmstein.tourcount.widgets.CountingLHWidget;
 import com.wmstein.tourcount.widgets.CountingTourNotesWidget;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,7 +71,7 @@ import java.util.Objects;
  * <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-03-30
+ * last edited in Java on 2026-05-05
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -101,12 +97,7 @@ public class CountingActivity
     private String spec_name;
     private int specCnt;
 
-    // Location info handling
-    private double latitude, longitude, height;
-    private String uncertainty;
-    LocationService locationService;
     SoundService soundService;
-    private boolean locServiceOn = false;
 
     // Proximity sensor handling screen on/off
     private PowerManager powerManager;
@@ -117,14 +108,13 @@ public class CountingActivity
     // Preferences
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private boolean awakePref;
+    private boolean awakePref;        // keep screen on
     private boolean brightPref;
     private String sortPref;
     private boolean lhandPref;       // true for left hand mode of counting screen
     private boolean buttonSoundPref;
-    private boolean alertSoundPref;
     private boolean buttonVibPref;
-    private String specCode = "";
+    private String specCode = "";    // species code of an added species
     private String proxSensorPref;
     private double sensorSensitivity = 0.0;
 
@@ -143,7 +133,7 @@ public class CountingActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "146, onCreate");
+            Log.i(TAG, "136, onCreate");
 
         TourCountApplication tourCount = (TourCountApplication) getApplication();
         prefs = TourCountApplication.getPrefs();
@@ -244,7 +234,6 @@ public class CountingActivity
             };
             getOnBackPressedDispatcher().addCallback(this, callback);
         }
-        locationService = new LocationService(getApplicationContext());
         if (buttonSoundPref)
             soundService = new SoundService(getApplicationContext());
     }
@@ -268,12 +257,10 @@ public class CountingActivity
         sortPref = prefs.getString("pref_sort_sp", "none");   // sort mode of species list
         lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
-        alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
         buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
         itemPosition = prefs.getInt("item_Position", 0);       // item position in spinner
         iid = prefs.getInt("count_id", 1);                     // species id
         proxSensorPref = prefs.getString("pref_prox", "Off");
-        locServiceOn = prefs.getBoolean("loc_srv_on", false);
     }
 
     @SuppressLint("DiscouragedApi")
@@ -282,7 +269,7 @@ public class CountingActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "285, onResume");
+            Log.i(TAG, "272, onResume");
 
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -294,9 +281,6 @@ public class CountingActivity
         if (buttonVibPref)
             vibrator = getApplicationContext().getSystemService(Vibrator.class);
 
-        // Get location with permissions check without using Nominatim service
-        locationDispatcher(0);
-
         // Set full brightness of screen
         if (brightPref) {
             WindowManager.LayoutParams params = getWindow().getAttributes();
@@ -307,8 +291,8 @@ public class CountingActivity
         if (awakePref)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // build the counting screen
-        // clear any existing views
+        // Prepare the counting screen
+        // Clear any existing views
         count_area.removeAllViews();
         tour_notes_area.removeAllViews();
         head_area2.removeAllViews();
@@ -585,11 +569,6 @@ public class CountingActivity
             editor.putBoolean("snd_srv_on", false);
             editor.commit();
         }
-
-        // Stop sound service when denied in settings
-        if (!alertSoundPref) {
-            locationService.stopSoundA();
-        }
     }
 
     @Override
@@ -597,7 +576,7 @@ public class CountingActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "600, onPause");
+            Log.i(TAG, "579, onPause");
 
         disableProximitySensor();
 
@@ -618,9 +597,6 @@ public class CountingActivity
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        // Stop location service with permissions check
-        locationDispatcher(2);
-
         prefs.unregisterOnSharedPreferenceChangeListener(this);
         sensorManager.unregisterListener(this);
     }
@@ -631,7 +607,7 @@ public class CountingActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "634, onStop");
+            Log.i(TAG, "610, onStop");
 
         counting_screen.invalidate();
 
@@ -640,11 +616,6 @@ public class CountingActivity
             soundService.releaseSoundM();
             soundService.releaseSoundP();
         }
-
-        // Stop alert sound in locationService when denied in settings
-        if (alertSoundPref) {
-            locationService.stopSoundA();
-        }
     }
 
     @Override
@@ -652,106 +623,7 @@ public class CountingActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "655, onDestroy");
-    }
-
-    // Check location permission
-    private boolean isFineLocationPermGranted() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED;
-    }
-
-    // Control location service
-    // locationDispatcherMode:
-    //  1 = start and use location service
-    //  2 = end location service
-    public void locationDispatcher(int locationDispatcherMode) {
-        if (isFineLocationPermGranted()) {
-            editor = prefs.edit();
-            switch (locationDispatcherMode) {
-                case 0 -> // Start location service and just get the location
-                {
-                    if (!locServiceOn) {
-                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "676 locationDispatcher 0");
-                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
-                        startService(sIntent);
-                        locServiceOn = true;
-
-                        editor.putBoolean("loc_srv_on", true);
-                        editor.commit();
-                    }
-                    getLoc(); // Get position
-                }
-                case 1 -> // Start location service, get location and get address with Nominatim data
-                {
-                    if (!locServiceOn) {
-                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "690 locationDispatcher 1");
-                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
-                        startService(sIntent);
-                        locServiceOn = true;
-
-                        editor.putBoolean("loc_srv_on", true);
-                        editor.commit();
-                    }
-                    getLoc();  // Get position
-                    if (latitude != 0)
-                        locationService.getAddress(); // Get data from OpenStreetMap Nominatim service
-                }
-                case 2 -> // stop location service
-                {
-                    if (locServiceOn) {
-                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "706, locationDispatcher 2");
-                        locationService.releaseSoundA();
-                        locationService.stopListener();
-                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
-                        stopService(sIntent);
-                        locServiceOn = false;
-
-                        editor.putBoolean("loc_srv_on", false);
-                        editor.commit();
-                    }
-                }
-            }
-        }
-    }
-
-    // Get the location data without Nominatim service
-    @SuppressLint("DefaultLocale")
-    public void getLoc() {
-        if (locationService.canGetLocation()) {
-            longitude = locationService.getLongitude();
-            latitude = locationService.getLatitude();
-            height = locationService.getAltitude();
-            if (height != 0.0)
-                height = correctHeight(latitude, longitude, height);
-            uncertainty = String.format("%f", locationService.getAccuracy());
-        }
-    }
-
-    // Correct height with geoid offset from simplified EarthGravitationalModel
-    private double correctHeight(double latitude, double longitude, double gpsHeight) {
-        double corrHeight;
-        double nnHeight;
-
-        EarthGravitationalModel gh = new EarthGravitationalModel();
-        try {
-            gh.load(this); // load the WGS84 correction coefficient table egm180.txt
-        } catch (IOException e) {
-            return 0;
-        }
-
-        // Calculate the offset between the ellipsoid and geoid
-        try {
-            corrHeight = gh.heightOffset(latitude, longitude, gpsHeight);
-        } catch (Exception e) {
-            return 0;
-        }
-
-        nnHeight = gpsHeight + corrHeight;
-        return nnHeight;
+            Log.i(TAG, "626, onDestroy");
     }
 
     // Spinner listener
@@ -771,13 +643,13 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "774, SpinnerListener, count id: "
+                        Log.d(TAG, "646, SpinnerListener, count id: "
                                 + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG, "780, SpinnerListener: " + e);
+                        Log.e(TAG, "652, SpinnerListener: " + e);
                 }
             }
 
@@ -843,10 +715,14 @@ public class CountingActivity
      * The functions below are triggered by the count buttons
      * on the righthand/lefthand (LH) views.
      * <p>
-     * For up-counting they start EditIndividualActivity,
+     * For up-counting they get locality and start EditIndividualActivity,
      * down-counting is done directly
      */
+    // Triggered by count up button for ♂|♀
     public void countUpf1i(View view) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "724, countUpf1i");
+
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
@@ -855,12 +731,11 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf1i();
 
-        locationDispatcher(1); // update location
         disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
 
-        // get edited info for individual and start EditIndividualActivity
+        // Provide edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
@@ -868,13 +743,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
+    // Triggered by count up button from left-hand view for ♂|♀
     public void countUpLHf1i(View view) {
         int iAtt = 1;
         int tempCountId = Integer.parseInt(view.getTag().toString());
@@ -882,12 +754,10 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHf1i();
 
-        locationDispatcher(1); // update location
         disableProximitySensor(); // for EditIndividualActivity
 
         assert Objects.requireNonNull(widget).count != null;
 
-        // get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
@@ -895,15 +765,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
-    // Triggered by count down button for
-    // decreases count if > 0
+    // Triggered by count down button to decrease count for ♂|♀ if > 0
     public void countDownf1i(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -940,8 +805,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count down button from left-hand view
-    // decreases count if > 0
+    // Triggered by count down button from left-hand view to decrease count for ♂|♀ if > 0
     public void countDownLHf1i(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -977,8 +841,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count up button for ♂
-    // starts EditIndividualActivity
+    // Triggered by count up button for ♂ and starts EditIndividualActivity
     public void countUpf2i(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
@@ -988,7 +851,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf2i();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1001,13 +863,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
+    // Triggered by count up button from left-hand view for ♂ and starts EditIndividualActivity
     public void countUpLHf2i(View view) {
         int iAtt = 2;
         int tempCountId = Integer.parseInt(view.getTag().toString());
@@ -1015,7 +874,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHf2i();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1028,15 +886,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
-    // Triggered by count down button
-    // decreases count if > 0
+    // Triggered by count down button to decrease count for ♂ if > 0
     public void countDownf2i(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1073,8 +926,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count down button from left-hand view
-    // decreases count if > 0
+    // Triggered by count down button from left-hand view to decrease count for ♂ if > 0
     public void countDownLHf2i(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1111,6 +963,7 @@ public class CountingActivity
         }
     }
 
+    // Triggered by count up button for ♀ and starts EditIndividualActivity
     public void countUpf3i(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
@@ -1120,7 +973,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpf3i();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1133,13 +985,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
+    // Triggered by count up button from left-hand view for ♀ and starts EditIndividualActivity
     public void countUpLHf3i(View view) {
         int iAtt = 3;
         int tempCountId = Integer.parseInt(view.getTag().toString());
@@ -1147,7 +996,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHf3i();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1160,15 +1008,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
-    // Triggered by count down button
-    // decreases count if > 0
+    // Triggered by count down button to decrease count for ♀ if > 0
     public void countDownf3i(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1205,8 +1048,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count down button from left-hand view
-    // decreases count if > 0
+    // Triggered by count down button from left-hand view to decrease count for ♀ if > 0
     public void countDownLHf3i(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1243,6 +1085,7 @@ public class CountingActivity
         }
     }
 
+    // Triggered by count up button for pupa and starts EditIndividualActivity
     public void countUppi(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
@@ -1252,7 +1095,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUppi();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1265,13 +1107,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
+    // Triggered by count up button from left-hand view for pupa and starts EditIndividualActivity
     public void countUpLHpi(View view) {
         int iAtt = 4;
         int tempCountId = Integer.parseInt(view.getTag().toString());
@@ -1279,7 +1118,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHpi();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1292,15 +1130,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
-    // Triggered by count down button
-    // decreases count if > 0
+    // Triggered by count down button to decrease count for pupa if > 0
     public void countDownpi(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1337,8 +1170,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count down button from left-hand view
-    // decreases count if > 0
+    // Triggered by count down button from left-hand view to decrease count for pupaif > 0
     public void countDownLHpi(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1375,6 +1207,7 @@ public class CountingActivity
         }
     }
 
+    // Triggered by count up button for larva and starts EditIndividualActivity
     public void countUpli(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
@@ -1384,7 +1217,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpli();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1397,13 +1229,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
+    // Triggered by count up button from left-hand view for larva and starts EditIndividualActivity
     public void countUpLHli(View view) {
         int iAtt = 5;
         int tempCountId = Integer.parseInt(view.getTag().toString());
@@ -1411,7 +1240,6 @@ public class CountingActivity
         if (widget != null)
             widget.countUpLHli();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1424,15 +1252,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
-    // Triggered by count down button
-    // decreases count if > 0
+    // Triggered by count down button to decrease count for larva if > 0
     public void countDownli(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1469,8 +1292,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count down button from left-hand view
-    // decreases count if > 0
+    // Triggered by count down button from left-hand view to decrease count for larva if > 0
     public void countDownLHli(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1507,6 +1329,7 @@ public class CountingActivity
         }
     }
 
+    // Triggered by count up button for egg and starts EditIndividualActivity
     public void countUpei(View view) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
@@ -1516,12 +1339,11 @@ public class CountingActivity
         if (widget != null)
             widget.countUpei();
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
 
-        // get edited info for individual and start EditIndividualActivity
+        // Get edited info for individual and start EditIndividualActivity
         Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
         intent.putExtra("count_id", tempCountId);
         intent.putExtra("SName", widget.count.name);
@@ -1529,13 +1351,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
+    // Triggered by count up button from left-hand view for egg and starts EditIndividualActivity
     public void countUpLHei(View view) {
         int iAtt = 6;
         int tempCountId = Integer.parseInt(view.getTag().toString());
@@ -1544,7 +1363,6 @@ public class CountingActivity
             widget.countUpLHei();
         }
 
-        locationDispatcher(1); // update location
         disableProximitySensor();
 
         assert Objects.requireNonNull(widget).count != null;
@@ -1557,15 +1375,10 @@ public class CountingActivity
         intent.putExtra("date", getcurDate());
         intent.putExtra("time", getcurTime());
         intent.putExtra("indivAtt", iAtt);
-        intent.putExtra("cLatitude", latitude);
-        intent.putExtra("cLongitude", longitude);
-        intent.putExtra("cHeight", height);
-        intent.putExtra("cUncert", uncertainty);
         startActivity(intent);
     }
 
-    // Triggered by count down button
-    // decreases count if > 0
+    // Triggered by count down button to decrease count for egg if > 0
     public void countDownei(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();
@@ -1602,8 +1415,7 @@ public class CountingActivity
         }
     }
 
-    // Triggered by count down button from left-hand view
-    // decreases count if > 0
+    // Triggered by count down button from left-hand view to decrease count for egg if > 0
     public void countDownLHei(View view) {
         if (buttonSoundPref)
             soundService.soundMinusButtonSound();

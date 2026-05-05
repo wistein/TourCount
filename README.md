@@ -9,10 +9,10 @@ TourCount is an Android app that supports species-specific and individually loca
 - The app comes with a prepared basic database with the most common species in Europe as a starting point.
 - Databases can be individually created and adapted within the app regarding metadata and expected butterfly species.
 - You may use an individual species list per region.
-- The app contains editors 
-  - to setup or adapt the current species list with add and delete species functions,
-  -  to prepare the metadata for a tour and
-  -  for individual species data of a count (e.g. status, remark or bulk count entry).
+- There are editors 
+  - to setup or adapt the current species list with add, delete and edit species functions,
+  - to prepare the metadata for a tour and
+  - for individual species data of a count (e.g. status, remark or bulk count entry).
 - The counting page has a scroll-list to select a species by picture and name.
 - Separate counters for ♂|♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
@@ -27,7 +27,7 @@ TourCount is an Android app that supports species-specific and individually loca
 
 ### Prerequisites
 The app demands for 
-- storage access permit which is needed for im-/exporting the counting data (databases, results or species lists,
+- storage access permit which is needed for im-/exporting the counting data (databases, results or species lists, 
 - the permit to read location data by GPS for coordinates and location info per count, 
 - internet access for OpenStreetMap reverse geocoding and 
 - the permit to keep the device awake
@@ -55,7 +55,7 @@ https://f-droid.org/packages/com.wmstein.tourcount/.
 All versions of the apk-file 'tourcount-release_nnn.apk' are provided in the GitHub repository under 
 https://github.com/wistein/TourCount.
 
-Please note that both F-Droid and GitHub versions are compiled from the same sources but signed 
+Please note that both apk versions (F-Droid and GitHub) are compiled from the same sources but signed 
 differently and so cannot be mutually updated.
 
 On GitHub you will find the published stable version when clicking the "master"-button and select 

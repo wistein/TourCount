@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2026-04-07 -->
+     last edited on 2026-04-15 -->
 
 <resources>
 
@@ -37,9 +37,9 @@
     <string name="cntsm">Counts ♂</string>
     <string name="cntsmf">Counts ♂|♀</string>
     <string name="cntsp">Counts Pu.</string>
-    <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!\nNote! Please, check afterwards in "Settings" if the data language is set.</string>
-    <string name="confirmListImport">Are you sure you want to import the species list? Your current data will be overwritten!</string>
-    <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current data will be deleted!</string>
+    <string name="confirmDBImport">Are you sure you want to import a DB file? Your current data will be overwritten!\n\nNote! If this is an older version of the file, go afterwards to “Settings” and check that the correct data language is set.</string>
+    <string name="confirmListImport">Are you sure you want to import the species list? Your current counting data will be deleted!</string>
+    <string name="confirmResetDB">Are you sure you want to reset the Count DB? Your current counting data will be deleted!</string>
     <string name="corruptDb">Database error! If problem remains after restart and after import of a different TourCount-DB, please de-install and re-install the app.</string>
     <string name="counting">Counting</string>
     <string name="editMetaButton">Edit Metadata</string>
@@ -72,7 +72,7 @@
     <string name="sort_codes">Species sorted by species codes</string>
     <string name="sort_names">Species sorted by species names</string>
     <string name="sort_time">Individuals sorted by registered time</string>
-    <string name="specsCommonLang">Note: This is the old list format! To ensure common names are displayed correctly, you must select the data language under “Settings.”.</string>
+    <string name="specsCommonLangMissing">Attention! The local data language is not defined in the old list. Please, select it in "Settings". Otherwise, German species names will be used.</string>
     <string name="sum">Totals:</string>
     <string name="sumSpec">Diff. Species:</string>
     <string name="sum_total">Sum Total:</string>
@@ -173,8 +173,8 @@
     <string name="hintSearch">Starting chars.</string>
     <string name="initCharsL">Please 2 chars.</string>
     <string name="labelAddSpecButton">Add Species</string>
+    <string name="specsCommonLang">Note: This is the old DB or species list format! To ensure common names are displayed correctly, you must select the data language under “Settings”.</string>
     <string name="specsToAdd">Further species:</string>
-    <string name="specsCommonLangMissing">Local data language is not defined! German names will be used.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">App Info (TourCount Ver. </string>
@@ -199,6 +199,7 @@
     <string name="pref_button_vib_summary">Make a vibration upon pressing a count button.</string>
     <string name="pref_csv_output_dialog">Sort order of the results and exported csv-table</string>
     <string name="pref_csv_output_title">Sorting the Results</string>
+    <string name="pref_distance_title">Min. distance for GPS update</string>
     <string name="pref_email_string">Mail Address for OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and will only be used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
     <string name="pref_interval_title">GPS polling interval</string>
@@ -272,6 +273,7 @@
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Tour Notes:</string>
     <string name="warnCount">Only values between 1 … 999999 allowed!</string>
+    <string name="not_available">Not available!</string>
 
     <!-- Permissions -->
     <string name="app_settings">System Settings</string>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-04-07 -->
+     last edited on 2026-04-15 -->
 
 <resources>
 
@@ -22,8 +22,8 @@
     <string name="cntsm">Nombre ♂</string>
     <string name="cntsmf">Nombre ♂|♀</string>
     <string name="cntsp">Nombre cr.</string>
-    <string name="confirmDBImport">Voulez-vous vraiment importer une BD ? Vos données actuelles seront écrasées !\nAttention ! Veuillez vérifier ensuite dans les « Paramètres » si la langue des données est bien sélectionnée.</string>
-    <string name="confirmListImport">Voulez-vous vraiment importer la liste d\'espèces ? Vos données actuelles seront écrasées !</string>
+    <string name="confirmDBImport">Voulez-vous vraiment importer une BD ? Vos données actuelles seront écrasées !\n\nAttention ! S\'il s\'agit d\'une ancienne version du fichier, rendez-vous ensuite dans « Paramètres » et vérifiez que la langue des données est correctement définie.</string>
+    <string name="confirmListImport">Voulez-vous vraiment importer la liste d\'espèces ? Vos données de comptage actuelles seront supprimées !</string>
     <string name="confirmResetDB">Voulez-vous vraiment réinitialiser la BD ? Vos données de comptage actuelles seront supprimées !</string>
     <string name="corruptDb">Erreur BD ! Si le problème persiste après le redémarrage et l\'importation d\'un autre TourCount-BD, veuillez désinstaller l\'application et la réinstaller.</string>
     <string name="counting">Compter</string>
@@ -57,7 +57,7 @@
     <string name="sort_codes">Espèces classées par codes d\'espèces</string>
     <string name="sort_names">Espèces classées par nom d\'espèce</string>
     <string name="sort_time">Individus classés par date d\'enregistrement</string>
-    <string name="specsCommonLang">Attention, ancien format de liste ! Pour utiliser correctement les noms communs, il faut sélectionner la langue des données dans « Paramètres ».</string>
+    <string name="specsCommonLangMissing">Attention ! La langue locale des données n\'est pas définie dans l\'ancienne liste ! Veuillez la sélectionner dans « Paramètres ». Sinon, les noms d\'espèces en allemand seront utilisés.</string>
     <string name="sum">Sommes:</string>
     <string name="sumSpec">Nombre espèces:</string>
     <string name="sum_total">Total:</string>
@@ -158,8 +158,8 @@
     <string name="hintSearch">Initiale</string>
     <string name="initCharsL">2 lettres, svp.</string>
     <string name="labelAddSpecButton">Ajouter des espèces</string>
+    <string name="specsCommonLang">Attention, ancien format de BD ou liste des espèces ! Pour utiliser correctement les noms communs, il faut sélectionner la langue des données dans « Paramètres ».</string>
     <string name="specsToAdd">Autres espèces:</string>
-    <string name="specsCommonLangMissing">La langue locale des données n\'est pas définie ! Les noms allemands seront utilisés.</string>
 
     <!-- ChangeLog/ShowTextDialog -->
     <string name="changelog_full_title">App-Info (TourCount Ver.</string>
@@ -184,6 +184,7 @@
     <string name="pref_button_vib_summary">Générer une vibration lorsqu\'un bouton de comptage est enfoncé.</string>
     <string name="pref_csv_output_dialog">Tri des résultats et du tableau CSV exporté</string>
     <string name="pref_csv_output_title">Tri des résultats</string>
+    <string name="pref_distance_title">Distance min. pour la requête GPS</string>
     <string name="pref_email_string">Adresse e-mail pour OSM-Geocoder</string>
     <string name="pref_email_string_summ">Nécessaire pour la consultation fiable des données d\'adresse via OSM-Nominatim-Reverse-Geocoder.\nL\'adresse e-mail est traitée de manière confidentielle et n\'est utilisée que pour vous contacter en cas de problème. Voir https://wiki.openstreetmap.org/wiki/Nominatim.</string>
     <string name="pref_interval_title">Intervalle d\'interrogation GPS</string>
@@ -257,6 +258,7 @@
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Note sur le tour:</string>
     <string name="warnCount">Seules les valeurs comprises entre  1 … 999999 sont autorisées !</string>
+    <string name="not_available">Indisponible !</string>
 
     <!-- Permissions -->
     <string name="app_settings">Paramètres système</string>

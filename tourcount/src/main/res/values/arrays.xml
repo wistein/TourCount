@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml English array strings and butterflies in 6 languages
-     last edited 2026-03-21 -->
+     last edited 2026-04-29 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="pref_bg_entries">
@@ -60,16 +60,33 @@
 		<item>High</item>
 	</string-array>
 
-    <string-array name="pref_sel_interval_entries">
-        <item>2 sec</item>
-        <item>5 sec</item>
-        <item>10 sec</item>
-        <item>20 sec</item>
-    </string-array>
+	<string-array name="pref_sel_dist_max_entries">
+		<item>2 m</item>
+		<item>5 m</item>
+		<item>10 m</item>
+		<item>15 m</item>
+		<item>20 m</item>
+	</string-array>
+	<string-array name="pref_sel_dist_max_values">
+		<item>2</item>
+		<item>5</item>
+		<item>10</item>
+		<item>15</item>
+		<item>20</item>
+	</string-array>
+
+	<string-array name="pref_sel_interval_entries">
+		<item>2 sec (&#8793; 2 m on foot)</item>
+		<item>5 sec (&#8793; 5.5 m on foot)</item>
+		<item>10 sec (&#8793; 11 m on foot)</item>
+		<item>15 sec (&#8793; 16 m on foot)</item>
+		<item>20 sec (&#8793; 22 m on foot)</item>
+	</string-array>
     <string-array name="pref_sel_interval_values">
         <item>2000</item>
         <item>5000</item>
         <item>10000</item>
+		<item>15000</item>
         <item>20000</item>
     </string-array>
 
@@ -872,7 +889,7 @@
 		<item comment="07113">Phengaris teleius</item>
 		<item comment="07114">Phengaris nausithous</item>
 		<item comment="07115">Phengaris alcon</item>
-		<item comment="07116">Phengaris rebeli</item>
+		<item comment="07116">Phengaris alcon rebeli</item>
 		<item comment="07120">Freyeria trochylus</item>
 		<item comment="07127">Plebejus argus</item>
 		<item comment="07128">Plebejus idas</item>

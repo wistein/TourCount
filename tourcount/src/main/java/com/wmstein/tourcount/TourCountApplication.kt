@@ -22,7 +22,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2026-03-27
+ * last edit on 2026-05-05
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -155,7 +155,23 @@ class TourCountApplication : Application() {
         }
 
         @JvmField
+        var lat = 0.0 // set by getLatitude() in LocationService
+
+        @JvmField
+        var lon = 0.0 // set by getLongitude() in LocationService
+
+        @JvmField
+        var heightNN = 0.0 // set by getAltitude() in LocationService
+
+        @JvmField
+        var uncertainty = 0.0 // set by getAccuracy() in LocationService
+
+        @JvmField
+        var sLocality = "" // set by getAddressL() in LocationService and getAddressC() in CountingActivity
+
+        @JvmField
         var isFirstLoc: Boolean = true // true for showing an info message for the 1. GPS lock
+
         @JvmField
         var isFirstStart: Boolean = true // true for showing a 'missing email' hint message once
     }

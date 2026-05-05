@@ -1,15 +1,14 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.7.4:
-- Die Datensprache wird auch beim Import einer DB anhand eines neuen Datensprachenfelds in DB erkannt
-- Die Datensprache kann unter 'Einstellungen' angepasst werden, wenn sie beim Import einer alten Version der Speziesliste nicht erkannt wird
-- Der Dateiname der initialen Basis-DB enthält nun auch ein Sprachkürzel
-- Die .csv-Dateinamen der Ergebnisse wurden mit einem zusätzlichen Kürzel versehen, das den Sortiermodus anzeigt (nach Name: _n, Code: _c)
-- Einige Code-Verbesserungen
-- Einige übersetzte Texte verbessert
-- Bugfix für den Verlust der Lokalitätsdaten nach Import einer Speziesliste
-- Doku ergänzt
-- Bugfixe
+Neu in Version 3.7.5:
+- GPS-Parameter "Min. Distanz für GPS-Update" in Einstellungen hinzugefügt
+- Einige Meldungen verbessert
+- Code-Verbesserungen
+- Doku und Beispieldateien aktualisiert
+- Bugfixes:
+  * In "Einstellungen" gewählte Datensprache wurde nicht in die DB geschrieben
+  * Registrierte Individuen hatten alle dieselben Ortsdaten (seit Version 3.7.4)
+  * Sprach-abhängige Datumsformatierung für Dateinamen korrigiert
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
@@ -29,11 +28,11 @@ Funktionen:
 - Artenlistenbearbeitung (Hinzufügen, Löschen und Editieren mit eingrenzender Vorauswahl) der Arten.
 - Die Ergebnisseite zeigt Meta-Daten, Bemerkungen, Summen und Zählergebnisse pro Art.
 
-Voraussetzungen
+Voraussetzungen:
 Die App benötigt
 - Speicherzugriffsrecht zwecks Im- und Export der Zähldaten, 
 - GPS für Koordinaten der gezählten Individuen, 
-- Internet-Zugang für OpenStreetMaps inverse Geocodierung, 
+- Internet-Zugang für OpenStreetMaps inverse Geocodierung,
 - Einstellungsrecht zwecks Helligkeitssteuerung des Bildschirms,
 - Recht zur Verhinderung des Ruhezustands.
 
@@ -43,7 +42,7 @@ Die App kann ab Android-Version 7.1 (Nougat) oder neuer verwendet werden.
 Dokumentation ist unter
 https://github.com/wistein/TourCount/tree/master/docs.
 
-TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge. 
+TourCount ist eine von zwei Apps für das Monitoring europäischer Schmetterlinge.
 Die 2. App, TransektCount, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
 
-Beide Apps verwenden die Kodierung der Europäischen Schmetterlinge nach Karsholt/Razowski und berücksichtigen somit nur europäische Schmetterlinge.
+Beide Apps verwenden die Kodierung der europäischen Schmetterlinge nach Karsholt/Razowski und berücksichtigen somit nur europäische Schmetterlinge.

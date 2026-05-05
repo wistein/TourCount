@@ -70,7 +70,7 @@ nocode,language,en
 07113,Phengaris teleius,Scarce large blue
 07114,Phengaris nausithous,Dusky large blue
 07115,Phengaris alcon,Alcon blue
-07116,Phengaris rebeli,Mountain Alcon blue
+07116,Phengaris alcon rebeli,Mountain Alcon blue
 07127,Plebejus argus,Silver-studded blue
 07128,Plebejus idas,Idas blue
 07129,Plebejus argyrognomon,Reverdin's blue
@@ -117,7 +117,7 @@ nocode,language,en
 07299,Apatura iris,Purple emperor
 07307,Pararge aegeria,Speckled wood
 07309,Lasiommata megera,Wall brown
-07312,Lasiommata maera,Large wall
+07312,Lasiommata maera,"Large wall"
 07315,Lopinga achine,Woodland brown
 07321,Coenonympha tullia,Large heath
 07325,Coenonympha arcania,Pearly heath
@@ -139,7 +139,7 @@ nocode,language,en
 07449,Chazara briseis,Hermit
 07547,Chiasmia clathrata,Latticed heath
 07613,Opisthograptis luteolata,Brimstone moth
-07620,Pseudopanth. macularia,Speckled yellow
+07620,Pseudopanthera macularia,Speckled yellow
 07804,Ematurga atomaria,Common heath
 07916,Siona lineata,Black-veined moth
 08028,Timandra comae,Blood-vein
@@ -148,7 +148,7 @@ nocode,language,en
 08289,Camptogram. bilineata,Yellow shell
 08411,Melanthia procellata,Pretty chalk carpet
 08631,Odezia atrata,Chimney sweeper
-08967,Callistege mi,Mother shipton
+08967,Euclidia mi,Mother shipton
 08969,Euclidia glyphica,Burnet companion
 08994,Hypena proboscidalis,Snout
 09056,Autographa gamma,Silver Y

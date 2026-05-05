@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml German array strings,
-     last edited 2026-03-11 -->
+     last edited 2026-04-29 -->
 
 <resources>
 
@@ -33,6 +33,14 @@
 		<item>Aus</item>
 		<item>Mittel</item>
 		<item>Hoch</item>
+	</string-array>
+
+	<string-array name="pref_sel_interval_entries">
+		<item>2 sec (&#8793; 2 m zu Fuß)</item>
+		<item>5 sec (&#8793; 5,5 m zu Fuß)</item>
+		<item>10 sec (&#8793; 11 m zu Fuß)</item>
+		<item>15 sec (&#8793; 16 m zu Fuß)</item>
+		<item>20 sec (&#8793; 22 m zu Fuß)</item>
 	</string-array>
 
 </resources>

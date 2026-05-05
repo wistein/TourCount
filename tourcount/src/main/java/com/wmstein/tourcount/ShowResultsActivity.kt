@@ -44,7 +44,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2026-03-23
+ * last edited on 2026-04-28
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null

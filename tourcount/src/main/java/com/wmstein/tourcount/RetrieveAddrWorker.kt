@@ -4,10 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.wmstein.tourcount.TourCountApplication.Companion.sLocality
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
-import com.wmstein.tourcount.database.Temp
-import com.wmstein.tourcount.database.TempDataSource
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -20,7 +19,7 @@ import javax.net.ssl.HttpsURLConnection
  * Created by wmstein on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-03-24
+ * last edited on 2026-05-05
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -31,18 +30,18 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
         val sb = StringBuilder()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "34, doWork")
+            Log.i(TAG, "33, doWork")
 
         // Get parameters from calling Activity
         val urlString = inputData.getString("URL_STRING") ?: return Result.failure()
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "39, urlString: $urlString")
+            Log.i(TAG, "38, urlString: $urlString")
 
         // Get app version number for User-Agent (requested parameter for Nominatim service)
         val lastVersion = prefs.getString("PREFS_VERSION_KEY", "")
         val userAgent = "TourCount $lastVersion"
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "45, User-Agent: $userAgent")
+            Log.i(TAG, "44, User-Agent: $userAgent")
 
         // Prepare request for Nominatim Reverse Geocoder of OpenStreetMap
         val url = URL(urlString)
@@ -62,7 +61,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             if (status != HttpsURLConnection.HTTP_OK)
             {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "65, URL responseCode: $status")
+                    Log.i(TAG, "64, Nominatim status: $status")
 
                 urlConnection.disconnect()
                 return Result.failure()
@@ -71,7 +70,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             // Get the XML from input stream of Nominatim
             val iStream = urlConnection.inputStream
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "74, iStream: $iStream")
+                Log.i(TAG, "73, iStream: $iStream")
 
             val reader = BufferedReader(InputStreamReader(iStream))
             var line: String? = ""
@@ -81,7 +80,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "84, Problem converting Stream to String: $e")
+                    Log.e(TAG, "83, Problem converting Stream to String: $e")
             } finally {
                 reader.close()
                 iStream.close()
@@ -89,7 +88,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
         } catch (e: IOException) {
             // SocketTimeoutException without email
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "92, Problem with internet address handling: $e")
+                Log.e(TAG, "91, Problem with internet address handling: $e")
         } finally {
             urlConnection.disconnect()
         }
@@ -97,9 +96,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
         xmlString = sb.toString()
 
         // Prepare Geocoder result strings to write into DB fields
-        val sectionDataSource: SectionDataSource
-        val tempDataSource: TempDataSource
-        val sLocality: String
+        val sectionDataSource = SectionDataSource(applicationContext)
         val sPlz: String
         val sCity: String
         val sPlace: String
@@ -112,7 +109,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             var send = xmlString.indexOf("</addressparts>")
             xmlString = xmlString.substring(sstart, send)
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "115, <addressparts>: $xmlString")
+                Log.i(TAG, "112, <addressparts>: $xmlString")
 
             val locality = StringBuilder() // quarter, road or street
             val plz = StringBuilder()      // postal code
@@ -203,80 +200,48 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             }
             sPlz = plz.toString()
 
-            sectionDataSource = SectionDataSource(applicationContext)
             sectionDataSource.open()
-
             val section: Section = sectionDataSource.section
 
-            // Save sCountry, sState, sCity, sPlace, sLocality, sPlz to DB Section table
+            // Save the initial sCountry, sState, sCity, sPlace, sLocality, sPlz to DB Section table
             if (section.country == "") {
-                if (sCountry.isNotEmpty()) {
+                if (sCountry.isNotEmpty())
                     section.country = sCountry
-                } else {
-                    section.country = ""
-                }
                 sectionDataSource.storeEmptyCountry(section.id, section.country)
             }
             if (section.b_state == "") {
-                if (sState.isNotEmpty()) {
+                if (sState.isNotEmpty())
                     section.b_state = sState
-                } else {
-                    section.b_state = ""
-                }
                 sectionDataSource.storeEmptyState(section.id, section.b_state)
             }
 
             if (section.city == "") {
-                if (sCity.isNotEmpty()) {
+                if (sCity.isNotEmpty())
                     section.city = sCity
-                } else {
-                    section.city = ""
-                }
                 sectionDataSource.storeEmptyCity(section.id, section.city)
             }
 
-            if (sPlace.isNotEmpty()) {
-                section.place = sPlace
-            } else {
-                section.place = ""
+            if (section.place == "") {
+                if (sPlace.isNotEmpty())
+                    section.place = sPlace
+                sectionDataSource.storeEmptyPlace(section.id, section.place)
             }
-            sectionDataSource.storeEmptyPlace(section.id, section.place)
 
             if (section.st_locality == "") {
-                if (sLocality.isNotEmpty()) {
+                if (sLocality.isNotEmpty())
                     section.st_locality = sLocality
-                } else {
-                    section.st_locality = ""
-                }
                 sectionDataSource.storeEmptyStLocality(section.id, section.st_locality)
             }
 
             if (section.plz == "") {
-                if (sPlz.isNotEmpty()) {
+                if (sPlz.isNotEmpty())
                     section.plz = sPlz
-                } else {
-                    section.plz = ""
-                }
                 sectionDataSource.storeEmptyPlz(section.id, section.plz)
             }
             sectionDataSource.close()
-
-            // Save sLocality to temp_loc in DB table Temp
-            tempDataSource = TempDataSource(applicationContext)
-            tempDataSource.open()
-            val tmp: Temp = tempDataSource.tmp
-
-            if (sLocality.isNotEmpty()) {
-                tmp.temp_loc = sLocality
-            } else {
-                tmp.temp_loc = ""
-            }
-            tempDataSource.saveTempLoc(tmp)
-
-            tempDataSource.close()
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "279, doWork: success")
+            Log.i(TAG, "244, Result.success")
 
         return Result.success()
     }

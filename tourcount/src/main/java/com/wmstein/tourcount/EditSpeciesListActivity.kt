@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,10 +21,12 @@ import androidx.core.app.NavUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.EditSpeciesListWidget
 import com.wmstein.tourcount.widgets.EditSpeciesListHintWidget
+
 import java.util.Locale
 
 /*************************************************************************
@@ -37,7 +40,7 @@ import java.util.Locale
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-03-20
+ * last edited on 2026-04-19
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
@@ -70,7 +73,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "73, onCreate")
+            Log.i(TAG, "76, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -230,7 +233,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "233, onPause")
+            Log.i(TAG, "236, onPause")
 
         countDataSource!!.close()
 
@@ -248,7 +251,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "251, onStop")
+            Log.i(TAG, "254, onStop")
 
         editingCountsArea = null
         hintArea = null
@@ -258,7 +261,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "261, onDestroy")
+            Log.i(TAG, "264, onDestroy")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -372,7 +375,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "375, Double name = $isDblName")
+                    Log.d(TAG, "378, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -394,7 +397,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "397, Double name = $isDblCode")
+                    Log.d(TAG, "400, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

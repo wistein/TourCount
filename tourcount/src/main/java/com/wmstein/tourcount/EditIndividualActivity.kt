@@ -17,13 +17,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import com.wmstein.tourcount.TourCountApplication.Companion.heightNN
+import com.wmstein.tourcount.TourCountApplication.Companion.lat
+import com.wmstein.tourcount.TourCountApplication.Companion.lon
+import com.wmstein.tourcount.TourCountApplication.Companion.sLocality
+import com.wmstein.tourcount.TourCountApplication.Companion.uncertainty
 import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
-import com.wmstein.tourcount.database.Temp
-import com.wmstein.tourcount.database.TempDataSource
 import com.wmstein.tourcount.widgets.EditIndividualWidget
 
 /*******************************************************************************************
@@ -33,18 +36,16 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-03-31
+ * last edited on 2026-05-05
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
-    private var tmp: Temp? = null
     private var counts: Count? = null
     private var indivArea: LinearLayout? = null
     private var eiw: EditIndividualWidget? = null
 
     // The actual data
     private var individualsDataSource: IndividualsDataSource? = null
-    private var tempDataSource: TempDataSource? = null
     private var countDataSource: CountDataSource? = null
 
     // Preferences
@@ -53,6 +54,7 @@ class EditIndividualActivity : AppCompatActivity() {
     private var brightPref = false // option for full bright screen
     private var buttonSoundPref = false
     private var buttonVibPref = false
+    private var metaPref: Boolean = false // use Reverse Geocoding
 
     // Prepare sound service
     private var soundService: SoundService? = null
@@ -61,12 +63,7 @@ class EditIndividualActivity : AppCompatActivity() {
     private var vibrator: Vibrator? = null
 
     // Location info handling
-    private var latitude = 0.0
-    private var longitude = 0.0
-    private var height = 0.0
-    private var uncertainty: String? = ""
-    private var sLocality: String? = ""
-
+    private var uncert: String? = ""
     private var countId = 0
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
@@ -79,17 +76,18 @@ class EditIndividualActivity : AppCompatActivity() {
     private var code: String? = ""
     private var mesg: String? = ""
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    @SuppressLint("SourceLockedOrientationActivity", "DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "89, onCreate")
+            Log.i(TAG, "84, onCreate")
 
-        awakePref = prefs.getBoolean("pref_awake", true)
+        awakePref = prefs.getBoolean("pref_awake", true) // keep screen on
         brightPref = prefs.getBoolean("pref_bright", true)
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
         buttonVibPref = prefs.getBoolean("pref_button_vib", false)
+        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -150,17 +148,17 @@ class EditIndividualActivity : AppCompatActivity() {
             dateStamp = extras.getString("date")
             timeStamp = extras.getString("time")
             indivAttr = extras.getInt("indivAtt")
-            latitude = extras.getDouble("cLatitude")
-            longitude = extras.getDouble("cLongitude")
-            height = extras.getDouble("cHeight")
-            uncertainty = extras.getString("cUncert")
         }
+
+        uncert = String.format("%f", uncertainty)
     }
     // End of onCreate()
 
-    @SuppressLint("DefaultLocale")
     override fun onResume() {
         super.onResume()
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "161, onResume")
 
         // Clear any existing views
         indivArea!!.removeAllViews()
@@ -168,12 +166,6 @@ class EditIndividualActivity : AppCompatActivity() {
         // Set up the data sources
         individualsDataSource = IndividualsDataSource(this)
         individualsDataSource!!.open()
-
-        // Get last found locality from tmp
-        tempDataSource = TempDataSource(this)
-        tempDataSource!!.open()
-        tmp = tempDataSource!!.tmp
-        sLocality = if (tmp!!.temp_loc != null) tmp!!.temp_loc else ""
 
         countDataSource = CountDataSource(this)
         countDataSource!!.open()
@@ -183,17 +175,33 @@ class EditIndividualActivity : AppCompatActivity() {
 
         counts = countDataSource!!.getCountById(countId)
 
-        // Display the editable data
+        displayData()
+    }
+    // End of onResume()
+
+    // Display the editable data
+    @SuppressLint("DefaultLocale")
+    fun displayData() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
+            Log.i(TAG, "186, displayData")
+        }
+
         eiw = EditIndividualWidget(this, null)
-        eiw!!.setWidgetLocality1(getString(R.string.locality) + ":")
-        eiw!!.widgetLocality2 = sLocality!!
         eiw!!.setWidgetZCoord1(getString(R.string.zcoord))
-        eiw!!.setWidgetZCoord2(
-            String.format(
-                "%.0f",
-                height
+
+        // Height value from GPS_PROVIDER
+        if (heightNN != 0.0) {
+            // Set string with value from double for heightNN
+            eiw!!.setWidgetZCoord2(
+                String.format(
+                    "%.0f",
+                    heightNN
+                )
             )
-        ) // set string with integer value from double
+        } else { // No height value from NETWORK_PROVIDER
+            // Set "-" as there is no height value
+            eiw!!.setWidgetZCoord2("-")
+        }
         eiw!!.setWidgetStadium1(getString(R.string.stadium) + ":")
         when (indivAttr) {
             1, 2, 3 -> {
@@ -231,22 +239,27 @@ class EditIndividualActivity : AppCompatActivity() {
         eiw!!.setWidgetIndivNote1(getString(R.string.note) + ":")
         eiw!!.widgetIndivNote2 = ""
         eiw!!.setWidgetXCoord1(getString(R.string.xcoord))
-        eiw!!.setWidgetXCoord2(String.format("%.6f", latitude))
+        eiw!!.setWidgetXCoord2(String.format("%.6f", lat))
         eiw!!.setWidgetYCoord1(getString(R.string.ycoord))
-        eiw!!.setWidgetYCoord2(String.format("%.6f", longitude))
+        eiw!!.setWidgetYCoord2(String.format("%.6f", lon))
+        eiw!!.setWidgetLocality1(getString(R.string.locality) + ":")
+
+        if (metaPref)
+            eiw!!.widgetLocality2 = sLocality
+        else
+            eiw!!.widgetLocality2 = "-"
         indivArea!!.addView(eiw)
     }
-    // End of onResume()
+    // End of displayData()
 
     override fun onPause() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "249, onPause")
+            Log.i(TAG, "259, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
-        tempDataSource!!.close()
         countDataSource!!.close()
     }
 
@@ -254,7 +267,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "261, onStop")
+            Log.i(TAG, "270, onStop")
 
         if (buttonSoundPref)
             soundService!!.releaseSoundP()
@@ -268,7 +281,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "275, onDestroy")
+            Log.i(TAG, "284, onDestroy")
     }
 
     private fun saveData(): Boolean {
@@ -277,13 +290,13 @@ class EditIndividualActivity : AppCompatActivity() {
             individualsDataSource!!.createIndividuals(
                 countId,
                 specName,
-                latitude,
-                longitude,
-                height,
-                uncertainty,
+                lat,
+                lon,
+                heightNN,
+                uncert,
                 dateStamp,
                 timeStamp,
-                sLocality,
+                eiw!!.widgetLocality2,
                 code
             )
         )
@@ -293,12 +306,11 @@ class EditIndividualActivity : AppCompatActivity() {
         individuals!!.locality = eiw!!.widgetLocality2
 
         // Uncertainty
-        if (latitude != 0.0) {
-            individuals!!.uncert = uncertainty
+        if (lat != 0.0) {
+            individuals!!.uncert = uncert
         } else {
             individuals!!.uncert = "0"
         }
-        tmp!!.temp_loc = eiw!!.widgetLocality2
 
         // Stadium
         individuals!!.stadium = eiw!!.widgetStadium2
@@ -373,7 +385,7 @@ class EditIndividualActivity : AppCompatActivity() {
                 }
 
                 6 -> {
-                    // Eggs
+                    // Egg
                     counts!!.count_ei += newCount
                     individuals!!.icount = newCount
                     individuals!!.sex = "-"
@@ -398,10 +410,9 @@ class EditIndividualActivity : AppCompatActivity() {
             ).show()
             return false // forces input newCount > 0
         }
-
-        tempDataSource!!.saveTempLoc(tmp!!)
         return true
     }
+    // End of saveData()
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

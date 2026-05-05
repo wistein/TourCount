@@ -70,7 +70,7 @@ nocode,language,de
 07113,Phengaris teleius,Heller Wiesenknopf-Ameisenbläuling
 07114,Phengaris nausithous,Dunkler Wiesenknopf-Ameisenbläuling
 07115,Phengaris alcon,Lungenenzian-Ameisenbläuling
-07116,Phengaris rebeli,Kreuzenzian-Ameisenbläuling
+07116,Phengaris alcon rebeli,Kreuzenzian-Ameisenbläuling
 07127,Plebejus argus,Argus-Bläuling
 07128,Plebejus idas,Idas-Bläuling
 07129,Plebejus argyrognomon,Kronwicken-Bläuling
@@ -139,7 +139,7 @@ nocode,language,de
 07449,Chazara briseis,Berghexe
 07547,Chiasmia clathrata,Klee-Gitterspanner
 07613,Opisthograptis luteolata,Gelbspanner
-07620,Pseudopanth. macularia,Pantherspanner
+07620,Pseudopanthera macularia,Pantherspanner
 07659,Ourapteryx sambucaria,Nachtschwalbenschwanz
 07804,Ematurga atomaria,Heideland-Tagspanner
 07916,Siona lineata,Hartheuspanner
@@ -149,7 +149,7 @@ nocode,language,de
 08289,Camptogram. bilineata,Ockergelber Blattspanner
 08411,Melanthia procellata,Waldreben-Blattspanner
 08631,Odezia atrata,Schwarzspanner
-08967,Callistege mi,Scheck-Tageule
+08967,Euclidia mi,Scheck-Tageule
 08969,Euclidia glyphica,Braune Tageule
 08994,Hypena proboscidalis,Nessel-Schnabeleule
 09051,Macdunnoughia confusa,Schafgarben-Silbereule

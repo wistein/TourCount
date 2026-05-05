@@ -29,7 +29,7 @@ import com.wmstein.tourcount.widgets.EditSpeciesNotesWidget
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-03-20
+ * last edited on 2026-04-19
  */
 class EditSpeciesNotesActivity : AppCompatActivity() {
     private var speciesWidgetArea: LinearLayout? = null

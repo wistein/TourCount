@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml Italian array strings,
-     last edited 2026-03-17 -->
+     last edited 2026-04-29 -->
 
 <resources>
 
@@ -33,6 +33,14 @@
         <item>Spento</item>
         <item>Medio</item>
         <item>Alto</item>
+    </string-array>
+
+    <string-array name="pref_sel_interval_entries">
+        <item>2 sec (&#8793; 2 m a piedi)</item>
+        <item>5 sec (&#8793; 5,5 m a piedi)</item>
+        <item>10 sec (&#8793; 11 m a piedi)</item>
+        <item>15 sec (&#8793; 16 m a piedi)</item>
+        <item>20 sec (&#8793; 22 m a piedi)</item>
     </string-array>
 
 </resources>

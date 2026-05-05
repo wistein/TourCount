@@ -1,7 +1,14 @@
 package com.wmstein.tourcount;
 
+import static com.wmstein.tourcount.TourCountApplication.heightNN;
+import static com.wmstein.tourcount.TourCountApplication.isFirstLoc;
 import static com.wmstein.tourcount.TourCountApplication.isFirstStart;
+import static com.wmstein.tourcount.TourCountApplication.lat;
+import static com.wmstein.tourcount.TourCountApplication.lon;
+import static com.wmstein.tourcount.TourCountApplication.sLocality;
+import static com.wmstein.tourcount.TourCountApplication.uncertainty;
 import static com.wmstein.tourcount.Utils.fromHtml;
+
 import static java.lang.Math.sqrt;
 
 import android.Manifest;
@@ -47,6 +54,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.OutOfQuotaPolicy;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.wmstein.changelog.ChangeLog;
 import com.wmstein.filechooser.AdvFileChooser;
@@ -83,7 +95,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-04-06
+ * last edited on 2026-05-05
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -114,11 +126,13 @@ public class WelcomeActivity
     // Preferences
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private String outPref;
+    private String outPref; // Output sorting
     private boolean buttonSoundPref;
+    private boolean alertSoundPref;
     private boolean storagePermGranted = false;  // Storage permission state
     private boolean fineLocationPermGranted = false; // Foreground location permission state
     private String dataLanguage = "";
+    private boolean metaPref = false;
 
     // DB handling
     private SQLiteDatabase database;
@@ -142,7 +156,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "145, onCreate");
+            Log.i(TAG, "159, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -154,6 +168,7 @@ public class WelcomeActivity
 
         // Initialize sound service
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // Prepare SoundService
+        alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
 
         if (buttonSoundPref) {
             soundService = new SoundService(getApplicationContext());
@@ -230,7 +245,7 @@ public class WelcomeActivity
             editor.commit();
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "233, onCreate, storagePermGranted: " + storagePermGranted);
+            Log.d(TAG, "248, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -328,12 +343,9 @@ public class WelcomeActivity
             public void handleOnBackPressed() {
                 if (doubleBackToExitPressedTwice) {
                     m1Handler.removeCallbacks(r1);
-                    // Clear last locality in temp_loc of table TEMP, otherwise the old
-                    //   locality is shown in the 1. count of a new started tour
-                    clear_loc();
-                    // Stop sound server
+
+                    // Stop button sound
                     if (sndServiceOn) {
-                        locationService.releaseSoundA();
                         soundService.releaseSoundM();
                         soundService.releaseSoundP();
 
@@ -365,7 +377,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "368, onResume");
+            Log.i(TAG, "380, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -374,18 +386,18 @@ public class WelcomeActivity
         outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
         locServiceOn = prefs.getBoolean("loc_srv_on", false);
         sndServiceOn = prefs.getBoolean("snd_srv_on", false);
-        // mail address for OSM query
-        String emailString = prefs.getString("email_String", ""); // for reliable query of Nominatim service
-        // option for OSM reverse geocoding
-        boolean metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        // Mail address for reliable query of Nominatim service
+        String emailString = prefs.getString("email_String", "");
+        // Option for use of Nominatim service for locality data
+        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
         dataLanguage = prefs.getString("pref_sel_data_lang", "");
 
         storagePermGranted = isStoragePermGranted(); // set storagePermGranted from self permission
 
-        if (isFirstStart) {
+        if (isFirstStart && metaPref) {
             // This is to remind a missing email address for Nominatim Reverse Geocoder.
             //   Info about the first GPS lock is handled in LocationService onLocationChanged().
-            if (metaPref && Objects.equals(emailString, "")) {
+            if (Objects.equals(emailString, "")) {
                 mesg = getString(R.string.missingEmail);
                 Toast.makeText(this, // orange
                         fromHtml("<font color='#ff6000'>" + mesg + "</font>"),
@@ -438,10 +450,16 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "441, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "453, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
-        locServiceOn = false;
-        locationDispatcher(0);
+        // Start Location Service and try to read location
+        if (fineLocationPermGranted) {
+            locServiceOn = false;
+            editor.putBoolean("loc_srv_on", false);
+            editor.commit();
+
+            locationDispatcher(1); // Start location service
+        }
     }
     // End of onResume()
 
@@ -453,13 +471,13 @@ public class WelcomeActivity
             storageGranted = Environment.isExternalStorageManager();
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "456, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "474, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "462, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "480, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -474,44 +492,55 @@ public class WelcomeActivity
     // locationDispatcherMode:
     //  0 = start location service just to get a fix as early as possible
     //  2 = end location service for WelcomeActivity
-    public void locationDispatcher(int locationDispatcherMode) {
-        if (fineLocationPermGranted) // current location permission state granted
-        {
+    private void locationDispatcher(int locationDispatcherMode) {
+        if (fineLocationPermGranted) {
             editor = prefs.edit();
-            // Handle action here
             switch (locationDispatcherMode) {
-                case 0 -> {
+                case 1 -> {
                     // Get location data
-                    locationService = new LocationService(getApplicationContext());
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "488, locationDispatcher 0");
+                            Log.i(TAG, "503, locationDispatcher 1");
 
+                        locationService = new LocationService(getApplicationContext());
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         startService(sIntent);
-                        locServiceOn = true;
 
+                        locServiceOn = true;
                         editor.putBoolean("loc_srv_on", true);
                         editor.commit();
+
+                        getLoc();  // Get position
                     }
                 }
                 case 2 -> {
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "502, locationDispatcher 2");
+                            Log.i(TAG, "520, locationDispatcher 2");
 
                         locationService.releaseSoundA();
                         locationService.stopListener();
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
                         stopService(sIntent);
-                        locServiceOn = false;
 
+                        locServiceOn = false;
                         editor.putBoolean("loc_srv_on", false);
                         editor.commit();
                     }
                 }
             }
+        }
+    }
+
+    // Get the location data and on isFirstLoc with Nominatim service
+    @SuppressLint("DefaultLocale")
+    public void getLoc() {
+        if (locationService.canGetLocation()) {
+            locationService.getLongitude();
+            locationService.getLatitude();
+            locationService.getAltitude();
+            locationService.getAccuracy();
         }
     }
 
@@ -636,13 +665,12 @@ public class WelcomeActivity
         } else if (id == R.id.editMeta) {
             // Call EditMetaActivity
             intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
-            // Trick: Pause for 500 msec to store results from RetrieveAddrWorker into DB
+            // Wait for 500 msec to get results from RetrieveAddrWorker
             mHandler.postDelayed(() ->
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
             return true;
         } else if (id == R.id.startCounting) {
             // Call CountingActivity
-            locationDispatcher(2); // Stop location service
             intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
@@ -670,14 +698,53 @@ public class WelcomeActivity
         locServiceOn = prefs.getBoolean("loc_srv_on", false);
         sndServiceOn = prefs.getBoolean("snd_srv_on", false);
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
+        alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
+        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        String emailString = prefs.getString("email_String", "");
 
-        // Stop sound service when denied in settings
+        if (metaPref) {
+            String urlString;
+            if (Objects.equals(emailString, "")) {
+                urlString = "https://nominatim.openstreetmap.org/reverse?email=test@temp.test"
+                        + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1";
+            } else {
+                urlString = "https://nominatim.openstreetmap.org/reverse?email="
+                        + emailString + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1";
+            }
+
+            // Start RetrieveAddrWorker immediately (with setExpedited())
+            WorkRequest retrieveAddrWorkRequest = new OneTimeWorkRequest
+                    .Builder(RetrieveAddrWorker.class)
+                    .setInputData(
+                            new Data.Builder()
+                                    .putString("URL_STRING", urlString)
+                                    .build()
+                    )
+                    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                    .build();
+
+            WorkManager.getInstance(this).enqueue(retrieveAddrWorkRequest);
+        }
+
+        // Set sound service when changed in settings
         if (!buttonSoundPref && sndServiceOn) {
             stopService(sndIntent);
             sndServiceOn = false;
             editor = prefs.edit();
             editor.putBoolean("snd_srv_on", false);
             editor.commit();
+        }
+
+        if (buttonSoundPref) {
+            startService(sndIntent);
+            sndServiceOn = true;
+            editor = prefs.edit();
+            editor.putBoolean("snd_srv_on", true);
+            editor.commit();
+        }
+
+        if (!alertSoundPref && fineLocationPermGranted && locServiceOn) {
+            locationService.stopSoundA();
         }
     }
 
@@ -686,12 +753,10 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "689, onPause");
+            Log.i(TAG, "756, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
-
-        locationDispatcher(2); // Stop location service
 
         prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -701,25 +766,22 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "704, onStop");
+            Log.i(TAG, "769, onStop");
 
         baseLayout.invalidate();
-
-        if (sndServiceOn) {
-            soundService.releaseSoundM();
-            soundService.releaseSoundP();
-        }
-
-        if (locServiceOn) {
-            locationService.releaseSoundA();
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
+        if (locServiceOn) {
+            locationService.releaseSoundA();
+        }
+
         if (sndServiceOn) {
+            soundService.releaseSoundM();
+            soundService.releaseSoundP();
             stopService(sndIntent);
             sndServiceOn = false;
             editor = prefs.edit();
@@ -728,12 +790,14 @@ public class WelcomeActivity
         }
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "731, onDestroy, sndServiceOn: " + sndServiceOn);
+            Log.i(TAG, "793, onDestroy, sndServiceOn: " + sndServiceOn);
+
+        if (fineLocationPermGranted)
+            locationDispatcher(2); // Stop location service
     }
 
     // Handle button click "Counting" here
     public void startCounting(View view) {
-        locationDispatcher(2); // Stop location service
         Intent intent;
         intent = new Intent(WelcomeActivity.this, CountingActivity.class);
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -742,7 +806,7 @@ public class WelcomeActivity
     // Handle button click "Prepare Inspection" here
     public void editMeta(View view) {
         Intent intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
-        // Trick: Pause for 500 msec to store results from RetrieveAddrWorker into DB
+        // Wait for 500 msec to get results from RetrieveAddrWorker
         mHandler.postDelayed(() ->
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
     }
@@ -866,7 +930,7 @@ public class WelcomeActivity
                                     hasDataLang = false;
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "869, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "933, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -880,7 +944,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "883, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "947, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1023,11 +1087,15 @@ public class WelcomeActivity
         sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
         database.execSQL(sql);
 
-        sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-                + DbHelper.T_TEMP_CNT + " = 0;";
-        database.execSQL(sql);
-
         dbHelper.close();
+
+        lat = 0.0;
+        lon = 0.0;
+        heightNN = 0.0;
+        uncertainty = 0.0;
+        sLocality = "";
+        isFirstLoc = true;
+        isFirstStart = true;
 
         editor = prefs.edit();
         editor.putInt("item_Position", 0);
@@ -1162,14 +1230,15 @@ public class WelcomeActivity
                 // Save current db as backup db tmpFile
                 copy(inFile, tmpFile);
 
-                // Clear DB values for basic DB
-                clearDBValues();
+                // Clear DB and location values for basic DB
+                boolean r_ok = clearDBValues();
 
                 // Write Basic DB
-                copy(inFile, outFile);
-
-                // Restore actual db from tmpFile
-                copy(tmpFile, inFile);
+                if (r_ok) {
+                    copy(inFile, outFile);
+                    // Restore actual db from tmpFile
+                    copy(tmpFile, inFile);
+                }
 
                 // Delete backup db
                 boolean d0 = tmpFile.delete();
@@ -1218,27 +1287,27 @@ public class WelcomeActivity
 
         boolean engl = false;
         boolean hasDate = true;
+        String dbDate = "", dbTime;
+        String dbDateEN, dbDateEU;
 
         // Get year from date
         if (!Objects.equals(date, "")) {
             // "-" at position 4 of the date means EN
             if (Objects.equals(date.substring(4, 5), "-"))
                 engl = true;
-        } else
-            hasDate = false;
-
-        // Create date for filename as YYYYMMDD from any format
-        String dbDate = "", dbTime;
-        String dbDateEN, dbDateEU;
-
-        if (!date.isEmpty()) {
+            // Create date for filename as YYYYMMDD from any format
             dbDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
             dbDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
-            if (engl)
-                dbDate = dbDateEN;
-            else
-                dbDate = dbDateEU;
+        } else {
+            dbDateEU = "";
+            dbDateEN = "";
+            hasDate = false;
         }
+
+        if (engl)
+            dbDate = dbDateEN;
+        else
+            dbDate = dbDateEU;
 
         if (!Objects.equals(start_tm, "")) {
             dbTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
@@ -1339,21 +1408,23 @@ public class WelcomeActivity
 
         boolean engl = false;
         boolean hasDate = true;
+        String csvDate, csvTime;
+        String csvDateEU, csvDateEN;
 
         // Get year from date
         if (!Objects.equals(date, "")) {
             // "-" at position 4 of the date means EN
             if (Objects.equals(date.substring(4, 5), "-"))
                 engl = true;
-        } else
+            // Create date for filename as YYYYMMDD from any format
+            csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
+            csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+        } else {
             hasDate = false;
+            csvDateEN = "";
+            csvDateEU = "";
+        }
 
-        // Create date for filename as YYYYMMDD from any format
-        String csvDate, csvTime;
-        String csvDateEU, csvDateEN;
-
-        csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
-        csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
         if (engl) {
             csvDate = csvDateEN;
         } else {
@@ -1430,12 +1501,23 @@ public class WelcomeActivity
 
                 sectName = "\"" + section.name + "\"";
                 sectNotes = "\"" + section.notes + "\"";
-                country = "\"" + section.country + "\"";
-                b_state = "\"" + section.b_state + "\"";
-                plz = "\"" + section.plz + "\"";
-                city = "\"" + section.city + "\"";
-                place = "\"" + section.place + "\"";
-                locality = "\"" + section.st_locality + "\"";
+
+                if (metaPref) {
+                    country = "\"" + section.country + "\"";
+                    b_state = "\"" + section.b_state + "\"";
+                    plz = "\"" + section.plz + "\"";
+                    city = "\"" + section.city + "\"";
+                    place = "\"" + section.place + "\"";
+                    locality = "\"" + section.st_locality + "\"";
+                }
+                else {
+                    country = getString(R.string.not_available);
+                    b_state = getString(R.string.not_available);
+                    plz = getString(R.string.not_available);
+                    city = getString(R.string.not_available);
+                    place = getString(R.string.not_available);
+                    locality = getString(R.string.not_available);
+                }
 
                 headDataSource.open();
                 head = headDataSource.getHead();
@@ -1475,7 +1557,7 @@ public class WelcomeActivity
                         };
                 csvWrite.writeNext(arrLocHead);
 
-                // Set location dataline
+                // Set location dataline with data of 1. location
                 String[] arrLocation =
                         {
                                 country,
@@ -1769,8 +1851,7 @@ public class WelcomeActivity
                                 sumP,
                                 sumL,
                                 sumE,
-                                getString(R.string.sum_total),
-                                Integer.toString(sum)
+                                getString(R.string.sum_total) + " " + sum
                         };
                 csvWrite.writeNext(arrSum);
                 // End of Species table
@@ -2161,16 +2242,7 @@ public class WelcomeActivity
         alert.show();
     }
 
-    // Clear temp_loc in table tmp
-    private void clear_loc() {
-        dbHelper = new DbHelper(this);
-        database = dbHelper.getWritableDatabase();
-        String sql = "UPDATE tmp SET temp_loc = '';";
-        database.execSQL(sql);
-        dbHelper.close();
-    }
-
-    // Clear DB values for basic DB
+    // Clear DB and location values for basic DB
     private boolean clearDBValues() {
         dbHelper = new DbHelper(this);
         database = dbHelper.getWritableDatabase();
@@ -2209,12 +2281,6 @@ public class WelcomeActivity
 
             sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
             database.execSQL(sql);
-
-            sql = "UPDATE " + DbHelper.TEMP_TABLE + " SET "
-                    + DbHelper.T_TEMP_LOC + " = '', "
-                    + DbHelper.T_TEMP_CNT + " = 0;";
-            database.execSQL(sql);
-
         } catch (Exception e) {
             mesg = getString(R.string.resetFail);
             Toast.makeText(this,
@@ -2224,6 +2290,15 @@ public class WelcomeActivity
             r_ok = false;
         }
         dbHelper.close();
+
+        lat = 0.0;
+        lon = 0.0;
+        heightNN = 0.0;
+        uncertainty = 0.0;
+        sLocality = "";
+        isFirstLoc = true;
+        isFirstStart = true;
+
         return r_ok;
     }
     // End of resetToBasisDb()

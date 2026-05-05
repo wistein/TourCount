@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -23,7 +24,7 @@ import androidx.fragment.app.DialogFragment
  * Adopted for TourCount by wmstein on 2018-06-20,
  * last edited in java on 2020-04-17,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-03-20
+ * last edited on 2026-04-19
  */
 class PermissionsStorageDialogFragment : DialogFragment() {
     private var context: Context? = null
@@ -38,7 +39,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "41, onCreate")
+            Log.i(TAG, "42, onCreate")
 
         setStyle(STYLE_NO_TITLE, R.style.PermissionsDialogFragmentStyle)
         isCancelable = false
@@ -47,12 +48,12 @@ class PermissionsStorageDialogFragment : DialogFragment() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) { //  (Android <11)
             val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "50, Manifest storage permission <11: $permission")
+                Log.i(TAG, "51, Manifest storage permission <11: $permission")
             permissionLauncherStorage.launch(permission)
         } else { // Android >= 11
             val permission = Manifest.permission.MANAGE_EXTERNAL_STORAGE
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "55, Manifest storage permission >10: $permission")
+                Log.i(TAG, "56, Manifest storage permission >10: $permission")
             permissionLauncherStorage.launch(permission)
         }
     }
@@ -77,7 +78,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     // Query and set missing external storage permission
     private fun showAppSettingsStorageDialog() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "79, External storage dialog")
+            Log.d(TAG, "81, External storage dialog")
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_storage_title))
             .setMessage(getString(R.string.dialog_storage_message))
@@ -100,7 +101,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     private fun showAppSettingsManageStorageDialog() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "102, Manage storage dialog")
+                Log.d(TAG, "104, Manage storage dialog")
 
             val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
             val uri = Uri.fromParts("package", "com.wmstein.tourcount", null)
@@ -114,7 +115,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
         super.onDetach()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "116, onDetach")
+            Log.i(TAG, "118, onDetach")
         context = null
     }
 

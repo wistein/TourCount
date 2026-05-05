@@ -15,6 +15,8 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import com.wmstein.tourcount.database.Head
+import com.wmstein.tourcount.database.HeadDataSource
 
 /**********************************************************
  * Set the Settings parameters for TourCount
@@ -23,11 +25,12 @@ import androidx.core.view.updateLayoutParams
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2026-03-21
+ * last edited on 2026-04-15
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
     private var prefs = TourCountApplication.getPrefs()
+    private var headDataSource: HeadDataSource? = null
 
     @SuppressLint("CommitPrefEdits", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +86,16 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+
+        val dataLanguage = prefs.getString("pref_sel_data_lang", "")
+
+        // Set up the data source
+        headDataSource = HeadDataSource(applicationContext)
+        headDataSource!!.open()
+        val head: Head = headDataSource!!.head
+        head.datalanguage = dataLanguage
+        headDataSource!!.saveHead(head)
+        headDataSource!!.close()
 
         var ringtone: String
 

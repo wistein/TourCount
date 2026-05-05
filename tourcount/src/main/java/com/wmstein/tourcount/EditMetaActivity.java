@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import static com.wmstein.tourcount.TourCountApplication.sLocality;
 import static com.wmstein.tourcount.Utils.fromHtml;
 
 import android.annotation.SuppressLint;
@@ -40,11 +41,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-/**********************************************************
- * EditMetaActivity collects meta info for the current tour
+/*********************************************************************************
+ * EditMetaActivity collects, partly edits and shows metadata for the current tour
  * <p>
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-03-04
+ * last edit in Java on 2026-04-29
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -64,8 +65,8 @@ public class EditMetaActivity extends AppCompatActivity
     private LinearLayout head_area;
     private TextView sDate, sTime, eTime;
 
-    private EditMetaTitleWidget ett;
-    private EditMetaLocationWidget elw;
+    private EditMetaTitleWidget emtw;
+    private EditMetaLocationWidget emlw;
     private EditMetaWidget emw;
 
     @Override
@@ -74,7 +75,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "77, onCreate");
+            Log.i(TAG, "78, onCreate");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -142,7 +143,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "144, onResume");
+            Log.i(TAG, "146, onResume");
 
         // Setup data sources
         headDataSource.open();
@@ -157,38 +158,41 @@ public class EditMetaActivity extends AppCompatActivity
         section = sectionDataSource.getSection();
 
         // Display editable list title, observer name and notes by EditMetaTitleWidget
-        ett = new EditMetaTitleWidget(this, null);
-        ett.setWidgetTitle(getString(R.string.titleEdit));
-        ett.setWidgetName(section.name);
-        ett.setWidgetOName1(getString(R.string.inspector));
-        ett.setWidgetOName2(head.observer);
-        ett.setWidgetONotes1(getString(R.string.titleTourNotes));
-        ett.setWidgetONotes2(section.notes);
-        head_area.addView(ett);
+        emtw = new EditMetaTitleWidget(this, null);
+        emtw.setWidgetTitle(getString(R.string.titleEdit));
+        emtw.setWidgetOName1(getString(R.string.inspector));
+        emtw.setWidgetONotes1(getString(R.string.titleTourNotes));
+
+        emtw.setWidgetName(section.name);
+        emtw.setWidgetOName2(head.observer);
+        emtw.setWidgetONotes2(section.notes);
+        head_area.addView(emtw);
 
         // Display the editable location data by EditMetaLocationWidget
-        elw = new EditMetaLocationWidget(this, null);
-        elw.setWidgetCo1(getString(R.string.country));
-        elw.setWidgetCo2(section.country);
-        elw.setWidgetState1(getString(R.string.bstate));
-        elw.setWidgetState2(section.b_state);
-        elw.setWidgetPlz1(getString(R.string.plz));
-        elw.setWidgetPlz2(section.plz);
-        elw.setWidgetCity1(getString(R.string.city));
-        elw.setWidgetCity2(section.city);
-        elw.setWidgetPlace1(getString(R.string.place));
-        elw.setWidgetPlace2(section.place);
-        elw.setWidgetLocality1(getString(R.string.slocality));
-        elw.setWidgetLocality2(section.st_locality);
-        head_area.addView(elw);
+        emlw = new EditMetaLocationWidget(this, null);
+        emlw.setWidgetCo1(getString(R.string.country));
+        emlw.setWidgetState1(getString(R.string.bstate));
+        emlw.setWidgetPlz1(getString(R.string.plz));
+        emlw.setWidgetCity1(getString(R.string.city));
+        emlw.setWidgetPlace1(getString(R.string.place));
+        emlw.setWidgetLocality1(getString(R.string.slocality));
+
+        emlw.setWidgetCo2(section.country);
+        emlw.setWidgetState2(section.b_state);
+        emlw.setWidgetPlz2(section.plz);
+        emlw.setWidgetCity2(section.city);
+        emlw.setWidgetPlace2(section.place);
+        if (Objects.equals(emlw.getWidgetLocality2(), "")) emlw.setWidgetLocality2(sLocality);
+        head_area.addView(emlw);
 
         // Display the editable metadata by EditMetaWidget
         emw = new EditMetaWidget(this, null);
         emw.setWidgetDate1(getString(R.string.date));
-        emw.setWidgetDate2(section.date);
         emw.setWidgetStartTm1(getString(R.string.starttm));
-        emw.setWidgetStartTm2(section.start_tm);
         emw.setWidgetEndTm1(getString(R.string.endtm));
+
+        emw.setWidgetDate2(section.date);
+        emw.setWidgetStartTm2(section.start_tm);
         emw.setWidgetEndTm2(section.end_tm);
 
         emw.setWidgetTemp1(getString(R.string.temperature));
@@ -211,7 +215,7 @@ public class EditMetaActivity extends AppCompatActivity
         }
         else
         {
-            ett.requestFocus();
+            emtw.requestFocus();
         }
 
         pdate = Calendar.getInstance();
@@ -318,14 +322,14 @@ public class EditMetaActivity extends AppCompatActivity
         if (id == android.R.id.home) // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "321, MenuItem home");
+                Log.d(TAG, "325, MenuItem home");
             finish();
             return true;
         }
         else if (id == R.id.menuSaveExit)
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "328, MenuItem saveExit");
+                Log.d(TAG, "332, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;
@@ -339,7 +343,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "342, onPause");
+            Log.i(TAG, "346, onPause");
 
         headDataSource.close();
         sectionDataSource.close();
@@ -361,7 +365,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "364, onStop");
+            Log.i(TAG, "368, onStop");
 
         head_area = null;
     }
@@ -372,33 +376,35 @@ public class EditMetaActivity extends AppCompatActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "375, onDestroy");
+            Log.i(TAG, "379, onDestroy");
     }
 
     private boolean saveData()
     {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "381, saveData");
+            Log.i(TAG, "385, saveData");
 
         // Save head data
-        head.observer = ett.getWidgetOName2();
+        head.observer = emtw.getWidgetOName2();
         headDataSource.saveHead(head);
 
         String mesg;
 
         // Save section data
-        section.name = ett.getWidgetName();
-        section.notes = ett.getWidgetONotes2();
+        section.name = emtw.getWidgetName();
+        section.notes = emtw.getWidgetONotes2();
 
-        section.country = elw.getWidgetCo2();
-        section.b_state = elw.getWidgetState2();
-        section.city = elw.getWidgetCity2();
-        section.place = elw.getWidgetPlace2();
-        section.st_locality = elw.getWidgetLocality2();
-        section.plz = elw.getWidgetPlz2();
+        section.country = emlw.getWidgetCo2();
+        section.b_state = emlw.getWidgetState2();
+        section.city = emlw.getWidgetCity2();
+        section.place = emlw.getWidgetPlace2();
+        section.st_locality = emlw.getWidgetLocality2();
+        section.plz = emlw.getWidgetPlz2();
 
         section.tmp = emw.getWidgetTemp2();
         section.tmp_end = emw.getWidgetTemp3();
+
+        // Check plausi for temperature
         if (section.tmp > 50 || section.tmp_end > 50 || section.tmp < 0 || section.tmp_end < 0)
         {
             mesg = getString(R.string.valTemp);
@@ -410,6 +416,8 @@ public class EditMetaActivity extends AppCompatActivity
 
         section.wind = emw.getWidgetWind2();
         section.wind_end = emw.getWidgetWind3();
+
+        // Check plausi for wind
         if (section.wind > 4 || section.wind_end > 4 || section.wind < 0 || section.wind_end < 0)
         {
             mesg = getString(R.string.valWind);
@@ -421,6 +429,8 @@ public class EditMetaActivity extends AppCompatActivity
 
         section.clouds = emw.getWidgetClouds2();
         section.clouds_end = emw.getWidgetClouds3();
+
+        // Check plausi for clouds
         if (section.clouds > 100 || section.clouds_end > 100 || section.clouds < 0 || section.clouds_end < 0)
         {
             mesg = getString(R.string.valClouds);
