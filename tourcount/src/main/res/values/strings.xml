@@ -117,7 +117,7 @@
     <string name="zlNotes">Tour Notes:</string>
 
     <!-- EditIndividualActivity -->
-    <string name="count1">No.</string>
+    <string name="count1">Count</string>
     <string name="indivDel">Deleted: Individual with ID:</string>
     <string name="locality">Locality</string>
     <string name="note">Individual Notes</string>

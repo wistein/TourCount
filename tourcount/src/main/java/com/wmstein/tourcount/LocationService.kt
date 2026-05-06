@@ -17,7 +17,9 @@ import android.widget.Toast
 
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
+import androidx.work.Constraints
 import androidx.work.Data
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
@@ -27,6 +29,7 @@ import com.wmstein.tourcount.TourCountApplication.Companion.heightNN
 import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLoc
 import com.wmstein.tourcount.TourCountApplication.Companion.lat
 import com.wmstein.tourcount.TourCountApplication.Companion.lon
+import com.wmstein.tourcount.TourCountApplication.Companion.rAddr
 import com.wmstein.tourcount.TourCountApplication.Companion.uncertainty
 import com.wmstein.tourcount.Utils.fromHtml
 
@@ -75,9 +78,9 @@ open class LocationService : Service, LocationListener {
         getLocation()
     }
 
-    fun getLocation() {
+    private fun getLocation() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "80, getLocation")
+            Log.i(TAG, "82, getLocation")
 
         audioAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
@@ -129,22 +132,8 @@ open class LocationService : Service, LocationListener {
                         selTimeInterval,
                         minDistanceM.toFloat(), this
                     )
-
-                    if (locationManager != null) {
-                        location =
-                            locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                        if (location != null) {
-                            lat = location!!.latitude
-                            lon = location!!.longitude
-                            // set heightNN
-                            heightGPS = location!!.altitude
-                            if (heightGPS != 0.0)
-                                correctHeight(lat, lon, heightGPS)
-                            uncertainty = location!!.accuracy.toDouble()
-                            exactLocation = true
-                        }
-                    }
                 }
+                exactLocation = true
             }
 
             if (!exactLocation) {
@@ -160,24 +149,115 @@ open class LocationService : Service, LocationListener {
                             selTimeInterval,
                             minDistanceM.toFloat(), this
                         )
-
-                        if (locationManager != null) {
-                            location =
-                                locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                            if (location != null) {
-                                lat = location!!.latitude
-                                lon = location!!.longitude
-                                heightNN = 0.0
-                                uncertainty = location!!.accuracy.toDouble() // 200
-                                exactLocation = false
-                            }
-                        }
                     }
+                    exactLocation = false
                 }
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "177, Error in getLocation: $e")
+                Log.e(TAG, "157, Error in getLocation: $e")
+        }
+    }
+
+    // Get locality info when location has changed
+    override fun onLocationChanged(location: Location) {
+        getGPSPosition()
+    }
+
+    private fun getGPSPosition() {
+        if (ActivityCompat.checkSelfPermission(
+                mContext!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            if (locationManager != null) {
+                if (exactLocation) {
+                    location =
+                        locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    if (location != null) {
+                        lat = location!!.latitude
+                        lon = location!!.longitude
+                        // set heightNN
+                        heightGPS = location!!.altitude
+                        if (heightGPS != 0.0)
+                            correctHeight(lat, lon, heightGPS)
+                        uncertainty = location!!.accuracy.toDouble()
+                    }
+                } else {
+                    location =
+                        locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    if (location != null) {
+                        lat = location!!.latitude
+                        lon = location!!.longitude
+                        heightNN = 0.0
+                        uncertainty = location!!.accuracy.toDouble() // 200
+                    }
+                }
+            }
+        }
+
+        if (isFirstLoc && lat != 0.0) {
+            soundAlertSound()
+
+            // European fauna area defined as inside the rectangle with
+            //   latitude:   27.6 < lat < 71.2
+            //   longitude: -31.3 < lon < 50.8
+            var mesg: String
+            if ((27.6 < lat && lat < 71.2) && (-31.3 < lon && lon < 50.8)) {
+                mesg = mContext!!.getString(R.string.newLock) // in green
+                Toast.makeText( // bright green
+                    mContext,
+                    fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                mesg = mContext!!.getString(R.string.outsideEurope) // in blue
+                Toast.makeText( // orange
+                    mContext,
+                    fromHtml("<font color='#ff6000'>$mesg</font>"),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            isFirstLoc = false
+
+            // Get location data from Nominatim
+            if (metaPref && !rAddr)
+                getAddressL()
+        }
+    }
+
+    // Get the address data by reverse geocoding from Nominatim service
+    private fun getAddressL() {
+        if (lat != 0.0 || lon != 0.0) {
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG,"232, getAddressL, lat = $lat")
+
+            val urlString: String?
+            if (emailString == "") {
+                urlString = ("https://nominatim.openstreetmap.org/reverse?email=test@temp.test"
+                        + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
+            } else {
+                urlString = ("https://nominatim.openstreetmap.org/reverse?email=" + emailString
+                        + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
+            }
+
+            // Start RetrieveAddrWorker immediately (with setExpedited())
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            // Start RetrieveAddrWorker immediately (with setExpedited())
+            val retrieveAddrWorkRequest =
+                OneTimeWorkRequestBuilder<RetrieveAddrWorker>()
+                    .setConstraints(constraints)
+                    .setInputData(
+                        Data.Builder()
+                            .putString("URL_STRING", urlString)
+                            .build()
+                    )
+                    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                    .build()
+            WorkManager.getInstance(mContext!!).enqueue(retrieveAddrWorkRequest)
         }
     }
 
@@ -211,11 +291,11 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "214, StopListener: Stop GPS service.")
+                    Log.i(TAG, "294, StopListener: Stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "218, Error in StopListener: $e")
+                Log.e(TAG, "298, Error in StopListener: $e")
         }
 
         if (alertSoundPref) {
@@ -227,6 +307,10 @@ open class LocationService : Service, LocationListener {
                 rToneA = null
             }
         }
+    }
+
+    fun canGetLocation(): Boolean {
+        return this.canGetLocation
     }
 
     fun getLongitude() {
@@ -255,51 +339,8 @@ open class LocationService : Service, LocationListener {
         }
     }
 
-    fun canGetLocation(): Boolean {
-        return this.canGetLocation
-    }
-
     override fun onBind(intent: Intent): IBinder? {
         return null
-    }
-
-    // Get locality info on first lock
-    override fun onLocationChanged(location: Location) {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "269, onLocationChanged")
-        getLatitude()
-        getLongitude()
-        getAltitude()
-        getAccuracy()
-
-        if (isFirstLoc && lat != 0.0) {
-            soundAlertSound()
-
-            // European fauna area defined as inside the rectangle with
-            //   latitude:   27.6 < lat < 71.2
-            //   longitude: -31.3 < lon < 50.8
-            var mesg: String
-            if ((27.6 < lat && lat < 71.2) && (-31.3 < lon && lon < 50.8)) {
-                mesg = mContext!!.getString(R.string.newLock) // in green
-                Toast.makeText( // bright green
-                    mContext,
-                    fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                mesg = mContext!!.getString(R.string.outsideEurope) // in blue
-                Toast.makeText( // orange
-                    mContext,
-                    fromHtml("<font color='#ff6000'>$mesg</font>"),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            isFirstLoc = false
-        }
-
-        // Get location data from Nominatim
-        if (metaPref)
-            getAddressL()
     }
 
     override fun onProviderEnabled(s: String) {
@@ -308,36 +349,6 @@ open class LocationService : Service, LocationListener {
 
     override fun onProviderDisabled(s: String) {
         // do nothing
-    }
-
-    // Get the address data by reverse geocoding from Nominatim service
-    private fun getAddressL() {
-        if (lat != 0.0 || lon != 0.0) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG,"317, getAddressL, lat = $lat")
-            val urlString: String?
-            if (emailString == "") {
-                urlString = ("https://nominatim.openstreetmap.org/reverse?" +
-                        "email=test@temp.test" + "&format=xml&lat="
-                        + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
-            } else {
-                urlString = ("https://nominatim.openstreetmap.org/reverse?" +
-                        "email=" + emailString + "&format=xml&lat="
-                        + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
-            }
-
-            // Start RetrieveAddrWorker immediately (with setExpedited())
-            val retrieveAddrWorkRequest =
-                OneTimeWorkRequestBuilder<RetrieveAddrWorker>()
-                    .setInputData(
-                        Data.Builder()
-                            .putString("URL_STRING", urlString)
-                            .build()
-                    )
-                    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                    .build()
-            WorkManager.getInstance(mContext!!).enqueue(retrieveAddrWorkRequest)
-        }
     }
 
     private fun soundAlertSound() {
@@ -376,13 +387,15 @@ open class LocationService : Service, LocationListener {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "379, onDestroy")
+            Log.i(TAG, "390, onDestroy")
 
         if (alertSoundPref && rToneA != null) {
             rToneA!!.reset()
             rToneA!!.release()
             rToneA = null
         }
+
+        WorkManager.getInstance(mContext!!).cancelAllWork()
         super.onDestroy()
     }
 

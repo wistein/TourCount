@@ -102,7 +102,7 @@
     <string name="zlNotes">Nota del tour:</string>
 
     <!-- EditIndividualActivity -->
-    <string name="count1">N.º</string>
+    <string name="count1">Núm.</string>
     <string name="indivDel">Eliminado: Individuo con ID:</string>
     <string name="locality">Localidad</string>
     <string name="note">Nota al individuo</string>

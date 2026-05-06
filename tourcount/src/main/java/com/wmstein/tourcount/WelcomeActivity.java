@@ -54,11 +54,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.OutOfQuotaPolicy;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.wmstein.changelog.ChangeLog;
 import com.wmstein.filechooser.AdvFileChooser;
@@ -95,7 +90,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-05-05
+ * last edited on 2026-05-06
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -156,7 +151,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "159, onCreate");
+            Log.i(TAG, "154, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -245,7 +240,7 @@ public class WelcomeActivity
             editor.commit();
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "248, onCreate, storagePermGranted: " + storagePermGranted);
+            Log.d(TAG, "243, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -377,7 +372,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "380, onResume");
+            Log.i(TAG, "375, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -450,7 +445,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "453, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "448, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
@@ -471,13 +466,13 @@ public class WelcomeActivity
             storageGranted = Environment.isExternalStorageManager();
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "474, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "469, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "480, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "475, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -500,7 +495,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "503, locationDispatcher 1");
+                            Log.i(TAG, "498, locationDispatcher 1");
 
                         locationService = new LocationService(getApplicationContext());
                         Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -517,7 +512,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "520, locationDispatcher 2");
+                            Log.i(TAG, "515, locationDispatcher 2");
 
                         locationService.releaseSoundA();
                         locationService.stopListener();
@@ -699,32 +694,6 @@ public class WelcomeActivity
         sndServiceOn = prefs.getBoolean("snd_srv_on", false);
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
-        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
-        String emailString = prefs.getString("email_String", "");
-
-        if (metaPref) {
-            String urlString;
-            if (Objects.equals(emailString, "")) {
-                urlString = "https://nominatim.openstreetmap.org/reverse?email=test@temp.test"
-                        + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1";
-            } else {
-                urlString = "https://nominatim.openstreetmap.org/reverse?email="
-                        + emailString + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1";
-            }
-
-            // Start RetrieveAddrWorker immediately (with setExpedited())
-            WorkRequest retrieveAddrWorkRequest = new OneTimeWorkRequest
-                    .Builder(RetrieveAddrWorker.class)
-                    .setInputData(
-                            new Data.Builder()
-                                    .putString("URL_STRING", urlString)
-                                    .build()
-                    )
-                    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                    .build();
-
-            WorkManager.getInstance(this).enqueue(retrieveAddrWorkRequest);
-        }
 
         // Set sound service when changed in settings
         if (!buttonSoundPref && sndServiceOn) {
@@ -735,7 +704,7 @@ public class WelcomeActivity
             editor.commit();
         }
 
-        if (buttonSoundPref) {
+        if (buttonSoundPref && !sndServiceOn) {
             startService(sndIntent);
             sndServiceOn = true;
             editor = prefs.edit();
@@ -753,7 +722,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "756, onPause");
+            Log.i(TAG, "725, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -766,7 +735,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "769, onStop");
+            Log.i(TAG, "738, onStop");
 
         baseLayout.invalidate();
     }
@@ -790,7 +759,7 @@ public class WelcomeActivity
         }
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "793, onDestroy, sndServiceOn: " + sndServiceOn);
+            Log.i(TAG, "762, onDestroy, sndServiceOn: " + sndServiceOn);
 
         if (fineLocationPermGranted)
             locationDispatcher(2); // Stop location service
@@ -930,7 +899,7 @@ public class WelcomeActivity
                                     hasDataLang = false;
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "933, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "902, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -944,7 +913,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "947, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "916, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1287,7 +1256,7 @@ public class WelcomeActivity
 
         boolean engl = false;
         boolean hasDate = true;
-        String dbDate = "", dbTime;
+        String dbDate, dbTime;
         String dbDateEN, dbDateEU;
 
         // Get year from date

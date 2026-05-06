@@ -1,9 +1,7 @@
 # TourCount
-
 TourCount is an Android app that supports species-specific and individually localized registering of butterflies on walks.
 
 ### Features
-
 - Data recording is organized for a tour in nature with its expected butterfly species.
  That means, you will use a fresh database instance per tour by clearing the current database or importing a prepared regional basic database.
 - The app comes with a prepared basic database with the most common species in Europe as a starting point.
@@ -64,7 +62,7 @@ the Tag with the highest Branch number n.n.n. Then get the file tourcount-releas
 The latest development version of 'tourcount-release_nnn.apk' is also provided in the GitHub 
 repository under the master branch https://github.com/wistein/TourCount/tree/master/apk.
 
-### Licenses
+#### Licenses
 
 Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 

@@ -2,11 +2,15 @@ package com.wmstein.tourcount
 
 import android.content.Context
 import android.util.Log
+
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+
+import com.wmstein.tourcount.TourCountApplication.Companion.rAddr
 import com.wmstein.tourcount.TourCountApplication.Companion.sLocality
 import com.wmstein.tourcount.database.Section
 import com.wmstein.tourcount.database.SectionDataSource
+
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -19,7 +23,7 @@ import javax.net.ssl.HttpsURLConnection
  * Created by wmstein on 2018-03-10,
  * last modification in Java on 2023-05-30,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-05
+ * last edited on 2026-05-06
  */
 class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
     Worker(context, parameters) {
@@ -30,18 +34,18 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
         val sb = StringBuilder()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "33, doWork")
+            Log.i(TAG, "37, doWork")
 
         // Get parameters from calling Activity
         val urlString = inputData.getString("URL_STRING") ?: return Result.failure()
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "38, urlString: $urlString")
+            Log.i(TAG, "42, urlString: $urlString")
 
         // Get app version number for User-Agent (requested parameter for Nominatim service)
         val lastVersion = prefs.getString("PREFS_VERSION_KEY", "")
         val userAgent = "TourCount $lastVersion"
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "44, User-Agent: $userAgent")
+            Log.i(TAG, "48, User-Agent: $userAgent")
 
         // Prepare request for Nominatim Reverse Geocoder of OpenStreetMap
         val url = URL(urlString)
@@ -61,7 +65,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             if (status != HttpsURLConnection.HTTP_OK)
             {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "64, Nominatim status: $status")
+                    Log.i(TAG, "68, Nominatim status: $status")
 
                 urlConnection.disconnect()
                 return Result.failure()
@@ -70,7 +74,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             // Get the XML from input stream of Nominatim
             val iStream = urlConnection.inputStream
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "73, iStream: $iStream")
+                Log.i(TAG, "77 iStream: $iStream")
 
             val reader = BufferedReader(InputStreamReader(iStream))
             var line: String? = ""
@@ -80,7 +84,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "83, Problem converting Stream to String: $e")
+                    Log.e(TAG, "87, Problem converting Stream to String: $e")
             } finally {
                 reader.close()
                 iStream.close()
@@ -88,7 +92,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
         } catch (e: IOException) {
             // SocketTimeoutException without email
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "91, Problem with internet address handling: $e")
+                Log.e(TAG, "95, Problem with internet address handling: $e")
         } finally {
             urlConnection.disconnect()
         }
@@ -109,7 +113,7 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             var send = xmlString.indexOf("</addressparts>")
             xmlString = xmlString.substring(sstart, send)
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "112, <addressparts>: $xmlString")
+                Log.i(TAG, "116, <addressparts>: $xmlString")
 
             val locality = StringBuilder() // quarter, road or street
             val plz = StringBuilder()      // postal code
@@ -241,8 +245,9 @@ class RetrieveAddrWorker(context: Context, parameters: WorkerParameters) :
             sectionDataSource.close()
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "244, Result.success")
+            Log.i(TAG, "248, Result.success")
 
+        rAddr = true
         return Result.success()
     }
 
