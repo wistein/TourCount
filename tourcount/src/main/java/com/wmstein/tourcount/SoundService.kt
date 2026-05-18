@@ -47,7 +47,7 @@ class SoundService : Service {
 
         audioAttributionContext = if (Build.VERSION.SDK_INT >= 30)
             mContext!!.createAttributionContext("ringSound")
-        else mContext
+        else mContext!!
 
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false) // make button sound
         buttonSoundMinus = prefs.getString("button_sound_minus", null).toString() // use deeper button sound

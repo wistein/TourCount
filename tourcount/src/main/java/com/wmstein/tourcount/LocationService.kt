@@ -64,7 +64,7 @@ open class LocationService : Service, LocationListener {
         locationAttributionContext =
             if (Build.VERSION.SDK_INT >= 30)
                 mContext!!.createAttributionContext("locationCheck")
-            else mContext
+            else mContext!!
 
         val prefs = TourCountApplication.getPrefs()
         selTimeInterval = prefs.getString("pref_time_interval", "5000")!!.toLong()
@@ -85,7 +85,7 @@ open class LocationService : Service, LocationListener {
             } else {
                 val mesg = getString(R.string.no_provider)
                 Toast.makeText(
-                    mContext,
+                    mContext!!,
                     fromHtml("<font color='red'><b>$mesg</b></font>"),
                     Toast.LENGTH_LONG
                 ).show()
