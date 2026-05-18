@@ -643,7 +643,7 @@ public class CountingActivity
                     count = countDataSource.getCountById(iid);
                     countingScreen(count);
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.d(TAG, "646, SpinnerListener, count id: "
+                        Log.i(TAG, "646, SpinnerListener, count id: "
                                 + count.id + ", code: " + count.code + ", name: " + count.name);
                 } catch (Exception e) {
                     // Exception may occur when permissions are changed while activity is paused

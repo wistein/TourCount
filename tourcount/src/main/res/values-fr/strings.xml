@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-04-15 -->
+     last edited on 2026-05-11 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Préférences</string>
-    <string name="newLock">GPS a la position !</string>
-    <string name="outsideEurope">GPS a la position, mais elle se trouve en dehors de la zone faunique européenne.</string>
+    <string name="newLoc">Lieu trouvé : </string>
+    <string name="outsideEurope">mais se trouve en dehors de la zone faunique européenne.</string>
 
     <!-- WelcomeActivity -->
     <string name="avCoords">Coordonnées moyennes:</string>
@@ -187,6 +187,7 @@
     <string name="pref_distance_title">Distance min. pour la requête GPS</string>
     <string name="pref_email_string">Adresse e-mail pour OSM-Geocoder</string>
     <string name="pref_email_string_summ">Nécessaire pour la consultation fiable des données d\'adresse via OSM-Nominatim-Reverse-Geocoder.\nL\'adresse e-mail est traitée de manière confidentielle et n\'est utilisée que pour vous contacter en cas de problème. Voir https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="pref_request_title">Intervalle de requêtes d\'adresse</string>
     <string name="pref_interval_title">Intervalle d\'interrogation GPS</string>
     <string name="pref_left_hand">Gaucher</string>
     <string name="pref_left_hand_summ">Afficher la vue de comptage pour gauchers.</string>

@@ -2,14 +2,19 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.7.5 (2026-05-05)
+#### Version 3.7.5 (2026-05-18)
+- Info about new Google restrictions in "App Info"
 - GPS parameter "Min. distance for GPS update" added in Settings
+- Background service for periodically requesting address information from Nominatim (OpenStreetMap) added
+- "Address request interval" option to change its duration added in Settings
+- An initial pop-up message with a short sound informs about the 1. locality found instead of the 1. GPS fix
 - Some messages improved
 - Code improvements
 - Docs and example files updated
 - Bugfixes:
-  * Data language changed in 'Settings' was not written to DB
-  * Individuals all had the same locality data (since version 3.7.4)
+  * Changing the data language in 'Settings' was not written to DB
+  * In version 3.7.4 individuals all had the same locality data
+  * Till version 3.7.3 Individuals all had the second-to-last locality info
   * Language dependent date formatting for filenames corrected
 
 #### Version 3.7.4 (2026-04-06)
@@ -338,7 +343,7 @@
 - Correct handling of subtraction for categories of species and individuals
 - Database version change 2 to 3 (takes care of additional counters)
 - Automatic conversion of existing databases to new version while loading
-- First use now creates a direct usable internal DB with common european species
+- First use now creates a direct usable internal DB with common European species
 - Layout of starting page updated
 - Adapted results page layout
 - More butterfly pictures added

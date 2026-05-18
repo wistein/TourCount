@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
+
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.database.Head
 import com.wmstein.tourcount.database.HeadDataSource
 
@@ -72,7 +74,8 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.settings_container, SettingsFragment())
             .commit()
-        editor = prefs.edit() // will be committed on pause
+
+        editor = prefs.edit() // prefs will be set and committed in onPause()
     }
     // End of onCreate()
 

@@ -35,7 +35,7 @@ class DbHelper (private val mContext: Context) :
     // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "38, Creating database: $DATABASE_NAME")
+            Log.i(TAG, "38, Creating database: $DATABASE_NAME")
 
         var sql = ("create table " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
@@ -132,7 +132,7 @@ class DbHelper (private val mContext: Context) :
         initialHead(db)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "135, Success!")
+            Log.i(TAG, "135, Success!")
     }
 
     // Initial data for COUNT_TABLE
@@ -177,7 +177,7 @@ class DbHelper (private val mContext: Context) :
     // see https://guides.codepath.org/android/local-databases-with-sqliteopenhelper
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "180, upGrade -> DB Ver. 9")
+            Log.i(TAG, "180, upGrade -> DB Ver. 9")
 
         if (oldVersion == 8) {
             version9(db)
@@ -242,7 +242,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "244, Upgraded database to version 2")
+            Log.i(TAG, "244, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -321,7 +321,7 @@ class DbHelper (private val mContext: Context) :
             db.execSQL(sql)
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "323, Upgraded database to version 3")
+                Log.i(TAG, "323, Upgraded database to version 3")
         }
     }
 
@@ -332,7 +332,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "334, Upgraded database to version 4")
+            Log.i(TAG, "334, Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -385,7 +385,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "387, Upgraded database to version 5")
+            Log.i(TAG, "387, Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -440,7 +440,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "442, Upgraded database to version 6")
+            Log.i(TAG, "442, Upgraded database to version 6")
     }
 
     /*** V7 ***/
@@ -460,7 +460,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "462, Upgraded database to version 7")
+            Log.i(TAG, "462, Upgraded database to version 7")
     }
 
     /*** V8 ***/
@@ -473,7 +473,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "475, Upgraded database to version 8")
+            Log.i(TAG, "475, Upgraded database to version 8")
     }
 
     /*** V9 ***/
@@ -488,7 +488,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "490, Upgraded database to version 9")
+            Log.i(TAG, "490, Upgraded database to version 9")
     }
 
     companion object {

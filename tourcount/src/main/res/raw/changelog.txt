@@ -45,39 +45,43 @@ _ subtitle
   _
   _ email: stein.wm@web.de
   _
-<!--
-  ! ----------
+  !
   & Attention:
-  ! Google has announced that starting in 2026/2027, all apps on certified Android devices will only work if developers submit their personal identity data directly to Google. As the private developer of this privacy conform open-source app, I do not agree with this requirement. So unfortunately, this app may no longer work on certified Android devices after that date.
+  ! Google has announced that starting in September 2026, all apps on regular Android devices will only work if developers have registered with Google, paid up a fee, and submit their official identity data directly to Google. As the private developer of this privacy conform open-source app, I do not agree with this requirement. So unfortunately, this app may no longer work without special precautions on regular Android devices after that date. For more info on this see <a href="https://keepandroidopen.org/" target="_blank">https://keepandroidopen.org/</a>.
   _
-  ! On Android devices with custom ROMS like GrapheneOS, LineageOS, /e/OS, etc., the app will continue to work as usual.
-  ! ----------
+  ! On Android devices with custom ROMS like GrapheneOS, LineageOS, iodéOS, CalyxOS, etc., the app will continue to work as usual.
+  !
   _
--->
-  ! TourCount supports species-specific and individually GPS-localized registering of butterflies.
+  .
+  ) TourCount supports species-specific and individually GPS-localized registering of butterflies.
   _ 
-  ! TourCount is one of two apps for European butterfly monitoring.
-  ! The 2nd app, <B>TransektCount</B> serves transect counters on their inspection walks. It supports species-specific counting of butterflies per transect section according to the European Butterfly Monitoring Scheme method.
+  ) TourCount is one of two apps for European butterfly monitoring.
+  ) The 2nd app, <B>TransektCount</B> serves transect counters on their inspection walks. It supports species-specific counting of butterflies per transect section according to the European Butterfly Monitoring Scheme method.
   _ 
-  ! Source code and documentation published under:
-  ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
+  ) Source code and documentation published under:
+  ) <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
-  ! Suitable for Android 7.1 (Nougat) or newer.
+  ) Suitable for Android 7.1 (Nougat) or newer.
   _
   .
   _
 
 $ 3.7.5
   % Version 3.7.5
-  _ 2026-05-05
+  _ 2026-05-18
+  * Info about new Google restrictions in "App Info"
   * GPS parameter "Min. distance for GPS update" added in Settings
+  * Background service for periodically requesting address information from Nominatim (OpenStreetMap) added
+  * "Address request interval" option to change its duration added in Settings
+  * An initial pop-up message with a short sound informs about the 1. locality found instead of the 1. GPS fix
   * Some messages improved
   * Code improvements
   * Docs and example files updated
   * Bugfixes:
-    - Data language changed in 'Settings' was not written to DB
-    - Individuals all had the same locality data (since version 3.7.4)
-    - Language dependent date formatting for filenames corrected
+  + - Changing the data language in 'Settings' was not written to DB
+  + - In version 3.7.4 individuals all had the same locality data
+  + - Till version 3.7.3 Individuals all had the second-to-last locality info
+  + - Language dependent date formatting for filenames corrected
 
 $ 3.7.4
   % Version 3.7.4
@@ -144,7 +148,7 @@ $ 3.6.9
   * Location background permission removed
   * The option to change the font size for comments removed
   * Location handling improved
-  * Option to set GPS polling intervall between 2 and 20 sec added
+  * Option to set the GPS polling interval between 2 and 20 sec added
   * A toast message and a beep inform about the first GPS (location) fix and possibly about the location not being in the European fauna area
   * Counting page layout slightly improved
   * On relevant pages the number fields show dimmed "0"-values for better readability

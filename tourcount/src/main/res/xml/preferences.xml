@@ -133,6 +133,15 @@
             android:title="@string/pref_email_string" />
 
         <ListPreference
+            android:defaultValue="10000"
+            android:entries="@array/pref_sel_request_time_entries"
+            android:entryValues="@array/pref_sel_request_time_values"
+            android:icon="@drawable/ic_http_black_40dp"
+            android:key="pref_request_interval"
+            android:title="@string/pref_request_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
             android:defaultValue="5"
             android:entries="@array/pref_sel_dist_max_entries"
             android:entryValues="@array/pref_sel_dist_max_values"

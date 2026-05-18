@@ -118,7 +118,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "121 onResume")
+            Log.i(TAG, "121 onResume")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -326,7 +326,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "329, onDestroy")
+            Log.i(TAG, "329, onDestroy")
     }
 
     companion object {

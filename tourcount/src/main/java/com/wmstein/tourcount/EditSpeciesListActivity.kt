@@ -375,7 +375,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "378, Double name = $isDblName")
+                    Log.i(TAG, "378, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -397,7 +397,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.d(TAG, "400, Double name = $isDblCode")
+                    Log.i(TAG, "400, Double name = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

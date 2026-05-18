@@ -436,7 +436,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "439, onDestroy")
+            Log.i(TAG, "439, onDestroy")
     }
 
     companion object {

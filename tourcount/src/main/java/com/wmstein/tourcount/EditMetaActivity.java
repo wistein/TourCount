@@ -322,14 +322,14 @@ public class EditMetaActivity extends AppCompatActivity
         if (id == android.R.id.home) // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "325, MenuItem home");
+                Log.i(TAG, "325, MenuItem home");
             finish();
             return true;
         }
         else if (id == R.id.menuSaveExit)
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "332, MenuItem saveExit");
+                Log.i(TAG, "332, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;

@@ -1,9 +1,14 @@
-Version 3.7.5 (05.05.2026)
+Version 3.7.5 (18.05.2026)
+- Info über neue Google Einschränkungen in "App-Info"
 - GPS-Parameter "Min. Distanz für GPS-Update" in Einstellungen hinzugefügt
+- Hintergrunddienst für die periodische Abfrage der Adressinformation von Nominatim (OpenStreetMap) hinzugefügt
+- Option "Adress-Abfrageintervall" zwecks Auswahl der Intervalllänge in Einstellungen hinzugefügt
+- Eine initiale Pop-Up-Info mit Ton meldet die 1. gefundene Lokalität anstelle des 1. GPS-Fix
 - Einige Meldungen verbessert
 - Code-Verbesserungen
 - Doku und Beispieldateien aktualisiert
 - Bugfixes:
   * In "Einstellungen" gewählte Datensprache wurde nicht in die DB geschrieben
-  * Registrierte Individuen hatten alle dieselben Ortsdaten (seit Version 3.7.4)
+  * In Version 3.7.4 hatten registrierte Individuen dieselben Ortsdaten
+  * Bis Version 3.7.3 hatten registrierte Individuen die jeweils vorletzten Ortsdaten
   * Sprach-abhängige Datumsformatierung für Dateinamen korrigiert

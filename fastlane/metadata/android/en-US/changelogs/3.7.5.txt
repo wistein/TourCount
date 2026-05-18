@@ -1,9 +1,14 @@
-Version 3.7.5 (2026-05-05)
+Version 3.7.5 (2026-05-16)
+- Info about new Google restrictions in "App Info"
 - GPS parameter "Min. distance for GPS update" added in Settings
+- Background service for periodically requesting address information from Nominatim (OpenStreetMap) added
+- "Address request interval" option to change its duration added in Settings
+- Initial pop-up message informs about the 1. locality found instead of the 1. GPS fix
 - Some messages improved
 - Code improvements
 - Docs and example files updated
 - Bugfixes:
-  * Data language changed in 'Settings' was not written to DB
-  * Individuals all had the same locality data (since version 3.7.4)
+  * Changing the data language in 'Settings' was not written to DB
+  * In version 3.7.4 individuals all had the same locality data
+  * Till version 3.7.3 Individuals all had the second-to-last locality info
   * Language dependent date formatting for filenames corrected

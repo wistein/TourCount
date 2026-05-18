@@ -12,6 +12,7 @@ import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.Log
 import android.view.WindowManager
+
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.PreferenceManager
@@ -22,7 +23,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2026-05-06
+ * last edit on 2026-05-18
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -34,7 +35,7 @@ class TourCountApplication : Application() {
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "37, StrictMode.setVmPolicy")
+            Log.i(TAG, "38, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
@@ -43,11 +44,14 @@ class TourCountApplication : Application() {
         }
 
         try {
-            prefs = PreferenceManager.getDefaultSharedPreferences(this)
+            prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "49, Error: $e")
+                Log.e(TAG, "50, Error: $e")
         }
+
+        // Initiate ActivityLifecycle for stopping periodic location requests
+        registerActivityLifecycleCallbacks(TCLifecycleHandler())
     }
     // End of onCreate()
 
@@ -73,7 +77,7 @@ class TourCountApplication : Application() {
             height = size.y
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "76, Width: $width Height: $height")
+            Log.i(TAG, "80, Width: $width Height: $height")
 
         var bMap: Bitmap?
         when (backgroundPref) {
@@ -170,13 +174,16 @@ class TourCountApplication : Application() {
         var sLocality = "" // set by getAddressL() in LocationService and getAddressC() in CountingActivity
 
         @JvmField
+        var adrServiceOn: Boolean = false // controlled in WelcomeActivity
+
+        @JvmField
         var isFirstLoc: Boolean = true // true for showing an info message for the 1. GPS lock
 
         @JvmField
-        var isFirstStart: Boolean = true // true for showing a 'missing email' hint message once
+        var isFirstLocality: Boolean = true // true for showing an info message for the 1. GPS lock
 
         @JvmField
-        var rAddr = false // true for having the starting address
+        var isFirstStart: Boolean = true // true for showing a 'missing email' hint message once
     }
 
 }

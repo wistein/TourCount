@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-04-15 -->
+     last edited on 2026-05-16 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Configuración</string>
-    <string name="newLock">¡El GPS tiene la posición!</string>
-    <string name="outsideEurope">¡El GPS tiene la posición! Pero el lugar se encuentra fuera del área de distribución de la fauna europea.</string>
+    <string name="newLoc">Localidad encontrada: </string>
+    <string name="outsideEurope">pero se encuentra fuera del área de distribución de la fauna europea.</string>
 
     <!-- WelcomeActivity -->
     <string name="avCoords">Coordenadas medias:</string>
@@ -187,6 +187,7 @@
     <string name="pref_distance_title">Distancia mínima para la actualización del GPS</string>
     <string name="pref_email_string">Dirección de email para el geocodificador de OSM</string>
     <string name="pref_email_string_summ">Es necesario para poder consultar de forma fiable los datos de direcciones mediante el geocodificador inverso OSM-Nominatim.\nLa dirección de email se tratará de forma confidencial y solo se utilizará para ponernos en contacto contigo en caso de que surja algún problema. Consulta https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="pref_request_title">Intervalo de solicitud de direcciones</string>
     <string name="pref_interval_title">Intervalo de consultas GPS</string>
     <string name="pref_left_hand">Zurdo</string>
     <string name="pref_left_hand_summ">Mostrar vista de conteo para zurdos.</string>

@@ -183,7 +183,7 @@ class EditIndividualActivity : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     fun displayData() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "186, displayData")
+            Log.i(TAG, "186, displayData: $sLocality")
         }
 
         eiw = EditIndividualWidget(this, null)

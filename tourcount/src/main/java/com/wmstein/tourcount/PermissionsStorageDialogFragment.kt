@@ -78,7 +78,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     // Query and set missing external storage permission
     private fun showAppSettingsStorageDialog() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "81, External storage dialog")
+            Log.i(TAG, "81, External storage dialog")
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_storage_title))
             .setMessage(getString(R.string.dialog_storage_message))
@@ -101,7 +101,7 @@ class PermissionsStorageDialogFragment : DialogFragment() {
     private fun showAppSettingsManageStorageDialog() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.d(TAG, "104, Manage storage dialog")
+                Log.i(TAG, "104, Manage storage dialog")
 
             val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
             val uri = Uri.fromParts("package", "com.wmstein.tourcount", null)

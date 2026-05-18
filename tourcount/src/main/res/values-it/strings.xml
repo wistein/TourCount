@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-04-15 -->
+     last edited 2026-05-11 -->
 
 <resources>
 
     <!-- generic -->
     <string name="action_settings">Impostazioni</string>
-    <string name="newLock">GPS ha individuato la posizione!</string>
-    <string name="outsideEurope">GPS ha individuato la posizione! Ma il luogo si trova al di fuori dell\'area faunistica europea.</string>
+    <string name="newLoc">Località trovata: </string>
+    <string name="outsideEurope">ma si trova al di fuori dell\'area faunistica europea.</string>
 
     <!-- WelcomeActivity -->
     <string name="avCoords">Coordinate medie:</string>
@@ -188,6 +188,7 @@
     <string name="pref_distance_title">Distanza minima per l\'aggiornamento GPS</string>
     <string name="pref_email_string">Indirizzo e-mail per OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessario per la ricerca affidabile dei dati dell\'indirizzo tramite OSM-Nominatim-Reverse-Geocoder.\nL\'indirizzo e-mail sarà trattato in modo confidenziale e utilizzato solo per contattarti in caso di problemi. Vedi https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="pref_request_title">Intervallo di richiesta di indirizzi</string>
     <string name="pref_interval_title">Intervallo di interrogazione GPS</string>
     <string name="pref_left_hand">Mancino</string>
     <string name="pref_left_hand_summ">Mostra visualizzazione conteggio per mancini</string>

@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+
 import androidx.core.net.toUri
 
 /*****************************************************************************************
@@ -16,7 +17,7 @@ import androidx.core.net.toUri
  * in background.
  *
  * Created for TourCount (and TransektCount) by wmstein on 2026-02-24,
- * last edited on 2026-03-20
+ * last edited on 2026-05-19
  */
 class SoundService : Service {
     private var mContext: Context? = null
@@ -36,17 +37,13 @@ class SoundService : Service {
         return null
     }
 
-    // Default constructor is demanded for service declaration
+    // Default constructor is demanded for service declaration in Manifest
     constructor() // not to be removed!
 
-    constructor(mContext: Context) {
-        this.mContext = mContext
-        makeSound()
-    }
-
-    private fun makeSound() {
+    constructor(context: Context) {
+        this.mContext = context
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "49, onCreate")
+            Log.i(TAG, "46, onCreate")
 
         audioAttributionContext = if (Build.VERSION.SDK_INT >= 30)
             mContext!!.createAttributionContext("ringSound")
@@ -58,10 +55,11 @@ class SoundService : Service {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "62, onStartCommand")
+            Log.i(TAG, "60, onStartCommand")
 
-        return super.onStartCommand(intent, flags, startId)
+        return START_STICKY
     }
 
     fun soundMinusButtonSound() {
@@ -118,21 +116,11 @@ class SoundService : Service {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "121, onDestroy")
+            Log.i(TAG, "119, onDestroy")
 
-        if (buttonSoundPref) {
-            if (rToneM != null) {
-                rToneM!!.reset()
-                rToneM!!.release()
-                rToneM = null
-            }
+        releaseSoundM()
+        releaseSoundP()
 
-            if (rToneP != null) {
-                rToneP!!.reset()
-                rToneP!!.release()
-                rToneP = null
-            }
-        }
         super.onDestroy()
     }
 

@@ -6,6 +6,7 @@ Formatting commands:
 _ subtitle
 ! free text
 & bold
+- list item
 # numbered list item
 * bullet list item
 . blank line
@@ -28,6 +29,13 @@ _ subtitle
           text-align:center }
       div.freetext {
           color:#F0F0F0 }
+      div.normaltext {
+          color:#C0C0F0;
+          margin-bottom: 0.5em }
+      div.margtext {
+          color:#C0C0F0;
+          margin-left: 2.5em;
+          margin-bottom: 0.5em }
       div.boldtext {
           color:#F0F0F0;
           font-size:1.2em;
@@ -45,39 +53,43 @@ _ subtitle
   _
   _ email: stein.wm@web.de
   _
-<!--
-  ! --------
+  !
   & Achtung:
-  ! Google hat angekündigt, dass ab 2026/2027 alle Apps auf zertifizierten Android-Geräten nur noch funktionieren, wenn die Entwickler ihre persönlichen Identitätsdaten direkt an Google übermitteln. Als privater Entwickler dieser datenschutzkonformen Open-Source-App stimme ich dieser Anforderung von Google nicht zu. Deshalb wird leider diese App ab diesem Zeitpunkt auf zertifizierten Android-Geräten möglicherweise nicht mehr funktionieren.
+  ! Google hat angekündigt, dass ab September 2026 alle Apps auf regulären Android-Geräten nur noch funktionieren, wenn die Entwickler sich bei Google registrieren, eine Gebühr bezahlen und ihre offiziellen Identitätsdaten direkt an Google übermitteln. Als privater Entwickler dieser datenschutzkonformen Open-Source-App stimme ich dieser Anforderung von Google nicht zu. Deshalb wird leider diese App ab diesem Zeitpunkt auf regulären Android-Geräten möglicherweise nicht mehr ohne besondere Vorkehrungen funktionieren. Mehr Information dazu siehe <a href="https://keepandroidopen.org/" target="_blank">https://keepandroidopen.org/</a>.
   _
-  ! Auf Android-Geräten mit Custom ROMS wie GrapheneOS, LineageOS, /e/OS, usw. wird die App weiterhin wie gewohnt funktionieren.
-  ! --------
+  ! Auf Android-Geräten mit Custom ROMS wie GrapheneOS, LineageOS, iodéOS, CalyxOS o.ä. wird die App weiterhin wie gewohnt funktionieren.
+  !
   _
--->
-  ! TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
+  .
+  ) <B>TourCount</B> unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen.
   _
-  ! TourCount ist eine von zwei Apps für das Monitoring Europäischer Schmetterlinge.
-  ! Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
+  ) TourCount ist eine von zwei Apps für das Monitoring europäischer Schmetterlinge.
+  ) Die zweite App, <B>TransektCount</B>, dient Transektzählern bei Transektbegehungen. Sie unterstützt das Spezies-spezifische Zählen von Schmetterlingen pro Transektabschnitt gemäß der European Butterfly Monitoring Scheme-Methode.
   _
-  ! Quellcode und Dokumentation veröffentlicht unter:
-  ! <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
+  ) Quellcode und Dokumentation veröffentlicht unter:
+  ) <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
-  ! Geeignet für Android 7.1 (Nougat) oder neuer.
+  ) Geeignet für Android 7.1 (Nougat) oder neuer.
   _
   .
   _
 
 $ 3.7.5
   % Version 3.7.5
-  _ 05.05.2026
+  _ 18.05.2026
+  * Info über neue Google Einschränkungen in "App-Info"
   * GPS-Parameter "Min. Distanz für GPS-Update" in Einstellungen hinzugefügt
+  * Hintergrunddienst für die periodische Abfrage der Adressinformation von Nominatim (OpenStreetMap) hinzugefügt
+  * Option "Adress-Abfrageintervall" zwecks Auswahl der Intervalllänge in Einstellungen hinzugefügt
+  * Eine initiale Pop-Up-Info mit Ton meldet die 1. gefundene Lokalität anstelle des 1. GPS-Fix
   * Einige Meldungen verbessert
   * Code-Verbesserungen
   * Doku und Beispieldateien aktualisiert
-  * Bugfixes:
-    - In "Einstellungen" gewählte Datensprache wurde nicht in die DB geschrieben
-    - Registrierte Individuen hatten alle dieselben Ortsdaten (seit Version 3.7.4)
-    - Sprach-abhängige Datumsformatierung für Dateinamen korrigiert
+  * Bugfixe:
+  + - In "Einstellungen" gewählte Datensprache wurde nicht in die DB geschrieben
+  + - In Version 3.7.4 hatten registrierte Individuen dieselben Ortsdaten
+  + - Bis Version 3.7.3 hatten registrierte Individuen die jeweils vorletzten Ortsdaten
+  + - Sprach-abhängige Datumsformatierung für Dateinamen korrigiert
 
 $ 3.7.4
   % Version 3.7.4

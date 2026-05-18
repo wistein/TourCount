@@ -42,7 +42,7 @@ import java.util.Locale;
  name in SharedPreferences
 
  Adaptation for TourCount by wmstein on 2016-04-18,
- last edited on 2026-03-24
+ last edited on 2026-05-16
  */
 public class ChangeLog {
     private static final String TAG = "ChangeLog";
@@ -63,7 +63,7 @@ public class ChangeLog {
         // Get version numbers of lastVersion and thisVersion to compare
         this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "65, lastVersion: " + lastVersion);
+            Log.i(TAG, "65, lastVersion: " + lastVersion);
 
         try {
             this.thisVersion = context.getPackageManager().getPackageInfo(
@@ -74,7 +74,7 @@ public class ChangeLog {
                 Log.e(TAG, "73, could not get version name from manifest!", e);
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "76, appVersion: " + thisVersion);
+            Log.i(TAG, "76, appVersion: " + thisVersion);
     }
 
     /**
@@ -191,35 +191,53 @@ public class ChangeLog {
                             this.closeList();
                             sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
                         }
-                        case '&' -> {
-                            // line contains bold text
-                            this.closeList();
-                            sb.append("<div class='boldtext'>").append(line.substring(1).trim()).append("</div>\n");
-                        }
                         case '_' -> {
                             // line contains version subtitle
                             this.closeList();
-                            sb.append("<div class='subtitle'>").append(line.substring(1).trim()).append("</div>\n");
+                            sb.append("<div class='subtitle'>");
+                            sb.append(line.substring(1).trim()).append("</div>\n");
                         }
                         case '!' -> {
                             // line contains free text
                             this.closeList();
-                            sb.append("<div class='freetext'>").append(line.substring(1).trim()).append("</div>\n");
+                            sb.append("<div class='freetext'>");
+                            sb.append(line.substring(1).trim()).append("</div>\n");
+                        }
+                        case ')' -> {
+                            // line contains normal text
+                            this.closeList();
+                            sb.append("<div class='normaltext'>");
+                            sb.append(line.substring(1).trim()).append("</div>\n");
+                        }
+                        case '+' -> {
+                            // line contains normal text with left margin
+                            this.closeList();
+                            sb.append("<div class='margtext'>");
+                            sb.append(line.substring(1).trim()).append("</div>\n");
+                        }
+                        case '&' -> {
+                            // line contains bold text
+                            this.closeList();
+                            sb.append("<div class='boldtext'>");
+                            sb.append(line.substring(1).trim()).append("</div>\n");
                         }
                         case '.' -> {
                             // empty line
                             this.closeList();
-                            sb.append("<div class='freetext'>").append(line.substring(1)).append("<br></div>\n");
+                            sb.append("<div class='freetext'>");
+                            sb.append(line.substring(1)).append("<br></div>\n");
                         }
                         case '#' -> {
                             // line contains numbered list item
                             this.openList(Listmode.ORDERED);
-                            sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                            sb.append("<li>");
+                            sb.append(line.substring(1).trim()).append("</li>\n");
                         }
                         case '*' -> {
                             // line contains bullet list item
                             this.openList(Listmode.UNORDERED);
-                            sb.append("<li>").append(line.substring(1).trim()).append("</li>\n");
+                            sb.append("<li>");
+                            sb.append(line.substring(1).trim()).append("</li>\n");
                         }
                         default -> {
                             // no special character: just use line as is

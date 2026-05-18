@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2026-04-15 -->
+     last edited on 2026-05-16 -->
 
 <resources>
 
@@ -21,8 +21,8 @@
 
     <!-- generic -->
     <string name="action_settings">Settings</string>
-    <string name="newLock">GPS has position!</string>
-    <string name="outsideEurope">GPS has position! But location is outside the European fauna area.</string>
+    <string name="newLoc">Locality found: </string>
+    <string name="outsideEurope">but is outside the European fauna area.</string>
 
     <!-- WelcomeActivity -->
     <string name="avCoords">Average Coordinates:</string>
@@ -202,6 +202,7 @@
     <string name="pref_distance_title">Min. distance for GPS update</string>
     <string name="pref_email_string">Mail Address for OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and will only be used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
+    <string name="pref_request_title">Address request interval</string>
     <string name="pref_interval_title">GPS polling interval</string>
     <string name="pref_left_hand">Left-hander</string>
     <string name="pref_left_hand_summ">Show left-hander counter view.</string>

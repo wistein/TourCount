@@ -1,5 +1,6 @@
 package com.wmstein.tourcount;
 
+import static com.wmstein.tourcount.TourCountApplication.adrServiceOn;
 import static com.wmstein.tourcount.TourCountApplication.heightNN;
 import static com.wmstein.tourcount.TourCountApplication.isFirstLoc;
 import static com.wmstein.tourcount.TourCountApplication.isFirstStart;
@@ -90,7 +91,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-05-06
+ * last edited on 2026-05-18
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -101,11 +102,15 @@ public class WelcomeActivity
     private View baseLayout;
 
     LocationService locationService;
-    private boolean locServiceOn = false;
+    private boolean locServiceOn = false; // Initial location service state (WelcomeActivity only)
+    Intent locIntent;
+
+    AddrRequestService addrRequestService;
+    Intent adrIntent;
 
     SoundService soundService;
+    private boolean sndServiceOn = false; // Initial sound service state (WelcomeActivity only)
     Intent sndIntent;
-    private boolean sndServiceOn = false;
 
     private ChangeLog cl;
     public boolean doubleBackToExitPressedTwice = false;
@@ -145,13 +150,13 @@ public class WelcomeActivity
     private String mesg;
     private AlertDialog alert;
 
-    @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
+    @SuppressLint({"SourceLockedOrientationActivity"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "154, onCreate");
+            Log.i(TAG, "159, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -170,8 +175,6 @@ public class WelcomeActivity
             sndIntent = new Intent(getApplicationContext(), SoundService.class);
             startService(sndIntent);
             sndServiceOn = true;
-            editor.putBoolean("snd_srv_on", true);
-            editor.commit();
         }
 
         // Proximity sensor handling in preferences menu
@@ -239,8 +242,6 @@ public class WelcomeActivity
             editor.putBoolean("has_asked_foreground", false);
             editor.commit();
         }
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.d(TAG, "243, onCreate, storagePermGranted: " + storagePermGranted);
 
         // Check DB version and upgrade if necessary
         dbHelper = new DbHelper(this);
@@ -302,6 +303,13 @@ public class WelcomeActivity
             }
         }
 
+        // Option for use of Nominatim service for locality data
+        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        if (metaPref) {
+            adrServiceOn = false; // will be set true by addressDispatcher
+            addressDispatcher(1); // Start AddrRequestService
+        }
+
         // New onBackPressed logic
         // Different Navigation Bar modes and layouts:
         // - Classic three-button navigation: NavBarMode = 0
@@ -339,17 +347,19 @@ public class WelcomeActivity
                 if (doubleBackToExitPressedTwice) {
                     m1Handler.removeCallbacks(r1);
 
-                    // Stop button sound
+                    // Stop button sound (SoundService)
                     if (sndServiceOn) {
                         soundService.releaseSoundM();
                         soundService.releaseSoundP();
 
                         stopService(sndIntent);
                         sndServiceOn = false;
-                        editor = prefs.edit();
-                        editor.putBoolean("snd_srv_on", false);
-                        editor.commit();
                     }
+
+                    // Stop AddrRequestService
+                    if (metaPref)
+                        addressDispatcher(2);
+
                     finish();
                     remove();
                 } else {
@@ -372,15 +382,13 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "375, onResume");
+            Log.i(TAG, "385, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
         editor = prefs.edit();
 
         outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
-        locServiceOn = prefs.getBoolean("loc_srv_on", false);
-        sndServiceOn = prefs.getBoolean("snd_srv_on", false);
         // Mail address for reliable query of Nominatim service
         String emailString = prefs.getString("email_String", "");
         // Option for use of Nominatim service for locality data
@@ -391,7 +399,6 @@ public class WelcomeActivity
 
         if (isFirstStart && metaPref) {
             // This is to remind a missing email address for Nominatim Reverse Geocoder.
-            //   Info about the first GPS lock is handled in LocationService onLocationChanged().
             if (Objects.equals(emailString, "")) {
                 mesg = getString(R.string.missingEmail);
                 Toast.makeText(this, // orange
@@ -445,15 +452,12 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "448, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "455, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
-            locServiceOn = false;
-            editor.putBoolean("loc_srv_on", false);
-            editor.commit();
-
-            locationDispatcher(1); // Start location service
+            // Start location service and get 1. location
+            locationDispatcher(1); // Start LocationService
         }
     }
     // End of onResume()
@@ -466,13 +470,13 @@ public class WelcomeActivity
             storageGranted = Environment.isExternalStorageManager();
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "469, ManageStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "473, ManageStoragePermission: " + storagePermGranted);
         } else {
             storageGranted = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "475, ExtStoragePermission: " + storagePermGranted);
+                Log.i(TAG, "479, ExtStoragePermission: " + storagePermGranted);
         }
         return storageGranted;
     }
@@ -489,24 +493,20 @@ public class WelcomeActivity
     //  2 = end location service for WelcomeActivity
     private void locationDispatcher(int locationDispatcherMode) {
         if (fineLocationPermGranted) {
-            editor = prefs.edit();
             switch (locationDispatcherMode) {
                 case 1 -> {
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "498, locationDispatcher 1");
+                            Log.i(TAG, "501, locationDispatcher 1");
 
                         locationService = new LocationService(getApplicationContext());
-                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
-                        startService(sIntent);
-
+                        locIntent = new Intent(getApplicationContext(), LocationService.class);
+                        startService(locIntent);
                         locServiceOn = true;
-                        editor.putBoolean("loc_srv_on", true);
-                        editor.commit();
-
-                        getLoc();  // Get position
                     }
+
+                    getLoc();  // Get position
                 }
                 case 2 -> {
                     // Stop location service
@@ -514,14 +514,10 @@ public class WelcomeActivity
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
                             Log.i(TAG, "515, locationDispatcher 2");
 
-                        locationService.releaseSoundA();
                         locationService.stopListener();
-                        Intent sIntent = new Intent(getApplicationContext(), LocationService.class);
-                        stopService(sIntent);
-
+                        locIntent = new Intent(getApplicationContext(), LocationService.class);
+                        stopService(locIntent);
                         locServiceOn = false;
-                        editor.putBoolean("loc_srv_on", false);
-                        editor.commit();
                     }
                 }
             }
@@ -532,10 +528,42 @@ public class WelcomeActivity
     @SuppressLint("DefaultLocale")
     public void getLoc() {
         if (locationService.canGetLocation()) {
+            // Store values in global variables
             locationService.getLongitude();
             locationService.getLatitude();
             locationService.getAltitude();
             locationService.getAccuracy();
+        }
+    }
+
+    private void addressDispatcher(int addrDispatcherMode) {
+        switch (addrDispatcherMode) {
+            case 1 -> {
+                // Get address data
+                if (!adrServiceOn) {
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "545, addressDispatcher 1");
+
+                    adrServiceOn = true;
+                    addrRequestService = new AddrRequestService();
+                    adrIntent = new Intent(getApplicationContext(), AddrRequestService.class);
+                    startService(adrIntent);
+                    addrRequestService.stopTimerTask();
+                }
+            }
+            case 2 -> {
+                // Stop AddrRequestService
+                if (adrServiceOn) {
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "558, addressDispatcher 2");
+
+                    addrRequestService.releaseSoundA();
+                    addrRequestService.stopTimerTask();
+                    adrIntent = new Intent(getApplicationContext(), AddrRequestService.class);
+                    stopService(adrIntent);
+                    adrServiceOn = false;
+                }
+            }
         }
     }
 
@@ -660,7 +688,7 @@ public class WelcomeActivity
         } else if (id == R.id.editMeta) {
             // Call EditMetaActivity
             intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
-            // Wait for 500 msec to get results from RetrieveAddrWorker
+            // Wait for 500 msec to get results from AddrRequestService
             mHandler.postDelayed(() ->
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
             return true;
@@ -690,8 +718,6 @@ public class WelcomeActivity
         baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.setBackgr());
         outPref = prefs.getString("pref_sort_output", "names");
-        locServiceOn = prefs.getBoolean("loc_srv_on", false);
-        sndServiceOn = prefs.getBoolean("snd_srv_on", false);
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
 
@@ -699,21 +725,15 @@ public class WelcomeActivity
         if (!buttonSoundPref && sndServiceOn) {
             stopService(sndIntent);
             sndServiceOn = false;
-            editor = prefs.edit();
-            editor.putBoolean("snd_srv_on", false);
-            editor.commit();
         }
 
         if (buttonSoundPref && !sndServiceOn) {
             startService(sndIntent);
             sndServiceOn = true;
-            editor = prefs.edit();
-            editor.putBoolean("snd_srv_on", true);
-            editor.commit();
         }
 
         if (!alertSoundPref && fineLocationPermGranted && locServiceOn) {
-            locationService.stopSoundA();
+            addrRequestService.stopSoundA();
         }
     }
 
@@ -722,7 +742,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "725, onPause");
+            Log.i(TAG, "745, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -735,34 +755,47 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "738, onStop");
+            Log.i(TAG, "758, onStop");
 
         baseLayout.invalidate();
+
+        // Stop Services when app should finish
+        if (!TCLifecycleHandler.isApplicationVisible()) {
+            if (locServiceOn) {
+                addrRequestService.releaseSoundA();
+            }
+
+            if (sndServiceOn) {
+                soundService.releaseSoundM();
+                soundService.releaseSoundP();
+                stopService(sndIntent);
+                sndServiceOn = false;
+            }
+
+            locationDispatcher(2);
+            lat = 0.0; // prohibits calls to Nominatim service
+            lon = 0.0;
+
+            if (adrServiceOn)
+                addrRequestService.stopTimerTask();
+            addressDispatcher(2);
+
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i(TAG, "784, onStop, app not visible, running services Loc, Snd, Adr: "
+                        + locServiceOn + ", " + sndServiceOn + ", " + adrServiceOn);
+
+            finishAndRemoveTask();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        if (locServiceOn) {
-            locationService.releaseSoundA();
-        }
-
-        if (sndServiceOn) {
-            soundService.releaseSoundM();
-            soundService.releaseSoundP();
-            stopService(sndIntent);
-            sndServiceOn = false;
-            editor = prefs.edit();
-            editor.putBoolean("snd_srv_on", false);
-            editor.commit();
-        }
-
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "762, onDestroy, sndServiceOn: " + sndServiceOn);
+            Log.i(TAG, "796, onDestroy");
 
-        if (fineLocationPermGranted)
-            locationDispatcher(2); // Stop location service
+        System.exit(0);
     }
 
     // Handle button click "Counting" here
@@ -775,7 +808,7 @@ public class WelcomeActivity
     // Handle button click "Prepare Inspection" here
     public void editMeta(View view) {
         Intent intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
-        // Wait for 500 msec to get results from RetrieveAddrWorker
+        // Wait for 500 msec to get results from AddrRequestService
         mHandler.postDelayed(() ->
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
     }
@@ -899,7 +932,7 @@ public class WelcomeActivity
                                     hasDataLang = false;
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "902, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "935, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -913,7 +946,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "916, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "949, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
