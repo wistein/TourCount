@@ -5,7 +5,7 @@ TourCount is an Android app that supports species-specific and individually loca
 Unfortunately, Google is enforcing its monopoly position as they decided to restrict the use of free Android software.
 Starting September 2026, a silent update, nonconsensually pushed by Google, will block every Android app whose developers have not registered with Google, signed their contract, paid up a fee, and handed over their government ID.
 I am NOT willing to accept neither these registration conditions nor the procedure.
-For more background on this you may visit https://keepandroidopen.org/.
+For more background on this and how to overcome the restriction you may visit https://keepandroidopen.org/.
 
 ### Features
 - Data recording is organized for a tour in nature with its expected butterfly species.
