@@ -2,6 +2,12 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.6 (2026-05-23)
+- Changed the minimal Android version from 7.1 to 11
+- Layout of the counting page better adapted to screen ratio
+- Code improvements
+- Docs updated
+
 #### Version 3.7.5 (2026-05-18)
 - Info about new Google restrictions in "App Info"
 - GPS parameter "Min. distance for GPS update" added in Settings

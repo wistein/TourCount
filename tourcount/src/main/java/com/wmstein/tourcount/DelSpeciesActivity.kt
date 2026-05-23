@@ -12,6 +12,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
+
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,11 +20,13 @@ import androidx.core.app.NavUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.database.SectionDataSource
 import com.wmstein.tourcount.widgets.DeleteSpeciesHintWidget
 import com.wmstein.tourcount.widgets.DeleteSpeciesWidget
+
 import java.util.Locale
 
 /********************************************************************
@@ -34,7 +37,7 @@ import java.util.Locale
  *
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2026-03-20
+ * last edited on 2026-05-19
  */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
@@ -62,7 +65,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "65, onCreate")
+            Log.i(TAG, "68, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -118,7 +121,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "121 onResume")
+            Log.i(TAG, "124 onResume")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -295,7 +298,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "298, onPause")
+            Log.i(TAG, "301, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -316,7 +319,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "319, onStop")
+            Log.i(TAG, "322, onStop")
 
         deleteArea = null
         delHintArea = null
@@ -326,7 +329,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "329, onDestroy")
+            Log.i(TAG, "332, onDestroy")
     }
 
     companion object {

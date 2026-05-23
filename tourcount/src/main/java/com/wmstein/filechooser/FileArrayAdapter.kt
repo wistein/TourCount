@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
+
 import java.util.Locale
 
 /**
@@ -17,7 +19,7 @@ import java.util.Locale
  * Adopted by wmstein on 2016-06-18,
  * modifications for TourCount by wmstein on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-03-19
+ * last edited on 2025-05-19
  */
 internal class FileArrayAdapter(
     private val faaContext: Context,

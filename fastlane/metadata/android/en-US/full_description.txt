@@ -1,18 +1,10 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.5:
-- Info about new Google restrictions in "App Info"
-- Background service for periodically requesting address information from Nominatim (OpenStreetMap) added
-- "Address request interval" option to change its duration added in Settings
-- An initial pop-up message with a short sound informs about the 1. locality found instead of the 1. GPS fix
-- Some messages improved
+New in Version 3.7.6:
+- Changed the minimal Android version from 7.1 to 11
+- Layout of the counting page better adapted to screen ratio
 - Code improvements
-- Docs and example files updated
-- Bugfixes:
-  * Changing the data language in 'Settings' was not written to DB
-  * In version 3.7.4 individuals all had the same locality data
-  * Till version 3.7.3 Individuals all had the second-to-last locality info
-  * Language dependent date formatting for filenames corrected
+- Docs updated
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

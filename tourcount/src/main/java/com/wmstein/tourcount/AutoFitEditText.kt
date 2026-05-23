@@ -10,8 +10,11 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.util.TypedValue
+
 import androidx.appcompat.widget.AppCompatEditText
+
 import java.util.Objects
+
 import kotlin.math.roundToInt
 
 /**************************************************
@@ -25,7 +28,7 @@ import kotlin.math.roundToInt
  * Modified for TourCount by wmstein on 2023-09-18,
  * last edited in Java on 2023-09-18
  * converted to Kotlin on 2023-09-19
- * last edited on 2026-02-17.
+ * last edited on 2026-05-19.
  */
 class AutoFitEditText @JvmOverloads constructor(
     context: Context?, attrs: AttributeSet? = null,

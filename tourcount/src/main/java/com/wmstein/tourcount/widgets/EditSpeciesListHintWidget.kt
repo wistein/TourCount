@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
+
 import com.wmstein.tourcount.R
+
 import java.util.Objects
 
 /***********************************************************
@@ -15,7 +17,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2023-05-16,
  * last edited in java on 2023-05-16,
  * converted to Kotlin on 2023-12-07,
- * last edited on 2026-03-02.
+ * last edited on 2026-05-23.
  */
 class EditSpeciesListHintWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private var searchE: EditText

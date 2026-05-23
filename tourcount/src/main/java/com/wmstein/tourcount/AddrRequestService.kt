@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.RingtoneManager
-import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
@@ -42,10 +41,10 @@ import javax.net.ssl.HttpsURLConnection
  * When counting on the way the current locality is added to each individual record.
  * 
  * To get this data it sends an HTTP request with the current location to the Nominatim
- * website of OpenStreetMap in a configurable interval (e.g. 10 seconds).
+ * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
  *
  * Created by wmstein on 2026-05-07,
- * last edited on 2026-05-18
+ * last edited on 2026-05-19
  */
 open class AddrRequestService : Service {
     private lateinit var audioAttributionContext: Context
@@ -74,7 +73,7 @@ open class AddrRequestService : Service {
 
     constructor() {
     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "77, constructor")
+            Log.i(TAG, "76, constructor")
 
     val prefs = TourCountApplication.getPrefs()
         emailString = prefs.getString("email_String", "")!!
@@ -98,7 +97,7 @@ open class AddrRequestService : Service {
         super.onStartCommand(intent, flags, startId)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "101, onStartCommand")
+            Log.i(TAG, "100, onStartCommand")
 
         serviceHandler?.obtainMessage()?.also { msg ->
             msg.arg1 = startId
@@ -114,7 +113,7 @@ open class AddrRequestService : Service {
         // Receive the message from onStartCommand()
         override fun handleMessage(msg: Message) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "117, handleMessage")
+                Log.i(TAG, "116, handleMessage")
 
             // Do the work here
             if (adrServiceOn) {
@@ -134,7 +133,7 @@ open class AddrRequestService : Service {
 
     fun startTimer() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "137, startTimer")
+            Log.i(TAG, "136, startTimer")
 
         timer = Timer()
         initialiseTimerTask()
@@ -151,12 +150,10 @@ open class AddrRequestService : Service {
         timerTask = object : TimerTask() {
             override fun run() {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "154, initialiseTimerTask: " + counter++)
+                    Log.i(TAG, "153, initialiseTimerTask: " + counter++)
 
                 audioAttributionContext =
-                    if (Build.VERSION.SDK_INT >= 30)
-                        applicationContext.createAttributionContext("ringSound")
-                    else applicationContext
+                    applicationContext.createAttributionContext("ringSound")
 
                 val uriB = if (alertSound.isNotBlank())
                     alertSound.toUri()
@@ -176,7 +173,7 @@ open class AddrRequestService : Service {
 
     fun stopTimerTask() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "179, stopTimerTask")
+            Log.i(TAG, "176, stopTimerTask")
 
         // Stop the timer, if it's not already null
         if (timer != null) {
@@ -221,7 +218,7 @@ open class AddrRequestService : Service {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "224, onDestroy")
+            Log.i(TAG, "221, onDestroy")
 
         if (!adrServiceOn)
             stopTimerTask()
@@ -236,7 +233,7 @@ open class AddrRequestService : Service {
     // Get the address data by reverse geocoding from Nominatim service
     private fun getAddress() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "239, getAddress")
+            Log.i(TAG, "236, getAddress")
 
         val urlString: String?
         val sb = StringBuilder()
@@ -268,7 +265,7 @@ open class AddrRequestService : Service {
             // Handle connection error
             if (status != HttpsURLConnection.HTTP_OK) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "271, Nominatim status: $status")
+                    Log.e(TAG, "268, Nominatim status: $status")
 
                 urlConnection.disconnect()
             }
@@ -284,7 +281,7 @@ open class AddrRequestService : Service {
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "287, Problem converting Stream to String: $e")
+                    Log.e(TAG, "284, Problem converting Stream to String: $e")
             } finally {
                 reader.close()
                 iStream.close()
@@ -292,7 +289,7 @@ open class AddrRequestService : Service {
         } catch (e: IOException) {
             // SocketTimeoutException without email
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "295, Problem with internet address handling: $e")
+                Log.e(TAG, "292, Problem with internet address handling: $e")
         } finally {
             urlConnection.disconnect()
         }
@@ -313,7 +310,7 @@ open class AddrRequestService : Service {
             var send = xmlString.indexOf("</addressparts>")
             xmlString = xmlString.substring(sstart, send)
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "316, <addressparts>: $xmlString")
+                Log.i(TAG, "313, <addressparts>: $xmlString")
 
             val locality = StringBuilder() // quarter, road or street
             val plz = StringBuilder()      // postal code
@@ -395,10 +392,10 @@ open class AddrRequestService : Service {
             }
             sLocality = locality.toString()
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "398, $sLocality")
+                Log.i(TAG, "395, $sLocality")
 
             if (isFirstLocality && lat != 0.0) {
-                soundAlertSound()
+                soundAlertSound() // Indicate the 1. locality found
 
                 // European fauna area defined as inside the rectangle with
                 //   latitude:   27.6 < lat < 71.2

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 
 /****************************************************
@@ -16,7 +17,7 @@ import com.wmstein.tourcount.R
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-02-28
+ * last edited on 2026-05-23
  */
 class CountingHead1Widget(
     context: Context,

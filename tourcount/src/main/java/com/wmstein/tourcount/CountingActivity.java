@@ -71,7 +71,7 @@ import java.util.Objects;
  * <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-05-05
+ * last edited in Java on 2026-05-19
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -1485,11 +1485,9 @@ public class CountingActivity
             {
                 vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
             } else {
-                if (Build.VERSION.SDK_INT >= 26) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(450,
-                            VibrationEffect.DEFAULT_AMPLITUDE));
-                    vibrator.cancel();
-                }
+                vibrator.vibrate(VibrationEffect.createOneShot(450,
+                        VibrationEffect.DEFAULT_AMPLITUDE));
+                vibrator.cancel();
             }
         }
     }

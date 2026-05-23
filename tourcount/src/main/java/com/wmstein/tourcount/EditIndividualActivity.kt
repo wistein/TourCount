@@ -12,11 +12,13 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
+
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.TourCountApplication.Companion.heightNN
 import com.wmstein.tourcount.TourCountApplication.Companion.lat
 import com.wmstein.tourcount.TourCountApplication.Companion.lon
@@ -36,7 +38,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-05-05
+ * last edited on 2026-05-19
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -81,7 +83,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "84, onCreate")
+            Log.i(TAG, "86, onCreate")
 
         awakePref = prefs.getBoolean("pref_awake", true) // keep screen on
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -158,7 +160,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "161, onResume")
+            Log.i(TAG, "163, onResume")
 
         // Clear any existing views
         indivArea!!.removeAllViews()
@@ -183,7 +185,7 @@ class EditIndividualActivity : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     fun displayData() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "186, displayData: $sLocality")
+            Log.i(TAG, "188, displayData: $sLocality")
         }
 
         eiw = EditIndividualWidget(this, null)
@@ -256,7 +258,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "259, onPause")
+            Log.i(TAG, "261, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
@@ -267,7 +269,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "270, onStop")
+            Log.i(TAG, "272, onStop")
 
         if (buttonSoundPref)
             soundService!!.releaseSoundP()
@@ -281,7 +283,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "284, onDestroy")
+            Log.i(TAG, "286, onDestroy")
     }
 
     private fun saveData(): Boolean {
@@ -439,17 +441,12 @@ class EditIndividualActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 31) {
             vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
         } else {
-            if (Build.VERSION.SDK_INT >= 26) {
-                vibrator?.vibrate(
-                    VibrationEffect.createOneShot(
-                        200,
-                        VibrationEffect.DEFAULT_AMPLITUDE
-                    )
+            vibrator?.vibrate(
+                VibrationEffect.createOneShot(
+                    200,
+                    VibrationEffect.DEFAULT_AMPLITUDE
                 )
-            } else {
-                @Suppress("DEPRECATION")
-                vibrator?.vibrate(200)
-            }
+            )
             vibrator?.cancel()
         }
     }

@@ -37,7 +37,7 @@ The app demands for
 - the permit to keep the device awake
 
 The device screen should have a minimum resolution of 1920 x 1024 pixels.  
-The app is usable with Android version 7.1 (Nougat) or newer.
+The app is usable with Android version 11 or newer.
 
 ### General
 #### Documentation

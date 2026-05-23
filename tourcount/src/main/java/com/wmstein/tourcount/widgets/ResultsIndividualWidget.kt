@@ -6,9 +6,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.AutoFitText
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Individuals
+
 import java.util.Objects
 
 /***********************************************************
@@ -17,7 +19,7 @@ import java.util.Objects
  * Created by wmstein on 2018-02-22.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {

@@ -1,0 +1,5 @@
+Version 3.7.6 (23.05.2026)
+- Die minimale Android-Version nach 11 geändert
+- Layout der Zählseite besser an das Seitenverhältnis angepasst
+- Code-Verbesserungen
+- Doku aktualisiert

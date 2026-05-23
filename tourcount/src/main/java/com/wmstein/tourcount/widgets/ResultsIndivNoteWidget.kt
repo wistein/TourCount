@@ -5,8 +5,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Individuals
+
 import java.util.Objects
 
 /**********************************************************
@@ -15,7 +17,7 @@ import java.util.Objects
  * Created by wmstein on 2018-03-21.
  * Last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class ResultsIndivNoteWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtBemInd: TextView

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 
@@ -43,11 +42,9 @@ class SoundService : Service {
     constructor(context: Context) {
         this.mContext = context
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "46, onCreate")
+            Log.i(TAG, "45, onCreate")
 
-        audioAttributionContext = if (Build.VERSION.SDK_INT >= 30)
-            mContext!!.createAttributionContext("ringSound")
-        else mContext!!
+        audioAttributionContext = mContext!!.createAttributionContext("ringSound")
 
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false) // make button sound
         buttonSoundMinus = prefs.getString("button_sound_minus", null).toString() // use deeper button sound
@@ -57,7 +54,7 @@ class SoundService : Service {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "60, onStartCommand")
+            Log.i(TAG, "57, onStartCommand")
 
         return START_STICKY
     }
@@ -116,7 +113,7 @@ class SoundService : Service {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "119, onDestroy")
+            Log.i(TAG, "116, onDestroy")
 
         releaseSoundM()
         releaseSoundP()

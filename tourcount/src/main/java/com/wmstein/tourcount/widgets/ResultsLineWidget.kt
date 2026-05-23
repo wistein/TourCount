@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
+
 import com.wmstein.tourcount.R
+
 import java.util.Objects
 
 /*****************************************************
@@ -13,7 +15,7 @@ import java.util.Objects
  * Created by wmstein on 2018-02-24,
  * last edited in Java on 2019-01-27,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class ResultsLineWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     init {

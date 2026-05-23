@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
+
 import java.util.Objects
 
 /******************************************************************
@@ -18,7 +20,7 @@ import java.util.Objects
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-02-28
+ * last edited on 2026-05-23
  */
 class CountingSpeciesNotesWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
@@ -36,7 +35,7 @@ import java.io.IOException
  *
  * Last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-05-19
+ * last edited on 2026-05-23
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
@@ -59,12 +58,10 @@ open class LocationService : Service, LocationListener {
     constructor(context: Context) {
         this.mContext = context
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "62, getLocation")
+            Log.i(TAG, "61, getLocation")
 
         locationAttributionContext =
-            if (Build.VERSION.SDK_INT >= 30)
-                mContext!!.createAttributionContext("locationCheck")
-            else mContext!!
+            mContext!!.createAttributionContext("locationCheck")
 
         val prefs = TourCountApplication.getPrefs()
         selTimeInterval = prefs.getString("pref_time_interval", "5000")!!.toLong()
@@ -126,7 +123,7 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "129, Error in getLocation: $e")
+                Log.e(TAG, "126, Error in getLocation: $e")
         }
     }
 
@@ -193,11 +190,11 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "196, StopListener: Stop GPS service.")
+                    Log.i(TAG, "193, StopListener: Stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "200, Error in StopListener: $e")
+                Log.e(TAG, "197, Error in StopListener: $e")
         }
     }
 
@@ -245,7 +242,7 @@ open class LocationService : Service, LocationListener {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "248, onDestroy")
+            Log.i(TAG, "245, onDestroy")
 
         super.onDestroy()
     }

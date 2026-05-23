@@ -16,6 +16,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,11 +24,13 @@ import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.AddSpeciesHintWidget
 import com.wmstein.tourcount.widgets.AddSpeciesWidget
+
 import java.util.Locale
 
 /**********************************************************************
@@ -41,7 +44,7 @@ import java.util.Locale
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-03-24
+ * last edited on 2026-05-19
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -86,7 +89,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "89, onCreate")
+            Log.i(TAG, "92, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -139,7 +142,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "142, onResume")
+            Log.i(TAG, "145, onResume")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -195,20 +198,11 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Toast hint for duration of list calculation
         val mesg = getString(R.string.wait)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Toast.makeText(
-                applicationContext,
-                fromHtml("<font color='blue'>$mesg</font>"),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else
-        {
-            Toast.makeText( // bright green
-                applicationContext,
-                fromHtml("<font color='#008800'>$mesg</font>"),
-                Toast.LENGTH_LONG
-            ).show()
-        }
+        Toast.makeText(
+            applicationContext,
+            fromHtml("<font color='blue'>$mesg</font>"),
+            Toast.LENGTH_SHORT
+        ).show()
         Handler(Looper.getMainLooper()).postDelayed({
             constructAddList()
         }, 100)
@@ -408,7 +402,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "411, onPause")
+            Log.i(TAG, "405, onPause")
 
         countDataSource!!.close()
 
@@ -426,7 +420,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "429, onStop")
+            Log.i(TAG, "423, onStop")
 
         addArea = null
         addHintArea = null
@@ -436,7 +430,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "439, onDestroy")
+            Log.i(TAG, "433, onDestroy")
     }
 
     companion object {

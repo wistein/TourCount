@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
+
 import androidx.appcompat.widget.AppCompatTextView
 
 /**************************************************************************************************
@@ -26,7 +27,7 @@ import androidx.appcompat.widget.AppCompatTextView
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
  * last edited in Java on 2023-05-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-02-17.
+ * last edited on 2026-05-19.
  */
 class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: AttributeSet?) :
     AppCompatTextView(context, attrs) {

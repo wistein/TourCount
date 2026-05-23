@@ -9,14 +9,16 @@ import android.view.MenuItem
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 import android.widget.TextView
+
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.Utils.fromHtml
+
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -27,7 +29,7 @@ import java.util.Locale
  * Custom class for displaying the Help and License Dialogs
  *
  * Created by wmstein for TourCount and TransektCount on 2025-07-08,
- * last edited on 2026-03-21
+ * last edited on 2026-05-19
  */
 class ShowTextDialog : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -116,7 +118,6 @@ class ShowTextDialog : AppCompatActivity() {
         Linkify.addLinks(tvText, Linkify.WEB_URLS)
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
     fun setStatusBarColor(window: Window, color: Int) {
         window.decorView.setOnApplyWindowInsetsListener { view, insets ->
             view.setBackgroundColor(color)

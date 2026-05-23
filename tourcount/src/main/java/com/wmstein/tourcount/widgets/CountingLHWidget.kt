@@ -7,20 +7,23 @@ import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.AutoFitText
-import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
+import com.wmstein.tourcount.R
+import com.wmstein.tourcount.TourCountApplication.Companion.screenRatioBig
+
 import java.util.Objects
 
 /**********************************
- * Interface for widget_counting_lh.xml
+ * Interface for widget_counting_lh_*.xml
  * used by CountingActivity
  *
  * Created by wmstein 2016-12-18,
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-02-28
+ * last edited on 2026-05-22
  */
 @SuppressLint("SetTextI18n")
 class CountingLHWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
@@ -42,9 +45,16 @@ class CountingLHWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(
     @JvmField
     var count: Count? = null
 
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lh, this, true)
+        if (screenRatioBig) // > 2
+            Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lh_big,
+                this, true)
+        else
+            Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lh_small,
+                this, true)
+
         namef1i = findViewById(R.id.f1iNameLH)
         namef2i = findViewById(R.id.f2iNameLH)
         namef3i = findViewById(R.id.f3iNameLH)

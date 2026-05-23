@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
+
 import java.io.Serializable
 import java.util.Objects
 
@@ -19,7 +21,7 @@ import java.util.Objects
  * Adopted for TourCount by wmstein on 2016-02-18
  * last edited in Java on 2020-10-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-02-28
+ * last edited on 2026-05-23
  */
 class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {

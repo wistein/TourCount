@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
+
 import java.util.Objects
 
 /***************************************************
  * EditTourNotesWidget used by EditTourNotesActivity
  *
  * Created by wmstein on 2025-09-16,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class EditTourNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val tourNotesTitle: TextView

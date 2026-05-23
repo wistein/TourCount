@@ -6,8 +6,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Section
+
 import java.util.Objects
 
 /*************************************************************
@@ -16,7 +18,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-02-28
+ * last edited on 2026-05-23
  */
 class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date

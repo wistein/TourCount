@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Section
+
 import java.util.Objects
 
 /******************************************************
@@ -16,7 +18,7 @@ import java.util.Objects
  * used by CountingActivity
  *
  * Created by wmstein 2025-09-16,
- * last edited on 2026-02-28
+ * last edited on 2026-05-23
  */
 class CountingTourNotesWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {

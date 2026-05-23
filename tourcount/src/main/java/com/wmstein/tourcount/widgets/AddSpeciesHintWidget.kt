@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
+
 import com.wmstein.tourcount.R
+
 import java.util.Objects
 
 /*****************************************************
@@ -13,7 +15,7 @@ import java.util.Objects
  * shows single hint line with search field
  *
  * Created by wmstein on 2024-12-17
- * last edited on 2026-03-02.
+ * last edited on 2026-05-23.
  */
 class AddSpeciesHintWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private var searchA: EditText

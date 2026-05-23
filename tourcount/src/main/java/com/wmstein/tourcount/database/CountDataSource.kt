@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
+
 import com.wmstein.tourcount.database.DbHelper.Companion.COUNT_TABLE
 
 /********************************************************
@@ -14,7 +15,7 @@ import com.wmstein.tourcount.database.DbHelper.Companion.COUNT_TABLE
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2025-11-01
+ * last edited on 2026-05-23
  */
 class CountDataSource(context: Context) {
     // Database fields

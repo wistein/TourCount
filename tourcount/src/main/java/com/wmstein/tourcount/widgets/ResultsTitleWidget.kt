@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
+
 import java.util.Objects
 
 /************************************************
@@ -14,7 +16,7 @@ import java.util.Objects
  * Created by wmstein on 2016-06-06,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class ResultsTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val listtitle: TextView

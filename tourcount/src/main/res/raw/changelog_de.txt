@@ -69,10 +69,18 @@ _ subtitle
   ) Quellcode und Dokumentation veröffentlicht unter:
   ) <a href="https://github.com/wistein/TourCount" target="_blank">https://github.com/wistein/TourCount</a>
   _
-  ) Geeignet für Android 7.1 (Nougat) oder neuer.
+  ) Geeignet für Android 11 oder neuer.
   _
   .
   _
+
+$ 3.7.6
+  % Version 3.7.6
+  _ 23.05.2026
+  * Die minimale Android-Version nach 11 geändert
+  * Layout der Zählseite besser an das Seitenverhältnis angepasst
+  * Code-Verbesserungen
+  * Doku aktualisiert
 
 $ 3.7.5
   % Version 3.7.5

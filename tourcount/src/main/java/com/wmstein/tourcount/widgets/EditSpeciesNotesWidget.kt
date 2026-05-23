@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
+
 import java.util.Objects
 
 /*********************************************************
@@ -15,7 +17,7 @@ import java.util.Objects
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class EditSpeciesNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val specNotesTitle: TextView

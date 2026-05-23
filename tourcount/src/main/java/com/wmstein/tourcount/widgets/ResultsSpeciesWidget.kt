@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
+
 import java.util.Objects
 
 /**********************************************************
@@ -18,7 +20,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 15.03.2016
  * Last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-03-02.
+ * last edited on 2026-05-23.
  */
 class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtSpecName: TextView

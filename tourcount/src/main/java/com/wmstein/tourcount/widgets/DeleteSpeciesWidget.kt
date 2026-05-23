@@ -8,8 +8,10 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Count
+
 import java.io.Serializable
 import java.util.Objects
 
@@ -18,7 +20,7 @@ import java.util.Objects
  * shows list of selectable species with name, code, picture and add checkbox
  *
  * Created for TourCount by wmstein on 2024-08-22,
- * last edited on 2026-03-02
+ * last edited on 2026-05-23
  */
 class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {

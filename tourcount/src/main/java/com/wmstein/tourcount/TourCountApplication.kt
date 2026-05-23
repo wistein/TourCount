@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
-import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.Log
@@ -23,7 +21,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2026-05-18
+ * last edit on 2026-05-23
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -35,7 +33,7 @@ class TourCountApplication : Application() {
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "38, StrictMode.setVmPolicy")
+            Log.i(TAG, "36, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
@@ -47,7 +45,7 @@ class TourCountApplication : Application() {
             prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "50, Error: $e")
+                Log.e(TAG, "48, Error: $e")
         }
 
         // Initiate ActivityLifecycle for stopping periodic location requests
@@ -63,21 +61,16 @@ class TourCountApplication : Application() {
         val backgroundPref: String = prefs!!.getString("pref_backgr", "default")!!
         val wm = checkNotNull(this.getSystemService(WINDOW_SERVICE) as WindowManager)
 
-        if (Build.VERSION.SDK_INT >= 30) {
-            val metrics = wm.currentWindowMetrics
-            width = metrics.bounds.right + metrics.bounds.left
-            height = metrics.bounds.top + metrics.bounds.bottom
-        } else {
-			@Suppress("DEPRECATION")
-            val display = wm.defaultDisplay // deprecated in 30
-            val size = Point()
-			@Suppress("DEPRECATION")
-            display.getSize(size) // deprecated in 30
-            width = size.x
-            height = size.y
-        }
+        val metrics = wm.currentWindowMetrics
+        width = metrics.bounds.right + metrics.bounds.left
+        height = metrics.bounds.top + metrics.bounds.bottom
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "80, Width: $width Height: $height")
+            Log.i(TAG, "68, Width: $width Height: $height")
+
+        if (height / width > 2)
+            screenRatioBig = true
+        else
+            screenRatioBig = false
 
         var bMap: Bitmap?
         when (backgroundPref) {
@@ -157,6 +150,9 @@ class TourCountApplication : Application() {
         fun getPrefs(): SharedPreferences {
             return prefs!!
         }
+
+        @JvmField
+        var screenRatioBig: Boolean = false // WelcomeActivity, CountingActivity
 
         @JvmField
         var lat = 0.0 // set by getLatitude() in LocationService

@@ -13,16 +13,18 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import android.widget.TextView
+
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+
 import com.wmstein.tourcount.BuildConfig
 import com.wmstein.tourcount.IsRunningOnEmulator
 import com.wmstein.tourcount.R
+
 import java.io.File
 import java.io.FileFilter
 import java.text.DateFormat
@@ -35,7 +37,7 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-04-06
+ * last edited on 2026-05-23
  */
 class AdvFileChooser : AppCompatActivity() {
     private var currentDir: File? = null
@@ -50,7 +52,7 @@ class AdvFileChooser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "53, onCreate")
+            Log.i(TAG, "55, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -105,21 +107,12 @@ class AdvFileChooser : AppCompatActivity() {
         fileHead.text = fileHd
 
         // currentDir = /storage/emulated/0/Documents/TourCount/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android >= 10+
-        {
-            currentDir = Environment.getExternalStorageDirectory()
-            currentDir = File("$currentDir/Documents/TourCount")
-        } else {
-            currentDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS
-            )
-            currentDir = File("$currentDir/TourCount")
-        }
+        currentDir = Environment.getExternalStorageDirectory()
+        currentDir = File("$currentDir/Documents/TourCount")
         fill(currentDir!!)
     }
     // End of onCreate()
 
-    @RequiresApi(Build.VERSION_CODES.R)
     fun setStatusBarColor(window: Window, color: Int) {
         window.decorView.setOnApplyWindowInsetsListener { view, insets ->
             view.setBackgroundColor(color)
@@ -186,7 +179,7 @@ class AdvFileChooser : AppCompatActivity() {
         intent.putExtra("fileSelected", fileSelected.absolutePath)
         setResult(RESULT_OK, intent)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "188, Selected file: $fileSelected")
+            Log.i(TAG, "182, Selected file: $fileSelected")
         finish()
     }
 

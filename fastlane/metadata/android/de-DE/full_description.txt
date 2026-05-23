@@ -1,19 +1,10 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.7.5:
-- Info über neue Google Einschränkungen in "App-Info"
-- GPS-Parameter "Min. Distanz für GPS-Update" in Einstellungen hinzugefügt
-- Hintergrunddienst für die periodische Abfrage der Adressinformation von Nominatim (OpenStreetMap) hinzugefügt
-- Option "Adress-Abfrageintervall" zwecks Auswahl der Intervalllänge in Einstellungen hinzugefügt
-- Eine initiale Pop-Up-Info mit Ton meldet die 1. gefundene Lokalität anstelle des 1. GPS-Fix
-- Einige Meldungen verbessert
-- Code-Verbesserungen
-- Doku und Beispieldateien aktualisiert
-- Bugfixes:
-  * In "Einstellungen" gewählte Datensprache wurde nicht in die DB geschrieben
-  * In Version 3.7.4 hatten registrierte Individuen dieselben Ortsdaten
-  * Bis Version 3.7.3 hatten registrierte Individuen die jeweils vorletzten Ortsdaten
-  * Sprach-abhängige Datumsformatierung für Dateinamen korrigiert
+Neu in Version 3.7.6:
+ - Die minimale Android-Version nach 11 geändert
+ - Layout der Zählseite besser an das Seitenverhältnis angepasst
+ - Code-Verbesserungen
+ - Doku aktualisiert
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

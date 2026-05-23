@@ -1,0 +1,5 @@
+Version 3.7.6 (2026-05-23)
+- Changed the minimal Android version from 7.1 to 11
+- Layout of the counting page better adapted to screen ratio
+- Code improvements
+- Docs updated

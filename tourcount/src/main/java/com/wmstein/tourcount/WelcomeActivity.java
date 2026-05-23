@@ -91,7 +91,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-05-18
+ * last edited on 2026-05-19
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -279,14 +279,8 @@ public class WelcomeActivity
         storagePermGranted = isStoragePermGranted();
         if (storagePermGranted) {
             File path;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-            {
-                path = Environment.getExternalStorageDirectory();
-                path = new File(path + "/Documents/TourCount");
-            } else {
-                path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-                path = new File(path + "/TourCount");
-            }
+            path = Environment.getExternalStorageDirectory();
+            path = new File(path + "/Documents/TourCount");
 
             // Delete old preliminary tourcount0.db if it does exist
             inFile = new File(path, "/tourcount0.db"); // old initial basic DB
@@ -382,7 +376,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "385, onResume");
+            Log.i(TAG, "379, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -452,7 +446,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "455, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "449, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
@@ -465,19 +459,11 @@ public class WelcomeActivity
     // Check initial external storage permission and set 'storagePermGranted'
     private Boolean isStoragePermGranted() {
         boolean storageGranted;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
-            storageGranted = Environment.isExternalStorageManager();
+        // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
+        storageGranted = Environment.isExternalStorageManager();
 
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "473, ManageStoragePermission: " + storagePermGranted);
-        } else {
-            storageGranted = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "479, ExtStoragePermission: " + storagePermGranted);
-        }
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "466, ManageStoragePermission: " + storagePermGranted);
         return storageGranted;
     }
 
@@ -498,7 +484,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "501, locationDispatcher 1");
+                            Log.i(TAG, "487, locationDispatcher 1");
 
                         locationService = new LocationService(getApplicationContext());
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -512,7 +498,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "515, locationDispatcher 2");
+                            Log.i(TAG, "501, locationDispatcher 2");
 
                         locationService.stopListener();
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -542,7 +528,7 @@ public class WelcomeActivity
                 // Get address data
                 if (!adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "545, addressDispatcher 1");
+                        Log.i(TAG, "531, addressDispatcher 1");
 
                     adrServiceOn = true;
                     addrRequestService = new AddrRequestService();
@@ -555,7 +541,7 @@ public class WelcomeActivity
                 // Stop AddrRequestService
                 if (adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "558, addressDispatcher 2");
+                        Log.i(TAG, "544, addressDispatcher 2");
 
                     addrRequestService.releaseSoundA();
                     addrRequestService.stopTimerTask();
@@ -742,7 +728,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "745, onPause");
+            Log.i(TAG, "731, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -755,7 +741,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "758, onStop");
+            Log.i(TAG, "744, onStop");
 
         baseLayout.invalidate();
 
@@ -781,7 +767,7 @@ public class WelcomeActivity
             addressDispatcher(2);
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "784, onStop, app not visible, running services Loc, Snd, Adr: "
+                Log.i(TAG, "770, onStop, app not visible, running services Loc, Snd, Adr: "
                         + locServiceOn + ", " + sndServiceOn + ", " + adrServiceOn);
 
             finishAndRemoveTask();
@@ -793,7 +779,7 @@ public class WelcomeActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "796, onDestroy");
+            Log.i(TAG, "782, onDestroy");
 
         System.exit(0);
     }
@@ -932,7 +918,7 @@ public class WelcomeActivity
                                     hasDataLang = false;
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "935, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "921, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -946,7 +932,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "949, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "935, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1196,14 +1182,8 @@ public class WelcomeActivity
         // outFile in Public Directory Documents/TourCount/
         // distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-        {
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TourCount");
-        } else {
-            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            path = new File(path + "/TourCount");
-        }
+        path = Environment.getExternalStorageDirectory();
+        path = new File(path + "/Documents/TourCount");
 
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // just verify path, result ignored
@@ -1266,14 +1246,8 @@ public class WelcomeActivity
     private void exportDb() {
         // Public data directory for outFile: Documents/TourCount/
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-        {
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TourCount");
-        } else {
-            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            path = new File(path + "/TourCount");
-        }
+        path = Environment.getExternalStorageDirectory();
+        path = new File(path + "/Documents/TourCount");
 
         String date, start_tm;
 
@@ -1379,14 +1353,8 @@ public class WelcomeActivity
         // outFile -> /storage/emulated/0/Documents/TourCount/Tour_yyyyMMdd_HHmmss_tourname.csv
         // and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-        {
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TourCount");
-        } else {
-            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            path = new File(path + "/TourCount");
-        }
+        path = Environment.getExternalStorageDirectory();
+        path = new File(path + "/Documents/TourCount");
 
         // Set environment data
         String date, start_tm, end_tm;
@@ -2036,16 +2004,8 @@ public class WelcomeActivity
         // outFileTour -> /storage/emulated/0/Documents/TourCount/species_ll_Tour_tourname_yyyyMMdd_HHmmss.csv
         // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_ll_Tour_tourname_yyyyMMdd_HHmmss.csv
         File pathTour, outFileTour, pathTransect, outFileTransect;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) // Android 10+
-        {
-            pathTransect = new File(Environment.getExternalStorageDirectory() + "/Documents/TransektCount");
-            pathTour = new File(Environment.getExternalStorageDirectory() + "/Documents/TourCount");
-        } else {
-            pathTransect = new File(Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/TransektCount");
-            pathTour = new File(Environment.
-                    getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/TourCount");
-        }
+        pathTransect = new File(Environment.getExternalStorageDirectory() + "/Documents/TransektCount");
+        pathTour = new File(Environment.getExternalStorageDirectory() + "/Documents/TourCount");
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);

@@ -8,7 +8,9 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import com.wmstein.tourcount.R
+
 import java.io.Serializable
 import java.util.Objects
 
@@ -19,7 +21,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2019-04-03,
  * last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-05-02
- * last edited on 2026-02-28
+ * last edited on 2026-05-23
  */
 class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {

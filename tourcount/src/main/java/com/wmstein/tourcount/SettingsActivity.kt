@@ -9,7 +9,6 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
@@ -27,7 +26,7 @@ import com.wmstein.tourcount.database.HeadDataSource
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2026-04-15
+ * last edited on 2026-05-19
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -79,7 +78,6 @@ class SettingsActivity : AppCompatActivity() {
     }
     // End of onCreate()
 
-    @RequiresApi(Build.VERSION_CODES.R)
     fun setStatusBarColor(window: Window, color: Int) {
         window.decorView.setOnApplyWindowInsetsListener { view, insets ->
             view.setBackgroundColor(color)
