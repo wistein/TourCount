@@ -2,7 +2,7 @@
 <!--
     widget_add_hint.xml
     used by AddSpeciesHintWidget.kt
-    Last edited on 2024-10-14
+    Last edited on 2026-05-24
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -20,6 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical|start"
+        android:paddingStart="5dp"
         android:layout_weight="0.6"
         android:text="@string/specsToAdd"
         android:textStyle="bold"
@@ -34,8 +35,8 @@
         android:layout_weight="0.5"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
+        android:inputType="text"
         android:importantForAutofill="no"
-        android:inputType="textCapSentences"
         android:textColorHint="@color/BrightGray"
         android:hint="@string/hintSearch"
         android:textSize="16sp"/>
@@ -50,7 +51,7 @@
         android:paddingEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
-        android:onClick="getAddInitialChars"
+        android:onClick="getAddSearchChars"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_search_black_48dp"
         tools:ignore="ContentDescription,UsingOnClickInXml" />

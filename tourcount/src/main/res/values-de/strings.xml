@@ -155,8 +155,8 @@
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Arten hinzufügen</string>
-    <string name="hintSearch">Anfangsbuchst.</string>
-    <string name="initCharsL">Bitte 2 Buchst.</string>
+    <string name="hintSearch">Such-String</string>
+    <string name="searchCharsL">Bitte >1 Buchst.</string>
     <string name="labelAddSpecButton">Arten hinzufügen</string>
     <string name="specsCommonLang">Achtung, altes DB- oder Artenlistenformat! Zur korrekten Verwendung von lokalen Namen muss die Sprache der Daten unter "Einstellungen" gewählt werden.</string>
     <string name="specsToAdd">Weitere Arten:</string>

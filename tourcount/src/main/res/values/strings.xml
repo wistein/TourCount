@@ -170,8 +170,8 @@
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
-    <string name="hintSearch">Starting chars.</string>
-    <string name="initCharsL">Please 2 chars.</string>
+    <string name="hintSearch">Search string</string>
+    <string name="searchCharsL">Please, >1 chars.</string>
     <string name="labelAddSpecButton">Add Species</string>
     <string name="specsCommonLang">Note: This is the old DB or species list format! To ensure common names are displayed correctly, you must select the data language under “Settings”.</string>
     <string name="specsToAdd">Further species:</string>

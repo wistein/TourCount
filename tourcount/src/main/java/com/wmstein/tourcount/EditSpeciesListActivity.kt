@@ -40,7 +40,7 @@ import java.util.Locale
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-04-19
+ * last edited on 2026-05-25
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
@@ -58,8 +58,8 @@ class EditSpeciesListActivity : AppCompatActivity() {
     private var cmpCountCodes: ArrayList<String>? = null
     private var savedCounts: ArrayList<EditSpeciesListWidget>? = null
 
-    // 2 initial characters to limit selection
-    private var initChars: String = ""
+    // 2 or more characters to limit selection
+    private var searchChars: String = ""
 
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
@@ -108,7 +108,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         //  Note variables to restore them
         val extras = intent.extras
         if (extras != null) {
-            initChars = extras.getString("init_Chars").toString()
+            searchChars = extras.getString("search_Chars").toString()
         }
 
         // Set up the data sources
@@ -153,8 +153,8 @@ class EditSpeciesListActivity : AppCompatActivity() {
 
         // Display hint: Current species list
         val hew = EditSpeciesListHintWidget(this, null)
-        if (initChars.length == 2)
-            hew.setSearchE(initChars)
+        if (searchChars.length >= 2)
+            hew.setSearchE(searchChars)
         else
             hew.setSearchE(getString(R.string.hintSearch))
         hintArea!!.addView(hew)
@@ -163,25 +163,25 @@ class EditSpeciesListActivity : AppCompatActivity() {
     }
     // End of onResume()
 
-    // Get initial 2 characters of species to select by search button
-    fun getEditInitialChars(view: View) {
+    // Get 2 or more characters of species to select by search button
+    fun getEditSearchChars(view: View) {
         // Read EditText searchEdit from widget_edit_hint.xml
         val searchEdit: EditText = findViewById(R.id.searchE)
+        searchEdit.findFocus()
 
         // Get the initial characters of species to select from
-        initChars = searchEdit.text.toString().trim()
-        if (initChars.length == 1) {
-            // Reminder: "Please, 2 characters"
-            searchEdit.error = getString(R.string.initCharsL)
+        searchChars = searchEdit.text.toString().trim()
+        if (searchChars.length == 1) {
+            // Reminder: "Please, >1 chars"
+            searchEdit.error = getString(R.string.searchCharsL)
         } else {
-            initChars = initChars.substring(0,2)
             searchEdit.error = null
             searchEdit.clearFocus()
             searchEdit.invalidate()
 
             // Re-enter EditSpeciesListActivity for edited list
             val intent = Intent(this@EditSpeciesListActivity, EditSpeciesListActivity::class.java)
-            intent.putExtra("init_Chars", initChars)
+            intent.putExtra("search_Chars", searchChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             finish()
@@ -200,12 +200,12 @@ class EditSpeciesListActivity : AppCompatActivity() {
 
         // Display all the counts by adding them to editingCountsArea
         // Get the counting list species into their EditSpeciesListWidget and add them to the view
-        if (initChars.length == 2) {
-            initChars = initChars.uppercase(Locale.getDefault()) //Compare initChars in uppercase
+        if (searchChars.length >= 2) {
+            searchChars = searchChars.uppercase(Locale.getDefault()) //Compare searchChars in uppercase
             var cnt = 1
             // Check name in counts for InitChars to reduce list
             for (count in counts) {
-                if (count.name?.substring(0, 2)?.uppercase(Locale.getDefault()) == initChars) {
+                if (count.name!!.uppercase(Locale.getDefault()).contains(searchChars)) {
                     esw = EditSpeciesListWidget(this, null)
                     esw!!.setCountName(count.name)
                     esw!!.setCountNameG(count.name_g)
@@ -397,7 +397,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "400, Double name = $isDblCode")
+                    Log.i(TAG, "400, Double code = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

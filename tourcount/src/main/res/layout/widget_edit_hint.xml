@@ -2,7 +2,7 @@
 <!--
     widget_edit_hint.xml
     used by EditSpeciesListHintWidget.kt
-    Last edited on 2024-10-14
+    Last edited on 2026-05-24
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:textColorHint="@color/BrightGray"
         android:hint="@string/hintSearch"
         android:importantForAutofill="no"
-        android:inputType="textCapSentences"
+        android:inputType="text"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textSize="16sp" />
@@ -51,7 +51,7 @@
         android:paddingEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
-        android:onClick="getEditInitialChars"
+        android:onClick="getEditSearchChars"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_search_black_48dp"
         tools:ignore="ContentDescription,UsingOnClickInXml" />

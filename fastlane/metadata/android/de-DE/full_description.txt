@@ -1,9 +1,7 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.7.6:
- - Die minimale Android-Version nach 11 geändert
- - Layout der Zählseite besser an das Seitenverhältnis angepasst
- - Code-Verbesserungen
+Neu in Version 3.7.7:
+ - Komfortablere Vorauswahl für Hinzufügen, Löschen oder Editieren von Arten der Zählliste
  - Doku aktualisiert
 
 Eigenschaften:

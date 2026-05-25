@@ -37,7 +37,7 @@ import java.util.Locale
  *
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2026-05-19
+ * last edited on 2026-05-25
  */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
@@ -51,7 +51,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     private var delHintArea: LinearLayout? = null
 
     // 2 initial characters to limit selection
-    private var initChars: String = ""
+    private var searchChars: String = ""
 
     // Arraylists
     private var listToDelete: ArrayList<DeleteSpeciesWidget>? = null
@@ -91,10 +91,13 @@ class DelSpeciesActivity : AppCompatActivity() {
             WindowInsetsCompat.CONSUMED
         }
 
-        // Get value from re-entering respective getDelInitialChars()
+        // Get value from re-entering respective getDelSearchChars()
         val extras = intent.extras
         if (extras != null)
-            initChars = extras.getString("init_Chars").toString()
+            searchChars = extras.getString("search_Chars").toString()
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "100 onCreate, searchChars: $searchChars")
 
         listToDelete = ArrayList()
 
@@ -121,7 +124,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "124 onResume")
+            Log.i(TAG, "127 onResume")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -150,8 +153,8 @@ class DelSpeciesActivity : AppCompatActivity() {
 
         // Display hint: Species in counting list
         val hdw = DeleteSpeciesHintWidget(this, null)
-        if (initChars.length == 2)
-            hdw.setSearchD(initChars)
+        if (searchChars.length >= 2)
+            hdw.setSearchD(searchChars)
         else
             hdw.setSearchD(getString(R.string.hintSearch))
         delHintArea!!.addView(hdw)
@@ -161,24 +164,24 @@ class DelSpeciesActivity : AppCompatActivity() {
     // End of onResume()
 
     // Get initial 2 characters of species to select by search button
-    fun getDelInitialChars(view: View) {
+    fun getDelSearchChars(view: View) {
         // Read EditText searchDel from widget_del_hint.xml
         val searchDel: EditText = findViewById(R.id.searchD)
+        searchDel.findFocus()
 
         // Get the initial characters of species to select from
-        initChars = searchDel.text.toString().trim()
-        if (initChars.length == 1) {
-            // Reminder: "Please, 2 characters"
-            searchDel.error = getString(R.string.initCharsL)
+        searchChars = searchDel.text.toString().trim()
+        if (searchChars.length == 1) {
+            // Reminder: "Please, >1 characters"
+            searchDel.error = getString(R.string.searchCharsL)
         } else {
-            initChars = initChars.substring(0,2)
             searchDel.error = null
             searchDel.clearFocus()
             searchDel.invalidate()
 
             // Re-enter DelSpeciesActivity for reduced add list
             val intent = Intent(this@DelSpeciesActivity, DelSpeciesActivity::class.java)
-            intent.putExtra("init_Chars", initChars)
+            intent.putExtra("search_Chars", searchChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             finish()
@@ -192,12 +195,12 @@ class DelSpeciesActivity : AppCompatActivity() {
         val counts = countDataSource!!.allSpeciesSrtCode
 
         // Get all counting list species into their CountEditWidgets and add these to the view
-        if (initChars.length == 2) {
-            initChars = initChars.uppercase(Locale.getDefault()) //Compare initChars in uppercase
+        if (searchChars.length >= 2) {
+            searchChars = searchChars.uppercase(Locale.getDefault()) //Compare searchChars in uppercase
             var cnt = 1
             // Check name in counts for InitChars to reduce list
             for (count in counts) {
-                if (count.name?.substring(0, 2)?.uppercase(Locale.getDefault()) == initChars) {
+                if (count.name!!.uppercase(Locale.getDefault()).contains(searchChars)) {
                     val dsw = DeleteSpeciesWidget(this, null)
                     dsw.setSpecName(count.name)
                     dsw.setSpecNameG(count.name_g)
@@ -298,7 +301,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "301, onPause")
+            Log.i(TAG, "304, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -319,7 +322,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "322, onStop")
+            Log.i(TAG, "325, onStop")
 
         deleteArea = null
         delHintArea = null
@@ -329,7 +332,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "332, onDestroy")
+            Log.i(TAG, "335, onDestroy")
     }
 
     companion object {

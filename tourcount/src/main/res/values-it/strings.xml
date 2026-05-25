@@ -156,8 +156,8 @@
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Aggiungi specie</string>
-    <string name="hintSearch">Iniziali</string>
-    <string name="initCharsL">2 lettere, per favore</string>
+    <string name="hintSearch">Cerca</string>
+    <string name="searchCharsL">>1 lettere, per favore</string>
     <string name="labelAddSpecButton">Aggiungi specie</string>
     <string name="specsCommonLang">Attenzione: vecchio formato del database o lista delle specie! Per utilizzare correttamente i nomi comuni, è necessario selezionare la lingua dei dati in «Impostazioni».</string>
     <string name="specsToAdd">Altre specie:</string>

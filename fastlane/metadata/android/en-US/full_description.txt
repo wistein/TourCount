@@ -1,9 +1,7 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.6:
-- Changed the minimal Android version from 7.1 to 11
-- Layout of the counting page better adapted to screen ratio
-- Code improvements
+New in Version 3.7.7:
+- More comfortable preselection for adding, deleting or editing species of the counting list
 - Docs updated
 
 Features:

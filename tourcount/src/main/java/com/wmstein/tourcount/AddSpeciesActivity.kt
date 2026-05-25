@@ -44,7 +44,7 @@ import java.util.Locale
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-05-19
+ * last edited on 2026-05-25
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -71,7 +71,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     private var posSpec: Int = 0
 
     // 2 initial characters to limit selection
-    private var initChars: String = ""
+    private var searchChars: String = ""
 
     // List of selected species to add
     private var listToAdd: ArrayList<AddSpeciesWidget>? = null
@@ -114,10 +114,10 @@ class AddSpeciesActivity : AppCompatActivity() {
             WindowInsetsCompat.CONSUMED
         }
 
-        // Get value from re-entering respective getAddInitialChars()
+        // Get value from re-entering respective getAddSearchChars()
         val extras = intent.extras
         if (extras != null)
-            initChars = extras.getString("init_Chars").toString()
+            searchChars = extras.getString("search_Chars").toString()
 
         listToAdd = ArrayList()
 
@@ -190,8 +190,8 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Display hint: Further available species
         val haw = AddSpeciesHintWidget(this, null)
-        if (initChars.length == 2)
-            haw.setSearchA(initChars)
+        if (searchChars.length >= 2)
+            haw.setSearchA(searchChars)
         else
             haw.setSearchA(getString(R.string.hintSearch))
         addHintArea!!.addView(haw)
@@ -211,26 +211,24 @@ class AddSpeciesActivity : AppCompatActivity() {
 
     // Get initial 2 characters of species to select by search button
     // Parameter view is necessary for function call
-    fun getAddInitialChars(view: View) {
+    fun getAddSearchChars(view: View) {
         // Read EditText searchAdd from widget_add_hint.xml
         val searchAdd: EditText = findViewById(R.id.searchA)
         searchAdd.findFocus()
 
-        // Get the initial characters of species to select from
-        initChars = searchAdd.text.toString().trim()
-        if (initChars.length == 1) {
-            // Reminder: "Please, 2 characters"
-            searchAdd.error = getString(R.string.initCharsL)
+        // Get the search characters for species to select from
+        searchChars = searchAdd.text.toString().trim()
+        if (searchChars.length == 1) {
+            // Reminder: "Please, >1 characters"
+            searchAdd.error = getString(R.string.searchCharsL)
         } else {
-            initChars = initChars.substring(0, 2)
             searchAdd.error = null
-
             searchAdd.clearFocus()
             searchAdd.invalidate()
 
             // Re-enter AddSpeciesActivity for reduced add list
             val intent = Intent(this@AddSpeciesActivity, AddSpeciesActivity::class.java)
-            intent.putExtra("init_Chars", initChars)
+            intent.putExtra("search_Chars", searchChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             finish()
@@ -273,23 +271,22 @@ class AddSpeciesActivity : AppCompatActivity() {
         namesLReducedArrayList = namesLCompleteArrayList
         codesReducedArrayList = codesCompleteArrayList
 
-        // 3. Further, optionally reduce the complete Arraylists for all but initChar species
-        if (initChars.length == 2) {
-            initChars = initChars.uppercase(Locale.getDefault()) //Compare initChars in uppercase
+        // 3. Further, optionally reduce the complete Arraylists for all but searchChars species
+        if (searchChars.length >= 2) {
+            searchChars = searchChars.uppercase(Locale.getDefault()) //Compare searchChars in uppercase
 
             // Empty ...ReducedArrayLists
             namesReducedArrayList = arrayListOf()
             namesLReducedArrayList = arrayListOf()
             codesReducedArrayList = arrayListOf()
 
-            // Check NamesCompleteArrayList for InitChars
             for (i in 0 until namesCompleteArrayList!!.size) {
-                if (namesCompleteArrayList!![i].substring(0, 2).uppercase(Locale.getDefault()) == initChars) {
+                if (namesCompleteArrayList!![i].uppercase(Locale.getDefault()).contains(searchChars)) {
                     specName = namesCompleteArrayList!![i]
                     specNameG = namesLCompleteArrayList!![i]
                     specCode = codesCompleteArrayList!![i]
 
-                    // Assemble remaining ReducedArrayLists for all Species with initChars
+                    // Assemble remaining ReducedArrayLists for all Species with searchChars
                     namesReducedArrayList!!.add(specName!!)
                     namesLReducedArrayList!!.add(specNameG!!)
                     codesReducedArrayList!!.add(specCode!!)
@@ -370,7 +367,7 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Re-enter AddSpeciesActivity to rebuild the species list
         val intent = Intent(this@AddSpeciesActivity, AddSpeciesActivity::class.java)
-        intent.putExtra("init_Chars", "")
+        intent.putExtra("search_Chars", "")
         intent.flags = FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()
@@ -402,7 +399,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "405, onPause")
+            Log.i(TAG, "402, onPause")
 
         countDataSource!!.close()
 
@@ -420,7 +417,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "423, onStop")
+            Log.i(TAG, "420, onStop")
 
         addArea = null
         addHintArea = null
@@ -430,7 +427,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "433, onDestroy")
+            Log.i(TAG, "430, onDestroy")
     }
 
     companion object {

@@ -155,8 +155,8 @@
 
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Ajouter des espèces</string>
-    <string name="hintSearch">Initiale</string>
-    <string name="initCharsL">2 lettres, svp.</string>
+    <string name="hintSearch">Rechercher</string>
+    <string name="searchCharsL">>1 lettres, svp.</string>
     <string name="labelAddSpecButton">Ajouter des espèces</string>
     <string name="specsCommonLang">Attention, ancien format de BD ou liste des espèces ! Pour utiliser correctement les noms communs, il faut sélectionner la langue des données dans « Paramètres ».</string>
     <string name="specsToAdd">Autres espèces:</string>

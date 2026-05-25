@@ -2,8 +2,7 @@
 <!--
     widget_del_hint.xml
     used by DeleteSpeciesHintWidget.kt
-    Copyright © 2023-2024, Wilhelm Stein, Bonn, Germany.
-    Last edited on 2024-10-14
+    Last edited on 2026-05-24
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,6 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical|start"
+        android:paddingStart="5dp"
         android:layout_weight="0.6"
         android:text="@string/presentSpecs"
         android:textStyle="bold"
@@ -36,9 +36,9 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:importantForAutofill="no"
-        android:inputType="textCapSentences"
-        android:textColorHint="@color/BrightGray"
+        android:inputType="text"
         android:hint="@string/hintSearch"
+        android:textColorHint="@color/BrightGray"
         android:textSize="16sp"/>
     <ImageButton
         android:id="@+id/buttonSearchD"
@@ -50,7 +50,7 @@
         android:paddingEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
-        android:onClick="getDelInitialChars"
+        android:onClick="getDelSearchChars"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_search_black_48dp"
         tools:ignore="ContentDescription,UsingOnClickInXml" />
