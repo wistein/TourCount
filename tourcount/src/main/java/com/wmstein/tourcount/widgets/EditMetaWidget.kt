@@ -18,7 +18,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -73,32 +73,32 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
 
     // Following the SETS of heads
     // date
-    fun setWidgetDate1(title: String?) {
+    fun setWidgetDate1(title: String) {
         widgetdate1.text = title
     }
 
     // start_tm
-    fun setWidgetStartTm1(title: String?) {
+    fun setWidgetStartTm1(title: String) {
         widgetstartTm1.text = title
     }
 
     // end_tm
-    fun setWidgetEndTm1(title: String?) {
+    fun setWidgetEndTm1(title: String) {
         widgetendTm1.text = title
     }
 
     // temperature
-    fun setWidgetTemp1(title: String?) {
+    fun setWidgetTemp1(title: String) {
         widgettemp1.text = title
     }
 
     // wind
-    fun setWidgetWind1(title: String?) {
+    fun setWidgetWind1(title: String) {
         widgetwind1.text = title
     }
 
     // clouds
-    fun setWidgetClouds1(title: String?) {
+    fun setWidgetClouds1(title: String) {
         widgetclouds1.text = title
     }
 
@@ -224,17 +224,17 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
             if (name > 0 ) widgetclouds3.setText(name.toString())
         }
 
-    var widgetDate2: String?
+    var widgetDate2: String
         get() = widgetdate2.text.toString()
         set(name) {
             widgetdate2.text = name
         }
-    var widgetStartTm2: String?
+    var widgetStartTm2: String
         get() = widgetstartTm2.text.toString()
         set(name) {
             widgetstartTm2.text = name
         }
-    var widgetEndTm2: String?
+    var widgetEndTm2: String
         get() = widgetendTm2.text.toString()
         set(name) {
             widgetendTm2.text = name

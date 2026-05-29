@@ -16,7 +16,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditMetaLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
@@ -63,60 +63,60 @@ class EditMetaLocationWidget(context: Context, attrs: AttributeSet?) : LinearLay
 
     // The SETS
     // Country
-    fun setWidgetCo1(title: String?) {
+    fun setWidgetCo1(title: String) {
         widgetCoT.text = title
     }
-    var widgetCo2: String?
+    var widgetCo2: String
         get() = widgetCoN.text.toString()
         set(name) {
             widgetCoN.text = name
         }
 
     // State
-    fun setWidgetState1(title: String?) {
+    fun setWidgetState1(title: String) {
         widgetStateT.text = title
     }
-    var widgetState2: String?
+    var widgetState2: String
         get() = widgetStateN.text.toString()
         set(name) {
             widgetStateN.text = name
         }
 
     // City
-    fun setWidgetCity1(title: String?) {
+    fun setWidgetCity1(title: String) {
         widgetcity1.text = title
     }
-    var widgetCity2: String?
+    var widgetCity2: String
         get() = widgetcity2.text.toString()
         set(name) {
             widgetcity2.text = name
         }
 
     // Place
-    fun setWidgetPlace1(title: String?) {
+    fun setWidgetPlace1(title: String) {
         widgetplace1.text = title
     }
-    var widgetPlace2: String?
+    var widgetPlace2: String
         get() = widgetplace2.text.toString()
         set(name) {
             widgetplace2.text = name
         }
 
     // Locality
-    fun setWidgetLocality1(title: String?) {
+    fun setWidgetLocality1(title: String) {
         widgetLocalityT.text = title
     }
-    var widgetLocality2: String?
+    var widgetLocality2: String
         get() = widgetLocalityN.text.toString()
         set(name) {
             widgetLocalityN.text = name
         }
 
     // PLZ
-    fun setWidgetPlz1(title: String?) {
+    fun setWidgetPlz1(title: String) {
         widgetplz1.text = title
     }
-    var widgetPlz2: String?
+    var widgetPlz2: String
         get() = widgetplz2.text.toString()
         set(name) {
             widgetplz2.text = name

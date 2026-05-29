@@ -24,6 +24,7 @@ import androidx.core.view.updateLayoutParams
 
 import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.CountDataSource
+import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.widgets.EditSpeciesListWidget
 import com.wmstein.tourcount.widgets.EditSpeciesListHintWidget
 
@@ -40,15 +41,16 @@ import java.util.Locale
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-25
+ * last edited on 2026-05-29
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
     private var countDataSource: CountDataSource? = null
+    private var individualsDataSource: IndividualsDataSource? = null
 
     // Layouts
     private var editingCountsArea: LinearLayout? = null
-    private var hintArea: LinearLayout? = null
+    private var editHintArea: LinearLayout? = null
 
     // Widgets
     private var esw: EditSpeciesListWidget? = null
@@ -59,21 +61,21 @@ class EditSpeciesListActivity : AppCompatActivity() {
     private var savedCounts: ArrayList<EditSpeciesListWidget>? = null
 
     // 2 or more characters to limit selection
-    private var searchChars: String = ""
+    private var searchChars = ""
 
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
-    private var sortPref: String? = ""
+    private var sortPref = ""
     private var brightPref = false
     private var awakePref = false
 
-    private var mesg: String = ""
+    private var mesg = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "76, onCreate")
+            Log.i(TAG, "78, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -102,7 +104,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
 
         savedCounts = ArrayList() // for EditSpeciesListWidget
 
-        hintArea = findViewById(R.id.showHintLayout)
+        editHintArea = findViewById(R.id.showHintLayout)
         editingCountsArea = findViewById(R.id.editingCountsLayout)
 
         //  Note variables to restore them
@@ -113,6 +115,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
 
         // Set up the data sources
         countDataSource = CountDataSource(this)
+        individualsDataSource = IndividualsDataSource(this)
 
         // New onBackPressed logic
         val callback = object : OnBackPressedCallback(true) {
@@ -131,7 +134,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
-        sortPref = prefs.getString("pref_sort_sp", "none")
+        sortPref = prefs.getString("pref_sort_sp", "none").toString()
 
         // Set full brightness of screen
         if (brightPref) {
@@ -142,22 +145,23 @@ class EditSpeciesListActivity : AppCompatActivity() {
         if (awakePref)
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        countDataSource!!.open()
+        individualsDataSource!!.open()
+
         // Build the EditSpeciesList screen
         editingCountsArea!!.removeAllViews()
-        hintArea!!.removeAllViews()
-
-        countDataSource!!.open()
+        editHintArea!!.removeAllViews()
 
         supportActionBar!!.setTitle(R.string.editTitle)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // Display hint: Current species list
+        // Display hint: "Search string" or editable searchChars
         val hew = EditSpeciesListHintWidget(this, null)
         if (searchChars.length >= 2)
-            hew.setSearchE(searchChars)
+            hew.setSearchE1(searchChars)
         else
             hew.setSearchE(getString(R.string.hintSearch))
-        hintArea!!.addView(hew)
+        editHintArea!!.addView(hew)
 
         constructEditList()
     }
@@ -189,7 +193,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
     }
 
     // Construct edit-species-list of contained species in the counting list
-    //   and optionally reduce it by uppercase initChar selection
+    //   and optionally reduce it to searchChars selection
     private fun constructEditList() {
         // Load the sorted species data
         val counts = when (sortPref) {
@@ -203,9 +207,9 @@ class EditSpeciesListActivity : AppCompatActivity() {
         if (searchChars.length >= 2) {
             searchChars = searchChars.uppercase(Locale.getDefault()) //Compare searchChars in uppercase
             var cnt = 1
-            // Check name in counts for InitChars to reduce list
+            // Check name in counts for searchChars to reduce list
             for (count in counts) {
-                if (count.name!!.uppercase(Locale.getDefault()).contains(searchChars)) {
+                if (count.name.uppercase(Locale.getDefault()).contains(searchChars)) {
                     esw = EditSpeciesListWidget(this, null)
                     esw!!.setCountName(count.name)
                     esw!!.setCountNameG(count.name_g)
@@ -233,9 +237,10 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "236, onPause")
+            Log.i(TAG, "240, onPause")
 
         countDataSource!!.close()
+        individualsDataSource!!.close()
 
         if (awakePref) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -243,25 +248,25 @@ class EditSpeciesListActivity : AppCompatActivity() {
 
         editingCountsArea!!.clearFocus()
         editingCountsArea!!.removeAllViews()
-        hintArea!!.clearFocus()
-        hintArea!!.removeAllViews()
+        editHintArea!!.clearFocus()
+        editHintArea!!.removeAllViews()
     }
 
     override fun onStop() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "254, onStop")
+            Log.i(TAG, "259, onStop")
 
         editingCountsArea = null
-        hintArea = null
+        editHintArea = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "264, onDestroy")
+            Log.i(TAG, "269, onDestroy")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -273,6 +278,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         val id = item.itemId
+
         if (id == android.R.id.home) {
             finish()
             return true
@@ -292,23 +298,31 @@ class EditSpeciesListActivity : AppCompatActivity() {
         // test for double entries and save species list
         var retValue = true
 
-        val childcount: Int = editingCountsArea!!.childCount //No. of species in list
+        val childcount: Int = editingCountsArea!!.childCount // No. of species in list
 
         // Check for unique species names and codes
         val isDblName: String = compCountNames()
         val isDblCode: String = compCountCodes()
+
         if (isDblName == "" && isDblCode == "") {
             // For all species
             for (i in 0 until childcount) {
                 val esw = editingCountsArea!!.getChildAt(i) as EditSpeciesListWidget
                 retValue =
                     if (isNotEmpty(esw.getCountName()) && isNotEmpty(esw.getCountCode())) {
-                        // Update species names and code
+                        // Update species names and codes
                         countDataSource!!.updateCountItem(
                             esw.countId,
                             esw.getCountName(),
                             esw.getCountCode(),
                             esw.getCountNameG()
+                        )
+
+                        // Change individual names and codes
+                        individualsDataSource!!.updateIndivItem(
+                            esw.countId,
+                            esw.getCountName(),
+                            esw.getCountCode()
                         )
                         true
                     } else {
@@ -375,7 +389,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountNames!!.contains(name)) {
                 isDblName = name
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "378, Double name = $isDblName")
+                    Log.i(TAG, "392, Double name = $isDblName")
                 break
             }
             cmpCountNames!!.add(name)
@@ -397,7 +411,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpCountCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "400, Double code = $isDblCode")
+                    Log.i(TAG, "414, Double code = $isDblCode")
                 break
             }
             cmpCountCodes!!.add(code)

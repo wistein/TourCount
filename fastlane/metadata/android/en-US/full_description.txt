@@ -1,8 +1,11 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.7:
-- More comfortable preselection for adding, deleting or editing species of the counting list
+New in Version 3.7.8:
+- Enhanced preselection for adding, deleting or editing species of the counting list
+- Editing species names or codes also changes counted individuals
+- Code improvements
 - Docs updated
+- Bugfixes
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

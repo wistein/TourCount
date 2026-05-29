@@ -44,18 +44,18 @@ import javax.net.ssl.HttpsURLConnection
  * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
  *
  * Created by wmstein on 2026-05-07,
- * last edited on 2026-05-19
+ * last edited on 2026-05-26
  */
 open class AddrRequestService : Service {
     private lateinit var audioAttributionContext: Context
 
     // Prefs
-    private var metaPref: Boolean = false // Option to use Nominatim service
+    private var metaPref = false // Option to use Nominatim service
     private var selRequestInterval: Long = 10000 // Default time interval for updates
-    private var emailString: String = "" // Needed for reliable Nominatim service
+    private var emailString = "" // Needed for reliable Nominatim service
     private var alertSoundPref = false
-    private var alertSound: String = ""
-    private var lastVersion: String = ""
+    private var alertSound = ""
+    private var lastVersion = ""
 
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
@@ -65,7 +65,7 @@ open class AddrRequestService : Service {
     private var counter = 0 // *new*
 
     private var rToneA: MediaPlayer? = null
-    private var xmlString: String = "" // Constructed string from Nominatim response
+    private var xmlString = "" // Constructed string from Nominatim response
 
     override fun onBind(intent: Intent?): IBinder? {
         return null

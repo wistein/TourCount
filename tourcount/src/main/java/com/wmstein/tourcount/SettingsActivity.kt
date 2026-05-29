@@ -26,7 +26,7 @@ import com.wmstein.tourcount.database.HeadDataSource
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2026-05-19
+ * last edited on 2026-05-26
  */
 class SettingsActivity : AppCompatActivity() {
     private var editor: SharedPreferences.Editor? = null
@@ -88,7 +88,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        val dataLanguage = prefs.getString("pref_sel_data_lang", "")
+        val dataLanguage = prefs.getString("pref_sel_data_lang", "").toString()
 
         // Set up the data source
         headDataSource = HeadDataSource(applicationContext)

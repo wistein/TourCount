@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-04-18,
  * last modified in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last modified on 2026-04-23
+ * last modified on 2026-05-26
  */
 class SectionDataSource(context: Context) {
     private var database: SQLiteDatabase? = null
@@ -114,7 +114,7 @@ class SectionDataSource(context: Context) {
         }
 
     // Store only when field is empty
-    fun storeEmptyCountry(id: Int, name: String?) {
+    fun storeEmptyCountry(id: Int, name: String) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_COUNTRY, name)
         val where =
@@ -123,7 +123,7 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun storeEmptyState(id: Int, name: String?) {
+    fun storeEmptyState(id: Int, name: String) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_STATE, name)
         val where =
@@ -132,7 +132,7 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun storeEmptyPlz(id: Int, name: String?) {
+    fun storeEmptyPlz(id: Int, name: String) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_PLZ, name)
         val where =
@@ -141,7 +141,7 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun storeEmptyCity(id: Int, name: String?) {
+    fun storeEmptyCity(id: Int, name: String) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_CITY, name)
         val where =
@@ -150,7 +150,7 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun storeEmptyPlace(id: Int, name: String?) {
+    fun storeEmptyPlace(id: Int, name: String) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_PLACE, name)
         val where =
@@ -159,7 +159,7 @@ class SectionDataSource(context: Context) {
         database!!.update(DbHelper.SECTION_TABLE, dataToInsert, where, whereArgs)
     }
 
-    fun storeEmptyStLocality(id: Int, name: String?) {
+    fun storeEmptyStLocality(id: Int, name: String) {
         val dataToInsert = ContentValues()
         dataToInsert.put(DbHelper.S_ST_LOCALITY, name)
         val where =

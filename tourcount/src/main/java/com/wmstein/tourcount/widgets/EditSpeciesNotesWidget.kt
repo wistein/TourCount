@@ -17,7 +17,7 @@ import java.util.Objects
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditSpeciesNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val specNotesTitle: TextView
@@ -31,15 +31,15 @@ class EditSpeciesNotesWidget(context: Context, attrs: AttributeSet?) : LinearLay
         specNotesName = findViewById(R.id.spNotesNotes)
     }
 
-    fun setSpNotesTitle(title: String?) {
+    fun setSpNotesTitle(title: String) {
         specNotesTitle.text = title
     }
 
-    fun setHint(hint: String?) {
+    fun setHint(hint: String) {
         specNotesName.hint = hint
     }
 
-    var spNotesNotes: String?
+    var spNotesNotes: String
         get() = specNotesName.text.toString()
         set(name) {
             specNotesName.setText(name)

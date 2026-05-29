@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
  * Modified for TourCount by wmstein on 2023-09-18,
  * last edited in Java on 2023-09-18
  * converted to Kotlin on 2023-09-19
- * last edited on 2026-05-19.
+ * last edited on 2026-05-26
  */
 class AutoFitEditText @JvmOverloads constructor(
     context: Context?, attrs: AttributeSet? = null,
@@ -48,7 +48,7 @@ class AutoFitEditText @JvmOverloads constructor(
     )
     private var widthLimit = 0
     private val _maxLines: Int
-    private var initiallized = false
+    private var initialized = false
     private var paint: TextPaint? = null
 
     private interface SizeTester {
@@ -103,7 +103,7 @@ class AutoFitEditText @JvmOverloads constructor(
                 else 1 // else, too big
             }
         }
-        initiallized = true
+        initialized = true
     }
 
     override fun setTypeface(tf: Typeface?) {
@@ -144,7 +144,7 @@ class AutoFitEditText @JvmOverloads constructor(
     }
 
     private fun adjustTextSize() {
-        if (!initiallized) return
+        if (!initialized) return
 
         val startSize = minTextSize.roundToInt()
         val heightLimit = (measuredHeight - compoundPaddingBottom - compoundPaddingTop)

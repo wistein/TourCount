@@ -17,7 +17,7 @@ import java.util.Objects
  * Adopted by wmstein for TourCount 2016-02-18,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditMetaTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val widgetEditTitle: TextView
@@ -42,34 +42,34 @@ class EditMetaTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout
     }
 
     // Tour name headline
-    fun setWidgetTitle(title: String?) {
+    fun setWidgetTitle(title: String) {
         widgetEditTitle.text = title
     }
 
     // Tour name edittext
-    var widgetName: String?
+    var widgetName: String
         get() = widgetEditName.text.toString()
         set(name) {
             widgetEditName.setText(name)
         }
 
     // Observer name
-    fun setWidgetOName1(title: String?) {
+    fun setWidgetOName1(title: String) {
         widgetEditOName1.text = title
     }
 
-    var widgetOName2: String?
+    var widgetOName2: String
         get() = widgetEditOName2.text.toString()
         set(name) {
             widgetEditOName2.setText(name)
         }
 
     // Notes
-    fun setWidgetONotes1(title: String?) {
+    fun setWidgetONotes1(title: String) {
         widgetEditONotes1.text = title
     }
 
-    var widgetONotes2: String?
+    var widgetONotes2: String
         get() = widgetEditONotes2.text.toString()
         set(name) {widgetEditONotes2.setText(name)
         }

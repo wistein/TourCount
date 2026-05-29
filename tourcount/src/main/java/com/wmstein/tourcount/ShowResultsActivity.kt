@@ -44,7 +44,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2026-04-28
+ * last edited on 2026-05-29
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -62,7 +62,7 @@ class ShowResultsActivity : AppCompatActivity() {
     // Preferences
     private var prefs = TourCountApplication.getPrefs()
     private var awakePref = false
-    private var outPref: String? = ""
+    private var outPref = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +74,7 @@ class ShowResultsActivity : AppCompatActivity() {
         tourCount = application as TourCountApplication
 
         awakePref = prefs.getBoolean("pref_awake", true)
-        outPref = prefs.getString("pref_sort_output", "names") // sort mode output
+        outPref = prefs.getString("pref_sort_output", "names").toString() // sort mode output
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -237,7 +237,7 @@ class ShowResultsActivity : AppCompatActivity() {
         specArea!!.addView(lmw)
 
         // Load the sorted list of species
-        val specs: List<Count> = if (outPref.equals("names")) {
+        val specs: List<Count> = if (outPref == "names") {
             // sort criteria are name and code
             countDataSource!!.cntSpeciesSrtName
         } else {
@@ -299,7 +299,7 @@ class ShowResultsActivity : AppCompatActivity() {
             if ((specCnt > 0) || (specNotes == "0")) {
                 specArea!!.addView(widget)
                 val iName = widget.getSpecname(spec)
-                indivs = individualsDataSource!!.getIndividualsByName(iName!!)
+                indivs = individualsDataSource!!.getIndividualsByName(iName)
                 for (indiv in indivs) {
                     val lnWidget1 = ResultsLineWidget(this, null)
                     iwidget = ResultsIndividualWidget(this, null)
@@ -310,10 +310,9 @@ class ShowResultsActivity : AppCompatActivity() {
 
                     // Show individual notes only when provided
                     val rwidget = ResultsIndivNoteWidget(this, null)
-                    val tRem: String? =
-                        if (iwidget.getIndNotes(indiv) == null) ""
-                        else iwidget.getIndNotes(indiv)
-                    if (tRem!!.isNotEmpty()) {
+                    val tRem = iwidget.getIndNotes(indiv)
+
+                    if (tRem.isNotEmpty()) {
                         rwidget.setRem(indiv)
                         specArea!!.addView(rwidget)
                     }
@@ -328,7 +327,7 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "331, onPause")
+            Log.i(TAG, "330, onPause")
 
         // Close the data sources
         headDataSource!!.close()
@@ -345,7 +344,7 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "348, onDestroy")
+            Log.i(TAG, "347, onDestroy")
 
         specArea = null
     }

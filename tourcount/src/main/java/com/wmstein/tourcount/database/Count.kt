@@ -6,7 +6,7 @@ package com.wmstein.tourcount.database
  * Created by wmstein on 2016-02-18,
  * last change in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-02-24
+ * last edited on 2026-05-26
  */
 class Count {
     @JvmField
@@ -24,13 +24,13 @@ class Count {
     @JvmField
     var count_ei = 0
     @JvmField
-    var name: String? = ""
+    var name = ""
     @JvmField
-    var code: String? = ""
+    var code = ""
     @JvmField
-    var notes: String? = ""
+    var notes = ""
     @JvmField
-    var name_g: String? = ""
+    var name_g = ""
 
     fun increase_f1i(): Int {
         count_f1i += 1

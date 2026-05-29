@@ -7,12 +7,14 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 
+import com.wmstein.tourcount.database.DbHelper.Companion.INDIVIDUALS_TABLE
+
 /********************************************************************
  * Class IndividualsDataSource provides methods for table Individuals
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2025-11-01
+ * last edited on 2026-05-29
  */
 class IndividualsDataSource(context: Context) {
     // Database fields
@@ -78,9 +80,9 @@ class IndividualsDataSource(context: Context) {
             values.put(DbHelper.I_ICOUNT, 0)
             values.put(DbHelper.I_CATEGORY, 0)
             values.put(DbHelper.I_CODE, code)
-            val insertId = database!!.insert(DbHelper.INDIVIDUALS_TABLE, null, values).toInt()
+            val insertId = database!!.insert(INDIVIDUALS_TABLE, null, values).toInt()
             val cursor = database!!.query(
-                DbHelper.INDIVIDUALS_TABLE,
+                INDIVIDUALS_TABLE,
                 allColumns, DbHelper.I_ID + " = " + insertId, null, null, null, null
             )
             cursor.moveToFirst()
@@ -93,11 +95,11 @@ class IndividualsDataSource(context: Context) {
     }
 
     fun deleteIndividualById(id: Int) {
-        database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null)
+        database!!.delete(INDIVIDUALS_TABLE, DbHelper.I_ID + " = " + id, null)
     }
 
     fun deleteIndividualsByCode(cd: String) {
-        database!!.delete(DbHelper.INDIVIDUALS_TABLE, DbHelper.I_CODE + " = '$cd'", null)
+        database!!.delete(INDIVIDUALS_TABLE, DbHelper.I_CODE + " = '$cd'", null)
     }
 
     fun decreaseIndividual(id: Int, newicount: Int) {
@@ -105,7 +107,7 @@ class IndividualsDataSource(context: Context) {
         dataToInsert.put(DbHelper.I_ICOUNT, newicount)
         val where = DbHelper.I_ID + " = ?"
         val whereArgs = arrayOf(id.toString())
-        database!!.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)
+        database!!.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)
     }
 
     @SuppressLint("Range")
@@ -152,7 +154,7 @@ class IndividualsDataSource(context: Context) {
             dataToInsert.put(DbHelper.I_CODE, individuals.code)
             val where = DbHelper.I_ID + " = ?"
             val whereArgs = arrayOf(individuals.id.toString())
-            database!!.update(DbHelper.INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)
+            database!!.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)
             individuals.id
         } else {
             0 // in case of doubleclick on count button
@@ -165,7 +167,7 @@ class IndividualsDataSource(context: Context) {
         val cIdStr = cId.toString()
         val categStr = categ.toString()
         val cursor = database!!.rawQuery(
-            "select * from " + DbHelper.INDIVIDUALS_TABLE
+            "select * from " + INDIVIDUALS_TABLE
                     + " WHERE (" + DbHelper.I_COUNT_ID + " = " + cIdStr + " AND "
                     + DbHelper.I_CATEGORY + " = " + categStr + ")", null, null
         )
@@ -185,7 +187,7 @@ class IndividualsDataSource(context: Context) {
     fun getIndividual(indivId: Int): Individuals {
         val individuals: Individuals
         val cursor = database!!.query(
-            DbHelper.INDIVIDUALS_TABLE,
+            INDIVIDUALS_TABLE,
             allColumns,
             DbHelper.I_ID + " = ?",
             arrayOf(indivId.toString()),
@@ -202,7 +204,7 @@ class IndividualsDataSource(context: Context) {
     fun getIndividualCount(indivId: Int): Int {
         val individuals: Individuals
         val cursor = database!!.query(
-            DbHelper.INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID
+            INDIVIDUALS_TABLE, allColumns, DbHelper.I_ID
                     + " = ?", arrayOf(indivId.toString()), null, null, null
         )
         cursor.moveToFirst()
@@ -215,7 +217,7 @@ class IndividualsDataSource(context: Context) {
     fun getIndividualsByName(iname: String): List<Individuals> {
         val indivs: MutableList<Individuals> = ArrayList()
         val slct =
-            "select * from " + DbHelper.INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_NAME + " = ?"
+            "select * from " + INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_NAME + " = ?"
         val cursor = database!!.rawQuery(slct, arrayOf(iname))
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
@@ -231,7 +233,7 @@ class IndividualsDataSource(context: Context) {
         get() {
             val individs: MutableList<Individuals> = ArrayList()
             val slct =
-                "select * from " + DbHelper.INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_COORD_X + " != 0"
+                "select * from " + INDIVIDUALS_TABLE + " WHERE " + DbHelper.I_COORD_X + " != 0"
             val cursor = database!!.rawQuery(slct, null)
             cursor.moveToFirst()
             while (!cursor.isAfterLast) {
@@ -243,4 +245,14 @@ class IndividualsDataSource(context: Context) {
             return individs
         }
 
+    fun updateIndivItem(cntId: Int, name: String, code: String) {
+        if (database!!.isOpen) {
+            val dataToInsert = ContentValues()
+            dataToInsert.put(DbHelper.I_NAME, name)
+            dataToInsert.put(DbHelper.I_CODE, code)
+            val where = DbHelper.I_COUNT_ID + " = ?"
+            val whereArgs = arrayOf(cntId.toString())
+            database!!.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)
+        }
+    }
 }

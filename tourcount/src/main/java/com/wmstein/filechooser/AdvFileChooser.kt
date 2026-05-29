@@ -37,15 +37,15 @@ import java.text.SimpleDateFormat
  * Adopted by wmstein on 2016-06-18,
  * last change in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class AdvFileChooser : AppCompatActivity() {
     private var currentDir: File? = null
     private var adapter: FileArrayAdapter? = null
-    private var fileExtension: String = ""
-    private var fileNameStart: String? = ""
+    private var fileExtension = ""
+    private var fileNameStart = ""
     private var fileFilter: FileFilter? = null
-    private var fileHd: String? = ""
+    private var fileHd = ""
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,12 +87,12 @@ class AdvFileChooser : AppCompatActivity() {
         if (extras != null) {
             if (extras.getString("filterFileExtension") != null) {
                 fileExtension = extras.getString("filterFileExtension")!!
-                fileNameStart = extras.getString("filterFileNameStart")
-                fileHd = extras.getString("fileHd")
+                fileNameStart = extras.getString("filterFileNameStart").toString()
+                fileHd = extras.getString("fileHd").toString()
 
                 fileFilter = FileFilter { pathname: File ->
                     pathname.name.contains(".") &&
-                            pathname.name.contains(fileNameStart!!) &&
+                            pathname.name.contains(fileNameStart) &&
                             fileExtension.contains(
                                 pathname.name.substring(
                                     pathname.name.lastIndexOf(".")

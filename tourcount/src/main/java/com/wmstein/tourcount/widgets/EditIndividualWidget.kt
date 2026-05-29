@@ -19,7 +19,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // locality
@@ -77,54 +77,54 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
 
     // Following the SETS
     // locality
-    fun setWidgetLocality1(title: String?) {
+    fun setWidgetLocality1(title: String) {
         widgetLoc1.text = title
     }
 
     // stadium
-    fun setWidgetStadium1(title: String?) {
+    fun setWidgetStadium1(title: String) {
         widgetStad1.text = title
     }
 
     // state
-    fun setWidgetState1(title: String?) {
+    fun setWidgetState1(title: String) {
         widgetStat1.text = title
     }
 
     // number of individuals
-    fun setWidgetCount1(title: String?) {
+    fun setWidgetCount1(title: String) {
         widgetCnt1.text = title
     }
 
     // note
-    fun setWidgetIndivNote1(title: String?) {
+    fun setWidgetIndivNote1(title: String) {
         widgetIndNote1.text = title
     }
 
     // x-coord
-    fun setWidgetXCoord1(title: String?) {
+    fun setWidgetXCoord1(title: String) {
         widgetXcoord1.text = title
     }
 
-    fun setWidgetXCoord2(name: String?) {
+    fun setWidgetXCoord2(name: String) {
         widgetXcoord2.text = name
     }
 
     // y-coord
-    fun setWidgetYCoord1(title: String?) {
+    fun setWidgetYCoord1(title: String) {
         widgetYcoord1.text = title
     }
 
-    fun setWidgetYCoord2(name: String?) {
+    fun setWidgetYCoord2(name: String) {
         widgetYcoord2.text = name
     }
 
     // z-coord
-    fun setWidgetZCoord1(title: String?) {
+    fun setWidgetZCoord1(title: String) {
         widgetZcoord1.text = title
     }
 
-    fun setWidgetZCoord2(name: String?) {
+    fun setWidgetZCoord2(name: String) {
         widgetZcoord2.text = name
     }
 
@@ -137,7 +137,7 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         }
 
     // get stadium with plausi
-    var widgetStadium2: String?
+    var widgetStadium2: String
         get() = widgetStad2.text.toString()
         set(name) {
             widgetStad2.text = name
@@ -167,7 +167,7 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         if (enabled) widgetStat2.visibility = VISIBLE else widgetStat2.visibility = INVISIBLE
     }
 
-    fun setWidgetState2(name: String?) {
+    fun setWidgetState2(name: String) {
         widgetStat2.setText(name)
     }
 
@@ -188,7 +188,7 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         }
 
     // get note of individual
-    var widgetIndivNote2: String?
+    var widgetIndivNote2: String
         get() = widgetIndNote2.text.toString()
         set(name) {
             widgetIndNote2.setText(name)

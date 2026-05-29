@@ -2,6 +2,13 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.7.8 (2026-05-29)
+- Enhanced preselection for adding, deleting or editing species of the counting list
+- Editing species names or codes also changes counted individuals 
+- Code improvements
+- Docs updated
+- Bugfixes
+
 #### Version 3.7.7 (2026-05-25)
 - More comfortable preselection for adding, deleting or editing species of the counting list
 - Docs updated

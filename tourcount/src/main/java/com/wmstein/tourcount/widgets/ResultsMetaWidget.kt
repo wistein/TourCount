@@ -18,7 +18,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-05-29
  */
 class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -107,13 +107,12 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
         if (section.clouds_end > 0) widgetendclouds2.text = section.clouds_end.toString()
     }
 
-    fun setWidgetNotes1(name: String?) {
+    fun setWidgetNotes1(name: String) {
         widgetnotes1.text = name
     }
 
-    fun setWidgetNotes2(name: String?) {
+    fun setWidgetNotes2(name: String) {
         widgetnotes2.text = name
     }
-
 
 }

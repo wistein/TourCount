@@ -44,7 +44,7 @@ import java.util.Locale
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-05-25
+ * last edited on 2026-05-28
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -65,13 +65,13 @@ class AddSpeciesActivity : AppCompatActivity() {
     private var codesCompleteArrayList: ArrayList<String?>? = null
     private var codesReducedArrayList: ArrayList<String?>? = null
 
-    private var specName: String? = ""
-    private var specNameG: String? = ""
-    private var specCode: String? = ""
-    private var posSpec: Int = 0
+    private var specName = ""
+    private var specNameG = ""
+    private var specCode = ""
+    private var posSpec = 0
 
     // 2 initial characters to limit selection
-    private var searchChars: String = ""
+    private var searchChars = ""
 
     // List of selected species to add
     private var listToAdd: ArrayList<AddSpeciesWidget>? = null
@@ -83,7 +83,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     private var prefs = TourCountApplication.getPrefs()
     private var brightPref = false
     private var awakePref = false
-    private var dataLanguage: String? = ""
+    private var dataLanguage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,7 +147,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
-        dataLanguage = prefs.getString("pref_sel_data_lang", "")
+        dataLanguage = prefs.getString("pref_sel_data_lang", "").toString()
 
         // Set full brightness of screen
         if (brightPref) {
@@ -188,10 +188,10 @@ class AddSpeciesActivity : AppCompatActivity() {
         supportActionBar!!.setTitle(R.string.addTitle)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // Display hint: Further available species
+        // Display hint: "Search string" or editable searchChars
         val haw = AddSpeciesHintWidget(this, null)
         if (searchChars.length >= 2)
-            haw.setSearchA(searchChars)
+            haw.setSearchA1(searchChars)
         else
             haw.setSearchA(getString(R.string.hintSearch))
         addHintArea!!.addView(haw)
@@ -236,7 +236,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     }
 
     // Construct add-species-list of not already contained species in the counting list
-    //   and optionally reduce it further by initChar selection
+    //   and optionally reduce it further by searchChars selection
     private fun constructAddList() {
         // 1. Build list of codes of contained species in counting list
         val specCodesContainedList = ArrayList<String?>()
@@ -257,7 +257,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             if (codesCompleteArrayList!!.contains(specCodesContainedList[i])) {
                 // Remove species with specCode[i] from missing species lists.
                 // Prerequisites: Exactly correlated arrays of selCodes, selSpecs and selSpecs_l
-                specCode = specCodesContainedList[i]
+                specCode = specCodesContainedList[i]!!
                 posSpec = codesCompleteArrayList!!.indexOf(specCode)
 
                 namesCompleteArrayList!!.removeAt(posSpec)
@@ -284,12 +284,12 @@ class AddSpeciesActivity : AppCompatActivity() {
                 if (namesCompleteArrayList!![i].uppercase(Locale.getDefault()).contains(searchChars)) {
                     specName = namesCompleteArrayList!![i]
                     specNameG = namesLCompleteArrayList!![i]
-                    specCode = codesCompleteArrayList!![i]
+                    specCode = codesCompleteArrayList!![i]!!
 
                     // Assemble remaining ReducedArrayLists for all Species with searchChars
-                    namesReducedArrayList!!.add(specName!!)
-                    namesLReducedArrayList!!.add(specNameG!!)
-                    codesReducedArrayList!!.add(specCode!!)
+                    namesReducedArrayList!!.add(specName)
+                    namesLReducedArrayList!!.add(specNameG)
+                    codesReducedArrayList!!.add(specCode)
                 }
             }
         }
@@ -308,7 +308,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             val asw = AddSpeciesWidget(this, null)
             asw.setSpecName(namesReducedArrayList!![i])
             asw.setSpecNameG(namesLReducedArrayList!![i])
-            asw.setSpecCode(codesReducedArrayList!![i])
+            asw.setSpecCode(codesReducedArrayList!![i]!!)
             asw.setPSpec(codesReducedArrayList!![i]!!)
             asw.setSpecId(remainingIdArrayList[i]!!)
             asw.setMarkSpec(false)

@@ -20,7 +20,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 15.03.2016
  * Last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23.
+ * last edited on 2026-05-26
  */
 class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtSpecName: TextView
@@ -35,7 +35,7 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
     private val specCountei: TextView
     private val txtSpecRem: TextView
     private val txtSpecRemT: TextView
-    private var specNotes: String = ""
+    private var specNotes = ""
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -65,12 +65,10 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
         val spCount = (spec.count_f1i + spec.count_f2i + spec.count_f3i + spec.count_pi
                 + spec.count_li + spec.count_ei)
         txtSpecName.text = spec.name
-        if (spec.name_g != null) {
-            if (spec.name_g!!.isNotEmpty()) {
-                txtSpecNameG.text = spec.name_g
-            } else {
-                txtSpecNameG.text = ""
-            }
+        if (spec.name_g.isNotEmpty()) {
+            txtSpecNameG.text = spec.name_g
+        } else {
+            txtSpecNameG.text = ""
         }
 
         specCount.text = spCount.toString()
@@ -80,22 +78,17 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
         if (spec.count_pi > 0) specCountpi.text = spec.count_pi.toString()
         if (spec.count_li > 0) specCountli.text = spec.count_li.toString()
         if (spec.count_ei > 0) specCountei.text = spec.count_ei.toString()
-        if (spec.notes != null) {
-            if (spec.notes!!.isNotEmpty()) {
-                txtSpecRem.text = spec.notes
-                txtSpecRem.visibility = VISIBLE
-                txtSpecRemT.visibility = VISIBLE
-                specNotes = spec.notes.toString()
-            }
-        } else {
-            txtSpecRem.visibility = GONE
-            txtSpecRemT.visibility = GONE
+        if (spec.notes.isNotEmpty()) {
+            txtSpecRem.text = spec.notes
+            txtSpecRem.visibility = VISIBLE
+            txtSpecRemT.visibility = VISIBLE
+            specNotes = spec.notes
         }
     }
 
     // Parameter spec.* for use in ShowResultsActivity
     fun getSpecNotes(spec: Count): String {
-        return if (spec.notes != null)
+        return if (spec.notes != "")
             specNotes
         else
             ""
@@ -126,7 +119,7 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
     }
 
     //Parameter spec_name for use in ShowResultsActivity
-    fun getSpecname(newcount: Count): String? {
+    fun getSpecname(newcount: Count): String {
         return newcount.name
     }
 

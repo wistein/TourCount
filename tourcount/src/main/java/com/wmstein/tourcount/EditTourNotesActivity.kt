@@ -23,11 +23,11 @@ import com.wmstein.tourcount.widgets.EditTourNotesWidget
 /***********************************************************
  * EditTourNotesActivity
  * Edit notes for the tour
- * uses EditTourNotetwidget.kt and activity_tour_options.xml
+ * uses EditTourNotesWidget.kt and activity_tour_options.xml
  *
  * Based on EditSpeciesNotesActivity.kt.
  * Changed by wmstein on 16.09.2025,
- * last edited on 2026-04-19
+ * last edited on 2026-05-29
  */
 class EditTourNotesActivity : AppCompatActivity() {
     private var tourWidgetArea: LinearLayout? = null

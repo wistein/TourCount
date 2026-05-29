@@ -22,7 +22,8 @@ import java.util.Locale
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
  * updated to version 8 on 2025-02-25,
- * last edited on 2026-05-23
+ * updated to version 9 on 2025-04-26,
+ * last edited on 2026-05-27
  *
  * ************************************************************************
  * ATTENTION!

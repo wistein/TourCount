@@ -15,7 +15,7 @@ import com.wmstein.tourcount.database.DbHelper.Companion.COUNT_TABLE
  * Created by wmstein on 2016-02-18,
  * last change on 2022-03-23,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class CountDataSource(context: Context) {
     // Database fields
@@ -45,7 +45,7 @@ class CountDataSource(context: Context) {
     }
 
     // Used by AddSpeciesActivity
-    fun createCount(name: String?, code: String?, nameG: String?) {
+    fun createCount(name: String, code: String, nameG: String) {
         if (database!!.isOpen) {
             val values = ContentValues()
             values.put(DbHelper.C_NAME, name)
@@ -150,7 +150,7 @@ class CountDataSource(context: Context) {
     }
 
     // Used by EditSpeciesListActivity
-    fun updateCountItem(id: Int, name: String?, code: String?, nameG: String?) {
+    fun updateCountItem(id: Int, name: String, code: String, nameG: String) {
         if (database!!.isOpen) {
             val dataToInsert = ContentValues()
             dataToInsert.put(DbHelper.C_NAME, name)
@@ -163,7 +163,7 @@ class CountDataSource(context: Context) {
     }
 
     // Used by WelcomeActivity
-    fun writeCountItem(id: String?, code: String?, name: String?, nameG: String?) {
+    fun writeCountItem(id: String, code: String, name: String, nameG: String) {
         if (database!!.isOpen) {
             val values = ContentValues()
             values.put(DbHelper.C_ID, id)
@@ -254,7 +254,7 @@ class CountDataSource(context: Context) {
         }
 
     // Used by CountingActivity
-    fun getAllStrings(sname: String?): Array<String?> {
+    fun getAllStrings(sname: String): Array<String?> {
         val cursor = database!!.query(
             COUNT_TABLE, allColumns,
             null, null, null, null, null
@@ -273,7 +273,7 @@ class CountDataSource(context: Context) {
     }
 
     // Used by CountingActivity
-    fun getAllStringsSrtName(sname: String?): Array<String?> {
+    fun getAllStringsSrtName(sname: String): Array<String?> {
         val cursor = database!!.query(
             COUNT_TABLE, allColumns,
             null, null, null, null, DbHelper.C_NAME
@@ -292,7 +292,7 @@ class CountDataSource(context: Context) {
     }
 
     // Used by CountingActivity
-    fun getAllStringsSrtCode(sname: String?): Array<String?> {
+    fun getAllStringsSrtCode(sname: String): Array<String?> {
         val cursor = database!!.query(
             COUNT_TABLE, allColumns,
             null, null, null, null, DbHelper.C_CODE

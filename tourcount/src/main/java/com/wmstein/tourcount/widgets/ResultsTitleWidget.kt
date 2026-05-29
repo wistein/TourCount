@@ -16,7 +16,7 @@ import java.util.Objects
  * Created by wmstein on 2016-06-06,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class ResultsTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val listtitle: TextView
@@ -33,19 +33,19 @@ class ResultsTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
         widgetname2 = findViewById(R.id.widgetName2)
     }
 
-    fun setListTitle(title: String?) {
+    fun setListTitle(title: String) {
         listtitle.text = title
     }
 
-    fun setListName(name: String?) {
+    fun setListName(name: String) {
         listname.text = name
     }
 
-    fun setWidgetName1(name: String?) {
+    fun setWidgetName1(name: String) {
         widgetname1.text = name
     }
 
-    fun setWidgetName2(name: String?) {
+    fun setWidgetName2(name: String) {
         widgetname2.text = name
     }
 

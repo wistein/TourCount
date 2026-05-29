@@ -21,7 +21,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2019-04-03,
  * last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-05-02
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -58,7 +58,7 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         return specName.text.toString()
     }
 
-    fun setSpecName(name: String?) {
+    fun setSpecName(name: String) {
         specName.text = name
     }
 
@@ -66,7 +66,7 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         return specNameG.text.toString()
     }
 
-    fun setSpecNameG(nameg: String?) {
+    fun setSpecNameG(nameg: String) {
         specNameG.text = nameg
     }
 
@@ -74,7 +74,7 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
         return specCode.text.toString()
     }
 
-    fun setSpecCode(code: String?) {
+    fun setSpecCode(code: String) {
         specCode.text = code
     }
 

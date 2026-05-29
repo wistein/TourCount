@@ -21,7 +21,7 @@ import java.util.Objects
  * Adopted for TourCount by wmstein on 2016-02-18
  * last edited in Java on 2020-10-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -53,7 +53,7 @@ class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayo
         return countName.text.toString()
     }
 
-    fun setCountName(name: String?) {
+    fun setCountName(name: String) {
         countName.setText(name)
     }
 
@@ -61,7 +61,7 @@ class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayo
         return countNameG.text.toString()
     }
 
-    fun setCountNameG(name: String?) {
+    fun setCountNameG(name: String) {
         countNameG.setText(name)
     }
 
@@ -69,7 +69,7 @@ class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayo
         return countCode.text.toString()
     }
 
-    fun setCountCode(name: String?) {
+    fun setCountCode(name: String) {
         countCode.setText(name)
     }
 

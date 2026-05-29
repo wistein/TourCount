@@ -38,7 +38,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-05-19
+ * last edited on 2026-05-26
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -56,7 +56,7 @@ class EditIndividualActivity : AppCompatActivity() {
     private var brightPref = false // option for full bright screen
     private var buttonSoundPref = false
     private var buttonVibPref = false
-    private var metaPref: Boolean = false // use Reverse Geocoding
+    private var metaPref = false // use Reverse Geocoding
 
     // Prepare sound service
     private var soundService: SoundService? = null
@@ -65,18 +65,18 @@ class EditIndividualActivity : AppCompatActivity() {
     private var vibrator: Vibrator? = null
 
     // Location info handling
-    private var uncert: String? = ""
+    private var uncert = ""
     private var countId = 0
     private var indivId = 0
     private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
-    private var specName: String? = ""
+    private var specName = ""
 
     // phase123 is true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
-    private var phase123: Boolean? = null
-    private var dateStamp: String? = ""
-    private var timeStamp: String? = ""
-    private var code: String? = ""
-    private var mesg: String? = ""
+    private var phase123 = false
+    private var dateStamp = ""
+    private var timeStamp = ""
+    private var code = ""
+    private var mesg = ""
 
     @SuppressLint("SourceLockedOrientationActivity", "DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,11 +144,11 @@ class EditIndividualActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             countId = extras.getInt("count_id")
-            if (extras.getString("SName") != "")
-                specName = extras.getString("SName")
-            code = extras.getString("SCode")
-            dateStamp = extras.getString("date")
-            timeStamp = extras.getString("time")
+            if (extras.getString("SName").toString() != "")
+                specName = extras.getString("SName").toString()
+            code = extras.getString("SCode").toString()
+            dateStamp = extras.getString("date").toString()
+            timeStamp = extras.getString("time").toString()
             indivAttr = extras.getInt("indivAtt")
         }
 
@@ -204,6 +204,7 @@ class EditIndividualActivity : AppCompatActivity() {
             // Set "-" as there is no height value
             eiw!!.setWidgetZCoord2("-")
         }
+
         eiw!!.setWidgetStadium1(getString(R.string.stadium) + ":")
         when (indivAttr) {
             1, 2, 3 -> {
@@ -226,7 +227,8 @@ class EditIndividualActivity : AppCompatActivity() {
                 phase123 = false
             }
         }
-        if (phase123!!) {
+
+        if (phase123) {
             eiw!!.widgetState1(true) // headline status
             eiw!!.setWidgetState1(getString(R.string.status123) + ":")
             eiw!!.widgetState2(true) // state
@@ -236,6 +238,7 @@ class EditIndividualActivity : AppCompatActivity() {
             eiw!!.setWidgetState2("-")
             eiw!!.widgetState2(false)
         }
+
         eiw!!.setWidgetCount1(getString(R.string.count1) + ":") // icount
         eiw!!.widgetCount2 = 1
         eiw!!.setWidgetIndivNote1(getString(R.string.note) + ":")
@@ -258,7 +261,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "261, onPause")
+            Log.i(TAG, "264, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
@@ -269,7 +272,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "272, onStop")
+            Log.i(TAG, "275, onStop")
 
         if (buttonSoundPref)
             soundService!!.releaseSoundP()
@@ -283,7 +286,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "286, onDestroy")
+            Log.i(TAG, "289, onDestroy")
     }
 
     private fun saveData(): Boolean {

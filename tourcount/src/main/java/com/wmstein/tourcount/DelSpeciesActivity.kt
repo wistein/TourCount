@@ -37,11 +37,11 @@ import java.util.Locale
  *
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2026-05-25
+ * last edited on 2026-05-28
  */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
-    private var specCode: String? = null
+    private var specCode = ""
     private var sectionDataSource: SectionDataSource? = null
     private var countDataSource: CountDataSource? = null
     private var individualsDataSource: IndividualsDataSource? = null
@@ -51,7 +51,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     private var delHintArea: LinearLayout? = null
 
     // 2 initial characters to limit selection
-    private var searchChars: String = ""
+    private var searchChars = ""
 
     // Arraylists
     private var listToDelete: ArrayList<DeleteSpeciesWidget>? = null
@@ -151,10 +151,10 @@ class DelSpeciesActivity : AppCompatActivity() {
         supportActionBar!!.setTitle(R.string.delTitle)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // Display hint: Species in counting list
+        // Display hint: "Search string" or editable searchChars
         val hdw = DeleteSpeciesHintWidget(this, null)
         if (searchChars.length >= 2)
-            hdw.setSearchD(searchChars)
+            hdw.setSearchD1(searchChars)
         else
             hdw.setSearchD(getString(R.string.hintSearch))
         delHintArea!!.addView(hdw)
@@ -189,7 +189,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     }
 
     // Construct del-species-list of contained species in the counting list
-    //   and optionally reduce it by initChar selection
+    //   and optionally reduce it by searchChars selection
     private fun constructDelList() {
         // Load the sorted species
         val counts = countDataSource!!.allSpeciesSrtCode
@@ -200,7 +200,7 @@ class DelSpeciesActivity : AppCompatActivity() {
             var cnt = 1
             // Check name in counts for InitChars to reduce list
             for (count in counts) {
-                if (count.name!!.uppercase(Locale.getDefault()).contains(searchChars)) {
+                if (count.name.uppercase(Locale.getDefault()).contains(searchChars)) {
                     val dsw = DeleteSpeciesWidget(this, null)
                     dsw.setSpecName(count.name)
                     dsw.setSpecNameG(count.name_g)
@@ -246,8 +246,8 @@ class DelSpeciesActivity : AppCompatActivity() {
         while (i < listToDelete!!.size) {
             specCode = listToDelete!![i].getSpecCode()
             try {
-                countDataSource!!.deleteCountByCode(specCode!!)
-                individualsDataSource!!.deleteIndividualsByCode(specCode!!)
+                countDataSource!!.deleteCountByCode(specCode)
+                individualsDataSource!!.deleteIndividualsByCode(specCode)
             } catch (_: Exception) {
                 // nothing
             }

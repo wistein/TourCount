@@ -15,7 +15,7 @@ import java.util.Objects
  * EditTourNotesWidget used by EditTourNotesActivity
  *
  * Created by wmstein on 2025-09-16,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class EditTourNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val tourNotesTitle: TextView
@@ -29,15 +29,15 @@ class EditTourNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
         tourNotesName = findViewById(R.id.trNotesName)
     }
 
-    fun setTrNotesTitle(title: String?) {
+    fun setTrNotesTitle(title: String) {
         tourNotesTitle.text = title
     }
 
-    fun setHint(hint: String?) {
+    fun setHint(hint: String) {
         tourNotesName.hint = hint
     }
 
-    var trNotesName: String?
+    var trNotesName: String
         get() = tourNotesName.text.toString()
         set(name) {
             tourNotesName.setText(name)

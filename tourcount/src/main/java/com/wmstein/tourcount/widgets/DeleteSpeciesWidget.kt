@@ -20,7 +20,7 @@ import java.util.Objects
  * shows list of selectable species with name, code, picture and add checkbox
  *
  * Created for TourCount by wmstein on 2024-08-22,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -54,15 +54,15 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
         markButton.tag = 0
     }
 
-    fun setSpecName(name: String?) {
+    fun setSpecName(name: String) {
         specName.text = name
     }
 
-    fun setSpecNameG(nameg: String?) {
+    fun setSpecNameG(nameg: String) {
         specNameG.text = nameg
     }
 
-    fun setSpecCode(code: String?) {
+    fun setSpecCode(code: String) {
         specCode.text = code
     }
 

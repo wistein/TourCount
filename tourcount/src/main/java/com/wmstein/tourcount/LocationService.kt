@@ -35,14 +35,14 @@ import java.io.IOException
  *
  * Last edited in Java on 2023-05-30,
  * converted to Kotlin on 2023-05-26,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
     private var locationAttributionContext: Context? = null
     private var checkGPS = false
     private var checkNetwork = false
-    var canGetLocation: Boolean = false // must be public
+    var canGetLocation = false // must be public
     private var location: Location? = null
     private var heightGPS = 0.0
     private var locationManager: LocationManager? = null

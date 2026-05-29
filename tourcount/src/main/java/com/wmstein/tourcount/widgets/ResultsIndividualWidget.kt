@@ -19,7 +19,7 @@ import java.util.Objects
  * Created by wmstein on 2018-02-22.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-05-26
  */
 class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -32,7 +32,7 @@ class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
     private val txtIndTm: TextView
     private val txtIndStat: TextView
     val txtIndCnt: AutoFitText
-    private var phase123: Boolean = false // butterfly ♂|♀, ♂ or ♀
+    private var phase123 = false // = butterfly ♂|♀, ♂ or ♀
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -57,10 +57,10 @@ class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
         txtIndSex.text = individual.sex
 
         // Stadium
-        if (individual.stadium!!.isNotEmpty()) {
-            txtIndStad.text = individual.stadium!!.substring(0, 1)
+        if (individual.stadium.isNotEmpty()) {
+            txtIndStad.text = individual.stadium.substring(0, 1)
             val sta =
-                individual.stadium!!.substring(0, 1) // Imago: F,B; Egg: E; Larva: R,C; Pupa: P
+                individual.stadium.substring(0, 1) // Imago: F,B; Egg: E; Larva: R,C; Pupa: P
             phase123 = sta == "F" || sta == "B" // true for Imago
         } else txtIndStad.text = "-"
 
@@ -102,7 +102,7 @@ class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
         }
 
         // Time
-        txtIndTm.text = individual.time_stamp.toString()
+        txtIndTm.text = individual.time_stamp
 
         // State
         val indStat = individual.state_1_6.toString()
@@ -116,7 +116,7 @@ class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
         txtIndCnt.text = text // In Kotlin EditText requires text as Editable?, not as String
     }
 
-    fun getIndNotes(individual: Individuals): String? {
+    fun getIndNotes(individual: Individuals): String {
         return individual.notes
     }
 
