@@ -37,7 +37,7 @@
 
         <!-- insert species as they are created in here -->
         <LinearLayout
-            android:id="@+id/editingCountsLayout"
+            android:id="@+id/editingSpeciesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

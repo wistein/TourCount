@@ -77,7 +77,7 @@ _ subtitle
 $ 3.7.8
   % Version 3.7.8
   _ 29.05.2026
-  * Komfortablere Vorauswahl für Hinzufügen, Löschen oder Editieren von Arten der Zählliste
+  * Erweiterte Vorauswahl für Hinzufügen, Löschen oder Editieren von Arten der Zählliste
   * Editieren der Spezies Namen oder Codes ändert auch die gezählten Individuen
   * Code-Verbesserungen
   * Doku aktualisiert

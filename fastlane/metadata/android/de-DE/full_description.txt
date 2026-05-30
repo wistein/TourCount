@@ -1,7 +1,7 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
 Neu in Version 3.7.8:
-- Komfortablere Vorauswahl für Hinzufügen, Löschen oder Editieren von Arten der Zählliste
+- Erweiterte Vorauswahl für Hinzufügen, Löschen oder Editieren von Arten der Zählliste
 - Editieren der Spezies Namen oder Codes ändert auch die gezählten Individuen
 - Code-Verbesserungen
 - Doku aktualisiert
