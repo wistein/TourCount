@@ -5,7 +5,7 @@
 <html lang="en">
 
 <!-- User instructions help.html --
-     Last edited on 2026-04-07
+     Last edited on 2026-06-15
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -144,12 +144,16 @@ Starting with app version 3.7.4, DB files are exported with a field for identify
 With <b>"Import Basic DB"</b> you can select and import an existing Basic DB file that was exported as a template for a regional tour and begins with “tourcount0”.<br>
 <b><font color=#2C87FD>Note:</font></b> The file name must always begin with the exact character string “tourcount0” (e.g., “tourcount0_en_Kottenforest.db”), otherwise the file cannot be imported as a Basic DB.
 <br><br>
-With <b>“Export Basic DB”</b> you may export the current internal DB without any walk-specific data but with general metadata and the current species list into a Basic DB file “tourcount0_dl_Tourname.db” to Documents/TourCount. This is reasonable if permanent changes have been made to the count list, such as adding new or removing species.
+When <b>exporting data</b>, the tour name (if it exists in the metadata) will be inserted into the name of the
+exported file. Here, any characters that violate the filename conventions are removed as necessary.
+<br><br>
+With <b>“Export Basic DB”</b>,  the internal DB (without walk-specific data but with general metadata and the
+current species list) can be exported as the Basic-DB file “tourcount0_dl_Tourname.db” into Documents/TourCount. This is reasonable if permanent changes have been made to the count list, such as adding new or removing species.
 <br><br>
 With <b>"Import DB"</b> any appropriately named TourCount DB can be read into TourCount.<br>
 <b><font color=#2C87FD>Note:</font></b> The db file name must always start with “tourcount_” (e.g. tourcount_en_Kottenforest.db), otherwise the file cannot be imported).
 <br><br>
-<b>"Export Current DB"</b> writes a copy of the DB with all currently contained data as "tourcount_dl_tourname_YYYYMMDD_hhmm.db" into Documents/TourCount with the date and start time of the tour if they were inserted into the metadata. Otherwise, the current date and time are inserted into the filename. The tourname, if necessary, is cleaned up to remove characters that violate file naming conventions.
+<b>"Export Current DB"</b> writes a copy of the DB with all currently contained data as "tourcount_dl_tourname_YYYYMMDD_hhmm.db" into Documents/TourCount. If exists, the start date of the tour gets inserted into the filename. Otherwise, the current date gets inserted.
 <br><br>
 The function <b>“Import Species List”</b> lets you select and import an available species list. The metadata is retained during import, but all counting data is deleted. If the TransektCount app is installed, the exported species lists can be imported mutually. <br>
 Starting with app version 3.7.2, the species list has been updated to include the data language. The available data languages are German, English, French, Italian, and Spanish. When local species names were available, they have been included for the species listed in the app.<br>
@@ -159,21 +163,16 @@ There is one drawback when importing a species list created for or with older ve
 With <b>"Export Species List"</b> the current species list can be exported as a CSV file (CSV = Comma Separated Values text file) "species_dl_Tour_tourname_YYYYMMDD_hhmmss.csv”. The tour name is also inserted here if it exists in the metadata, and any characters that violate the filename conventions are removed as necessary.<br>
 If you imported a species list that was exported from an app version earlier than 3.7.2, you can set its data language in Settings and then re-export the list. After that, the data language will be automatically detected and set in the future.
 <br><br>
-The function <b>"Export Results"</b> writes the metadata and the counting results into a pre-formatted spreadsheet-readable CSV file "Tour_dl_tourname_YYYYMMDD_hhmmss.csv" to "Documents/TourCount". It tries to use the start date for the filename.<br>
-From here, the exported .csv result files can be viewed and, to a limited extent, edited in a spreadsheet app such as Collabora (open source, free, based on LibreOffice). It is available in the Collabora Office Store (an additional package source in the F-Droid app store), in the Play Store, or directly at https://www.collaboraoffice.com/downloads/).
+The function <b>“Export Results (xlsx)”</b> writes the counting results with the tour metadata into the formatted Excel spreadsheet file “Tour_dl_Tourname_YYYYMMDD _hhmm.xlsx” to “Documents/TourCount”. It tries to use the start date for the filename.
 <br><br>
-The table can be sorted in advance using the result sorting option in TourCount (by species or codes), depending on your preference for easier data entry into a central monitoring web page like <br>
+The function <b>"Export Results (csv)"</b> writes the counting results with the tour metadata into the pre-formatted .csv textfile "Tour_dl_tourname_YYYYMMDD_hhmmss.csv" to "Documents/TourCount". It tries to use the start date for the filename.
+<br><br>
+The exported table can be sorted in advance (by species or codes) using the result sorting option in TourCount settings, depending on your preference for easier data entry into a central monitoring web page like <br>
 https://www.falterfunde.de/platform/s4y/falterfunde/index.do.
 <br><br>
-When loading the data into a spreadsheet, to ensure that the formats and character sets are displayed correctly, please ensure that
+The exported result files could be viewed and, to a limited extent, edited in a spreadsheet app such as Collabora (open source, free, based on LibreOffice). It is available in the Collabora Office Store (an additional package source in the F-Droid app store), in the Play Store, or directly at https://www.collaboraoffice.com/downloads/).
 <br><br>
-- file origin is "Unicode UTF-8",<br>
-- delimiter is comma and<br>
-- quotations marks ("") are set for text field recognition<br>
-<br><br>
-If the leading zeros of the species codes or codes with * are to be displayed correctly, the option <i>“Format fields in quotation marks as text”</i> must be selected in the import dialog, if available, or else the column with the codes must be formatted as text.
-<br><br>
-The exported .csv result files can also be transferred to a PC for further processing and importing into a spreadsheet program (tested with MS Excel, LibreOffice Calc, and Softmaker PlanMaker).
+The exported .xlsx or .csv result files can also be transferred to a PC for further processing and loaded or imported into a spreadsheet program (tested with MS Excel, LibreOffice Calc, and Softmaker PlanMaker).
 <br><br>
 IT-affine users may also transfer the exported ".db" files to a PC and examine or edit them there with a free tool like "DB Browser for SQLite" (http://sqlitebrowser.org). It lets you edit them manually or per SQL script. Some useful example SQL scripts are published in the docs directory of the GitHub TourCount project site https://github.com/wistein/TourCount/tree/master/docs.<br>
 <br><br>

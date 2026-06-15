@@ -67,6 +67,11 @@
                     android:title="@string/exportMenu"
                     app:showAsAction="never" />
                 <item
+                    android:id="@+id/exportXLSXMenu"
+                    android:icon="@drawable/exportr"
+                    android:title="@string/exportXLSXMenu"
+                    app:showAsAction="never" />
+                <item
                     android:id="@+id/exportCSVMenu"
                     android:icon="@drawable/exportr"
                     android:title="@string/exportCSVMenu"

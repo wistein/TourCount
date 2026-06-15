@@ -1,11 +1,9 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.7.8:
-- Erweiterte Vorauswahl für Hinzufügen, Löschen oder Editieren von Arten der Zählliste
-- Editieren der Spezies Namen oder Codes ändert auch die gezählten Individuen
+Neu in Version 3.7.9:
+- Ergebnisexport in formatierte Excel-Tabellendatei (.xlsx)
 - Code-Verbesserungen
 - Doku aktualisiert
-- Bugfixe
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.
@@ -14,7 +12,7 @@ Eigenschaften:
 - Getrennte Zähler für ♂-♀-unbestimmt, ♂, ♀, Puppe, Raupe oder Ei.
 - Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
 - Ergebnisseite mit aufbereiteter Darstellung zur Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung unter www.falterfunde.de.
-- Das Ergebnis kann als SQLite-Datei oder im CSV-Format ausgegeben werden (u. a. zwecks Transfer und Weiterverwendung in einem Spreadsheet-Programm auf einem PC.)
+- Das Ergebnis kann als SQLite-Datei, im XLSX- oder CSV-Format ausgegeben werden (u. a. zwecks Transfer und Weiterverwendung in einem Spreadsheet-Programm auf einem PC.)
 - Die Hilfe enthält eine detaillierte Benutzeranleitung.
 
 Funktionen:

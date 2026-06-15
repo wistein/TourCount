@@ -1,11 +1,9 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.8:
-- Enhanced preselection for adding, deleting or editing species of the counting list
-- Editing species names or codes also changes counted individuals
+New in Version 3.7.9:
+- Export results into formatted Excel spreadsheet file (.xlsx)
 - Code improvements
 - Docs updated
-- Bugfixes
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.
@@ -14,7 +12,7 @@ Features:
 - Separate counters for ♂-♀-indeterminate, ♂, ♀, pupa, larva or egg.
 - You may use an individual species list per region.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
-- Results may be exported in SQLite- or CSV-format (for transfer to a PC for your own processing, e.g. in a spreadsheet.)
+- Results may be exported in SQLite-, XLSX- or CSV-format (for transfer to a PC and your own processing, e.g. in a spreadsheet.)
 - Help contains a detailed userguide.
 
 Functions:

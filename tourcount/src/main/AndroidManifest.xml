@@ -7,26 +7,18 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2026-05-13
+     Last edited 2026-06-15
 -->
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permissions used for exporting files to the public directory Documents/TourCount
-         which are then readable by an external app (until Android SDK-version 29) -->
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage"
-        android:maxSdkVersion="29"/>
-
     <!-- Permission used for exporting files to the public directory Documents/TourCount
          which are then readable by an external app (since Android SDK-version >=30) -->
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="AllFilesAccessPolicy,ScopedStorage"
-        android:minSdkVersion="30" />
+        tools:ignore="AllFilesAccessPolicy,ScopedStorage" />
 
     <!-- Permissions needed for location providers -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -53,7 +45,6 @@
         android:label="@string/location_attr_label"
         android:tag="locationCheck" />
 
-    <!-- android:largeHeap="true" (doesn't make a difference for ListSection problem) -->
     <application
         android:name=".TourCountApplication"
         android:icon="@mipmap/ic_launcher"
@@ -239,6 +230,10 @@
             android:exported="false"
             android:stopWithTask="true">
         </service>
+
+        <uses-library
+            android:name="org.dhatim.fastexcel"
+            android:required="false" />
 
     </application>
 

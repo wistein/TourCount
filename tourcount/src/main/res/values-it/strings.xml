@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-05-11 -->
+     last edited 2026-06-15 -->
 
 <resources>
 
@@ -13,7 +13,9 @@
     <string name="avCoords">Coordinate medie:</string>
     <string name="back_twice">Premere nuovamente per uscire</string>
     <string name="bema">Nota spec.:</string>
+    <string name="bemaRes">Nota spec.</string>
     <string name="bems">Nota indiv.:</string>
+    <string name="bemsRes">Nota indiv.</string>
     <string name="cancelButton">Annulla</string>
     <string name="changeLogTitle">App-Info</string>
     <string name="cntse">Numero uova</string>
@@ -30,6 +32,7 @@
     <string name="editMetaButton">Modifica dei metadati</string>
     <string name="exportBasisMenu">Esporta DB di base</string>
     <string name="exportCSVMenu">Export dei risultati (csv)</string>
+    <string name="exportXLSXMenu">Export dei risultati (xlsx)</string>
     <string name="exportMenu">Esporta DB attuale</string>
     <string name="exportSpeciesListMenu">Esporta lista delle specie</string>
     <string name="importBasisMenu">Imposta DB di base</string>
@@ -43,13 +46,15 @@
     <string name="individuals">Individui</string>
     <string name="missingEmail">In Impostazioni, inserisci un indirizzo e-mail valido per garantire un rilevamento affidabile della posizione.</string>
     <string name="name_spec">Nome della specie:</string>
+    <string name="name_specRes">Nome della specie</string>
     <string name="noCard">Non è possibile utilizzare la directory Documents/TourCount!</string>
     <string name="reset2basic">Il database è stato ripristinato.</string>
     <string name="resetDBMenu">Reset dati</string>
     <string name="resetFail">Impossibile ripristinare il database!</string>
-    <string name="saveBasisDB">Esporre il database di base in Documents/TourCount</string>
-    <string name="saveCSV">Esporre il file csv in Documents/TourCount</string>
-    <string name="saveDB">Esporre il database interno in Documents/TourCount</string>
+    <string name="saveBasisDB">Esporre il database di base in \‘Documents/TourCount\‘</string>
+    <string name="saveCSV">Esporre il file csv in \‘Documents/TourCount\‘</string>
+    <string name="saveXLSX">Esporre il file xlsx in \‘Documents/TourCount\‘</string>
+    <string name="saveDB">Esporre il database interno in \‘Documents/TourCount\‘</string>
     <string name="saveFail">Impossibile esportare il database!</string>
     <string name="saveFailList">Impossibile esportare la lista delle specie!</string>
     <string name="saveFailListTransect">Esportazione in \‘Documents/TransektCount\’ non riuscita!</string>
@@ -79,27 +84,40 @@
 
     <!-- EditMetaActivity -->
     <string name="bstate">Stato federale:</string>
+    <string name="bstateRes">Stato federale</string>
     <string name="city">Città:</string>
+    <string name="cityRes">Città</string>
     <string name="clouds">Nuvolosità (%):</string>
+    <string name="cloudsRes">Nuvolosità (%)</string>
     <string name="cnts">Numero</string>
     <string name="country">Stato:</string>
+    <string name="countryRes">Stato</string>
     <string name="date">Data:</string>
+    <string name="dateRes">Data</string>
     <string name="editHeadTitle">Metadati relativi all\'ispezione</string>
     <string name="endtm">fino a:</string>
     <string name="hinttap">Clicca qui</string>
-    <string name="place">Luogo:</string>
-    <string name="plz">CAP:</string>
-    <string name="slocality">Località (inizio):</string>
     <string name="inspector">Cartografo/a:</string>
-    <string name="speccode">Codice specie</string>
+    <string name="place">Luogo:</string>
+    <string name="placeRes">Luogo</string>
+    <string name="plz">CAP:</string>
+    <string name="plzRes">CAP</string>
+    <string name="slocality">Località (inizio):</string>
+    <string name="slocalityRes">Località (inizio)</string>
+    <string name="speccode">Codice specie:</string>
+    <string name="speccodeRes">Codice specie</string>
     <string name="starttm">Ora di inizio:</string>
     <string name="temperature">Temp. (°C):</string>
+    <string name="temperatureRes">Temp. (°C)</string>
     <string name="tm">Tempo:</string>
+    <string name="tmRes">Tempo</string>
     <string name="valClouds">Controllare le nuvole!</string>
     <string name="valTemp">Temperatura irrealistica!</string>
     <string name="valWind">Controllare il vento!</string>
     <string name="wind">Vento (0–4):</string>
+    <string name="windRes">Vento (0–4)</string>
     <string name="zlNotes">Note sul tour:</string>
+    <string name="zlNotesRes">Note sul tour</string>
 
     <!-- EditIndividualActivity -->
     <string name="count1">Num.</string>
@@ -116,10 +134,14 @@
     <string name="status123">Cond. (0–6)</string>
     <string name="time">Tempo</string>
     <string name="uncerti">Incertezza (m):</string>
+    <string name="uncertiRes">Incertezza (m)</string>
     <string name="valState">Controllare lo stato!</string>
     <string name="xcoord">Latitudine:</string>
+    <string name="xcoordRes">Latitudine</string>
     <string name="ycoord">Longitudine:</string>
+    <string name="ycoordRes">Longitudine</string>
     <string name="zcoord">Altezza (m):</string>
+    <string name="zcoordRes">Altezza (m)</string>
 
     <!-- CountingActivity -->
     <string name="action_share">Comunicare</string>

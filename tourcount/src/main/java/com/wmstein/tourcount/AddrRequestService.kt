@@ -44,7 +44,7 @@ import javax.net.ssl.HttpsURLConnection
  * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
  *
  * Created by wmstein on 2026-05-07,
- * last edited on 2026-05-26
+ * last edited on 2026-06-08
  */
 open class AddrRequestService : Service {
     private lateinit var audioAttributionContext: Context
@@ -62,7 +62,7 @@ open class AddrRequestService : Service {
 
     private var timer: Timer? = null
     private var timerTask: TimerTask? = null
-    private var counter = 0 // *new*
+    private var counter = 0 // only for debugging
 
     private var rToneA: MediaPlayer? = null
     private var xmlString = "" // Constructed string from Nominatim response
@@ -141,9 +141,9 @@ open class AddrRequestService : Service {
         // Schedule the timer, after a delay of 100 ms to wake up every 10 s (default)
         timer?.schedule(
             timerTask,
-            100,
+            100, // 0 doesn't work
             selRequestInterval
-        ) // delay = 100 ms, request period (10000 ms)
+        ) // delay = 100 ms, request period = 10000 ms
     }
 
     fun initialiseTimerTask() {
@@ -185,7 +185,7 @@ open class AddrRequestService : Service {
     }
 
     // If the user has set the preference for an audible alert, then sound it here.
-    fun soundAlertSound() {
+    fun soundSoundA() {
         if (alertSoundPref) {
             if (rToneA!!.isPlaying) {
                 rToneA!!.stop()
@@ -395,7 +395,7 @@ open class AddrRequestService : Service {
                 Log.i(TAG, "395, $sLocality")
 
             if (isFirstLocality && lat != 0.0) {
-                soundAlertSound() // Indicate the 1. locality found
+                soundSoundA() // Indicate the 1. locality found
 
                 // European fauna area defined as inside the rectangle with
                 //   latitude:   27.6 < lat < 71.2

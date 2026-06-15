@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ used by CountingSpeciesNotesWidget.kt
   ~ shows line with edit button and species notes on Counting Screen
-  ~ Last edited on 2026-01-01.
+  ~ Last edited on 2026-06-08.
   -->
 
 <TableLayout
@@ -44,7 +44,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/countHead2"
+                android:id="@+id/speciesNotesEdit"
                 style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,12 +64,12 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/buttonEdit"
+            android:id="@+id/buttonSpeciesNotes"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center_vertical"
-            android:onClick="editOptions"
+            android:onClick="editSpeciesNotes"
             android:src="@android:drawable/ic_menu_edit"
             tools:ignore="UsingOnClickInXml" />
 

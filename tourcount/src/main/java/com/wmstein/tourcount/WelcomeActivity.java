@@ -68,6 +68,7 @@ import com.wmstein.tourcount.database.SectionDataSource;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -80,6 +81,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import org.dhatim.fastexcel.BorderSide;
+import org.dhatim.fastexcel.Workbook;
+import org.dhatim.fastexcel.Worksheet;
+
 /**********************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and lets you call 
@@ -91,7 +96,7 @@ import java.util.Objects;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-05-19
+ * last edited on 2026-06-15
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -156,7 +161,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "159, onCreate");
+            Log.i(TAG, "164, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -376,7 +381,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "379, onResume");
+            Log.i(TAG, "384, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -446,7 +451,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "449, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "454, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
@@ -463,7 +468,7 @@ public class WelcomeActivity
         storageGranted = Environment.isExternalStorageManager();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "466, ManageStoragePermission: " + storagePermGranted);
+            Log.i(TAG, "471, ManageStoragePermission: " + storagePermGranted);
         return storageGranted;
     }
 
@@ -484,7 +489,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "487, locationDispatcher 1");
+                            Log.i(TAG, "492, locationDispatcher 1");
 
                         locationService = new LocationService(getApplicationContext());
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -498,7 +503,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "501, locationDispatcher 2");
+                            Log.i(TAG, "506, locationDispatcher 2");
 
                         locationService.stopListener();
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -528,7 +533,7 @@ public class WelcomeActivity
                 // Get address data
                 if (!adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "531, addressDispatcher 1");
+                        Log.i(TAG, "536, addressDispatcher 1");
 
                     adrServiceOn = true;
                     addrRequestService = new AddrRequestService();
@@ -541,7 +546,7 @@ public class WelcomeActivity
                 // Stop AddrRequestService
                 if (adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "544, addressDispatcher 2");
+                        Log.i(TAG, "549, addressDispatcher 2");
 
                     addrRequestService.releaseSoundA();
                     addrRequestService.stopTimerTask();
@@ -597,6 +602,23 @@ public class WelcomeActivity
                         PermissionsStorageDialogFragment.class.getName());
                 if (storagePermGranted) {
                     exportDb2CSV();
+                } else {
+                    mesg = getString(R.string.storage_perm_denied);
+                    Toast.makeText(this,
+                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+            return true;
+        } else if (id == R.id.exportXLSXMenu) {
+            // Call exportDb2XLSX()
+            if (storagePermGranted) {
+                exportDb2XLSX();
+            } else {
+                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
+                        PermissionsStorageDialogFragment.class.getName());
+                if (storagePermGranted) {
+                    exportDb2XLSX();
                 } else {
                     mesg = getString(R.string.storage_perm_denied);
                     Toast.makeText(this,
@@ -728,7 +750,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "731, onPause");
+            Log.i(TAG, "753, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -741,7 +763,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "744, onStop");
+            Log.i(TAG, "766, onStop");
 
         baseLayout.invalidate();
 
@@ -767,7 +789,7 @@ public class WelcomeActivity
             addressDispatcher(2);
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "770, onStop, app not visible, running services Loc, Snd, Adr: "
+                Log.i(TAG, "792, onStop, app not visible, running services Loc, Snd, Adr: "
                         + locServiceOn + ", " + sndServiceOn + ", " + adrServiceOn);
 
             finishAndRemoveTask();
@@ -779,7 +801,7 @@ public class WelcomeActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "782, onDestroy");
+            Log.i(TAG, "804, onDestroy");
 
         System.exit(0);
     }
@@ -907,18 +929,17 @@ public class WelcomeActivity
                                 headDataSource.open();
 
                                 Head head = headDataSource.getHead();
-                                String headLanguage = head.datalanguage;
+                                String headLanguage = head.datalanguage; // Could be null in head table
                                 headDataSource.close();
                                 boolean hasDataLang = true;
 
-                                if (!Objects.equals(headLanguage, "")) {
-                                    assert headLanguage != null;
-                                    headLanguage = headLanguage.substring(0, 2);
-                                } else
+                                if (Objects.equals(headLanguage, "") || headLanguage == null)
                                     hasDataLang = false;
+                                else
+                                    headLanguage = headLanguage.substring(0, 2);
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "921, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "942, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -932,7 +953,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "935, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "956, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1256,9 +1277,9 @@ public class WelcomeActivity
         date = section.date;
         start_tm = section.start_tm;
 
-        if (date == null)
+        if (date == null) // 'date' field could be null in section table
             date = "";
-        if (start_tm == null)
+        if (start_tm == null) // 'start_tm' field could be null in section table
             start_tm = "";
 
         boolean engl = false;
@@ -1351,7 +1372,6 @@ public class WelcomeActivity
      */
     private void exportDb2CSV() {
         // outFile -> /storage/emulated/0/Documents/TourCount/Tour_yyyyMMdd_HHmmss_tourname.csv
-        // and distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
         File path;
         path = Environment.getExternalStorageDirectory();
         path = new File(path + "/Documents/TourCount");
@@ -1371,9 +1391,9 @@ public class WelcomeActivity
         start_tm = section.start_tm;
         end_tm = section.end_tm;
 
-        if (date == null)
+        if (date == null) // 'date' field could be null in section table
             date = "";
-        if (start_tm == null)
+        if (start_tm == null) // 'start_tm' field could be null in section table
             start_tm = "";
 
         boolean engl = false;
@@ -1479,8 +1499,7 @@ public class WelcomeActivity
                     city = "\"" + section.city + "\"";
                     place = "\"" + section.place + "\"";
                     locality = "\"" + section.st_locality + "\"";
-                }
-                else {
+                } else {
                     country = getString(R.string.not_available);
                     b_state = getString(R.string.not_available);
                     plz = getString(R.string.not_available);
@@ -1517,13 +1536,13 @@ public class WelcomeActivity
                 // Set location headline
                 String[] arrLocHead =
                         {
-                                getString(R.string.country),
-                                getString(R.string.bstate),
-                                getString(R.string.plz),
-                                getString(R.string.city),
-                                getString(R.string.place),
-                                getString(R.string.slocality),
-                                getString(R.string.zlNotes)
+                                getString(R.string.countryRes),
+                                getString(R.string.bstateRes),
+                                getString(R.string.plzRes),
+                                getString(R.string.cityRes),
+                                getString(R.string.placeRes),
+                                getString(R.string.slocalityRes),
+                                getString(R.string.zlNotesRes)
                         };
                 csvWrite.writeNext(arrLocHead);
 
@@ -1547,12 +1566,12 @@ public class WelcomeActivity
                 // Set environment headline
                 String[] arrEnvHead =
                         {
-                                getString(R.string.date),
+                                getString(R.string.dateRes),
                                 "",
-                                getString(R.string.tm),
-                                getString(R.string.temperature),
-                                getString(R.string.wind),
-                                getString(R.string.clouds)
+                                getString(R.string.tmRes),
+                                getString(R.string.temperatureRes),
+                                getString(R.string.windRes),
+                                getString(R.string.cloudsRes)
                         };
                 csvWrite.writeNext(arrEnvHead);
 
@@ -1590,16 +1609,16 @@ public class WelcomeActivity
                 //    Species Name, Local Name, Code, Counts, Spec.-Notes
                 String[] arrCntHead =
                         {
-                                getString(R.string.name_spec),
+                                getString(R.string.name_specRes),
                                 nameSpecG,
-                                getString(R.string.speccode),
+                                getString(R.string.speccodeRes),
                                 getString(R.string.cntsmf),
                                 getString(R.string.cntsm),
                                 getString(R.string.cntsf),
                                 getString(R.string.cntsp),
                                 getString(R.string.cntsl),
                                 getString(R.string.cntse),
-                                getString(R.string.bema)
+                                getString(R.string.bemaRes)
                         };
                 csvWrite.writeNext(arrCntHead);
 
@@ -1835,19 +1854,19 @@ public class WelcomeActivity
                 //    Date, Time, Sexus, Phase, State, Indiv.-Notes 
                 String[] arrIndHead =
                         {
-                                getString(R.string.individuals) + ":",
-                                getString(R.string.cnts) + ":",
-                                getString(R.string.locality) + ":",
-                                getString(R.string.ycoord),
-                                getString(R.string.xcoord),
-                                getString(R.string.uncerti),
-                                getString(R.string.zcoord),
-                                getString(R.string.date),
-                                getString(R.string.time) + ":",
-                                getString(R.string.sex) + ":",
-                                getString(R.string.stadium) + ":",
-                                getString(R.string.status123) + ":",
-                                getString(R.string.bems)
+                                getString(R.string.individuals),
+                                getString(R.string.cnts),
+                                getString(R.string.locality),
+                                getString(R.string.ycoordRes),
+                                getString(R.string.xcoordRes),
+                                getString(R.string.uncertiRes),
+                                getString(R.string.zcoordRes),
+                                getString(R.string.dateRes),
+                                getString(R.string.time),
+                                getString(R.string.sex),
+                                getString(R.string.stadium),
+                                getString(R.string.status123),
+                                getString(R.string.bemsRes)
                         };
                 csvWrite.writeNext(arrIndHead);
 
@@ -1938,9 +1957,9 @@ public class WelcomeActivity
                                 "",
                                 "",
                                 "",
-                                getString(R.string.ycoord),
-                                getString(R.string.xcoord),
-                                getString(R.string.uncerti)
+                                getString(R.string.ycoordRes),
+                                getString(R.string.xcoordRes),
+                                getString(R.string.uncertiRes)
                         };
                 csvWrite.writeNext(arrACoordHead);
 
@@ -1993,6 +2012,726 @@ public class WelcomeActivity
         }
     }
     // End of exportDb2CSV()
+
+    /***********************************************************************************************
+     // Exports DB contents as tourcount_yyyy-MM-dd_HHmmss.xlsx to
+     // Documents/TourCount/ with purged data set.
+     // Spreadsheet programs can directly load this xlsx file
+     */
+    private void exportDb2XLSX() {
+        mesg = getString(R.string.saveXLSX);
+        Toast.makeText(this,
+                fromHtml("<font color='blue'>" + mesg + "</font>"),
+                Toast.LENGTH_SHORT).show();
+
+        // Set environment data
+        String date, start_tm, end_tm;
+        int temps, winds, clouds, tempe, winde, cloude;
+
+        section = sectionDataSource.getSection();
+        temps = section.tmp;
+        tempe = section.tmp_end;
+        winds = section.wind;
+        winde = section.wind_end;
+        clouds = section.clouds;
+        cloude = section.clouds_end;
+        date = section.date;
+        start_tm = section.start_tm;
+        end_tm = section.end_tm;
+
+        if (date == null) // 'date' field could be null in section table
+            date = "";
+        if (start_tm == null) // 'start_tm' field could be null in section table
+            start_tm = "";
+
+        boolean engl = false;
+        boolean hasDate = true;
+        String csvDate, csvTime;
+        String csvDateEU, csvDateEN;
+
+        // Get year from date
+        if (!Objects.equals(date, "")) {
+            // "-" at position 4 of the date means EN
+            if (Objects.equals(date.substring(4, 5), "-"))
+                engl = true;
+            // Create date for filename as YYYYMMDD from any format
+            csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
+            csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+        } else {
+            hasDate = false;
+            csvDateEN = "";
+            csvDateEU = "";
+        }
+
+        if (engl) {
+            csvDate = csvDateEN;
+        } else {
+            csvDate = csvDateEU;
+        }
+
+        if (!Objects.equals(start_tm, "")) {
+            csvTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
+
+            if (hasDate)
+                csvDate = csvDate + "_" + csvTime; // yyyymmdd_hhmm
+        } else
+            csvDate = ""; // has only a value when both date and start time are given
+
+        // outFile -> /storage/emulated/0/Documents/TourCount/Tour_yyyyMMdd_HHmmss_tourname.xlsx
+        File path;
+        path = Environment.getExternalStorageDirectory();
+        path = new File(path + "/Documents/TourCount");
+
+        //noinspection ResultOfMethodCallIgnored
+        path.mkdirs(); // Just verify path, result ignored
+
+        String sortIdent;
+        if (outPref.equals("names")) {
+            sortIdent = "n";
+        } else {
+            sortIdent = "c";
+        }
+
+        dataLanguage = prefs.getString("pref_sel_data_lang", "");
+
+        if (Objects.equals(tourNameDir, "") && Objects.equals(csvDate, ""))
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
+        else if (Objects.equals(tourNameDir, ""))
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + csvDate + "_" + sortIdent + ".xlsx");
+        else if (Objects.equals(csvDate, ""))
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
+        else
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + csvDate + "_" + sortIdent + ".xlsx");
+
+        FileOutputStream outputStream;
+        try {
+            outputStream = new FileOutputStream(outFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Workbook wb = new Workbook(outputStream, "TourCount", "1.0");
+        Worksheet ws = wb.newWorksheet("Results");
+
+        String sectName;
+        String sectNotes;
+
+        Head head;
+        String country, b_state, inspecName;
+        String plz, city, place, locality;
+        int spstate;
+        String spstate0;
+        double longi, lati, heigh, uncer;
+        int frst, sum = 0;
+        int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
+        String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
+        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
+
+        // Check if we can write the media
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
+
+        if (!mExternalStorageWriteable) {
+            mesg = getString(R.string.noCard);
+            Toast.makeText(this,
+                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                    Toast.LENGTH_LONG).show();
+        } else {
+            // Get sorting mode of species list
+            String sortMode;
+            if (outPref.equals("names")) {
+                sortMode = getString(R.string.sort_names);
+            } else {
+                sortMode = getString(R.string.sort_codes);
+            }
+
+            // *************************************
+            // Export the purged count table to xlsx
+
+            // Consult Section on Head tables for head and meta info
+            section = sectionDataSource.getSection();
+
+            sectName = section.name;
+            sectNotes = section.notes;
+
+            if (metaPref) {
+                country = section.country;
+                b_state = section.b_state;
+                plz = section.plz;
+                city = section.city;
+                place = section.place;
+                locality = section.st_locality;
+            } else {
+                country = getString(R.string.not_available);
+                b_state = getString(R.string.not_available);
+                plz = getString(R.string.not_available);
+                city = getString(R.string.not_available);
+                place = getString(R.string.not_available);
+                locality = getString(R.string.not_available);
+            }
+
+            headDataSource.open();
+            head = headDataSource.getHead();
+            inspecName = head.observer;
+            headDataSource.close();
+
+            // Row 0: Headline
+            ws.range(0,0,0,4).style().bold().set();
+            ws.value(0,0, getString(R.string.zList) + ":");
+            ws.value(0,1, sectName);
+            ws.value(0,3, getString(R.string.inspector));
+            ws.value(0,4, inspecName);
+            ws.value(0,9, sortMode);
+
+            // Row 1
+            ws.value(1,9, getString(R.string.sort_time));
+
+            // Row 2: Set location headline
+            ws.range(2,0,2,6).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().set();
+            ws.value(2,0, getString(R.string.countryRes));
+            ws.value(2,1, getString(R.string.bstateRes));
+            ws.value(2,2, getString(R.string.plzRes));
+            ws.value(2,3, getString(R.string.cityRes));
+            ws.value(2,4, getString(R.string.placeRes));
+            ws.value(2,5, getString(R.string.slocalityRes));
+            ws.value(2,6, getString(R.string.zlNotesRes));
+
+            // Row 3: Set location data line with data of 1. location
+            ws.value(3,0, country);
+            ws.value(3,1, b_state);
+            ws.value(3,2, plz);
+            ws.value(3,3, city);
+            ws.value(3,4, place);
+            ws.value(3,5, locality);
+            ws.value(3,6, sectNotes);
+
+            // Row 5: Set environment headline
+            ws.range(5,0,5,1).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().set();
+            ws.value(5,0, getString(R.string.dateRes));        // date
+            ws.value(5,1, "");
+            ws.range(5,2,5,5).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().horizontalAlignment("center").set();
+            ws.value(5,2, getString(R.string.tmRes));          // Time
+            ws.value(5,3, getString(R.string.temperatureRes)); // Temperature
+            ws.value(5,4, getString(R.string.windRes));        // Wind
+            ws.value(5,5, getString(R.string.cloudsRes));      // Clouds
+
+            // Row 6: Write 1. line of environment data
+            ws.value(6,0, date);
+            ws.value(6,1, getString(R.string.starttm));
+            ws.style(6,1).horizontalAlignment("right").set();
+            ws.value(6,2, start_tm);
+            ws.style(6,2).horizontalAlignment("center").set();
+            ws.value(6,3, String.valueOf(temps));
+            ws.style(6,3).horizontalAlignment("center").set();
+            ws.value(6,4, String.valueOf(winds));
+            ws.style(6,4).horizontalAlignment("center").set();
+            ws.value(6,5, String.valueOf(clouds));
+            ws.style(6,5).horizontalAlignment("center").set();
+
+
+            // Row 7: Write 2. line of environment data
+            ws.value(7,1, getString(R.string.endtm));
+            ws.style(7,1).horizontalAlignment("right").set();
+            ws.value(7,2, end_tm);
+            ws.style(7,2).horizontalAlignment("center").set();
+            ws.value(7,3, String.valueOf(tempe));
+            ws.style(7,3).horizontalAlignment("center").set();
+            ws.value(7,4, String.valueOf(winde));
+            ws.style(7,4).horizontalAlignment("center").set();
+            ws.value(7,5, String.valueOf(cloude));
+            ws.style(7,5).horizontalAlignment("center").set();
+
+            String nameSpecG = Utils.nameSpecG(dataLanguage);
+
+            // Row 9: Write counts headline
+            //    Species Name, Local Name, Code, Counts, Spec.-Notes
+            ws.range(9,0,9,1).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().set();
+            ws.value(9,0, getString(R.string.name_specRes)); // Species Name
+            ws.value(9,1, nameSpecG);                     // Local Name
+            ws.range(9,2,9,8).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().horizontalAlignment("center").set();
+            ws.value(9,2, getString(R.string.speccodeRes));  // Code
+            ws.style(9,3).borderStyle(BorderSide.LEFT,"thin").set();
+            ws.value(9,3, getString(R.string.cntsmf));    // Counts
+            ws.value(9,4, getString(R.string.cntsm));
+            ws.value(9,5, getString(R.string.cntsf));
+            ws.value(9,6, getString(R.string.cntsp));
+            ws.value(9,7, getString(R.string.cntsl));
+            ws.value(9,8, getString(R.string.cntse));
+            ws.style(9,9).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.value(9,9, getString(R.string.bemaRes));      // Notes
+
+            // Write counts data
+            dbHelper = new DbHelper(this);
+            database = dbHelper.getWritableDatabase();
+
+            Cursor curCSVCnt; // Cursor for Counts table
+
+            // Sort mode species list
+            if (outPref.equals("names")) {
+                curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                        + " WHERE " + " ("
+                        + DbHelper.C_NOTES + " = '0' or "
+                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                        + " order by " + DbHelper.C_NAME, null, null);
+            } else {
+                curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                        + " WHERE " + " ("
+                        + DbHelper.C_NOTES + " = '0' or "
+                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                        + " order by " + DbHelper.C_CODE, null, null);
+            }
+
+            // Get the number of individuals with attributes
+            int cnts;       // individuals icount
+            String strcnts;
+            int cntsmf;     // Imago male or female
+            String strcntsmf;
+            int cntsm = 0;  // Imago male
+            String strcntsm;
+            int cntsf = 0;  // Imago female
+            String strcntsf;
+            int cntsp = 0;  // Pupa
+            String strcntsp;
+            int cntsl = 0;  // Caterpillar
+            String strcntsl;
+            int cntse = 0;  // Egg
+            String strcntse;
+            String male = "m";
+            String fmale = "f";
+            String stadium1 = getString(R.string.stadium_1);
+            String stadium2 = getString(R.string.stadium_2);
+            String stadium3 = getString(R.string.stadium_3);
+            String stadium4 = getString(R.string.stadium_4);
+
+            String spname;
+            String spcode;
+            String slct; // Recording time to sort individuals
+
+            // Prepare species and individuals data
+            Cursor curCSVInd; // Cursor for Individuals table
+            int specIndex = 0;
+            while (curCSVCnt.moveToNext()) {
+                spname = curCSVCnt.getString(7); // species name from count table
+                spcode = curCSVCnt.getString(8); // species code from count table
+                slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
+                        + DbHelper.I_NAME + " = ? AND "
+                        + DbHelper.I_SEX + " = ? AND "
+                        + DbHelper.I_STADIUM + " = ?";
+
+                // Select male
+                curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1});
+                while (curCSVInd.moveToNext()) {
+                    cnts = curCSVInd.getInt(14); // individuals icount
+                    cntsm = cntsm + cnts;
+                }
+                curCSVInd.close();
+
+                // Select female
+                curCSVInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1});
+                while (curCSVInd.moveToNext()) {
+                    cnts = curCSVInd.getInt(14); // individuals icount
+                    cntsf = cntsf + cnts;
+                }
+                curCSVInd.close();
+
+                String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
+                        + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
+
+                // Select pupa
+                curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2});
+                while (curCSVInd.moveToNext()) {
+                    cnts = curCSVInd.getInt(14); // individuals icount
+                    cntsp = cntsp + cnts;
+                }
+                curCSVInd.close();
+
+                // Select caterpillar
+                curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
+                while (curCSVInd.moveToNext()) {
+                    cnts = curCSVInd.getInt(14); // individuals icount
+                    cntsl = cntsl + cnts;
+                }
+                curCSVInd.close();
+
+                // Select egg
+                curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
+                while (curCSVInd.moveToNext()) {
+                    cnts = curCSVInd.getInt(14); // individuals icount
+                    cntse = cntse + cnts;
+                }
+                curCSVInd.close();
+
+                cntsmf = curCSVCnt.getInt(1);
+                cntsm = curCSVCnt.getInt(2);
+                cntsf = curCSVCnt.getInt(3);
+                cntsp = curCSVCnt.getInt(4);
+                cntsl = curCSVCnt.getInt(5);
+                cntse = curCSVCnt.getInt(6);
+
+                if (cntsmf > 0) // suppress '0' in output
+                    strcntsmf = Integer.toString(cntsmf);
+                else
+                    strcntsmf = "";
+                if (cntsm > 0)
+                    strcntsm = Integer.toString(cntsm);
+                else
+                    strcntsm = "";
+                if (cntsf > 0)
+                    strcntsf = Integer.toString(cntsf);
+                else
+                    strcntsf = "";
+                if (cntsp > 0)
+                    strcntsp = Integer.toString(cntsp);
+                else
+                    strcntsp = "";
+                if (cntsl > 0)
+                    strcntsl = Integer.toString(cntsl);
+                else
+                    strcntsl = "";
+                if (cntse > 0)
+                    strcntse = Integer.toString(cntse);
+                else
+                    strcntse = "";
+
+                String sp_notes;   // species notes
+                sp_notes = curCSVCnt.getString(9);
+                if (sp_notes == null)
+                    sp_notes = "";
+
+                boolean even = specIndex % 2 == 0;
+
+                // Species table entry with counts,
+                // Row 10 (+ index of species), alternating gray line background
+                if (even) {
+                    ws.value(10 + specIndex,0, spname);                     // species name
+                    ws.value(10 + specIndex,1, curCSVCnt.getString(10)); // local name
+                    ws.range(10 + specIndex,2,10 + specIndex,8)
+                            .style().horizontalAlignment("center").set();
+                    ws.value(10 + specIndex,2, spcode);                     // species code
+                    ws.style(10 + specIndex,3).borderStyle(BorderSide.LEFT,"thin").set();
+                    ws.value(10 + specIndex,3, strcntsmf);                  // count ♂|♀
+                    ws.value(10 + specIndex,4, strcntsm);                   // count ♂
+                    ws.value(10 + specIndex,5, strcntsf);                   // count ♀
+                    ws.value(10 + specIndex,6, strcntsp);                   // count pupa
+                    ws.value(10 + specIndex,7, strcntsl);                   // count caterpillar
+                    ws.value(10 + specIndex,8, strcntse);                   // count egg
+                    ws.value(10 + specIndex,9, sp_notes);                   // species notes
+                } else {
+                    ws.range(10 + specIndex,0,10 + specIndex,1)
+                            .style().fillColor("DDDDDD").set();
+                    ws.value(10 + specIndex,0, spname);                     // species name
+                    ws.value(10 + specIndex,1, curCSVCnt.getString(10)); // local name
+                    ws.range(10 + specIndex,2,10 + specIndex,8)
+                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
+                    ws.value(10 + specIndex,2, spcode);                     // species code
+                    ws.style(10 + specIndex,3).borderStyle(BorderSide.LEFT,"thin").set();
+                    ws.value(10 + specIndex,3, strcntsmf);                  // count ♂|♀
+                    ws.value(10 + specIndex,4, strcntsm);                   // count ♂
+                    ws.value(10 + specIndex,5, strcntsf);                   // count ♀
+                    ws.value(10 + specIndex,6, strcntsp);                   // count pupa
+                    ws.value(10 + specIndex,7, strcntsl);                   // count caterpillar
+                    ws.value(10 + specIndex,8, strcntse);                   // count egg
+                    ws.style(10 + specIndex,8).fillColor("DDDDDD")
+                            .horizontalAlignment("center").set();
+                    ws.value(10 + specIndex,9, sp_notes);                   // species notes
+                    ws.style(10 + specIndex,9).fillColor("DDDDDD").set();
+                }
+
+                sum = sum + cntsmf + cntsm + cntsf + cntsp + cntsl + cntse;
+                summf = summf + cntsmf;
+                summ = summ + cntsm;
+                sumf = sumf + cntsf;
+                sump = sump + cntsp;
+                suml = suml + cntsl;
+                sume = sume + cntse;
+
+                // Suppress 0 by blank
+                if (summf == 0)
+                    sumMF = "";
+                else
+                    sumMF = Integer.toString(summf);
+
+                if (summ == 0)
+                    sumM = "";
+                else
+                    sumM = Integer.toString(summ);
+
+                if (sumf == 0)
+                    sumF = "";
+                else
+                    sumF = Integer.toString(sumf);
+
+                if (sump == 0)
+                    sumP = "";
+                else
+                    sumP = Integer.toString(sump);
+
+                if (suml == 0)
+                    sumL = "";
+                else
+                    sumL = Integer.toString(suml);
+
+                if (sume == 0)
+                    sumE = "";
+                else
+                    sumE = Integer.toString(sume);
+
+                cntsm = 0;
+                cntsf = 0;
+                cntsp = 0;
+                cntsl = 0;
+                cntse = 0;
+                specIndex++;
+            }
+            curCSVCnt.close();
+            // End of Species table
+
+            int sumSpec = countDataSource.getDiffSpec(); // get number of different species
+
+            // Write total sum
+            // Row 11 + specIndex:
+            ws.style(11 + specIndex,0).bold().set();
+            ws.value(11 + specIndex,0, getString(R.string.sumSpec) + " " + (sumSpec));
+
+            ws.style(11 + specIndex,2).horizontalAlignment("right").bold().set();
+            ws.value(11 + specIndex,2, getString(R.string.sum));
+
+            ws.range(11 + specIndex,3,11 + specIndex,8)
+                    .style().horizontalAlignment("center").set();
+            ws.value(11 + specIndex,3, sumMF);
+            ws.value(11 + specIndex,4, sumM);
+            ws.value(11 + specIndex,5, sumF);
+            ws.value(11 + specIndex,6, sumP);
+            ws.value(11 + specIndex,7, sumL);
+            ws.value(11 + specIndex,8, sumE);
+            ws.style(11 + specIndex,9).bold().set();
+            ws.value(11 + specIndex,9, getString(R.string.sum_total) + " " + sum);
+            // End of Species table
+
+            // Set left lines in species table
+            ws.range(10,3,11 + specIndex,3)
+                    .style().borderStyle(BorderSide.LEFT,"thin").set();
+            ws.range(10,9,11 + specIndex,9)
+                    .style().borderStyle(BorderSide.LEFT,"thin").set();
+            // Set left and bottom lines in species table headline cells
+            ws.style(9,3).borderStyle(BorderSide.LEFT,"thin")
+                    .borderStyle(BorderSide.BOTTOM,"thin").set();
+            ws.style(9,9).borderStyle(BorderSide.LEFT,"thin")
+                    .borderStyle(BorderSide.BOTTOM,"thin").set();
+
+            // Individuals table headline
+            //    Individuals, Counts, Locality, Longitude, Latitude, Uncertainty, Height,
+            //    Date, Time, Sexus, Phase, State, Indiv.-Notes
+            // Row 13 + specIndex
+            ws.style(13 + specIndex,0).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.value(13 + specIndex,0, getString(R.string.individuals));
+            ws.style(13 + specIndex,1).borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().horizontalAlignment("center").set();
+            ws.value(13 + specIndex,1, getString(R.string.cnts));
+            ws.style(13 + specIndex,2).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.value(13 + specIndex,2, getString(R.string.locality));
+            ws.range(13 + specIndex,3,13 + specIndex,6).style().borderStyle(BorderSide
+                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
+            ws.value(13 + specIndex,3, getString(R.string.ycoordRes));
+            ws.value(13 + specIndex,4, getString(R.string.xcoordRes));
+            ws.value(13 + specIndex,5, getString(R.string.uncertiRes));
+            ws.value(13 + specIndex,6, getString(R.string.zcoordRes));
+            ws.range(13 + specIndex,7,13 + specIndex,8).style().borderStyle(BorderSide
+                    .BOTTOM,"thin").bold().set();
+            ws.value(13 + specIndex,7, getString(R.string.dateRes));
+            ws.value(13 + specIndex,8, getString(R.string.time));
+            ws.range(13 + specIndex,9,13 + specIndex,11).style().borderStyle(BorderSide
+                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
+            ws.value(13 + specIndex,9, getString(R.string.sex));
+            ws.value(13 + specIndex,10, getString(R.string.stadium));
+            ws.value(13 + specIndex,11, getString(R.string.status123));
+            ws.value(13 + specIndex,12, getString(R.string.bemsRes));
+            ws.style(13 + specIndex,12).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+
+            // Build the sorted individuals array
+            curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
+                            + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP,
+                    null, null);
+
+            String lngi, latit;
+            frst = 0;
+            int indIndex = specIndex;
+            while (curCSVInd.moveToNext()) {
+                longi = curCSVInd.getDouble(4);
+                lati = curCSVInd.getDouble(3);
+                uncer = Math.rint(curCSVInd.getDouble(6));
+                heigh = Math.rint(curCSVInd.getDouble(5));
+                spstate = curCSVInd.getInt(12);
+                if (spstate == 0)
+                    spstate0 = "-";
+                else
+                    spstate0 = Integer.toString(spstate);
+                cnts = curCSVInd.getInt(14);
+                if (cnts > 0)
+                    strcnts = String.valueOf(cnts);
+                else
+                    strcnts = "";
+
+                try {
+                    lngi = String.valueOf(longi).substring(0, 8); // longitude
+                } catch (StringIndexOutOfBoundsException e) {
+                    lngi = String.valueOf(longi);
+                }
+
+                try {
+                    latit = String.valueOf(lati).substring(0, 8); // latitude
+                } catch (StringIndexOutOfBoundsException e) {
+                    latit = String.valueOf(lati);
+                }
+
+                String iNotes = curCSVInd.getString(13);
+                if (iNotes == null)
+                    iNotes = "";
+
+                boolean even = indIndex % 2 == 0;
+
+                // Individuals table entries
+                if (even) {
+                    ws.value(14 + indIndex,0, curCSVInd.getString(2));               // species name
+                    ws.style(14 + indIndex,1).horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,1, strcnts);                                 // indiv. counts
+                    ws.value(14 + indIndex,2, curCSVInd.getString(9));               // locality
+                    ws.range(14 + indIndex,3,14 + indIndex,6)
+                            .style().horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,3, lngi);                                    // longitude
+                    ws.value(14 + indIndex,4, latit);                                   // latitude
+                    ws.value(14 + indIndex,5, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
+                    ws.value(14 + indIndex,6, String.valueOf(Math.round(heigh)));       // height
+                    ws.value(14 + indIndex,7, curCSVInd.getString(7));                // date
+                    ws.value(14 + indIndex,8, curCSVInd.getString(8));                // time
+                    ws.range(14 + indIndex,9,14 + indIndex,11)
+                            .style().horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,9, curCSVInd.getString(10));               // sexus
+                    ws.value(14 + indIndex,10, curCSVInd.getString(11));              // phase
+                    ws.value(14 + indIndex,11, spstate0);                                // status
+                    ws.value(14 + indIndex,12, iNotes);                                  // indiv. notes
+                } else {
+                    ws.style(14 + indIndex,0).fillColor("DDDDDD").set();
+                    ws.value(14 + indIndex,0, curCSVInd.getString(2));               // species name
+                    ws.style(14 + indIndex,1).fillColor("DDDDDD").horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,1, strcnts);                                 // indiv. counts
+                    ws.style(14 + indIndex,2).fillColor("DDDDDD").set();
+                    ws.value(14 + indIndex,2, curCSVInd.getString(9));               // locality
+                    ws.range(14 + indIndex,3,14 + indIndex,6)
+                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,3, lngi);                                    // longitude
+                    ws.value(14 + indIndex,4, latit);                                   // latitude
+                    ws.value(14 + indIndex,5, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
+                    ws.value(14 + indIndex,6, String.valueOf(Math.round(heigh)));       // height
+                    ws.range(14 + indIndex,7,14 + indIndex,8)
+                            .style().fillColor("DDDDDD").set();
+                    ws.value(14 + indIndex,7, curCSVInd.getString(7));                // date
+                    ws.value(14 + indIndex,8, curCSVInd.getString(8));                // time
+
+                    ws.range(14 + indIndex,9,14 + indIndex,11)
+                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,9, curCSVInd.getString(10));               // sexus
+                    ws.value(14 + indIndex,10, curCSVInd.getString(11));              // phase
+                    ws.value(14 + indIndex,11, spstate0);                                // status
+
+                    ws.style(14 + indIndex,12).fillColor("DDDDDD").set();
+                    ws.value(14 + indIndex,12, iNotes);                                  // indiv. notes
+                }
+
+                if (longi != 0) // Has coordinates
+                {
+                    if (frst == 0) {
+                        loMin = longi;
+                        loMax = longi;
+                        laMin = lati;
+                        laMax = lati;
+                        uncer1 = uncer;
+                        frst = 1; // Just 1 with coordinates
+                    } else {
+                        loMin = Math.min(loMin, longi);
+                        loMax = Math.max(loMax, longi);
+                        laMin = Math.min(laMin, lati);
+                        laMax = Math.max(laMax, lati);
+                        uncer1 = Math.max(uncer1, uncer);
+                    }
+                }
+
+                indIndex++; // Last increment adds an empty row
+            }
+            curCSVInd.close();
+
+            // Write Average Coords headline
+            ws.value(15 + indIndex,0, "");
+            ws.value(15 + indIndex,1, "");
+            ws.value(15 + indIndex,2, "");
+            ws.range(15 + indIndex,2,15 + indIndex,5)
+                    .style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .horizontalAlignment("center").bold().set();
+            ws.value(15 + indIndex,3, getString(R.string.ycoordRes));
+            ws.value(15 + indIndex,4, getString(R.string.xcoordRes));
+            ws.value(15 + indIndex,5, getString(R.string.uncertiRes));
+
+            lo = (loMax + loMin) / 2;   // average longitude
+            la = (laMax + laMin) / 2;   // average latitude
+
+            // Simple distance calculation between 2 coordinates within the temperate zone in meters (Pythagoras):
+            //   uc = (((loMax-loMin)*71500)² + ((laMax-laMin)*111300)²)½
+            uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
+            uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
+            if (uc <= uncer1)
+                uc = uncer1;
+
+            try {
+                lngi = String.valueOf(lo).substring(0, 8); //longitude
+            } catch (StringIndexOutOfBoundsException e) {
+                lngi = String.valueOf(lo);
+            }
+
+            try {
+                latit = String.valueOf(la).substring(0, 8); // latitude
+            } catch (StringIndexOutOfBoundsException e) {
+                latit = String.valueOf(la);
+            }
+
+            // Write Average Coords
+            ws.style(16 + indIndex,2).horizontalAlignment("right").bold().set();
+            ws.value(16 + indIndex,2, getString(R.string.avCoords));
+            ws.range(16 + indIndex,3,16 + indIndex,5)
+                    .style().horizontalAlignment("center").set();
+            ws.value(16 + indIndex,3, lngi);
+            ws.value(16 + indIndex,4, latit);
+            ws.value(16 + indIndex,5, String.valueOf(Math.round(uc))); // average uncertainty radius)
+
+            // Set vertical line in coordinates table and correct cell (15 + indIndex, 3)
+            ws.range(15 + indIndex,3,16 + indIndex,3)
+                    .style().borderStyle(BorderSide.LEFT,"thin").set();
+            ws.style(15 + indIndex,3).borderStyle(BorderSide.BOTTOM,"thin")
+                            .borderStyle(BorderSide.LEFT,"thin").set();
+
+            dbHelper.close();
+
+            try {
+                // Export purged db as xlsx
+                wb.finish();
+                outputStream.close();
+                wb.close();
+            } catch (IOException e) {
+                mesg = getString(R.string.saveFail);
+                Toast.makeText(this,
+                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    // End of exportDb2XLSX()
 
     /**
      * @noinspection ResultOfMethodCallIgnored

@@ -37,7 +37,7 @@ import java.util.Locale
  *
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2026-05-28
+ * last edited on 2026-06-08
  */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
@@ -163,13 +163,14 @@ class DelSpeciesActivity : AppCompatActivity() {
     }
     // End of onResume()
 
-    // Get initial 2 characters of species to select by search button
+    // Get 2 or more characters of species to select by search button
+    // Parameter view is necessary for function call
     fun getDelSearchChars(view: View) {
         // Read EditText searchDel from widget_del_hint.xml
         val searchDel: EditText = findViewById(R.id.searchD)
         searchDel.findFocus()
 
-        // Get the initial characters of species to select from
+        // Get the search characters to build a species list to select from
         searchChars = searchDel.text.toString().trim()
         if (searchChars.length == 1) {
             // Reminder: "Please, >1 characters"
@@ -179,7 +180,7 @@ class DelSpeciesActivity : AppCompatActivity() {
             searchDel.clearFocus()
             searchDel.invalidate()
 
-            // Re-enter DelSpeciesActivity for reduced add list
+            // Re-enter DelSpeciesActivity for the reduced species delete-list
             val intent = Intent(this@DelSpeciesActivity, DelSpeciesActivity::class.java)
             intent.putExtra("search_Chars", searchChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
@@ -188,18 +189,18 @@ class DelSpeciesActivity : AppCompatActivity() {
         }
     }
 
-    // Construct del-species-list of contained species in the counting list
+    // Construct a del-species-list of contained species in the current counting list
     //   and optionally reduce it by searchChars selection
     private fun constructDelList() {
         // Load the sorted species
-        val counts = countDataSource!!.allSpeciesSrtCode
+        val countsCodesSortList = countDataSource!!.allSpeciesSrtCode
 
         // Get all counting list species into their CountEditWidgets and add these to the view
         if (searchChars.length >= 2) {
             searchChars = searchChars.uppercase(Locale.getDefault()) //Compare searchChars in uppercase
             var cnt = 1
-            // Check name in counts for InitChars to reduce list
-            for (count in counts) {
+            // Check name in countsCodesSortList for InitChars to reduce list
+            for (count in countsCodesSortList) {
                 if (count.name.uppercase(Locale.getDefault()).contains(searchChars)) {
                     val dsw = DeleteSpeciesWidget(this, null)
                     dsw.setSpecName(count.name)
@@ -212,7 +213,7 @@ class DelSpeciesActivity : AppCompatActivity() {
                 }
             }
         } else {
-            for (count in counts) {
+            for (count in countsCodesSortList) {
                 val dsw = DeleteSpeciesWidget(this, null)
                 dsw.setSpecName(count.name)
                 dsw.setSpecNameG(count.name_g)
@@ -224,7 +225,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         }
     }
 
-    // Mark the selected species and consider it for delete from the species counts list
+    // Mark the selected species and consider it for delete from the species countsCodesSortList list
     fun checkBoxDel(view: View) {
         val idToDel = view.tag as Int
         val dsw = deleteArea!!.getChildAt(idToDel) as DeleteSpeciesWidget
@@ -240,7 +241,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         }
     }
 
-    // Delete selected species from species list
+    // Delete selected species from current species list
     private fun delSpecs() {
         var i = 0 // index of species list to delete
         while (i < listToDelete!!.size) {
@@ -258,7 +259,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         countDataSource!!.sortCounts()
 
         // Rebuild the species list
-        val counts = countDataSource!!.allSpeciesSrtCode
+        val countsCodesSortList = countDataSource!!.allSpeciesSrtCode
 
         delHintArea!!.removeAllViews()
         val hdw = DeleteSpeciesHintWidget(this, null)
@@ -266,7 +267,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         delHintArea!!.addView(hdw)
 
         deleteArea!!.removeAllViews()
-        for (count in counts) {
+        for (count in countsCodesSortList) {
             val dsw = DeleteSpeciesWidget(this, null)
             dsw.setSpecName(count.name)
             dsw.setSpecNameG(count.name_g)
@@ -301,7 +302,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "304, onPause")
+            Log.i(TAG, "305, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -322,7 +323,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "325, onStop")
+            Log.i(TAG, "326, onStop")
 
         deleteArea = null
         delHintArea = null
@@ -332,7 +333,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "335, onDestroy")
+            Log.i(TAG, "336, onDestroy")
     }
 
     companion object {

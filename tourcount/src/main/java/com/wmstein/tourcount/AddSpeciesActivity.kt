@@ -26,7 +26,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 
 import com.wmstein.tourcount.Utils.fromHtml
-import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.AddSpeciesHintWidget
 import com.wmstein.tourcount.widgets.AddSpeciesWidget
@@ -44,7 +43,7 @@ import java.util.Locale
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-05-28
+ * last edited on 2026-06-15
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -76,9 +75,6 @@ class AddSpeciesActivity : AppCompatActivity() {
     // List of selected species to add
     private var listToAdd: ArrayList<AddSpeciesWidget>? = null
 
-    // List of all count list species sorted by codes
-    private lateinit var countsCodesSortList: List<Count>
-
     // preferences
     private var prefs = TourCountApplication.getPrefs()
     private var brightPref = false
@@ -89,7 +85,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "92, onCreate")
+            Log.i(TAG, "89, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -142,7 +138,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "145, onResume")
+            Log.i(TAG, "142, onResume")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -203,20 +199,22 @@ class AddSpeciesActivity : AppCompatActivity() {
             fromHtml("<font color='blue'>$mesg</font>"),
             Toast.LENGTH_SHORT
         ).show()
+
+        // Delay necessary for Toast to show and not break activity
         Handler(Looper.getMainLooper()).postDelayed({
             constructAddList()
         }, 100)
     }
     // End of onResume()
 
-    // Get initial 2 characters of species to select by search button
+    // Get 2 or more characters of species to select by search button
     // Parameter view is necessary for function call
     fun getAddSearchChars(view: View) {
         // Read EditText searchAdd from widget_add_hint.xml
         val searchAdd: EditText = findViewById(R.id.searchA)
         searchAdd.findFocus()
 
-        // Get the search characters for species to select from
+        // Get the search characters to build a species list to select from
         searchChars = searchAdd.text.toString().trim()
         if (searchChars.length == 1) {
             // Reminder: "Please, >1 characters"
@@ -226,7 +224,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             searchAdd.clearFocus()
             searchAdd.invalidate()
 
-            // Re-enter AddSpeciesActivity for reduced add list
+            // Re-enter AddSpeciesActivity for the reduced species-add-list
             val intent = Intent(this@AddSpeciesActivity, AddSpeciesActivity::class.java)
             intent.putExtra("search_Chars", searchChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
@@ -235,16 +233,16 @@ class AddSpeciesActivity : AppCompatActivity() {
         }
     }
 
-    // Construct add-species-list of not already contained species in the counting list
-    //   and optionally reduce it further by searchChars selection
+    // Construct an add-species-list of not already contained species in the current counting list
+    //   and optionally reduce it by searchChars selection
     private fun constructAddList() {
         // 1. Build list of codes of contained species in counting list
         val specCodesContainedList = ArrayList<String?>()
 
         // Get sorted species of the counting list
-        countsCodesSortList = countDataSource!!.allSpeciesSrtCode
+        val countsCodesSortList = countDataSource!!.allSpeciesSrtCode
 
-        // build ArrayList of codes of already contained species
+        // Build ArrayList of codes of already contained species
         for (count in countsCodesSortList) {
             specCodesContainedList.add(count.code)
         }
@@ -294,7 +292,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             }
         }
 
-        // Create remainingIdArrayList with IDs of remaining species
+        // Create remainingIdArrayList for all remaining species of codesReducedArrayList
         remainingIdArrayList = arrayOfNulls(codesReducedArrayList!!.size)
         var i = 0
         while (i < codesReducedArrayList!!.size) {
@@ -302,7 +300,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             i++
         }
 
-        // load the data of remaining species into the AddSpeciesWidget
+        // Load the data of the remaining species into the AddSpeciesWidget
         i = 0
         while (i < codesReducedArrayList!!.size) {
             val asw = AddSpeciesWidget(this, null)
@@ -328,19 +326,19 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         val checked = asw.getMarkSpec() // return boolean isChecked
 
-        // put species on add list
+        // Put species on the add-list
         if (checked) {
             listToAdd!!.add(asw)
         } else {
-            // remove species previously added from add list
+            // Remove species previously added from the add-list
             listToAdd!!.remove(asw)
         }
     }
 
-    // Update COUNT_TABLE with added species 
+    // Update COUNT_TABLE with the species to add
     @SuppressLint("ApplySharedPref")
     private fun addSpecs() {
-        // Append the species from list to add to the COUNT_TABLE
+        // Append the species from the add-list to the COUNT_TABLE
         var i = 0
         while (i < listToAdd!!.size) {
             specName = listToAdd!![i].getSpecName()
@@ -354,7 +352,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             i++
         }
 
-        // Re-index and sort counts table for code
+        // Re-index and sort the counts table for code
         countDataSource!!.sortCounts()
 
         // Store code of last selected species in sharedPreferences
@@ -399,7 +397,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "402, onPause")
+            Log.i(TAG, "401, onPause")
 
         countDataSource!!.close()
 
@@ -417,7 +415,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "420, onStop")
+            Log.i(TAG, "419, onStop")
 
         addArea = null
         addHintArea = null
@@ -427,7 +425,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "430, onDestroy")
+            Log.i(TAG, "429, onDestroy")
     }
 
     companion object {

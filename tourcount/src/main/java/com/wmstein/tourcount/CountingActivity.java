@@ -71,7 +71,7 @@ import java.util.Objects;
  * <p>
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-05-19
+ * last edited in Java on 2026-06-08
  */
 public class CountingActivity
         extends AppCompatActivity
@@ -93,7 +93,7 @@ public class CountingActivity
     private List<CountingLHWidget> countingWidgetsLH;
     private Spinner spinner;
     private int itemPosition = 0;
-    private int i_Id = 0; // Individuals id
+    private int i_Id = 0; // Individuals table ID
     private String spec_name;
     private int specCnt;
 
@@ -114,7 +114,7 @@ public class CountingActivity
     private boolean lhandPref;       // true for left hand mode of counting screen
     private boolean buttonSoundPref;
     private boolean buttonVibPref;
-    private String specCode = "";    // species code of an added species
+    private String specCode = "";    // code of a species to be shown in the counting list
     private String proxSensorPref;
     private double sensorSensitivity = 0.0;
 
@@ -377,13 +377,14 @@ public class CountingActivity
         else
             spinner = findViewById(R.id.countHead1Spinner);
 
-        // Get itemPosition of added species by specCode from sharedPreference
+        // Get itemPosition of the species to be shown from sharedPreference
         if (!Objects.equals(prefs.getString("new_spec_code", ""), "")) {
             specCode = prefs.getString("new_spec_code", "");
             editor = prefs.edit();
             editor.putString("new_spec_code", ""); // clear prefs value after use
             editor.apply();
         }
+
         if (!Objects.equals(specCode, "")) {
             int i = 0;
             while (i <= codeArray.length) {
@@ -397,7 +398,7 @@ public class CountingActivity
             specCode = "";
         }
 
-        // Set part of counting screen
+        // Set spinner part of the counting screen by itemPosition
         CountingHead1Widget adapter = new CountingHead1Widget(this,
                 idArray, nameArray, nameArrayG, codeArray, imageArray);
         spinner.setAdapter(adapter);
@@ -546,14 +547,14 @@ public class CountingActivity
     }
     // End of onOptionsItemSelected()
 
-    // Edit count options by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
-    public void editOptions(View view) {
+    // Edit species notes by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
+    public void editSpeciesNotes(View view) {
         Intent intent = new Intent(CountingActivity.this, EditSpeciesNotesActivity.class);
         intent.putExtra("count_id", iid);
         startActivity(intent);
     }
 
-    // Edit count options by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
+    // Edit tour notes by EditTourNotesActivity by button in widget_counting_tour_notes.xml
     public void editTourNotes(View view) {
         Intent intent = new Intent(CountingActivity.this, EditTourNotesActivity.class);
         intent.putExtra("count_id", iid);
@@ -576,7 +577,7 @@ public class CountingActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "579, onPause");
+            Log.i(TAG, "580, onPause");
 
         disableProximitySensor();
 
@@ -591,8 +592,7 @@ public class CountingActivity
         countDataSource.close();
         individualsDataSource.close();
 
-        // N.B. a wakelock might not be held, e.g. if someone is using Cyanogenmod and
-        // has denied wakelock permission to TourCount
+        // On some Custom ROMS a wakelock might not be held, if wakelock permission is not granted
         if (awakePref) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }

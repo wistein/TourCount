@@ -38,7 +38,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-05-26
+ * last edited on 2026-06-08
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -68,10 +68,10 @@ class EditIndividualActivity : AppCompatActivity() {
     private var uncert = ""
     private var countId = 0
     private var indivId = 0
-    private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = caterpillar, 5 = pupa, 6 = egg
+    private var indivAttr = 0 // 1 = ♂|♀, 2 = ♂, 3 = ♀, 4 = pupa, 5 = caterpillar, 6 = egg
     private var specName = ""
 
-    // phase123 is true for butterfly (♂|♀, ♂ or ♀), false for egg, caterpillar or pupa
+    // phase123 is true for butterfly (♂|♀, ♂ or ♀), false for pupa, caterpillar or egg
     private var phase123 = false
     private var dateStamp = ""
     private var timeStamp = ""

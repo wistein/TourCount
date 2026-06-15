@@ -5,7 +5,7 @@
 <html lang="de">
 
 <!-- TourCount Benutzeranleitung help_de.html --
-     Last edited on 2026-04-07
+     Last edited on 2026-06-15
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -151,37 +151,33 @@ Ab App-Version 3.7.4 werden die DB-Dateien mit einem Feld zur Erkennung der Date
 Mit <b>„Import Basis-DB“</b> kann eine vorhandene Basis-DB-Datei ausgewählt und eingelesen werden, die als Vorlage für eine neue Tour dient.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der Dateiname muss dazu immer mit der exakten Zeichenfolge „tourcount0“ beginnen (z. B.: „tourcount0_de_Kottenforst.db“), sonst kann die Datei nicht als Basis-DB importiert werden.
 <br><br>
+Beim <b>Datenexport</b> wird der Tourname (falls in den Metadaten vorhanden) in den Dateinamen eingefügt. Dabei werden alle Zeichen entfernt, die den Dateinamen-Konventionen widersprechen.
+<br><br>
 Mit <b>„Export Basis-DB“</b> kann die interne DB als Basis-DB-Datei „tourcount0_ds_Tourname.db“, d. h. ohne begehungsspezifische Daten aber mit allgemeinen Metadaten und der aktuellen Speziesliste nach Documents/TourCount exportiert werden, z.B. wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden, wie z.B. Arten wurden gelöscht oder neue hinzugefügt.
 <br><br>
 Mit <b>„Import DB“</b> kann eine exportierte oder eine ggf. entsprechend benannte TourCount-DB, die Zähldaten enthält, ausgewählt und in die App geladen werden.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der DB-Dateiname muss dazu immer mit der exakten Zeichenfolge „tourcount_“ beginnen (z. B.: „tourcount_de_Kottenforst_20250815.db“), ansonsten kann die Datei nicht als normale DB importiert werden.
 <br><br>
-<b>„Export akt. DB“</b> schreibt eine Kopie der DB mit allen momentan enthaltenen Daten in die Datei „tourcount_ds_Tourname_JJJJMMTT_hhmm.db“ ins Verzeichnis Documents/TourCount. Falls in den Metadaten vorhanden, wird das Datum und die Startzeit der Tour in den Dateinamen eingefügt. Anderenfalls wird das aktuelle Datum verwendet.
-Der Tourname wird eingefügt, falls er unter Metadaten existiert und ggf. um Zeichen bereinigt, die den Dateinamen-Konventionen widersprechen.
+<b>„Export akt. DB“</b> schreibt eine Kopie der DB mit allen momentan enthaltenen Daten in die Datei „tourcount_ds_Tourname_JJJJMMTT_hhmm.db“ ins Verzeichnis Documents/TourCount. Dabei wird vorzugsweise das Startdatum der Tour eingefügt falls es unter Metadaten existiert.
 <br><br>
 Mit <b>„Import Speziesliste“</b> kann eine vorhandene Speziesliste ausgewählt und importiert werden. Beim Import bleiben die Metadaten erhalten, jedoch werden alle Zähldaten gelöscht. Falls die App TransektCount installiert ist, können die exportierten Spezieslisten wechselseitig importiert werden.<br>
 Ab App-Version 3.7.2 wurde die Struktur der Speziesliste um die Angabe der Datensprache ergänzt. Als Datensprache können Deutsch, Englisch, Französisch, Italienisch oder Spanisch genutzt werden. Soweit lokale Artnamen aufgefunden werden konnten, sind sie für die in der App vorhandenen Arten enthalten.<br>
 Beim Importieren einer Artenliste, die für oder mit älteren Versionen erstellt wurde, gibt es einen Haken. Damit alles wie erwartet funktioniert, müssen Sie die richtige Datensprache manuell in den Einstellungen festlegen.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der Dateiname einer Speziesliste muss immer mit „species_“ beginnen, sonst kann die Datei nicht importiert werden.
 <br><br>
-Mit <b>„Export Speziesliste“</b> kann die aktuelle Speziesliste als CSV-Datei (CSV = Comma Separated Values Textdatei) „species_ds_Tour_Tourname_JJJJMMTT_hhmmss.csv“ exportiert werden. Dabei wird auch hier der Tourname eingefügt, falls er unter Metadaten existiert und ggf. um Zeichen bereinigt, die den Dateinamen-Konventionen widersprechen.<br>
+Mit <b>„Export Speziesliste“</b> kann die aktuelle Speziesliste als CSV-Datei (CSV = Comma Separated Values Textdatei) „species_ds_Tour_Tourname_JJJJMMTT_hhmmss.csv“ exportiert werden. <br>
 Wurde eine Speziesliste importiert, die aus einer App-Version < 3.7.2 exportiert wurde, kann deren Datensprache unter Einstellungen eingestellt werden und die Liste erneut exportiert werden. Dann wird deren Datensprache zukünftig automatisch erkannt und gesetzt.
 <br><br>
-Die Funktion <b>„Export Ergebnisse“</b> scheibt Metadaten und Zählergebnisse als aufbereitete, Spreadsheet-kompatible Tabelle „Tour_ds_Tourname_JJJJMMTT_hhmm.csv“ ins Verzeichnis „Documents/TourCount“. Wenn vorhanden, wird das Startdatum im Dateinamen verwendet.<br>
-Die exportierten .csv-Ergebnisdateien (Komma-getrennte Textdateien) können in einer Android-Tabellenkalkulations-App erfolgen, wie Collabora (Open Source, kostenlos und basiert auf LibreOffice). Sie ist erhältlich z.B. im Collabora Office Store (eine zusätzliche Paketquelle im F-Droid App-Store), im Play Store oder direkt unter https://www.collaboraoffice.com/downloads/).
+Die Funktion <b>„Export d. Ergebnisse (xlsx)“</b> scheibt die Zählergebnisse und die Meta-Daten als Excel-Tabelle „Tour_ds_Tourname_JJJJMMTT_hhmm.xlsx“ nach „Documents/TourCount". Es wird vorzugsweise das Startdatum der Tour in den Dateinamen übernommen.
 <br><br>
-Die Tabelle kann vorher per Ergebnis-Sortier-Option in TourCount (nach Spezies oder Codes) geordnet aufbereitet werden, je nach Bedarf hinsichtlich einer einfacheren Dateneingabe in eine zentrale Monitoring-Web-Seite, wie <br>
+Die Funktion <b>„Export d. Ergebnisse (csv)“</b> scheibt die aufbereiteten Zählergebnisse und die Meta-Daten in die .csv-Textdatei „Tour_ds_Tourname_JJJJMMTT_hhmm.csv“ ins Verzeichnis „Documents/TourCount“. Es wird vorzugsweise das Startdatum der Tour in den Dateinamen übernommen.
+<br><br>
+Die Tabelle kann vorher per Ergebnis-Sortier-Option (nach Spezies oder Codes) in den TourCount Einstellungen geordnet aufbereitet werden, je nach Bedarf hinsichtlich einer einfacheren Dateneingabe in eine zentrale Monitoring-Web-Seite, wie <br>
 https://www.falterfunde.de/platform/s4y/falterfunde/index.do.
 <br><br>
-Beim Laden der Daten ist zur korrekten Darstellung der Formate und Zeichensätze darauf zu achten, dass<br>
-- Dateiursprung im Format „Unicode UTF-8“,<br>
-- Komma als Trennzeichen and<br>
-- Anführungszeichen ("") zur Textfelderkennung<br>
-gesetzt sind.
+Die exportierten Ergebnisdateien können in einer Android-Tabellenkalkulations-App, wie Collabora (Open Source, kostenlos und basiert auf LibreOffice) angesehen und eingeschränkt auch bearbeitet werden. Sie ist erhältlich z.B. im Collabora Office Store (eine zusätzliche Paketquelle im F-Droid App-Store), im Play Store oder direkt unter https://www.collaboraoffice.com/downloads/).
 <br><br>
-Sollen die führenden Nullen der Spezies-Codes oder Codes mit * korrekt angezeigt werden, so muss beim Import-Dialog, falls vorhanden, die Option <i>„Felder in Anführungszeichen als Text formatieren“</i> gesetzt oder ansonsten die Spalte mit den Codes als Text formatiert werden.
-<br><br>
-Die exportierten .csv-Ergebnisdateien können auch für die weitere Bearbeitung auf einen PC übertragen und in einer Tabellenkalkulation importiert werden (getestet mit LibreOffice Calc, MS Excel und Softmaker PlanMaker).
+Die exportierten .xlsx- oder .csv-Ergebnisdateien können auch für die weitere Bearbeitung auf einen PC übertragen und in einer Tabellenkalkulation geladen bzw. importiert werden (getestet mit LibreOffice Calc, MS Excel und Softmaker PlanMaker).
 <br><br>
 IT-affine Anwender können exportierte .db-Dateien auf einen PC übertragen und mit Hilfe eines kostenlosen Tools wie „DB Browser for SQLite“ (https://sqlitebrowser.org) manuell oder per SQL-Script bearbeiten. Einige vorbereitete, ggf. nützliche Beispiel-SQL-Scripte finden sich im Doku-Verzeichnis der GitHub-Webseite:<br>
 https://github.com/wistein/TourCount/tree/master/docs.

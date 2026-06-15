@@ -1,5 +1,7 @@
 // Build file where you can add configuration options for the module.
-// Last edited on 2026-05-24
+// minifyEnabled set to false, as otherwise apache.poi libraries are missing and compiling fails.
+// This increases apk size drastically.
+// Last edited on 2026-06-13
 
 plugins {
     id 'com.android.application'
@@ -11,16 +13,16 @@ android {
 
     defaultConfig {
         applicationId "com.wmstein.tourcount"
+        useLibrary 'org.apache.http.legacy'
         minSdk = 30
         targetSdk = 37
-        versionCode = 378
-        versionName = "3.7.8"
+        versionCode = 379
+        versionName = "3.7.9"
     }
 
     buildTypes {
         release {
             minifyEnabled = true
-
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
@@ -57,13 +59,14 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.13.0'
     implementation 'androidx.annotation:annotation-jvm:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.core:core-ktx:1.18.0'
+    implementation 'androidx.core:core-ktx:1.19.0'
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.10.0'
     implementation 'androidx.lifecycle:lifecycle-process:2.10.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.10.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'androidx.work:work-runtime:2.11.2'
     implementation 'com.google.android.material:material:1.14.0'
+    implementation 'org.dhatim:fastexcel:0.20.2'
 }

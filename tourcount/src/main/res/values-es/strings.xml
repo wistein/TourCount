@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-05-16 -->
+     last edited on 2026-06-15 -->
 
 <resources>
 
@@ -13,7 +13,9 @@
     <string name="avCoords">Coordenadas medias:</string>
     <string name="back_twice">Vuelve a pulsar para salir</string>
     <string name="bema">Nota de la especie:</string>
+    <string name="bemaRes">Nota de la especie</string>
     <string name="bems">Nota al individuo:</string>
+    <string name="bemsRes">Nota al individuo</string>
     <string name="cancelButton">Cancelar</string>
     <string name="changeLogTitle">Info de app</string>
     <string name="cntse">Núm. huevos</string>
@@ -30,6 +32,7 @@
     <string name="editMetaButton">Editar metadatos</string>
     <string name="exportBasisMenu">Exportar BD básica</string>
     <string name="exportCSVMenu">Exportar los resultados (csv)</string>
+    <string name="exportXLSXMenu">Exportar los resultados (xlsx)</string>
     <string name="exportMenu">Exportar BD actual</string>
     <string name="exportSpeciesListMenu">Exportar lista de especies</string>
     <string name="importBasisMenu">Importar BD básica</string>
@@ -43,12 +46,14 @@
     <string name="individuals">Individuos</string>
     <string name="missingEmail">Introduce una dirección de correo electrónico válida en la sección «Configuración» para garantizar una localización precisa.</string>
     <string name="name_spec">Nombre de especie:</string>
+    <string name="name_specRes">Nombre de especie</string>
     <string name="noCard">¡No se puede escribir en el directorio «Documents»!</string>
     <string name="reset2basic">La base de datos se ha restablecido.</string>
     <string name="resetDBMenu">Restablecer datos</string>
     <string name="resetFail">¡No se ha podido restablecer la base de datos!</string>
     <string name="saveBasisDB">Exportar la BD básica a Documents/TourCount</string>
     <string name="saveCSV">Exportar el fichero CSV a Documentos/TourCount</string>
+    <string name="saveXLSX">Exportar el fichero XLSX a Documentos/TourCount</string>
     <string name="saveDB">Exportar la BD interna a Documents/TourCount</string>
     <string name="saveFail">¡No se ha podido exportar la BD!</string>
     <string name="saveFailList">¡No se ha podido exportar la lista de especies!</string>
@@ -79,27 +84,40 @@
 
     <!-- EditMetaActivity -->
     <string name="bstate">Estado federado:</string>
+    <string name="bstateRes">Estado federado</string>
     <string name="city">Ciudad:</string>
+    <string name="cityRes">Ciudad</string>
     <string name="clouds">Nubosidad (%):</string>
+    <string name="cloudsRes">Nubosidad (%)</string>
     <string name="cnts">Número</string>
     <string name="country">País:</string>
+    <string name="countryRes">País</string>
     <string name="date">Fecha:</string>
+    <string name="dateRes">Fecha</string>
     <string name="editHeadTitle">Metadatos</string>
     <string name="endtm">hasta:</string>
     <string name="hinttap">Pulsa aquí</string>
     <string name="inspector">Autor/a:</string>
     <string name="place">Lugar:</string>
+    <string name="placeRes">Lugar</string>
     <string name="plz">Cód. postal:</string>
+    <string name="plzRes">Cód. postal</string>
     <string name="slocality">Lugar (salida):</string>
+    <string name="slocalityRes">Lugar (salida)</string>
     <string name="speccode">Código:</string>
+    <string name="speccodeRes">Código</string>
     <string name="starttm">Hora de:</string>
     <string name="temperature">Temp. (°C):</string>
+    <string name="temperatureRes">Temp. (°C)</string>
     <string name="tm">Hora:</string>
+    <string name="tmRes">Hora</string>
     <string name="valClouds">¡Comprueba las nubes!</string>
     <string name="valTemp">¡Una temperatura irreal!</string>
     <string name="valWind">¡Comprueba el viento!</string>
     <string name="wind">Viento (0–4):</string>
+    <string name="windRes">Viento (0–4)</string>
     <string name="zlNotes">Nota del tour:</string>
+    <string name="zlNotesRes">Nota del tour</string>
 
     <!-- EditIndividualActivity -->
     <string name="count1">Núm.</string>
@@ -116,10 +134,14 @@
     <string name="status123">Estado (0–6)</string>
     <string name="time">Hora</string>
     <string name="uncerti">Inseguridad (m):</string>
+    <string name="uncertiRes">Inseguridad (m)</string>
     <string name="valState">¡Comprueba el estado!</string>
     <string name="xcoord">Latitud:</string>
+    <string name="xcoordRes">Latitud</string>
     <string name="ycoord">Longitud:</string>
+    <string name="ycoordRes">Longitud</string>
     <string name="zcoord">Altura (m):</string>
+    <string name="zcoordRes">Altura (m)</string>
 
     <!-- CountingActivity -->
     <string name="action_share">Comunicar</string>

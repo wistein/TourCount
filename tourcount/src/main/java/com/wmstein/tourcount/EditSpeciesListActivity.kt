@@ -41,7 +41,7 @@ import java.util.Locale
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-30
+ * last edited on 2026-06-08
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
@@ -171,12 +171,13 @@ class EditSpeciesListActivity : AppCompatActivity() {
     // End of onResume()
 
     // Get 2 or more characters of species to select by search button
+    // Parameter view is necessary for function call
     fun getEditSearchChars(view: View) {
         // Read EditText searchEdit from widget_edit_hint.xml
         val searchEdit: EditText = findViewById(R.id.searchE)
         searchEdit.findFocus()
 
-        // Get the initial characters of species to select from
+        // Get the search characters to build a species list to select from
         searchChars = searchEdit.text.toString().trim()
         if (searchChars.length == 1) {
             // Reminder: "Please, >1 chars"
@@ -186,7 +187,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             searchEdit.clearFocus()
             searchEdit.invalidate()
 
-            // Re-enter EditSpeciesListActivity for edited list
+            // Re-enter EditSpeciesListActivity for the reduced species-edit-list
             val intent = Intent(this@EditSpeciesListActivity, EditSpeciesListActivity::class.java)
             intent.putExtra("search_Chars", searchChars)
             intent.flags = FLAG_ACTIVITY_CLEAR_TOP
@@ -199,19 +200,19 @@ class EditSpeciesListActivity : AppCompatActivity() {
     //   and optionally reduce it to searchChars selection
     private fun constructEditList() {
         // Load the sorted species data
-        val countsToEdit = when (sortPref) {
+        val countsToEditList = when (sortPref) {
             "names_alpha" -> countDataSource!!.allSpeciesSrtName
             "codes" -> countDataSource!!.allSpeciesSrtCode
             else -> countDataSource!!.allSpecies
         }
 
-        // Display all the countsToEdit by adding them to editingSpeciesArea
+        // Display all the species to edit by adding them to editingSpeciesArea
         // Get the counting list species into their EditSpeciesListWidget and add them to the view
         if (searchChars.length >= 2) {
             searchChars = searchChars.uppercase(Locale.getDefault()) //Compare searchChars in uppercase
 
-            // Check name in countsToEdit for searchChars to reduce list
-            for (count in countsToEdit) {
+            // Reduce the list by checking the names in countsToEditList for searchChars
+            for (count in countsToEditList) {
                 if (count.name.uppercase(Locale.getDefault()).contains(searchChars)) {
                     esw = EditSpeciesListWidget(this, null)
                     esw!!.setCountName(count.name)
@@ -223,7 +224,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
                 }
             }
         } else {
-            for (count in countsToEdit) {
+            for (count in countsToEditList) {
                 esw = EditSpeciesListWidget(this, null)
                 esw!!.setCountName(count.name)
                 esw!!.setCountNameG(count.name_g)
@@ -235,7 +236,25 @@ class EditSpeciesListActivity : AppCompatActivity() {
         }
     }
 
-    // Test for double entries and save species list
+    // Test species list for double entry
+    private fun testData(): Boolean {
+        var retValue = true
+
+        // Check for unique species names
+        val isDbl: String = compSpeciesNames()
+        if (isDbl != "") {
+            mesg = isDbl + " " + getString(R.string.isDouble) + " " + getString(R.string.duplicate)
+            Toast.makeText(
+                applicationContext,
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
+            retValue = false
+        }
+        return retValue
+    }
+
+    // Save changes to current species list
     private fun saveData(): Boolean {
         // test for double entries and save species list
         var retValue = true
@@ -299,24 +318,6 @@ class EditSpeciesListActivity : AppCompatActivity() {
     }
     // End of saveData()
 
-    // Test species list for double entry
-    private fun testData(): Boolean {
-        var retValue = true
-
-        // Check for unique species names
-        val isDbl: String = compSpeciesNames()
-        if (isDbl != "") {
-            mesg = isDbl + " " + getString(R.string.isDouble) + " " + getString(R.string.duplicate)
-            Toast.makeText(
-                applicationContext,
-                fromHtml("<font color='red'><b>$mesg</b></font>"),
-                Toast.LENGTH_LONG
-            ).show()
-            retValue = false
-        }
-        return retValue
-    }
-
     // Compare count names for duplicates and returns name of 1. duplicate found
     private fun compSpeciesNames(): String {
         var name: String
@@ -331,7 +332,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpSpeciesNames!!.contains(name)) {
                 isDblName = name
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "334, Double name = $isDblName")
+                    Log.i(TAG, "335, Double name = $isDblName")
                 break
             }
             cmpSpeciesNames!!.add(name)
@@ -353,7 +354,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpSpeciesCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "356, Double code = $isDblCode")
+                    Log.i(TAG, "357, Double code = $isDblCode")
                 break
             }
             cmpSpeciesCodes!!.add(code)
@@ -389,7 +390,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "392, onPause")
+            Log.i(TAG, "393, onPause")
 
         countDataSource!!.close()
         individualsDataSource!!.close()
@@ -408,7 +409,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "411, onStop")
+            Log.i(TAG, "412, onStop")
 
         editingSpeciesArea = null
         editHintArea = null
@@ -418,7 +419,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "421, onDestroy")
+            Log.i(TAG, "422, onDestroy")
     }
 
     companion object {
