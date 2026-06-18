@@ -96,7 +96,7 @@ import org.dhatim.fastexcel.Worksheet;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-06-15
+ * last edited on 2026-06-18
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -1515,10 +1515,10 @@ public class WelcomeActivity
 
                 String[] arrHead =
                         {
-                                getString(R.string.zList) + ":", // Count List:
+                                getString(R.string.zList) + ": ", // Count List:
                                 sectName,          // Section name
                                 "",
-                                getString(R.string.inspector),     // Inspector:
+                                getString(R.string.inspector) +": ",     // Inspector:
                                 inspecName,        // Inspector name
                                 "", "", "", "",
                                 sortMode
@@ -1536,13 +1536,13 @@ public class WelcomeActivity
                 // Set location headline
                 String[] arrLocHead =
                         {
-                                getString(R.string.countryRes),
-                                getString(R.string.bstateRes),
-                                getString(R.string.plzRes),
-                                getString(R.string.cityRes),
-                                getString(R.string.placeRes),
-                                getString(R.string.slocalityRes),
-                                getString(R.string.zlNotesRes)
+                                getString(R.string.country),
+                                getString(R.string.bstate),
+                                getString(R.string.plz),
+                                getString(R.string.city),
+                                getString(R.string.place),
+                                getString(R.string.slocality),
+                                getString(R.string.zlNotes)
                         };
                 csvWrite.writeNext(arrLocHead);
 
@@ -1566,12 +1566,12 @@ public class WelcomeActivity
                 // Set environment headline
                 String[] arrEnvHead =
                         {
-                                getString(R.string.dateRes),
+                                getString(R.string.date),
                                 "",
-                                getString(R.string.tmRes),
-                                getString(R.string.temperatureRes),
-                                getString(R.string.windRes),
-                                getString(R.string.cloudsRes)
+                                getString(R.string.tm),
+                                getString(R.string.temperature),
+                                getString(R.string.wind),
+                                getString(R.string.clouds)
                         };
                 csvWrite.writeNext(arrEnvHead);
 
@@ -1609,16 +1609,16 @@ public class WelcomeActivity
                 //    Species Name, Local Name, Code, Counts, Spec.-Notes
                 String[] arrCntHead =
                         {
-                                getString(R.string.name_specRes),
+                                getString(R.string.name_spec),
                                 nameSpecG,
-                                getString(R.string.speccodeRes),
+                                getString(R.string.speccode),
                                 getString(R.string.cntsmf),
                                 getString(R.string.cntsm),
                                 getString(R.string.cntsf),
                                 getString(R.string.cntsp),
                                 getString(R.string.cntsl),
                                 getString(R.string.cntse),
-                                getString(R.string.bemaRes)
+                                getString(R.string.bema)
                         };
                 csvWrite.writeNext(arrCntHead);
 
@@ -1857,16 +1857,16 @@ public class WelcomeActivity
                                 getString(R.string.individuals),
                                 getString(R.string.cnts),
                                 getString(R.string.locality),
-                                getString(R.string.ycoordRes),
-                                getString(R.string.xcoordRes),
-                                getString(R.string.uncertiRes),
-                                getString(R.string.zcoordRes),
-                                getString(R.string.dateRes),
+                                getString(R.string.ycoord),
+                                getString(R.string.xcoord),
+                                getString(R.string.uncerti),
+                                getString(R.string.zcoord),
+                                getString(R.string.date),
                                 getString(R.string.time),
                                 getString(R.string.sex),
                                 getString(R.string.stadium),
                                 getString(R.string.status123),
-                                getString(R.string.bemsRes)
+                                getString(R.string.bems)
                         };
                 csvWrite.writeNext(arrIndHead);
 
@@ -1957,9 +1957,9 @@ public class WelcomeActivity
                                 "",
                                 "",
                                 "",
-                                getString(R.string.ycoordRes),
-                                getString(R.string.xcoordRes),
-                                getString(R.string.uncertiRes)
+                                getString(R.string.ycoord),
+                                getString(R.string.xcoord),
+                                getString(R.string.uncerti)
                         };
                 csvWrite.writeNext(arrACoordHead);
 
@@ -2110,9 +2110,6 @@ public class WelcomeActivity
             throw new RuntimeException(e);
         }
 
-        Workbook wb = new Workbook(outputStream, "TourCount", "1.0");
-        Worksheet ws = wb.newWorksheet("Results");
-
         String sectName;
         String sectNotes;
 
@@ -2124,8 +2121,14 @@ public class WelcomeActivity
         double longi, lati, heigh, uncer;
         int frst, sum = 0;
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
-        String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
         double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
+
+        // Prepare the fastexcel sheet
+        Workbook wb = new Workbook(outputStream, "TourCount", "1.0");
+        wb.properties().setTitle("TourCount Results of " + tourName);
+        wb.setGlobalDefaultFont("Arial", 11);
+
+        Worksheet ws = wb.newWorksheet("Results");
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
@@ -2175,26 +2178,24 @@ public class WelcomeActivity
             headDataSource.close();
 
             // Row 0: Headline
-            ws.range(0,0,0,4).style().bold().set();
-            ws.value(0,0, getString(R.string.zList) + ":");
-            ws.value(0,1, sectName);
-            ws.value(0,3, getString(R.string.inspector));
-            ws.value(0,4, inspecName);
+            ws.value(0,0, getString(R.string.zList) + ": " + sectName);
+            ws.value(0,3, getString(R.string.inspector) + ": " + inspecName);
             ws.value(0,9, sortMode);
+            ws.range(0,0,0,6).style().fillColor("CCCCCC").fontSize(12).bold().set();
 
             // Row 1
             ws.value(1,9, getString(R.string.sort_time));
 
             // Row 2: Set location headline
+            ws.value(2,0, getString(R.string.country));
+            ws.value(2,1, getString(R.string.bstate));
+            ws.value(2,2, getString(R.string.plz));
+            ws.value(2,3, getString(R.string.city));
+            ws.value(2,4, getString(R.string.place));
+            ws.value(2,5, getString(R.string.slocality));
+            ws.value(2,6, getString(R.string.zlNotes));
             ws.range(2,0,2,6).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().set();
-            ws.value(2,0, getString(R.string.countryRes));
-            ws.value(2,1, getString(R.string.bstateRes));
-            ws.value(2,2, getString(R.string.plzRes));
-            ws.value(2,3, getString(R.string.cityRes));
-            ws.value(2,4, getString(R.string.placeRes));
-            ws.value(2,5, getString(R.string.slocalityRes));
-            ws.value(2,6, getString(R.string.zlNotesRes));
 
             // Row 3: Set location data line with data of 1. location
             ws.value(3,0, country);
@@ -2206,63 +2207,60 @@ public class WelcomeActivity
             ws.value(3,6, sectNotes);
 
             // Row 5: Set environment headline
+            ws.value(5,0, getString(R.string.date));        // date
+            ws.value(5,1, "");
+            ws.value(5,2, getString(R.string.tm));          // Time
+            ws.value(5,3, getString(R.string.temperature)); // Temperature
+            ws.value(5,4, getString(R.string.wind));        // Wind
+            ws.value(5,5, getString(R.string.clouds));      // Clouds
             ws.range(5,0,5,1).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().set();
-            ws.value(5,0, getString(R.string.dateRes));        // date
-            ws.value(5,1, "");
             ws.range(5,2,5,5).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().horizontalAlignment("center").set();
-            ws.value(5,2, getString(R.string.tmRes));          // Time
-            ws.value(5,3, getString(R.string.temperatureRes)); // Temperature
-            ws.value(5,4, getString(R.string.windRes));        // Wind
-            ws.value(5,5, getString(R.string.cloudsRes));      // Clouds
 
             // Row 6: Write 1. line of environment data
             ws.value(6,0, date);
             ws.value(6,1, getString(R.string.starttm));
-            ws.style(6,1).horizontalAlignment("right").set();
             ws.value(6,2, start_tm);
-            ws.style(6,2).horizontalAlignment("center").set();
             ws.value(6,3, String.valueOf(temps));
-            ws.style(6,3).horizontalAlignment("center").set();
             ws.value(6,4, String.valueOf(winds));
-            ws.style(6,4).horizontalAlignment("center").set();
             ws.value(6,5, String.valueOf(clouds));
-            ws.style(6,5).horizontalAlignment("center").set();
-
+            ws.style(6,1).horizontalAlignment("right").set();
+            ws.range(6,2,6,5).style().horizontalAlignment("center").set();
 
             // Row 7: Write 2. line of environment data
             ws.value(7,1, getString(R.string.endtm));
-            ws.style(7,1).horizontalAlignment("right").set();
             ws.value(7,2, end_tm);
-            ws.style(7,2).horizontalAlignment("center").set();
             ws.value(7,3, String.valueOf(tempe));
-            ws.style(7,3).horizontalAlignment("center").set();
             ws.value(7,4, String.valueOf(winde));
-            ws.style(7,4).horizontalAlignment("center").set();
             ws.value(7,5, String.valueOf(cloude));
-            ws.style(7,5).horizontalAlignment("center").set();
+            ws.style(7,1).horizontalAlignment("right").set();
+            ws.range(7,2,7,5).style().horizontalAlignment("center").set();
 
             String nameSpecG = Utils.nameSpecG(dataLanguage);
 
             // Row 9: Write counts headline
             //    Species Name, Local Name, Code, Counts, Spec.-Notes
-            ws.range(9,0,9,1).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().set();
-            ws.value(9,0, getString(R.string.name_specRes)); // Species Name
+            ws.value(9,0, getString(R.string.name_spec)); // Species Name
             ws.value(9,1, nameSpecG);                     // Local Name
-            ws.range(9,2,9,8).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().horizontalAlignment("center").set();
-            ws.value(9,2, getString(R.string.speccodeRes));  // Code
-            ws.style(9,3).borderStyle(BorderSide.LEFT,"thin").set();
+            ws.value(9,2, getString(R.string.speccode));  // Code
             ws.value(9,3, getString(R.string.cntsmf));    // Counts
             ws.value(9,4, getString(R.string.cntsm));
             ws.value(9,5, getString(R.string.cntsf));
             ws.value(9,6, getString(R.string.cntsp));
             ws.value(9,7, getString(R.string.cntsl));
             ws.value(9,8, getString(R.string.cntse));
-            ws.style(9,9).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
-            ws.value(9,9, getString(R.string.bemaRes));      // Notes
+            ws.value(9,9, getString(R.string.bema));      // Notes
+
+            // Set styles for headline
+            ws.range(9,0,9,1).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().set();
+            ws.range(9,2,9,8).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().horizontalAlignment("center").set();
+            ws.style(9,3).borderStyle(BorderSide.LEFT,"thin")
+                    .borderStyle(BorderSide.BOTTOM,"thin").set();
+            ws.style(9,9).bold().borderStyle(BorderSide.LEFT,"thin")
+                    .borderStyle(BorderSide.BOTTOM,"thin").set();
 
             // Write counts data
             dbHelper = new DbHelper(this);
@@ -2291,19 +2289,12 @@ public class WelcomeActivity
 
             // Get the number of individuals with attributes
             int cnts;       // individuals icount
-            String strcnts;
             int cntsmf;     // Imago male or female
-            String strcntsmf;
             int cntsm = 0;  // Imago male
-            String strcntsm;
             int cntsf = 0;  // Imago female
-            String strcntsf;
             int cntsp = 0;  // Pupa
-            String strcntsp;
             int cntsl = 0;  // Caterpillar
-            String strcntsl;
             int cntse = 0;  // Egg
-            String strcntse;
             String male = "m";
             String fmale = "f";
             String stadium1 = getString(R.string.stadium_1);
@@ -2376,31 +2367,6 @@ public class WelcomeActivity
                 cntsl = curCSVCnt.getInt(5);
                 cntse = curCSVCnt.getInt(6);
 
-                if (cntsmf > 0) // suppress '0' in output
-                    strcntsmf = Integer.toString(cntsmf);
-                else
-                    strcntsmf = "";
-                if (cntsm > 0)
-                    strcntsm = Integer.toString(cntsm);
-                else
-                    strcntsm = "";
-                if (cntsf > 0)
-                    strcntsf = Integer.toString(cntsf);
-                else
-                    strcntsf = "";
-                if (cntsp > 0)
-                    strcntsp = Integer.toString(cntsp);
-                else
-                    strcntsp = "";
-                if (cntsl > 0)
-                    strcntsl = Integer.toString(cntsl);
-                else
-                    strcntsl = "";
-                if (cntse > 0)
-                    strcntse = Integer.toString(cntse);
-                else
-                    strcntse = "";
-
                 String sp_notes;   // species notes
                 sp_notes = curCSVCnt.getString(9);
                 if (sp_notes == null)
@@ -2413,35 +2379,97 @@ public class WelcomeActivity
                 if (even) {
                     ws.value(10 + specIndex,0, spname);                     // species name
                     ws.value(10 + specIndex,1, curCSVCnt.getString(10)); // local name
+                    ws.value(10 + specIndex,2, spcode);                     // species code
+                    ws.value(10 + specIndex,3, cntsmf);                     // count ♂|♀
+                    ws.value(10 + specIndex,4, cntsm);                      // count ♂
+                    ws.value(10 + specIndex,5, cntsf);                      // count ♀
+                    ws.value(10 + specIndex,6, cntsp);                      // count pupa
+                    ws.value(10 + specIndex,7, cntsl);                      // count caterpillar
+                    ws.value(10 + specIndex,8, cntse);                      // count egg
+                    ws.value(10 + specIndex,9, sp_notes);                   // species notes
+
+                    // Conditional red color for value > 0, else transparent
+                    if (cntsmf > 0)
+                        ws.style(10 + specIndex,3).fontColor("FF0000").set(); // red
+                    else
+                        ws.style(10 + specIndex,3).fontColor("00FFFFFF").set(); // transparent
+                    if (cntsm > 0)
+                        ws.style(10 + specIndex,4).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,4).fontColor("00FFFFFF").set();
+                    if (cntsf > 0)
+                        ws.style(10 + specIndex,5).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,5).fontColor("00FFFFFF").set();
+                    if (cntsp > 0)
+                        ws.style(10 + specIndex,6).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,6).fontColor("00FFFFFF").set();
+                    if (cntsl > 0)
+                        ws.style(10 + specIndex,7).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,7).fontColor("00FFFFFF").set();
+                    if (cntse > 0)
+                        ws.style(10 + specIndex,8).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,8).fontColor("00FFFFFF").set();
+
+                    // Conditional species notes, if "0" -> red
+                    if (Objects.equals(sp_notes, "0"))
+                        ws.style(10 + specIndex,9).fontColor("FF0000").set();
+
+                    // Border and alignment
+                    ws.style(10 + specIndex,3).borderStyle(BorderSide.LEFT,"thin").set();
                     ws.range(10 + specIndex,2,10 + specIndex,8)
                             .style().horizontalAlignment("center").set();
-                    ws.value(10 + specIndex,2, spcode);                     // species code
-                    ws.style(10 + specIndex,3).borderStyle(BorderSide.LEFT,"thin").set();
-                    ws.value(10 + specIndex,3, strcntsmf);                  // count ♂|♀
-                    ws.value(10 + specIndex,4, strcntsm);                   // count ♂
-                    ws.value(10 + specIndex,5, strcntsf);                   // count ♀
-                    ws.value(10 + specIndex,6, strcntsp);                   // count pupa
-                    ws.value(10 + specIndex,7, strcntsl);                   // count caterpillar
-                    ws.value(10 + specIndex,8, strcntse);                   // count egg
-                    ws.value(10 + specIndex,9, sp_notes);                   // species notes
                 } else {
-                    ws.range(10 + specIndex,0,10 + specIndex,1)
-                            .style().fillColor("DDDDDD").set();
                     ws.value(10 + specIndex,0, spname);                     // species name
                     ws.value(10 + specIndex,1, curCSVCnt.getString(10)); // local name
+                    ws.value(10 + specIndex,2, spcode);                     // species code
+                    ws.value(10 + specIndex,3, cntsmf);                     // count ♂|♀
+                    ws.value(10 + specIndex,4, cntsm);                      // count ♂
+                    ws.value(10 + specIndex,5, cntsf);                      // count ♀
+                    ws.value(10 + specIndex,6, cntsp);                      // count pupa
+                    ws.value(10 + specIndex,7, cntsl);                      // count caterpillar
+                    ws.value(10 + specIndex,8, cntse);                      // count egg
+                    ws.value(10 + specIndex,9, sp_notes);                   // species notes
+
+                    // Conditional red color for value > 0, else light gray (cell background)
+                    if (cntsmf > 0)
+                        ws.style(10 + specIndex,3).fontColor("FF0000").set(); // red
+                    else
+                        ws.style(10 + specIndex,3).fontColor("DDDDDD").set(); // transparent
+                    if (cntsm > 0)
+                        ws.style(10 + specIndex,4).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,4).fontColor("DDDDDD").set();
+                    if (cntsf > 0)
+                        ws.style(10 + specIndex,5).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,5).fontColor("DDDDDD").set();
+                    if (cntsp > 0)
+                        ws.style(10 + specIndex,6).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,6).fontColor("DDDDDD").set();
+                    if (cntsl > 0)
+                        ws.style(10 + specIndex,7).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,7).fontColor("DDDDDD").set();
+                    if (cntse > 0)
+                        ws.style(10 + specIndex,8).fontColor("FF0000").set();
+                    else
+                        ws.style(10 + specIndex,8).fontColor("DDDDDD").set();
+
+                    // Border
+                    ws.style(10 + specIndex,3).borderStyle(BorderSide.LEFT,"thin").set();
+
+                    // Background light gray and alignment
+                    ws.range(10 + specIndex,0,10 + specIndex,1)
+                            .style().fillColor("DDDDDD").set();
                     ws.range(10 + specIndex,2,10 + specIndex,8)
                             .style().fillColor("DDDDDD").horizontalAlignment("center").set();
-                    ws.value(10 + specIndex,2, spcode);                     // species code
-                    ws.style(10 + specIndex,3).borderStyle(BorderSide.LEFT,"thin").set();
-                    ws.value(10 + specIndex,3, strcntsmf);                  // count ♂|♀
-                    ws.value(10 + specIndex,4, strcntsm);                   // count ♂
-                    ws.value(10 + specIndex,5, strcntsf);                   // count ♀
-                    ws.value(10 + specIndex,6, strcntsp);                   // count pupa
-                    ws.value(10 + specIndex,7, strcntsl);                   // count caterpillar
-                    ws.value(10 + specIndex,8, strcntse);                   // count egg
                     ws.style(10 + specIndex,8).fillColor("DDDDDD")
                             .horizontalAlignment("center").set();
-                    ws.value(10 + specIndex,9, sp_notes);                   // species notes
                     ws.style(10 + specIndex,9).fillColor("DDDDDD").set();
                 }
 
@@ -2452,37 +2480,6 @@ public class WelcomeActivity
                 sump = sump + cntsp;
                 suml = suml + cntsl;
                 sume = sume + cntse;
-
-                // Suppress 0 by blank
-                if (summf == 0)
-                    sumMF = "";
-                else
-                    sumMF = Integer.toString(summf);
-
-                if (summ == 0)
-                    sumM = "";
-                else
-                    sumM = Integer.toString(summ);
-
-                if (sumf == 0)
-                    sumF = "";
-                else
-                    sumF = Integer.toString(sumf);
-
-                if (sump == 0)
-                    sumP = "";
-                else
-                    sumP = Integer.toString(sump);
-
-                if (suml == 0)
-                    sumL = "";
-                else
-                    sumL = Integer.toString(suml);
-
-                if (sume == 0)
-                    sumE = "";
-                else
-                    sumE = Integer.toString(sume);
 
                 cntsm = 0;
                 cntsf = 0;
@@ -2498,62 +2495,71 @@ public class WelcomeActivity
 
             // Write total sum
             // Row 11 + specIndex:
-            ws.style(11 + specIndex,0).bold().set();
-            ws.value(11 + specIndex,0, getString(R.string.sumSpec) + " " + (sumSpec));
-
-            ws.style(11 + specIndex,2).horizontalAlignment("right").bold().set();
+            ws.value(11 + specIndex,0, getString(R.string.sumSpec) + " ");
+            ws.style(11 + specIndex,0).horizontalAlignment("right").bold().set();
+            ws.value(11 + specIndex,1, sumSpec);
+            ws.style(11 + specIndex,1).horizontalAlignment("center").bold().set();
             ws.value(11 + specIndex,2, getString(R.string.sum));
-
+            ws.style(11 + specIndex,2).horizontalAlignment("right").bold().set();
+            ws.value(11 + specIndex,3, summf);
+            ws.value(11 + specIndex,4, summ);
+            ws.value(11 + specIndex,5, sumf);
+            ws.value(11 + specIndex,6, sump);
+            ws.value(11 + specIndex,7, suml);
+            ws.value(11 + specIndex,8, sume);
             ws.range(11 + specIndex,3,11 + specIndex,8)
-                    .style().horizontalAlignment("center").set();
-            ws.value(11 + specIndex,3, sumMF);
-            ws.value(11 + specIndex,4, sumM);
-            ws.value(11 + specIndex,5, sumF);
-            ws.value(11 + specIndex,6, sumP);
-            ws.value(11 + specIndex,7, sumL);
-            ws.value(11 + specIndex,8, sumE);
-            ws.style(11 + specIndex,9).bold().set();
+                    .style().horizontalAlignment("center").bold().set();
             ws.value(11 + specIndex,9, getString(R.string.sum_total) + " " + sum);
-            // End of Species table
+            ws.style(11 + specIndex,9).bold().set();
 
-            // Set left lines in species table
+            if (summf == 0)
+                ws.style(11 + specIndex,3).fontColor("00FFFFFF").set(); // transparent
+            if (summ == 0)
+                ws.style(11 + specIndex,4).fontColor("00FFFFFF").set(); // transparent
+            if (sumf == 0)
+                ws.style(11 + specIndex,5).fontColor("00FFFFFF").set(); // transparent
+            if (sump == 0)
+                ws.style(11 + specIndex,6).fontColor("00FFFFFF").set(); // transparent
+            if (suml == 0)
+                ws.style(11 + specIndex,7).fontColor("00FFFFFF").set(); // transparent
+            if (sume == 0)
+                ws.style(11 + specIndex,8).fontColor("00FFFFFF").set(); // transparent
+
+            // End of totals
+
+            // Set bordes for totals
             ws.range(10,3,11 + specIndex,3)
                     .style().borderStyle(BorderSide.LEFT,"thin").set();
             ws.range(10,9,11 + specIndex,9)
                     .style().borderStyle(BorderSide.LEFT,"thin").set();
-            // Set left and bottom lines in species table headline cells
-            ws.style(9,3).borderStyle(BorderSide.LEFT,"thin")
-                    .borderStyle(BorderSide.BOTTOM,"thin").set();
-            ws.style(9,9).borderStyle(BorderSide.LEFT,"thin")
-                    .borderStyle(BorderSide.BOTTOM,"thin").set();
 
             // Individuals table headline
             //    Individuals, Counts, Locality, Longitude, Latitude, Uncertainty, Height,
             //    Date, Time, Sexus, Phase, State, Indiv.-Notes
             // Row 13 + specIndex
-            ws.style(13 + specIndex,0).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
             ws.value(13 + specIndex,0, getString(R.string.individuals));
-            ws.style(13 + specIndex,1).borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().horizontalAlignment("center").set();
             ws.value(13 + specIndex,1, getString(R.string.cnts));
-            ws.style(13 + specIndex,2).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
             ws.value(13 + specIndex,2, getString(R.string.locality));
-            ws.range(13 + specIndex,3,13 + specIndex,6).style().borderStyle(BorderSide
-                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
-            ws.value(13 + specIndex,3, getString(R.string.ycoordRes));
-            ws.value(13 + specIndex,4, getString(R.string.xcoordRes));
-            ws.value(13 + specIndex,5, getString(R.string.uncertiRes));
-            ws.value(13 + specIndex,6, getString(R.string.zcoordRes));
-            ws.range(13 + specIndex,7,13 + specIndex,8).style().borderStyle(BorderSide
-                    .BOTTOM,"thin").bold().set();
-            ws.value(13 + specIndex,7, getString(R.string.dateRes));
+            ws.value(13 + specIndex,3, getString(R.string.ycoord));
+            ws.value(13 + specIndex,4, getString(R.string.xcoord));
+            ws.value(13 + specIndex,5, getString(R.string.uncerti));
+            ws.value(13 + specIndex,6, getString(R.string.zcoord));
+            ws.value(13 + specIndex,7, getString(R.string.date));
             ws.value(13 + specIndex,8, getString(R.string.time));
-            ws.range(13 + specIndex,9,13 + specIndex,11).style().borderStyle(BorderSide
-                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
             ws.value(13 + specIndex,9, getString(R.string.sex));
             ws.value(13 + specIndex,10, getString(R.string.stadium));
             ws.value(13 + specIndex,11, getString(R.string.status123));
-            ws.value(13 + specIndex,12, getString(R.string.bemsRes));
+            ws.value(13 + specIndex,12, getString(R.string.bems));
+            ws.style(13 + specIndex,0).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.style(13 + specIndex,1).borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().horizontalAlignment("center").set();
+            ws.style(13 + specIndex,2).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.range(13 + specIndex,3,13 + specIndex,6).style().borderStyle(BorderSide
+                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
+            ws.range(13 + specIndex,7,13 + specIndex,8).style().borderStyle(BorderSide
+                    .BOTTOM,"thin").bold().set();
+            ws.range(13 + specIndex,9,13 + specIndex,11).style().borderStyle(BorderSide
+                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
             ws.style(13 + specIndex,12).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
 
             // Build the sorted individuals array
@@ -2575,10 +2581,6 @@ public class WelcomeActivity
                 else
                     spstate0 = Integer.toString(spstate);
                 cnts = curCSVInd.getInt(14);
-                if (cnts > 0)
-                    strcnts = String.valueOf(cnts);
-                else
-                    strcnts = "";
 
                 try {
                     lngi = String.valueOf(longi).substring(0, 8); // longitude
@@ -2600,50 +2602,48 @@ public class WelcomeActivity
 
                 // Individuals table entries
                 if (even) {
-                    ws.value(14 + indIndex,0, curCSVInd.getString(2));               // species name
-                    ws.style(14 + indIndex,1).horizontalAlignment("center").set();
-                    ws.value(14 + indIndex,1, strcnts);                                 // indiv. counts
-                    ws.value(14 + indIndex,2, curCSVInd.getString(9));               // locality
-                    ws.range(14 + indIndex,3,14 + indIndex,6)
-                            .style().horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,0, curCSVInd.getString(2));                // species name
+                    ws.value(14 + indIndex,1, cnts);                                    // indiv. counts
+                    ws.value(14 + indIndex,2, curCSVInd.getString(9));                // locality
                     ws.value(14 + indIndex,3, lngi);                                    // longitude
                     ws.value(14 + indIndex,4, latit);                                   // latitude
                     ws.value(14 + indIndex,5, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
                     ws.value(14 + indIndex,6, String.valueOf(Math.round(heigh)));       // height
-                    ws.value(14 + indIndex,7, curCSVInd.getString(7));                // date
-                    ws.value(14 + indIndex,8, curCSVInd.getString(8));                // time
+                    ws.value(14 + indIndex,7, curCSVInd.getString(7));               // date
+                    ws.value(14 + indIndex,8, curCSVInd.getString(8));               // time
+                    ws.value(14 + indIndex,9, curCSVInd.getString(10));              // sexus
+                    ws.value(14 + indIndex,10, curCSVInd.getString(11));             // phase
+                    ws.value(14 + indIndex,11, spstate0);                               // status
+                    ws.value(14 + indIndex,12, iNotes);                                 // indiv. notes
+                    ws.style(14 + indIndex,1).horizontalAlignment("center").set();
+                    ws.range(14 + indIndex,3,14 + indIndex,6)
+                            .style().horizontalAlignment("center").set();
                     ws.range(14 + indIndex,9,14 + indIndex,11)
                             .style().horizontalAlignment("center").set();
-                    ws.value(14 + indIndex,9, curCSVInd.getString(10));               // sexus
-                    ws.value(14 + indIndex,10, curCSVInd.getString(11));              // phase
-                    ws.value(14 + indIndex,11, spstate0);                                // status
-                    ws.value(14 + indIndex,12, iNotes);                                  // indiv. notes
                 } else {
-                    ws.style(14 + indIndex,0).fillColor("DDDDDD").set();
-                    ws.value(14 + indIndex,0, curCSVInd.getString(2));               // species name
-                    ws.style(14 + indIndex,1).fillColor("DDDDDD").horizontalAlignment("center").set();
-                    ws.value(14 + indIndex,1, strcnts);                                 // indiv. counts
-                    ws.style(14 + indIndex,2).fillColor("DDDDDD").set();
-                    ws.value(14 + indIndex,2, curCSVInd.getString(9));               // locality
-                    ws.range(14 + indIndex,3,14 + indIndex,6)
-                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
+                    ws.value(14 + indIndex,0, curCSVInd.getString(2));                // species name
+                    ws.value(14 + indIndex,1, cnts);                                    // indiv. counts
+                    ws.value(14 + indIndex,2, curCSVInd.getString(9));                // locality
                     ws.value(14 + indIndex,3, lngi);                                    // longitude
                     ws.value(14 + indIndex,4, latit);                                   // latitude
                     ws.value(14 + indIndex,5, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
                     ws.value(14 + indIndex,6, String.valueOf(Math.round(heigh)));       // height
+                    ws.value(14 + indIndex,7, curCSVInd.getString(7));               // date
+                    ws.value(14 + indIndex,8, curCSVInd.getString(8));               // time
+                    ws.value(14 + indIndex,9, curCSVInd.getString(10));              // sexus
+                    ws.value(14 + indIndex,10, curCSVInd.getString(11));             // phase
+                    ws.value(14 + indIndex,11, spstate0);                               // status
+                    ws.value(14 + indIndex,12, iNotes);                                 // indiv. notes
+                    ws.style(14 + indIndex,0).fillColor("DDDDDD").set();
+                    ws.style(14 + indIndex,1).fillColor("DDDDDD").horizontalAlignment("center").set();
+                    ws.style(14 + indIndex,2).fillColor("DDDDDD").set();
+                    ws.range(14 + indIndex,3,14 + indIndex,6)
+                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
                     ws.range(14 + indIndex,7,14 + indIndex,8)
                             .style().fillColor("DDDDDD").set();
-                    ws.value(14 + indIndex,7, curCSVInd.getString(7));                // date
-                    ws.value(14 + indIndex,8, curCSVInd.getString(8));                // time
-
                     ws.range(14 + indIndex,9,14 + indIndex,11)
                             .style().fillColor("DDDDDD").horizontalAlignment("center").set();
-                    ws.value(14 + indIndex,9, curCSVInd.getString(10));               // sexus
-                    ws.value(14 + indIndex,10, curCSVInd.getString(11));              // phase
-                    ws.value(14 + indIndex,11, spstate0);                                // status
-
                     ws.style(14 + indIndex,12).fillColor("DDDDDD").set();
-                    ws.value(14 + indIndex,12, iNotes);                                  // indiv. notes
                 }
 
                 if (longi != 0) // Has coordinates
@@ -2672,12 +2672,12 @@ public class WelcomeActivity
             ws.value(15 + indIndex,0, "");
             ws.value(15 + indIndex,1, "");
             ws.value(15 + indIndex,2, "");
+            ws.value(15 + indIndex,3, getString(R.string.ycoord));
+            ws.value(15 + indIndex,4, getString(R.string.xcoord));
+            ws.value(15 + indIndex,5, getString(R.string.uncerti));
             ws.range(15 + indIndex,2,15 + indIndex,5)
                     .style().borderStyle(BorderSide.BOTTOM,"thin")
                     .horizontalAlignment("center").bold().set();
-            ws.value(15 + indIndex,3, getString(R.string.ycoordRes));
-            ws.value(15 + indIndex,4, getString(R.string.xcoordRes));
-            ws.value(15 + indIndex,5, getString(R.string.uncertiRes));
 
             lo = (loMax + loMin) / 2;   // average longitude
             la = (laMax + laMin) / 2;   // average latitude
@@ -2702,13 +2702,13 @@ public class WelcomeActivity
             }
 
             // Write Average Coords
-            ws.style(16 + indIndex,2).horizontalAlignment("right").bold().set();
             ws.value(16 + indIndex,2, getString(R.string.avCoords));
-            ws.range(16 + indIndex,3,16 + indIndex,5)
-                    .style().horizontalAlignment("center").set();
             ws.value(16 + indIndex,3, lngi);
             ws.value(16 + indIndex,4, latit);
             ws.value(16 + indIndex,5, String.valueOf(Math.round(uc))); // average uncertainty radius)
+            ws.style(16 + indIndex,2).horizontalAlignment("right").bold().set();
+            ws.range(16 + indIndex,3,16 + indIndex,5)
+                    .style().horizontalAlignment("center").set();
 
             // Set vertical line in coordinates table and correct cell (15 + indIndex, 3)
             ws.range(15 + indIndex,3,16 + indIndex,3)

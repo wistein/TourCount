@@ -44,7 +44,7 @@ import kotlin.math.sqrt
  * last edited in Java on 2022-05-21,
  * converted to Kotlin on 2023-07-09,
  * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2026-05-29
+ * last edited on 2026-06-16
  */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
@@ -176,7 +176,7 @@ class ShowResultsActivity : AppCompatActivity() {
         ltw.setListTitle(getString(R.string.titleEdit))
         ltw.setListName(section.name)
 
-        ltw.setWidgetName1(getString(R.string.inspector))
+        ltw.setWidgetName1(getString(R.string.inspector) + ": ")
         ltw.setWidgetName2(head!!.observer)
         specArea!!.addView(ltw)
 

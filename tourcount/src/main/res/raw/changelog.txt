@@ -28,6 +28,13 @@ _ subtitle
           text-align:center }
       div.freetext {
           color:#F0F0F0 }
+      div.normaltext {
+          color:#C0C0F0;
+          margin-bottom: 0.5em }
+      div.margtext {
+          color:#C0C0F0;
+          margin-left: 2.5em;
+          margin-bottom: 0.5em }
       div.boldtext {
           color:#F0F0F0;
           font-size:1.2em;
@@ -68,7 +75,7 @@ _ subtitle
 
 $ 3.7.9
   % Version 3.7.9
-  _ 2026-06-15
+  _ 2026-06-18
   * Export results into formatted Excel spreadsheet file (.xlsx)
   * Code improvements
   * Docs updated

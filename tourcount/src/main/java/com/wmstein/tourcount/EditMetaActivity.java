@@ -45,7 +45,7 @@ import java.util.Objects;
  * EditMetaActivity collects, partly edits and shows metadata for the current tour
  * <p>
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-04-29
+ * last edit in Java on 2026-06-17
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -160,7 +160,7 @@ public class EditMetaActivity extends AppCompatActivity
         // Display editable list title, observer name and notes by EditMetaTitleWidget
         emtw = new EditMetaTitleWidget(this, null);
         emtw.setWidgetTitle(getString(R.string.titleEdit));
-        emtw.setWidgetOName1(getString(R.string.inspector));
+        emtw.setWidgetOName1(getString(R.string.inspector) + ": ");
         emtw.setWidgetONotes1(getString(R.string.titleTourNotes));
 
         emtw.setWidgetName(section.name);
@@ -170,12 +170,12 @@ public class EditMetaActivity extends AppCompatActivity
 
         // Display the editable location data by EditMetaLocationWidget
         emlw = new EditMetaLocationWidget(this, null);
-        emlw.setWidgetCo1(getString(R.string.country));
-        emlw.setWidgetState1(getString(R.string.bstate));
-        emlw.setWidgetPlz1(getString(R.string.plz));
-        emlw.setWidgetCity1(getString(R.string.city));
-        emlw.setWidgetPlace1(getString(R.string.place));
-        emlw.setWidgetLocality1(getString(R.string.slocality));
+        emlw.setWidgetCo1(getString(R.string.country) + ":");
+        emlw.setWidgetState1(getString(R.string.bstate) + ":");
+        emlw.setWidgetPlz1(getString(R.string.plz) + ":");
+        emlw.setWidgetCity1(getString(R.string.city) + ":");
+        emlw.setWidgetPlace1(getString(R.string.place) + ":");
+        emlw.setWidgetLocality1(getString(R.string.slocality) + ":");
 
         emlw.setWidgetCo2(section.country);
         emlw.setWidgetState2(section.b_state);
@@ -187,7 +187,7 @@ public class EditMetaActivity extends AppCompatActivity
 
         // Display the editable metadata by EditMetaWidget
         emw = new EditMetaWidget(this, null);
-        emw.setWidgetDate1(getString(R.string.date));
+        emw.setWidgetDate1(getString(R.string.date) + ":");
         emw.setWidgetStartTm1(getString(R.string.starttm));
         emw.setWidgetEndTm1(getString(R.string.endtm));
 
@@ -195,9 +195,9 @@ public class EditMetaActivity extends AppCompatActivity
         emw.setWidgetStartTm2(section.start_tm);
         emw.setWidgetEndTm2(section.end_tm);
 
-        emw.setWidgetTemp1(getString(R.string.temperature));
-        emw.setWidgetWind1(getString(R.string.wind));
-        emw.setWidgetClouds1(getString(R.string.clouds));
+        emw.setWidgetTemp1(getString(R.string.temperature) + ":");
+        emw.setWidgetWind1(getString(R.string.wind) + ":");
+        emw.setWidgetClouds1(getString(R.string.clouds) + ":");
 
         emw.setWidgetTemp2(section.tmp);
         emw.setWidgetTemp3(section.tmp_end);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-06-15 -->
+     last edited on 2026-06-16 -->
 
 <resources>
 
@@ -12,10 +12,8 @@
     <!-- WelcomeActivity -->
     <string name="avCoords">Mittlere Koordinaten:</string>
     <string name="back_twice">Zum Beenden erneut drücken</string>
-    <string name="bema">Bem. zur Art:</string>
-    <string name="bemaRes">Bem. zur Art</string>
-    <string name="bems">Bem. zum Ind.:</string>
-    <string name="bemsRes">Bem. zum Ind.</string>
+    <string name="bema">Bem. zur Art</string>
+    <string name="bems">Bem. zum Ind.</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="changeLogTitle">App-Info</string>
     <string name="cntse">Anzahl Ei</string>
@@ -45,8 +43,7 @@
     <string name="importSpeciesListMenu">Import Speziesliste</string>
     <string name="individuals">Individuen</string>
     <string name="missingEmail">Bitte unter Einstellungen eine gültige E-Mail-Adresse für zuverlässige Ortserkennung eingeben.</string>
-    <string name="name_spec">Spezies-Name:</string>
-    <string name="name_specRes">Spezies-Name</string>
+    <string name="name_spec">Spezies-Name</string>
     <string name="noCard">Kann nicht ins \'Documents\'-Verzeichnis schreiben!</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="resetDBMenu">Reset Daten</string>
@@ -83,41 +80,28 @@
     <string name="br_Error">Es gibt ein Problem mit der gewählten Datei!</string>
 
     <!-- EditMetaActivity -->
-    <string name="bstate">Bundesland:</string>
-    <string name="bstateRes">Bundesland</string>
-    <string name="city">Stadt:</string>
-    <string name="cityRes">Stadt</string>
-    <string name="clouds">Wolken (%):</string>
-    <string name="cloudsRes">Wolken (%)</string>
+    <string name="bstate">Bundesland</string>
+    <string name="city">Stadt</string>
+    <string name="clouds">Wolken (%)</string>
     <string name="cnts">Anzahl</string>
-    <string name="country">Land:</string>
-    <string name="countryRes">Land</string>
-    <string name="date">Datum:</string>
-    <string name="dateRes">Datum</string>
+    <string name="country">Land</string>
+    <string name="date">Datum</string>
     <string name="editHeadTitle">Metadaten</string>
     <string name="endtm">bis:</string>
     <string name="hinttap">Tippe hier</string>
-    <string name="inspector">Melder(in):</string>
-    <string name="place">Ort:</string>
-    <string name="placeRes">Ort</string>
-    <string name="plz">PLZ:</string>
-    <string name="plzRes">PLZ</string>
-    <string name="slocality">Lokalität (Start):</string>
-    <string name="slocalityRes">Lokalität (Start)</string>
-    <string name="speccode">Spez.-Code:</string>
-    <string name="speccodeRes">Spez.-Code</string>
+    <string name="inspector">Melder(in)</string>
+    <string name="place">Ort</string>
+    <string name="plz">PLZ</string>
+    <string name="slocality">Lokalität (Start)</string>
+    <string name="speccode">Spez.-Code</string>
     <string name="starttm">Zeit von:</string>
-    <string name="temperature">Temp. (°C):</string>
-    <string name="temperatureRes">Temp. (°C)</string>
-    <string name="tm">Zeit:</string>
-    <string name="tmRes">Zeit</string>
+    <string name="temperature">Temp. (°C)</string>
+    <string name="tm">Zeit</string>
     <string name="valClouds">Wolken überprüfen!</string>
     <string name="valTemp">Unrealistische Temperatur!</string>
     <string name="valWind">Wind überprüfen!</string>
-    <string name="wind">Wind (0–4):</string>
-    <string name="windRes">Wind (0–4)</string>
-    <string name="zlNotes">Bem. zur Tour:</string>
-    <string name="zlNotesRes">Bem. zur Tour</string>
+    <string name="wind">Wind (0–4)</string>
+    <string name="zlNotes">Bem. zur Tour</string>
 
     <!-- EditIndividualActivity -->
     <string name="count1">Anz.</string>
@@ -133,15 +117,11 @@
     <string name="stadium_4">Ei</string>
     <string name="status123">Zust. (0–6)</string>
     <string name="time">Zeit</string>
-    <string name="uncerti">Unsicherheit (m):</string>
-    <string name="uncertiRes">Unsicherheit (m)</string>
+    <string name="uncerti">Unsicherheit (m)</string>
     <string name="valState">Zustand überprüfen!</string>
-    <string name="xcoord">Breitengrad:</string>
-    <string name="xcoordRes">Breitengrad</string>
-    <string name="ycoord">Längengrad:</string>
-    <string name="ycoordRes">Längengrad</string>
-    <string name="zcoord">Höhe (m):</string>
-    <string name="zcoordRes">Höhe (m)</string>
+    <string name="xcoord">Breitengrad</string>
+    <string name="ycoord">Längengrad</string>
+    <string name="zcoord">Höhe (m)</string>
 
     <!-- CountingActivity -->
     <string name="action_share">Mitteilen</string>

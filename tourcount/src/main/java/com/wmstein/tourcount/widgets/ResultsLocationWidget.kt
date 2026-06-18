@@ -20,7 +20,7 @@ import kotlin.math.roundToInt
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-23
+ * last edited on 2026-06-18
  */
 class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
@@ -84,19 +84,26 @@ class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayo
 
     // Following the SETS
     fun setLocationWidget(section: Section) {
-        widgetCoT.setText(R.string.country)
+        val countryC = context.getString(R.string.country) + ":"
+        val bstateC = context.getString(R.string.bstate) + ":"
+        val cityC = context.getString(R.string.city) + ":"
+        val placeC = context.getString(R.string.place) + ":"
+        val slocalityC = context.getString(R.string.slocality) + ":"
+        val plzC = context.getString(R.string.plz) + ":"
+
+        widgetCoT.setText(countryC)
         widgetCoN.text = section.country
-        widgetstate1.setText(R.string.bstate)
+        widgetstate1.setText(bstateC)
         widgetstate2.text = section.b_state
 
-        widgetcity1.setText(R.string.city)
+        widgetcity1.setText(cityC)
         widgetcity2.text = section.city
-        widgetplace1.setText(R.string.place)
+        widgetplace1.setText(placeC)
         widgetplace2.text = section.place
 
-        widgetlocality1.setText(R.string.slocality)
+        widgetlocality1.setText(slocalityC)
         widgetlocality2.text = section.st_locality
-        widgetplz1.setText(R.string.plz)
+        widgetplz1.setText(plzC)
         widgetplz2.text = section.plz
 
         widgetdlo1.setText(R.string.dLo)

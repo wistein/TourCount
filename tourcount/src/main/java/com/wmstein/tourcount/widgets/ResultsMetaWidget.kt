@@ -18,7 +18,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-29
+ * last edited on 2026-06-18
  */
 class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -82,7 +82,7 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
     // Following the SETS
     @SuppressLint("SetTextI18n")
     fun setListMetaWidget(section: Section) {
-        widgetdate1.setText(R.string.date)
+        widgetdate1.text = context.getString(R.string.date) + ":"
         widgetdate2.text = section.date
 
         widgetstartTm1.setText(R.string.starttm)
@@ -92,17 +92,18 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
         widgetendTm2.text = section.end_tm
 
         // temperature
-        widgettemp1.setText(R.string.temperature)
+        widgettemp1.text = context.getString(R.string.temperature) + ":"
         if (section.tmp > 0) widgetstarttemp2.text = section.tmp.toString()
         if (section.tmp_end > 0) widgetendtemp2.text = section.tmp_end.toString()
 
         // wind
-        widgetwind1.setText(R.string.wind)
+        context.getString(R.string.wind) + ":"
+        widgetwind1.text = context.getString(R.string.wind) + ":"
         if (section.wind > 0) widgetstartwind2.text = section.wind.toString()
         if (section.wind_end > 0) widgetendwind2.text = section.wind_end.toString()
 
         // clouds
-        widgetclouds1.setText(R.string.clouds)
+        widgetclouds1.text = context.getString(R.string.clouds) + ":"
         if (section.clouds > 0) widgetstartclouds2.text = section.clouds.toString()
         if (section.clouds_end > 0) widgetendclouds2.text = section.clouds_end.toString()
     }

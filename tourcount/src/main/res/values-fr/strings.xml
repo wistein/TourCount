@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-06-15 -->
+     last edited on 2026-06-16 -->
 
 <resources>
 
@@ -12,10 +12,8 @@
     <!-- WelcomeActivity -->
     <string name="avCoords">Coordonnées moyennes:</string>
     <string name="back_twice">Appuyez à nouveau pour quitter</string>
-    <string name="bema">Note sur l\'espèce:</string>
-    <string name="bemaRes">Note sur l\'espèce</string>
-    <string name="bems">Note sur l\'indiv.:</string>
-    <string name="bemsRes">Note sur l\'indiv.</string>
+    <string name="bema">Note sur l\'espèce</string>
+    <string name="bems">Note sur l\'indiv.</string>
     <string name="cancelButton">Annuler</string>
     <string name="changeLogTitle">Info sur l\'application</string>
     <string name="cntse">Nombre œuf</string>
@@ -45,8 +43,7 @@
     <string name="importDB">La BD a été importée.</string>
     <string name="individuals">Individus</string>
     <string name="missingEmail">Veuillez saisir une adresse e-mail valide dans les paramètres pour garantir la fiabilité de la localisation.</string>
-    <string name="name_spec">Nom de l\'espèce :</string>
-    <string name="name_specRes">Nom de l\'espèce</string>
+    <string name="name_spec">Nom de l\'espèce</string>
     <string name="noCard">Impossible d\'écrire dans le répertoire \'Documents/TourCount\' !</string>
     <string name="reset2basic">La BD a été réinitialisée.</string>
     <string name="resetDBMenu">Reset données</string>
@@ -83,41 +80,28 @@
     <string name="br_Error">Il y a un problème avec le fichier sélectionné !</string>
 
     <!-- EditMetaActivity -->
-    <string name="bstate">Province:</string>
-    <string name="bstateRes">Province</string>
-    <string name="city">Ville:</string>
-    <string name="cityRes">Ville</string>
-    <string name="clouds">Nuages (%):</string>
-    <string name="cloudsRes">Nuages (%)</string>
+    <string name="bstate">Province</string>
+    <string name="city">Ville</string>
+    <string name="clouds">Nuages (%)</string>
     <string name="cnts">Nombre</string>
-    <string name="country">Pays:</string>
-    <string name="countryRes">Pays</string>
-    <string name="date">Date:</string>
-    <string name="dateRes">Date</string>
+    <string name="country">Pays</string>
+    <string name="date">Date</string>
     <string name="editHeadTitle">Métadonnées d. Tour</string>
     <string name="endtm">jusqu\'à:</string>
     <string name="hinttap">Cliquez ici</string>
-    <string name="inspector">Moniteur:</string>
-    <string name="place">Lieu:</string>
-    <string name="placeRes">Lieu</string>
-    <string name="plz">Cd. poste:</string>
-    <string name="plzRes">Cd. poste</string>
-    <string name="slocality">Localité (départ):</string>
-    <string name="slocalityRes">Localité (départ)</string>
-    <string name="speccode">Code spéci.:</string>
-    <string name="speccodeRes">Code spéci.</string>
+    <string name="inspector">Moniteur</string>
+    <string name="place">Lieu</string>
+    <string name="plz">Cd. poste</string>
+    <string name="slocality">Localité (départ)</string>
+    <string name="speccode">Code spéci.</string>
     <string name="starttm">Heure de:</string>
-    <string name="temperature">Temp. (°C):</string>
-    <string name="temperatureRes">Temp. (°C)</string>
-    <string name="tm">Heure:</string>
-    <string name="tmRes">Heure</string>
+    <string name="temperature">Temp. (°C)</string>
+    <string name="tm">Heure</string>
     <string name="valClouds">Vérifiez les nuages !</string>
     <string name="valTemp">Température irréaliste !</string>
     <string name="valWind">Vérifiez le vent !</string>
-    <string name="wind">Vent (0–4):</string>
-    <string name="windRes">Vent (0–4)</string>
-    <string name="zlNotes">Note sur le tour:</string>
-    <string name="zlNotesRes">Note sur le tour</string>
+    <string name="wind">Vent (0–4)</string>
+    <string name="zlNotes">Note sur le tour</string>
 
     <!-- EditIndividualActivity -->
     <string name="count1">Nbr.</string>
@@ -133,15 +117,11 @@
     <string name="stadium_4">Œuf</string>
     <string name="status123">État (0–6)</string>
     <string name="time">Temps</string>
-    <string name="uncerti">Incertitude (m):</string>
-    <string name="uncertiRes">Incertitude (m)</string>
+    <string name="uncerti">Incertitude (m)</string>
     <string name="valState">Vérifiez l\'état !</string>
-    <string name="xcoord">Latitude:</string>
-    <string name="xcoordRes">Latitude</string>
-    <string name="ycoord">Longitude:</string>
-    <string name="ycoordRes">Longitude</string>
-    <string name="zcoord">Altitude (m):</string>
-    <string name="zcoordRes">Altitude (m)</string>
+    <string name="xcoord">Latitude</string>
+    <string name="ycoord">Longitude</string>
+    <string name="zcoord">Altitude (m)</string>
 
     <!-- CountingActivity -->
     <string name="action_share">Communiquer</string>

@@ -6,7 +6,6 @@ Formatting commands:
 _ subtitle
 ! free text
 & bold
-- list item
 # numbered list item
 * bullet list item
 . blank line
@@ -76,7 +75,7 @@ _ subtitle
 
 $ 3.7.9
   % Version 3.7.9
-  _ 15.06.2026
+  _ 18.06.2026
   * Ergebnisexport in formatierte Excel-Tabellendatei (.xlsx)
   * Code-Verbesserungen
   * Doku aktualisiert

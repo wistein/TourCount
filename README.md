@@ -23,7 +23,7 @@ For more background on this and how to overcome the restriction you may visit ht
   location data by reverse OSM-geocoding from OpenStreetMap when GPS and internet access are granted.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
 - Results are shown with metadata, totals, remarks, species results and individual data.
-- Results may be exported as SQLite-DB, in XLSX- or in CSV-format (e.g. for transfer to a PC and more comfortable processing in a spreadsheet).
+- Results may be exported as SQLite-DB, in formatted XLSX- or in CSV-format (e.g. for transfer to a PC and more comfortable processing in a spreadsheet).
 - The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
 - Help contains a detailed user guide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
