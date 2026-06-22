@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-06-16 -->
+     last edited 2026-06-18 -->
 
 <resources>
 
@@ -48,6 +48,7 @@
     <string name="reset2basic">Il database è stato ripristinato.</string>
     <string name="resetDBMenu">Reset dati</string>
     <string name="resetFail">Impossibile ripristinare il database!</string>
+    <string name="results">Risultato di TourCount</string>
     <string name="saveBasisDB">Esporre il database di base in \‘Documents/TourCount\‘</string>
     <string name="saveCSV">Esporre il file csv in \‘Documents/TourCount\‘</string>
     <string name="saveXLSX">Esporre il file xlsx in \‘Documents/TourCount\‘</string>
@@ -88,6 +89,7 @@
     <string name="date">Data</string>
     <string name="editHeadTitle">Metadati relativi all\'ispezione</string>
     <string name="endtm">fino a:</string>
+    <string name="from">di:</string>
     <string name="hinttap">Clicca qui</string>
     <string name="inspector">Cartografo/a</string>
     <string name="place">Luogo</string>

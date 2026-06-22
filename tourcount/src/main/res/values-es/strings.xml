@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-06-16 -->
+     last edited on 2026-06-18 -->
 
 <resources>
 
@@ -48,6 +48,7 @@
     <string name="reset2basic">La base de datos se ha restablecido.</string>
     <string name="resetDBMenu">Restablecer datos</string>
     <string name="resetFail">¡No se ha podido restablecer la base de datos!</string>
+    <string name="results">Resultado de TourCount</string>
     <string name="saveBasisDB">Exportar la BD básica a Documents/TourCount</string>
     <string name="saveCSV">Exportar el fichero CSV a Documentos/TourCount</string>
     <string name="saveXLSX">Exportar el fichero XLSX a Documentos/TourCount</string>
@@ -88,6 +89,7 @@
     <string name="date">Fecha</string>
     <string name="editHeadTitle">Metadatos</string>
     <string name="endtm">hasta:</string>
+    <string name="from">de:</string>
     <string name="hinttap">Pulsa aquí</string>
     <string name="inspector">Autor/a</string>
     <string name="place">Lugar</string>

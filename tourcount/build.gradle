@@ -1,7 +1,5 @@
 // Build file where you can add configuration options for the module.
-// minifyEnabled set to false, as otherwise apache.poi libraries are missing and compiling fails.
-// This increases apk size drastically.
-// Last edited on 2026-06-13
+// Last edited on 2026-06-18
 
 plugins {
     id 'com.android.application'
@@ -13,7 +11,6 @@ android {
 
     defaultConfig {
         applicationId "com.wmstein.tourcount"
-        useLibrary 'org.apache.http.legacy'
         minSdk = 30
         targetSdk = 37
         versionCode = 379
@@ -62,9 +59,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.19.0'
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.10.0'
-    implementation 'androidx.lifecycle:lifecycle-process:2.10.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.11.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.11.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.11.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'androidx.work:work-runtime:2.11.2'
     implementation 'com.google.android.material:material:1.14.0'

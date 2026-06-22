@@ -75,7 +75,7 @@ _ subtitle
 
 $ 3.7.9
   % Version 3.7.9
-  _ 18.06.2026
+  _ 22.06.2026
   * Ergebnisexport in formatierte Excel-Tabellendatei (.xlsx)
   * Code-Verbesserungen
   * Doku aktualisiert

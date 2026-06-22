@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-06-16 -->
+     last edited on 2026-06-18 -->
 
 <resources>
 
@@ -48,6 +48,7 @@
     <string name="reset2basic">La BD a été réinitialisée.</string>
     <string name="resetDBMenu">Reset données</string>
     <string name="resetFail">La BD n\'a pas pu être réinitialisée !</string>
+    <string name="results">Résultat de TourCount</string>
     <string name="saveBasisDB">Exporter la structure de BD vers \'Documents/TourCount\'</string>
     <string name="saveCSV">Exporter le fichier CSV vers \'Documents/TourCount\'</string>
     <string name="saveXLSX">Exporter le fichier XLSX vers \'Documents/TourCount\'</string>
@@ -88,6 +89,7 @@
     <string name="date">Date</string>
     <string name="editHeadTitle">Métadonnées d. Tour</string>
     <string name="endtm">jusqu\'à:</string>
+    <string name="from">de:</string>
     <string name="hinttap">Cliquez ici</string>
     <string name="inspector">Moniteur</string>
     <string name="place">Lieu</string>

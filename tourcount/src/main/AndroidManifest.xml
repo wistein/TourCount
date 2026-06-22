@@ -231,10 +231,6 @@
             android:stopWithTask="true">
         </service>
 
-        <uses-library
-            android:name="org.dhatim.fastexcel"
-            android:required="false" />
-
     </application>
 
 </manifest>
