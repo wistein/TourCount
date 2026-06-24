@@ -12,8 +12,9 @@ Eigenschaften:
 - Getrennte Zähler für ♂-♀-unbestimmt, ♂, ♀, Puppe, Raupe oder Ei.
 - Für unterschiedliche Regionen können angepasste Artenlisten erstellt werden.
 - Ergebnisseite mit aufbereiteter Darstellung zur Übertragung in die science4you-Eingabemaske zur Schmetterlingserfassung unter www.falterfunde.de.
-- Das Ergebnis kann als SQLite-Datei, im XLSX- oder CSV-Format ausgegeben werden (u. a. zwecks Transfer und Weiterverwendung in einem Spreadsheet-Programm auf einem PC.)
+- Das Ergebnis kann sowohl in formatiertem XLSX- oder CSV-Format als auch als SQLite-DB-Datei ausgegeben werden (u. a. zwecks Transfer auf einen PC und komfortablerem Lesen in einem Spreadsheet-Programm oder zur weiteren Verarbeitung.)
 - Die Hilfe enthält eine detaillierte Benutzeranleitung.
+- TourCount kann in Deutsch, Englisch, Französisch, Italienisch und Spanisch genutzt werden und bietet die lokalen Artennamen in diesen Sprachen an.
 
 Funktionen:
 - Editor für Meta-Daten zur Vorbereitung einer Tour.
@@ -24,15 +25,14 @@ Funktionen:
 - Die Ergebnisseite zeigt Meta-Daten, Bemerkungen, Summen und Zählergebnisse pro Art.
 
 Voraussetzungen:
-Die App benötigt
-- Speicherzugriffsrecht zwecks Im- und Export der Zähldaten, 
-- GPS für Koordinaten der gezählten Individuen, 
-- Internet-Zugang für OpenStreetMaps inverse Geocodierung,
-- Einstellungsrecht zwecks Helligkeitssteuerung des Bildschirms,
-- Recht zur Verhinderung des Ruhezustands.
+Die App benötigt Zugriffsrechte
+- für Speicherzugriff zwecks Im- und Export der Zähldaten, Spezieslisten und Ergebnisse,
+- zur Standortbestimmung per GPS für Koordinaten der gezählten Individuen,
+- für Internet-Zugang für OpenStreetMaps inverse Geocodierung (Ortsangaben) und
+- zur Verhinderung des Ruhezustands.
 
 Der Smartphone-Bildschirm sollte eine Auflösung von mindestens 1920 x 1024 Pixel haben.
-Die App kann ab Android-Version 7.1 (Nougat) oder neuer verwendet werden.
+Die App kann ab Android-Version 11 oder neuer verwendet werden.
 
 Dokumentation ist unter
 https://github.com/wistein/TourCount/tree/master/docs.

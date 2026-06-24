@@ -21,6 +21,13 @@ Note on F-Droid:
 2. From the author's GitHub project pages (current development status)
 ----------------------------------------------------------------------
 
+   The apps available directly from the project page reflect the current state of development 
+   and may include new or improved features; however, as long as the version number is higher 
+   than that of the latest release tag, they should be considered beta versions that may 
+   contain new bugs.
+   
+   Apps from GitHub project pages do not automatically receive update notifications.
+   
    Apps:
    - TransektCount app, apk file (transektcount_release_nnn.apk):
 	   https://github.com/wistein/TransektCount/tree/master/apk
@@ -63,8 +70,8 @@ Note on F-Droid:
    made in the internal database of an app. After such a change, the database version is incremented. 
    This is recognized by the app and the currently used DB is adapted internally.
    
-   However, the currently adapted DB version cannot be used after a downgrade to a 
-   previous app which uses a previous DB version. 
+   However, it is no longer possible to use a database with a new version number after downgrading 
+   the app to a previous version.
 
    All sample DBs are published in the current version. 
    

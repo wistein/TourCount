@@ -1,4 +1,4 @@
-Version 3.7.9 (22.06.2026)
+Version 3.7.9 (23.06.2026)
 - Ergebnisexport in formatierte Excel-Tabellendatei (.xlsx)
 - Code-Verbesserungen
 - Doku aktualisiert

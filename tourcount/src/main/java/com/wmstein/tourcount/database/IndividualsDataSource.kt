@@ -14,7 +14,7 @@ import com.wmstein.tourcount.database.DbHelper.Companion.INDIVIDUALS_TABLE
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-29
+ * last edited on 2026-06-23
  */
 class IndividualsDataSource(context: Context) {
     // Database fields
@@ -126,7 +126,10 @@ class IndividualsDataSource(context: Context) {
         newindividuals.sex = cursor.getString(cursor.getColumnIndex(DbHelper.I_SEX))
         newindividuals.stadium = cursor.getString(cursor.getColumnIndex(DbHelper.I_STADIUM))
         newindividuals.state_1_6 = cursor.getInt(cursor.getColumnIndex(DbHelper.I_STATE_1_6))
-        newindividuals.notes = cursor.getString(cursor.getColumnIndex(DbHelper.I_NOTES))
+        var indNotes = cursor.getString(cursor.getColumnIndex(DbHelper.I_NOTES))
+        if (indNotes == null) // null could have been inserted while edited a DB with DB Browser for SQLite
+            indNotes = ""     //   and would cause a crash
+        newindividuals.notes = indNotes
         newindividuals.icount = cursor.getInt(cursor.getColumnIndex(DbHelper.I_ICOUNT))
         newindividuals.icategory = cursor.getInt(cursor.getColumnIndex(DbHelper.I_CATEGORY))
         newindividuals.code = cursor.getString(cursor.getColumnIndex(DbHelper.I_CODE))

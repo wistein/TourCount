@@ -23,18 +23,18 @@ For more background on this and how to overcome the restriction you may visit ht
   location data by reverse OSM-geocoding from OpenStreetMap when GPS and internet access are granted.
 - Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
 - Results are shown with metadata, totals, remarks, species results and individual data.
-- Results may be exported as SQLite-DB, in formatted XLSX- or in CSV-format (e.g. for transfer to a PC and more comfortable processing in a spreadsheet).
+- The results can be exported in formatted XLSX or CSV format, as well as in an SQLite database file (e.g. to transfer them to a PC, for easier reading in a spreadsheet program, or for further processing).
 - The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
 - Help contains a detailed user guide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
 - TourCount supports counting in German, English, French, Italian and Spanish language and provides locale species names in these languages.
 
 ### Prerequisites
-The app demands for 
-- storage access permit which is needed for im-/exporting the counting data (databases, results or species lists, 
-- the permit to read location data by GPS for coordinates and location info per count, 
-- internet access for OpenStreetMap reverse geocoding and 
-- the permit to keep the device awake
+The app requires permits for 
+- storage access for im-/exporting the counting data, results or species lists, 
+- reading location data by GPS for coordinates and location info per counted individual, 
+- internet access for OpenStreetMap reverse geocoding requests and 
+- preventing the sleep mode.
 
 The device screen should have a minimum resolution of 1920 x 1024 pixels.  
 The app is usable with Android version 11 or newer.

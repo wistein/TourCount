@@ -75,7 +75,7 @@ _ subtitle
 
 $ 3.7.9
   % Version 3.7.9
-  _ 2026-06-22
+  _ 2026-06-23
   * Export results into formatted Excel spreadsheet file (.xlsx)
   * Code improvements
   * Docs updated

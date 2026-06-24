@@ -98,7 +98,7 @@ import org.dhatim.fastexcel.Worksheet;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-06-21
+ * last edited on 2026-06-23
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -395,6 +395,8 @@ public class WelcomeActivity
         // Option for use of Nominatim service for locality data
         metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
         dataLanguage = prefs.getString("pref_sel_data_lang", "");
+        if (dataLanguage.isEmpty())
+            dataLanguage = "--";
 
         storagePermGranted = isStoragePermGranted(); // set storagePermGranted from self permission
 
@@ -1138,7 +1140,7 @@ public class WelcomeActivity
                 editor.putString("pref_sel_data_lang", dataLanguage);
             } else {
                 hasDataLang = false;
-                editor.putString("pref_sel_data_lang", "");
+                editor.putString("pref_sel_data_lang", "--");
             }
 
             editor.putBoolean("has_data_lang", hasDataLang); // controls data language setting
@@ -1214,6 +1216,8 @@ public class WelcomeActivity
             outFile = new File(path, "/tourcount0_" + localLanguage + ".db");
         else if (i >= 0) {
             dataLanguage = prefs.getString("pref_sel_data_lang", "");
+            if (dataLanguage.isEmpty())
+                dataLanguage = "--";
 
             if (Objects.equals(tourNameDir, ""))
                 outFile = new File(path, "/tourcount0_" + dataLanguage + ".db");
@@ -1320,6 +1324,8 @@ public class WelcomeActivity
         path.mkdirs(); // Just verify path, result ignored
 
         dataLanguage = prefs.getString("pref_sel_data_lang", "");
+        if (dataLanguage.isEmpty())
+            dataLanguage = "--";
 
         // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyyMMdd_HHmm.db
         if (Objects.equals(tourNameDir, "") && Objects.equals(dbDate, ""))
@@ -1442,6 +1448,8 @@ public class WelcomeActivity
         }
 
         dataLanguage = prefs.getString("pref_sel_data_lang", "");
+        if (dataLanguage.isEmpty())
+            dataLanguage = "--";
 
         if (Objects.equals(tourNameDir, "") && Objects.equals(csvDate, ""))
             outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".csv");
@@ -2095,6 +2103,8 @@ public class WelcomeActivity
         }
 
         dataLanguage = prefs.getString("pref_sel_data_lang", "");
+        if (dataLanguage.isEmpty())
+            dataLanguage = "--";
 
         if (Objects.equals(tourNameDir, "") && Objects.equals(csvDate, ""))
             outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
@@ -2767,7 +2777,8 @@ public class WelcomeActivity
         } else {
             // Export species list into species_ll_tour_Tourname_yyyyMMdd_HHmmss.csv
             dataLanguage = prefs.getString("pref_sel_data_lang", "");
-
+            if (dataLanguage.isEmpty())
+                dataLanguage = "--";
             String[] codeArray;
             String[] nameArray;
             String[] nameArrayL;
@@ -2850,14 +2861,14 @@ public class WelcomeActivity
                 default -> {
                     // No data language given
                     if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_Tour_"
+                        outFileTransect = new File(pathTransect, "/species_--_Tour_"
                                 + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_Tour_"
+                        outFileTour = new File(pathTour, "/species_--_Tour_"
                                 + getcurDate() + ".csv");
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_Tour_"
+                        outFileTransect = new File(pathTransect, "/species_--_Tour_"
                                 + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_Tour_"
+                        outFileTour = new File(pathTour, "/species_--_Tour_"
                                 + tourNameDir + "_" + getcurDate() + ".csv");
                     }
                 }

@@ -12,7 +12,8 @@ Installation von TransektCount und TourCount
 Anmerkung zu F-Droid:
    Der Bezug von Apps aus F-Droid ist mindestens so sicher wie der Bezug durch den Google Play Store.
    Alle Apps werden im Gegensatz zum Play Store auch datenschutzmäßig überprüft und durch F-Droid
-   selbst kompiliert. Falls eine App nicht alle Anforderungen von F-Droid hinsichtlich unerwünschter Merkmale erfüllt, ist es vermerkt.
+   selbst kompiliert. Falls eine App nicht alle Anforderungen von F-Droid hinsichtlich unerwünschter 
+   Merkmale erfüllt, ist es vermerkt.
 
    Die Quellcodes der F-Droid-Apps sind generell veröffentlicht und mit einer Open-Source-Lizenz lizenziert.
 
@@ -20,11 +21,17 @@ Anmerkung zu F-Droid:
 2. App von den GitHub-Projektseiten des Autors laden (aktueller Entwicklungsstand)
 ----------------------------------------------------------------------------------
 
+   Die Apps direkt von der Projektseite entsprechen dem aktuellen Entwicklungsstand, haben ggf. neue oder 
+   verbesserte Funktionen, sind aber solange als Beta-Version mit potenziell neuen Fehlern zu betrachten, 
+   wie die Versionsnummer größer ist als die des neuesten Release-Tags.
+   
+   Apps von den GitHub-Projektseiten werden nicht automatisch mit Update-Hinweisen versorgt.
+   
    Apps:
    - TransektCount-App, apk-Datei (transektcount_release_nnn.apk):
 	   https://github.com/wistein/TransektCount/tree/master/apk
    - TourCount-App, apk-Datei (tourcount_release_nnn.apk):
-       https://github.com/wistein/TourCount/tree/master/apk
+     https://github.com/wistein/TourCount/tree/master/apk
 
    Die .apk-Datei von der o.a. GitHub-Seite ins Downloads-Verzeichnis kopieren.
    Im Smartphone vor der Installation die Android-Option "Unbekannte Herkunft" unter
@@ -61,5 +68,8 @@ Anmerkung zu F-Droid:
    Datenbank-Version inkrementiert. Das wird von der App erkannt und die aktuell genutzte DB 
    intern strukturell angepasst.
    
-   Die Nutzung einer neu versionierten DB ist aber nach einem Down-Grade zu einer Vorgänger-
+   Die Nutzung einer neu versionierten DB ist aber nach einem App-Down-Grade zu einer Vorgänger-
    App-Version nicht mehr möglich.
+   
+   Alle Beispiel-DBs sind in der aktuellen Version veröffentlicht.
+   
