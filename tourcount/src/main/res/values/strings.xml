@@ -75,7 +75,6 @@
     <string name="sort_codes">Species sorted by species codes</string>
     <string name="sort_names">Species sorted by species names</string>
     <string name="sort_time">Individuals sorted by registered time</string>
-    <string name="specsCommonLangMissing">Attention! The local data language is not defined in the old list. Please, select it in "Settings". Otherwise, German species names will be used.</string>
     <string name="sum">Totals:</string>
     <string name="sumSpec">Diff. Species:</string>
     <string name="sum_total">Sum Total:</string>
@@ -122,7 +121,6 @@
 
     <!-- EditIndividualActivity -->
     <string name="count1">Count</string>
-    <string name="indivDel">Deleted: Individual with ID:</string>
     <string name="locality">Locality</string>
     <string name="note">Individual Notes</string>
     <string name="saveIndividualButton">Save</string>
@@ -284,8 +282,6 @@
     <string name="app_settings">System Settings</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
-    <string name="dialog_storage_message">Please grant storage permission for TourCount to be able to import and export data.</string>
-    <string name="dialog_storage_title">Storage permission required</string>
     <string name="storage_perm_denied">Required storage permission for TourCount is missing, storage is not possible.</string>
 	
 </resources>

@@ -61,7 +61,6 @@
     <string name="sort_codes">Especies ordenadas por códigos de especie</string>
     <string name="sort_names">Especies ordenadas por nombre de especie</string>
     <string name="sort_time">Individuos ordenados por fecha de registro</string>
-    <string name="specsCommonLangMissing">¡Atención! El idioma de los datos locales no aparece en la lista anterior. Selecciónalo en «Configuración». De lo contrario, se utilizarán los nombres de las especies en alemán.</string>
     <string name="sum">Totales:</string>
     <string name="sumSpec">Núm. de especies:</string>
     <string name="sum_total">Total:</string>
@@ -107,7 +106,6 @@
 
     <!-- EditIndividualActivity -->
     <string name="count1">Núm.</string>
-    <string name="indivDel">Eliminado: Individuo con ID:</string>
     <string name="locality">Localidad</string>
     <string name="note">Nota al individuo</string>
     <string name="saveIndividualButton">Guardar</string>
@@ -269,8 +267,6 @@
     <string name="app_settings">Configuración del sistema</string>
     <string name="dialog_fine_location_message">El registro de las mariposas debe realizarse indicando la ubicación con la mayor precisión posible.</string>
     <string name="dialog_fine_location_title">Permite que se registre tu ubicación exacta.</string>
-    <string name="dialog_storage_message">Por favor, concede a TourCount permiso de almacenamiento para poder importar y exportar los datos.</string>
-    <string name="dialog_storage_title">Se requiere permiso de almacenamiento</string>
     <string name="storage_perm_denied">Falta el permiso de almacenamiento necesario para TourCount; no es posible guardar.</string>
 
 </resources>

@@ -61,7 +61,6 @@
     <string name="sort_codes">Specie ordinate per codice specie</string>
     <string name="sort_names">Specie ordinate per nome della specie</string>
     <string name="sort_time">Individui ordinati in base alla data di registrazione</string>
-    <string name="specsCommonLangMissing">Attenzione! La lingua dei dati locali non è definita nel vecchio elenco. Selezionarla in “Impostazioni”. In caso contrario, verranno utilizzati i nomi delle specie in tedesco.</string>
     <string name="sum">Totali (interni):</string>
     <string name="sumSpec">Specie:</string>
     <string name="sum_total">Totale (totale):</string>
@@ -107,7 +106,6 @@
 
     <!-- EditIndividualActivity -->
     <string name="count1">Num.</string>
-    <string name="indivDel">Cancellato: individuo con ID:</string>
     <string name="locality">Località</string>
     <string name="note">Nota sull\'individuo</string>
     <string name="saveIndividualButton">Salvare</string>
@@ -270,8 +268,6 @@
     <string name="app_settings">Impostazioni di sistema</string>
     <string name="dialog_fine_location_message">Il riconoscimento dei tratti di transetto richiede la massima precisione possibile.</string>
     <string name="dialog_fine_location_title">Consenti la localizzazione precisa.</string>
-    <string name="dialog_storage_message">Concedi l\'autorizzazione di archiviazione a TourCount per l\'importazione e l\'esportazione dei dati.</string>
-    <string name="dialog_storage_title">Autorizzazione di archiviazione richiesta</string>
     <string name="storage_perm_denied">Manca l\'autorizzazione di salvataggio necessaria per TourCount, non è possibile salvare.</string>
 
 </resources>

@@ -60,7 +60,6 @@
     <string name="sort_codes">Espèces classées par codes d\'espèces</string>
     <string name="sort_names">Espèces classées par nom d\'espèce</string>
     <string name="sort_time">Individus classés par date d\'enregistrement</string>
-    <string name="specsCommonLangMissing">Attention ! La langue locale des données n\'est pas définie dans l\'ancienne liste ! Veuillez la sélectionner dans « Paramètres ». Sinon, les noms d\'espèces en allemand seront utilisés.</string>
     <string name="sum">Sommes:</string>
     <string name="sumSpec">Nombre espèces:</string>
     <string name="sum_total">Total:</string>
@@ -107,7 +106,6 @@
 
     <!-- EditIndividualActivity -->
     <string name="count1">Nbr.</string>
-    <string name="indivDel">Supprimé : individu avec ID :</string>
     <string name="locality">Localité</string>
     <string name="note">Note sur l\'individu</string>
     <string name="saveIndividualButton">Sauvegarder</string>
@@ -269,8 +267,6 @@
     <string name="app_settings">Paramètres système</string>
     <string name="dialog_fine_location_message">L\'enregistrement des papillons doit être effectué avec une localisation aussi précise que possible.</string>
     <string name="dialog_fine_location_title">Autoriser la localisation précise.</string>
-    <string name="dialog_storage_message">Veuillez accorder l\'autorisation de stockage à TourCount afin de pouvoir importer et exporter les données.</string>
-    <string name="dialog_storage_title">Autorisation de stockage requise</string>
     <string name="storage_perm_denied">L\'autorisation de stockage nécessaire pour TourCount fait défaut, l\'enregistrement n\'est pas possible.</string>
 
 </resources>

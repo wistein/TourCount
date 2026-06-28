@@ -43,7 +43,7 @@ import java.util.Locale
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-05-26
- * last edited on 2026-06-15
+ * last edited on 2026-06-28
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -85,7 +85,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "89, onCreate")
+            Log.i(TAG, "88, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -138,7 +138,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "142, onResume")
+            Log.i(TAG, "141, onResume")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -397,7 +397,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "401, onPause")
+            Log.i(TAG, "400, onPause")
 
         countDataSource!!.close()
 
@@ -415,7 +415,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "419, onStop")
+            Log.i(TAG, "418, onStop")
 
         addArea = null
         addHintArea = null
@@ -425,7 +425,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "429, onDestroy")
+            Log.i(TAG, "428, onDestroy")
     }
 
     companion object {

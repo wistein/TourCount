@@ -98,7 +98,7 @@ import org.dhatim.fastexcel.Worksheet;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-06-27
+ * last edited on 2026-06-28
  */
 public class WelcomeActivity
         extends AppCompatActivity

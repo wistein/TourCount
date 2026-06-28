@@ -61,7 +61,6 @@
     <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
     <string name="sort_names">Spezies sortiert nach Spezies-Namen</string>
     <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
-    <string name="specsCommonLangMissing">Achtung! Die lokale Datensprache ist in der alten Liste nicht festgelegt. Bitte unter "Einstellungen" wählen. Ansonsten werden deutsche Artnamen verwendet.</string>
     <string name="sum">Summen:</string>
     <string name="sumSpec">Anzahl Arten:</string>
     <string name="sum_total">Gesamtsumme:</string>
@@ -107,7 +106,6 @@
 
     <!-- EditIndividualActivity -->
     <string name="count1">Anz.</string>
-    <string name="indivDel">Gelöscht: Individuum mit ID:</string>
     <string name="locality">Lokalität</string>
     <string name="note">Bemerkung zum Individuum</string>
     <string name="saveIndividualButton">Speichern</string>
@@ -269,8 +267,6 @@
     <string name="app_settings">System-Einstellungen</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
-    <string name="dialog_storage_message">Bitte erteile die Speicherberechtigung für TourCount zwecks Import und Export der Daten.</string>
-    <string name="dialog_storage_title">Speicherberechtigung wird benötigt</string>
     <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt, Speichern ist nicht möglich.</string>
 
 </resources>
