@@ -73,6 +73,15 @@ _ subtitle
   .
   _
 
+$ 3.8.0
+  % Version 3.8.0
+  _ 2026-06-28
+  * Exported Excel spreadsheet improved
+  * Code improvements
+  * Text corrections
+  * Docs updated
+  * Bugfix
+
 $ 3.7.9
   % Version 3.7.9
   _ 2026-06-23

@@ -1,9 +1,11 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.7.9:
-- Export results into formatted Excel spreadsheet file (.xlsx)
+New in Version 3.8.0:
+- Exported Excel spreadsheet improved
 - Code improvements
+- Text corrections
 - Docs updated
+- Bugfix
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

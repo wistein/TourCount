@@ -1,0 +1,6 @@
+Version 3.8.0 (2026-06-28)
+- Exported Excel spreadsheet improved
+- Code improvements
+- Text corrections
+- Docs updated
+- Bugfix

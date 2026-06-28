@@ -87,7 +87,7 @@ import org.dhatim.fastexcel.Position;
 import org.dhatim.fastexcel.Workbook;
 import org.dhatim.fastexcel.Worksheet;
 
-/**********************************************************************
+/***************************************************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and lets you call 
  * EditMetaActivity, CountingActivity and ShowResultsActivity.
@@ -98,7 +98,7 @@ import org.dhatim.fastexcel.Worksheet;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-06-23
+ * last edited on 2026-06-27
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -163,7 +163,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "164, onCreate");
+            Log.i(TAG, "166, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -383,7 +383,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "384, onResume");
+            Log.i(TAG, "386, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -455,7 +455,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "454, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "458, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
@@ -472,7 +472,7 @@ public class WelcomeActivity
         storageGranted = Environment.isExternalStorageManager();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "471, ManageStoragePermission: " + storagePermGranted);
+            Log.i(TAG, "475, ManageStoragePermission: " + storagePermGranted);
         return storageGranted;
     }
 
@@ -493,7 +493,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "492, locationDispatcher 1");
+                            Log.i(TAG, "496, locationDispatcher 1");
 
                         locationService = new LocationService(getApplicationContext());
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -507,7 +507,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "506, locationDispatcher 2");
+                            Log.i(TAG, "510, locationDispatcher 2");
 
                         locationService.stopListener();
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -537,7 +537,7 @@ public class WelcomeActivity
                 // Get address data
                 if (!adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "536, addressDispatcher 1");
+                        Log.i(TAG, "540, addressDispatcher 1");
 
                     adrServiceOn = true;
                     addrRequestService = new AddrRequestService();
@@ -550,7 +550,7 @@ public class WelcomeActivity
                 // Stop AddrRequestService
                 if (adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "549, addressDispatcher 2");
+                        Log.i(TAG, "553, addressDispatcher 2");
 
                     addrRequestService.releaseSoundA();
                     addrRequestService.stopTimerTask();
@@ -634,12 +634,12 @@ public class WelcomeActivity
         } else if (id == R.id.exportBasisMenu) {
             // Call exportBasisDb()
             if (storagePermGranted) {
-                exportBasisDb(2);
+                exportBasisDb(2); // 2: show message + long name
             } else {
                 PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
                         PermissionsStorageDialogFragment.class.getName());
                 if (storagePermGranted) {
-                    exportBasisDb(2);
+                    exportBasisDb(2); // 2: show message + long name
                 } else {
                     mesg = getString(R.string.storage_perm_denied);
                     Toast.makeText(this,
@@ -754,7 +754,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "753, onPause");
+            Log.i(TAG, "757, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -767,7 +767,7 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "766, onStop");
+            Log.i(TAG, "770, onStop");
 
         baseLayout.invalidate();
 
@@ -793,7 +793,7 @@ public class WelcomeActivity
             addressDispatcher(2);
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "792, onStop, app not visible, running services Loc, Snd, Adr: "
+                Log.i(TAG, "796, onStop, app not visible, running services Loc, Snd, Adr: "
                         + locServiceOn + ", " + sndServiceOn + ", " + adrServiceOn);
 
             finishAndRemoveTask();
@@ -805,7 +805,7 @@ public class WelcomeActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "804, onDestroy");
+            Log.i(TAG, "808, onDestroy");
 
         System.exit(0);
     }
@@ -943,7 +943,7 @@ public class WelcomeActivity
                                     headLanguage = headLanguage.substring(0, 2);
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "942, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "946, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -957,7 +957,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "956, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "960, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1194,6 +1194,8 @@ public class WelcomeActivity
     // Exports Basic DB to Documents/TourCount/tourcount0_name.db
     // hasNoName indicated initial creation of tourcount0.db if it does not exist
     private void exportBasisDb(int i) {
+        // i = 0: don't show a message, use local language and short name
+        // i = 2: show message and use data language and long name
         // inFile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
         String inPath = getApplicationContext().getFilesDir().getPath();
         inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db";
@@ -1212,9 +1214,10 @@ public class WelcomeActivity
 
         //noinspection ResultOfMethodCallIgnored
         path.mkdirs(); // just verify path, result ignored
+
         if (i == 0)
             outFile = new File(path, "/tourcount0_" + localLanguage + ".db");
-        else if (i >= 0) {
+        else if (i > 0) {
             dataLanguage = prefs.getString("pref_sel_data_lang", "");
             if (dataLanguage.isEmpty())
                 dataLanguage = "--";
@@ -1371,7 +1374,7 @@ public class WelcomeActivity
     // End of exportDb()
 
     /***********************************************************************************************
-     // Exports DB contents as Tour_DL_tourname_yyyyMMdd_HHmm_si.csv to
+     // Exports DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.csv to
      // Documents/TourCount/ with purged data set.
      // Spreadsheet programs can import this csv file with
      //   - Unicode UTF-8 filter,
@@ -1379,7 +1382,7 @@ public class WelcomeActivity
      //   - "" for text recognition.
      */
     private void exportDb2CSV() {
-        // outFile -> /storage/emulated/0/Documents/TourCount/Tour_DL_tourname_yyyyMMdd_HHmm_si.csv
+        // Public data directory for outFile: Documents/TourCount/
         File path;
         path = Environment.getExternalStorageDirectory();
         path = new File(path + "/Documents/TourCount");
@@ -1464,15 +1467,20 @@ public class WelcomeActivity
         String sectNotes;
 
         Head head;
-        String country, b_state, inspecName;
+
+        // Prepare metadata
+        String inspecName;  // Inspector's name
+        String country, b_state;
         String plz, city, place, locality;
         int spstate;
         String spstate0;
         double longi, lati, heigh, uncer;
+        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
+
+        // Prepare counts data
         int frst, sum = 0;
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
         String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
-        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
         // Check if we can write the media
         mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
@@ -2024,7 +2032,7 @@ public class WelcomeActivity
     // End of exportDb2CSV()
 
     /***********************************************************************************************
-     // Exports DB contents as Tour_DL_tourname_yyyyMMdd_HHmm_si.xlsx to
+     // Exports DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.xlsx to
      // Documents/TourCount/ with purged data set.
      // Spreadsheet programs can directly load this xlsx file
      */
@@ -2204,9 +2212,13 @@ public class WelcomeActivity
             ws.value(0,5, getString(R.string.inspector) + ": " + inspecName);
             ws.value(0,10, sortMode);
             ws.range(0,0,0,8).style().fillColor("CCCCCC").fontSize(12).bold().set();
+            ws.range(0,0,0,2).merge();
+            ws.range(0,5,0,8).merge();
+            ws.range(0,10,0,13).merge();
 
             // Row 1
             ws.value(1,10, getString(R.string.sort_time));
+            ws.range(1,10,1,13).merge();
 
             // Row 2: Set location headline
             ws.value(2,0, getString(R.string.country));
@@ -2515,7 +2527,7 @@ public class WelcomeActivity
             ws.style(10 + specIndex,0).horizontalAlignment("right").bold().set();
             ws.value(10 + specIndex,1, sumSpec);
             ws.style(10 + specIndex,1).horizontalAlignment("center").bold().set();
-            ws.value(10 + specIndex,3, getString(R.string.sum));
+            ws.value(10 + specIndex,3, getString(R.string.sum) + " ");
             ws.style(10 + specIndex,3).horizontalAlignment("right").bold().set();
             ws.value(10 + specIndex,4, summf);
             ws.value(10 + specIndex,5, summ);
@@ -2523,10 +2535,12 @@ public class WelcomeActivity
             ws.value(10 + specIndex,7, sump);
             ws.value(10 + specIndex,8, suml);
             ws.value(10 + specIndex,9, sume);
-            ws.range(10 + specIndex,3,10 + specIndex,8)
+            ws.range(10 + specIndex,4,10 + specIndex,9)
                     .style().horizontalAlignment("center").bold().set();
-            ws.value(10 + specIndex,10, getString(R.string.sum_total) + " " + sum);
-            ws.style(10 + specIndex,10).bold().set();
+            ws.value(10 + specIndex,10, getString(R.string.sum_total) + " ");
+            ws.style(10 + specIndex,10).horizontalAlignment("right").bold().set();
+            ws.value(10 + specIndex,11,  sum);
+            ws.style(10 + specIndex,11).horizontalAlignment("center").bold().set();
 
             if (summf == 0)
                 ws.style(10 + specIndex,4).fontColor("00FFFFFF").set(); // transparent

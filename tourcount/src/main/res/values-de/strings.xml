@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-06-18 -->
+     last edited on 2026-06-27 -->
 
 <resources>
 
@@ -44,7 +44,7 @@
     <string name="individuals">Individuen</string>
     <string name="missingEmail">Bitte unter Einstellungen eine gültige E-Mail-Adresse für zuverlässige Ortserkennung eingeben.</string>
     <string name="name_spec">Spezies-Name</string>
-    <string name="noCard">Kann nicht ins \'Documents\'-Verzeichnis schreiben!</string>
+    <string name="noCard">Kann nicht ins \'Documents/TourCount\'-Verzeichnis schreiben!</string>
     <string name="reset2basic">Die Datenbank wurde zurückgesetzt.</string>
     <string name="resetDBMenu">Reset Daten</string>
     <string name="resetFail">Die Datenbank konnte nicht zurückgesetzt werden!</string>

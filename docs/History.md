@@ -2,6 +2,13 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.8.0 (2026-06-28)
+- Exported Excel spreadsheet improved
+- Code improvements
+- Text corrections
+- Docs updated
+- Bugfix
+
 #### Version 3.7.9 (2026-06-23)
 - Export results into formatted Excel spreadsheet file (.xlsx)
 - Code improvements

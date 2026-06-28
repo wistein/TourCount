@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2026-06-18 -->
+     last edited on 2026-06-27 -->
 
 <resources>
 
@@ -59,7 +59,7 @@
     <string name="individuals">Individuals</string>
     <string name="missingEmail">Please enter a valid email address under Settings for reliable location detection.</string>
     <string name="name_spec">Species Name</string>
-    <string name="noCard">Cannot write to the \'Documents\' directory!</string>
+    <string name="noCard">Cannot write to the \'Documents/TourCount\' directory!</string>
     <string name="reset2basic">Your database has been resetted.</string>
     <string name="resetDBMenu">Reset Data</string>
     <string name="resetFail">Your database could not be resetted!</string>

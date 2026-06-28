@@ -73,6 +73,15 @@ _ subtitle
   .
   _
 
+$ 3.8.0
+  % Version 3.8.0
+  _ 28.06.2026
+  * Exportierte Excel-Tabelle verbessert
+  * Code-Verbesserungen
+  * Textkorrekturen
+  * Doku aktualisiert
+  * Bugfix
+
 $ 3.7.9
   % Version 3.7.9
   _ 23.06.2026
