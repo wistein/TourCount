@@ -5,7 +5,7 @@
 <html lang="de">
 
 <!-- TourCount Benutzeranleitung help_de.html --
-     Last edited on 2026-06-22
+     Last edited on 2026-07-02
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -142,25 +142,27 @@ Die Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen 
 Zwecks Vorbereitung einer neuen Tour können mittels <b>„Reset Daten“</b> die tourspezifischen Metadaten und alle Zähldaten gelöscht werden.<br>
 Alternativ können eine vorhandene Basis-DB, eine andere tourcount-DB oder eine Speziesliste importiert werden.
 <br><br>
+Danach wird allerdings die aktuelle Lokalität erst nach ca. 10 s erneut erkannt. Erst nach Erscheinen der Pop-Up-Meldung dazu können die Metadaten der Lokalität automatisch auf der Metadaten-Seite eingefügt werden. Bei einem zu schnellen Aufruf der Metadaten-Seite fehlen ansonsten die aktuellen Ortsdaten. Diese würden erst bei einem späteren Aufruf der Metadaten-Seite hinzugefügt.
+<br><br>
 TourCount arbeitet Android-spezifisch intern mit einer SQLite-Datenbank im App-eigenen, für den Anwender gesperrten Speicherbereich. Dadurch sind externe Anwenderdaten nur per Import für die App nutzbar und DB-Daten bzw. Ergebnisse nur per Export zur weiteren Verwendung durch den Anwender erreichbar.
 <br><br>
 Ab App-Version 3.7.4 werden die DB-Dateien mit einem Feld zur Erkennung der Datensprache für lokale Artnamen (Deutsch, Englisch, Französisch, Italienisch oder Spanisch) exportiert. Für eine früher erzeugte DB-Datei sollte nach deren Import zwecks korrekter Weiterverarbeitung per "Einstellungen" die korrekte Datensprache gewählt werden.
 <br><br>
-Mit <b>„Import Basis-DB“</b> kann eine vorhandene Basis-DB-Datei ausgewählt und eingelesen werden, die als Vorlage für eine neue Tour dient.<br>
+Mit <b>„Import Basis-DB“</b> kann eine vorhandene Basis-DB-Datei ausgewählt und eingelesen werden, die als Vorlage für eine neue Tour dient. Nach dem Import wird allerdings die aktuelle Lokalität erst nach ca. 10 s wieder erkannt.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der Dateiname muss dazu immer mit der exakten Zeichenfolge „tourcount0“ beginnen (z. B.: „tourcount0_de_Kottenforst.db“), sonst kann die Datei nicht als Basis-DB importiert werden.
 <br><br>
 Beim <b>Datenexport</b> wird der Tourname (falls in den Metadaten vorhanden) in den Dateinamen eingefügt. Dabei werden alle Zeichen entfernt, die den Dateinamen-Konventionen widersprechen.
 <br><br>
 Mit <b>„Export Basis-DB“</b> kann die interne DB als Basis-DB-Datei „tourcount0_ds_Tourname.db“, d. h. ohne begehungsspezifische Daten aber mit allgemeinen Metadaten und der aktuellen Speziesliste nach Documents/TourCount exportiert werden, z.B. wenn dauerhaft Änderungen an der Zählliste vorgenommen wurden, wie z.B. Arten wurden gelöscht oder neue hinzugefügt.
 <br><br>
-Mit <b>„Import DB“</b> kann eine entsprechend benannte TourCount-DB ausgewählt und in die App geladen werden.<br>
+Mit <b>„Import DB“</b> kann eine entsprechend benannte TourCount-DB ausgewählt und in die App geladen werden. Nach dem Import wird allerdings die aktuelle Lokalität erst nach ca. 10 s wieder erkannt.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der DB-Dateiname muss dazu immer mit der exakten Zeichenfolge „tourcount_“ beginnen (z. B.: „tourcount_de_Kottenforst_20250815.db“), ansonsten kann die Datei nicht als TourCount-DB importiert werden.
 <br><br>
 <b>„Export akt. DB“</b> schreibt eine Kopie der DB mit allen momentan enthaltenen Daten in die Datei „tourcount_ds_Tourname_JJJJMMTT_hhmm.db“ ins Verzeichnis Documents/TourCount. Falls in den Metadaten vorhanden, werden Datum und Zeitpunkt des Tourstarts in den Dateinamen eingefügt. Anderenfalls wird das aktuelle Datum verwendet. Der Tourname wird eingefügt, falls er unter Metadaten existiert und ggf. um Zeichen bereinigt, die den Dateinamen-Konventionen widersprechen.
 <br><br>
 Mit <b>„Import Speziesliste“</b> kann eine vorhandene Speziesliste ausgewählt und importiert werden. Beim Import bleiben die Metadaten erhalten, jedoch werden alle Zähldaten gelöscht. Falls die App TransektCount installiert ist, können die exportierten Spezieslisten wechselseitig importiert werden.<br>
 Ab App-Version 3.7.2 wurde die Struktur der Speziesliste um die Angabe der Datensprache ergänzt. Als Datensprache können Deutsch, Englisch, Französisch, Italienisch oder Spanisch genutzt werden. Soweit lokale Artnamen aufgefunden werden konnten, sind sie für die in der App vorhandenen Arten enthalten.<br>
-Beim Importieren einer Artenliste, die für oder mit älteren Versionen erstellt wurde, gibt es einen Haken. Damit alles wie erwartet funktioniert, müssen Sie die richtige Datensprache manuell in den Einstellungen festlegen.<br>
+Beim Importieren einer Artenliste, die für oder mit älteren Versionen erstellt wurde, gibt es einen Haken. Damit alles wie erwartet funktioniert, müssen Sie die richtige Datensprache manuell in den Einstellungen festlegen. Nach dem Import wird die aktuelle Lokalität erst nach ca. 10 s wieder erkannt.<br>
 <b><font color=#2C87FD>Merke:</font></b> Der Dateiname einer Speziesliste muss immer mit „species_“ beginnen, sonst kann die Datei nicht importiert werden.
 <br><br>
 Mit <b>„Export Speziesliste“</b> kann die aktuelle Speziesliste als CSV-Textdatei (CSV = Comma Separated Values) „species_ds_Tour_Tourname_JJJJMMTT_hhmmss.csv“ exportiert werden.

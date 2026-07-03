@@ -21,7 +21,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2026-05-26
+ * last edit on 2026-07-01
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -167,16 +167,16 @@ class TourCountApplication : Application() {
         var uncertainty = 0.0 // set by getAccuracy() in LocationService
 
         @JvmField
-        var sLocality = "" // set by getAddressL() in LocationService and getAddressC() in CountingActivity
+        var tLocality = "" // set by getAddressL() in LocationService and getAddressC() in CountingActivity
 
         @JvmField
         var adrServiceOn = false // controlled in WelcomeActivity
 
         @JvmField
-        var isFirstLoc = true // true for showing an info message for the 1. GPS lock
+        var isFirstLocality = true // true for showing an info message for the 1. GPS lock
 
         @JvmField
-        var isFirstLocality = true // true for showing an info message for the 1. GPS lock
+        var loopAddr = false // controls Looper for address messaging
 
         @JvmField
         var isFirstStart = true // true for showing a 'missing email' hint message once

@@ -2,11 +2,11 @@ package com.wmstein.tourcount;
 
 import static com.wmstein.tourcount.TourCountApplication.adrServiceOn;
 import static com.wmstein.tourcount.TourCountApplication.heightNN;
-import static com.wmstein.tourcount.TourCountApplication.isFirstLoc;
+import static com.wmstein.tourcount.TourCountApplication.isFirstLocality;
 import static com.wmstein.tourcount.TourCountApplication.isFirstStart;
 import static com.wmstein.tourcount.TourCountApplication.lat;
 import static com.wmstein.tourcount.TourCountApplication.lon;
-import static com.wmstein.tourcount.TourCountApplication.sLocality;
+import static com.wmstein.tourcount.TourCountApplication.tLocality;
 import static com.wmstein.tourcount.TourCountApplication.uncertainty;
 import static com.wmstein.tourcount.Utils.fromHtml;
 
@@ -98,7 +98,7 @@ import org.dhatim.fastexcel.Worksheet;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-06-28
+ * last edited on 2026-07-03
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -417,7 +417,7 @@ public class WelcomeActivity
         baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setBackground(tourCount.setBackgr());
 
-        // Set tour name as title
+        // Set tour name as title from DB table section
         section = sectionDataSource.getSection();
         tourName = section.name;
         try {
@@ -484,7 +484,7 @@ public class WelcomeActivity
 
     // Control location service
     // locationDispatcherMode:
-    //  0 = start location service just to get a fix as early as possible
+    //  1 = start location service just to get a fix as early as possible
     //  2 = end location service for WelcomeActivity
     private void locationDispatcher(int locationDispatcherMode) {
         if (fineLocationPermGranted) {
@@ -519,11 +519,10 @@ public class WelcomeActivity
         }
     }
 
-    // Get the location data and on isFirstLoc with Nominatim service
+    // Get the location data and store values in global variables
     @SuppressLint("DefaultLocale")
     public void getLoc() {
         if (locationService.canGetLocation()) {
-            // Store values in global variables
             locationService.getLongitude();
             locationService.getLatitude();
             locationService.getAltitude();
@@ -531,6 +530,7 @@ public class WelcomeActivity
         }
     }
 
+    // Control AddrRequestService
     private void addressDispatcher(int addrDispatcherMode) {
         switch (addrDispatcherMode) {
             case 1 -> {
@@ -869,6 +869,9 @@ public class WelcomeActivity
     /**********************************************************************************************/
     // Choose a tourcount db-file to load and set it to tourcount.db
     private void importDBFile() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "873, importDBFile");
+
         String fileExtension = ".db";
         String fileNameStart = "tourcount_";
         String fileHd = getString(R.string.fileHeadlineDB);
@@ -943,7 +946,7 @@ public class WelcomeActivity
                                     headLanguage = headLanguage.substring(0, 2);
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "946, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "949, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -953,11 +956,11 @@ public class WelcomeActivity
                                 editor.putBoolean("has_data_lang", hasDataLang); // controls data language setting
                                 editor.apply();
 
-                                // List tour name as title
+                                // Set tour name as title from DB table section
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "960, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "963, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1008,6 +1011,9 @@ public class WelcomeActivity
     /**********************************************************************************************/
     // Import species list (also from TransektCount file species_YYYY-MM-DD_hhmmss.csv)
     private void importSpeciesList() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "1015, importSpeciesList");
+
         // Select exported TransektCount species list file
         String fileExtension = ".csv";
         String fileNameStart = "species_";
@@ -1091,6 +1097,9 @@ public class WelcomeActivity
 
     // Clear DB for import of external species list
     private void clearDBforImport() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "1101, clearDBforImport");
+
         dbHelper = new DbHelper(this);
         database = dbHelper.getWritableDatabase();
 
@@ -1106,14 +1115,19 @@ public class WelcomeActivity
         lon = 0.0;
         heightNN = 0.0;
         uncertainty = 0.0;
-        sLocality = "";
-        isFirstLoc = true;
-        isFirstStart = true;
+        tLocality = "";
+        isFirstLocality = true;
 
         editor = prefs.edit();
         editor.putInt("item_Position", 0);
         editor.putInt("count_id", 1);
         editor.apply();
+
+        // Restart Location Service and try to read location
+        if (fineLocationPermGranted) {
+            // Start location service and get 1. location
+            locationDispatcher(1); // Start LocationService
+        }
     }
 
     // Read an exported species list and write items to table counts
@@ -2209,11 +2223,11 @@ public class WelcomeActivity
             // Start creating xlsx table
             // Row 0: Headline
             ws.value(0,0, getString(R.string.zList) + ": " + sectName);
-            ws.value(0,5, getString(R.string.inspector) + ": " + inspecName);
+            ws.value(0,4, getString(R.string.inspector) + ": " + inspecName);
             ws.value(0,10, sortMode);
             ws.range(0,0,0,8).style().fillColor("CCCCCC").fontSize(12).bold().set();
             ws.range(0,0,0,2).merge();
-            ws.range(0,5,0,8).merge();
+            ws.range(0,4,0,8).merge();
             ws.range(0,10,0,13).merge();
 
             // Row 1
@@ -2225,22 +2239,26 @@ public class WelcomeActivity
             ws.value(2,1, getString(R.string.bstate));
             ws.value(2,3, getString(R.string.plz));
             ws.value(2,4, getString(R.string.city));
-            ws.value(2,5, getString(R.string.place));
-            ws.value(2,6, getString(R.string.slocality));
-            ws.value(2,7, getString(R.string.zlNotes));
-            ws.range(2,1,2,2).style().merge().set();
-            ws.range(2,0,2,7).style().borderStyle(BorderSide.BOTTOM,"thin")
+            ws.value(2,6, getString(R.string.place));
+            ws.value(2,8, getString(R.string.slocality));
+            ws.range(2,0,2,13).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().set();
+            ws.range(2,1,2,2).merge();
+            ws.range(2,4,2,5).merge();
+            ws.range(2,6,2,7).merge();
+            ws.range(2,8,2,13).merge();
 
             // Row 3: Set location data line with data of 1. location
             ws.value(3,0, country);
             ws.value(3,1, b_state);
             ws.value(3,3, plz);
             ws.value(3,4, city);
-            ws.value(3,5, place);
-            ws.value(3,6, locality);
-            ws.value(3,7, sectNotes);
-            ws.range(3,1,3,2).style().merge().set();
+            ws.value(3,6, place);
+            ws.value(3,8, locality);
+            ws.range(3,1,3,2).merge();
+            ws.range(3,4,3,5).merge();
+            ws.range(3,6,3,7).merge();
+            ws.range(3,8,3,13).merge();
 
             // Row 5: Set environment headline
             ws.value(5,0, getString(R.string.date));        // date
@@ -2249,10 +2267,14 @@ public class WelcomeActivity
             ws.value(5,3, getString(R.string.temperature)); // temperature
             ws.value(5,4, getString(R.string.wind));        // wind
             ws.value(5,5, getString(R.string.clouds));      // clouds
+            ws.value(5,10, getString(R.string.zlNotes));
             ws.range(5,0,5,1).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().set();
             ws.range(5,2,5,5).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().horizontalAlignment("center").set();
+            ws.range(5,6,5,13).style().borderStyle(BorderSide.BOTTOM,"thin")
+                    .bold().set();
+            ws.range(5,10,5,13).merge();
 
             // Row 6: Write 1. line of environment data
             ws.value(6,0, date);
@@ -2261,8 +2283,10 @@ public class WelcomeActivity
             ws.value(6,3, String.valueOf(temps));
             ws.value(6,4, String.valueOf(winds));
             ws.value(6,5, String.valueOf(clouds));
+            ws.value(6,10, sectNotes);
             ws.style(6,1).horizontalAlignment("right").set();
             ws.range(6,2,6,5).style().horizontalAlignment("center").set();
+            ws.range(6,10,6,13).merge();
 
             // Row 7: Write 2. line of environment data
             ws.value(7,1, getString(R.string.endtm));
@@ -2957,6 +2981,9 @@ public class WelcomeActivity
     /**********************************************************************************************/
     // Clear all relevant DB values, reset to basic DB 
     private void resetToBasisDb() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "2985, resetToBasisDb");
+
         // Confirm dialogue before anything else takes place
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -2980,6 +3007,9 @@ public class WelcomeActivity
 
     // Clear DB and location values for basic DB
     private boolean clearDBValues() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "3011, clearDBValues");
+
         dbHelper = new DbHelper(this);
         database = dbHelper.getWritableDatabase();
         boolean r_ok = true;
@@ -3031,9 +3061,14 @@ public class WelcomeActivity
         lon = 0.0;
         heightNN = 0.0;
         uncertainty = 0.0;
-        sLocality = "";
-        isFirstLoc = true;
-        isFirstStart = true;
+        tLocality = "";
+        isFirstLocality = true;
+
+        // Restart Location Service and try to read location
+        if (fineLocationPermGranted) {
+            // Start location service and get 1. location
+            locationDispatcher(1); // Start LocationService
+        }
 
         return r_ok;
     }

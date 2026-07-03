@@ -1,6 +1,5 @@
 package com.wmstein.tourcount;
 
-import static com.wmstein.tourcount.TourCountApplication.sLocality;
 import static com.wmstein.tourcount.Utils.fromHtml;
 
 import android.annotation.SuppressLint;
@@ -45,7 +44,7 @@ import java.util.Objects;
  * EditMetaActivity collects, partly edits and shows metadata for the current tour
  * <p>
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-06-17
+ * last edit in Java on 2026-07-01
  */
 public class EditMetaActivity extends AppCompatActivity
 {
@@ -75,7 +74,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "78, onCreate");
+            Log.i(TAG, "77, onCreate");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -118,7 +117,7 @@ public class EditMetaActivity extends AppCompatActivity
                 @Override
                 public void handleOnBackPressed() {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "121, handleOnBackPressed");
+                        Log.i(TAG, "120, handleOnBackPressed");
                     finish();
                     remove();
                 }
@@ -143,7 +142,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "146, onResume");
+            Log.i(TAG, "145, onResume");
 
         // Setup data sources
         headDataSource.open();
@@ -182,7 +181,7 @@ public class EditMetaActivity extends AppCompatActivity
         emlw.setWidgetPlz2(section.plz);
         emlw.setWidgetCity2(section.city);
         emlw.setWidgetPlace2(section.place);
-        if (Objects.equals(emlw.getWidgetLocality2(), "")) emlw.setWidgetLocality2(sLocality);
+        emlw.setWidgetLocality2(section.st_locality);
         head_area.addView(emlw);
 
         // Display the editable metadata by EditMetaWidget
@@ -322,14 +321,14 @@ public class EditMetaActivity extends AppCompatActivity
         if (id == android.R.id.home) // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "325, MenuItem home");
+                Log.i(TAG, "324, MenuItem home");
             finish();
             return true;
         }
         else if (id == R.id.menuSaveExit)
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "332, MenuItem saveExit");
+                Log.i(TAG, "331, MenuItem saveExit");
             if (saveData())
                 finish();
             return true;
@@ -343,7 +342,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "346, onPause");
+            Log.i(TAG, "345, onPause");
 
         headDataSource.close();
         sectionDataSource.close();
@@ -365,7 +364,7 @@ public class EditMetaActivity extends AppCompatActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "368, onStop");
+            Log.i(TAG, "367, onStop");
 
         head_area = null;
     }
@@ -376,13 +375,13 @@ public class EditMetaActivity extends AppCompatActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "379, onDestroy");
+            Log.i(TAG, "378, onDestroy");
     }
 
     private boolean saveData()
     {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "385, saveData");
+            Log.i(TAG, "384, saveData");
 
         // Save head data
         head.observer = emtw.getWidgetOName2();
@@ -508,7 +507,7 @@ public class EditMetaActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // sdk 35
             return cs == null || cs.isEmpty();
         else
-            return cs == null || cs.length() == 0; // needed for older Android versions
+            return cs == null || cs.length() == 0; // needed for Android versions < sdk 35
     }
 
 }

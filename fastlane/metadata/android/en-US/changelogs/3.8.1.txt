@@ -1,0 +1,7 @@
+Version 3.8.1 (2026-07-02)
+- Exported Excel spreadsheet improved
+- Code improvements
+- User guide and Help amended
+- Docs updated
+- Bugfix for getting start locality only once after app start
+- Bugfix for getting location metadata after Reset or Import Data

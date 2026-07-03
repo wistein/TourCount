@@ -2,6 +2,14 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.8.1 (2026-07-02)
+- Exported Excel spreadsheet improved
+- Code improvements
+- User guide and Help amended
+- Docs updated
+- Bugfix for getting start locality only once after app start
+- Bugfix for getting location metadata after Reset or Import Data
+
 #### Version 3.8.0 (2026-06-28)
 - Exported Excel spreadsheet improved
 - Code improvements

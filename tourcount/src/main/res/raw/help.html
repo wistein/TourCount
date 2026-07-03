@@ -5,7 +5,7 @@
 <html lang="en">
 
 <!-- User instructions help.html --
-     Last edited on 2026-06-22
+     Last edited on 2026-07-02
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -136,11 +136,13 @@ For more info see<br>
 <br><br>
 For preparing a new tour you may use <b>"Reset Data"</b> to reset the tour-specific metadata and all count data. Alternatively you may import the Basic DB, another tourcount-DB or a species list.
 <br><br>
+However, after that, the current locality is not recognized again until about 10 seconds later, at which point it is set as the starting locality. Only after the corresponding pop-up message appears can the locality's metadata be automatically inserted on the metadata page. If the metadata page is accessed too quickly, the current location data will be missing. This data would only be added when the metadata page is accessed at a later time.
+<br><br>
 Android-specifically, TourCount stores the data in an internal SQlite DB in the app's own protected storage area that is not accessible by the user. Therefore, it is necessary to import/export data from/to files in a user accessible storage area.
 <br><br>
 Starting with app version 3.7.4, DB files are exported with a field for identifying the data language for local species names (German, English, French, Italian, and Spanish). For imported DB files created prior to this update, the correct data language should be selected via “Settings” to ensure proper processing.
 <br><br>
-With <b>"Import Basic DB"</b> you can select and import an existing Basic DB file that was exported as a template for a regional tour and begins with “tourcount0”.<br>
+With <b>"Import Basic DB"</b> you can select and import an existing Basic DB file that was exported as a template for a regional tour and begins with “tourcount0”. However, after the import, it takes about 10 seconds for the current locality to be recognized again.<br>
 <b><font color=#2C87FD>Note:</font></b> The file name must always begin with the exact character string “tourcount0” (e.g., “tourcount0_en_Kottenforest.db”), otherwise the file cannot be imported as a Basic DB.
 <br><br>
 When <b>exporting data</b>, the tour name (if it exists in the metadata) will be inserted into the name of the
@@ -149,14 +151,14 @@ exported file. Here, any characters that violate the filename conventions are re
 With <b>“Export Basic DB”</b>,  the internal DB (without walk-specific data but with general metadata and the
 current species list) can be exported as the Basic-DB file “tourcount0_dl_Tourname.db” into Documents/TourCount. This is reasonable if permanent changes have been made to the count list, such as adding new or removing species.
 <br><br>
-With <b>"Import DB"</b> any appropriately named TourCount DB can be selected and read into TourCount.<br>
+With <b>"Import DB"</b> any appropriately named TourCount DB can be selected and read into TourCount. However, after the import, it takes about 10 seconds for the current locality to be recognized again.<br>
 <b><font color=#2C87FD>Note:</font></b> The db file name must always start with “tourcount_” (e.g. tourcount_en_Kottenforest.db), otherwise the file cannot be imported).
 <br><br>
 <b>"Export Current DB"</b> writes a copy of the DB with all currently contained data as "tourcount_dl_tourname_YYYYMMDD_hhmm.db" into Documents/TourCount. If exist, the start date and time of the tour get inserted into the filename. Otherwise, the current date gets inserted. If a tour name exists, it is inserted into the filename but eventually gets cleaned up to remove characters that violate file naming conventions.
 <br><br>
 The function <b>“Import Species List”</b> lets you select and import an available species list. The metadata is retained during import, but all counting data is deleted. If the TransektCount app is installed, the exported species lists can be imported mutually. <br>
 Starting with app version 3.7.2, the species list has been updated to include the data language. The available data languages are German, English, French, Italian, and Spanish. When local species names were available, they have been included for the species listed in the app.<br>
-There is one drawback when importing a species list created for or with older versions. To work as expected you have to set the correct data language manually in the Settings.<br>
+There is one drawback when importing a species list created for or with older versions. To work as expected you have to set the correct data language manually in the Settings. However, after the import, it takes about 10 seconds for the current locality to be recognized again.<br>
 <b><font color=#2C87FD>Note:</font></b> The file name of a species list must always begin with "species_", otherwise the list cannot be imported.
 <br><br>
 With <b>"Export Species List"</b> the current species list can be exported as a CSV file (CSV = Comma Separated Values text file) "species_dl_Tour_tourname_YYYYMMDD_hhmmss.csv”. The tour name is also inserted here if it exists in the metadata, and any characters that violate the filename conventions are removed as necessary.<br>

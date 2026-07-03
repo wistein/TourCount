@@ -63,7 +63,7 @@
     <string name="sort_time">Individui ordinati in base alla data di registrazione</string>
     <string name="sum">Totali (interni):</string>
     <string name="sumSpec">Specie:</string>
-    <string name="sum_total">Totale (totale):</string>
+    <string name="sum_total">Totale:</string>
     <string name="title">Registro specifico delle specie di\n\nfarfalle nei tratti di transetto</string>
     <string name="viewHelpTitle">Aiuto</string>
     <string name="viewLicenseTitle">Licenze</string>

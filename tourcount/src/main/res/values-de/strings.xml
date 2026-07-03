@@ -63,7 +63,7 @@
     <string name="sort_time">Individuen sortiert nach Erfassungszeitpunkt</string>
     <string name="sum">Summen:</string>
     <string name="sumSpec">Anzahl Arten:</string>
-    <string name="sum_total">Gesamtsumme:</string>
+    <string name="sum_total">Insgesamt:</string>
     <string name="title">Artspezifische Erfassung von\n\nSchmetterlingen unterwegs</string>
     <string name="viewHelpTitle">Hilfe</string>
     <string name="viewLicenseTitle">Lizenzen</string>

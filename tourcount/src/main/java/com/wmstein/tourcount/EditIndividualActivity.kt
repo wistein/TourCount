@@ -22,7 +22,7 @@ import androidx.core.view.updateLayoutParams
 import com.wmstein.tourcount.TourCountApplication.Companion.heightNN
 import com.wmstein.tourcount.TourCountApplication.Companion.lat
 import com.wmstein.tourcount.TourCountApplication.Companion.lon
-import com.wmstein.tourcount.TourCountApplication.Companion.sLocality
+import com.wmstein.tourcount.TourCountApplication.Companion.tLocality
 import com.wmstein.tourcount.TourCountApplication.Companion.uncertainty
 import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.Count
@@ -38,7 +38,7 @@ import com.wmstein.tourcount.widgets.EditIndividualWidget
  * Created by wmstein on 2016-05-15,
  * last modification in Java an 2023-07-09,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-06-08
+ * last edited on 2026-07-01
  */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
@@ -185,7 +185,7 @@ class EditIndividualActivity : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     fun displayData() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "188, displayData: $sLocality")
+            Log.i(TAG, "188, displayData: $tLocality")
         }
 
         eiw = EditIndividualWidget(this, null)
@@ -250,7 +250,7 @@ class EditIndividualActivity : AppCompatActivity() {
         eiw!!.setWidgetLocality1(getString(R.string.locality) + ":")
 
         if (metaPref)
-            eiw!!.widgetLocality2 = sLocality
+            eiw!!.widgetLocality2 = tLocality
         else
             eiw!!.widgetLocality2 = "-"
         indivArea!!.addView(eiw)

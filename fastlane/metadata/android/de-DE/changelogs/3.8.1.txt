@@ -1,0 +1,7 @@
+Version 3.8.1 (02.07.2027)
+- Exportierte Excel-Tabelle verbessert
+- Code-Verbesserungen
+- Benutzeranleitung und Hilfe ergänzt
+- Doku aktualisiert
+- Bugfix für Erhalt der Start-Lokalität nur einmal nach App-Start
+- Bugfix für Erhalt der Orts-Metadaten nach Reset oder Import von Daten

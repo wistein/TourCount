@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 
-import com.wmstein.tourcount.R
 import com.wmstein.tourcount.database.Section
+import com.wmstein.tourcount.R
 
 import java.util.Objects
 
@@ -20,7 +20,7 @@ import kotlin.math.roundToInt
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-06-18
+ * last edited on 2026-07-03
  */
 class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
@@ -62,21 +62,21 @@ class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayo
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         Objects.requireNonNull(inflater).inflate(R.layout.widget_list_location, this, true)
-        widgetCoT = findViewById(R.id.widgetLCountryTitle) // Country
+        widgetCoT = findViewById(R.id.widgetLCountryTitle) // country
         widgetCoN = findViewById(R.id.widgetLCountryName)
-        widgetstate1 = findViewById(R.id.widgetState1)
+        widgetstate1 = findViewById(R.id.widgetState1)     // federal state
         widgetstate2 = findViewById(R.id.widgetState2)
-        widgetplz1 = findViewById(R.id.widgetLPlz1) // plz
+        widgetplz1 = findViewById(R.id.widgetLPlz1)        // plz
         widgetplz2 = findViewById(R.id.widgetLPlz2)
-        widgetcity1 = findViewById(R.id.widgetLCity1) // city
+        widgetcity1 = findViewById(R.id.widgetLCity1)      // city
         widgetcity2 = findViewById(R.id.widgetLCity2)
-        widgetplace1 = findViewById(R.id.widgetLPlace1) // place
+        widgetplace1 = findViewById(R.id.widgetLPlace1)    // place
         widgetplace2 = findViewById(R.id.widgetLPlace2)
-        widgetlocality1 = findViewById(R.id.widgetLoc1)
+        widgetlocality1 = findViewById(R.id.widgetLoc1)    // locality
         widgetlocality2 = findViewById(R.id.widgetLoc2)
-        widgetdlo1 = findViewById(R.id.widgetLdlo1) // lon
+        widgetdlo1 = findViewById(R.id.widgetLdlo1)        // longitude
         widgetdlo2 = findViewById(R.id.widgetLdlo2)
-        widgetdla1 = findViewById(R.id.widgetLdla1) // lat
+        widgetdla1 = findViewById(R.id.widgetLdla1)        // latitude
         widgetdla2 = findViewById(R.id.widgetLdla2)
         widgetuncert1 = findViewById(R.id.widgetLmuncert1) // uncert
         widgetuncert2 = findViewById(R.id.widgetLmuncert2)

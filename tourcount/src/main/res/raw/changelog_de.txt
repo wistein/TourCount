@@ -73,6 +73,16 @@ _ subtitle
   .
   _
 
+$ 3.8.1
+  % Version 3.8.1
+  _ 02.07.2026
+  * Exportierte Excel-Tabelle verbessert
+  * Code-Verbesserungen
+  * Benutzeranleitung und Hilfe ergänzt
+  * Doku aktualisiert
+  * Bugfix für Erhalt der Start-Lokalität nur einmal nach App-Start
+  * Bugfix für Erhalt der Orts-Metadaten nach Reset oder Import von Daten
+
 $ 3.8.0
   % Version 3.8.0
   _ 28.06.2026
