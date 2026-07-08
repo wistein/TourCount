@@ -1,12 +1,8 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.8.1:
+Neu in Version 3.8.2:
 - Exportierte Excel-Tabelle verbessert
 - Code-Verbesserungen
-- Benutzeranleitung und Hilfe ergänzt
-- Doku aktualisiert
-- Bugfix für Erhalt der Start-Lokalität nur einmal nach App-Start
-- Bugfix für Erhalt der Orts-Metadaten nach Reset oder Import von Daten
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

@@ -1,0 +1,3 @@
+Version 3.8.2 (08.07.2027)
+- Exportierte Excel-Tabelle verbessert
+- Code-Verbesserungen

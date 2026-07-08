@@ -98,7 +98,7 @@ import org.dhatim.fastexcel.Worksheet;
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-07-03
+ * last edited on 2026-07-08
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -2225,6 +2225,7 @@ public class WelcomeActivity
             ws.value(0,0, getString(R.string.zList) + ": " + sectName);
             ws.value(0,4, getString(R.string.inspector) + ": " + inspecName);
             ws.value(0,10, sortMode);
+            ws.style(0,10).horizontalAlignment("right").set();
             ws.range(0,0,0,8).style().fillColor("CCCCCC").fontSize(12).bold().set();
             ws.range(0,0,0,2).merge();
             ws.range(0,4,0,8).merge();
@@ -2232,6 +2233,7 @@ public class WelcomeActivity
 
             // Row 1
             ws.value(1,10, getString(R.string.sort_time));
+            ws.style(1,10).horizontalAlignment("right").set();
             ws.range(1,10,1,13).merge();
 
             // Row 2: Set location headline
