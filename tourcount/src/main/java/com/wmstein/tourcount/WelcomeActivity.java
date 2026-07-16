@@ -4,6 +4,7 @@ import static com.wmstein.tourcount.TourCountApplication.adrServiceOn;
 import static com.wmstein.tourcount.TourCountApplication.heightNN;
 import static com.wmstein.tourcount.TourCountApplication.isFirstLocality;
 import static com.wmstein.tourcount.TourCountApplication.isFirstStart;
+import static com.wmstein.tourcount.TourCountApplication.isStorPermReq;
 import static com.wmstein.tourcount.TourCountApplication.lat;
 import static com.wmstein.tourcount.TourCountApplication.lon;
 import static com.wmstein.tourcount.TourCountApplication.tLocality;
@@ -26,19 +27,25 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -56,6 +63,7 @@ import androidx.core.view.MenuCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wmstein.changelog.ChangeLog;
 import com.wmstein.filechooser.AdvFileChooser;
 import com.wmstein.tourcount.database.CountDataSource;
@@ -91,14 +99,14 @@ import org.dhatim.fastexcel.Worksheet;
  * WelcomeActivity provides the starting page with menu and buttons for
  * import/export/help/info methods and lets you call 
  * EditMetaActivity, CountingActivity and ShowResultsActivity.
- * It uses further LocationService and PermissionDialogFragment.
+ * It uses further LocationService and PermissionLocationDialogFragment.
  * <p>
- * Database handling is mainly done in WelcomeActivity as upgrade to current
- * DB version when importing an older DB file by importDBFile().
+ * Database handling is mainly controlled in WelcomeActivity as e.g. upgrade
+ * to current DB version when importing an older DB file by importDBFile().
  * <p>
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-07-08
+ * last edited on 2026-07-16
  */
 public class WelcomeActivity
         extends AppCompatActivity
@@ -119,6 +127,7 @@ public class WelcomeActivity
     private boolean sndServiceOn = false; // Initial sound service state (WelcomeActivity only)
     Intent sndIntent;
 
+    Intent stoIntent;
     private ChangeLog cl;
     public boolean doubleBackToExitPressedTwice = false;
 
@@ -163,7 +172,7 @@ public class WelcomeActivity
         super.onCreate(savedInstanceState);
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "166, onCreate");
+            Log.i(TAG, "175, onCreate");
 
         tourCount = (TourCountApplication) getApplication();
 
@@ -233,17 +242,12 @@ public class WelcomeActivity
         if (cl.firstRun())
             cl.getLogDialog().show();
 
-        // Check initial storage permission state and provide dialog
+        // Check initial storage permission state and if not granted provide dialog
         storagePermGranted = isStoragePermGranted();
         if (!storagePermGranted) // in self permission
         {
-            PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                    PermissionsStorageDialogFragment.class.getName());
-
-            mesg = getString(R.string.storage_perm_denied);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+            // Provide dialog for storage permission request
+            requestAllFilesAccessPermission(1);
 
             // Prepare to ask foreground location permission only once
             editor.putBoolean("has_asked_foreground", false);
@@ -324,6 +328,44 @@ public class WelcomeActivity
     }
     // End of onCreate()
 
+    // Check initial external storage permission and set 'storagePermGranted'
+    private Boolean isStoragePermGranted() {
+        // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
+        boolean storageGranted;
+        storageGranted = Environment.isExternalStorageManager();
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "338, ManageStoragePermission: " + storageGranted);
+        return storageGranted;
+    }
+
+    // Request All-Files-Access Permission
+    public void requestAllFilesAccessPermission(int m) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "345, requestAllFilesAccessPermission");
+
+        String mesg = "";
+        if (m == 1)
+            mesg = getString(R.string.dialog_storage_message1);
+        else if ( m == 2)
+            mesg = getString(R.string.dialog_storage_message2);
+
+        // Provide dialog for storage permission request
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_storage_title))
+                .setMessage(mesg)
+                .setPositiveButton(getString(R.string.ok_button), (dialogInterface, i) -> {
+                    stoIntent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    Uri packageUri = Uri.fromParts("package", getPackageName(), null);
+                    stoIntent.setData(packageUri);
+                    isStorPermReq = true;
+                    startActivity(stoIntent);
+                })
+                .setNegativeButton(getString(R.string.cancelButton), (dialogInterface, i) ->
+                                showSnackbarRed(getString(R.string.storage_perm_denied)))
+                .create().show();
+    }
+
     // Check for Navigation bar (1-, 2- or 3-button mode)
     public int getNavBarMode() {
         Resources resources = this.getResources();
@@ -383,7 +425,7 @@ public class WelcomeActivity
         super.onResume();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "386, onResume");
+            Log.i(TAG, "428, onResume");
 
         prefs = TourCountApplication.getPrefs();
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -398,7 +440,8 @@ public class WelcomeActivity
         if (dataLanguage.isEmpty())
             dataLanguage = "--";
 
-        storagePermGranted = isStoragePermGranted(); // set storagePermGranted from self permission
+        // Set storagePermGranted from self permission
+        storagePermGranted = isStoragePermGranted();
 
         if (isFirstStart && metaPref) {
             // This is to remind a missing email address for Nominatim Reverse Geocoder.
@@ -443,8 +486,8 @@ public class WelcomeActivity
             if (!hasAskedForegroundLocation) {
                 // Query foreground location permission first
                 // Ask necessary fine location permission with info in AlertDialog
-                PermissionsForegroundDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsForegroundDialogFragment.class.getName());
+                PermissionsLocationDialogFragment.newInstance().show(getSupportFragmentManager(),
+                        PermissionsLocationDialogFragment.class.getName());
 
                 editor.putBoolean("has_asked_foreground", true);
                 editor.commit();
@@ -455,7 +498,7 @@ public class WelcomeActivity
         isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "458, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG, "501, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
@@ -464,17 +507,6 @@ public class WelcomeActivity
         }
     }
     // End of onResume()
-
-    // Check initial external storage permission and set 'storagePermGranted'
-    private Boolean isStoragePermGranted() {
-        boolean storageGranted;
-        // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
-        storageGranted = Environment.isExternalStorageManager();
-
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "475, ManageStoragePermission: " + storagePermGranted);
-        return storageGranted;
-    }
 
     // Check initial fine location permission
     private void isFineLocationPermGranted() {
@@ -493,7 +525,7 @@ public class WelcomeActivity
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "496, locationDispatcher 1");
+                            Log.i(TAG, "528, locationDispatcher 1");
 
                         locationService = new LocationService(getApplicationContext());
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -507,7 +539,7 @@ public class WelcomeActivity
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "510, locationDispatcher 2");
+                            Log.i(TAG, "542, locationDispatcher 2");
 
                         locationService.stopListener();
                         locIntent = new Intent(getApplicationContext(), LocationService.class);
@@ -537,7 +569,7 @@ public class WelcomeActivity
                 // Get address data
                 if (!adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "540, addressDispatcher 1");
+                        Log.i(TAG, "572, addressDispatcher 1");
 
                     adrServiceOn = true;
                     addrRequestService = new AddrRequestService();
@@ -550,7 +582,7 @@ public class WelcomeActivity
                 // Stop AddrRequestService
                 if (adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "553, addressDispatcher 2");
+                        Log.i(TAG, "585, addressDispatcher 2");
 
                     addrRequestService.releaseSoundA();
                     addrRequestService.stopTimerTask();
@@ -570,6 +602,7 @@ public class WelcomeActivity
         return true;
     }
 
+    // Handle clicks on the action bar and its menu items here
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -580,123 +613,103 @@ public class WelcomeActivity
             startActivity(new Intent(this, SettingsActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
-        } else if (id == R.id.exportMenu) {
-            // Call exportDb()
-            if (storagePermGranted) {
-                exportDb();
-            } else {
-                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsStorageDialogFragment.class.getName());
-                if (storagePermGranted) {
-                    exportDb();
-                } else {
-                    mesg = getString(R.string.storage_perm_denied);
-                    Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-            return true;
-        } else if (id == R.id.exportXLSXMenu) {
-            // Call exportDb2XLSX()
-            if (storagePermGranted) {
-                exportDb2XLSX();
-            } else {
-                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsStorageDialogFragment.class.getName());
-                if (storagePermGranted) {
-                    exportDb2XLSX();
-                } else {
-                    mesg = getString(R.string.storage_perm_denied);
-                    Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-            return true;
-        } else if (id == R.id.exportCSVMenu) {
-            // Call exportDb2CSV()
-            if (storagePermGranted) {
-                exportDb2CSV();
-            } else {
-                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsStorageDialogFragment.class.getName());
-                if (storagePermGranted) {
-                    exportDb2CSV();
-                } else {
-                    mesg = getString(R.string.storage_perm_denied);
-                    Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-            return true;
+
         } else if (id == R.id.exportBasisMenu) {
             // Call exportBasisDb()
             if (storagePermGranted) {
                 exportBasisDb(2); // 2: show message + long name
             } else {
-                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsStorageDialogFragment.class.getName());
-                if (storagePermGranted) {
-                    exportBasisDb(2); // 2: show message + long name
-                } else {
-                    mesg = getString(R.string.storage_perm_denied);
-                    Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
-                }
+                requestAllFilesAccessPermission(2);
             }
             return true;
+
+        } else if (id == R.id.exportMenu) {
+            // Call exportDb()
+            if (storagePermGranted) {
+                exportDb();
+            } else {
+                requestAllFilesAccessPermission(2);
+            }
+            return true;
+
+        } else if (id == R.id.exportXLSXMenu) {
+            // Call exportDb2XLSX()
+            if (storagePermGranted) {
+                exportDb2XLSX();
+            } else {
+                requestAllFilesAccessPermission(2);
+            }
+            return true;
+
+        } else if (id == R.id.exportCSVMenu) {
+            // Call exportDb2CSV()
+            if (storagePermGranted) {
+                exportDb2CSV();
+            } else {
+                requestAllFilesAccessPermission(2);
+            }
+            return true;
+
         } else if (id == R.id.exportSpeciesListMenu) {
             // Call exportSpeciesList()
             if (storagePermGranted) {
                 exportSpeciesList();
             } else {
-                PermissionsStorageDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsStorageDialogFragment.class.getName());
-                if (storagePermGranted) {
-                    exportSpeciesList();
-                } else {
-                    mesg = getString(R.string.storage_perm_denied);
-                    Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
-                }
+                requestAllFilesAccessPermission(2);
             }
             return true;
+
         } else if (id == R.id.importBasisMenu) {
             // Call importBasisDb()
-            importBasisDb();
+            if (storagePermGranted) {
+                importBasisDb();
+            } else {
+                requestAllFilesAccessPermission(2);
+            }
             return true;
+
         } else if (id == R.id.importFileMenu) {
             // Call  importDBFile()
-            importDBFile();
+            if (storagePermGranted) {
+                importDBFile();
+            } else {
+                requestAllFilesAccessPermission(2);
+            }
             return true;
+
+        } else if (id == R.id.importSpeciesListMenu) {
+            // Call importSpeciesList()
+            if (storagePermGranted) {
+                importSpeciesList();
+            } else {
+                requestAllFilesAccessPermission(2);
+            }
+            return true;
+
         } else if (id == R.id.resetDBMenu) {
             // Call resetToBasisDb()
             resetToBasisDb();
             return true;
-        } else if (id == R.id.importSpeciesListMenu) {
-            // Call importSpeciesList()
-            importSpeciesList();
-            return true;
+
         } else if (id == R.id.viewHelp) {
             // Call ShowTextDialog with help text
             intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
             intent.putExtra("dialog", "help");
             startActivity(intent);
             return true;
+
         } else if (id == R.id.changeLog) {
             // Call ChangeLog
             cl.getFullLogDialog().show();
             return true;
+
         } else if (id == R.id.viewLicense) {
             // Call ShowTextDialog with license text
             intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
             intent.putExtra("dialog", "license");
             startActivity(intent);
             return true;
+
         } else if (id == R.id.editMeta) {
             // Call EditMetaActivity
             intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
@@ -704,11 +717,13 @@ public class WelcomeActivity
             mHandler.postDelayed(() ->
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
             return true;
+
         } else if (id == R.id.startCounting) {
             // Call CountingActivity
             intent = new Intent(WelcomeActivity.this, CountingActivity.class);
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
+
         } else if (id == R.id.showResults) {
             // Call ShowResultsActivity
             mesg = getString(R.string.wait);
@@ -732,6 +747,7 @@ public class WelcomeActivity
         outPref = prefs.getString("pref_sort_output", "names");
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
+        metaPref = prefs.getBoolean("pref_metadata", false);
 
         // Set sound service when changed in settings
         if (!buttonSoundPref && sndServiceOn) {
@@ -744,7 +760,7 @@ public class WelcomeActivity
             sndServiceOn = true;
         }
 
-        if (!alertSoundPref && fineLocationPermGranted && locServiceOn) {
+        if (!alertSoundPref && fineLocationPermGranted && adrServiceOn) {
             addrRequestService.stopSoundA();
         }
     }
@@ -754,7 +770,7 @@ public class WelcomeActivity
         super.onPause();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "757, onPause");
+            Log.i(TAG, "773, onPause");
 
         countDataSource.close();
         sectionDataSource.close();
@@ -767,13 +783,13 @@ public class WelcomeActivity
         super.onStop();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "770, onStop");
+            Log.i(TAG, "786, onStop");
 
         baseLayout.invalidate();
 
         // Stop Services when app should finish
         if (!TCLifecycleHandler.isApplicationVisible()) {
-            if (locServiceOn) {
+            if (adrServiceOn) {
                 addrRequestService.releaseSoundA();
             }
 
@@ -793,7 +809,7 @@ public class WelcomeActivity
             addressDispatcher(2);
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "796, onStop, app not visible, running services Loc, Snd, Adr: "
+                Log.i(TAG, "812, onStop, app not visible, running services Loc, Snd, Adr: "
                         + locServiceOn + ", " + sndServiceOn + ", " + adrServiceOn);
 
             finishAndRemoveTask();
@@ -805,7 +821,7 @@ public class WelcomeActivity
         super.onDestroy();
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "808, onDestroy");
+            Log.i(TAG, "824, onDestroy");
 
         System.exit(0);
     }
@@ -827,7 +843,6 @@ public class WelcomeActivity
 
     // Start ShowResultsActivity (by button)
     public void showResults(View view) {
-        // a Snackbar here comes incomplete
         mesg = getString(R.string.wait);
         Toast.makeText(this,
                 fromHtml("<font color='blue'>" + mesg + "</font>"),
@@ -870,7 +885,7 @@ public class WelcomeActivity
     // Choose a tourcount db-file to load and set it to tourcount.db
     private void importDBFile() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "873, importDBFile");
+            Log.i(TAG, "888, importDBFile");
 
         String fileExtension = ".db";
         String fileNameStart = "tourcount_";
@@ -940,13 +955,13 @@ public class WelcomeActivity
                                 headDataSource.close();
                                 boolean hasDataLang = true;
 
-                                if (Objects.equals(headLanguage, "") || headLanguage == null)
+                                if (Objects.equals(headLanguage, ""))
                                     hasDataLang = false;
                                 else
                                     headLanguage = headLanguage.substring(0, 2);
 
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "949, ImportFile, headLanguage: " + headLanguage);
+                                    Log.i(TAG, "964, ImportFile, headLanguage: " + headLanguage);
 
                                 // Save values for initial count-id and itemposition
                                 editor = prefs.edit();
@@ -960,7 +975,7 @@ public class WelcomeActivity
                                 section = sectionDataSource.getSection();
                                 tourName = section.name;
                                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "963, ImportFile, Tourname: " + tourName);
+                                    Log.i(TAG, "978, ImportFile, Tourname: " + tourName);
 
                                 Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
 
@@ -1012,7 +1027,7 @@ public class WelcomeActivity
     // Import species list (also from TransektCount file species_YYYY-MM-DD_hhmmss.csv)
     private void importSpeciesList() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1015, importSpeciesList");
+            Log.i(TAG, "1030, importSpeciesList");
 
         // Select exported TransektCount species list file
         String fileExtension = ".csv";
@@ -1098,7 +1113,7 @@ public class WelcomeActivity
     // Clear DB for import of external species list
     private void clearDBforImport() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1101, clearDBforImport");
+            Log.i(TAG, "1116, clearDBforImport");
 
         dbHelper = new DbHelper(this);
         database = dbHelper.getWritableDatabase();
@@ -1300,11 +1315,6 @@ public class WelcomeActivity
         date = section.date;
         start_tm = section.start_tm;
 
-        if (date == null) // 'date' field could be null in section table
-            date = "";
-        if (start_tm == null) // 'start_tm' field could be null in section table
-            start_tm = "";
-
         boolean engl = false;
         boolean hasDate = true;
         String dbDate, dbTime;
@@ -1415,11 +1425,6 @@ public class WelcomeActivity
         date = section.date;
         start_tm = section.start_tm;
         end_tm = section.end_tm;
-
-        if (date == null) // 'date' field could be null in section table
-            date = "";
-        if (start_tm == null) // 'start_tm' field could be null in section table
-            start_tm = "";
 
         boolean engl = false;
         boolean hasDate = true;
@@ -2048,7 +2053,7 @@ public class WelcomeActivity
     /***********************************************************************************************
      // Exports DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.xlsx to
      // Documents/TourCount/ with purged data set.
-     // Spreadsheet programs can directly load this xlsx file
+     // Spreadsheet programs can directly load this .xlsx file
      */
     private void exportDb2XLSX() {
         mesg = getString(R.string.saveXLSX);
@@ -2056,7 +2061,7 @@ public class WelcomeActivity
                 fromHtml("<font color='blue'>" + mesg + "</font>"),
                 Toast.LENGTH_SHORT).show();
 
-        // Set environment data
+        // Get environment data from DB
         String date, start_tm, end_tm;
         int temps, winds, clouds, tempe, winde, cloude;
 
@@ -2071,15 +2076,10 @@ public class WelcomeActivity
         start_tm = section.start_tm;
         end_tm = section.end_tm;
 
-        if (date == null) // 'date' field could be null in section table
-            date = "";
-        if (start_tm == null) // 'start_tm' field could be null in section table
-            start_tm = "";
-
         boolean engl = false;
         boolean hasDate = true;
-        String csvDate, csvTime;
-        String csvDateEU, csvDateEN;
+        String xslxDate, xslxTime;
+        String xslxDateEU, xslxDateEN;
 
         // Get year from date
         if (!Objects.equals(date, "")) {
@@ -2087,27 +2087,27 @@ public class WelcomeActivity
             if (Objects.equals(date.substring(4, 5), "-"))
                 engl = true;
             // Create date for filename as YYYYMMDD from any format
-            csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
-            csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+            xslxDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
+            xslxDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
         } else {
             hasDate = false;
-            csvDateEN = "";
-            csvDateEU = "";
+            xslxDateEN = "";
+            xslxDateEU = "";
         }
 
         if (engl) {
-            csvDate = csvDateEN;
+            xslxDate = xslxDateEN;
         } else {
-            csvDate = csvDateEU;
+            xslxDate = xslxDateEU;
         }
 
         if (!Objects.equals(start_tm, "")) {
-            csvTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
+            xslxTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
 
             if (hasDate)
-                csvDate = csvDate + "_" + csvTime; // yyyymmdd_hhmm
+                xslxDate = xslxDate + "_" + xslxTime; // yyyymmdd_hhmm
         } else
-            csvDate = ""; // has only a value when both date and start time are given
+            xslxDate = ""; // has only a value when both date and start time are given
 
         // outFile -> /storage/emulated/0/Documents/TourCount/Tour_DL_tourname_yyyyMMdd_HHmm_si.xlsx
         File path;
@@ -2119,23 +2119,24 @@ public class WelcomeActivity
 
         String sortIdent;
         if (outPref.equals("names")) {
-            sortIdent = "n";
+            sortIdent = "n"; // species name
         } else {
-            sortIdent = "c";
+            sortIdent = "c"; // species code
         }
 
         dataLanguage = prefs.getString("pref_sel_data_lang", "");
         if (dataLanguage.isEmpty())
             dataLanguage = "--";
 
-        if (Objects.equals(tourNameDir, "") && Objects.equals(csvDate, ""))
+        // Create xlsx-filename
+        if (Objects.equals(tourNameDir, "") && Objects.equals(xslxDate, ""))
             outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
         else if (Objects.equals(tourNameDir, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + csvDate + "_" + sortIdent + ".xlsx");
-        else if (Objects.equals(csvDate, ""))
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + xslxDate + "_" + sortIdent + ".xlsx");
+        else if (Objects.equals(xslxDate, ""))
             outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
         else
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + csvDate + "_" + sortIdent + ".xlsx");
+            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + xslxDate + "_" + sortIdent + ".xlsx");
 
         FileOutputStream outputStream;
         try {
@@ -2157,11 +2158,12 @@ public class WelcomeActivity
         int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
         double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
 
-        // Prepare the fastexcel sheet
+        // Prepare the fastexcel Workbook
         Workbook wb = new Workbook(outputStream, "TourCount", "1.0");
         wb.properties().setTitle(getString(R.string.results)); //
         wb.setGlobalDefaultFont("Arial", 11);
 
+        // Prepare the fastexcel Worksheet
         Worksheet ws = wb.newWorksheet(getString(R.string.results));
         ws.paperSize(PaperSize.A4_PAPER);
         ws.pageOrientation("landscape");
@@ -2181,6 +2183,9 @@ public class WelcomeActivity
                     fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
                     Toast.LENGTH_LONG).show();
         } else {
+            // ***********************************************
+            // Export the purged count table to the .xlsx-file
+
             // Get sorting mode of species list
             String sortMode;
             if (outPref.equals("names")) {
@@ -2188,9 +2193,6 @@ public class WelcomeActivity
             } else {
                 sortMode = getString(R.string.sort_codes);
             }
-
-            // *************************************
-            // Export the purged count table to xlsx
 
             // Consult Section on Head tables for head and meta info
             section = sectionDataSource.getSection();
@@ -2314,7 +2316,7 @@ public class WelcomeActivity
             ws.value(9,9, getString(R.string.cntse));
             ws.value(9,10, getString(R.string.bema));      // notes
 
-            // Set styles for headline
+            // Set styles for counts table headline
             ws.range(9,1,9,2).merge();
             ws.range(9,0,9,2).style().borderStyle(BorderSide.BOTTOM,"thin")
                     .bold().set();
@@ -2332,11 +2334,11 @@ public class WelcomeActivity
             dbHelper = new DbHelper(this);
             database = dbHelper.getWritableDatabase();
 
-            Cursor curCSVCnt; // Cursor for Counts table
+            Cursor curXLSXCnt; // Cursor for Counts table
 
             // Sort mode species list
             if (outPref.equals("names")) {
-                curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                curXLSXCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
                         + " WHERE " + " ("
                         + DbHelper.C_NOTES + " = '0' or "
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
@@ -2344,7 +2346,7 @@ public class WelcomeActivity
                         + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
                         + " order by " + DbHelper.C_NAME, null, null);
             } else {
-                curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
+                curXLSXCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
                         + " WHERE " + " ("
                         + DbHelper.C_NOTES + " = '0' or "
                         + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
@@ -2373,68 +2375,68 @@ public class WelcomeActivity
             String slct; // Recording time to sort individuals
 
             // Prepare species and individuals data
-            Cursor curCSVInd;                       // Cursor for Individuals table
+            Cursor curXLSXInd;                       // Cursor for Individuals table
             int specIndex = 0;
-            while (curCSVCnt.moveToNext()) {
-                spname = curCSVCnt.getString(7); // species name from count table
-                spcode = curCSVCnt.getString(8); // species code from count table
+            while (curXLSXCnt.moveToNext()) {
+                spname = curXLSXCnt.getString(7); // species name from count table
+                spcode = curXLSXCnt.getString(8); // species code from count table
                 slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
                         + DbHelper.I_NAME + " = ? AND "
                         + DbHelper.I_SEX + " = ? AND "
                         + DbHelper.I_STADIUM + " = ?";
 
                 // Select male
-                curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1});
-                while (curCSVInd.moveToNext()) {
-                    cnts = curCSVInd.getInt(14);
+                curXLSXInd = database.rawQuery(slct, new String[]{spname, male, stadium1});
+                while (curXLSXInd.moveToNext()) {
+                    cnts = curXLSXInd.getInt(14);
                     cntsm = cntsm + cnts;
                 }
-                curCSVInd.close();
+                curXLSXInd.close();
 
                 // Select female
-                curCSVInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1});
-                while (curCSVInd.moveToNext()) {
-                    cnts = curCSVInd.getInt(14);
+                curXLSXInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1});
+                while (curXLSXInd.moveToNext()) {
+                    cnts = curXLSXInd.getInt(14);
                     cntsf = cntsf + cnts;
                 }
-                curCSVInd.close();
+                curXLSXInd.close();
 
                 String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
                         + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
 
                 // Select pupa
-                curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2});
-                while (curCSVInd.moveToNext()) {
-                    cnts = curCSVInd.getInt(14);
+                curXLSXInd = database.rawQuery(slct1, new String[]{spname, stadium2});
+                while (curXLSXInd.moveToNext()) {
+                    cnts = curXLSXInd.getInt(14);
                     cntsp = cntsp + cnts;
                 }
-                curCSVInd.close();
+                curXLSXInd.close();
 
                 // Select caterpillar
-                curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
-                while (curCSVInd.moveToNext()) {
-                    cnts = curCSVInd.getInt(14);
+                curXLSXInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
+                while (curXLSXInd.moveToNext()) {
+                    cnts = curXLSXInd.getInt(14);
                     cntsl = cntsl + cnts;
                 }
-                curCSVInd.close();
+                curXLSXInd.close();
 
                 // Select egg
-                curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
-                while (curCSVInd.moveToNext()) {
-                    cnts = curCSVInd.getInt(14);
+                curXLSXInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
+                while (curXLSXInd.moveToNext()) {
+                    cnts = curXLSXInd.getInt(14);
                     cntse = cntse + cnts;
                 }
-                curCSVInd.close();
+                curXLSXInd.close();
 
-                cntsmf = curCSVCnt.getInt(1);
-                cntsm = curCSVCnt.getInt(2);
-                cntsf = curCSVCnt.getInt(3);
-                cntsp = curCSVCnt.getInt(4);
-                cntsl = curCSVCnt.getInt(5);
-                cntse = curCSVCnt.getInt(6);
+                cntsmf = curXLSXCnt.getInt(1);
+                cntsm = curXLSXCnt.getInt(2);
+                cntsf = curXLSXCnt.getInt(3);
+                cntsp = curXLSXCnt.getInt(4);
+                cntsl = curXLSXCnt.getInt(5);
+                cntse = curXLSXCnt.getInt(6);
 
                 String sp_notes;   // species notes
-                sp_notes = curCSVCnt.getString(9);
+                sp_notes = curXLSXCnt.getString(9);
                 if (sp_notes == null)
                     sp_notes = "";
 
@@ -2443,7 +2445,7 @@ public class WelcomeActivity
                 // Species table entry with counts,
                 // Row 10 (+ index of species), alternating gray line background
                 ws.value(10 + specIndex,0, spname);                     // species name
-                ws.value(10 + specIndex,1, curCSVCnt.getString(10)); // local name
+                ws.value(10 + specIndex,1, curXLSXCnt.getString(10)); // local name
                 ws.value(10 + specIndex,3, spcode);                     // species code
                 ws.value(10 + specIndex,4, cntsmf);                     // count ♂|♀
                 ws.value(10 + specIndex,5, cntsm);                      // count ♂
@@ -2542,7 +2544,7 @@ public class WelcomeActivity
                 cntse = 0;
                 specIndex++;
             }
-            curCSVCnt.close();
+            curXLSXCnt.close();
             // End of Species table
 
             int sumSpec = countDataSource.getDiffSpec(); // get number of different species
@@ -2616,31 +2618,31 @@ public class WelcomeActivity
             // Cells 0 + 1 bottom line and bold
             ws.range(12 + specIndex,0,12 + specIndex,2).style()
                     .borderStyle(BorderSide.BOTTOM,"thin").bold().set();
-            // Range 3 - 12 bottom line, center and bold
+            // Cells 3 - 12 bottom line, center and bold
             ws.range(12 + specIndex,3,12 + specIndex,12).style().borderStyle(BorderSide
                     .BOTTOM,"thin").bold().horizontalAlignment("center").set();
             // Cell 13 bottom line and bold
             ws.style(12 + specIndex,13).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
 
             // Build the sorted individuals array
-            curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
+            curXLSXInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
                             + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP,
                     null, null);
 
             String lngi, latit;
             frst = 0;
             int indIndex = specIndex;
-            while (curCSVInd.moveToNext()) {
-                longi = curCSVInd.getDouble(4);
-                lati = curCSVInd.getDouble(3);
-                uncer = Math.rint(curCSVInd.getDouble(6));
-                heigh = Math.rint(curCSVInd.getDouble(5));
-                spstate = curCSVInd.getInt(12);
+            while (curXLSXInd.moveToNext()) {
+                longi = curXLSXInd.getDouble(4);
+                lati = curXLSXInd.getDouble(3);
+                uncer = Math.rint(curXLSXInd.getDouble(6));
+                heigh = Math.rint(curXLSXInd.getDouble(5));
+                spstate = curXLSXInd.getInt(12);
                 if (spstate == 0)
                     spstate0 = "-";
                 else
                     spstate0 = Integer.toString(spstate);
-                cnts = curCSVInd.getInt(14);
+                cnts = curXLSXInd.getInt(14);
 
                 try {
                     lngi = String.valueOf(longi).substring(0, 8); // longitude
@@ -2654,7 +2656,7 @@ public class WelcomeActivity
                     latit = String.valueOf(lati);
                 }
 
-                String iNotes = curCSVInd.getString(13);
+                String iNotes = curXLSXInd.getString(13);
                 if (iNotes == null)
                     iNotes = "";
 
@@ -2662,43 +2664,43 @@ public class WelcomeActivity
 
                 // Individuals table entries
                 if (even) {
-                    ws.value(13 + indIndex,0, curCSVInd.getString(2));                // species name
-                    ws.value(13 + indIndex,1, curCSVInd.getString(9));                // locality
+                    ws.value(13 + indIndex,0, curXLSXInd.getString(2));               // species name
+                    ws.value(13 + indIndex,1, curXLSXInd.getString(9));               // locality
                     ws.value(13 + indIndex,3, cnts);                                    // indiv. counts
                     ws.value(13 + indIndex,4, lngi);                                    // longitude
                     ws.value(13 + indIndex,5, latit);                                   // latitude
                     ws.value(13 + indIndex,6, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
                     ws.value(13 + indIndex,7, String.valueOf(Math.round(heigh)));       // height
-                    ws.value(13 + indIndex,8, curCSVInd.getString(7));               // date
-                    ws.value(13 + indIndex,9, curCSVInd.getString(8));               // time
-                    ws.value(13 + indIndex,10, curCSVInd.getString(10));              // sexus
-                    ws.value(13 + indIndex,11, curCSVInd.getString(11));             // phase
+                    ws.value(13 + indIndex,8, curXLSXInd.getString(7));               // date
+                    ws.value(13 + indIndex,9, curXLSXInd.getString(8));               // time
+                    ws.value(13 + indIndex,10, curXLSXInd.getString(10));             // sexus
+                    ws.value(13 + indIndex,11, curXLSXInd.getString(11));             // phase
                     ws.value(13 + indIndex,12, spstate0);                               // status
                     ws.value(13 + indIndex,13, iNotes);                                 // indiv. notes
                     // Merge cells 1 + 2
                     ws.range(13 + indIndex,1, 13 + indIndex,2).style().merge().set();
-                    // Range cell 3 - 12 center
+                    // Cells 3 - 12 center
                     ws.range(13 + indIndex,3,13 + indIndex,12)
                             .style().horizontalAlignment("center").set();
                 } else {
-                    ws.value(13 + indIndex,0, curCSVInd.getString(2));                // species name
-                    ws.value(13 + indIndex,1, curCSVInd.getString(9));                // locality
+                    ws.value(13 + indIndex,0, curXLSXInd.getString(2));               // species name
+                    ws.value(13 + indIndex,1, curXLSXInd.getString(9));               // locality
                     ws.value(13 + indIndex,3, cnts);                                    // indiv. counts
                     ws.value(13 + indIndex,4, lngi);                                    // longitude
                     ws.value(13 + indIndex,5, latit);                                   // latitude
                     ws.value(13 + indIndex,6, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
                     ws.value(13 + indIndex,7, String.valueOf(Math.round(heigh)));       // height
-                    ws.value(13 + indIndex,8, curCSVInd.getString(7));               // date
-                    ws.value(13 + indIndex,9, curCSVInd.getString(8));               // time
-                    ws.value(13 + indIndex,10, curCSVInd.getString(10));              // sexus
-                    ws.value(13 + indIndex,11, curCSVInd.getString(11));             // phase
+                    ws.value(13 + indIndex,8, curXLSXInd.getString(7));               // date
+                    ws.value(13 + indIndex,9, curXLSXInd.getString(8));               // time
+                    ws.value(13 + indIndex,10, curXLSXInd.getString(10));             // sexus
+                    ws.value(13 + indIndex,11, curXLSXInd.getString(11));             // phase
                     ws.value(13 + indIndex,12, spstate0);                               // status
                     ws.value(13 + indIndex,13, iNotes);                                 // indiv. notes
                     // Merge cells 1 + 2
                     ws.range(13 + indIndex,1, 13 + indIndex,2).style().merge().set();
-                    // Range 0 - 2 color "DDDDDD"
+                    // Cells 0 - 2 color "DDDDDD"
                     ws.range(13 + indIndex,0,13 + indIndex,2).style().fillColor("DDDDDD").set();
-                    // Range cell 3 - 12 center
+                    // Cells 3 - 12 center
                     ws.range(13 + indIndex,3,13 + indIndex,12)
                             .style().fillColor("DDDDDD").horizontalAlignment("center").set();
                     ws.style(13 + indIndex,13).fillColor("DDDDDD").set();
@@ -2724,7 +2726,7 @@ public class WelcomeActivity
 
                 indIndex++; // Last increment adds an empty row
             }
-            curCSVInd.close();
+            curXLSXInd.close();
 
             // Write Average Coords headline
             ws.value(14 + indIndex,4, getString(R.string.ycoord));
@@ -2984,7 +2986,7 @@ public class WelcomeActivity
     // Clear all relevant DB values, reset to basic DB 
     private void resetToBasisDb() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "2985, resetToBasisDb");
+            Log.i(TAG, "2989, resetToBasisDb");
 
         // Confirm dialogue before anything else takes place
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -3010,7 +3012,7 @@ public class WelcomeActivity
     // Clear DB and location values for basic DB
     private boolean clearDBValues() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "3011, clearDBValues");
+            Log.i(TAG, "3015, clearDBValues");
 
         dbHelper = new DbHelper(this);
         database = dbHelper.getWritableDatabase();
@@ -3075,5 +3077,17 @@ public class WelcomeActivity
         return r_ok;
     }
     // End of resetToBasisDb()
+
+    // Red warning message
+    private void showSnackbarRed(String str)
+    {
+        baseLayout = findViewById(R.id.baseLayout); // in WelcomeActivity
+        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
+        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setTextColor(Color.RED);
+        tv.setGravity(Gravity.CENTER);
+        sB.show();
+    }
 
 }

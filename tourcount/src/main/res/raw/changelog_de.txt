@@ -75,9 +75,13 @@ _ subtitle
 
 $ 3.8.2
   % Version 3.8.2
-  _ 08.07.2026
+  _ 16.07.2026
   * Exportierte Excel-Tabelle verbessert
   * Code-Verbesserungen
+  * Überarbeitete Speicherberechtigungserteilung
+  * Zusätzliche Sprachen für Fastlane-Beschreibung
+  * Bugfix für Info-Sound-Steuerung
+  * Bugfix für doppelte Anzeige der 1. Localität bei Zählung
 
 $ 3.8.1
   % Version 3.8.1

@@ -1,0 +1,46 @@
+TourCount supporta la registrazione delle farfalle in base alla specie e con localizzazione GPS individuale.
+
+Novità della versione 3.8.2:
+- Miglioramento del foglio Excel esportato
+- Miglioramenti al codice
+- Gestione rivista delle autorizzazioni di archiviazione
+- Lingue aggiuntive per le descrizioni di Fastlane
+- Correzione di un bug relativo al controllo dei suoni informativi
+- Correzione di un bug relativo a 1. Località visualizzata due volte nel conteggio
+
+Caratteristiche:
+- La raccolta dei dati si basa su un soggiorno in una regione in cui sono presenti le farfalle tipiche di quella zona.
+- I database si riferiscono a un “itinerario” e possono essere creati e personalizzati all’interno dell’app per quanto riguarda i metadati e le specie previste.
+- L’app contiene un elenco interno con numerose specie europee e, come punto di partenza per un utilizzo immediato, dispone di un database predefinito con le specie europee più comuni che ci si può aspettare di incontrare.
+- Contatori separati per ♂-♀-indeterminato, ♂, ♀, crisalide, bruco o uovo.
+- È possibile creare elenchi di specie personalizzati per diverse regioni.
+- Pagina dei risultati con una rappresentazione elaborata per il trasferimento nel modulo di inserimento dati di science4you per la registrazione delle farfalle all’indirizzo www.falterfunde.de.
+- Il risultato può essere esportato sia in formato XLSX o CSV formattato, sia come file SQLite-DB (tra l’altro per il trasferimento su un PC e una lettura più comoda in un programma di foglio di calcolo o per un’ulteriore elaborazione).
+- La sezione “Aiuto” contiene una guida utente dettagliata.
+- TourCount è disponibile in tedesco, inglese, francese, italiano e spagnolo e fornisce i nomi locali delle specie in queste lingue.
+
+Funzioni:
+- Editor dei metadati per la preparazione di un tour.
+- Pagina di conteggio con elenco a scorrimento per la selezione delle specie.
+- È possibile modificare i dati relativi alle singole specie per ogni avvistamento (ad es. stato, nota o numero elevato).
+- L’app inserisce automaticamente data, ora, coordinate e altitudine sul livello del mare, nonché i dati relativi alla località tramite geocodifica OSM inversa, se il GPS e Internet sono attivi.
+- Modifica dell’elenco delle specie (aggiunta, eliminazione e modifica con preselezione per restringere il campo) delle specie.
+- La pagina dei risultati mostra metadati, note, totali e risultati del conteggio per ciascuna specie.
+
+Requisiti:
+L’app richiede i seguenti diritti di accesso:
+- accesso alla memoria per l’importazione e l’esportazione dei dati di conteggio, degli elenchi delle specie e dei risultati,
+- localizzazione tramite GPS per le coordinate degli individui contati,
+- accesso a Internet per la geocodifica inversa di OpenStreetMap (dati di localizzazione) e
+- per impedire la modalità di sospensione.
+
+Lo schermo dello smartphone dovrebbe avere una risoluzione di almeno 1920 x 1024 pixel.
+L'app può essere utilizzata a partire dalla versione 11 di Android o successive.
+
+La documentazione è disponibile all'indirizzo
+https://github.com/wistein/TourCount/tree/master/docs.
+
+TourCount è una delle due app dedicate al monitoraggio delle farfalle europee.
+La seconda app, TransektCount, è destinata a chi effettua censimenti lungo transetti. Supporta il conteggio specifico per specie per ogni sezione di transetto secondo il metodo dell’European Butterfly Monitoring Scheme.
+
+Entrambe le app utilizzano la classificazione delle farfalle europee secondo Karsholt/Razowski e prendono quindi in considerazione solo le farfalle europee.

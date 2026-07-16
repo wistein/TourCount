@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml English strings
-     last edited on 2026-06-27 -->
+     last edited on 2026-07-16 -->
 
 <resources>
 
@@ -282,6 +282,10 @@
     <string name="app_settings">System Settings</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
-    <string name="storage_perm_denied">Required storage permission for TourCount is missing, storage is not possible.</string>
+
+    <string name="dialog_storage_message1">Please grant the "All files access" permission for TourCount\n\nin order to import or export TourCount files.\n\nOtherwise, neither databases, lists, nor results can be imported or exported.</string>
+    <string name="dialog_storage_message2">Please grant the “All files access” permission for TourCount\n\nso that TourCount files can be imported and exported.\n\nThen try again.</string>
+    <string name="dialog_storage_title">Allow to use "All files access"\n(only TourCount-specific files).</string>
+    <string name="storage_perm_denied">Required storage permission for TourCount is missing, file import and export is not possible.</string>
 	
 </resources>

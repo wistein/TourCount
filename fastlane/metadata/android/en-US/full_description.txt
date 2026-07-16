@@ -3,6 +3,10 @@ TourCount supports species-specific and individually GPS-localized registering o
 New in Version 3.8.2:
 - Exported Excel spreadsheet improved
 - Code improvements
+- Revised storage permission handling
+- Additional languages for Fastlane description
+- Bugfix for Info-Sound handling
+- Bugfix for 1. locality shown twice in count
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

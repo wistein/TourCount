@@ -1,0 +1,46 @@
+TourCount permet l'enregistrement des papillons par espèce et avec localisation GPS individuelle.
+
+Nouveautés de la version 3.8.2 :
+- Amélioration du tableau Excel exporté
+- Améliorations du code
+- Gestion révisée des autorisations de mémoire
+- Ajout de langues supplémentaires pour les descriptions de Fastlane
+- Correction d'un bug concernant le contrôle des sons d'information
+- Correction d'un bug concernant 1. La localité apparaît deux fois dans le décompte
+
+Caractéristiques :
+- La collecte des données s'appuie sur un séjour dans une région où l'on peut s'attendre à observer des papillons.
+- Les bases de données se rapportent à un « circuit » et peuvent être créées et personnalisées individuellement au sein de l'application en termes de métadonnées et d'espèces attendues.
+- L'application contient une liste interne répertoriant de nombreuses espèces européennes et propose, comme point de départ prêt à l'emploi, une base de données préconfigurée comprenant les espèces européennes les plus courantes.
+- Compteurs distincts pour ♂-♀-indéterminé, ♂, ♀, chrysalide, chenille ou œuf.
+- Des listes d’espèces adaptées peuvent être créées pour différentes régions.
+- Page de résultats avec une présentation structurée permettant le transfert vers le formulaire de saisie science4you dédié au recensement des papillons, disponible à l’adresse www.falterfunde.de.
+- Le résultat peut être exporté au format XLSX ou CSV formaté, ainsi que sous forme de fichier SQLite-DB (notamment pour le transfert vers un PC et une lecture plus aisée dans un tableur ou pour un traitement ultérieur).
+- La rubrique « Aide » contient un guide d'utilisation détaillé.
+- TourCount est disponible en allemand, anglais, français, italien et espagnol et propose les noms d'espèces locaux dans ces langues.
+
+Fonctionnalités :
+- Éditeur de métadonnées pour la préparation d'une sortie.
+- Page de recensement avec liste déroulante pour la sélection des espèces.
+- Les données spécifiques à chaque espèce peuvent être modifiées pour chaque observation (par exemple, état, remarque ou nombre important).
+- L'application ajoute automatiquement la date, l'heure, les coordonnées et l'altitude au-dessus du niveau de la mer, ainsi que les données de localisation via le géocodage OSM inverse, lorsque le GPS et Internet fonctionnent.
+- Gestion des listes d'espèces (ajout, suppression et modification avec présélection filtrée) des espèces.
+- La page des résultats affiche les métadonnées, les remarques, les totaux et les résultats de comptage par espèce.
+
+Conditions préalables :
+L'application nécessite des droits d'accès
+- à la mémoire pour l'importation et l'exportation des données de comptage, des listes d'espèces et des résultats,
+- à la localisation par GPS pour les coordonnées des individus comptés,
+- à Internet pour le géocodage inverse OpenStreetMaps (informations de localisation) et
+- pour empêcher la mise en veille.
+
+L'écran du smartphone doit avoir une résolution d'au moins 1 920 x 1 024 pixels.
+L'application est compatible avec Android version 11 ou ultérieure.
+
+La documentation est disponible à l'adresse suivante :
+https://github.com/wistein/TourCount/tree/master/docs.
+
+TourCount est l'une des deux applications destinées au suivi des papillons européens.
+La deuxième application, TransektCount, est destinée aux observateurs effectuant des relevés le long de transects. Elle permet de recenser les espèces spécifiques par section de transect, conformément à la méthode du European Butterfly Monitoring Scheme.
+
+Les deux applications utilisent le système de codification des papillons européens de Karsholt/Razowski et ne prennent donc en compte que les papillons européens.

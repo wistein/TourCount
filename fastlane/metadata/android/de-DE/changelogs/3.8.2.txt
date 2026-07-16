@@ -1,3 +1,7 @@
-Version 3.8.2 (08.07.2027)
+Version 3.8.2 (15.07.2027)
 - Exportierte Excel-Tabelle verbessert
 - Code-Verbesserungen
+- Überarbeitete Speicherberechtigungserteilung
+- Zusätzliche Sprachen für Fastlane-Beschreibung
+- Bugfix für Info-Sound-Steuerung
+- Bugfix für doppelte Anzeige der 1. Localität bei Zählung

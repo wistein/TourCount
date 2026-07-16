@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-06-27 -->
+     last edited on 2026-07-16 -->
 
 <resources>
 
@@ -267,6 +267,10 @@
     <string name="app_settings">Configuración del sistema</string>
     <string name="dialog_fine_location_message">El registro de las mariposas debe realizarse indicando la ubicación con la mayor precisión posible.</string>
     <string name="dialog_fine_location_title">Permite que se registre tu ubicación exacta.</string>
+
+    <string name="dialog_storage_message1">Por favor, concede el permiso «Acceso a todos los archivos» a TourCount\n\npara poder importar y exportar archivos de TourCount.\n\nDe lo contrario, no se podrán importar ni exportar bases de datos, listas ni resultados.</string>
+    <string name="dialog_storage_message2">Por favor, concede el permiso «Acceso a todos los archivos» a TourCount\n\npara poder importar y exportar archivos de TourCount.\n\nDespués, vuelve a intentarlo.</string>
+    <string name="dialog_storage_title">Permitir el «Acceso a todos los archivos»\n(solo las específicas de TourCount).</string>
     <string name="storage_perm_denied">Falta el permiso de almacenamiento necesario para TourCount; no es posible guardar.</string>
 
 </resources>

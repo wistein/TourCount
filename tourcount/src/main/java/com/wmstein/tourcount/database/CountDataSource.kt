@@ -193,7 +193,7 @@ class CountDataSource(context: Context) {
         return count
     }
 
-    // Used by CountingActivity
+    // getAllIds() used by CountingActivity
     val allIds: Array<String?>
         get() {
             val cursor = database!!.query(
@@ -213,7 +213,7 @@ class CountDataSource(context: Context) {
             return idArray
         }
 
-    // Used by CountingActivity
+    // getAllIdsSrtName used by CountingActivity
     val allIdsSrtName: Array<String?>
         get() {
             val cursor = database!!.query(
@@ -233,7 +233,7 @@ class CountDataSource(context: Context) {
             return idArray
         }
 
-    // Used by CountingActivity
+    // Get codes array of current species list (used by CountingActivity)
     val allIdsSrtCode: Array<String?>
         get() {
             val cursor = database!!.query(

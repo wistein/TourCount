@@ -1,5 +1,6 @@
 package com.wmstein.tourcount.database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -19,11 +20,18 @@ import java.util.Locale
  *
  * Basic structure of DbHelper.java by milo on 05/05/2014.
  * Adopted for TourCount by wmstein on 2016-04-19,
+ * updated to version 2 on 2017-09-09, rel. 219
+ * updated to version 3 on 2018-03-31, rel. 304
+ * updated to version 4 on 2019-03-25, rel. 308
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-06,
- * updated to version 8 on 2025-02-25,
- * updated to version 9 on 2025-04-26,
- * last edited on 2026-05-27
+ * updated to version 5 on 2023-12-17, rel. 345
+ * updated to version 6 on 2024-05-15, rel. 347
+ * updated to version 7 on 2024-08-26, rel. 350
+ * updated to version 8 on 2025-02-25, rel. 362
+ * updated to version 9 on 2026-04-07, rel. 374
+ * current version 9, -> has to be set under 'companion object'
+ * last edited on 2026-07-13
  *
  * ************************************************************************
  * ATTENTION!
@@ -38,9 +46,9 @@ class DbHelper (private val mContext: Context) :
     // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "38, Creating database: $DATABASE_NAME")
+            Log.i(TAG, "49, Creating database: $DATABASE_NAME")
 
-        var sql = ("create table " + SECTION_TABLE + " ("
+        var sql = ("CREATE TABLE " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
                 + S_NAME + " text, "
                 + S_COUNTRY + " text, "
@@ -61,7 +69,7 @@ class DbHelper (private val mContext: Context) :
                 + S_ST_LOCALITY + " text)")
         db.execSQL(sql)
 
-        sql = ("create table " + COUNT_TABLE + " ("
+        sql = ("CREATE TABLE " + COUNT_TABLE + " ("
                 + C_ID + " integer primary key, "
                 + C_COUNT_F1I + " int, "
                 + C_COUNT_F2I + " int, "
@@ -75,20 +83,20 @@ class DbHelper (private val mContext: Context) :
                 + C_NAME_G + " text)")
         db.execSQL(sql)
 
-        sql = ("create table " + HEAD_TABLE + " ("
+        sql = ("CREATE TABLE " + HEAD_TABLE + " ("
                 + H_ID + " integer primary key, "
                 + H_OBSERVER + " text, "
                 + H_DATALANGUAGE + " text)")
         db.execSQL(sql)
 
         // TEMP_TABLE is obsolete since ver. 3.7.5
-        sql = ("create table " + TEMP_TABLE + " ("
+        sql = ("CREATE TABLE " + TEMP_TABLE + " ("
                 + T_ID + " integer primary key, "
                 + T_TEMP_LOC + " text, "
                 + T_TEMP_CNT + " int)")
         db.execSQL(sql)
 
-        sql = ("create table " + INDIVIDUALS_TABLE + " ("
+        sql = ("CREATE TABLE " + INDIVIDUALS_TABLE + " ("
                 + I_ID + " integer primary key, "
                 + I_COUNT_ID + " int, "
                 + I_NAME + " text, "
@@ -108,20 +116,36 @@ class DbHelper (private val mContext: Context) :
                 + I_CODE + " text)")
         db.execSQL(sql)
 
-        // Create SECTION_TABLE with 1 empty row
+        // Initialize 1 row of SECTION_TABLE
         var values1 = ContentValues()
         values1.put(S_ID, 1)
         values1.put(S_NAME, "")
+        values1.put(S_COUNTRY, "")
+        values1.put(S_PLZ, "")
+        values1.put(S_CITY, "")
+        values1.put(S_PLACE, "")
+        values1.put(S_TEMPE, 0)
+        values1.put(S_WIND, 0)
+        values1.put(S_CLOUDS, 0)
+        values1.put(S_TEMPE_END, 0)
+        values1.put(S_WIND_END, 0)
+        values1.put(S_CLOUDS_END, 0)
+        values1.put(S_DATE, "")
+        values1.put(S_START_TM, "")
+        values1.put(S_END_TM, "")
+        values1.put(S_NOTES, "")
+        values1.put(S_STATE, "")
+        values1.put(S_ST_LOCALITY, "")
         db.insert(SECTION_TABLE, null, values1)
 
-        // Create HEAD_TABLE with 1 empty row
+        // Initialize 1 row of HEAD_TABLE
         values1 = ContentValues()
         values1.put(H_ID, 1)
         values1.put(H_OBSERVER, "")
-        values1.put(H_DATALANGUAGE, "")
+        values1.put(H_DATALANGUAGE, initDataLanguage)
         db.insert(HEAD_TABLE, null, values1)
 
-        // Create TEMP_TABLE with 1 empty row
+        // Initialize 1 row of TEMP_TABLE
         values1 = ContentValues()
         values1.put(T_ID, 1)
         values1.put(T_TEMP_LOC, "")
@@ -131,17 +155,15 @@ class DbHelper (private val mContext: Context) :
         // Create initial data for COUNT_TABLE
         initialCounts(db)
 
-        // Create initial data for HEAD_TABLE
-        initialHead(db)
-
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "135, Success!")
+            Log.i(TAG, "159, Success!")
     }
 
     // Initial data for COUNT_TABLE
     private fun initialCounts(db: SQLiteDatabase) {
         val specs: Array<String> = mContext.resources.getStringArray(R.array.initSpecs)
         val codes: Array<String> = mContext.resources.getStringArray(R.array.initCodes)
+
         // Initial local species name entries comprise initial species in the current system language
         val specsL: Array<String> = when (initDataLanguage) {
             "en" -> mContext.resources.getStringArray(R.array.initSpecs_en)
@@ -151,11 +173,11 @@ class DbHelper (private val mContext: Context) :
             else -> mContext.resources.getStringArray(R.array.initSpecs_de)
         }
 
-        for (i in 0 until specs.size) { // changed i in 1 -> i in 0
+        for ((i, element) in codes.withIndex()) {
             val values4 = ContentValues()
             values4.put(C_ID, i)
             values4.put(C_NAME, specs[i])
-            values4.put(C_CODE, codes[i])
+            values4.put(C_CODE, element)
             values4.put(C_COUNT_F1I, 0)
             values4.put(C_COUNT_F2I, 0)
             values4.put(C_COUNT_F3I, 0)
@@ -168,19 +190,13 @@ class DbHelper (private val mContext: Context) :
         }
     }
 
-    private fun initialHead(db: SQLiteDatabase) {
-        // Enter current system language as initial data language
-        val sql = "UPDATE $HEAD_TABLE SET $H_DATALANGUAGE = '$initDataLanguage'"
-        db.execSQL(sql)
-    }
-    
     // *********************************************************************************
     // Called with 1. call of dbHelper.getWritableDatabase() if newVersion != oldVersion
     //   and if a database already exists on disk with the same DATABASE_NAME.
     // see https://guides.codepath.org/android/local-databases-with-sqliteopenhelper
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "180, upGrade -> DB Ver. 9")
+            Log.i(TAG, "199, start upGrade -> DB Ver. 9")
 
         if (oldVersion == 8) {
             version9(db)
@@ -208,6 +224,7 @@ class DbHelper (private val mContext: Context) :
             version9(db)
         }
         if (oldVersion == 3) {
+            //version4a()
             version4(db)
             version5(db)
             version6(db)
@@ -237,66 +254,70 @@ class DbHelper (private val mContext: Context) :
     }
 
     /*** V2 ***/
-    // Version 2: New extra column icount added to INDIVIDUALS_TABLE
+    // Version 2: Add column icount to INDIVIDUALS_TABLE
     private fun version2(db: SQLiteDatabase) {
-
-        // Add new extra column icount to table individuals
-        val sql = "alter table $INDIVIDUALS_TABLE add column $I_ICOUNT int"
+        var sql = "ALTER TABLE individuals add column icount int"
         db.execSQL(sql)
 
+        sql = "UPDATE individuals SET icount = 0"
+        db.execSQL(sql)
+        
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "244, Upgraded database to version 2")
+            Log.i(TAG, "266, Upgraded database to version 2")
     }
 
     /*** V3 ***/
-    // Version 3: New extra columns for sexes and stadiums added to COUNT_TABLE
+    // Version 3:
+    // - Add columns for sexes and stadiums to COUNT_TABLE
+    // - Add I_CATEGORY to INDIVIDUALS table
+    // - Fill sex and icategory with default values to avoid crash when negative counting
+    // - Insert old data into new counts table structure
     private fun version3(db: SQLiteDatabase) {
         var sql: String
         var colExist = false
-        var colCatExist = false
+        var colCategoryExists = false
 
-        // add new extra columns to table counts
+        // Add columns for sexes and stadiums to COUNT_TABLE
         try {
-            sql = "alter table $COUNT_TABLE add column $C_COUNT_F2I int"
+            sql = "ALTER TABLE counts ADD COLUMN count_f2i int"
             db.execSQL(sql)
         } catch (_: Exception) {
             colExist = true
         }
 
-        sql = "alter table $COUNT_TABLE add column $C_COUNT_F3I int"
+        sql = "ALTER TABLE counts ADD COLUMN count_f3i int"
         db.execSQL(sql)
-        sql = "alter table $COUNT_TABLE add column $C_COUNT_PI int"
+        sql = "ALTER TABLE counts ADD COLUMN count_pi int"
         db.execSQL(sql)
-        sql = "alter table $COUNT_TABLE add column $C_COUNT_LI int"
+        sql = "ALTER TABLE counts ADD COLUMN count_li int"
         db.execSQL(sql)
-        sql = "alter table $COUNT_TABLE add column $C_COUNT_EI int"
+        sql = "ALTER TABLE counts ADD COLUMN count_ei int"
         db.execSQL(sql)
 
-        // Add I_CATEGORY to INDIVIDUALS table
+        // Add column I_CATEGORY to INDIVIDUALS table
         try {
-            sql = ("alter table " + INDIVIDUALS_TABLE + " add column " + I_CATEGORY
-                    + " int default 1")
+            sql = "ALTER TABLE individuals ADD COLUMN icategory int default 1"
             db.execSQL(sql)
         } catch (_: Exception) {
-            colCatExist = true
+            colCategoryExists = true
         }
 
         // Fill sex and icategory with default values to avoid crash when negative counting
-        if (!colCatExist) {
-            sql = "UPDATE $INDIVIDUALS_TABLE SET $I_SEX = '-'"
+        if (!colCategoryExists) {
+            sql = "UPDATE individuals SET sex = '-'"
             db.execSQL(sql)
         }
 
-        // Copy old data into new structure
+        // Insert old data into new counts table structure
         if (!colExist) {
             // Rename table counts to counts_backup
-            sql = "alter table $COUNT_TABLE rename to counts_backup"
+            sql = "ALTER TABLE counts RENAME TO 'counts_backup'"
             db.execSQL(sql)
 
             // Create new counts table
-            sql = ("create table " + COUNT_TABLE + " ("
+            sql = ("CREATE TABLE " + COUNT_TABLE + " ("
                     + C_ID + " integer primary key, "
-                    + C_COUNT_F1I + " int, "
+                    + C_COUNT_F1I + " int, " // renamed from C_COUNT
                     + C_COUNT_F2I + " int, "
                     + C_COUNT_F3I + " int, "
                     + C_COUNT_PI + " int, "
@@ -320,37 +341,76 @@ class DbHelper (private val mContext: Context) :
                     + C_CODE + ","
                     + C_NOTES + " FROM counts_backup")
             db.execSQL(sql)
+
             sql = "DROP TABLE counts_backup"
             db.execSQL(sql)
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "323, Upgraded database to version 3")
+                Log.i(TAG, "349, Upgraded database to version 3")
         }
     }
 
     /*** V4 ***/
-    // Version 4: Add column C_NAME_G
+    // Version 4: Add column C_NAME_G to counts table and fill in the german local names
+    @SuppressLint("Range")
     private fun version4(db: SQLiteDatabase) {
-        val sql = "alter table $COUNT_TABLE add column $C_NAME_G text"
+        val sql = "ALTER TABLE counts ADD COLUMN name_g text"
         db.execSQL(sql)
 
+        val sCodes: MutableList<String> = ArrayList() // Species codes of the current counting list
+        val cursor = db.rawQuery(
+            "SELECT * FROM counts ORDER BY code", null
+        )
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            sCodes.add(cursor.getString(cursor.getColumnIndex(C_CODE)))
+            cursor.moveToNext()
+        }
+        cursor.close()
+        val specNum: Int = sCodes.size
+
+        val allCodesArray: Array<String> = mContext.resources.getStringArray(R.array.selCodes)
+        val allNamesArrayG: Array<String> = mContext.resources.getStringArray(R.array.selSpecs_de)
+        var nameG: String
+
+        var cntInd = 1 // counts table index
+        var specInd = 0 // list index
+        
+        // For all species of the counting list
+        while (specInd < specNum) {
+            // Compare code with allCodesArray and find nameG
+            for ((i, code) in allCodesArray.withIndex()) {
+                if (code == sCodes[specInd]) {
+                    nameG = allNamesArrayG[i]
+
+                    val values = ContentValues()
+                    values.put(C_NAME_G, nameG)
+                    db.update(COUNT_TABLE, values, "_id = $cntInd", null)
+                }
+            }
+            specInd++
+            cntInd++
+        }
+
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "334, Upgraded database to version 4")
+            Log.i(TAG, "396, Upgraded database to version 4")
     }
 
     /*** V5 ***/
-    // Version 5: Change TEMP_TABLE name to 'tmp' and SECTION_TABLE column S_TEMP to S_TEMPE and 'tmp'
+    // Version 5:
+    // - Change TEMP_TABLE name to 'tmp' and
+    // - SECTION_TABLE column S_TEMP to S_TEMPE and 'tmp'
     private fun version5(db: SQLiteDatabase) {
         // rename table temp to tmp
-        var sql = "alter table 'temp' rename to 'tmp'"
+        var sql = "ALTER TABLE 'temp' RENAME TO 'tmp'"
         db.execSQL(sql)
 
         // Rename column 'temp' to 'tmp' in SECTION_TABLE
-        sql = "alter table $SECTION_TABLE rename to 'section_backup'"
+        sql = "ALTER TABLE sections RENAME TO 'section_backup'"
         db.execSQL(sql)
 
         // Create new sections table
-        sql = ("create table " + SECTION_TABLE + " ("
+        sql = ("CREATE TABLE " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
                 + S_NAME + " text, "
                 + S_COUNTRY + " text, "
@@ -388,18 +448,18 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "387, Upgraded database to version 5")
+            Log.i(TAG, "451, Upgraded database to version 5")
     }
 
     /*** V6 ***/
     // Version 6: Add fields S_TEMPE_END, S_WIND_END and S_CLOUDS_END to SECTION_TABLE
     private fun version6(db: SQLiteDatabase) {
         // in SECTION_TABLE rename column 'temp' to 'tmp'
-        var sql = "alter table $SECTION_TABLE rename to 'section_backup'"
+        var sql = "ALTER TABLE sections RENAME TO 'section_backup'"
         db.execSQL(sql)
 
         // Create new sections table
-        sql = ("create table " + SECTION_TABLE + " ("
+        sql = ("CREATE TABLE " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
                 + S_NAME + " text, "
                 + S_COUNTRY + " text, "
@@ -443,47 +503,52 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "442, Upgraded database to version 6")
+            Log.i(TAG, "506, Upgraded database to version 6")
     }
 
     /*** V7 ***/
     // Version 7: Add field I_CODE to INDIVIDUALS_TABLE and clear count data
     private fun version7(db: SQLiteDatabase) {
         // Empty INDIVIDUALS_TABLE
-        var sql = "DELETE FROM $INDIVIDUALS_TABLE"
+        var sql = "DELETE FROM individuals"
         db.execSQL(sql)
 
         // Add I_CODE to INDIVIDUALS table
-        sql = "alter table $INDIVIDUALS_TABLE add column $I_CODE text"
+        sql = "ALTER TABLE individuals ADD COLUMN code text"
+        db.execSQL(sql)
+
+        sql = "UPDATE individuals SET code = ''"
         db.execSQL(sql)
 
         // Empty COUNT_TABLE
-        sql = "UPDATE $COUNT_TABLE SET $C_COUNT_F1I = 0, $C_COUNT_F2I = 0, $C_COUNT_F3I = 0, " +
-                "$C_COUNT_PI = 0, $C_COUNT_LI = 0, $C_COUNT_EI = 0, $C_NOTES = ''"
+        sql = "UPDATE counts SET count_f1i = 0, count_f2i = 0, count_f3i = 0, " +
+                "count_pi = 0, count_li = 0, count_ei = 0, notes = ''"
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "462, Upgraded database to version 7")
+            Log.i(TAG, "529, Upgraded database to version 7")
     }
 
     /*** V8 ***/
     // Version 8: Add fields S_STATE and S_ST_LOCALITY to SECTION_TABLE
     private fun version8(db: SQLiteDatabase) {
-        var sql = "alter table $SECTION_TABLE add column $S_STATE text"
+        var sql = "ALTER TABLE sections ADD COLUMN b_state text"
         db.execSQL(sql)
 
-        sql = "alter table $SECTION_TABLE add column $S_ST_LOCALITY text"
+        sql = "ALTER TABLE sections ADD COLUMN st_locality text"
+        db.execSQL(sql)
+
+        sql = "UPDATE sections SET b_state = '', st_locality = ''"
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "475, Upgraded database to version 8")
+            Log.i(TAG, "545, Upgraded database to version 8")
     }
 
     /*** V9 ***/
-    // Version 9: New extra column datalanguage added to HEAD_TABLE
+    // Version 9: Add column datalanguage to HEAD_TABLE
     private fun version9(db: SQLiteDatabase) {
-        // Add new extra column datalanguage to table head
-        var sql = "alter table head add column datalanguage text"
+        var sql = "ALTER TABLE head ADD COLUMN datalanguage text"
         db.execSQL(sql)
 
         // Enter empty dataLanguage
@@ -491,7 +556,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "490, Upgraded database to version 9")
+            Log.i(TAG, "559, Upgraded database to version 9")
     }
 
     companion object {

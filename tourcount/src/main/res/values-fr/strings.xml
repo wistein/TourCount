@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml French strings,
-     last edited on 2026-06-27 -->
+     last edited on 2026-07-16 -->
 
 <resources>
 
@@ -267,6 +267,10 @@
     <string name="app_settings">Paramètres système</string>
     <string name="dialog_fine_location_message">L\'enregistrement des papillons doit être effectué avec une localisation aussi précise que possible.</string>
     <string name="dialog_fine_location_title">Autoriser la localisation précise.</string>
+
+    <string name="dialog_storage_message1">Veuillez attribuer l\'autorisation « Accès à tous les fichiers » à TourCount\n\nafin de permettre l\'importation et l\'exportation des fichiers TourCount.\n\nSinon, ni les bases de données, ni les listes, ni les résultats ne pourront être importés ou exportés.</string>
+    <string name="dialog_storage_message2">Veuillez accorder l\'autorisation « Accès à tous les fichiers » à TourCount\n\nafin de pouvoir importer et exporter des fichiers TourCount.\n\nRéessayez ensuite.</string>
+    <string name="dialog_storage_title">Autoriser le \'Accès à tous les fichiers\'\n(seulement ceux spécifiques à TourCount).</string>
     <string name="storage_perm_denied">L\'autorisation de stockage nécessaire pour TourCount fait défaut, l\'enregistrement n\'est pas possible.</string>
 
 </resources>

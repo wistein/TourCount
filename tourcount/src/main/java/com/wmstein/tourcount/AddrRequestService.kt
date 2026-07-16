@@ -45,7 +45,7 @@ import javax.net.ssl.HttpsURLConnection
  * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
  *
  * Created by wmstein on 2026-05-07,
- * last edited on 2026-07-03
+ * last edited on 2026-07-14
  */
 open class AddrRequestService : Service {
     private lateinit var audioAttributionContext: Context
@@ -255,6 +255,7 @@ open class AddrRequestService : Service {
                 Log.i(TAG, "255, <addressparts>: $xmlString")
 
             val locality = StringBuilder() // quarter, road or street
+            val locality1 = StringBuilder() // quarter, road or street
             val plz = StringBuilder()      // postal code
             val city = StringBuilder()     // city or town, village
             val place = StringBuilder()    // suburb
@@ -322,7 +323,7 @@ open class AddrRequestService : Service {
                     sstart = xmlString.indexOf("<quarter>") + 9
                     send = xmlString.indexOf("</quarter>")
                     val quarter = xmlString.substring(sstart, send)
-                    locality.append(quarter)
+                    if (locality.toString() == "") locality.append(quarter)
                 }
                 if (locality.toString() != "" && xmlString.contains("<road>")
                     || xmlString.contains("<street>")
@@ -397,25 +398,25 @@ open class AddrRequestService : Service {
                 sstart = xmlString.indexOf("<quarter>") + 9
                 send = xmlString.indexOf("</quarter>")
                 val quarter = xmlString.substring(sstart, send)
-                locality.append(quarter)
+                locality1.append(quarter)
             }
-            if (locality.toString() != "" && xmlString.contains("<road>")
+            if (locality1.toString() != "" && xmlString.contains("<road>")
                 || xmlString.contains("<street>")
-            ) locality.append(", ")
+            ) locality1.append(", ")
             if (xmlString.contains("<road>")) {
                 sstart = xmlString.indexOf("<road>") + 6
                 send = xmlString.indexOf("</road>")
                 val road = xmlString.substring(sstart, send)
-                locality.append(road)
+                locality1.append(road)
             } else {
                 if (xmlString.contains("<street>")) {
                     sstart = xmlString.indexOf("<street>") + 8
                     send = xmlString.indexOf("</street>")
                     val street = xmlString.substring(sstart, send)
-                    locality.append(street)
+                    locality1.append(street)
                 }
             }
-            tLocality = locality.toString() // current temporary locality
+            tLocality = locality1.toString() // current temporary locality
         }
     }
 

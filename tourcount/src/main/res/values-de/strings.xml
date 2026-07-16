@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml German strings,
-     last edited on 2026-06-27 -->
+     last edited on 2026-07-16 -->
 
 <resources>
 
@@ -267,6 +267,10 @@
     <string name="app_settings">System-Einstellungen</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
-    <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt, Speichern ist nicht möglich.</string>
+
+    <string name="dialog_storage_message1">Bitte erteile die Berechtigung \'Zugriff auf alle Dateien\' für TourCount\n\nzwecks Im- und Export von TourCount-Dateien.\n\nAnsonsten können weder Datenbanken, Listen noch Ergebnisse im- oder exportiert werden.</string>
+    <string name="dialog_storage_message2">Bitte erteile TourCount die Berechtigung \'Zugriff auf alle Dateien\'\n\nzwecks Im- und Export von TourCount-Dateien.\n\nVersuche es danach erneut.</string>
+    <string name="dialog_storage_title">Erlaube den \'Zugriff auf alle Dateien\'\n(nur TourCount-spezifische).</string>
+    <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt, Im- und Export von Daten ist nicht möglich.</string>
 
 </resources>

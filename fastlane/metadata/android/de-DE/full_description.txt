@@ -3,6 +3,10 @@ TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Re
 Neu in Version 3.8.2:
 - Exportierte Excel-Tabelle verbessert
 - Code-Verbesserungen
+- Überarbeitete Speicherberechtigungserteilung
+- Zusätzliche Sprachen für Fastlane-Beschreibung
+- Bugfix für Info-Sound-Steuerung
+- Bugfix für doppelte Anzeige der 1. Localität bei Zählung
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

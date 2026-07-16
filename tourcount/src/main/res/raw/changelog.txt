@@ -75,9 +75,13 @@ _ subtitle
 
 $ 3.8.2
   % Version 3.8.2
-  _ 2026-07-08
+  _ 2026-07-16
   * Exported Excel spreadsheet improved
   * Code improvements
+  * Revised storage permission handling
+  * Additional languages for Fastlane description
+  * Bugfix for Info-Sound handling
+  * Bugfix for 1. locality shown twice in count
 
 $ 3.8.1
   % Version 3.8.1

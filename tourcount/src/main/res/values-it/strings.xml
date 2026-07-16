@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- strings.xml Italian strings,
-     last edited 2026-06-27 -->
+     last edited 2026-07-16 -->
 
 <resources>
 
@@ -268,6 +268,10 @@
     <string name="app_settings">Impostazioni di sistema</string>
     <string name="dialog_fine_location_message">Il riconoscimento dei tratti di transetto richiede la massima precisione possibile.</string>
     <string name="dialog_fine_location_title">Consenti la localizzazione precisa.</string>
+
+    <string name="dialog_storage_message1">Ti preghiamo di concedere l\'autorizzazione “Accesso a tutti i file” per TourCount\n\nal fine di importare ed esportare i file di TourCount.\n\nIn caso contrario, non sarà possibile importare né esportare né database, né elenchi, né risultati.</string>
+    <string name="dialog_storage_message2">Ti preghiamo di concedere l\'autorizzazione “Accesso a tutti i file” per TourCount\n\nal fine di importare ed esportare i file di TourCount.\n\nProva poi di nuovo.</string>
+    <string name="dialog_storage_title">Autorizza la \'Accesso a tutti i file\'\n(solo quelle specifiche di TourCount).</string>
     <string name="storage_perm_denied">Manca l\'autorizzazione di salvataggio necessaria per TourCount, non è possibile salvare.</string>
 
 </resources>

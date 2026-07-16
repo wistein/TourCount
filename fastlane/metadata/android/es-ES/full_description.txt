@@ -1,0 +1,46 @@
+TourCount permite registrar mariposas de forma específica por especie y con localización GPS individualizada.
+
+Novedades de la versión 3.8.2:
+- Mejora de la hoja de cálculo Excel exportada
+- Mejoras en el código
+- Gestión revisada de permisos de almacenamiento
+- Idiomas adicionales para las descripciones de Fastlane
+- Corrección de un error en el control del sonido de información
+- Corrección de un error: 1. La localidad aparece dos veces en el recuento
+
+Características:
+- El registro de datos se basa en una estancia en una región con las mariposas que se esperan encontrar en ella.
+- Las bases de datos se refieren a una «ruta» y pueden crearse y personalizarse individualmente dentro de la aplicación en cuanto a metadatos y especies esperadas.
+- La aplicación incluye una lista interna con numerosas especies europeas y, como punto de partida para su uso inmediato, cuenta con una base de datos preparada con las especies europeas más comunes que cabe esperar encontrar.
+- Contadores separados para ♂-♀-indeterminado, ♂, ♀, crisálida, oruga u huevo.
+- Se pueden crear listas de especies adaptadas a diferentes regiones.
+- Página de resultados con una presentación preparada para su transferencia al formulario de science4you para el registro de mariposas en www.falterfunde.de.
+- El resultado se puede exportar tanto en formato XLSX o CSV con formato como en un archivo de base de datos SQLite (entre otras cosas, para transferirlo a un ordenador y facilitar su lectura en un programa de hojas de cálculo o para su posterior procesamiento).
+- La sección de ayuda incluye un manual de usuario detallado.
+- TourCount se puede utilizar en alemán, inglés, francés, italiano y español, y ofrece los nombres locales de las especies en estos idiomas.
+
+Funciones:
+- Editor de metadatos para preparar una ruta.
+- Página de recuento con lista desplegable para seleccionar especies.
+- Se pueden editar los datos de cada especie por avistamiento (por ejemplo, estado, comentario o número elevado).
+- La aplicación añade automáticamente la fecha, la hora, las coordenadas y la altitud sobre el nivel del mar, así como los datos de ubicación mediante geocodificación inversa de OSM, siempre que el GPS y Internet funcionen.
+- Edición de listas de especies (añadir, eliminar y editar con preselección restrictiva) de las especies.
+- La página de resultados muestra metadatos, observaciones, totales y resultados del recuento por especie.
+
+Requisitos:
+La aplicación necesita permisos de acceso
+- para acceder al almacenamiento con el fin de importar y exportar los datos de recuento, las listas de especies y los resultados,
+- para la localización mediante GPS con el fin de obtener las coordenadas de los individuos contados,
+- para acceder a Internet con el fin de realizar la geocodificación inversa de OpenStreetMap (datos de ubicación) y
+- para evitar que el dispositivo entre en modo de suspensión.
+
+La pantalla del smartphone debe tener una resolución mínima de 1920 x 1024 píxeles.
+La aplicación se puede utilizar a partir de la versión 11 de Android o posterior.
+
+La documentación está disponible en
+https://github.com/wistein/TourCount/tree/master/docs.
+
+TourCount es una de las dos aplicaciones destinadas al seguimiento de las mariposas europeas.
+La segunda aplicación, TransektCount, está destinada a los recuento de transectos durante las inspecciones de los mismos. Permite realizar recuentos específicos por especie en cada tramo del transecto, de acuerdo con el método del European Butterfly Monitoring Scheme.
+
+Ambas aplicaciones utilizan la clasificación de las mariposas europeas según Karsholt/Razowski y, por lo tanto, solo tienen en cuenta las mariposas europeas.

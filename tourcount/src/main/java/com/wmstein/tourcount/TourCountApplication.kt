@@ -21,7 +21,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2026-07-01
+ * last edit on 2026-07-15
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -180,6 +180,10 @@ class TourCountApplication : Application() {
 
         @JvmField
         var isFirstStart = true // true for showing a 'missing email' hint message once
+
+        // Reduces Activity count in TCLifecycleHandler
+        @JvmField
+        var isStorPermReq = false // true for showing a 'missing email' hint message once
     }
 
 }
