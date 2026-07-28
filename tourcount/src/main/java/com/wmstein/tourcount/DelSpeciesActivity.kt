@@ -37,7 +37,7 @@ import java.util.Locale
  *
  * Based on EditSpeciesListActivity.kt.
  * Created on 2024-08-22 by wmstein,
- * last edited on 2026-06-08
+ * last edited on 2026-07-21
  */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
@@ -164,8 +164,11 @@ class DelSpeciesActivity : AppCompatActivity() {
     // End of onResume()
 
     // Get 2 or more characters of species to select by search button
-    // Parameter view is necessary for function call
+    // Parameter view is necessary for error-free function call
     fun getDelSearchChars(view: View) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "170, View: $view")
+
         // Read EditText searchDel from widget_del_hint.xml
         val searchDel: EditText = findViewById(R.id.searchD)
         searchDel.findFocus()

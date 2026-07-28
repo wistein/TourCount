@@ -16,24 +16,24 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 /******************
- *    Derived from:
- *    GeoTools - The Open Source Java GIS Toolkit
- *    https://geotools.org
+ * Derived from:
+ * GeoTools - The Open Source Java GIS Toolkit
+ * https://geotools.org
  *
- *    © 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *    The original file is derived from NGA/NASA software available for unlimited distribution.
- *    See https://earth-info.nima.mil/GandG/wgs84/gravitymod/.
+ * The original file is derived from NGA/NASA software available for unlimited distribution.
+ * See earth-info.nima.mil/GandG/wgs84/gravitymod/.
  *
  * Transforms vertical coordinates using coefficients from the
  * https://earth-info.nima.mil/GandG/wgs84/gravitymod/wgs84_180/wgs84_180.html
@@ -47,11 +47,11 @@ import kotlin.math.sqrt
  * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last edit in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edit on 2026-02-28
+ * last edit on 2026-07-28
  */
-// Maximum degree and order attained.
-class EarthGravitationalModel @JvmOverloads constructor(
-    private val nmax: Int = DEFAULT_ORDER) : VerticalTransform() {
+class EarthGravitationalModel : VerticalTransform() {
+    // Maximum degree and order attained.
+    private val nmax: Int = 180
 
     // WGS 84 semi-major axis.
     private val semiMajor = 6378137.0
@@ -71,23 +71,20 @@ class EarthGravitationalModel @JvmOverloads constructor(
     // Theoretical (Normal) Gravity Formula Constant.
     private val star = 0.001931851386
 
-    /**
-     * The geopotential coefficients read from the ASCII file.
+    /* The geopotential coefficients read from the ASCII file.
      * Those arrays are filled by the load method.
      */
     private val cnmGeopCoef: DoubleArray
     private val snmGeopCoef: DoubleArray
 
-    /**
-     * Cleanshaw coefficients needed for the selected gravimetric quantities that are computed.
+    /* Cleanshaw coefficients needed for the selected gravimetric quantities that are computed.
      * Those arrays are computed by the initialize method.
      */
     private val aClenshaw: DoubleArray
     private val bClenshaw: DoubleArray
     private val `as`: DoubleArray
 
-    /**
-     * Temporary buffer for use by heightOffset only. Allocated once
+    /* Temporary buffer for use by heightOffset only. Allocated once
      * for avoiding too many objects creation / destruction.
      */
     private val cr: DoubleArray
@@ -97,8 +94,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
 
     // Creates a model with the default maximum degree and order.
     init {
-        /**
-         * WGS84 model values.
+        /* WGS84 model values.
          * NOTE: The Fortran program gives 3.9860015e+14 for 'rkm' constant. This value has been
          * modified in later programs. From http://cddis.gsfc.nasa.gov/926/egm96/doc/S11.HTML :
          *
@@ -122,8 +118,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
         s12 = DoubleArray(nmax + 3)
     }
 
-    /**
-     * Loads the coefficients from the specified ASCII file and initialize the internal
+    /* Loads the coefficients from the specified ASCII file and initialize the internal
      * clenshaw arrays.
      *
      * Note: ASCII may look like an unefficient format for binary distribution.
@@ -143,8 +138,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
         while (`in`.readLine().also { line = it } != null) {
             val tokens = StringTokenizer(line)
             try {
-                /**
-                 * Note: we use 'parseShort' instead of 'parseInt' as an easy way to ensure that
+                /* Note: we use 'parseShort' instead of 'parseInt' as an easy way to ensure that
                  *       the values are in some reasonable range. The range is typically [0..180].
                  *       We don't check that, but at least 'parseShort' disallows values greater
                  *       than 32767.
@@ -159,8 +153,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
                     snmGeopCoef[ll] = sbar
                 }
             } catch (cause: RuntimeException) {
-                /**
-                 * Catch the following exceptions:
+                /* Catch the following exceptions:
                  *   - NoSuchElementException      if a line has too few numbers.
                  *   - NumberFormatException       if a number can't be parsed.
                  *   - IndexOutOfBoundsException   if 'n' or 'm' values are illegal.
@@ -172,16 +165,13 @@ class EarthGravitationalModel @JvmOverloads constructor(
         initialize()
     }
 
-    /**
-     * Computes the clenshaw arrays after all coefficients have been read.
+    /* Computes the clenshaw arrays after all coefficients have been read.
      * We perform this step in a separated method than {from} in case we wish
      * to read the coefficient from another source than an ASCII file in some future
      * version.
      */
     private fun initialize() {
-        /**
-         * MODIFY CNM EVEN ZONAL COEFFICIENTS.
-         */
+        // MODIFY CNM EVEN ZONAL COEFFICIENTS.
         val c2n = DoubleArray(6)
         c2n[1] = c2
         var sign = 1
@@ -198,9 +188,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
         if (nmax > 6) cnmGeopCoef[36] += c2n[4] / SQRT_17
         if (nmax > 9) cnmGeopCoef[55] += c2n[5] / SQRT_21
 
-        /**
-         * BUILD ALL CLENSHAW COEFFICIENT ARRAYS.
-         */
+        // BUILD ALL CLENSHAW COEFFICIENT ARRAYS.
         for (i in 0..nmax) {
             `as`[i] = -sqrt(1.0 + 1.0 / (2 * (i + 1)))
         }
@@ -216,18 +204,17 @@ class EarthGravitationalModel @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Returns the value to add to a height above the ellipsoid in order to get a
+    /* Returns the value to add to a height above the ellipsoid in order to get a
      * height above the geoid for the specified geographic coordinate.
      *
-     * @param longitude The geodetic longitude, in decimal degrees.
-     * @param latitude  The geodetic latitude, in decimal degrees.
-     * @param height    The height above the ellipsoid in metres.
-     * @return The value to add in order to get the height above the geoid (in metres).
+     * longitude: The geodetic longitude, in decimal degrees.
+     * latitude:  The geodetic latitude, in decimal degrees.
+     * height:    The height above the ellipsoid in metres.
+     *
+     * returns the value to add in order to get the height above the geoid (in metres).
      */
     public override fun heightOffset(longitude: Double, latitude: Double, height: Double): Double {
-        /**
-         * Note: no need to ensure that longitude is in [-180...+180°] range, because its value
+        /* Note: no need to ensure that longitude is in [-180...+180°] range, because its value
          * is used only in trigonometric functions (sin / cos), which roll it as we would expect.
          * Latitude is used only in trigonometric functions as well.
          */
@@ -269,6 +256,8 @@ class EarthGravitationalModel @JvmOverloads constructor(
             previousSht = sht
             sht = -`as`[i] * y * f1 * sht + s11[i] * cr[i] + s12[i] * sr[i]
         }
+
+        // Pre-computed values of some square roots.
         return (s11[0] + s12[0]) * f1 + previousSht * SQRT_03 * y * f2 * rkm /
                 (semiMajor * (gravn - height * 0.3086e-5))
     }
@@ -281,13 +270,7 @@ class EarthGravitationalModel @JvmOverloads constructor(
         private const val SQRT_17 = 4.123105625617661
         private const val SQRT_21 = 4.58257569495584
 
-        // The default value for #nmax.
-        private const val DEFAULT_ORDER = 180
-
-        /**
-         * Computes the index as it would be returned by the locating array iv
-         *
-         * Tip (used in some place in this class):
+        /* Computes the index as it would be returned by the locating array iv
          * locatingArray(n+1) == locatingArray(n) + n + 1.
          */
         private fun locatingArray(n: Int): Int {

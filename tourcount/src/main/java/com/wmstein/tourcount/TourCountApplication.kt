@@ -21,7 +21,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edit on 2026-07-15
+ * last edited on 2026-07-21.
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -67,10 +67,7 @@ class TourCountApplication : Application() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
             Log.i(TAG, "68, Width: $width Height: $height")
 
-        if (height / width > 2)
-            screenRatioBig = true
-        else
-            screenRatioBig = false
+        screenRatioBig = height / width > 2
 
         var bMap: Bitmap?
         when (backgroundPref) {

@@ -118,7 +118,7 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
         return spec.count_ei
     }
 
-    //Parameter spec_name for use in ShowResultsActivity
+    //Parameter speciesName for use in ShowResultsActivity
     fun getSpecname(newcount: Count): String {
         return newcount.name
     }

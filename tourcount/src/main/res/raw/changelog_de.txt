@@ -73,6 +73,14 @@ _ subtitle
   .
   _
 
+$ 3.8.3
+  % Version 3.8.3
+  _ 28.07.2026
+  * Code-Überarbeitung
+  * Exportierte Excel-Tabelle verbessert
+  * Restliche Java-Module nach Kotlin konvertiert
+  * Benennung der exportierten Dateien geändert
+
 $ 3.8.2
   % Version 3.8.2
   _ 16.07.2026
@@ -81,7 +89,7 @@ $ 3.8.2
   * Überarbeitete Speicherberechtigungserteilung
   * Zusätzliche Sprachen für Fastlane-Beschreibung
   * Bugfix für Info-Sound-Steuerung
-  * Bugfix für doppelte Anzeige der 1. Localität bei Zählung
+  * Bugfix für doppelte Anzeige der 1. Lokalität bei Zählung
 
 $ 3.8.1
   % Version 3.8.1

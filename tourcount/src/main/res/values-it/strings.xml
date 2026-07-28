@@ -86,7 +86,7 @@
     <string name="cnts">Numero</string>
     <string name="country">Stato</string>
     <string name="date">Data</string>
-    <string name="editHeadTitle">Metadati relativi all\'ispezione</string>
+    <string name="editHeadTitle">Metadati del tour</string>
     <string name="endtm">fino a:</string>
     <string name="from">di:</string>
     <string name="hinttap">Clicca qui</string>

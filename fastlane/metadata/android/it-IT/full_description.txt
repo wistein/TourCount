@@ -1,12 +1,10 @@
 TourCount supporta la registrazione delle farfalle in base alla specie e con localizzazione GPS individuale.
 
-Novità della versione 3.8.2:
-- Miglioramento del foglio Excel esportato
+Novità della versione 3.8.3:
 - Miglioramenti al codice
-- Gestione rivista delle autorizzazioni di archiviazione
-- Lingue aggiuntive per le descrizioni di Fastlane
-- Correzione di un bug relativo al controllo dei suoni informativi
-- Correzione di un bug relativo a 1. Località visualizzata due volte nel conteggio
+- Miglioramento del foglio Excel esportato
+- I restanti moduli Java sono stati convertiti in Kotlin
+- Modifica della struttura dei nomi dei file esportati
 
 Caratteristiche:
 - La raccolta dei dati si basa su un soggiorno in una regione in cui sono presenti le farfalle tipiche di quella zona.

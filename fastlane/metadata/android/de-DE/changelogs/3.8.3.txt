@@ -1,0 +1,5 @@
+Version 3.8.3 (28.07.2027)
+- Code-Überarbeitung
+- Exportierte Excel-Tabelle verbessert
+- Restliche Java-Module nach Kotlin konvertiert
+- Benennung der exportierten Dateien geändert

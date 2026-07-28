@@ -15,7 +15,7 @@ import java.io.Writer
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * [...](https://www.apache.org/licenses/LICENSE-2.0)
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ import java.io.Writer
  *
  * Last edited in Java on 2023-06-17,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-02-26
+ * last edited on 2026-07-21
  */
 internal class CSVWriter private constructor(
     private val rawWriter: Writer,

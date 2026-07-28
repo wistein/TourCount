@@ -26,9 +26,9 @@ import kotlin.math.roundToInt
  * licensed under MIT License by Viktor Arsovski.
  *
  * Modified for TourCount by wmstein on 2023-09-18,
- * last edited in Java on 2023-09-18
- * converted to Kotlin on 2023-09-19
- * last edited on 2026-05-26
+ * last edited in Java on 2023-09-18,
+ * converted to Kotlin on 2023-09-19,
+ * last edited on 2026-07-21.
  */
 class AutoFitEditText @JvmOverloads constructor(
     context: Context?, attrs: AttributeSet? = null,
@@ -49,7 +49,7 @@ class AutoFitEditText @JvmOverloads constructor(
     private var widthLimit = 0
     private val _maxLines: Int
     private var initialized = false
-    private var paint: TextPaint? = null
+    private var textPaint: TextPaint? = null
 
     private interface SizeTester {
         /**
@@ -75,15 +75,15 @@ class AutoFitEditText @JvmOverloads constructor(
                 suggestedSize: Int,
                 availableSpace: RectF
             ): Int {
-                paint!!.textSize = suggestedSize.toFloat()
+                textPaint!!.textSize = suggestedSize.toFloat()
                 val text = Objects.requireNonNull(text).toString()
                 val singleline = maxLines == 1
                 if (singleline) {
-                    textRect.bottom = paint!!.fontSpacing
-                    textRect.right = paint!!.measureText(text)
+                    textRect.bottom = textPaint!!.fontSpacing
+                    textRect.right = textPaint!!.measureText(text)
                 } else {
                     val sb = StaticLayout.Builder.obtain(text, 0, text.length,
-                        paint!!, widthLimit)
+                        textPaint!!, widthLimit)
                         .setAlignment(Layout.Alignment.ALIGN_NORMAL)
                         .setLineSpacing(spacingAdd, spacingMult)
                         .setIncludePad(true)
@@ -107,8 +107,8 @@ class AutoFitEditText @JvmOverloads constructor(
     }
 
     override fun setTypeface(tf: Typeface?) {
-        if (paint == null) paint = TextPaint(getPaint())
-        paint!!.typeface = tf
+        if (textPaint == null) textPaint = TextPaint(paint)
+        textPaint!!.typeface = tf
         super.setTypeface(tf)
     }
 

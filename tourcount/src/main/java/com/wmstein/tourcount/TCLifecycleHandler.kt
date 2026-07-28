@@ -11,76 +11,81 @@ import android.util.Log
  * Needed to stop AddrRequestService when app is finished but not yet destroyed and
  * takes care of the special activity handling of the permit dialog of MANAGE_EXTERNAL_STORAGE.
  * 
- * Based on [...](https://stackoverflow.com/questions/3667022/)
+ * Inspired by https://stackoverflow.com/questions/3667022/
  * checking-if-an-android-application-is-running-in-the-background/13809991#13809991
  * 
- * Adopted for TourCount by wmstein on 2026-05-11,
- * Last edited on 2026-07-16
+ * Adopted for TourCount in Kotlin by wmstein on 2026-05-11,
+ * Last edited on 2026-07-18
  */
 class TCLifecycleHandler : ActivityLifecycleCallbacks {
+    var activityName: String = ""
+    var isWelcomeActivity = false
+
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.i(
-            "TCLifecycleHandler ","23, Activity created: $activity $started"
-        )
     }
 
-    override fun onActivityDestroyed(activity: Activity) {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.i(
-            "TCLifecycleHandler ","29, Activity destroyed: $activity $started"
-        )
+    // onActivityStarted counts up
+    override fun onActivityStarted(activity: Activity) {
+        started++ // counts any activity
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i("TCLifecycleHandler ","32, Activities started: $started times")
     }
 
+    // After requestAllFilesAccessPermission in WelcomeActivity, WelcomeActivity resumes,
+    //   so here corrects activity counts (adds additional stopped count)
     override fun onActivityResumed(activity: Activity) {
-        // Reduce activity counts for startActivity(stoIntent) from requestAllFilesAccessPermission
-        // in WelcomeActivity
-        val activ: String = activity.toString()
-        var isWelcomeActivity = false
-        if (activ.contains("WelcomeActivity"))
+        if (activity.toString().contains("WelcomeActivity")) {
+            activityName = "WelcomeActivity"
             isWelcomeActivity = true
-
-        if (TourCountApplication.isStorPermReq && isWelcomeActivity) {
-            stopped++
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.i(
-                "TCLifecycleHandler ","44, Activity resumed, stopped: $activ $stopped"
-            )
-            TourCountApplication.isStorPermReq = false
+        } else {
+            activityName = "other"
+            isWelcomeActivity = false
         }
-    }
-
-    override fun onActivityPaused(activity: Activity) {
-        // Increase activity counts for startActivity(stoIntent) from requestAllFilesAccessPermission
-        // in WelcomeActivity
-        val activ: String = activity.toString()
-        var isWelcomeActivity = false
-        if (activ.contains("WelcomeActivity"))
-            isWelcomeActivity = true
 
         if (TourCountApplication.isStorPermReq && isWelcomeActivity) {
-            started++
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.i(
-                "TCLifecycleHandler ","61, Activity paused, started: $activ $started"
-            )
+            stopped++ // counts only for isStorPermReq in WelcomeActivity
+
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i("TCLifecycleHandler ","50, $activityName resumed, activities stopped: $stopped times")
+
+            TourCountApplication.isStorPermReq = false
         }
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
     }
 
-    override fun onActivityStarted(activity: Activity) {
-        started++
+    // requestAllFilesAccessPermission in WelcomeActivity pauses WelcomeActivity,
+    //   so here corrects activity counts (adds additional started count)
+    override fun onActivityPaused(activity: Activity) {
+        if (activity.toString().contains("WelcomeActivity")) {
+            activityName = "WelcomeActivity"
+            isWelcomeActivity = true
+        } else {
+            activityName = "other"
+            isWelcomeActivity = false
+        }
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) Log.i(
-            "TCLifecycleHandler ","73, Activity started: $activity $started"
-        )
+        if (TourCountApplication.isStorPermReq && isWelcomeActivity) {
+            started++ // counts only for isStorPermReq in WelcomeActivity
+
+            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                Log.i("TCLifecycleHandler ","74, $activityName paused, activities started: $started times")
+        }
     }
 
+    // onActivityStopped counts down
     override fun onActivityStopped(activity: Activity) {
-        stopped++
+        stopped++ // counts any activity
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i("TCLifecycleHandler ", "81, Activity stopped: $activity $stopped")
-            Log.i("TCLifecycleHandler ", "82, Application is visible: " + (started > stopped))
+            Log.i("TCLifecycleHandler ", "83, Activities stopped: $stopped times")
+            Log.i("TCLifecycleHandler ", "84, Application is visible: $isApplicationVisible")
         }
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
     }
 
     companion object {

@@ -1,287 +1,293 @@
-package com.wmstein.changelog;
+package com.wmstein.changelog
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.webkit.WebView;
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.util.Log
+import android.view.ContextThemeWrapper
+import android.webkit.WebView
 
-import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceManager
 
-import com.wmstein.tourcount.BuildConfig;
-import com.wmstein.tourcount.IsRunningOnEmulator;
-import com.wmstein.tourcount.R;
+import com.wmstein.tourcount.BuildConfig
+import com.wmstein.tourcount.IsRunningOnEmulator
+import com.wmstein.tourcount.R
+import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Locale;
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.Locale
+import androidx.core.graphics.toColorInt
 
 /**********************************************************************
- Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
-
- Permission to use, copy, modify, and distribute this piece of software
- for any purpose with or without fee is hereby granted, provided that
- the above copyright notice and this permission notice appear in the
- source code of all copies.
-
- It would be appreciated if you mention the author in your change log,
- contributors list or the like.
-
- Author: Karsten Priegnitz
- See: <a href="https://code.google.com/p/android-change-log/">...</a>
-
- App newly installed: Shows the history of TourCount.
- App updated: Shows the last changes of TourCount.
-
- Therefore, retrieves the version names and stores the new version
- name in SharedPreferences
-
- Adaptation for TourCount by wmstein on 2016-04-18,
- last edited on 2026-05-16
+ * Based on ChangeLog.java, copyright © 2011-2013, Karsten Priegnitz
+ * 
+ * Permission to use, copy, modify, and distribute this piece of software
+ * for any purpose with or without fee is hereby granted, provided that
+ * the above copyright notice and this permission notice appear in the
+ * source code of all copies.
+ * 
+ * It would be appreciated if you mention the author in your change log,
+ * contributors list or the like.
+ * 
+ * Author: Karsten Priegnitz
+ * See: https://code.google.com/p/android-change-log/
+ * 
+ * App newly installed: Shows the history of TourCount.
+ * App updated: Shows the last changes of TourCount.
+ * 
+ * Therefore, retrieves the version names and stores the new version name in SharedPreferences
+ * 
+ * Adopted for TourCount by wmstein on 2016-04-18,
+ * last edited in Java on 2026-05-16,
+ * converted to Kotlin on 2026-07-18,
+ * last edited on 2026-07-19.
  */
-public class ChangeLog {
-    private static final String TAG = "ChangeLog";
-    private final Context context;
-    private final String lastVersion;
-    private String thisVersion;
+class ChangeLog(private val context: Context, prefs: SharedPreferences) {
+    // Get version numbers of lastVersion and thisVersion to compare
+    private val lastVersion = prefs.getString(VERSION_KEY, NO_VERSION)!!
+    private var thisVersion = ""
 
-    // key for storing the version name in SharedPreferences
-    private static final String VERSION_KEY = "PREFS_VERSION_KEY";
-    private static final String NO_VERSION = "";
-    private Listmode listMode = Listmode.NONE;
-    private StringBuffer sb = null;
-    private static final String EOCL = "END_OF_CHANGE_LOG";
+    private var listMode: ListMode? = ListMode.NONE
+    private var sb: StringBuffer? = null
 
-    public ChangeLog(Context context, SharedPreferences prefs) {
-        this.context = context;
+    private var prefs = getPrefs()
+    private var editor = prefs.edit()
 
-        // Get version numbers of lastVersion and thisVersion to compare
-        this.lastVersion = prefs.getString(VERSION_KEY, NO_VERSION);
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "65, lastVersion: " + lastVersion);
-
+    init {
         try {
-            this.thisVersion = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0).versionName;
-        } catch (NameNotFoundException e) {
-            this.thisVersion = NO_VERSION;
+            thisVersion = context.packageManager.getPackageInfo(
+                context.packageName, 0
+            ).versionName!!
+        } catch (e: PackageManager.NameNotFoundException) {
+            thisVersion = NO_VERSION
+
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "73, could not get version name from manifest!", e);
+                Log.e(TAG,"69, Could not get version name from PackageManager! ",e)
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "76, appVersion: " + thisVersion);
+            Log.i(TAG,"72, init, last Version: $lastVersion, curr. Version: $thisVersion")
     }
 
     /**
-     * Return true if this version of your app is started the first time
+     * Return true if this version of TourCount is started the first time
      */
-    public boolean firstRun() {
-        return !this.lastVersion.equals(this.thisVersion);
+    fun firstRun(): Boolean {
+        return lastVersion != thisVersion
     }
 
     /**
-     * Return true if your app including ChangeLog is started the first time ever.
-     * Return also true if your app was deinstalled and reinstalled again.
+     * Return true if TourCount including ChangeLog is started the first time ever.
+     * Return also true if TourCount was deinstalled and reinstalled again.
      */
-    private boolean firstRunEver() {
-        return NO_VERSION.equals(this.lastVersion);
+    private fun firstRunEver(): Boolean {
+        return NO_VERSION == lastVersion
     }
 
     /**
      * Return an AlertDialog displaying the changes since the previous installed
-     * version of your app (what's new). But when this is the first run of your app
+     * version of TourCount (what's new). But when this is the first run of TourCount
      * including ChangeLog then the full log dialog is show.
      */
-    public AlertDialog getLogDialog() {
-        return this.getDialog(this.firstRunEver());
-    }
+    val logDialog: AlertDialog?
+        get() = getDialog(firstRunEver())
 
     /**
      * Return an AlertDialog with a full change log displayed
      */
-    public AlertDialog getFullLogDialog() {
-        return this.getDialog(true);
-    }
+    val fullLogDialog: AlertDialog?
+        get() = getDialog(true)
 
-    private AlertDialog getDialog(boolean full) {
-        WebView wv = new WebView(this.context);
+    private fun getDialog(full: Boolean): AlertDialog? {
+        val wv = WebView(context)
 
-        wv.setBackgroundColor(Color.parseColor("#1a1a1a")); // DarkGray
-        wv.loadDataWithBaseURL(null, this.getLog(full), "text/html",
-                "UTF-8", null);
+        wv.setBackgroundColor("#1a1a1a".toColorInt()) // DarkGray
+        wv.loadDataWithBaseURL(
+            null, getLog(full), "text/html",
+            "UTF-8", null
+        )
 
-        String fullTitle = context.getResources().getString(R.string.changelog_full_title)
-                + " " + thisVersion + ")\n";
-        String changeTitle = "Ver. " + thisVersion + ": "
-                + context.getResources().getString(R.string.changelog_title);
+        val fullTitle = (context.resources.getString(R.string.changelog_full_title)
+                + " " + thisVersion + ")\n")
+        val changeTitle = ("Ver. " + thisVersion + ": "
+                + context.resources.getString(R.string.changelog_title))
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this.context, android.R.style.Theme_Material_Dialog));
+        val builder = AlertDialog.Builder(
+            ContextThemeWrapper(context, android.R.style.Theme_Material_Dialog)
+        )
         builder
-                .setView(wv)
-                .setTitle(full ? fullTitle : changeTitle)
-                .setCancelable(false)
-                // OK button
-                .setPositiveButton(context.getResources().getString(
-                                R.string.ok_button),
-                        (dialog, which) -> updateVersionInPreferences());
+            .setView(wv)
+            .setTitle(if (full) fullTitle else changeTitle)
+            .setCancelable(false) // OK button
+            .setPositiveButton(
+                context.resources.getString(R.string.ok_button))
+            { _: DialogInterface?, _: Int -> updateVersionInPreferences() }
 
         if (!full) {
             // "more ..." button
-            builder.setNegativeButton(R.string.changelog_show_full, (dialog, id) -> getFullLogDialog().show());
+            builder.setNegativeButton(R.string.changelog_show_full)
+            { _: DialogInterface?, _: Int -> this.fullLogDialog!!.show() }
         }
-        return builder.create();
+        return builder.create()
     }
 
-    private void updateVersionInPreferences() {
-        // save new version number to preferences
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(VERSION_KEY, thisVersion);
-        editor.apply();
+    // Save new version number to preferences
+    private fun updateVersionInPreferences() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        editor.putString(VERSION_KEY, thisVersion)
+        editor.apply()
     }
 
     /**
      * Return HTML displaying the changes since the previous installed version
-     * of your app (what's new)
+     * of TourCount (what's new)
      */
-    public String getLog() {
-        return this.getLog(false);
-    }
+    val log: String
+        get() = getLog(false)
 
-    private String getLog(boolean full) {
+    private fun getLog(full: Boolean): String {
         // read changelog.txt file
-        sb = new StringBuffer();
+        sb = StringBuffer()
         try {
-            String language = Locale.getDefault().toString().substring(0, 2);
-            InputStream ins;
-            if (language.equals("de")) {
-                ins = context.getResources().openRawResource(R.raw.changelog_de);
+            val language = Locale.getDefault().toString().substring(0, 2)
+            val ins = if (language == "de") {
+                context.resources.openRawResource(R.raw.changelog_de)
             } else {
-                ins = context.getResources().openRawResource(R.raw.changelog);
+                context.resources.openRawResource(R.raw.changelog)
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(ins));
-            boolean advanceToEOVS = false; // if true: ignore further version sections
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                char marker = !line.isEmpty() ? line.charAt(0) : 0;
+            val br = BufferedReader(InputStreamReader(ins))
+            var advanceToEOVS = false // if true: ignore further version sections
+            var line: String?
+            while ((br.readLine().also { line = it }) != null) {
+                line = line!!.trim { it <= ' ' }
+                val marker = if (!line.isEmpty()) line[0] else 0.toChar()
 
+                // begin of a version section
                 if (marker == '$') {
-                    // begin of a version section
-                    this.closeList();
-                    String version = line.substring(1).trim();
+                    closeList()
+                    val version = line.substring(1).trim { it <= ' ' }
                     // stop output?
                     if (!full) {
-                        if (this.lastVersion.equals(version))
-                            advanceToEOVS = true;
-                        else if (version.equals(EOCL))
-                            advanceToEOVS = false;
+                        if (lastVersion == version) advanceToEOVS = true
+                        else if (version == EOCL) advanceToEOVS = false
                     }
                 } else if (!advanceToEOVS) {
-                    switch (marker) {
-                        case '%' -> {
+                    when (marker) {
+                        '%' -> {
                             // line contains version title
-                            this.closeList();
-                            sb.append("<div class='title'>").append(line.substring(1).trim()).append("</div>\n");
+                            closeList()
+                            sb!!.append("<div class='title'>")
+                                .append(line.substring(1).trim { it <= ' ' }).append("</div>\n")
                         }
-                        case '_' -> {
+
+                        '_' -> {
                             // line contains version subtitle
-                            this.closeList();
-                            sb.append("<div class='subtitle'>");
-                            sb.append(line.substring(1).trim()).append("</div>\n");
+                            closeList()
+                            sb!!.append("<div class='subtitle'>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</div>\n")
                         }
-                        case '!' -> {
+
+                        '!' -> {
                             // line contains free text
-                            this.closeList();
-                            sb.append("<div class='freetext'>");
-                            sb.append(line.substring(1).trim()).append("</div>\n");
+                            closeList()
+                            sb!!.append("<div class='freetext'>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</div>\n")
                         }
-                        case ')' -> {
+
+                        ')' -> {
                             // line contains normal text
-                            this.closeList();
-                            sb.append("<div class='normaltext'>");
-                            sb.append(line.substring(1).trim()).append("</div>\n");
+                            closeList()
+                            sb!!.append("<div class='normaltext'>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</div>\n")
                         }
-                        case '+' -> {
+
+                        '+' -> {
                             // line contains normal text with left margin
-                            this.closeList();
-                            sb.append("<div class='margtext'>");
-                            sb.append(line.substring(1).trim()).append("</div>\n");
+                            closeList()
+                            sb!!.append("<div class='margtext'>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</div>\n")
                         }
-                        case '&' -> {
+
+                        '&' -> {
                             // line contains bold text
-                            this.closeList();
-                            sb.append("<div class='boldtext'>");
-                            sb.append(line.substring(1).trim()).append("</div>\n");
+                            closeList()
+                            sb!!.append("<div class='boldtext'>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</div>\n")
                         }
-                        case '.' -> {
+
+                        '.' -> {
                             // empty line
-                            this.closeList();
-                            sb.append("<div class='freetext'>");
-                            sb.append(line.substring(1)).append("<br></div>\n");
+                            closeList()
+                            sb!!.append("<div class='freetext'>")
+                            sb!!.append(line.substring(1)).append("<br></div>\n")
                         }
-                        case '#' -> {
+
+                        '#' -> {
                             // line contains numbered list item
-                            this.openList(Listmode.ORDERED);
-                            sb.append("<li>");
-                            sb.append(line.substring(1).trim()).append("</li>\n");
+                            openList(ListMode.ORDERED)
+                            sb!!.append("<li>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</li>\n")
                         }
-                        case '*' -> {
+
+                        '*' -> {
                             // line contains bullet list item
-                            this.openList(Listmode.UNORDERED);
-                            sb.append("<li>");
-                            sb.append(line.substring(1).trim()).append("</li>\n");
+                            openList(ListMode.UNORDERED)
+                            sb!!.append("<li>")
+                            sb!!.append(line.substring(1).trim { it <= ' ' }).append("</li>\n")
                         }
-                        default -> {
+
+                        else -> {
                             // no special character: just use line as is
-                            this.closeList();
-                            sb.append(line).append("\n");
+                            closeList()
+                            sb!!.append(line).append("\n")
                         }
                     }
                 }
             }
-            this.closeList();
-            br.close();
-            ins.close();
-        } catch (IOException e) {
+            closeList()
+            br.close()
+            ins.close()
+        } catch (e: IOException) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "234, could not read changelog.", e);
+                Log.e(TAG,"256, could not read changelog.",e)
         }
 
-        return sb.toString();
+        return sb.toString()
     }
 
-    private void openList(Listmode listMode) {
+    private fun openList(listMode: ListMode?) {
         if (this.listMode != listMode) {
-            closeList();
-            if (listMode == Listmode.ORDERED)
-                sb.append("<div class='list'><ol>\n");
-            else if (listMode == Listmode.UNORDERED)
-                sb.append("<div class='list'><ul>\n");
-            this.listMode = listMode;
+            closeList()
+            if (listMode == ListMode.ORDERED) sb!!.append("<div class='list'><ol>\n")
+            else if (listMode == ListMode.UNORDERED) sb!!.append("<div class='list'><ul>\n")
+            this.listMode = listMode
         }
     }
 
-    private void closeList() {
-        if (this.listMode == Listmode.ORDERED)
-            sb.append("</ol></div>\n");
-        else if (this.listMode == Listmode.UNORDERED)
-            sb.append("</ul></div>\n");
-        this.listMode = Listmode.NONE;
+    private fun closeList() {
+        if (this.listMode == ListMode.ORDERED) sb!!.append("</ol></div>\n")
+        else if (this.listMode == ListMode.UNORDERED) sb!!.append("</ul></div>\n")
+        this.listMode = ListMode.NONE
     }
 
     /**
-     * modes for HTML-Lists (none, numbered, bullet)
+     * Modes for HTML-Lists (none, numbered, bullet)
      */
-    private enum Listmode {
+    private enum class ListMode {
         NONE, ORDERED, UNORDERED,
+    }
+
+    companion object {
+        private const val TAG = "ChangeLog"
+
+        // key for storing the version name in SharedPreferences
+        private const val VERSION_KEY = "PREFS_VERSION_KEY"
+        private const val NO_VERSION = "-"
+        private const val EOCL = "END_OF_CHANGE_LOG"
     }
 
 }

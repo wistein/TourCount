@@ -45,7 +45,7 @@ import javax.net.ssl.HttpsURLConnection
  * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
  *
  * Created by wmstein on 2026-05-07,
- * last edited on 2026-07-14
+ * last edited on 2026-07-19
  */
 open class AddrRequestService : Service {
     private lateinit var audioAttributionContext: Context
@@ -177,13 +177,12 @@ open class AddrRequestService : Service {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
             Log.i(TAG, "178, getAddress")
 
-        val urlString: String?
         val sb = StringBuilder()
-        if (emailString == "") {
-            urlString = ("https://nominatim.openstreetmap.org/reverse?email=test@temp.test"
+        val urlString = if (emailString == "") {
+            ("https://nominatim.openstreetmap.org/reverse?email=test@temp.test"
                     + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
         } else {
-            urlString = ("https://nominatim.openstreetmap.org/reverse?email=" + emailString
+            ("https://nominatim.openstreetmap.org/reverse?email=" + emailString
                     + "&format=xml&lat=" + lat + "&lon=" + lon + "&zoom=18&addressdetails=1")
         }
 
@@ -207,7 +206,7 @@ open class AddrRequestService : Service {
             // Handle connection error
             if (status != HttpsURLConnection.HTTP_OK) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "210, Nominatim status: $status")
+                    Log.e(TAG, "209, Nominatim status: $status")
 
                 urlConnection.disconnect()
             }
@@ -223,7 +222,7 @@ open class AddrRequestService : Service {
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "226, Problem converting Stream to String: $e")
+                    Log.e(TAG, "225, Problem converting Stream to String: $e")
             } finally {
                 reader.close()
                 iStream.close()
@@ -231,7 +230,7 @@ open class AddrRequestService : Service {
         } catch (e: IOException) {
             // SocketTimeoutException without email
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "234, Problem with internet address handling: $e")
+                Log.e(TAG, "233, Problem with internet address handling: $e")
         } finally {
             urlConnection.disconnect()
         }
@@ -252,7 +251,7 @@ open class AddrRequestService : Service {
             var send = xmlString.indexOf("</addressparts>")
             xmlString = xmlString.substring(sstart, send)
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "255, <addressparts>: $xmlString")
+                Log.i(TAG, "254, <addressparts>: $xmlString")
 
             val locality = StringBuilder() // quarter, road or street
             val locality1 = StringBuilder() // quarter, road or street

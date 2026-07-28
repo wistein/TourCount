@@ -73,6 +73,14 @@ _ subtitle
   .
   _
 
+$ 3.8.3
+  % Version 3.8.3
+  _ 2026-07-28
+  * Code improvements
+  * Exported Excel spreadsheet improved
+  * Remaining Java modules converted to Kotlin
+  * Name composition for exported files changed
+
 $ 3.8.2
   % Version 3.8.2
   _ 2026-07-16

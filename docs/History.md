@@ -2,6 +2,12 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.8.3 (2026-07-28)
+- Code improvements
+- Exported Excel spreadsheet improved
+- Remaining Java modules converted to Kotlin
+- Name composition for exported files changed 
+
 #### Version 3.8.2 (2026-07-16)
 - Exported Excel spreadsheet improved
 - Code improvements

@@ -41,7 +41,7 @@ import java.util.Locale
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-06-08
+ * last edited on 2026-07-21.
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
@@ -171,8 +171,11 @@ class EditSpeciesListActivity : AppCompatActivity() {
     // End of onResume()
 
     // Get 2 or more characters of species to select by search button
-    // Parameter view is necessary for function call
+    // Parameter view is necessary for error-free function call
     fun getEditSearchChars(view: View) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "177, View: $view")
+
         // Read EditText searchEdit from widget_edit_hint.xml
         val searchEdit: EditText = findViewById(R.id.searchE)
         searchEdit.findFocus()

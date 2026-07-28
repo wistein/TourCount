@@ -17,7 +17,7 @@ import java.util.Locale
  * Created by wmstein on 2017-09-25,
  * last modified in Java on 2018-06-13,
  * converted to Kotlin on 2024-09-30,
- * last edited on 2026-05-19.
+ * last edited on 2026-07-21.
  */
 internal object Utils {
     @JvmStatic
@@ -30,36 +30,37 @@ internal object Utils {
         var nameSpec = "Name"
         val sysLanguage = Locale.getDefault().toString().substring(0, 2)
 
-        if (sysLanguage == "de" && dataLanguage == "de") nameSpec = "Deutscher Name"
-        else if (sysLanguage == "en" && dataLanguage == "de") nameSpec = "German name"
-        else if (sysLanguage == "fr" && dataLanguage == "de") nameSpec = "Nom allemand"
-        else if (sysLanguage == "it" && dataLanguage == "de") nameSpec = "Nome tedesco"
-        else if (sysLanguage == "es" && dataLanguage == "de") nameSpec = "Nombre alemán"
+        when (sysLanguage) {
+            "de" if dataLanguage == "de" -> nameSpec = "Deutscher Name"
+            "en" if dataLanguage == "de" -> nameSpec = "German name"
+            "fr" if dataLanguage == "de" -> nameSpec = "Nom allemand"
+            "it" if dataLanguage == "de" -> nameSpec = "Nome tedesco"
+            "es" if dataLanguage == "de" -> nameSpec = "Nombre alemán"
 
-        else if (sysLanguage == "de" && dataLanguage == "en") nameSpec = "Englischer Name"
-        else if (sysLanguage == "en" && dataLanguage == "en") nameSpec = "English name"
-        else if (sysLanguage == "fr" && dataLanguage == "en") nameSpec = "Nom anglais"
-        else if (sysLanguage == "it" && dataLanguage == "en") nameSpec = "Nome inglese"
-        else if (sysLanguage == "es" && dataLanguage == "en") nameSpec = "Nombre inglés"
+            "de" if dataLanguage == "en" -> nameSpec = "Englischer Name"
+            "en" if dataLanguage == "en" -> nameSpec = "English name"
+            "fr" if dataLanguage == "en" -> nameSpec = "Nom anglais"
+            "it" if dataLanguage == "en" -> nameSpec = "Nome inglese"
+            "es" if dataLanguage == "en" -> nameSpec = "Nombre inglés"
 
-        else if (sysLanguage == "de" && dataLanguage == "fr") nameSpec = "Französischer Name"
-        else if (sysLanguage == "en" && dataLanguage == "fr") nameSpec = "French name"
-        else if (sysLanguage == "fr" && dataLanguage == "fr") nameSpec = "Nom français"
-        else if (sysLanguage == "it" && dataLanguage == "fr") nameSpec = "Nome francese"
-        else if (sysLanguage == "es" && dataLanguage == "fr") nameSpec = "Nombre francés"
+            "de" if dataLanguage == "fr" -> nameSpec = "Französischer Name"
+            "en" if dataLanguage == "fr" -> nameSpec = "French name"
+            "fr" if dataLanguage == "fr" -> nameSpec = "Nom français"
+            "it" if dataLanguage == "fr" -> nameSpec = "Nome francese"
+            "es" if dataLanguage == "fr" -> nameSpec = "Nombre francés"
 
-        else if (sysLanguage == "de" && dataLanguage == "it") nameSpec = "Italienischer Name"
-        else if (sysLanguage == "en" && dataLanguage == "it") nameSpec = "Italian name"
-        else if (sysLanguage == "fr" && dataLanguage == "it") nameSpec = "Nom italien"
-        else if (sysLanguage == "it" && dataLanguage == "it") nameSpec = "Nome italiano"
-        else if (sysLanguage == "es" && dataLanguage == "it") nameSpec = "Nombre italiano"
+            "de" if dataLanguage == "it" -> nameSpec = "Italienischer Name"
+            "en" if dataLanguage == "it" -> nameSpec = "Italian name"
+            "fr" if dataLanguage == "it" -> nameSpec = "Nom italien"
+            "it" if dataLanguage == "it" -> nameSpec = "Nome italiano"
+            "es" if dataLanguage == "it" -> nameSpec = "Nombre italiano"
 
-        else if (sysLanguage == "de" && dataLanguage == "es") nameSpec = "Spanischer Name"
-        else if (sysLanguage == "en" && dataLanguage == "es") nameSpec = "Spanish name"
-        else if (sysLanguage == "fr" && dataLanguage == "es") nameSpec = "Nom espagnol"
-        else if (sysLanguage == "it" && dataLanguage == "es") nameSpec = "Nome spagnolo"
-        else if (sysLanguage == "es" && dataLanguage == "es") nameSpec = "Nombre español"
-
+            "de" if dataLanguage == "es" -> nameSpec = "Spanischer Name"
+            "en" if dataLanguage == "es" -> nameSpec = "Spanish name"
+            "fr" if dataLanguage == "es" -> nameSpec = "Nom espagnol"
+            "it" if dataLanguage == "es" -> nameSpec = "Nome spagnolo"
+            "es" if dataLanguage == "es" -> nameSpec = "Nombre español"
+        }
         return nameSpec
     }
 

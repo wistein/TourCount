@@ -1,12 +1,10 @@
 TourCount permite registrar mariposas de forma específica por especie y con localización GPS individualizada.
 
-Novedades de la versión 3.8.2:
-- Mejora de la hoja de cálculo Excel exportada
+Novedades de la versión 3.8.3:
 - Mejoras en el código
-- Gestión revisada de permisos de almacenamiento
-- Idiomas adicionales para las descripciones de Fastlane
-- Corrección de un error en el control del sonido de información
-- Corrección de un error: 1. La localidad aparece dos veces en el recuento
+- Mejora de la hoja de cálculo Excel exportada
+- Se han convertido al Kotlin los módulos de Java restantes
+- Se ha modificado la composición de los nombres de los archivos exportados
 
 Características:
 - El registro de datos se basa en una estancia en una región con las mariposas que se esperan encontrar en ella.

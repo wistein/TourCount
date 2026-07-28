@@ -42,8 +42,8 @@ import java.util.Locale
  *
  * Created for TourCount by wmstein on 2019-04-12,
  * last edited in Java on 2023-05-13,
- * converted to Kotlin on 2023-05-26
- * last edited on 2026-06-28
+ * converted to Kotlin on 2023-05-26,
+ * last edited on 2026-07-21.
  */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
@@ -169,11 +169,9 @@ class AddSpeciesActivity : AppCompatActivity() {
             else -> {
                 namesLCompleteArrayList = ArrayList(listOf(*resources.getStringArray(R.array.selSpecs_de)))
                 val mesg = getString(R.string.specsCommonLang)
-                Toast.makeText(
-                    this,
+                Toast.makeText(this,
                     fromHtml("<font color='red'><b>$mesg</b></font>"),
-                    Toast.LENGTH_LONG
-                ).show()
+                    Toast.LENGTH_LONG).show()
             }
         }
 
@@ -194,11 +192,9 @@ class AddSpeciesActivity : AppCompatActivity() {
 
         // Toast hint for duration of list calculation
         val mesg = getString(R.string.wait)
-        Toast.makeText(
-            applicationContext,
+        Toast.makeText(applicationContext,
             fromHtml("<font color='blue'>$mesg</font>"),
-            Toast.LENGTH_SHORT
-        ).show()
+            Toast.LENGTH_SHORT).show()
 
         // Delay necessary for Toast to show and not break activity
         Handler(Looper.getMainLooper()).postDelayed({
@@ -208,8 +204,11 @@ class AddSpeciesActivity : AppCompatActivity() {
     // End of onResume()
 
     // Get 2 or more characters of species to select by search button
-    // Parameter view is necessary for function call
+    // Parameter view is necessary for error-free function call
     fun getAddSearchChars(view: View) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "210, View: $view")
+
         // Read EditText searchAdd from widget_add_hint.xml
         val searchAdd: EditText = findViewById(R.id.searchA)
         searchAdd.findFocus()
@@ -278,7 +277,7 @@ class AddSpeciesActivity : AppCompatActivity() {
             namesLReducedArrayList = arrayListOf()
             codesReducedArrayList = arrayListOf()
 
-            for (i in 0 until namesCompleteArrayList!!.size) {
+            for (i in namesCompleteArrayList!!.indices) {
                 if (namesCompleteArrayList!![i].uppercase(Locale.getDefault()).contains(searchChars)) {
                     specName = namesCompleteArrayList!![i]
                     specNameG = namesLCompleteArrayList!![i]
@@ -397,7 +396,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "400, onPause")
+            Log.i(TAG, "399, onPause")
 
         countDataSource!!.close()
 
@@ -415,7 +414,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "418, onStop")
+            Log.i(TAG, "417, onStop")
 
         addArea = null
         addHintArea = null
@@ -425,7 +424,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "428, onDestroy")
+            Log.i(TAG, "427, onDestroy")
     }
 
     companion object {

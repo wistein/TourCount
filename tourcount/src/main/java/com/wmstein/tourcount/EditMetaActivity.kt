@@ -1,514 +1,458 @@
-package com.wmstein.tourcount;
+package com.wmstein.tourcount
 
-import static com.wmstein.tourcount.Utils.fromHtml;
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.DatePicker
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
+import com.wmstein.tourcount.Utils.fromHtml
+import com.wmstein.tourcount.database.Head
+import com.wmstein.tourcount.database.HeadDataSource
+import com.wmstein.tourcount.database.Section
+import com.wmstein.tourcount.database.SectionDataSource
+import com.wmstein.tourcount.widgets.EditMetaLocationWidget
+import com.wmstein.tourcount.widgets.EditMetaTitleWidget
+import com.wmstein.tourcount.widgets.EditMetaWidget
 
-import com.wmstein.tourcount.database.Head;
-import com.wmstein.tourcount.database.HeadDataSource;
-import com.wmstein.tourcount.database.Section;
-import com.wmstein.tourcount.database.SectionDataSource;
-import com.wmstein.tourcount.widgets.EditMetaLocationWidget;
-import com.wmstein.tourcount.widgets.EditMetaWidget;
-import com.wmstein.tourcount.widgets.EditMetaTitleWidget;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /*********************************************************************************
  * EditMetaActivity collects, partly edits and shows metadata for the current tour
- * <p>
+ * 
  * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-07-01
+ * last edit in Java on 2026-07-01,
+ * converted to kotlin on 2026-07-17,
+ * last edited on 2026-07-21.
  */
-public class EditMetaActivity extends AppCompatActivity
-{
-    private static final String TAG = "EditMetaAct";
-
+class EditMetaActivity : AppCompatActivity() {
     // Preferences
-    private final SharedPreferences prefs = TourCountApplication.getPrefs();
+    private val prefs = getPrefs()
 
     // Data from DB tables
-    private Head head;
-    private Section section;
-    private HeadDataSource headDataSource;
-    private SectionDataSource sectionDataSource;
+    private var head: Head? = null
+    private var section: Section? = null
+    private var headDataSource: HeadDataSource? = null
+    private var sectionDataSource: SectionDataSource? = null
 
-    private Calendar pdate, ptime;
+    private var pdate: Calendar? = null
+    private var ptime: Calendar? = null
 
-    private LinearLayout head_area;
-    private TextView sDate, sTime, eTime;
+    private var headArea: LinearLayout? = null
+    private var sDate: TextView? = null
+    private var sTime: TextView? = null
+    private var eTime: TextView? = null
 
-    private EditMetaTitleWidget emtw;
-    private EditMetaLocationWidget emlw;
-    private EditMetaWidget emw;
+    private var emtw: EditMetaTitleWidget? = null
+    private var emlw: EditMetaLocationWidget? = null
+    private var emw: EditMetaWidget? = null
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "77, onCreate");
+            Log.i(TAG, "78, onCreate")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM)  // SDK 35+
         {
-            EdgeToEdge.enable(this);
+            this.enableEdgeToEdge()
         }
-        setContentView(R.layout.activity_edit_meta);
+        setContentView(R.layout.activity_edit_meta)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.editHeadScreen),
-                (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                    mlp.topMargin = insets.top;
-                    mlp.bottomMargin = insets.bottom;
-                    mlp.leftMargin = insets.left;
-                    mlp.rightMargin = insets.right;
-                    v.setLayoutParams(mlp);
-                    return WindowInsetsCompat.CONSUMED;
-                });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.editHeadScreen))
+        { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = insets.top
+                leftMargin = insets.left
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Option for full bright screen
-        boolean brightPref = prefs.getBoolean("pref_bright", true);
+        val brightPref = prefs.getBoolean("pref_bright", true)
 
         // Set full brightness of screen
         if (brightPref) {
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.screenBrightness = 1.0f;
-            getWindow().setAttributes(params);
+            val params = window.attributes
+            params.screenBrightness = 1.0f
+            window.attributes = params
         }
 
-        head_area = findViewById(R.id.edit_head);
+        headArea = findViewById(R.id.edit_head)
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.editHeadTitle));
+        supportActionBar!!.title = getString(R.string.editHeadTitle)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        headDataSource = new HeadDataSource(this);
-        sectionDataSource = new SectionDataSource(this);
+        headDataSource = HeadDataSource(this)
+        sectionDataSource = SectionDataSource(this)
 
         // New onBackPressed logic
-        if (getNavBarMode() == 0 || getNavBarMode() == 1) {
-            OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-                @Override
-                public void handleOnBackPressed() {
+        if (this.navBarMode == 0 || this.navBarMode == 1) {
+            val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "120, handleOnBackPressed");
-                    finish();
-                    remove();
+                        Log.i(TAG,"121, handleOnBackPressed")
+
+                    finish()
+                    remove()
                 }
-            };
-            getOnBackPressedDispatcher().addCallback(this, callback);
+            }
+            onBackPressedDispatcher.addCallback(this, callback)
         }
     }
     // End of onCreate()
 
-    // Check for Navigation bar 1-, 2- or 3-button mode
-    public int getNavBarMode() {
-        Resources resources = this.getResources();
-        @SuppressLint("DiscouragedApi")
-        int resourceId = resources.getIdentifier("config_navBarInteractionMode",
-                "integer", "android");
-        return resourceId > 0 ? resources.getInteger(resourceId) : 0;
-    }
+    val navBarMode: Int
+        get() {
+            val resources = this.getResources()
+            @SuppressLint("DiscouragedApi") val resourceId = resources.getIdentifier(
+                "config_navBarInteractionMode",
+                "integer", "android"
+            )
+            return if (resourceId > 0) resources.getInteger(resourceId) else 0
+        }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
+    override fun onResume() {
+        super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "145, onResume");
+            Log.i(TAG, "146, onResume")
 
         // Setup data sources
-        headDataSource.open();
-        sectionDataSource.open();
+        headDataSource!!.open()
+        sectionDataSource!!.open()
 
         // Build the Edit Metadata screen
         // Clear existing view
-        head_area.removeAllViews();
+        headArea!!.removeAllViews()
 
         // Load head and metadata
-        head = headDataSource.getHead();
-        section = sectionDataSource.getSection();
+        head = headDataSource!!.head
+        section = sectionDataSource!!.section
 
         // Display editable list title, observer name and notes by EditMetaTitleWidget
-        emtw = new EditMetaTitleWidget(this, null);
-        emtw.setWidgetTitle(getString(R.string.titleEdit));
-        emtw.setWidgetOName1(getString(R.string.inspector) + ": ");
-        emtw.setWidgetONotes1(getString(R.string.titleTourNotes));
+        emtw = EditMetaTitleWidget(this, null)
+        emtw!!.setWidgetTitle(getString(R.string.titleEdit))
+        emtw!!.setWidgetOName1(getString(R.string.inspector) + ": ")
+        emtw!!.setWidgetONotes1(getString(R.string.titleTourNotes))
 
-        emtw.setWidgetName(section.name);
-        emtw.setWidgetOName2(head.observer);
-        emtw.setWidgetONotes2(section.notes);
-        head_area.addView(emtw);
+        emtw!!.widgetName = section!!.name
+        emtw!!.widgetOName2 = head!!.observer
+        emtw!!.widgetONotes2 = section!!.notes
+        headArea!!.addView(emtw)
 
         // Display the editable location data by EditMetaLocationWidget
-        emlw = new EditMetaLocationWidget(this, null);
-        emlw.setWidgetCo1(getString(R.string.country) + ":");
-        emlw.setWidgetState1(getString(R.string.bstate) + ":");
-        emlw.setWidgetPlz1(getString(R.string.plz) + ":");
-        emlw.setWidgetCity1(getString(R.string.city) + ":");
-        emlw.setWidgetPlace1(getString(R.string.place) + ":");
-        emlw.setWidgetLocality1(getString(R.string.slocality) + ":");
+        emlw = EditMetaLocationWidget(this, null)
+        emlw!!.setWidgetCo1(getString(R.string.country) + ":")
+        emlw!!.setWidgetState1(getString(R.string.bstate) + ":")
+        emlw!!.setWidgetPlz1(getString(R.string.plz) + ":")
+        emlw!!.setWidgetCity1(getString(R.string.city) + ":")
+        emlw!!.setWidgetPlace1(getString(R.string.place) + ":")
+        emlw!!.setWidgetLocality1(getString(R.string.slocality) + ":")
 
-        emlw.setWidgetCo2(section.country);
-        emlw.setWidgetState2(section.b_state);
-        emlw.setWidgetPlz2(section.plz);
-        emlw.setWidgetCity2(section.city);
-        emlw.setWidgetPlace2(section.place);
-        emlw.setWidgetLocality2(section.st_locality);
-        head_area.addView(emlw);
+        emlw!!.widgetCo2 = section!!.country
+        emlw!!.widgetState2 = section!!.b_state
+        emlw!!.widgetPlz2 = section!!.plz
+        emlw!!.widgetCity2 = section!!.city
+        emlw!!.widgetPlace2 = section!!.place
+        emlw!!.widgetLocality2 = section!!.st_locality
+        headArea!!.addView(emlw)
 
         // Display the editable metadata by EditMetaWidget
-        emw = new EditMetaWidget(this, null);
-        emw.setWidgetDate1(getString(R.string.date) + ":");
-        emw.setWidgetStartTm1(getString(R.string.starttm));
-        emw.setWidgetEndTm1(getString(R.string.endtm));
+        emw = EditMetaWidget(this, null)
+        emw!!.setWidgetDate1(getString(R.string.date) + ":")
+        emw!!.setWidgetStartTm1(getString(R.string.starttm))
+        emw!!.setWidgetEndTm1(getString(R.string.endtm))
 
-        emw.setWidgetDate2(section.date);
-        emw.setWidgetStartTm2(section.start_tm);
-        emw.setWidgetEndTm2(section.end_tm);
+        emw!!.widgetDate2 = section!!.date
+        emw!!.widgetStartTm2 = section!!.start_tm
+        emw!!.widgetEndTm2 = section!!.end_tm
 
-        emw.setWidgetTemp1(getString(R.string.temperature) + ":");
-        emw.setWidgetWind1(getString(R.string.wind) + ":");
-        emw.setWidgetClouds1(getString(R.string.clouds) + ":");
+        emw!!.setWidgetTemp1(getString(R.string.temperature) + ":")
+        emw!!.setWidgetWind1(getString(R.string.wind) + ":")
+        emw!!.setWidgetClouds1(getString(R.string.clouds) + ":")
 
-        emw.setWidgetTemp2(section.tmp);
-        emw.setWidgetTemp3(section.tmp_end);
-        emw.setWidgetWind2(section.wind);
-        emw.setWidgetWind3(section.wind_end);
-        emw.setWidgetClouds2(section.clouds);
-        emw.setWidgetClouds3(section.clouds_end);
-        head_area.addView(emw);
+        emw!!.widgetTemp2 = section!!.tmp
+        emw!!.widgetTemp3 = section!!.tmp_end
+        emw!!.widgetWind2 = section!!.wind
+        emw!!.widgetWind3 = section!!.wind_end
+        emw!!.widgetClouds2 = section!!.clouds
+        emw!!.widgetClouds3 = section!!.clouds_end
+        headArea!!.addView(emw)
 
         // Check for focus
-        String sName = section.name;
-        if (isNotEmpty(sName))
-        {
-            emw.requestFocus();
-        }
-        else
-        {
-            emtw.requestFocus();
+        val sName = section!!.name
+        if (sName != "") {
+            emw!!.requestFocus()
+        } else {
+            emtw!!.requestFocus()
         }
 
-        pdate = Calendar.getInstance();
-        ptime = Calendar.getInstance();
+        pdate = Calendar.getInstance()
+        ptime = Calendar.getInstance()
 
-        sDate = findViewById(R.id.widgetDate2);
-        sTime = findViewById(R.id.widgetStartTm2);
-        eTime = findViewById(R.id.widgetEndTm2);
+        sDate = findViewById(R.id.widgetDate2)
+        sTime = findViewById(R.id.widgetStartTm2)
+        eTime = findViewById(R.id.widgetEndTm2)
 
         // Get current date by click
-        sDate.setOnClickListener(v ->
-        {
-            Date date = new Date();
-            sDate.setText(getformDate(date));
-        });
+        sDate!!.setOnClickListener { _: View? ->
+            val date = Date()
+            sDate!!.text = getformDate(date)
+        }
 
         // Get date picker result
-        final DatePickerDialog.OnDateSetListener dpd = (view, year, monthOfYear, dayOfMonth) ->
-        {
-            pdate.set(Calendar.YEAR, year);
-            pdate.set(Calendar.MONTH, monthOfYear);
-            pdate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            Date date = pdate.getTime();
-            sDate.setText(getformDate(date));
-        };
+        val dpd =
+            OnDateSetListener { _: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                pdate!!.set(Calendar.YEAR, year)
+                pdate!!.set(Calendar.MONTH, monthOfYear)
+                pdate!!.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                val date = pdate!!.getTime()
+                sDate!!.text = getformDate(date)
+            }
 
         // Select date by long click
-        sDate.setOnLongClickListener(v ->
-        {
-            new DatePickerDialog(EditMetaActivity.this, dpd,
-                pdate.get(Calendar.YEAR),
-                pdate.get(Calendar.MONTH),
-                pdate.get(Calendar.DAY_OF_MONTH)).show();
-            return true;
-        });
+        sDate!!.setOnLongClickListener { _: View? ->
+            DatePickerDialog(
+                this@EditMetaActivity, dpd,
+                pdate!!.get(Calendar.YEAR),
+                pdate!!.get(Calendar.MONTH),
+                pdate!!.get(Calendar.DAY_OF_MONTH)
+            ).show()
+            true
+        }
 
         // Get current start time
-        sTime.setOnClickListener(v ->
-        {
-            Date date = new Date();
-            sTime.setText(getformTime(date));
-        });
+        sTime!!.setOnClickListener { _: View? ->
+            val date = Date()
+            sTime!!.text = getformTime(date)
+        }
 
         // Get start time picker result
-        final TimePickerDialog.OnTimeSetListener stpd = (view, hourOfDay, minute) ->
-        {
-            ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            ptime.set(Calendar.MINUTE, minute);
-            Date date = ptime.getTime();
-            sTime.setText(getformTime(date));
-        };
+        val stpd = OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int ->
+            ptime!!.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            ptime!!.set(Calendar.MINUTE, minute)
+            val date = ptime!!.getTime()
+            sTime!!.text = getformTime(date)
+        }
 
         // Select start time
-        sTime.setOnLongClickListener(v ->
-        {
-            new TimePickerDialog(EditMetaActivity.this, stpd,
-                ptime.get(Calendar.HOUR_OF_DAY),
-                ptime.get(Calendar.MINUTE),
-                true).show();
-            return true;
-        });
+        sTime!!.setOnLongClickListener { _: View? ->
+            TimePickerDialog(
+                this@EditMetaActivity, stpd,
+                ptime!!.get(Calendar.HOUR_OF_DAY),
+                ptime!!.get(Calendar.MINUTE),
+                true
+            ).show()
+            true
+        }
 
         // Get current end time
-        eTime.setOnClickListener(v ->
-        {
-            Date date = new Date();
-            eTime.setText(getformTime(date));
-        });
+        eTime!!.setOnClickListener { _: View? ->
+            val date = Date()
+            eTime!!.text = getformTime(date)
+        }
 
         // Get start time picker result
-        final TimePickerDialog.OnTimeSetListener etpd = (view, hourOfDay, minute) ->
-        {
-            ptime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            ptime.set(Calendar.MINUTE, minute);
-            Date date = ptime.getTime();
-            eTime.setText(getformTime(date));
-        };
+        val etpd = OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int ->
+            ptime!!.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            ptime!!.set(Calendar.MINUTE, minute)
+            val date = ptime!!.getTime()
+            eTime!!.text = getformTime(date)
+        }
 
         // Select end time
-        eTime.setOnLongClickListener(v ->
-        {
-            new TimePickerDialog(EditMetaActivity.this, etpd,
-                ptime.get(Calendar.HOUR_OF_DAY),
-                ptime.get(Calendar.MINUTE),
-                true).show();
-            return true;
-        });
+        eTime!!.setOnLongClickListener { _: View? ->
+            TimePickerDialog(
+                this@EditMetaActivity, etpd,
+                ptime!!.get(Calendar.HOUR_OF_DAY),
+                ptime!!.get(Calendar.MINUTE),
+                true
+            ).show()
+            true
+        }
     }
     // End of onResume()
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.edit_meta, menu);
-        return true;
+        menuInflater.inflate(R.menu.edit_meta, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
-        int id = item.getItemId();
-        if (id == android.R.id.home) // back button in actionBar
+        val id = item.itemId
+        if (id == android.R.id.home)  // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "324, MenuItem home");
-            finish();
-            return true;
+                Log.i(TAG, "316, MenuItem home")
+
+            finish()
+            return true
         }
-        else if (id == R.id.menuSaveExit)
-        {
+
+        if (id == R.id.menuSaveExit) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "331, MenuItem saveExit");
-            if (saveData())
-                finish();
-            return true;
+                Log.i(TAG, "324, MenuItem saveExit")
+
+            if (saveData()) finish()
+            return true
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
+    override fun onPause() {
+        super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "345, onPause");
+            Log.i(TAG, "336, onPause")
 
-        headDataSource.close();
-        sectionDataSource.close();
+        headDataSource!!.close()
+        sectionDataSource!!.close()
 
-        sDate.setOnClickListener(null);
-        sDate.setOnLongClickListener(null);
-        sTime.setOnClickListener(null);
-        sTime.setOnLongClickListener(null);
-        eTime.setOnClickListener(null);
-        eTime.setOnLongClickListener(null);
+        sDate!!.setOnClickListener(null)
+        sDate!!.setOnLongClickListener(null)
+        sTime!!.setOnClickListener(null)
+        sTime!!.setOnLongClickListener(null)
+        eTime!!.setOnClickListener(null)
+        eTime!!.setOnLongClickListener(null)
 
-        head_area.clearFocus();
-        head_area.removeAllViews();
+        headArea!!.clearFocus()
+        headArea!!.removeAllViews()
     }
 
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
+    override fun onStop() {
+        super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "367, onStop");
+            Log.i(TAG, "356, onStop")
 
-        head_area = null;
+        headArea = null
     }
 
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
+    override fun onDestroy() {
+        super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "378, onDestroy");
+            Log.i(TAG, "365, onDestroy")
     }
 
-    private boolean saveData()
-    {
+    private fun saveData(): Boolean {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "384, saveData");
+            Log.i(TAG, "370 saveData")
 
         // Save head data
-        head.observer = emtw.getWidgetOName2();
-        headDataSource.saveHead(head);
+        head!!.observer = emtw!!.widgetOName2
+        headDataSource!!.saveHead(head!!)
 
-        String mesg;
+        var mesg: String
 
         // Save section data
-        section.name = emtw.getWidgetName();
-        section.notes = emtw.getWidgetONotes2();
+        section!!.name = emtw!!.widgetName
+        section!!.notes = emtw!!.widgetONotes2
 
-        section.country = emlw.getWidgetCo2();
-        section.b_state = emlw.getWidgetState2();
-        section.city = emlw.getWidgetCity2();
-        section.place = emlw.getWidgetPlace2();
-        section.st_locality = emlw.getWidgetLocality2();
-        section.plz = emlw.getWidgetPlz2();
+        section!!.country = emlw!!.widgetCo2
+        section!!.b_state = emlw!!.widgetState2
+        section!!.city = emlw!!.widgetCity2
+        section!!.place = emlw!!.widgetPlace2
+        section!!.st_locality = emlw!!.widgetLocality2
+        section!!.plz = emlw!!.widgetPlz2
 
-        section.tmp = emw.getWidgetTemp2();
-        section.tmp_end = emw.getWidgetTemp3();
+        section!!.tmp = emw!!.widgetTemp2
+        section!!.tmp_end = emw!!.widgetTemp3
 
         // Check plausi for temperature
-        if (section.tmp > 50 || section.tmp_end > 50 || section.tmp < 0 || section.tmp_end < 0)
-        {
-            mesg = getString(R.string.valTemp);
-            Toast.makeText(this, //orange
-                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
-            return false;
+        if (section!!.tmp !in 0..50 || section!!.tmp_end !in 0..50) {
+            mesg = getString(R.string.valTemp)
+            Toast.makeText(this,  //orange
+                fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG).show()
+            return false
         }
 
-        section.wind = emw.getWidgetWind2();
-        section.wind_end = emw.getWidgetWind3();
+        section!!.wind = emw!!.widgetWind2
+        section!!.wind_end = emw!!.widgetWind3
 
         // Check plausi for wind
-        if (section.wind > 4 || section.wind_end > 4 || section.wind < 0 || section.wind_end < 0)
-        {
-            mesg = getString(R.string.valWind);
-            Toast.makeText(this, // orange
-                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
-            return false;
+        if (section!!.wind !in 0..4 || section!!.wind_end !in 0..4) {
+            mesg = getString(R.string.valWind)
+            Toast.makeText(this,  // orange
+                fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG).show()
+            return false
         }
 
-        section.clouds = emw.getWidgetClouds2();
-        section.clouds_end = emw.getWidgetClouds3();
+        section!!.clouds = emw!!.widgetClouds2
+        section!!.clouds_end = emw!!.widgetClouds3
 
         // Check plausi for clouds
-        if (section.clouds > 100 || section.clouds_end > 100 || section.clouds < 0 || section.clouds_end < 0)
-        {
-            mesg = getString(R.string.valClouds);
-            Toast.makeText(this, // orange
-                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
-            return false;
+        if (section!!.clouds !in 0..100 || section!!.clouds_end !in 0..100) {
+            mesg = getString(R.string.valClouds)
+            Toast.makeText(this,  // orange
+                fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG).show()
+            return false
         }
 
-        section.date = emw.getWidgetDate2();
-        section.start_tm = emw.getWidgetStartTm2();
-        section.end_tm = emw.getWidgetEndTm2();
+        section!!.date = emw!!.widgetDate2
+        section!!.start_tm = emw!!.widgetStartTm2
+        section!!.end_tm = emw!!.widgetEndTm2
 
-        sectionDataSource.saveSection(section);
-        return true;
+        sectionDataSource!!.saveSection(section!!)
+        return true
     }
+    // End of saveData()
 
-    // Formatted date
-    public static String getformDate(Date date)
-    {
-        DateFormat dform;
-        String lng = Locale.getDefault().toString().substring(0, 2);
+    companion object {
+        private const val TAG = "EditMetaAct"
 
-        if (lng.equals("de"))
-            dform = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        else if (lng.equals("en"))
-            dform = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        else // for fr, it and es
-            dform = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+        // Formatted date
+        fun getformDate(date: Date): String {
+            val dform: DateFormat?
+            val lng = Locale.getDefault().toString().substring(0, 2)
 
-        return dform.format(date);
-    }
+            dform = when (lng) {
+                "de" -> SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
+                "en" -> SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                else  // for fr, it and es
+                    -> SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
+            }
+            return dform.format(date)
+        }
 
-    // Date for start_tm and end_tm
-    public static String getformTime(Date date)
-    {
-        DateFormat dform = new SimpleDateFormat("HH:mm", Locale.US);
-        return dform.format(date);
-    }
-
-    /**
-     * Following functions are taken from the Apache commons-lang3-3.4 library
-     * licensed under Apache License Version 2.0, January 2004
-     <p>
-     * Checks if a CharSequence is not empty ("") and not null.
-     <p>
-     * isNotEmpty(null)      = false
-     * isNotEmpty("")        = false
-     * isNotEmpty(" ")       = true
-     * isNotEmpty("bob")     = true
-     * isNotEmpty("  bob  ") = true
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is not empty and not null
-     */
-    public static boolean isNotEmpty(final CharSequence cs)
-    {
-        return !isEmpty(cs);
-    }
-
-    /**
-     * Checks if a CharSequence is empty ("") or null.
-     <p>
-     * isEmpty(null)      = true
-     * isEmpty("")        = true
-     * isEmpty(" ")       = false
-     * isEmpty("bob")     = false
-     * isEmpty("  bob  ") = false
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is empty or null
-     */
-    public static boolean isEmpty(final CharSequence cs)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // sdk 35
-            return cs == null || cs.isEmpty();
-        else
-            return cs == null || cs.length() == 0; // needed for Android versions < sdk 35
+        // Derive start_tm and end_tm from date
+        fun getformTime(date: Date): String {
+            val dform: DateFormat = SimpleDateFormat("HH:mm", Locale.US)
+            return dform.format(date)
+        }
     }
 
 }
-

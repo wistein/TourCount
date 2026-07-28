@@ -1,221 +1,216 @@
-package com.wmstein.tourcount;
+package com.wmstein.tourcount
 
-import static com.wmstein.tourcount.Utils.fromHtml;
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.pm.PackageManager
+import android.database.CursorIndexOutOfBoundsException
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.PowerManager
+import android.os.PowerManager.WakeLock
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.provider.MediaStore
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import android.view.WindowManager
+import android.widget.AdapterView
+import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.database.CursorIndexOutOfBoundsException;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.PowerManager;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
+import com.wmstein.tourcount.Utils.fromHtml
+import com.wmstein.tourcount.database.Count
+import com.wmstein.tourcount.database.CountDataSource
+import com.wmstein.tourcount.database.IndividualsDataSource
+import com.wmstein.tourcount.database.Section
+import com.wmstein.tourcount.database.SectionDataSource
+import com.wmstein.tourcount.widgets.CountingHead1Widget
+import com.wmstein.tourcount.widgets.CountingLHWidget
+import com.wmstein.tourcount.widgets.CountingSpeciesNotesWidget
+import com.wmstein.tourcount.widgets.CountingTourNotesWidget
+import com.wmstein.tourcount.widgets.CountingWidget
 
-import com.wmstein.tourcount.database.Count;
-import com.wmstein.tourcount.database.CountDataSource;
-import com.wmstein.tourcount.database.IndividualsDataSource;
-import com.wmstein.tourcount.database.Section;
-import com.wmstein.tourcount.database.SectionDataSource;
-import com.wmstein.tourcount.widgets.CountingWidget;
-import com.wmstein.tourcount.widgets.CountingHead1Widget;
-import com.wmstein.tourcount.widgets.CountingSpeciesNotesWidget;
-import com.wmstein.tourcount.widgets.CountingLHWidget;
-import com.wmstein.tourcount.widgets.CountingTourNotesWidget;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
 
 /***************************************************************************************
  * CountingActivity is the central activity of TourCount.
- * It provides the counters, starts GPS-location polling, starts EditIndividualActivity,
- * starts EditSpeciesListActivity, switches screen off when device is pocketed
+ * It provides six counters, starts GPS-location polling, starts AddSpeciesActivity, DelSpeciesActivity,
+ * EditSpeciesListActivity, EditSpeciesNotesActivity, EditTourNotesActivity and EditIndividualActivity,
+ * switches screen off when the device is pocketed
  * and allows taking pictures and sending notes.
- * <p>
+ *
  * CountingActivity uses CountingWidget.kt, CountingLHWidget.kt, NotesWidget.kt,
  * activity_counting.xml and activity_counting_lh.xml
- * <p>
+ *
  * Basic counting functions created by milo for BeeCount on 2014-05-05.
  * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-06-08
+ * last edited in Java on 2026-06-08,
+ * converted to Kotlin on 2026-07-17,
+ * last edited on 2026-07-21.
  */
-public class CountingActivity
-        extends AppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener, SensorEventListener {
-    private static final String TAG = "CountAct";
-
-    private int iid = 1;
-    private LinearLayout counting_screen;
-    private LinearLayout count_area;
-
-    private LinearLayout head_area2;
-    private LinearLayout tour_notes_area;
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
-
+class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, SensorEventListener {
+    private var countScreen: LinearLayout? = null
+    private var countArea: LinearLayout? = null
+    private var headArea: LinearLayout? = null
+    private var notesArea: LinearLayout? = null
+    
     // Data
-    private Count count;
-    private Section section;
-    private List<CountingWidget> countingWidgets;
-    private List<CountingLHWidget> countingWidgetsLH;
-    private Spinner spinner;
-    private int itemPosition = 0;
-    private int i_Id = 0; // Individuals table ID
-    private String spec_name;
-    private int specCnt;
+    private var iid = 1
+    private var count: Count? = null
+    private var section: Section? = null
+    private var spinner: Spinner? = null
+    private var itemPosition = 0
+    private var indID = 0 // Individuals table ID
+    private var speciesName = ""
+    private var specCnt = 0
 
-    SoundService soundService;
+    // CountingWidgets
+    private lateinit var countingWidgets: MutableList<CountingWidget>
+    private lateinit var countingWidgetsLH: MutableList<CountingLHWidget>
 
     // Proximity sensor handling screen on/off
-    private PowerManager powerManager;
-    private SensorManager sensorManager;
-    private PowerManager.WakeLock proximityWakeLock;
-    private Sensor proximitySensor;
+    private var powerManager: PowerManager? = null
+    private var sensorManager: SensorManager? = null
+    private var proximityWakeLock: WakeLock? = null
+    private var proximitySensor: Sensor? = null
 
     // Preferences
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-    private boolean awakePref;        // keep screen on
-    private boolean brightPref;
-    private String sortPref;
-    private boolean lhandPref;       // true for left hand mode of counting screen
-    private boolean buttonSoundPref;
-    private boolean buttonVibPref;
-    private String specCode = "";    // code of a species to be shown in the counting list
-    private String proxSensorPref;
-    private double sensorSensitivity = 0.0;
+    private var prefs = getPrefs()
+    private var editor = prefs.edit()
+    private var awakePref = false // keep screen on
+    private var brightPref = false // make screen bright
+    private var sortPref = ""
+    private var lhandPref = false // true for left hand mode of counting screen
+    private var buttonSoundPref = false
+    private var buttonVibPref = false
+    private var specCode = "" // code of a species to be shown in the counting list
+    private var proxSensorPref = ""
+    private var sensorSensitivity = 0.0
 
     // Data sources
-    private SectionDataSource sectionDataSource;
-    private CountDataSource countDataSource;
-    private IndividualsDataSource individualsDataSource;
+    private var sectionDataSource: SectionDataSource? = null
+    private var countDataSource: CountDataSource? = null
+    private var individualsDataSource: IndividualsDataSource? = null
 
-    // Prepare vibrator service
-    private Vibrator vibrator;
+    private lateinit var soundService: SoundService
 
-    private String mesg = "";
+    private lateinit var vibrator: Vibrator
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private var mesg = ""
+
+    private val mHandler = Handler(Looper.getMainLooper())
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "136, onCreate");
+            Log.i(TAG, "132, onCreate")
 
-        TourCountApplication tourCount = (TourCountApplication) getApplication();
-        prefs = TourCountApplication.getPrefs();
-        setPrefVariables(); // set all stored preferences into their variables
+        val tourCount = application as TourCountApplication
+        setPrefVariables() // set all stored preferences into their variables
 
-        sectionDataSource = new SectionDataSource(this);
-        countDataSource = new CountDataSource(this);
-        individualsDataSource = new IndividualsDataSource(this);
+        sectionDataSource = SectionDataSource(this)
+        countDataSource = CountDataSource(this)
+        individualsDataSource = IndividualsDataSource(this)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
-            EdgeToEdge.enable(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM)  // SDK 35+
+            this.enableEdgeToEdge()
 
         // Distinguish between left-/ right-handed counting page layout
         if (lhandPref) {
-            setContentView(R.layout.activity_counting_lh);
-            counting_screen = findViewById(R.id.countingScreenLH);
-            counting_screen.setBackground(tourCount.setBackgr());
-            count_area = findViewById(R.id.countCountiLayoutLH);
-            tour_notes_area = findViewById(R.id.tourNotesLayoutLH);
-            head_area2 = findViewById(R.id.countHead2LayoutLH);
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreenLH),
-                    (v, windowInsets) -> {
-                        Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                        mlp.topMargin = insets.top;
-                        mlp.bottomMargin = insets.bottom;
-                        mlp.leftMargin = insets.left;
-                        mlp.rightMargin = insets.right;
-                        v.setLayoutParams(mlp);
-                        return WindowInsetsCompat.CONSUMED;
-                    });
+            setContentView(R.layout.activity_counting_lh)
+            countScreen = findViewById(R.id.countingScreenLH)
+            countScreen!!.background = tourCount.setBackgr()
+            countArea = findViewById(R.id.countCountiLayoutLH)
+            notesArea = findViewById(R.id.tourNotesLayoutLH)
+            headArea = findViewById(R.id.countHead2LayoutLH)
+
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreenLH))
+            { v, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.updateLayoutParams<MarginLayoutParams> {
+                    topMargin = insets.top
+                    leftMargin = insets.left
+                    bottomMargin = insets.bottom
+                    rightMargin = insets.right
+                }
+                WindowInsetsCompat.CONSUMED
+            }
         } else {
-            setContentView(R.layout.activity_counting);
-            counting_screen = findViewById(R.id.countingScreen);
-            counting_screen.setBackground(tourCount.setBackgr());
-            count_area = findViewById(R.id.countCountiLayout);
-            tour_notes_area = findViewById(R.id.tourNotesLayout);
-            head_area2 = findViewById(R.id.countHead2Layout);
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreen),
-                    (v, windowInsets) -> {
-                        Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                        mlp.topMargin = insets.top;
-                        mlp.bottomMargin = insets.bottom;
-                        mlp.leftMargin = insets.left;
-                        mlp.rightMargin = insets.right;
-                        v.setLayoutParams(mlp);
-                        return WindowInsetsCompat.CONSUMED;
-                    });
+            setContentView(R.layout.activity_counting)
+            countScreen = findViewById(R.id.countingScreen)
+            countScreen!!.background = tourCount.setBackgr()
+            countArea = findViewById(R.id.countCountiLayout)
+            notesArea = findViewById(R.id.tourNotesLayout)
+            headArea = findViewById(R.id.countHead2Layout)
+
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.countingScreen))
+            { v, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.updateLayoutParams<MarginLayoutParams> {
+                    topMargin = insets.top
+                    leftMargin = insets.left
+                    bottomMargin = insets.bottom
+                    rightMargin = insets.right
+                }
+                WindowInsetsCompat.CONSUMED
+            }
         }
 
         // Proximity sensor handling screen on/off
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        proximitySensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_PROXIMITY)
 
-        powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        if (powerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
-            proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                    "TourCount:WAKELOCK");
-        } else {
-            proximityWakeLock = null;
-        }
+        powerManager = this.getSystemService(POWER_SERVICE) as PowerManager
+        proximityWakeLock = 
+            if (powerManager!!.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) 
+                powerManager!!.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+                "TourCount:WAKELOCK")
+        else null
 
         // Get sensitivity range of proximity sensor
-        double sensorSensitivityMax;
-        if (proximitySensor != null)
-            sensorSensitivityMax = proximitySensor.getMaximumRange();
-        else {
-            sensorSensitivityMax = 0;
-        }
+        val sensorSensitivityMax: Double =
+            if (proximitySensor != null)
+                proximitySensor!!.maximumRange.toDouble()
+            else 0.0
 
         // Get proximity sensitivity selection from preferences
-        if (sensorSensitivityMax != 0) {
+        if (sensorSensitivityMax != 0.0) {
             // Set sensorSensitivity proportional to value for max. sensitivity
-            if (Objects.equals(proxSensorPref, "Off"))
-                sensorSensitivity = 0;
-            else if (Objects.equals(proxSensorPref, "Medium")) {
-                sensorSensitivity = sensorSensitivityMax / 2;
-            } else if (Objects.equals(proxSensorPref, "High")) {
-                sensorSensitivity = sensorSensitivityMax - 0.1;
+            when (proxSensorPref) {
+                "Off" -> sensorSensitivity = 0.0
+                "Medium" -> sensorSensitivity = sensorSensitivityMax / 2
+                "High" -> sensorSensitivity = sensorSensitivityMax - 0.1
             }
         }
+
+        // Start button sound service
+        if (buttonSoundPref) soundService = SoundService(applicationContext)
 
         // new onBackPressed logic
         // Different Navigation Bar modes and layouts:
@@ -223,1233 +218,1225 @@ public class CountingActivity
         // - Two-button navigation (Android P): NavBarMode = 1
         // - Full screen gesture mode (Android Q): NavBarMode = 2
         // Use only if NavBarMode = 0 or 1.
-        if (getNavBarMode() == 0 || getNavBarMode() == 1) {
-            OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-                @Override
-                public void handleOnBackPressed() {
-                    disableProximitySensor();
-                    finish();
-                    remove();
+        if (this.navBarMode == 0 || this.navBarMode == 1) {
+            val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    disableProximitySensor()
+                    finish()
+                    remove()
                 }
-            };
-            getOnBackPressedDispatcher().addCallback(this, callback);
+            }
+            onBackPressedDispatcher.addCallback(this, callback)
         }
-        if (buttonSoundPref)
-            soundService = new SoundService(getApplicationContext());
     }
     // End of onCreate()
 
-    // Check for Navigation bar 1-, 2- or 3-button mode
-    public int getNavBarMode() {
-        Resources resources = this.getResources();
+    val navBarMode: Int
+        get() {
+            val resources = this.getResources()
 
-        @SuppressLint("DiscouragedApi")
-        int resourceId = resources.getIdentifier("config_navBarInteractionMode",
-                "integer", "android");
+            @SuppressLint("DiscouragedApi") val resourceId = resources.getIdentifier(
+                "config_navBarInteractionMode",
+                "integer", "android"
+            )
 
-        return resourceId > 0 ? resources.getInteger(resourceId) : 0;
-    }
+            return if (resourceId > 0) resources.getInteger(resourceId) else 0
+        }
 
     // Load preferences at start, and also when a change is detected
-    private void setPrefVariables() {
-        awakePref = prefs.getBoolean("pref_awake", true);      // keep screen on while counting
-        brightPref = prefs.getBoolean("pref_bright", true);    // bright counting page
-        sortPref = prefs.getString("pref_sort_sp", "none");   // sort mode of species list
-        lhandPref = prefs.getBoolean("pref_left_hand", false); // left-handed counting page
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // make button sound
-        buttonVibPref = prefs.getBoolean("pref_button_vib", false); // make vibration
-        itemPosition = prefs.getInt("item_Position", 0);       // item position in spinner
-        iid = prefs.getInt("count_id", 1);                     // species id
-        proxSensorPref = prefs.getString("pref_prox", "Off");
+    private fun setPrefVariables() {
+        awakePref = prefs.getBoolean("pref_awake", true) // keep screen on while counting
+        brightPref = prefs.getBoolean("pref_bright", true) // bright counting page
+        sortPref = prefs.getString("pref_sort_sp", "none")!! // sort mode of species list
+        lhandPref = prefs.getBoolean("pref_left_hand", false) // left-handed counting page
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false) // make button sound
+        buttonVibPref = prefs.getBoolean("pref_button_vib", false) // make vibration
+        itemPosition = prefs.getInt("item_Position", 0) // item position in spinner
+        iid = prefs.getInt("count_id", 1) // species id
+        proxSensorPref = prefs.getString("pref_prox", "Off")!!
     }
 
     @SuppressLint("DiscouragedApi")
-    @Override
-    protected void onResume() {
-        super.onResume();
+    override fun onResume() {
+        super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "272, onResume");
+            Log.i(TAG, "264, onResume")
 
-        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager!!.registerListener(this,
+            proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
 
-        prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        setPrefVariables(); // set prefs into their variables
+        prefs = getPrefs()
+        prefs.registerOnSharedPreferenceChangeListener(this)
+        setPrefVariables() // set prefs into their variables
 
         // Prepare vibrator service
-        if (buttonVibPref)
-            vibrator = getApplicationContext().getSystemService(Vibrator.class);
+        if (buttonVibPref) vibrator =
+            applicationContext.getSystemService(Vibrator::class.java)
 
         // Set full brightness of screen
         if (brightPref) {
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.screenBrightness = 1.0f;
-            getWindow().setAttributes(params);
+            val params = window.attributes
+            params.screenBrightness = 1.0f
+            window.attributes = params
         }
 
-        if (awakePref)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (awakePref) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         // Prepare the counting screen
-        // Clear any existing views
-        count_area.removeAllViews();
-        tour_notes_area.removeAllViews();
-        head_area2.removeAllViews();
+        //   Clear any existing views
+        countArea!!.removeAllViews()
+        notesArea!!.removeAllViews()
+        headArea!!.removeAllViews()
 
         // Set up the data sources
-        sectionDataSource.open();
-        countDataSource.open();
-        individualsDataSource.open();
+        sectionDataSource!!.open()
+        countDataSource!!.open()
+        individualsDataSource!!.open()
 
         // Load the section data
         try {
-            section = sectionDataSource.getSection();
-        } catch (CursorIndexOutOfBoundsException e) {
-            mesg = getString(R.string.getHelp);
+            section = sectionDataSource!!.section
+        } catch (_: CursorIndexOutOfBoundsException) {
+            mesg = getString(R.string.getHelp)
             Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
-            finish();
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG).show()
+            disableProximitySensor()
+            finish()
         }
 
-        // Load and show the data, set title in ActionBar
-        try {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(section.name);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException e) {
-            // nothing
-        }
+        // Load and show the data,
+        //   set title in ActionBar
+        supportActionBar!!.title = section!!.name
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        String[] idArray;
-        String[] nameArray;
-        String[] nameArrayG;
-        String[] codeArray;
+        val idArray: Array<String?>?
+        val nameArray: Array<String?>?
+        val nameArrayG: Array<String?>?
+        val codeArray: Array<String?>?
 
-        switch (sortPref) {
-            case "names_alpha" -> {
-                idArray = countDataSource.getAllIdsSrtName();
-                nameArray = countDataSource.getAllStringsSrtName("name");
-                codeArray = countDataSource.getAllStringsSrtName("code");
-                nameArrayG = countDataSource.getAllStringsSrtName("name_g");
+        when (sortPref) {
+            "names_alpha" -> {
+                idArray = countDataSource!!.allIdsSrtName
+                nameArray = countDataSource!!.getAllStringsSrtName("name")
+                codeArray = countDataSource!!.getAllStringsSrtName("code")
+                nameArrayG = countDataSource!!.getAllStringsSrtName("name_g")
             }
 
-            case "codes" -> {
-                idArray = countDataSource.getAllIdsSrtCode();
-                nameArray = countDataSource.getAllStringsSrtCode("name");
-                codeArray = countDataSource.getAllStringsSrtCode("code");
-                nameArrayG = countDataSource.getAllStringsSrtCode("name_g");
+            "codes" -> {
+                idArray = countDataSource!!.allIdsSrtCode
+                nameArray = countDataSource!!.getAllStringsSrtCode("name")
+                codeArray = countDataSource!!.getAllStringsSrtCode("code")
+                nameArrayG = countDataSource!!.getAllStringsSrtCode("name_g")
             }
 
-            default -> {
-                idArray = countDataSource.getAllIds();
-                nameArray = countDataSource.getAllStrings("name");
-                codeArray = countDataSource.getAllStrings("code");
-                nameArrayG = countDataSource.getAllStrings("name_g");
+            else -> {
+                idArray = countDataSource!!.allIds
+                nameArray = countDataSource!!.getAllStrings("name")
+                codeArray = countDataSource!!.getAllStrings("code")
+                nameArrayG = countDataSource!!.getAllStrings("name_g")
             }
         }
 
-        String ucode, rName;
-        int resId, resId0;
-        int z = 0;
-        resId0 = getResources().getIdentifier("p00000", "drawable",
-                this.getPackageName());
+        var rName: String
+        var resId: Int
+        val resId0 = getResources().getIdentifier(
+            "p00000", "drawable",this.packageName)
 
-        Integer[] imageArray = new Integer[codeArray.length];
-        for (String code : codeArray) {
-            ucode = code;
-            rName = "p" + ucode;
-            resId = getResources().getIdentifier(rName, "drawable",
-                    this.getPackageName());
-            if (resId != 0)
-                imageArray[z] = resId;
-            else
-                imageArray[z] = resId0;
-            z++;
+        val imageArray = arrayOfNulls<Int>(codeArray.size)
+        for ((iPic, code) in codeArray.withIndex()) {
+            rName = "p$code"
+            resId = getResources().getIdentifier(
+                rName, "drawable",
+                this.packageName
+            )
+            if (resId != 0) imageArray[iPic] = resId
+            else imageArray[iPic] = resId0
         }
 
-        countingWidgets = new ArrayList<>();
-        countingWidgetsLH = new ArrayList<>();
+        countingWidgets = ArrayList()
+        countingWidgetsLH = ArrayList()
 
         // Show head1: Species with spinner to select
-        if (lhandPref) // if left-handed counting page
-            spinner = findViewById(R.id.countHead1SpinnerLH);
-        else
-            spinner = findViewById(R.id.countHead1Spinner);
+        spinner = if (lhandPref)  // if left-handed counting page
+            findViewById(R.id.countHead1SpinnerLH)
+        else findViewById(R.id.countHead1Spinner)
 
         // Get itemPosition of the species to be shown from sharedPreference
-        if (!Objects.equals(prefs.getString("new_spec_code", ""), "")) {
-            specCode = prefs.getString("new_spec_code", "");
-            editor = prefs.edit();
-            editor.putString("new_spec_code", ""); // clear prefs value after use
-            editor.apply();
+        if (prefs.getString("new_spec_code", "")!! != "") {
+            specCode = prefs.getString("new_spec_code", "")!!
+            editor.putString("new_spec_code", "") // clear prefs value after use
+            editor.apply()
         }
 
-        if (!Objects.equals(specCode, "")) {
-            int i = 0;
-            while (i <= codeArray.length) {
-                assert specCode != null;
-                if (specCode.equals(codeArray[i])) {
-                    itemPosition = i;
-                    break;
+        if (specCode != "") {
+            var i = 0
+            while (i <= codeArray.size) {
+                if (specCode == codeArray[i]) {
+                    itemPosition = i
+                    break
                 }
-                i++;
+                i++
             }
-            specCode = "";
+            specCode = ""
         }
 
         // Set spinner part of the counting screen by itemPosition
-        CountingHead1Widget adapter = new CountingHead1Widget(this,
-                idArray, nameArray, nameArrayG, codeArray, imageArray);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(itemPosition);
-        spinnerListener();
+        @Suppress("UNCHECKED_CAST") val adapter = CountingHead1Widget(
+            this,
+            idArray, nameArray, nameArrayG, codeArray, imageArray as Array<Int>
+        )
+        spinner!!.adapter = adapter
+        spinner!!.setSelection(itemPosition)
+        spinnerListener()
     }
     // End of onResume()
 
     // Watch proximity sensor
-    @Override
-    public void onSensorChanged(SensorEvent event) {
+    override fun onSensorChanged(event: SensorEvent) {
         if (proximitySensor != null) {
-            if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-                float sensi = event.values[0];
+            if (event.sensor.type == Sensor.TYPE_PROXIMITY) {
 
                 // if ([0|5] >= [0|-2.5|-4.9] && [0|5] < [0|2.5|4.9])
+                val sensi = event.values[0]
                 if (sensi >= -sensorSensitivity && sensi < sensorSensitivity) {
                     // near
-                    if (proximityWakeLock == null)
-                        proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                "TourCount:WAKELOCK");
+                    if (proximityWakeLock == null) 
+                        proximityWakeLock = powerManager!!.newWakeLock(
+                        PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+                        "TourCount:WAKELOCK")
 
-                    if (!proximityWakeLock.isHeld())
-                        proximityWakeLock.acquire(30 * 60 * 1000L); // 30 minutes
+                    if (!proximityWakeLock!!.isHeld)
+                        proximityWakeLock!!.acquire(30 * 60 * 1000L) // 30 minutes
                 } else {
                     // far
-                    disableProximitySensor();
+                    disableProximitySensor()
                 }
             }
         }
     }
 
     // Necessary for SensorEventListener
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
+    override fun onAccuracyChanged(sensor: Sensor?, i: Int) {
     }
 
-    private void disableProximitySensor() // far
+    private fun disableProximitySensor() // far
     {
-        if (proximityWakeLock == null)
-            return;
-        if (proximityWakeLock.isHeld()) {
-            int flags = PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY;
-            proximityWakeLock.release(flags);
-            proximityWakeLock = null;
+        if (proximityWakeLock == null) return
+        if (proximityWakeLock!!.isHeld) {
+            val flags = PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY
+            proximityWakeLock!!.release(flags)
+            proximityWakeLock = null
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.counting, menu);
-        return true;
+        menuInflater.inflate(R.menu.counting, menu)
+        return true
     }
 
     // Handle menu selections
     @SuppressLint("QueryPermissionsNeeded")
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home  // back button in actionBar
+                -> {
+                disableProximitySensor()
 
-        if (id == android.R.id.home) // back button in actionBar
-        {
-            disableProximitySensor();
-
-            finish();
-            return true;
-        } else if (id == R.id.menuAddSpecies) {
-            disableProximitySensor();
-
-            Intent intent = new Intent(CountingActivity.this,
-                    AddSpeciesActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.menuDelSpecies) {
-            disableProximitySensor();
-
-            mesg = getString(R.string.wait);
-            Toast.makeText(this,
-                    fromHtml("<font color='blue'>" + mesg + "</font>"),
-                    Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(CountingActivity.this,
-                    DelSpeciesActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            // Trick: Pause for 100 msec to show toast
-            mHandler.postDelayed(() ->
-                    startActivity(intent), 100);
-            return true;
-        } else if (id == R.id.menuEditSection) {
-            disableProximitySensor();
-
-            mesg = getString(R.string.wait);
-            Toast.makeText(this,
-                    fromHtml("<font color='blue'>" + mesg + "</font>"),
-                    Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(CountingActivity.this,
-                    EditSpeciesListActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            // Trick: Pause for 100 msec to show toast
-            mHandler.postDelayed(() ->
-                    startActivity(intent), 100);
-            return true;
-        } else if (id == R.id.menuTakePhoto) {
-            Intent camIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-
-            PackageManager packageManager = getPackageManager();
-            List<ResolveInfo> activities = packageManager.queryIntentActivities(camIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-
-            // Select from available camera apps
-            boolean isIntentSafe = !activities.isEmpty();
-            if (isIntentSafe) {
-                String title = getResources().getString(R.string.chooserTitle);
-                Intent chooser = Intent.createChooser(camIntent, title);
-                if (camIntent.resolveActivity(getPackageManager()) != null) {
-                    try {
-                        startActivity(chooser);
-                    } catch (Exception e) {
-                        mesg = getString(R.string.noPhotoPermit);
-                        Toast.makeText(this,
-                                fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-            } else {
-                // Only default camera available
-                startActivity(camIntent);
+                finish()
+                return true
             }
-            return true;
-        } else if (id == R.id.action_share) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "TourCount");
-            sendIntent.putExtra(Intent.EXTRA_TITLE, "Message of TourCount");
-            sendIntent.putExtra(Intent.EXTRA_TEXT, section.name + ": ");
-            sendIntent.setType("text/plain");
-            startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-            return true;
+
+            R.id.menuAddSpecies -> {
+                disableProximitySensor()
+
+                val intent = Intent(
+                    this@CountingActivity,
+                    AddSpeciesActivity::class.java
+                )
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                return true
+            }
+
+            R.id.menuDelSpecies -> {
+                disableProximitySensor()
+
+                mesg = getString(R.string.wait)
+                Toast.makeText(
+                    this,
+                    fromHtml("<font color='blue'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                val intent = Intent(this@CountingActivity, DelSpeciesActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                // Trick: Pause for 100 msec to show toast
+                mHandler.postDelayed({ startActivity(intent) }, 100)
+                return true
+            }
+
+            R.id.menuEditSection -> {
+                disableProximitySensor()
+
+                mesg = getString(R.string.wait)
+                Toast.makeText(
+                    this,
+                    fromHtml("<font color='blue'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                val intent = Intent(this@CountingActivity, EditSpeciesListActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                // Trick: Pause for 100 msec to show toast
+                mHandler.postDelayed({ startActivity(intent) }, 100)
+                return true
+            }
+
+            R.id.menuTakePhoto -> {
+                val camIntent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+
+                val packageManager = getPackageManager()
+                val activities = packageManager.queryIntentActivities(
+                    camIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                )
+
+                // Select from available camera apps
+                val isIntentSafe = !activities.isEmpty()
+                if (isIntentSafe) {
+                    val title = getResources().getString(R.string.chooserTitle)
+                    val chooser = Intent.createChooser(camIntent, title)
+                    if (camIntent.resolveActivity(getPackageManager()) != null) {
+                        try {
+                            startActivity(chooser)
+                        } catch (_: Exception) {
+                            mesg = getString(R.string.noPhotoPermit)
+                            Toast.makeText(
+                                this,
+                                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                } else {
+                    // Only default camera available
+                    startActivity(camIntent)
+                }
+                return true
+            }
+
+            R.id.action_share -> {
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "TourCount")
+                sendIntent.putExtra(Intent.EXTRA_TITLE, "Message of TourCount")
+                sendIntent.putExtra(Intent.EXTRA_TEXT, section!!.name + ": ")
+                sendIntent.type = "text/plain"
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)))
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item);
     }
     // End of onOptionsItemSelected()
 
     // Edit species notes by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
-    public void editSpeciesNotes(View view) {
-        Intent intent = new Intent(CountingActivity.this, EditSpeciesNotesActivity.class);
-        intent.putExtra("count_id", iid);
-        startActivity(intent);
+    fun editSpeciesNotes(view: View?) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "552, View: $view")
+
+        disableProximitySensor()
+
+        val intent = Intent(this@CountingActivity, EditSpeciesNotesActivity::class.java)
+        intent.putExtra("count_id", iid)
+        startActivity(intent)
     }
 
     // Edit tour notes by EditTourNotesActivity by button in widget_counting_tour_notes.xml
-    public void editTourNotes(View view) {
-        Intent intent = new Intent(CountingActivity.this, EditTourNotesActivity.class);
-        intent.putExtra("count_id", iid);
-        startActivity(intent);
+    fun editTourNotes(view: View?) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "564, View: $view")
+
+        disableProximitySensor()
+
+        val intent = Intent(this@CountingActivity, EditTourNotesActivity::class.java)
+        intent.putExtra("count_id", iid)
+        startActivity(intent)
     }
 
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        setPrefVariables();
-
-        // Stop sound service when denied in settings
-        if (!buttonSoundPref) {
-            editor = prefs.edit();
-            editor.putBoolean("snd_srv_on", false);
-            editor.commit();
-        }
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String?) {
+        setPrefVariables()
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    override fun onPause() {
+        super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "580, onPause");
+            Log.i(TAG, "581, onPause")
 
-        disableProximitySensor();
+        disableProximitySensor()
 
         // save current count id in case it is lost on pause
-        editor = prefs.edit();
-        editor.putInt("count_id", iid);
-        editor.putInt("item_Position", itemPosition);
-        editor.apply();
+        editor.putInt("count_id", iid)
+        editor.putInt("item_Position", itemPosition)
+        editor.apply()
 
         // close the data sources
-        sectionDataSource.close();
-        countDataSource.close();
-        individualsDataSource.close();
+        sectionDataSource!!.close()
+        countDataSource!!.close()
+        individualsDataSource!!.close()
 
         // On some Custom ROMS a wakelock might not be held, if wakelock permission is not granted
         if (awakePref) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
-        prefs.unregisterOnSharedPreferenceChangeListener(this);
-        sensorManager.unregisterListener(this);
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
+        sensorManager!!.unregisterListener(this)
     }
     // End of onPause()
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    public override fun onStop() {
+        super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "610, onStop");
+            Log.i(TAG, "609, onStop")
 
-        counting_screen.invalidate();
+        countScreen!!.invalidate()
 
         // Stop sound service when denied in settings
         if (buttonSoundPref) {
-            soundService.releaseSoundM();
-            soundService.releaseSoundP();
+            soundService.releaseSoundM()
+            soundService.releaseSoundP()
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public override fun onDestroy() {
+        super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "626, onDestroy");
+            Log.i(TAG, "624, onDestroy")
     }
 
     // Spinner listener
-    private void spinnerListener() {
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long aid) {
+    private fun spinnerListener() {
+        spinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View,
+                position: Int,
+                aid: Long
+            ) {
                 try {
-                    head_area2.removeAllViews();
-                    count_area.removeAllViews();
-                    tour_notes_area.removeAllViews();
+                    headArea!!.removeAllViews()
+                    countArea!!.removeAllViews()
+                    notesArea!!.removeAllViews()
 
-                    String sid = ((TextView) view.findViewById(R.id.countId)).getText().toString();
-                    iid = Integer.parseInt(sid); // get species id
-                    itemPosition = position;
+                    // Get species id
+                    val sid =
+                        (view.findViewById<View?>(R.id.countId) as TextView).text.toString()
+                    iid = sid.toInt()
+                    itemPosition = position
 
-                    count = countDataSource.getCountById(iid);
-                    countingScreen(count);
+                    count = countDataSource!!.getCountById(iid)
+                    countingScreen(count!!)
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "646, SpinnerListener, count id: "
-                                + count.id + ", code: " + count.code + ", name: " + count.name);
-                } catch (Exception e) {
+                        Log.i(TAG, ("650, SpinnerListener, count id: " + count!!.id
+                                + ", code: " + count!!.code + ", name: " + count!!.name))
+                } catch (e: Exception) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG, "652, SpinnerListener: " + e);
+                        Log.e(TAG,"656, SpinnerListener: $e"
+                    )
                 }
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
                 // stub, necessary to make Spinner work correctly when repeatedly used
             }
-        });
+        }
     }
 
     // Show rest of widgets for counting screen
-    private void countingScreen(Count count) {
+    private fun countingScreen(count: Count) {
         // 1. Species line with Spinner is set by CountingHead1Widget in onResume
 
-        // 2. counts
-        if (lhandPref) // if left-handed counting page
-        {
-            CountingLHWidget widgetc = new CountingLHWidget(this, null);
-            widgetc.setCount(count);
-            countingWidgetsLH.add(widgetc);
-            count_area.addView(widgetc);
+        // 2. Counting Area
+        if (lhandPref) { // if left-handed counting page
+            val widgetc = CountingLHWidget(this, null)
+            widgetc.setCount(count)
+            countingWidgetsLH.add(widgetc)
+            countArea!!.addView(widgetc)
         } else {
-            CountingWidget widgetc = new CountingWidget(this, null);
-            widgetc.setCount(count);
-            countingWidgets.add(widgetc);
-            count_area.addView(widgetc);
+            val widgetc = CountingWidget(this, null)
+            widgetc.setCount(count)
+            countingWidgets.add(widgetc)
+            countArea!!.addView(widgetc)
         }
 
         // 3. Species notes with edit button
-        CountingSpeciesNotesWidget widgets = new CountingSpeciesNotesWidget(this, null);
-        widgets.setCountHead2(count);
-        head_area2.addView(widgets);
+        val widgets = CountingSpeciesNotesWidget(this, null)
+        widgets.setCountHead2(count)
+        headArea!!.addView(widgets)
 
         // 4. Tour notes with edit button
-        CountingTourNotesWidget widgett = new CountingTourNotesWidget(this, null);
-        widgett.setTourNotes(section);
-        tour_notes_area.addView(widgett);
+        val widgett = CountingTourNotesWidget(this, null)
+        widgett.setTourNotes(section!!)
+        notesArea!!.addView(widgett)
     }
     // End of countingScreen
 
     // Get the referenced counting widgets
     // CountingWidget (right-handed)
-    private CountingWidget getCountFromId(int id) {
-        for (CountingWidget widget : countingWidgets) {
-            assert widget.count != null;
-            if (widget.count.id == id)
-                return widget;
+    private fun getCountFromId(id: Int): CountingWidget? {
+        for (widget in countingWidgets) {
+            checkNotNull(widget.count)
+            if (widget.count!!.id == id) return widget
         }
-        return null;
+        return null
     }
 
     // CountingWidget (left-handed)
-    private CountingLHWidget getCountFromIdLH(int id) {
-        for (CountingLHWidget widget : countingWidgetsLH) {
-            assert widget.count != null;
-            if (widget.count.id == id)
-                return widget;
+    private fun getCountFromIdLH(id: Int): CountingLHWidget? {
+        for (widget in countingWidgetsLH) {
+            checkNotNull(widget.count)
+            if (widget.count!!.id == id) return widget
         }
-        return null;
+        return null
     }
 
     /********************************************************
      * The functions below are triggered by the count buttons
      * on the righthand/lefthand (LH) views.
-     * <p>
+     *
      * For up-counting they get locality and start EditIndividualActivity,
      * down-counting is done directly
      */
     // Triggered by count up button for ♂|♀
-    public void countUpf1i(View view) {
+    fun countUpf1i(view: View) {
+        val tempCountId = view.tag.toString().toInt()
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "724, countUpf1i");
+            Log.i(TAG, "726, countUpf1i, count Id: $tempCountId")
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
-        int iAtt = 1; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
+        val iAtt = 1 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        if (widget != null)
-            widget.countUpf1i();
+        val widget = getCountFromId(tempCountId)
+        widget?.countUpf1i()
 
-        disableProximitySensor(); // for EditIndividualActivity
+        disableProximitySensor() // for EditIndividualActivity
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingWidget>(widget).count
 
         // Provide edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count up button from left-hand view for ♂|♀
-    public void countUpLHf1i(View view) {
-        int iAtt = 1;
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        if (widget != null)
-            widget.countUpLHf1i();
+    fun countUpLHf1i(view: View) {
+        val iAtt = 1
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        widget?.countUpLHf1i()
 
-        disableProximitySensor(); // for EditIndividualActivity
+        disableProximitySensor() // for EditIndividualActivity
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count down button to decrease count for ♂|♀ if > 0
-    public void countDownf1i(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownf1i(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_f1i;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        Objects.requireNonNull<CountingWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_f1i
         if (specCnt > 0) {
-            widget.countDownf1i(); // decrease species counter
-            countDataSource.saveCountf1i(count);
+            widget.countDownf1i() // decrease species counter
+            countDataSource!!.saveCountf1i(count!!)
 
             // get last individual of category 1 (♂|♀)
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 1);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 1)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count down button from left-hand view to decrease count for ♂|♀ if > 0
-    public void countDownLHf1i(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownLHf1i(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_f1i;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        Objects.requireNonNull<CountingLHWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_f1i
         if (specCnt > 0) {
-            widget.countDownLHf1i();
-            countDataSource.saveCountf1i(count);
+            widget.countDownLHf1i()
+            countDataSource!!.saveCountf1i(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 1);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 1)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count up button for ♂ and starts EditIndividualActivity
-    public void countUpf2i(View view) {
+    fun countUpf2i(view: View) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
-        int iAtt = 2; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
+        val iAtt = 2 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        if (widget != null)
-            widget.countUpf2i();
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        widget?.countUpf2i()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count up button from left-hand view for ♂ and starts EditIndividualActivity
-    public void countUpLHf2i(View view) {
-        int iAtt = 2;
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        if (widget != null)
-            widget.countUpLHf2i();
+    fun countUpLHf2i(view: View) {
+        val iAtt = 2
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        widget?.countUpLHf2i()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count down button to decrease count for ♂ if > 0
-    public void countDownf2i(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownf2i(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_f2i;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        Objects.requireNonNull<CountingWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_f2i
 
         if (specCnt > 0) {
-            widget.countDownf2i();
-            countDataSource.saveCountf2i(count);
+            widget.countDownf2i()
+            countDataSource!!.saveCountf2i(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 2);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 2)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count down button from left-hand view to decrease count for ♂ if > 0
-    public void countDownLHf2i(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownLHf2i(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_f2i;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        Objects.requireNonNull<CountingLHWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_f2i
 
         if (specCnt > 0) {
-            widget.countDownLHf2i();
-            countDataSource.saveCountf2i(count);
+            widget.countDownLHf2i()
+            countDataSource!!.saveCountf2i(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 2);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 2)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count up button for ♀ and starts EditIndividualActivity
-    public void countUpf3i(View view) {
+    fun countUpf3i(view: View) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
-        int iAtt = 3; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
+        val iAtt = 3 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        if (widget != null)
-            widget.countUpf3i();
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        widget?.countUpf3i()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count up button from left-hand view for ♀ and starts EditIndividualActivity
-    public void countUpLHf3i(View view) {
-        int iAtt = 3;
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        if (widget != null)
-            widget.countUpLHf3i();
+    fun countUpLHf3i(view: View) {
+        val iAtt = 3
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        widget?.countUpLHf3i()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count down button to decrease count for ♀ if > 0
-    public void countDownf3i(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownf3i(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_f3i;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        Objects.requireNonNull<CountingWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_f3i
 
         if (specCnt > 0) {
-            widget.countDownf3i();
-            countDataSource.saveCountf3i(count);
+            widget.countDownf3i()
+            countDataSource!!.saveCountf3i(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 3);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 3)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count down button from left-hand view to decrease count for ♀ if > 0
-    public void countDownLHf3i(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownLHf3i(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_f3i;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        Objects.requireNonNull<CountingLHWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_f3i
 
         if (specCnt > 0) {
-            widget.countDownLHf3i();
-            countDataSource.saveCountf3i(count);
+            widget.countDownLHf3i()
+            countDataSource!!.saveCountf3i(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 3);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 3)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count up button for pupa and starts EditIndividualActivity
-    public void countUppi(View view) {
+    fun countUppi(view: View) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
-        int iAtt = 4; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
+        val iAtt = 4 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        if (widget != null)
-            widget.countUppi();
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        widget?.countUppi()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count up button from left-hand view for pupa and starts EditIndividualActivity
-    public void countUpLHpi(View view) {
-        int iAtt = 4;
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        if (widget != null)
-            widget.countUpLHpi();
+    fun countUpLHpi(view: View) {
+        val iAtt = 4
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        widget?.countUpLHpi()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count down button to decrease count for pupa if > 0
-    public void countDownpi(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownpi(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_pi;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        Objects.requireNonNull<CountingWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_pi
 
         if (specCnt > 0) {
-            widget.countDownpi();
-            countDataSource.saveCountpi(count);
+            widget.countDownpi()
+            countDataSource!!.saveCountpi(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 4);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 4)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
-    // Triggered by count down button from left-hand view to decrease count for pupaif > 0
-    public void countDownLHpi(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    // Triggered by count down button from left-hand view to decrease count for pupa if > 0
+    fun countDownLHpi(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_pi;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        Objects.requireNonNull<CountingLHWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_pi
 
         if (specCnt > 0) {
-            widget.countDownLHpi();
-            countDataSource.saveCountpi(count);
+            widget.countDownLHpi()
+            countDataSource!!.saveCountpi(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 4);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 4)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count up button for larva and starts EditIndividualActivity
-    public void countUpli(View view) {
+    fun countUpli(view: View) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
-        int iAtt = 5; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
+        val iAtt = 5 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        if (widget != null)
-            widget.countUpli();
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        widget?.countUpli()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count up button from left-hand view for larva and starts EditIndividualActivity
-    public void countUpLHli(View view) {
-        int iAtt = 5;
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        if (widget != null)
-            widget.countUpLHli();
+    fun countUpLHli(view: View) {
+        val iAtt = 5
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        widget?.countUpLHli()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count down button to decrease count for larva if > 0
-    public void countDownli(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownli(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_li;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        Objects.requireNonNull<CountingWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_li
 
         if (specCnt > 0) {
-            widget.countDownli();
-            countDataSource.saveCountli(count);
+            widget.countDownli()
+            countDataSource!!.saveCountli(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 5);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 5)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count down button from left-hand view to decrease count for larva if > 0
-    public void countDownLHli(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownLHli(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_li;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        Objects.requireNonNull<CountingLHWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_li
 
         if (specCnt > 0) {
-            widget.countDownLHli();
-            countDataSource.saveCountli(count);
+            widget.countDownLHli()
+            countDataSource!!.saveCountli(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 5);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 5)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count up button for egg and starts EditIndividualActivity
-    public void countUpei(View view) {
+    fun countUpei(view: View) {
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
-        int iAtt = 6; // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
+        val iAtt = 6 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        if (widget != null)
-            widget.countUpei();
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        widget?.countUpei()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingWidget>(widget).count
 
         // Get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count up button from left-hand view for egg and starts EditIndividualActivity
-    public void countUpLHei(View view) {
-        int iAtt = 6;
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        if (widget != null) {
-            widget.countUpLHei();
-        }
+    fun countUpLHei(view: View) {
+        val iAtt = 6
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromIdLH(tempCountId)
+        widget?.countUpLHei()
 
-        disableProximitySensor();
+        disableProximitySensor()
 
-        assert Objects.requireNonNull(widget).count != null;
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
         // get edited info for individual and start EditIndividualActivity
-        Intent intent = new Intent(CountingActivity.this, EditIndividualActivity.class);
-        intent.putExtra("count_id", tempCountId);
-        intent.putExtra("SName", widget.count.name);
-        intent.putExtra("SCode", widget.count.code);
-        intent.putExtra("date", getcurDate());
-        intent.putExtra("time", getcurTime());
-        intent.putExtra("indivAtt", iAtt);
-        startActivity(intent);
+        val intent = Intent(this@CountingActivity, EditIndividualActivity::class.java)
+        intent.putExtra("count_id", tempCountId)
+        intent.putExtra("SName", widget!!.count!!.name)
+        intent.putExtra("SCode", widget.count!!.code)
+        intent.putExtra("date", getcurDate())
+        intent.putExtra("time", getcurTime())
+        intent.putExtra("indivAtt", iAtt)
+        startActivity(intent)
     }
 
     // Triggered by count down button to decrease count for egg if > 0
-    public void countDownei(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownei(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
-        CountingWidget widget = getCountFromId(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_ei;
+        val tempCountId = view.tag.toString().toInt()
+        val widget = getCountFromId(tempCountId)
+        Objects.requireNonNull<CountingWidget>(widget).count
+
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_ei
 
         if (specCnt > 0) {
-            widget.countDownei();
-            countDataSource.saveCountei(count);
+            widget.countDownei()
+            countDataSource!!.saveCountei(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 6);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 6)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
 
     // Triggered by count down button from left-hand view to decrease count for egg if > 0
-    public void countDownLHei(View view) {
-        if (buttonSoundPref)
-            soundService.soundMinusButtonSound();
-        buttonVib();
+    fun countDownLHei(view: View) {
+        if (buttonSoundPref) soundService.soundMinusButtonSound()
+        buttonVib()
 
-        int tempCountId = Integer.parseInt(view.getTag().toString());
+        val tempCountId = view.tag.toString().toInt()
 
-        CountingLHWidget widget = getCountFromIdLH(tempCountId);
-        assert Objects.requireNonNull(widget).count != null;
+        val widget = getCountFromIdLH(tempCountId)
+        Objects.requireNonNull<CountingLHWidget>(widget).count
 
-        spec_name = widget.count.name; // set spec_name for toast in deleteIndividual
-        specCnt = widget.count.count_ei;
+        speciesName = widget!!.count!!.name // set speciesName for toast in deleteIndividual
+        specCnt = widget.count!!.count_ei
 
         if (specCnt > 0) {
-            widget.countDownLHei();
-            countDataSource.saveCountei(count);
+            widget.countDownLHei()
+            countDataSource!!.saveCountei(count!!)
 
-            i_Id = individualsDataSource.getLastIndiv(tempCountId, 6);
-            if (i_Id == -1) {
-                mesg = getString(R.string.getHelp) + spec_name;
+            indID = individualsDataSource!!.getLastIndiv(tempCountId, 6)
+            if (indID == -1) {
+                mesg = getString(R.string.getHelp) + speciesName
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
-                return;
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG).show()
+                return
             }
-            int icount = individualsDataSource.getIndividualCount(i_Id);
-            if (i_Id > 0 && icount < 2) {
-                individualsDataSource.deleteIndividualById(i_Id);
-                i_Id--;
-                return;
+            val icount = individualsDataSource!!.getIndividualCount(indID)
+            if (indID > 0 && icount < 2) {
+                individualsDataSource!!.deleteIndividualById(indID)
+                indID--
+                return
             }
-            if (i_Id > 0) {
-                int icount1 = icount - 1;
-                individualsDataSource.decreaseIndividual(i_Id, icount1);
+            if (indID > 0) {
+                val icount1 = icount - 1
+                individualsDataSource!!.decreaseIndividual(indID, icount1)
             }
         }
     }
@@ -1457,39 +1444,45 @@ public class CountingActivity
 
     // Date for date_stamp
     @SuppressLint("SimpleDateFormat")
-    private String getcurDate() {
-        Date date = new Date();
-        DateFormat dform;
-        String lng = Locale.getDefault().toString().substring(0, 2);
+    private fun getcurDate(): String {
+        val date = Date()
+        val dform: DateFormat?
+        val lng = Locale.getDefault().toString().substring(0, 2)
 
-        if (lng.equals("en"))
-            dform = new SimpleDateFormat("yyyy-MM-dd");
-        else if (lng.equals("de"))
-            dform = new SimpleDateFormat("dd.MM.yyyy");
-        else // for fr, it and es
-            dform = new SimpleDateFormat("dd/MM/yyyy");
-        return dform.format(date);
+        dform = when (lng) {
+            "en" -> SimpleDateFormat("yyyy-MM-dd")
+            "de" -> SimpleDateFormat("dd.MM.yyyy")
+            else  // for fr, it and es
+                -> SimpleDateFormat("dd/MM/yyyy")
+        }
+        return dform.format(date)
     }
 
     // Date for time_stamp
-    private String getcurTime() {
-        Date date = new Date();
-        @SuppressLint("SimpleDateFormat")
-        DateFormat dform = new SimpleDateFormat("HH:mm:ss");
-        return dform.format(date);
+    private fun getcurTime(): String {
+        val date = Date()
+        @SuppressLint("SimpleDateFormat") val dform: DateFormat = SimpleDateFormat("HH:mm:ss")
+        return dform.format(date)
     }
 
-    private void buttonVib() {
+    private fun buttonVib() {
         if (buttonVibPref) {
-            if (Build.VERSION.SDK_INT >= 31) // S, Android 12
-            {
-                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+            if (Build.VERSION.SDK_INT >= 31) { // S, Android 12
+                vibrator.vibrate(VibrationEffect.createPredefined(
+                    VibrationEffect.EFFECT_CLICK))
             } else {
-                vibrator.vibrate(VibrationEffect.createOneShot(450,
-                        VibrationEffect.DEFAULT_AMPLITUDE));
-                vibrator.cancel();
+                vibrator.vibrate(VibrationEffect.createOneShot(
+                        450,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                )
+                vibrator.cancel()
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "CountAct"
     }
 
 }

@@ -1,318 +1,304 @@
-package com.wmstein.tourcount;
+package com.wmstein.tourcount
 
-import static com.wmstein.tourcount.TourCountApplication.adrServiceOn;
-import static com.wmstein.tourcount.TourCountApplication.heightNN;
-import static com.wmstein.tourcount.TourCountApplication.isFirstLocality;
-import static com.wmstein.tourcount.TourCountApplication.isFirstStart;
-import static com.wmstein.tourcount.TourCountApplication.isStorPermReq;
-import static com.wmstein.tourcount.TourCountApplication.lat;
-import static com.wmstein.tourcount.TourCountApplication.lon;
-import static com.wmstein.tourcount.TourCountApplication.tLocality;
-import static com.wmstein.tourcount.TourCountApplication.uncertainty;
-import static com.wmstein.tourcount.Utils.fromHtml;
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
+import android.graphics.Color
+import android.graphics.Typeface
+import android.hardware.Sensor
+import android.hardware.SensorManager
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.os.Vibrator
+import android.provider.Settings
+import android.util.Log
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.TextView
+import android.widget.Toast
 
-import static java.lang.Math.sqrt;
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Vibrator;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar
+import com.wmstein.changelog.ChangeLog
+import com.wmstein.filechooser.AdvFileChooser
+import com.wmstein.tourcount.PermissionsLocationDialogFragment.Companion.newInstance
+import com.wmstein.tourcount.TCLifecycleHandler.Companion.isApplicationVisible
+import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
+import com.wmstein.tourcount.Utils.fromHtml
+import com.wmstein.tourcount.database.CountDataSource
+import com.wmstein.tourcount.database.DbHelper
+import com.wmstein.tourcount.database.Head
+import com.wmstein.tourcount.database.HeadDataSource
+import com.wmstein.tourcount.database.Section
+import com.wmstein.tourcount.database.SectionDataSource
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.MenuCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import org.dhatim.fastexcel.BorderSide
+import org.dhatim.fastexcel.PaperSize
+import org.dhatim.fastexcel.Position
+import org.dhatim.fastexcel.Workbook
 
-import com.google.android.material.snackbar.Snackbar;
-import com.wmstein.changelog.ChangeLog;
-import com.wmstein.filechooser.AdvFileChooser;
-import com.wmstein.tourcount.database.CountDataSource;
-import com.wmstein.tourcount.database.DbHelper;
-import com.wmstein.tourcount.database.Head;
-import com.wmstein.tourcount.database.HeadDataSource;
-import com.wmstein.tourcount.database.Section;
-import com.wmstein.tourcount.database.SectionDataSource;
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.FileReader
+import java.io.FileWriter
+import java.io.IOException
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import org.dhatim.fastexcel.BorderSide;
-import org.dhatim.fastexcel.PaperSize;
-import org.dhatim.fastexcel.Position;
-import org.dhatim.fastexcel.Workbook;
-import org.dhatim.fastexcel.Worksheet;
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.round
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
+import kotlin.system.exitProcess
 
 /***************************************************************************************************
  * WelcomeActivity provides the starting page with menu and buttons for
- * import/export/help/info methods and lets you call 
+ * import/export/help/info methods and lets you call
  * EditMetaActivity, CountingActivity and ShowResultsActivity.
  * It uses further LocationService and PermissionLocationDialogFragment.
- * <p>
+ *
  * Database handling is mainly controlled in WelcomeActivity as e.g. upgrade
  * to current DB version when importing an older DB file by importDBFile().
- * <p>
+ *
  * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
  * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited on 2026-07-16
+ * last edited in Java on 2026-07-18,
+ * converted to Kotlin on 2026-07-19,
+ * last edited on 2026-07-28.
  */
-public class WelcomeActivity
-        extends AppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private final String TAG = "WelcomeAct";
+class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
+    private var tourCount: TourCountApplication? = null
+    private var baseLayout: View? = null
+    private var cl: ChangeLog? = null
 
-    private TourCountApplication tourCount;
-    private View baseLayout;
-
-    LocationService locationService;
-    private boolean locServiceOn = false; // Initial location service state (WelcomeActivity only)
-    Intent locIntent;
-
-    AddrRequestService addrRequestService;
-    Intent adrIntent;
-
-    SoundService soundService;
-    private boolean sndServiceOn = false; // Initial sound service state (WelcomeActivity only)
-    Intent sndIntent;
-
-    Intent stoIntent;
-    private ChangeLog cl;
-    public boolean doubleBackToExitPressedTwice = false;
+    // Services
+    var locationService: LocationService? = null
+    private var locServiceOn = false // Initial location service state (WelcomeActivity only)
+    private lateinit var locIntent: Intent
+    var addrRequestService: AddrRequestService? = null
+    var adrIntent: Intent? = null
+    var soundService: SoundService? = null
+    private var sndServiceOn = false // Initial sound service state (WelcomeActivity only)
+    var sndIntent: Intent? = null
 
     // Import/export stuff
-    private File inFile;
-    private File outFile;
-    private String localLanguage = "";
-    private boolean mExternalStorageWriteable = false;
-    private final String sState = Environment.getExternalStorageState();
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private var inFile: File? = null
+    private var outFile: File? = null
+    private var localLanguage = ""
+    private var mExternalStorageWriteable = false
+    private val storageState = Environment.getExternalStorageState()
+    private val mHandler = Handler(Looper.getMainLooper())
+
+    // File handling with plausi check
+    private val regexFilename = "[^a-zA-Z_0-9äöüÄÖÜ-]"
+    private var tourName = "" // The tour name as shown
+    private var tourNameForDir = "" // The tour name as part of a filename
 
     // Preferences
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-    private String outPref; // Output sorting
-    private boolean buttonSoundPref;
-    private boolean alertSoundPref;
-    private boolean storagePermGranted = false;  // Storage permission state
-    private boolean fineLocationPermGranted = false; // Foreground location permission state
-    private String dataLanguage = "";
-    private boolean metaPref = false;
+    private var prefs = getPrefs()
+    private var editor = prefs.edit()
+    private var outPref = "" // Output sorting
+    private var buttonSoundPref = false
+    private var alertSoundPref = false
+    private var dataLanguage = ""
+    private var metaPref = false
 
-    // DB handling
-    private SQLiteDatabase database;
-    private DbHelper dbHelper;
-    private SectionDataSource sectionDataSource;
-    private Section section;
-    private HeadDataSource headDataSource;
-    private CountDataSource countDataSource;
+    // Permissions
+    private var storagePermGranted = false // Storage permission state
+    var stoIntent: Intent? = null
+    private var fineLocationPermGranted = false // Foreground location permission state
 
-    // Inserting tourName into filename with plausi check
-    private final String regexFilename = "[^a-zA-Z_0-9äöüÄÖÜ-]";
-    private String tourName = ""; // The tour name as shown
-    private String tourNameDir = ""; // The tour name as part of a filename
+    // DB handling, data sources
+    private var database: SQLiteDatabase? = null
+    private var dbHelper: DbHelper? = null
+    private var sectionDataSource: SectionDataSource? = null
+    private var section: Section? = null
+    private var headDataSource: HeadDataSource? = null
+    private var countDataSource: CountDataSource? = null
 
-    private String mesg;
-    private AlertDialog alert;
+    // Other stuff
+    private var mesg = ""
+    private lateinit var alert: AlertDialog
+    private var doubleBackToExitPressedTwice = false
 
-    @SuppressLint({"SourceLockedOrientationActivity"})
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "175, onCreate");
+            Log.i(TAG, "167, onCreate")
 
-        tourCount = (TourCountApplication) getApplication();
+        tourCount = application as TourCountApplication
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        // Get preferences
-        prefs = TourCountApplication.getPrefs();
-        editor = prefs.edit();
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         // Initialize sound service
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false); // Prepare SoundService
-        alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false) // Prepare SoundService
+        alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
 
         if (buttonSoundPref) {
-            soundService = new SoundService(getApplicationContext());
-            sndIntent = new Intent(getApplicationContext(), SoundService.class);
-            startService(sndIntent);
-            sndServiceOn = true;
+            soundService = SoundService(applicationContext)
+            sndIntent = Intent(applicationContext, SoundService::class.java)
+            startService(sndIntent)
+            sndServiceOn = true
         }
 
         // Proximity sensor handling in preferences menu
-        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        val proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
 
-        // Check for Proximity and Ambient Light sensor
-        boolean prefProx = proximitySensor != null; // true if proximity sensor is available
+        // Gray out preferences menu item pref_prox when max. proximity sensitivity = null
+        val prefProx = proximitySensor != null // true if proximity sensor is available
 
         // Gray out preferences menu item pref_button_vib when device has no vibrator
-        Vibrator vibrator = getApplicationContext().getSystemService(Vibrator.class);
-        boolean prefVib = vibrator.hasVibrator(); // true if vibrator is available
+        val vibrator = applicationContext.getSystemService(Vibrator::class.java)
+        val prefVib = vibrator.hasVibrator() // true if vibrator is available
 
         // Set pref_prox and pref_button_vib enabler, used in SettingsFragment
-        editor.putBoolean("enable_prox", prefProx);
-        editor.putBoolean("enable_vib", prefVib);
-        editor.apply();
+        editor.putBoolean("enable_prox", prefProx)
+        editor.putBoolean("enable_vib", prefVib)
+        editor.apply()
 
         // Set DarkMode when system is in BrightMode
-        int nightModeFlags = Configuration.UI_MODE_NIGHT_MASK;
-        int confUi = getResources().getConfiguration().uiMode;
-        if ((nightModeFlags & confUi) == Configuration.UI_MODE_NIGHT_NO) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        val nightModeFlags = Configuration.UI_MODE_NIGHT_MASK
+        val confUi = getResources().configuration.uiMode
+        if ((nightModeFlags and confUi) == Configuration.UI_MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
 
         // Use EdgeToEdge mode for Android 15+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM)  // SDK 35+
         {
-            EdgeToEdge.enable(this);
+            this.enableEdgeToEdge()
         }
 
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_welcome)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.baseLayout),
-                (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                    mlp.topMargin = insets.top;
-                    mlp.bottomMargin = insets.bottom;
-                    mlp.leftMargin = insets.left;
-                    mlp.rightMargin = insets.right;
-                    v.setLayoutParams(mlp);
-                    return WindowInsetsCompat.CONSUMED;
-                });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.baseLayout))
+        { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = insets.top
+                leftMargin = insets.left
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
-        cl = new ChangeLog(this, prefs);
+        cl = ChangeLog(this, prefs)
 
         // Show changelog for new version
-        if (cl.firstRun())
-            cl.getLogDialog().show();
+        if (cl!!.firstRun())
+            Objects.requireNonNull<AlertDialog>(cl!!.logDialog).show()
 
         // Check initial storage permission state and if not granted provide dialog
-        storagePermGranted = isStoragePermGranted();
-        if (!storagePermGranted) // in self permission
+        storagePermGranted = isStoragePermGranted()
+        if (!storagePermGranted)  // in self permission
         {
-            // Provide dialog for storage permission request
-            requestAllFilesAccessPermission(1);
+            // Provide dialog for storage permission request with explanation
+            requestAllFilesAccessPermission(1)
 
             // Prepare to ask foreground location permission only once
-            editor.putBoolean("has_asked_foreground", false);
-            editor.commit();
+            editor.putBoolean("has_asked_foreground", false)
+            editor.commit()
         }
 
         // Check DB version and upgrade if necessary
-        dbHelper = new DbHelper(this);
-        database = dbHelper.getWritableDatabase(); // Make DB upgrade if necessary
-        dbHelper.close();
+        dbHelper = DbHelper(this)
+        database = dbHelper!!.writableDatabase // Make DB upgrade if necessary
+        dbHelper!!.close()
 
         // Set up the data sources
-        headDataSource = new HeadDataSource(this);
-        sectionDataSource = new SectionDataSource(this);
-        countDataSource = new CountDataSource(this);
+        headDataSource = HeadDataSource(this)
+        sectionDataSource = SectionDataSource(this)
+        countDataSource = CountDataSource(this)
 
         // Get tour name and check for DB integrity
         try {
-            sectionDataSource.open();
-            section = sectionDataSource.getSection();
-            tourName = section.name;
-            sectionDataSource.close();
-        } catch (SQLiteException e) {
-            sectionDataSource.close();
+            sectionDataSource!!.open()
+            section = sectionDataSource!!.section
+            tourName = section!!.name
+            sectionDataSource!!.close()
+        } catch (_: SQLiteException) {
+            sectionDataSource!!.close()
 
-            mesg = getString(R.string.corruptDb);
+            mesg = getString(R.string.corruptDb)
             Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
 
-            mHandler.postDelayed(this::finishAndRemoveTask, 2000);
+            mHandler.postDelayed({ this.finishAndRemoveTask() }, 2000)
         }
 
         // Prepare tourName to be part of a filename
-        tourNameDir = tourName;
-        if (!Objects.equals(tourNameDir, ""))
-            tourNameDir = tourNameDir.replaceAll(regexFilename, "");
+        tourNameForDir = tourName
+        if (tourNameForDir != "") tourNameForDir = tourNameForDir.replace(regexFilename.toRegex(), "")
 
-        // Test for existence of file /storage/emulated/0/Documents/TourCount/tourcount0.db
-        storagePermGranted = isStoragePermGranted();
+        storagePermGranted = isStoragePermGranted()
         if (storagePermGranted) {
-            File path;
-            path = Environment.getExternalStorageDirectory();
-            path = new File(path + "/Documents/TourCount");
+            // Test for existence of directory /storage/emulated/0/Documents/TourCount
+            var path = Environment.getExternalStorageDirectory()
+            path = File("$path/Documents/TourCount")
 
-            // Delete old preliminary tourcount0.db if it does exist
-            inFile = new File(path, "/tourcount0.db"); // old initial basic DB
-            if (inFile.exists())
-                //noinspection ResultOfMethodCallIgnored
-                inFile.delete();
+            // Delete an old existing tourcount0.db if it does exist
+            inFile = File(path, "/tourcount0.db") // old initial basic DB
+            if (inFile!!.exists())
+                inFile!!.delete()
 
             // Create directory TourCount and write initial tourcount0_ll.db file
-            localLanguage = Locale.getDefault().toString().substring(0, 2);
-            inFile = new File(path, "/tourcount0_" + localLanguage + ".db"); // new initial basic DB
-            if (!inFile.exists()) {
-                // parameter 0: short name, local language and don't show a message
-                exportBasisDb(0);
+            localLanguage = Locale.getDefault().toString().substring(0, 2)
+            inFile = File(path, "/tourcount0_$localLanguage.db") // new initial basic DB
+            if (!inFile!!.exists()) {
+                // Call with parameter 0: short name, local language and don't show a message
+                exportBasisDb(0)
             }
         }
 
         // Option for use of Nominatim service for locality data
-        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
+        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
         if (metaPref) {
-            adrServiceOn = false; // will be set true by addressDispatcher
-            addressDispatcher(1); // Start AddrRequestService
+            TourCountApplication.adrServiceOn = false // will be set true by addressDispatcher
+            addressDispatcher(1) // Start AddrRequestService
         }
 
         // New onBackPressed logic
@@ -321,897 +307,890 @@ public class WelcomeActivity
         // - Two-button navigation (Android P): NavBarMode = 1
         // - Full screen gesture mode (Android Q): NavBarMode = 2
         // Use onBackPressed logic only if NavBarMode = 0 or 1.
-        if (getNavBarMode() == 0 || getNavBarMode() == 1) {
-            OnBackPressedCallback callback = getOnBackPressedCallback();
-            getOnBackPressedDispatcher().addCallback(this, callback);
+        if (this.navBarMode == 0 || this.navBarMode == 1) {
+            val callback = this.onBackPressedCallback
+            onBackPressedDispatcher.addCallback(this, callback)
         }
     }
     // End of onCreate()
 
-    // Check initial external storage permission and set 'storagePermGranted'
-    private Boolean isStoragePermGranted() {
-        // check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
-        boolean storageGranted;
-        storageGranted = Environment.isExternalStorageManager();
+    // Check storage self permission
+    private fun isStoragePermGranted(): Boolean {
+        // Check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
+        val storageGranted: Boolean = Environment.isExternalStorageManager()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "338, ManageStoragePermission: " + storageGranted);
-        return storageGranted;
+            Log.i(TAG,"323, ManageStoragePermission: $storageGranted")
+
+        return storageGranted
     }
 
     // Request All-Files-Access Permission
-    public void requestAllFilesAccessPermission(int m) {
+    fun requestAllFilesAccessPermission(m: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "345, requestAllFilesAccessPermission");
+            Log.i(TAG,"331, requestAllFilesAccessPermission")
 
-        String mesg = "";
-        if (m == 1)
-            mesg = getString(R.string.dialog_storage_message1);
-        else if ( m == 2)
-            mesg = getString(R.string.dialog_storage_message2);
+        if (m == 1) mesg = getString(R.string.dialog_storage_message1)
+        else if (m == 2) mesg = getString(R.string.dialog_storage_message2)
 
         // Provide dialog for storage permission request
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.dialog_storage_title))
-                .setMessage(mesg)
-                .setPositiveButton(getString(R.string.ok_button), (dialogInterface, i) -> {
-                    stoIntent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    Uri packageUri = Uri.fromParts("package", getPackageName(), null);
-                    stoIntent.setData(packageUri);
-                    isStorPermReq = true;
-                    startActivity(stoIntent);
-                })
-                .setNegativeButton(getString(R.string.cancelButton), (dialogInterface, i) ->
-                                showSnackbarRed(getString(R.string.storage_perm_denied)))
-                .create().show();
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_storage_title))
+            .setMessage(mesg)
+            .setPositiveButton(
+                getString(R.string.ok_button)
+            ) { _: DialogInterface?, _: Int ->
+                stoIntent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                val packageUri = Uri.fromParts("package", packageName, null)
+                stoIntent!!.data = packageUri
+                TourCountApplication.isStorPermReq = true
+                startActivity(stoIntent)
+            }
+            .setNegativeButton(
+                getString(R.string.cancelButton)
+            ) { _: DialogInterface?, _: Int ->
+                showSnackbarRed(getString(R.string.storage_perm_denied))
+            }
+            .create().show()
     }
 
-    // Check for Navigation bar (1-, 2- or 3-button mode)
-    public int getNavBarMode() {
-        Resources resources = this.getResources();
+    val navBarMode: Int
+        // Check for Navigation bar (1-, 2- or 3-button mode)
+        get() {
+            val resources = this.getResources()
 
-        @SuppressLint("DiscouragedApi")
-        int resourceId = resources.getIdentifier("config_navBarInteractionMode",
-                "integer", "android");
+            @SuppressLint("DiscouragedApi") val resourceId = resources.getIdentifier(
+                "config_navBarInteractionMode",
+                "integer", "android"
+            )
 
-        // navBarMode = 0: 3-button, = 1: 2-button, = 2: gesture
-        return resourceId > 0 ? resources.getInteger(resourceId) : 0;
-    }
+            // navBarMode = 0: 3-button, = 1: 2-button, = 2: gesture
+            return if (resourceId > 0) resources.getInteger(resourceId) else 0
+        }
 
     // Use onBackPressed logic for button navigation
-    @NonNull
-    private OnBackPressedCallback getOnBackPressedCallback() {
-        final Handler m1Handler = new Handler(Looper.getMainLooper());
-        final Runnable r1 = () -> doubleBackToExitPressedTwice = false;
+    private val onBackPressedCallback: OnBackPressedCallback
+        get() {
+            val m1Handler = Handler(Looper.getMainLooper())
+            val r1 = Runnable { doubleBackToExitPressedTwice = false }
 
-        return new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (doubleBackToExitPressedTwice) {
-                    m1Handler.removeCallbacks(r1);
+            return object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (doubleBackToExitPressedTwice) {
+                        m1Handler.removeCallbacks(r1)
 
-                    // Stop button sound (SoundService)
-                    if (sndServiceOn) {
-                        soundService.releaseSoundM();
-                        soundService.releaseSoundP();
+                        // Stop button sound (SoundService)
+                        if (sndServiceOn) {
+                            soundService!!.releaseSoundM()
+                            soundService!!.releaseSoundP()
 
-                        stopService(sndIntent);
-                        sndServiceOn = false;
+                            stopService(sndIntent)
+                            sndServiceOn = false
+                        }
+
+                        // Stop AddrRequestService
+                        if (metaPref) addressDispatcher(2)
+
+                        finish()
+                        remove()
+                    } else {
+                        doubleBackToExitPressedTwice = true
+
+                        mesg = getString(R.string.back_twice) // within 1.5 sec
+                        Toast.makeText(applicationContext,
+                            fromHtml("<font color='blue'>$mesg</font>"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        m1Handler.postDelayed(r1, 1500)
                     }
-
-                    // Stop AddrRequestService
-                    if (metaPref)
-                        addressDispatcher(2);
-
-                    finish();
-                    remove();
-                } else {
-                    doubleBackToExitPressedTwice = true;
-
-                    mesg = getString(R.string.back_twice);
-                    Toast.makeText(getApplicationContext(),
-                            fromHtml("<font color='blue'>" + mesg + "</font>"),
-                            Toast.LENGTH_SHORT).show();
-
-                    m1Handler.postDelayed(r1, 1500);
                 }
             }
-        };
-    }
+        }
 
-    @SuppressLint({"SourceLockedOrientationActivity", "ApplySharedPref"})
-    @Override
-    protected void onResume() {
-        super.onResume();
+    @SuppressLint("SourceLockedOrientationActivity", "ApplySharedPref")
+    override fun onResume() {
+        super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "428, onResume");
+            Log.i(TAG, "415, onResume")
 
-        prefs = TourCountApplication.getPrefs();
-        prefs.registerOnSharedPreferenceChangeListener(this);
-        editor = prefs.edit();
+        prefs = getPrefs()
+        prefs.registerOnSharedPreferenceChangeListener(this)
+        editor = prefs.edit()
 
-        outPref = prefs.getString("pref_sort_output", "names"); // sort mode csv-export
+        outPref = prefs.getString("pref_sort_output", "names")!! // sort mode csv-export
         // Mail address for reliable query of Nominatim service
-        String emailString = prefs.getString("email_String", "");
+        val emailString: String = prefs.getString("email_String", "")!!
         // Option for use of Nominatim service for locality data
-        metaPref = prefs.getBoolean("pref_metadata", false); // use Reverse Geocoding
-        dataLanguage = prefs.getString("pref_sel_data_lang", "");
-        if (dataLanguage.isEmpty())
-            dataLanguage = "--";
+        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
+        if (dataLanguage.isEmpty()) dataLanguage = "--"
 
         // Set storagePermGranted from self permission
-        storagePermGranted = isStoragePermGranted();
+        storagePermGranted = isStoragePermGranted()
 
-        if (isFirstStart && metaPref) {
+        if (TourCountApplication.isFirstStart && metaPref) {
             // This is to remind a missing email address for Nominatim Reverse Geocoder.
-            if (Objects.equals(emailString, "")) {
-                mesg = getString(R.string.missingEmail);
-                Toast.makeText(this, // orange
-                        fromHtml("<font color='#ff6000'>" + mesg + "</font>"),
-                        Toast.LENGTH_SHORT).show();
-            }
-            isFirstStart = false;
+            if (emailString == "") {
+                mesg = getString(R.string.missingEmail)
+                Toast.makeText(this,  // orange
+                    fromHtml("<font color='#ff6000'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()}
+            TourCountApplication.isFirstStart = false
         }
 
-        sectionDataSource.open();
-        countDataSource.open();
+        sectionDataSource!!.open()
+        countDataSource!!.open()
 
-        baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(tourCount.setBackgr());
+        baseLayout = findViewById(R.id.baseLayout)
+        baseLayout!!.background = tourCount!!.setBackgr()
 
         // Set tour name as title from DB table section
-        section = sectionDataSource.getSection();
-        tourName = section.name;
-        try {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
-        } catch (NullPointerException e) {
-            // nothing
-        }
+        section = sectionDataSource!!.section
+        tourName = section!!.name
+        supportActionBar!!.title = tourName
 
         // Prepare modified tourName to be part of a filename
-        tourNameDir = tourName;
-        if (!Objects.equals(tourNameDir, ""))
-            tourNameDir = tourNameDir.replaceAll(regexFilename, "");
+        tourNameForDir = tourName
+        if (tourNameForDir != "") tourNameForDir = tourNameForDir.replace(regexFilename.toRegex(), "")
 
         // Location permissions handling:
-        //   Get flag fineLocationPermGranted from self permissions
-        isFineLocationPermGranted();
+        isFineLocationPermGranted() // Get flag fineLocationPermGranted from self permissions
 
         // If location permission is not yet granted prepare and query for it
         if (storagePermGranted && !fineLocationPermGranted) {
-            // Get flag 'has_asked_foreground'
-            boolean hasAskedForegroundLocation = prefs.getBoolean("has_asked_foreground", false);
+            // Get flag 'has_asked_foreground' for foreground location permission
+            val hasAskedForegroundLocation = prefs.getBoolean("has_asked_foreground", false)
 
             if (!hasAskedForegroundLocation) {
-                // Query foreground location permission first
-                // Ask necessary fine location permission with info in AlertDialog
-                PermissionsLocationDialogFragment.newInstance().show(getSupportFragmentManager(),
-                        PermissionsLocationDialogFragment.class.getName());
+                // Query foreground location permission first and set flag 'has_asked_foreground'
+                // Ask necessary fine location permission with info in PermissionsLocationDialog
+                newInstance().show(
+                    supportFragmentManager,PermissionsLocationDialogFragment::class.java.name)
 
-                editor.putBoolean("has_asked_foreground", true);
-                editor.commit();
+                editor.putBoolean("has_asked_foreground", true)
+                editor.commit()
             }
         }
 
         // Get new location self permission state
-        isFineLocationPermGranted(); // set fineLocationPermGranted from self permission
+        isFineLocationPermGranted() // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "501, onResume, fineLocationPermGranted: " + fineLocationPermGranted);
+            Log.i(TAG,"481, onResume, fineLocationPermGranted: $fineLocationPermGranted")
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
             // Start location service and get 1. location
-            locationDispatcher(1); // Start LocationService
+            locationDispatcher(1)
         }
     }
     // End of onResume()
 
     // Check initial fine location permission
-    private void isFineLocationPermGranted() {
-        fineLocationPermGranted = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    private fun isFineLocationPermGranted() {
+        fineLocationPermGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Control location service
-    // locationDispatcherMode:
-    //  1 = start location service just to get a fix as early as possible
-    //  2 = end location service for WelcomeActivity
-    private void locationDispatcher(int locationDispatcherMode) {
+    // Control location service by locationDispatcherMode:
+    //  1 = start location service and periodic location requests
+    //  2 = end location service when app is invisible
+    private fun locationDispatcher(locationDispatcherMode: Int) {
         if (fineLocationPermGranted) {
-            switch (locationDispatcherMode) {
-                case 1 -> {
+            when (locationDispatcherMode) {
+                1 -> {
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "528, locationDispatcher 1");
+                            Log.i(TAG,"509, locationDispatcher 1")
 
-                        locationService = new LocationService(getApplicationContext());
-                        locIntent = new Intent(getApplicationContext(), LocationService.class);
-                        startService(locIntent);
-                        locServiceOn = true;
+                        locationService = LocationService(applicationContext)
+                        locIntent = Intent(applicationContext, LocationService::class.java)
+                        startService(locIntent)
+                        locServiceOn = true
                     }
 
-                    getLoc();  // Get position
+                    this.loc // Get position
                 }
-                case 2 -> {
+
+                2 -> {
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "542, locationDispatcher 2");
+                            Log.i(TAG,"524, locationDispatcher 2")
 
-                        locationService.stopListener();
-                        locIntent = new Intent(getApplicationContext(), LocationService.class);
-                        stopService(locIntent);
-                        locServiceOn = false;
+                        locationService!!.stopListener()
+                        locIntent = Intent(applicationContext, LocationService::class.java)
+                        stopService(locIntent)
+                        locServiceOn = false
                     }
                 }
             }
         }
     }
 
-    // Get the location data and store values in global variables
-    @SuppressLint("DefaultLocale")
-    public void getLoc() {
-        if (locationService.canGetLocation()) {
-            locationService.getLongitude();
-            locationService.getLatitude();
-            locationService.getAltitude();
-            locationService.getAccuracy();
+    @get:SuppressLint("DefaultLocale")
+    val loc: Unit
+        // Get the location data and store values in global variables
+        get() {
+            if (locationService!!.canGetLocation()) {
+                locationService!!.getLongitude()
+                locationService!!.getLatitude()
+                locationService!!.getAltitude()
+                locationService!!.getAccuracy()
+            }
         }
-    }
 
     // Control AddrRequestService
-    private void addressDispatcher(int addrDispatcherMode) {
-        switch (addrDispatcherMode) {
-            case 1 -> {
+    private fun addressDispatcher(addrDispatcherMode: Int) {
+        when (addrDispatcherMode) {
+            1 -> {
                 // Get address data
-                if (!adrServiceOn) {
+                if (!TourCountApplication.adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "572, addressDispatcher 1");
+                        Log.i(TAG,"555, addressDispatcher 1")
 
-                    adrServiceOn = true;
-                    addrRequestService = new AddrRequestService();
-                    adrIntent = new Intent(getApplicationContext(), AddrRequestService.class);
-                    startService(adrIntent);
-                    addrRequestService.stopTimerTask();
+                    TourCountApplication.adrServiceOn = true
+                    addrRequestService = AddrRequestService()
+                    adrIntent = Intent(applicationContext, AddrRequestService::class.java)
+                    startService(adrIntent)
+                    addrRequestService!!.stopTimerTask()
                 }
             }
-            case 2 -> {
-                // Stop AddrRequestService
-                if (adrServiceOn) {
-                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, "585, addressDispatcher 2");
 
-                    addrRequestService.releaseSoundA();
-                    addrRequestService.stopTimerTask();
-                    adrIntent = new Intent(getApplicationContext(), AddrRequestService.class);
-                    stopService(adrIntent);
-                    adrServiceOn = false;
+            2 -> {
+                // Stop AddrRequestService
+                if (TourCountApplication.adrServiceOn) {
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG,"569, addressDispatcher 2")
+
+                    addrRequestService!!.releaseSoundA()
+                    addrRequestService!!.stopTimerTask()
+                    adrIntent = Intent(applicationContext, AddrRequestService::class.java)
+                    stopService(adrIntent)
+                    TourCountApplication.adrServiceOn = false
                 }
             }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.welcome, menu);
-        MenuCompat.setGroupDividerEnabled(menu, true); // Show dividers in menu
-        return true;
+    // Show the action bar menu with present items.
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.welcome, menu)
+        MenuCompat.setGroupDividerEnabled(menu, true) // Show dividers in menu
+        return true
     }
 
     // Handle clicks on the action bar and its menu items here
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            // Call SettingsActivity
-            startActivity(new Intent(this, SettingsActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            return true;
-
-        } else if (id == R.id.exportBasisMenu) {
-            // Call exportBasisDb()
-            if (storagePermGranted) {
-                exportBasisDb(2); // 2: show message + long name
-            } else {
-                requestAllFilesAccessPermission(2);
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent: Intent?
+        when (item.itemId) {
+            R.id.action_settings -> {
+                // Call SettingsActivity
+                startActivity(
+                    Intent(this, SettingsActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                )
+                return true
             }
-            return true;
-
-        } else if (id == R.id.exportMenu) {
-            // Call exportDb()
-            if (storagePermGranted) {
-                exportDb();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.exportBasisMenu -> {
+                // Call exportBasisDb()
+                if (storagePermGranted) {
+                    exportBasisDb(2) // 2: show message + long file name
+                } else {
+                    requestAllFilesAccessPermission(2) // message with "... Then try again."
+                }
+                return true
             }
-            return true;
-
-        } else if (id == R.id.exportXLSXMenu) {
-            // Call exportDb2XLSX()
-            if (storagePermGranted) {
-                exportDb2XLSX();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.exportMenu -> {
+                // Call exportDb()
+                if (storagePermGranted) {
+                    exportDb()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
             }
-            return true;
-
-        } else if (id == R.id.exportCSVMenu) {
-            // Call exportDb2CSV()
-            if (storagePermGranted) {
-                exportDb2CSV();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.exportXLSXMenu -> {
+                // Call exportDb2XLSX()
+                if (storagePermGranted) {
+                    exportDb2XLSX()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
             }
-            return true;
-
-        } else if (id == R.id.exportSpeciesListMenu) {
-            // Call exportSpeciesList()
-            if (storagePermGranted) {
-                exportSpeciesList();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.exportCSVMenu -> {
+                // Call exportDb2CSV()
+                if (storagePermGranted) {
+                    exportDb2CSV()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
             }
-            return true;
-
-        } else if (id == R.id.importBasisMenu) {
-            // Call importBasisDb()
-            if (storagePermGranted) {
-                importBasisDb();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.exportSpeciesListMenu -> {
+                // Call exportSpeciesList()
+                if (storagePermGranted) {
+                    exportSpeciesList()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
             }
-            return true;
-
-        } else if (id == R.id.importFileMenu) {
-            // Call  importDBFile()
-            if (storagePermGranted) {
-                importDBFile();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.importBasisMenu -> {
+                // Call importBasisDb()
+                if (storagePermGranted) {
+                    importBasisDb()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
             }
-            return true;
-
-        } else if (id == R.id.importSpeciesListMenu) {
-            // Call importSpeciesList()
-            if (storagePermGranted) {
-                importSpeciesList();
-            } else {
-                requestAllFilesAccessPermission(2);
+            R.id.importFileMenu -> {
+                // Call  importDBFile()
+                if (storagePermGranted) {
+                    importDBFile()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
             }
-            return true;
+            R.id.importSpeciesListMenu -> {
+                // Call importSpeciesList()
+                if (storagePermGranted) {
+                    importSpeciesList()
+                } else {
+                    requestAllFilesAccessPermission(2)
+                }
+                return true
+            }
+            R.id.resetDBMenu -> {
+                // Call resetToBasisDb()
+                resetToBasisDb()
+                return true
+            }
+            R.id.viewHelp -> {
+                // Call ShowTextDialog with help text
+                intent = Intent(this@WelcomeActivity, ShowTextDialog::class.java)
+                intent.putExtra("dialog", "help")
+                startActivity(intent)
+                return true
+            }
+            R.id.changeLog -> {
+                // Call ChangeLog
+                Objects.requireNonNull<AlertDialog>(cl!!.fullLogDialog).show()
+                return true
+            }
+            R.id.viewLicense -> {
+                // Call ShowTextDialog with license text
+                intent = Intent(this@WelcomeActivity, ShowTextDialog::class.java)
+                intent.putExtra("dialog", "license")
+                startActivity(intent)
+                return true
+            }
+            R.id.editMeta -> {
+                // Call EditMetaActivity
+                intent = Intent(this@WelcomeActivity, EditMetaActivity::class.java)
+                // Wait for 500 msec to get results from AddrRequestService
+                mHandler.postDelayed(
+                    { startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)) },
+                    500
+                )
+                return true
+            }
+            R.id.startCounting -> {
+                // Call CountingActivity
+                intent = Intent(this@WelcomeActivity, CountingActivity::class.java)
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                return true
+            }
+            R.id.showResults -> {
+                // Call ShowResultsActivity
+                mesg = getString(R.string.wait)
+                Toast.makeText(this,
+                    fromHtml("<font color='blue'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
 
-        } else if (id == R.id.resetDBMenu) {
-            // Call resetToBasisDb()
-            resetToBasisDb();
-            return true;
-
-        } else if (id == R.id.viewHelp) {
-            // Call ShowTextDialog with help text
-            intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
-            intent.putExtra("dialog", "help");
-            startActivity(intent);
-            return true;
-
-        } else if (id == R.id.changeLog) {
-            // Call ChangeLog
-            cl.getFullLogDialog().show();
-            return true;
-
-        } else if (id == R.id.viewLicense) {
-            // Call ShowTextDialog with license text
-            intent = new Intent(WelcomeActivity.this, ShowTextDialog.class);
-            intent.putExtra("dialog", "license");
-            startActivity(intent);
-            return true;
-
-        } else if (id == R.id.editMeta) {
-            // Call EditMetaActivity
-            intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
-            // Wait for 500 msec to get results from AddrRequestService
-            mHandler.postDelayed(() ->
-                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
-            return true;
-
-        } else if (id == R.id.startCounting) {
-            // Call CountingActivity
-            intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            return true;
-
-        } else if (id == R.id.showResults) {
-            // Call ShowResultsActivity
-            mesg = getString(R.string.wait);
-            Toast.makeText(this,
-                    fromHtml("<font color='blue'>" + mesg + "</font>"),
-                    Toast.LENGTH_SHORT).show();
-
-            // Trick: Pause for 100 msec to show toast
-            mHandler.postDelayed(() ->
-                    startActivity(new Intent(getApplicationContext(), ShowResultsActivity
-                            .class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
-            return true;
+                // Trick: Pause for 100 msec to show toast
+                mHandler.postDelayed({
+                    startActivity(
+                        Intent(applicationContext,ShowResultsActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
+                }, 100)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item);
     }
     // End of onOptionsItemSelected
 
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        baseLayout = findViewById(R.id.baseLayout);
-        baseLayout.setBackground(tourCount.setBackgr());
-        outPref = prefs.getString("pref_sort_output", "names");
-        buttonSoundPref = prefs.getBoolean("pref_button_sound", false);
-        alertSoundPref = prefs.getBoolean("pref_alert_sound", false);
-        metaPref = prefs.getBoolean("pref_metadata", false);
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String?) {
+        baseLayout = findViewById(R.id.baseLayout)
+        baseLayout!!.background = tourCount!!.setBackgr()
+        outPref = prefs.getString("pref_sort_output", "names")!!
+        buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
+        alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
+        metaPref = prefs.getBoolean("pref_metadata", false)
 
-        // Set sound service when changed in settings
+        // Handle sound service when changed in settings
         if (!buttonSoundPref && sndServiceOn) {
-            stopService(sndIntent);
-            sndServiceOn = false;
+            stopService(sndIntent)
+            sndServiceOn = false
         }
 
         if (buttonSoundPref && !sndServiceOn) {
-            startService(sndIntent);
-            sndServiceOn = true;
+            startService(sndIntent)
+            sndServiceOn = true
         }
 
-        if (!alertSoundPref && fineLocationPermGranted && adrServiceOn) {
-            addrRequestService.stopSoundA();
+        if (!alertSoundPref && fineLocationPermGranted && TourCountApplication.adrServiceOn) {
+            addrRequestService!!.stopSoundA()
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    public override fun onPause() {
+        super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "773, onPause");
+            Log.i(TAG, "762, onPause")
 
-        countDataSource.close();
-        sectionDataSource.close();
+        countDataSource!!.close()
+        sectionDataSource!!.close()
 
-        prefs.unregisterOnSharedPreferenceChangeListener(this);
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    public override fun onStop() {
+        super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "786, onStop");
+            Log.i(TAG, "774, onStop")
 
-        baseLayout.invalidate();
+        baseLayout!!.invalidate()
 
         // Stop Services when app should finish
-        if (!TCLifecycleHandler.isApplicationVisible()) {
-            if (adrServiceOn) {
-                addrRequestService.releaseSoundA();
+        if (!isApplicationVisible) {
+            if (TourCountApplication.adrServiceOn) {
+                addrRequestService!!.releaseSoundA()
             }
 
             if (sndServiceOn) {
-                soundService.releaseSoundM();
-                soundService.releaseSoundP();
-                stopService(sndIntent);
-                sndServiceOn = false;
+                soundService!!.releaseSoundM()
+                soundService!!.releaseSoundP()
+                stopService(sndIntent)
+                sndServiceOn = false
             }
 
-            locationDispatcher(2);
-            lat = 0.0; // prohibits calls to Nominatim service
-            lon = 0.0;
+            locationDispatcher(2)
+            TourCountApplication.lat = 0.0 // prohibits calls to Nominatim service
+            TourCountApplication.lon = 0.0
 
-            if (adrServiceOn)
-                addrRequestService.stopTimerTask();
-            addressDispatcher(2);
+            if (TourCountApplication.adrServiceOn) addrRequestService!!.stopTimerTask()
+            addressDispatcher(2)
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "812, onStop, app not visible, running services Loc, Snd, Adr: "
-                        + locServiceOn + ", " + sndServiceOn + ", " + adrServiceOn);
+                Log.i(TAG, ("799, onStop, app not visible, running services Loc, Snd, Adr: "
+                        + locServiceOn + ", " + sndServiceOn + ", " + TourCountApplication.adrServiceOn))
 
-            finishAndRemoveTask();
+            finishAndRemoveTask()
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public override fun onDestroy() {
+        super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "824, onDestroy");
+            Log.i(TAG, "810, onDestroy")
 
-        System.exit(0);
+        exitProcess(0)
     }
 
     // Handle button click "Counting" here
-    public void startCounting(View view) {
-        Intent intent;
-        intent = new Intent(WelcomeActivity.this, CountingActivity.class);
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    fun startCounting(view: View?) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "818, startCounting, View: $view")
+
+        val intent = Intent(this@WelcomeActivity, CountingActivity::class.java)
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 
     // Handle button click "Prepare Inspection" here
-    public void editMeta(View view) {
-        Intent intent = new Intent(WelcomeActivity.this, EditMetaActivity.class);
+    fun editMeta(view: View?) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "827, editMeta, View: $view")
+
+        val intent = Intent(this@WelcomeActivity, EditMetaActivity::class.java)
         // Wait for 500 msec to get results from AddrRequestService
-        mHandler.postDelayed(() ->
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 500);
+        mHandler.postDelayed(
+            { startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            },500)
     }
 
     // Start ShowResultsActivity (by button)
-    public void showResults(View view) {
-        mesg = getString(R.string.wait);
+    fun showResults(view: View?) {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "839, showResults, View: $view")
+
+        mesg = getString(R.string.wait)
         Toast.makeText(this,
-                fromHtml("<font color='blue'>" + mesg + "</font>"),
-                Toast.LENGTH_SHORT).show();
+            fromHtml("<font color='blue'>$mesg</font>"),
+            Toast.LENGTH_SHORT
+        ).show()
 
         // Trick: Pause for 100 msec to show toast
-        mHandler.postDelayed(() ->
-                startActivity(new Intent(getApplicationContext(), ShowResultsActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)), 100);
-    }
-
-    // Date for filename of exported data
-    private static String getcurDate() {
-        Date date = new Date();
-        @SuppressLint("SimpleDateFormat")
-        DateFormat dform = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        return dform.format(date);
+        mHandler.postDelayed(
+            { startActivity(Intent(applicationContext,
+                ShowResultsActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            }, 100)
     }
 
     /***********************************************************************************************
      * The next three functions below are for importing data files.
      * They've been put here because no database should be open at this point.
-     **********************************************************************************************/
+     */
     // Import the basic DB
-    private void importBasisDb() {
-        String fileExtension = ".db";
-        String fileNameStart = "tourcount0";
-        String fileHd = getString(R.string.fileHeadlineBasicDB);
+    private fun importBasisDb() {
+        val fileExtension = ".db"
+        val fileNameStart = "tourcount0"
+        val fileHd = getString(R.string.fileHeadlineBasicDB)
 
-        Intent intent;
-        intent = new Intent(this, AdvFileChooser.class);
-        intent.putExtra("filterFileExtension", fileExtension);
-        intent.putExtra("filterFileNameStart", fileNameStart);
-        intent.putExtra("fileHd", fileHd);
-        myActivityResultLauncher.launch(intent);
+        val intent = Intent(this, AdvFileChooser::class.java)
+        intent.putExtra("filterFileExtension", fileExtension)
+        intent.putExtra("filterFileNameStart", fileNameStart)
+        intent.putExtra("fileHd", fileHd)
+        myActivityResultLauncher.launch(intent)
     }
-    // End of importBasisDb()
+    // End of part 1 of importBasisDb()
 
-    /**********************************************************************************************/
     // Choose a tourcount db-file to load and set it to tourcount.db
-    private void importDBFile() {
+    private fun importDBFile() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "888, importDBFile");
+            Log.i(TAG, "876, importDBFile")
 
-        String fileExtension = ".db";
-        String fileNameStart = "tourcount_";
-        String fileHd = getString(R.string.fileHeadlineDB);
+        val fileExtension = ".db"
+        val fileNameStart = "tourcount_"
+        val fileHd = getString(R.string.fileHeadlineDB)
 
-        Intent intent;
-        intent = new Intent(this, AdvFileChooser.class);
-        intent.putExtra("filterFileExtension", fileExtension);
-        intent.putExtra("filterFileNameStart", fileNameStart);
-        intent.putExtra("fileHd", fileHd);
-        myActivityResultLauncher.launch(intent);
+        val intent = Intent(this, AdvFileChooser::class.java)
+        intent.putExtra("filterFileExtension", fileExtension)
+        intent.putExtra("filterFileNameStart", fileNameStart)
+        intent.putExtra("fileHd", fileHd)
+        myActivityResultLauncher.launch(intent)
     }
+    // End of part 1 of importDBFile()
 
-    // ActivityResultLauncher is part2 of importBasisDb() and importDBFile()
+    // myActivityResultLauncher is part2 of importBasisDb() and importDBFile()
     // and processes the result of AdvFileChooser
-    final ActivityResultLauncher<Intent> myActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    String selectedFile;
-                    inFile = null;
+    @Suppress("UNCHECKED_CAST")
+    val myActivityResultLauncher: ActivityResultLauncher<Intent?> =
+        registerForActivityResult(
+            StartActivityForResult() as ActivityResultContract<Intent?, ActivityResult?>
+        ) { result ->
+            var selectedFile = ""
+            inFile = null
 
-                    if (result.getResultCode() == Activity.RESULT_OK) // has a file
-                    {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            selectedFile = data.getStringExtra("fileSelected");
-                            if (selectedFile != null)
-                                inFile = new File(selectedFile);
-                            else
-                                inFile = null;
-                        }
-                    } else {
-                        if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
-                            mesg = getString(R.string.noFile);
-                            Toast.makeText(getApplicationContext(), // orange
-                                    fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
+            if (result?.resultCode == RESULT_OK)  // has a file
+            {
+                val data = result.data
+                if (data != null) {
+                    selectedFile = data.getStringExtra("fileSelected")!!
+                    inFile = if (selectedFile != "") File(selectedFile)
+                    else null
+                }
+            } else {
+                if ((result?.resultCode == RESULT_FIRST_USER)) {
+                    mesg = getString(R.string.noFile)
+                    Toast.makeText(applicationContext,  // orange
+                        fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
 
-                    if (inFile != null) {
-                        // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
-                        String destPath = getApplicationContext().getFilesDir().getPath();
-                        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/tourcount.db";
-                        outFile = new File(destPath);
+            if (inFile != null) {
+                // outFile -> /data/data/com.wmstein.tourcount/databases/tourcount.db
+                var destPath = applicationContext.filesDir.path
+                destPath = destPath.substring(
+                    0,
+                    destPath.lastIndexOf("/")
+                ) + "/databases/tourcount.db"
+                outFile = File(destPath)
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
-                        builder.setIcon(android.R.drawable.ic_dialog_alert);
-                        builder.setMessage(R.string.confirmDBImport);
-                        builder.setCancelable(false);
-                        builder.setPositiveButton(R.string.importButton, (dialog, id) ->
-                        {
-                            try {
-                                countDataSource.close();
-                                sectionDataSource.close();
+                val builder = AlertDialog.Builder(this@WelcomeActivity)
+                builder.setIcon(android.R.drawable.ic_dialog_alert)
+                builder.setMessage(R.string.confirmDBImport)
+                builder.setCancelable(false)
+                builder.setPositiveButton(
+                    R.string.importButton
+                ) { _: DialogInterface?, _: Int ->
+                    try {
+                        countDataSource!!.close()
+                        sectionDataSource!!.close()
 
-                                copy(inFile, outFile);
+                        copy(inFile, outFile)
 
-                                sectionDataSource.open();
-                                countDataSource.open();
-                                headDataSource.open();
+                        sectionDataSource!!.open()
+                        countDataSource!!.open()
+                        headDataSource!!.open()
 
-                                Head head = headDataSource.getHead();
-                                String headLanguage = head.datalanguage; // Could be null in head table
-                                headDataSource.close();
-                                boolean hasDataLang = true;
+                        val head = headDataSource!!.head
+                        var headLanguage = head.datalanguage
+                        headDataSource!!.close()
+                        var hasDataLang = true
 
-                                if (Objects.equals(headLanguage, ""))
-                                    hasDataLang = false;
-                                else
-                                    headLanguage = headLanguage.substring(0, 2);
+                        if (headLanguage == "") hasDataLang = false
+                        else headLanguage = headLanguage.substring(0, 2)
 
-                                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "964, ImportFile, headLanguage: " + headLanguage);
+                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                            Log.i(TAG, "953, ImportFile, headLanguage: $headLanguage")
 
-                                // Save values for initial count-id and itemposition
-                                editor = prefs.edit();
-                                editor.putInt("count_id", 1);
-                                editor.putInt("item_Position", 0);
-                                editor.putString("pref_sel_data_lang", headLanguage);
-                                editor.putBoolean("has_data_lang", hasDataLang); // controls data language setting
-                                editor.apply();
+                        // Save values for initial count-id and itemposition
+                        editor.putInt("count_id", 1)
+                        editor.putInt("item_Position", 0)
+                        editor.putString("pref_sel_data_lang", headLanguage)
+                        editor.putBoolean("has_data_lang", hasDataLang) // data language setting
+                        editor.apply()
 
-                                // Set tour name as title from DB table section
-                                section = sectionDataSource.getSection();
-                                tourName = section.name;
-                                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                                    Log.i(TAG, "978, ImportFile, Tourname: " + tourName);
+                        // Set tour name as title from DB table section
+                        section = sectionDataSource!!.section
+                        tourName = section!!.name
+                        supportActionBar!!.title = tourName
 
-                                Objects.requireNonNull(getSupportActionBar()).setTitle(tourName);
+                        // Prepare new tourName to be part of a filename
+                        tourNameForDir = tourName
+                        if (tourNameForDir != "") tourNameForDir =
+                            tourNameForDir.replace(regexFilename.toRegex(), "")
 
-                                // Prepare new tourName to be part of a filename
-                                tourNameDir = tourName;
-                                if (!Objects.equals(tourNameDir, ""))
-                                    tourNameDir = tourNameDir.replaceAll(regexFilename, "");
+                        mesg = getString(R.string.importDB)
+                        Toast.makeText(applicationContext,  // bright green
+                            fromHtml("<font color='#008000'>$mesg</font>"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (_: IOException) {
+                        sectionDataSource!!.open()
+                        countDataSource!!.open()
 
-                                mesg = getString(R.string.importDB);
-                                Toast.makeText(getApplicationContext(), // bright green
-                                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
-                                        Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                sectionDataSource.open();
-                                countDataSource.open();
-
-                                mesg = getString(R.string.importFail);
-                                Toast.makeText(getApplicationContext(),
-                                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        builder.setNegativeButton(R.string.cancelButton, (dialog, id) ->
-                                dialog.cancel());
-                        alert = builder.create();
-                        alert.show();
+                        mesg = getString(R.string.importFail)
+                        Toast.makeText(applicationContext,
+                            fromHtml("<font color='red'><b>$mesg</b></font>"),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
-            });
+                builder.setNegativeButton(
+                    R.string.cancelButton
+                ) { dialog: DialogInterface?, _: Int -> dialog!!.cancel() }
+                alert = builder.create()
+                alert.show()
+            }
+        }
     // End of part2 of import of DB files
 
-    /**********************************************************************************************/
-    // Copy file block-wise
-    private static void copy(File src, File dst) throws IOException {
-        FileInputStream in = new FileInputStream(src);
-        FileOutputStream out = new FileOutputStream(dst);
-
-        // Transfer bytes from in to out
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        in.close();
-        out.close();
-    }
-
-    /**********************************************************************************************/
-    // Import species list (also from TransektCount file species_YYYY-MM-DD_hhmmss.csv)
-    private void importSpeciesList() {
+    // Select and import a species list (also from TransektCount file species_YYYY-MM-DD_hhmmss.csv)
+    private fun importSpeciesList() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1030, importSpeciesList");
+            Log.i(TAG, "1000, importSpeciesList")
 
-        // Select exported TransektCount species list file
-        String fileExtension = ".csv";
-        String fileNameStart = "species_";
-        String fileHd = getString(R.string.fileHeadlineCSV);
+        val fileExtension = ".csv"
+        val fileNameStart = "species_"
+        val fileHd = getString(R.string.fileHeadlineCSV)
 
-        Intent intent;
-        intent = new Intent(this, AdvFileChooser.class);
-        intent.putExtra("filterFileExtension", fileExtension);
-        intent.putExtra("filterFileNameStart", fileNameStart);
-        intent.putExtra("fileHd", fileHd);
-        listActivityResultLauncher.launch(intent);
+        val intent = Intent(this, AdvFileChooser::class.java)
+        intent.putExtra("filterFileExtension", fileExtension)
+        intent.putExtra("filterFileNameStart", fileNameStart)
+        intent.putExtra("fileHd", fileHd)
+        listActivityResultLauncher.launch(intent)
     }
 
-    // ActivityResultLauncher processes the result of AdvFileChooser
-    final ActivityResultLauncher<Intent> listActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<>() {
-                @SuppressLint("ApplySharedPref")
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    String selectedFile;
-                    inFile = null;
+    // listActivityResultLauncher processes the result of AdvFileChooser
+    @Suppress("UNCHECKED_CAST")
+    val listActivityResultLauncher: ActivityResultLauncher<Intent?> =
+        registerForActivityResult(
+            StartActivityForResult() as ActivityResultContract<Intent?, ActivityResult?>
+        ) { result ->
+            var selectedFile = ""
+            inFile = null
 
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            selectedFile = data.getStringExtra("fileSelected");
-                            if (selectedFile != null)
-                                inFile = new File(selectedFile);
-                            else
-                                inFile = null;
-                        }
-                    }
-                    // RESULT_FIRST_USER is set in AdvFileChooser for no file
-                    else if ((result.getResultCode() == Activity.RESULT_FIRST_USER)) {
-                        mesg = getString(R.string.noFile);
-                        Toast.makeText(getApplicationContext(), // orange
-                                fromHtml("<font color='#ff6000'><b>" + mesg + "</b></font>"),
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                    if (inFile != null) {
-                        String csvLine;
-                        boolean brError = false;
-
-                        // Check for old version of species list
-                        try {
-                            BufferedReader br = new BufferedReader(new FileReader(inFile));
-                            csvLine = br.readLine(); // Read 1. line only
-                            String[] specLine = csvLine.split(",");
-                            if (Objects.equals(specLine[0], "nocode"))
-                                mesg = getString(R.string.confirmListImport);
-                            else
-                                mesg = getString(R.string.specsCommonLang) + "\n\n" + getString(R.string.confirmListImport);
-                            br.close();
-                        } catch (Exception e) {
-                            mesg = getString(R.string.br_Error);
-                            brError = true;
-                        }
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
-                        builder.setIcon(android.R.drawable.ic_dialog_alert);
-                        builder.setMessage(mesg);
-                        if (brError) {
-                            builder.setCancelable(true);
-                            builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-                        } else {
-                            builder.setCancelable(false);
-                            builder.setPositiveButton(R.string.importButton, (dialog, id) ->
-                            {
-                                clearDBforImport();
-                                readSpeciesCSV(inFile);
-                            });
-                            builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-                        }
-                        alert = builder.create();
-                        alert.show();
-                    }
+            if (result?.resultCode == RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    selectedFile = data.getStringExtra("fileSelected")!!
+                    inFile = if (selectedFile != "")
+                        File(selectedFile)
+                    else null
                 }
-            });
+            } else if ((result?.resultCode == RESULT_FIRST_USER)) {
+                mesg = getString(R.string.noFile)
+                Toast.makeText(applicationContext,  // orange
+                    fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            if (inFile != null) {
+                val csvLine: String
+                var brError = false
+
+                // Check for old version of species list
+                try {
+                    val br = BufferedReader(FileReader(inFile))
+                    csvLine = br.readLine() // Read 1. line only
+                    val specLine: Array<String?> =
+                        csvLine.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                            .toTypedArray()
+                    mesg = if (specLine[0] == "nocode")
+                        getString(R.string.confirmListImport)
+                    else
+                        getString(R.string.specsCommonLang) + "\n\n" + getString(R.string.confirmListImport)
+                    br.close()
+                } catch (_: Exception) {
+                    mesg = getString(R.string.br_Error)
+                    brError = true
+                }
+
+                val builder = AlertDialog.Builder(this@WelcomeActivity)
+                builder.setIcon(android.R.drawable.ic_dialog_alert)
+                builder.setMessage(mesg)
+                if (brError) {
+                    builder.setCancelable(true)
+                    builder.setNegativeButton(
+                        R.string.cancelButton
+                    ) { dialog: DialogInterface?, _: Int -> dialog!!.cancel() }
+                } else {
+                    builder.setCancelable(false)
+                    builder.setPositiveButton(
+                        R.string.importButton
+                    ) { _: DialogInterface?, _: Int ->
+                        clearDBforImport()
+                        readSpeciesCSV(inFile)
+                    }
+                    builder.setNegativeButton(
+                        R.string.cancelButton
+                    ) { dialog: DialogInterface?, _: Int -> dialog!!.cancel() }
+                }
+                alert = builder.create()
+                alert.show()
+            }
+        }
 
     // Clear DB for import of external species list
-    private void clearDBforImport() {
+    private fun clearDBforImport() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1116, clearDBforImport");
+            Log.i(TAG, "1087, clearDBforImport")
 
-        dbHelper = new DbHelper(this);
-        database = dbHelper.getWritableDatabase();
+        dbHelper = DbHelper(this)
+        database = dbHelper!!.writableDatabase
 
-        String sql = "DELETE FROM " + DbHelper.COUNT_TABLE;
-        database.execSQL(sql);
+        var sql = "DELETE FROM " + DbHelper.COUNT_TABLE
+        database!!.execSQL(sql)
 
-        sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
-        database.execSQL(sql);
+        sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE
+        database!!.execSQL(sql)
 
-        dbHelper.close();
+        dbHelper!!.close()
 
-        lat = 0.0;
-        lon = 0.0;
-        heightNN = 0.0;
-        uncertainty = 0.0;
-        tLocality = "";
-        isFirstLocality = true;
+        TourCountApplication.lat = 0.0
+        TourCountApplication.lon = 0.0
+        TourCountApplication.heightNN = 0.0
+        TourCountApplication.uncertainty = 0.0
+        TourCountApplication.tLocality = ""
+        TourCountApplication.isFirstLocality = true
 
-        editor = prefs.edit();
-        editor.putInt("item_Position", 0);
-        editor.putInt("count_id", 1);
-        editor.apply();
+        editor.putInt("item_Position", 0)
+        editor.putInt("count_id", 1)
+        editor.apply()
 
         // Restart Location Service and try to read location
         if (fineLocationPermGranted) {
             // Start location service and get 1. location
-            locationDispatcher(1); // Start LocationService
+            locationDispatcher(1) // Start LocationService
         }
     }
 
     // Read an exported species list and write items to table counts
-    private void readSpeciesCSV(File inFile) {
+    private fun readSpeciesCSV(inFile: File?) {
         try {
-            mesg = getString(R.string.waitImport);
+            mesg = getString(R.string.waitImport)
             Toast.makeText(this,
-                    fromHtml("<font color='blue'>" + mesg + "</font>"),
-                    Toast.LENGTH_SHORT).show();
+                fromHtml("<font color='blue'>$mesg</font>"),
+                Toast.LENGTH_SHORT
+            ).show()
 
-            String csvLine;
-            List<String> codeArray = new ArrayList<>();
-            List<String> nameArray = new ArrayList<>();
-            List<String> nameGArray = new ArrayList<>();
+            var csvLine: String
+            val codeArray: MutableList<String?> = ArrayList()
+            val nameArray: MutableList<String?> = ArrayList()
+            val nameGArray: MutableList<String?> = ArrayList()
 
-            BufferedReader br = new BufferedReader(new FileReader(inFile));
-            boolean hasDataLang = true;
+            var br = BufferedReader(FileReader(inFile))
+            var hasDataLang = true
 
-            editor = prefs.edit();
-            csvLine = br.readLine(); // Read 1. line only
-            String[] specLine = csvLine.split(",");
-            if (Objects.equals(specLine[0], "nocode")) {
-                dataLanguage = specLine[2];
-                editor.putString("pref_sel_data_lang", dataLanguage);
+            editor = prefs.edit()
+            csvLine = br.readLine() // Read 1. line only
+            var specLine: Array<String?> =
+                csvLine.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            if (specLine[0] == "nocode") {
+                dataLanguage = specLine[2]!!
+                editor.putString("pref_sel_data_lang", dataLanguage)
             } else {
-                hasDataLang = false;
-                editor.putString("pref_sel_data_lang", "--");
+                hasDataLang = false
+                editor.putString("pref_sel_data_lang", "--")
             }
 
-            editor.putBoolean("has_data_lang", hasDataLang); // controls data language setting
-            editor.apply();
+            editor.putBoolean("has_data_lang", hasDataLang) // controls data language setting
+            editor.apply()
 
-            br.close();
+            br.close()
 
-            br = new BufferedReader(new FileReader(inFile));
+            br = BufferedReader(FileReader(inFile))
 
-            int i = 0;       // index of imported list
-            int iCounts = 1; // index of id in table counts
-            while ((csvLine = br.readLine()) != null) // for each csvLine
+            var i = 0 // index of imported list
+            var iCounts = 1 // index of id in table counts
+
+            while ((br.readLine().also { csvLine = it }) != null)  // for each csvLine
             {
-                specLine = csvLine.split(",");
+                specLine =
+                    csvLine.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+
                 // 1. line fields contain String[0]: "nocode", [1]: "language", [2]: "de"|"en"|"fr"|"it"|"es"
-                if (Objects.equals(specLine[0], "nocode")) {
+                if (specLine[0] == "nocode") {
                     if (hasDataLang) {
-                        iCounts--;
-                        i--;
+                        iCounts--
+                        i--
                     }
                 } else {
                     // comma-separated 0:code, 1:name, 2:nameL
-                    codeArray.add(i, specLine[0]);
-                    nameArray.add(i, specLine[1]);
-                    nameGArray.add(i, specLine[2]);
-                    countDataSource.writeCountItem(String.valueOf(iCounts), codeArray.get(i),
-                            nameArray.get(i), nameGArray.get(i));
+                    codeArray.add(i, specLine[0])
+                    nameArray.add(i, specLine[1])
+                    nameGArray.add(i, specLine[2])
+                    countDataSource!!.writeCountItem(
+                        iCounts.toString(), codeArray[i]!!,
+                        nameArray[i]!!, nameGArray[i]!!
+                    )
                 }
-                i++;
-                iCounts++;
+                i++
+                iCounts++
             }
-            br.close();
+            br.close()
 
-            mesg = getString(R.string.importList);
-            Toast.makeText(this, // bright green
-                    fromHtml("<font color='#008000'>" + mesg + "</font>"),
-                    Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            mesg = getString(R.string.importListFail);
+            mesg = getString(R.string.importList)
+            Toast.makeText(this,  // bright green
+                fromHtml("<font color='#008000'>$mesg</font>"),
+                Toast.LENGTH_SHORT
+            ).show()
+        } catch (_: Exception) {
+            mesg = getString(R.string.importListFail)
             Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
     // End of importSpeciesList()
@@ -1219,1817 +1198,1855 @@ public class WelcomeActivity
     /***********************************************************************************************
      * The next four functions below are for exporting data files.
      * They've been put here because no database should be open at this point.
-     **********************************************************************************************/
+     */
     // Exports Basic DB to Documents/TourCount/tourcount0_name.db
     // hasNoName indicated initial creation of tourcount0.db if it does not exist
-    private void exportBasisDb(int i) {
+    private fun exportBasisDb(i: Int) {
         // i = 0: don't show a message, use local language and short name
         // i = 2: show message and use data language and long name
         // inFile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
-        String inPath = getApplicationContext().getFilesDir().getPath();
-        inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db";
-        inFile = new File(inPath);
+        var inPath = applicationContext.filesDir.path
+        inPath = inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db"
+        inFile = File(inPath)
 
         // tmpFile -> /data/data/com.wmstein.tourcount/files/tourcount_tmp.db
-        String tmpPath = getApplicationContext().getFilesDir().getPath();
-        tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db";
-        File tmpFile = new File(tmpPath);
+        var tmpPath = applicationContext.filesDir.path
+        tmpPath = tmpPath.substring(0, tmpPath.lastIndexOf("/")) + "/files/tourcount_tmp.db"
+        val tmpFile = File(tmpPath)
 
         // outFile in Public Directory Documents/TourCount/
         // distinguish versions (as getExternalStoragePublicDirectory is deprecated in Q, Android 10)
-        File path;
-        path = Environment.getExternalStorageDirectory();
-        path = new File(path + "/Documents/TourCount");
+        var path = Environment.getExternalStorageDirectory()
+        path = File("$path/Documents/TourCount")
 
-        //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // just verify path, result ignored
+        path.mkdirs() // just verify path, result ignored
 
-        if (i == 0)
-            outFile = new File(path, "/tourcount0_" + localLanguage + ".db");
+        if (i == 0) outFile = File(path, "/tourcount0_$localLanguage.db")
         else if (i > 0) {
-            dataLanguage = prefs.getString("pref_sel_data_lang", "");
-            if (dataLanguage.isEmpty())
-                dataLanguage = "--";
+            dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
+            if (dataLanguage.isEmpty()) dataLanguage = "--"
 
-            if (Objects.equals(tourNameDir, ""))
-                outFile = new File(path, "/tourcount0_" + dataLanguage + ".db");
-            else
-                outFile = new File(path, "/tourcount0_" + dataLanguage + "_" + tourNameDir + ".db");
+            outFile = if (tourNameForDir == "") File(path, "/tourcount0_$dataLanguage.db")
+            else File(path, "/tourcount0_$dataLanguage" + "_$tourNameForDir.db")
         }
 
         // Check if we can write the media
-        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED == storageState
 
         if (!mExternalStorageWriteable) {
-            mesg = getString(R.string.noCard);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+            mesg = getString(R.string.noCard)
+            Toast.makeText(
+                this,
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
         } else {
             // Export the basic db
             try {
                 // Save current db as backup db tmpFile
-                copy(inFile, tmpFile);
+                copy(inFile, tmpFile)
 
                 // Clear DB and location values for basic DB
-                boolean r_ok = clearDBValues();
+                val resOK = clearDBValues()
 
                 // Write Basic DB
-                if (r_ok) {
-                    copy(inFile, outFile);
+                if (resOK) {
+                    copy(inFile, outFile)
                     // Restore actual db from tmpFile
-                    copy(tmpFile, inFile);
+                    copy(tmpFile, inFile)
                 }
 
                 // Delete backup db
-                boolean d0 = tmpFile.delete();
+                val d0 = tmpFile.delete()
 
                 // Show message success
                 if (d0 && i == 2) {
-                    mesg = getString(R.string.saveBasisDB);
-                    Toast.makeText(this, // bright green
-                            fromHtml("<font color='#008000'>" + mesg + "</font>"),
-                            Toast.LENGTH_SHORT).show();
+                    mesg = getString(R.string.saveBasisDB)
+                    Toast.makeText(
+                        this,  // bright green
+                        fromHtml("<font color='#008000'>$mesg</font>"),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } catch (IOException e) {
-                mesg = getString(R.string.saveFail);
-                Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
+            } catch (_: IOException) {
+                mesg = getString(R.string.saveFail)
+                Toast.makeText(
+                    this,
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
     // End of exportBasisDb()
 
-    @SuppressLint({"SdCardPath", "LongLogTag"})
-    private void exportDb() {
+    @SuppressLint("SdCardPath", "LongLogTag")
+    private fun exportDb() {
         // Public data directory for outFile: Documents/TourCount/
-        File path;
-        path = Environment.getExternalStorageDirectory();
-        path = new File(path + "/Documents/TourCount");
-
-        String date, start_tm;
+        var path = Environment.getExternalStorageDirectory()
+        path = File("$path/Documents/TourCount")
 
         // Open Section table for date and start_tm
-        section = sectionDataSource.getSection();
-        date = section.date;
-        start_tm = section.start_tm;
+        section = sectionDataSource!!.section
+        val date = section!!.date
+        val startTM = section!!.start_tm
 
-        boolean engl = false;
-        boolean hasDate = true;
-        String dbDate, dbTime;
-        String dbDateEN, dbDateEU;
+        var engl = false
+        var hasDate = true
+        var dbDate: String
+        val dbTime: String
+        val dbDateEN: String
+        val dbDateEU: String
 
         // Get year from date
-        if (!Objects.equals(date, "")) {
+        if (date != "") {
             // "-" at position 4 of the date means EN
-            if (Objects.equals(date.substring(4, 5), "-"))
-                engl = true;
+            if (date.substring(4, 5) == "-") engl = true
             // Create date for filename as YYYYMMDD from any format
-            dbDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
-            dbDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+            dbDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2)
+            dbDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10)
         } else {
-            dbDateEU = "";
-            dbDateEN = "";
-            hasDate = false;
+            dbDateEU = ""
+            dbDateEN = ""
+            hasDate = false
         }
 
-        if (engl)
-            dbDate = dbDateEN;
-        else
-            dbDate = dbDateEU;
+        dbDate = if (engl) dbDateEN
+        else dbDateEU
 
-        if (!Objects.equals(start_tm, "")) {
-            dbTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
+        if (startTM != "") {
+            dbTime = startTM.substring(0, 2) + startTM.substring(3, 5)
 
-            if (hasDate)
-                dbDate = dbDate + "_" + dbTime; // yyyymmdd_hhmm
-        } else
-            dbDate = ""; // has only a value when both date and start time are given
+            if (hasDate) dbDate = dbDate + "_" + dbTime // yyyymmdd_hhmm
+        } else dbDate = "" // has only a value when both date and start time are given
 
-        //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // Just verify path, result ignored
+        path.mkdirs() // Just verify path, result ignored
 
-        dataLanguage = prefs.getString("pref_sel_data_lang", "");
-        if (dataLanguage.isEmpty())
-            dataLanguage = "--";
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
+        if (dataLanguage.isEmpty()) dataLanguage = "--"
 
         // outFile -> /storage/emulated/0/Documents/TourCount/tourcount_yyyyMMdd_HHmm.db
-        if (Objects.equals(tourNameDir, "") && Objects.equals(dbDate, ""))
-            outFile = new File(path, "/tourcount_" + dataLanguage + "_" + getcurDate() + ".db");
-        else if (Objects.equals(tourNameDir, ""))
-            outFile = new File(path, "/tourcount_" + dataLanguage + "_" + dbDate + ".db");
-        else if (Objects.equals(dbDate, ""))
-            outFile = new File(path, "/tourcount_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + ".db");
-        else
-            outFile = new File(path, "/tourcount_" + dataLanguage + "_" + tourNameDir + "_" + dbDate + ".db");
+        outFile = if (tourNameForDir == "" && dbDate == "")
+            File(path, "/tourcount_" + dataLanguage + "_" + getcurDate() + ".db")
+        else if (tourNameForDir == "")
+            File(path, "/tourcount_" + dataLanguage + "_" + dbDate + ".db")
+        else if (dbDate == "")
+            File(path,
+            "/tourcount_" + dataLanguage + "_" + getcurDate() + "_" + tourNameForDir + ".db")
+        else File(path,
+            "/tourcount_" + dataLanguage + "_" + dbDate + "_" + tourNameForDir + ".db")
 
         // inFile <- /data/data/com.wmstein.tourcount/databases/tourcount.db
-        String inPath = getApplicationContext().getFilesDir().getPath();
-        inPath = inPath.substring(0, inPath.lastIndexOf("/"))
-                + "/databases/tourcount.db";
-        inFile = new File(inPath);
+        var inPath = applicationContext.filesDir.path
+        inPath = (inPath.substring(0, inPath.lastIndexOf("/")) + "/databases/tourcount.db")
+        inFile = File(inPath)
 
         // Check if we can write the media
-        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED == storageState
 
         if (!mExternalStorageWriteable) {
-            mesg = getString(R.string.noCard);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+            mesg = getString(R.string.noCard)
+            Toast.makeText(
+                this,
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
         } else {
             // Export the db
             try {
-                copy(inFile, outFile);
+                copy(inFile, outFile)
 
-                mesg = getString(R.string.saveDB);
-                Toast.makeText(this,
-                        fromHtml("<font color='blue'>" + mesg + "</font>"),
-                        Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                mesg = getString(R.string.saveFail);
-                Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
+                mesg = getString(R.string.saveDB)
+                Toast.makeText(
+                    this,
+                    fromHtml("<font color='blue'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (_: IOException) {
+                mesg = getString(R.string.saveFail)
+                Toast.makeText(
+                    this,
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
     // End of exportDb()
 
     /***********************************************************************************************
-     // Exports DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.csv to
-     // Documents/TourCount/ with purged data set.
-     // Spreadsheet programs can import this csv file with
-     //   - Unicode UTF-8 filter,
-     //   - comma delimiter and
-     //   - "" for text recognition.
+     * Exports the DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.csv to
+     * Documents/TourCount/ with purged data set.
+     * Spreadsheet programs can import this csv file with
+     *  - Unicode UTF-8 filter,
+     *  - comma delimiter and
+     *  - "" for text recognition.
      */
-    private void exportDb2CSV() {
+    private fun exportDb2CSV() {
         // Public data directory for outFile: Documents/TourCount/
-        File path;
-        path = Environment.getExternalStorageDirectory();
-        path = new File(path + "/Documents/TourCount");
+        var path = Environment.getExternalStorageDirectory()
+        path = File("$path/Documents/TourCount")
+
+        section = sectionDataSource!!.section
+        val temps: Int = section!!.tmp
+        val tempe: Int = section!!.tmp_end
+        val winds: Int = section!!.wind
+        val winde: Int = section!!.wind_end
+        val clouds: Int = section!!.clouds
+        val cloude: Int = section!!.clouds_end
 
         // Set environment data
-        String date, start_tm, end_tm;
-        int temps, winds, clouds, tempe, winde, cloude;
+        val date = section!!.date
+        val startTM = section!!.start_tm
+        val endTM = section!!.end_tm
 
-        section = sectionDataSource.getSection();
-        temps = section.tmp;
-        tempe = section.tmp_end;
-        winds = section.wind;
-        winde = section.wind_end;
-        clouds = section.clouds;
-        cloude = section.clouds_end;
-        date = section.date;
-        start_tm = section.start_tm;
-        end_tm = section.end_tm;
-
-        boolean engl = false;
-        boolean hasDate = true;
-        String csvDate, csvTime;
-        String csvDateEU, csvDateEN;
+        var engl = false
+        var hasDate = true
+        var csvDate: String?
+        val csvTime: String?
+        val csvDateEU: String?
+        val csvDateEN: String?
 
         // Get year from date
-        if (!Objects.equals(date, "")) {
+        if (date != "") {
             // "-" at position 4 of the date means EN
-            if (Objects.equals(date.substring(4, 5), "-"))
-                engl = true;
+            if (date.substring(4, 5) == "-") engl = true
             // Create date for filename as YYYYMMDD from any format
-            csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
-            csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+            csvDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2)
+            csvDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10)
         } else {
-            hasDate = false;
-            csvDateEN = "";
-            csvDateEU = "";
+            hasDate = false
+            csvDateEN = ""
+            csvDateEU = ""
         }
 
-        if (engl) {
-            csvDate = csvDateEN;
+        csvDate = if (engl) {
+            csvDateEN
         } else {
-            csvDate = csvDateEU;
+            csvDateEU
         }
 
-        if (!Objects.equals(start_tm, "")) {
-            csvTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
+        if (startTM != "") {
+            csvTime = startTM.substring(0, 2) + startTM.substring(3, 5)
 
-            if (hasDate)
-                csvDate = csvDate + "_" + csvTime; // yyyymmdd_hhmm
-        } else
-            csvDate = ""; // has only a value when both date and start time are given
+            if (hasDate) csvDate = csvDate + "_" + csvTime // yyyymmdd_hhmm
+        } else csvDate = "" // has only a value when both date and start time are given
 
-        //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // Just verify path, result ignored
-
-        String sortIdent;
-        if (outPref.equals("names")) {
-            sortIdent = "n";
+        path.mkdirs()
+        // Just verify path, result ignored
+        val sortIdent = if (outPref == "names") {
+            "n"
         } else {
-            sortIdent = "c";
+            "c"
         }
 
-        dataLanguage = prefs.getString("pref_sel_data_lang", "");
-        if (dataLanguage.isEmpty())
-            dataLanguage = "--";
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
+        if (dataLanguage.isEmpty()) dataLanguage = "--"
 
-        if (Objects.equals(tourNameDir, "") && Objects.equals(csvDate, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".csv");
-        else if (Objects.equals(tourNameDir, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + csvDate + "_" + sortIdent + ".csv");
-        else if (Objects.equals(csvDate, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + "_" + sortIdent + ".csv");
-        else
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + csvDate + "_" + sortIdent + ".csv");
+        outFile = if (tourNameForDir == "" && csvDate == "")
+            File(path,
+            "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".csv")
+        else if (tourNameForDir == "")
+            File(path,
+            "/Tour_" + dataLanguage + "_" + csvDate + "_" + sortIdent + ".csv")
+        else if (csvDate == "")
+            File(path,
+            "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + tourNameForDir + "_" + sortIdent + ".csv")
+        else File(path,
+            "/Tour_" + dataLanguage + "_" + csvDate + "_" + tourNameForDir + "_" + sortIdent + ".csv")
 
-        String sectName;
-        String sectNotes;
+        val sectName: String
+        val sectNotes: String
 
-        Head head;
+        val head: Head?
 
         // Prepare metadata
-        String inspecName;  // Inspector's name
-        String country, b_state;
-        String plz, city, place, locality;
-        int spstate;
-        String spstate0;
-        double longi, lati, heigh, uncer;
-        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
+        val inspecName: String // Inspector's name
+        val country: String
+        val bState: String
+        val plz: String
+        val city: String
+        val place: String
+        val locality: String
+        var spstate: Int
+        var spstate0: String
+        var longi: Double
+        var lati: Double
+        var heigh: Double
+        var uncer: Double
+        val lo: Double
+        val la: Double
+        var loMin = 0.0
+        var loMax = 0.0
+        var laMin = 0.0
+        var laMax = 0.0
+        var uc: Double
+        var uncer1 = 0.0
 
         // Prepare counts data
-        int frst, sum = 0;
-        int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
-        String sumMF = "", sumM = "", sumF = "", sumP = "", sumL = "", sumE = "";
+        var frst: Int
+        var sum = 0
+        var summf = 0
+        var summ = 0
+        var sumf = 0
+        var sump = 0
+        var suml = 0
+        var sume = 0
+        var sumMF = ""
+        var sumM = ""
+        var sumF = ""
+        var sumP = ""
+        var sumL = ""
+        var sumE = ""
 
         // Check if we can write the media
-        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED == storageState
 
         if (!mExternalStorageWriteable) {
-            mesg = getString(R.string.noCard);
-            Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+            mesg = getString(R.string.noCard)
+            Toast.makeText(
+                this,
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
         } else {
             // Get sorting mode of species list
-            String sortMode;
-            if (outPref.equals("names")) {
-                sortMode = getString(R.string.sort_names);
+            val sortMode = if (outPref == "names") {
+                getString(R.string.sort_names)
             } else {
-                sortMode = getString(R.string.sort_codes);
+                getString(R.string.sort_codes)
             }
 
             // Export the purged count table to csv
             try {
                 // Export purged db as csv
-                CSVWriter csvWrite = new CSVWriter(new FileWriter(outFile));
+                val csvWrite = CSVWriter(FileWriter(outFile))
 
                 // Consult Section on Head tables for head and meta info
-                section = sectionDataSource.getSection();
+                section = sectionDataSource!!.section
 
-                sectName = "\"" + section.name + "\"";
-                sectNotes = "\"" + section.notes + "\"";
+                sectName = "\"" + section!!.name + "\""
+                sectNotes = "\"" + section!!.notes + "\""
 
                 if (metaPref) {
-                    country = "\"" + section.country + "\"";
-                    b_state = "\"" + section.b_state + "\"";
-                    plz = "\"" + section.plz + "\"";
-                    city = "\"" + section.city + "\"";
-                    place = "\"" + section.place + "\"";
-                    locality = "\"" + section.st_locality + "\"";
+                    country = "\"" + section!!.country + "\""
+                    bState = "\"" + section!!.b_state + "\""
+                    plz = "\"" + section!!.plz + "\""
+                    city = "\"" + section!!.city + "\""
+                    place = "\"" + section!!.place + "\""
+                    locality = "\"" + section!!.st_locality + "\""
                 } else {
-                    country = getString(R.string.not_available);
-                    b_state = getString(R.string.not_available);
-                    plz = getString(R.string.not_available);
-                    city = getString(R.string.not_available);
-                    place = getString(R.string.not_available);
-                    locality = getString(R.string.not_available);
+                    country = getString(R.string.not_available)
+                    bState = getString(R.string.not_available)
+                    plz = getString(R.string.not_available)
+                    city = getString(R.string.not_available)
+                    place = getString(R.string.not_available)
+                    locality = getString(R.string.not_available)
                 }
 
-                headDataSource.open();
-                head = headDataSource.getHead();
-                inspecName = "\"" + head.observer + "\"";
-                headDataSource.close();
+                headDataSource!!.open()
+                head = headDataSource!!.head
+                inspecName = "\"" + head.observer + "\""
+                headDataSource!!.close()
 
-                String[] arrHead =
-                        {
-                                getString(R.string.zList) + ": ", // Count List:
-                                sectName,          // Section name
-                                "",
-                                getString(R.string.inspector) +": ",     // Inspector:
-                                inspecName,        // Inspector name
-                                "", "", "", "",
-                                sortMode
-                        };
-                csvWrite.writeNext(arrHead);
+                val arrHead =
+                    arrayOf<String?>(
+                        getString(R.string.zList) + ": ",  // Count List:
+                        sectName,  // Section name
+                        "",
+                        getString(R.string.inspector) + ": ",  // Inspector:
+                        inspecName,  // Inspector name
+                        "", "", "", "",
+                        sortMode
+                    )
+                csvWrite.writeNext(arrHead)
 
                 // 2nd row
-                String[] arrRow2 =
-                        {
-                                "", "", "", "", "", "", "", "", "",
-                                getString(R.string.sort_time)
-                        };
-                csvWrite.writeNext(arrRow2);
+                val arrRow2 =
+                    arrayOf<String?>(
+                        "", "", "", "", "", "", "", "", "",
+                        getString(R.string.sort_time)
+                    )
+                csvWrite.writeNext(arrRow2)
 
                 // Set location headline
-                String[] arrLocHead =
-                        {
-                                getString(R.string.country),
-                                getString(R.string.bstate),
-                                getString(R.string.plz),
-                                getString(R.string.city),
-                                getString(R.string.place),
-                                getString(R.string.slocality),
-                                getString(R.string.zlNotes)
-                        };
-                csvWrite.writeNext(arrLocHead);
+                val arrLocHead =
+                    arrayOf<String?>(
+                        getString(R.string.country),
+                        getString(R.string.bstate),
+                        getString(R.string.plz),
+                        getString(R.string.city),
+                        getString(R.string.place),
+                        getString(R.string.slocality),
+                        getString(R.string.zlNotes)
+                    )
+                csvWrite.writeNext(arrLocHead)
 
                 // Set location dataline with data of 1. location
-                String[] arrLocation =
-                        {
-                                country,
-                                b_state,
-                                plz,
-                                city,
-                                place,
-                                locality,
-                                sectNotes
-                        };
-                csvWrite.writeNext(arrLocation);
+                val arrLocation =
+                    arrayOf<String?>(
+                        country,
+                        bState,
+                        plz,
+                        city,
+                        place,
+                        locality,
+                        sectNotes
+                    )
+                csvWrite.writeNext(arrLocation)
 
                 // Empty row
-                String[] arrEmpt = {};
-                csvWrite.writeNext(arrEmpt);
+                val arrEmpt = arrayOf<String?>()
+                csvWrite.writeNext(arrEmpt)
 
                 // Set environment headline
-                String[] arrEnvHead =
-                        {
-                                getString(R.string.date),
-                                "",
-                                getString(R.string.tm),
-                                getString(R.string.temperature),
-                                getString(R.string.wind),
-                                getString(R.string.clouds)
-                        };
-                csvWrite.writeNext(arrEnvHead);
+                val arrEnvHead =
+                    arrayOf<String?>(
+                        getString(R.string.date),
+                        "",
+                        getString(R.string.tm),
+                        getString(R.string.temperature),
+                        getString(R.string.wind),
+                        getString(R.string.clouds)
+                    )
+                csvWrite.writeNext(arrEnvHead)
 
 
                 // Write environment data
-                String[] arrEnvironment =
-                        {
-                                "\"" + date + "\"",
-                                getString(R.string.starttm),
-                                "\"" + start_tm + "\"",
-                                String.valueOf(temps),
-                                String.valueOf(winds),
-                                String.valueOf(clouds)
-                        };
-                csvWrite.writeNext(arrEnvironment);
+                val arrEnvironment =
+                    arrayOf<String?>(
+                        "\"" + date + "\"",
+                        getString(R.string.starttm),
+                        "\"" + startTM + "\"",
+                        temps.toString(),
+                        winds.toString(),
+                        clouds.toString()
+                    )
+                csvWrite.writeNext(arrEnvironment)
 
                 // Write environment data
-                String[] arrEnvironment2 =
-                        {
-                                "",
-                                getString(R.string.endtm),
-                                "\"" + end_tm + "\"",
-                                String.valueOf(tempe),
-                                String.valueOf(winde),
-                                String.valueOf(cloude)
-                        };
-                csvWrite.writeNext(arrEnvironment2);
+                val arrEnvironment2 =
+                    arrayOf<String?>(
+                        "",
+                        getString(R.string.endtm),
+                        "\"" + endTM + "\"",
+                        tempe.toString(),
+                        winde.toString(),
+                        cloude.toString()
+                    )
+                csvWrite.writeNext(arrEnvironment2)
 
                 // Empty row
-                csvWrite.writeNext(arrEmpt);
+                csvWrite.writeNext(arrEmpt)
 
-                String nameSpecG = Utils.nameSpecG(dataLanguage);
+                val nameSpecG = Utils.nameSpecG(dataLanguage)
 
                 // Write counts headline
                 //    Species Name, Local Name, Code, Counts, Spec.-Notes
-                String[] arrCntHead =
-                        {
-                                getString(R.string.name_spec),
-                                nameSpecG,
-                                getString(R.string.speccode),
-                                getString(R.string.cntsmf),
-                                getString(R.string.cntsm),
-                                getString(R.string.cntsf),
-                                getString(R.string.cntsp),
-                                getString(R.string.cntsl),
-                                getString(R.string.cntse),
-                                getString(R.string.bema)
-                        };
-                csvWrite.writeNext(arrCntHead);
+                val arrCntHead =
+                    arrayOf<String?>(
+                        getString(R.string.name_spec),
+                        nameSpecG,
+                        getString(R.string.speccode),
+                        getString(R.string.cntsmf),
+                        getString(R.string.cntsm),
+                        getString(R.string.cntsf),
+                        getString(R.string.cntsp),
+                        getString(R.string.cntsl),
+                        getString(R.string.cntse),
+                        getString(R.string.bema)
+                    )
+                csvWrite.writeNext(arrCntHead)
 
                 // Write counts data
-                dbHelper = new DbHelper(this);
-                database = dbHelper.getWritableDatabase();
+                dbHelper = DbHelper(this)
+                database = dbHelper!!.writableDatabase
 
-                Cursor curCSVCnt; // Cursor for Counts table
+                val curCSVCnt: Cursor? // Cursor for Counts table
 
                 // Sort mode species list
-                if (outPref.equals("names")) {
-                    curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                            + " WHERE " + " ("
-                            + DbHelper.C_NOTES + " = '0' or "
-                            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-                            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-                            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-                            + " order by " + DbHelper.C_NAME, null, null);
+                if (outPref == "names") {
+                    curCSVCnt = database!!.rawQuery(
+                        ("select * from " + DbHelper.COUNT_TABLE
+                                + " WHERE " + " ("
+                                + DbHelper.C_NOTES + " = '0' or "
+                                + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                                + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                                + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                                + " order by " + DbHelper.C_NAME), null, null
+                    )
                 } else {
-                    curCSVCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                            + " WHERE " + " ("
-                            + DbHelper.C_NOTES + " = '0' or "
-                            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-                            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-                            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-                            + " order by " + DbHelper.C_CODE, null, null);
+                    curCSVCnt = database!!.rawQuery(
+                        ("select * from " + DbHelper.COUNT_TABLE
+                                + " WHERE " + " ("
+                                + DbHelper.C_NOTES + " = '0' or "
+                                + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                                + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                                + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                                + " order by " + DbHelper.C_CODE), null, null
+                    )
                 }
 
                 // Get the number of individuals with attributes
-                int cnts;       // individuals icount
-                String strcnts;
-                int cntsmf;     // Imago male or female
-                String strcntsmf;
-                int cntsm = 0;  // Imago male
-                String strcntsm;
-                int cntsf = 0;  // Imago female
-                String strcntsf;
-                int cntsp = 0;  // Pupa
-                String strcntsp;
-                int cntsl = 0;  // Caterpillar
-                String strcntsl;
-                int cntse = 0;  // Egg
-                String strcntse;
-                String male = "m";
-                String fmale = "f";
-                String stadium1 = getString(R.string.stadium_1);
-                String stadium2 = getString(R.string.stadium_2);
-                String stadium3 = getString(R.string.stadium_3);
-                String stadium4 = getString(R.string.stadium_4);
+                var cnts: Int // individuals icount
+                var strcnts: String
+                var cntsmf: Int // Imago male or female
+                var strcntsmf: String
+                var cntsm = 0 // Imago male
+                var strcntsm: String
+                var cntsf = 0 // Imago female
+                var strcntsf: String
+                var cntsp = 0 // Pupa
+                var strcntsp: String
+                var cntsl = 0 // Caterpillar
+                var strcntsl: String
+                var cntse = 0 // Egg
+                var strcntse: String
+                val male = "m"
+                val fmale = "f"
+                val stadium1 = getString(R.string.stadium_1)
+                val stadium2 = getString(R.string.stadium_2)
+                val stadium3 = getString(R.string.stadium_3)
+                val stadium4 = getString(R.string.stadium_4)
 
-                String spname;
-                String spcode;
-                String slct; // Recording time to sort individuals
+                var spname: String
+                var spcode: String
 
-                Cursor curCSVInd; // Cursor for Individuals table
+                var curCSVInd: Cursor? // Cursor for Individuals table
                 while (curCSVCnt.moveToNext()) {
-                    spname = curCSVCnt.getString(7); // species name from count table
-                    spcode = "\"" + curCSVCnt.getString(8) + "\""; // species code from count table
-                    slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
+                    spname = curCSVCnt.getString(7) // species name from count table
+                    spcode = "\"" + curCSVCnt.getString(8) + "\"" // species code from count table
+                    val slct = ("SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
                             + DbHelper.I_NAME + " = ? AND "
                             + DbHelper.I_SEX + " = ? AND "
-                            + DbHelper.I_STADIUM + " = ?";
+                            + DbHelper.I_STADIUM + " = ?")
 
                     // Select male
-                    curCSVInd = database.rawQuery(slct, new String[]{spname, male, stadium1});
+                    curCSVInd = database!!.rawQuery(slct, arrayOf<String?>(spname, male, stadium1))
                     while (curCSVInd.moveToNext()) {
-                        cnts = curCSVInd.getInt(14); // individuals icount
-                        cntsm = cntsm + cnts;
+                        cnts = curCSVInd.getInt(14) // individuals icount
+                        cntsm += cnts
                     }
-                    curCSVInd.close();
+                    curCSVInd.close()
 
                     // Select female
-                    curCSVInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1});
+                    curCSVInd = database!!.rawQuery(slct, arrayOf<String?>(spname, fmale, stadium1))
                     while (curCSVInd.moveToNext()) {
-                        cnts = curCSVInd.getInt(14); // individuals icount
-                        cntsf = cntsf + cnts;
+                        cnts = curCSVInd.getInt(14) // individuals icount
+                        cntsf += cnts
                     }
-                    curCSVInd.close();
+                    curCSVInd.close()
 
-                    String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
-                            + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
+                    val slct1 = ("SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
+                            + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?")
 
                     // Select pupa
-                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium2});
+                    curCSVInd = database!!.rawQuery(slct1, arrayOf<String?>(spname, stadium2))
                     while (curCSVInd.moveToNext()) {
-                        cnts = curCSVInd.getInt(14); // individuals icount
-                        cntsp = cntsp + cnts;
+                        cnts = curCSVInd.getInt(14) // individuals icount
+                        cntsp += cnts
                     }
-                    curCSVInd.close();
+                    curCSVInd.close()
 
                     // Select caterpillar
-                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
+                    curCSVInd = database!!.rawQuery(slct1,arrayOf<String?>(spname, stadium3))
                     while (curCSVInd.moveToNext()) {
-                        cnts = curCSVInd.getInt(14); // individuals icount
-                        cntsl = cntsl + cnts;
+                        cnts = curCSVInd.getInt(14) // individuals icount
+                        cntsl += cnts
                     }
-                    curCSVInd.close();
+                    curCSVInd.close()
 
                     // Select egg
-                    curCSVInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
+                    curCSVInd = database!!.rawQuery(slct1, arrayOf<String?>(spname, stadium4))
                     while (curCSVInd.moveToNext()) {
-                        cnts = curCSVInd.getInt(14); // individuals icount
-                        cntse = cntse + cnts;
+                        cnts = curCSVInd.getInt(14) // individuals icount
+                        cntse += cnts
                     }
-                    curCSVInd.close();
+                    curCSVInd.close()
 
-                    cntsmf = curCSVCnt.getInt(1);
-                    cntsm = curCSVCnt.getInt(2);
-                    cntsf = curCSVCnt.getInt(3);
-                    cntsp = curCSVCnt.getInt(4);
-                    cntsl = curCSVCnt.getInt(5);
-                    cntse = curCSVCnt.getInt(6);
+                    cntsmf = curCSVCnt.getInt(1)
+                    cntsm = curCSVCnt.getInt(2)
+                    cntsf = curCSVCnt.getInt(3)
+                    cntsp = curCSVCnt.getInt(4)
+                    cntsl = curCSVCnt.getInt(5)
+                    cntse = curCSVCnt.getInt(6)
 
-                    if (cntsmf > 0) // suppress '0' in output
-                        strcntsmf = Integer.toString(cntsmf);
-                    else
-                        strcntsmf = "";
-                    if (cntsm > 0)
-                        strcntsm = Integer.toString(cntsm);
-                    else
-                        strcntsm = "";
-                    if (cntsf > 0)
-                        strcntsf = Integer.toString(cntsf);
-                    else
-                        strcntsf = "";
-                    if (cntsp > 0)
-                        strcntsp = Integer.toString(cntsp);
-                    else
-                        strcntsp = "";
-                    if (cntsl > 0)
-                        strcntsl = Integer.toString(cntsl);
-                    else
-                        strcntsl = "";
-                    if (cntse > 0)
-                        strcntse = Integer.toString(cntse);
-                    else
-                        strcntse = "";
-
-                    String sp_notes;   // species notes
-                    sp_notes = curCSVCnt.getString(9);
-                    if (sp_notes == null)
-                        sp_notes = "";
-                    sp_notes = "\"" + sp_notes + "\"";
+                    // Suppress '0' in output
+                    strcntsmf = if (cntsmf > 0) cntsmf.toString()
+                    else ""
+                    strcntsm = if (cntsm > 0) cntsm.toString()
+                    else ""
+                    strcntsf = if (cntsf > 0) cntsf.toString()
+                    else ""
+                    strcntsp = if (cntsp > 0) cntsp.toString()
+                    else ""
+                    strcntsl = if (cntsl > 0) cntsl.toString()
+                    else ""
+                    strcntse = if (cntse > 0) cntse.toString()
+                    else ""
+                    var spNotes: String = curCSVCnt.getString(9) // species notes
+                    spNotes = "\"" + spNotes + "\""
 
                     // Species table
-                    String[] arrStr =
-                            {
-                                    spname,                     // species name
-                                    curCSVCnt.getString(10), // local name
-                                    spcode,                     // species code
-                                    strcntsmf,                  // count ♂ o. ♀
-                                    strcntsm,                   // count ♂
-                                    strcntsf,                   // count ♀
-                                    strcntsp,                   // count pupa
-                                    strcntsl,                   // count caterpillar
-                                    strcntse,                   // count egg
-                                    sp_notes                    // species notes
-                            };
-                    csvWrite.writeNext(arrStr);
+                    val arrStr =
+                        arrayOf<String?>(
+                            spname,    // species name
+                            curCSVCnt.getString(10),  // local name
+                            spcode,    // species code
+                            strcntsmf, // count ♂ o. ♀
+                            strcntsm,  // count ♂
+                            strcntsf,  // count ♀
+                            strcntsp,  // count pupa
+                            strcntsl,  // count caterpillar
+                            strcntse,  // count egg
+                            spNotes   // species notes
+                        )
+                    csvWrite.writeNext(arrStr)
 
-                    sum = sum + cntsmf + cntsm + cntsf + cntsp + cntsl + cntse;
-                    summf = summf + cntsmf;
-                    summ = summ + cntsm;
-                    sumf = sumf + cntsf;
-                    sump = sump + cntsp;
-                    suml = suml + cntsl;
-                    sume = sume + cntse;
+                    sum += cntsmf + cntsm + cntsf + cntsp + cntsl + cntse
+                    summf += cntsmf
+                    summ += cntsm
+                    sumf += cntsf
+                    sump += cntsp
+                    suml += cntsl
+                    sume += cntse
 
                     // Suppress 0 by blank
-                    if (summf == 0)
-                        sumMF = "";
-                    else
-                        sumMF = Integer.toString(summf);
+                    sumMF = if (summf == 0) ""
+                    else summf.toString()
 
-                    if (summ == 0)
-                        sumM = "";
-                    else
-                        sumM = Integer.toString(summ);
+                    sumM = if (summ == 0) ""
+                    else summ.toString()
 
-                    if (sumf == 0)
-                        sumF = "";
-                    else
-                        sumF = Integer.toString(sumf);
+                    sumF = if (sumf == 0) ""
+                    else sumf.toString()
 
-                    if (sump == 0)
-                        sumP = "";
-                    else
-                        sumP = Integer.toString(sump);
+                    sumP = if (sump == 0) ""
+                    else sump.toString()
 
-                    if (suml == 0)
-                        sumL = "";
-                    else
-                        sumL = Integer.toString(suml);
+                    sumL = if (suml == 0) ""
+                    else suml.toString()
 
-                    if (sume == 0)
-                        sumE = "";
-                    else
-                        sumE = Integer.toString(sume);
+                    sumE = if (sume == 0) ""
+                    else sume.toString()
 
-                    cntsm = 0;
-                    cntsf = 0;
-                    cntsp = 0;
-                    cntsl = 0;
-                    cntse = 0;
+                    cntsm = 0
+                    cntsf = 0
+                    cntsp = 0
+                    cntsl = 0
+                    cntse = 0
                 }
-                curCSVCnt.close();
+                curCSVCnt.close()
 
-                int sumSpec = countDataSource.getDiffSpec(); // get number of different species
+                val sumSpec = countDataSource!!.diffSpec // get number of different species
 
                 // Write total sum
-                String[] arrSum =
-                        {
-                                "",
-                                getString(R.string.sumSpec) + " " + (sumSpec),
-                                getString(R.string.sum),
-                                sumMF,
-                                sumM,
-                                sumF,
-                                sumP,
-                                sumL,
-                                sumE,
-                                getString(R.string.sum_total) + " " + sum
-                        };
-                csvWrite.writeNext(arrSum);
+                val arrSum =
+                    arrayOf<String?>(
+                        "",
+                        getString(R.string.sumSpec) + " " + (sumSpec),
+                        getString(R.string.sum),
+                        sumMF,
+                        sumM,
+                        sumF,
+                        sumP,
+                        sumL,
+                        sumE,
+                        getString(R.string.sum_total) + " " + sum
+                    )
+                csvWrite.writeNext(arrSum)
                 // End of Species table
 
                 // Empty row
-                csvWrite.writeNext(arrEmpt);
+                csvWrite.writeNext(arrEmpt)
 
                 // Individuals table
                 // Write individual headline
                 //    Individuals, Counts, Locality, Longitude, Latitude, Uncertainty, Height,
                 //    Date, Time, Sexus, Phase, State, Indiv.-Notes 
-                String[] arrIndHead =
-                        {
-                                getString(R.string.individuals),
-                                getString(R.string.cnts),
-                                getString(R.string.locality),
-                                getString(R.string.ycoord),
-                                getString(R.string.xcoord),
-                                getString(R.string.uncerti),
-                                getString(R.string.zcoord),
-                                getString(R.string.date),
-                                getString(R.string.time),
-                                getString(R.string.sex),
-                                getString(R.string.stadium),
-                                getString(R.string.status123),
-                                getString(R.string.bems)
-                        };
-                csvWrite.writeNext(arrIndHead);
+                val arrIndHead =
+                    arrayOf<String?>(
+                        getString(R.string.individuals),
+                        getString(R.string.cnts),
+                        getString(R.string.locality),
+                        getString(R.string.ycoord),
+                        getString(R.string.xcoord),
+                        getString(R.string.uncerti),
+                        getString(R.string.zcoord),
+                        getString(R.string.date),
+                        getString(R.string.time),
+                        getString(R.string.sex),
+                        getString(R.string.stadium),
+                        getString(R.string.status123),
+                        getString(R.string.bems)
+                    )
+                csvWrite.writeNext(arrIndHead)
 
                 // Build the sorted individuals array
-                curCSVInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
-                                + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP,
-                        null, null);
+                curCSVInd = database!!.rawQuery(
+                    ("select * from " + DbHelper.INDIVIDUALS_TABLE
+                            + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP),
+                    null, null
+                )
 
-                String lngi, latit;
-                frst = 0;
+                var lngi: String
+                var latit: String
+                frst = 0
                 while (curCSVInd.moveToNext()) {
-                    longi = curCSVInd.getDouble(4);
-                    lati = curCSVInd.getDouble(3);
-                    uncer = Math.rint(curCSVInd.getDouble(6));
-                    heigh = Math.rint(curCSVInd.getDouble(5));
-                    spstate = curCSVInd.getInt(12);
-                    if (spstate == 0)
-                        spstate0 = "-";
-                    else
-                        spstate0 = Integer.toString(spstate);
-                    cnts = curCSVInd.getInt(14);
-                    if (cnts > 0)
-                        strcnts = String.valueOf(cnts);
-                    else
-                        strcnts = "";
+                    longi = curCSVInd.getDouble(4)
+                    lati = curCSVInd.getDouble(3)
+                    uncer = round(curCSVInd.getDouble(6))
+                    heigh = round(curCSVInd.getDouble(5))
+                    spstate = curCSVInd.getInt(12)
+                    spstate0 = if (spstate == 0) "-"
+                    else spstate.toString()
+                    cnts = curCSVInd.getInt(14)
+                    strcnts = if (cnts > 0) cnts.toString()
+                    else ""
 
-                    try {
-                        lngi = String.valueOf(longi).substring(0, 8); // longitude
-                    } catch (StringIndexOutOfBoundsException e) {
-                        lngi = String.valueOf(longi);
+                    lngi = try {
+                        longi.toString().substring(0, 8) // longitude
+                    } catch (_: StringIndexOutOfBoundsException) {
+                        longi.toString()
                     }
 
-                    try {
-                        latit = String.valueOf(lati).substring(0, 8); // latitude
-                    } catch (StringIndexOutOfBoundsException e) {
-                        latit = String.valueOf(lati);
+                    latit = try {
+                        lati.toString().substring(0, 8) // latitude
+                    } catch (_: StringIndexOutOfBoundsException) {
+                        lati.toString()
                     }
 
-                    String iNotes = curCSVInd.getString(13);
-                    if (iNotes == null)
-                        iNotes = "";
-                    iNotes = "\"" + iNotes + "\"";
+                    var iNotes = curCSVInd.getString(13)
+                    if (iNotes == null) iNotes = ""
+                    iNotes = "\"" + iNotes + "\""
 
-                    String[] arrIndividual =
-                            {
-                                    curCSVInd.getString(2),                // species name
-                                    strcnts,                                 // indiv. counts
-                                    "\"" + curCSVInd.getString(9) + "\"",  // locality
-                                    lngi,                                    // longitude
-                                    latit,                                   // latitude
-                                    String.valueOf(Math.round(uncer + 20)),  // uncertainty + 20 m extra
-                                    String.valueOf(Math.round(heigh)),       // height
-                                    "\"" + curCSVInd.getString(7) + "\"", // date
-                                    curCSVInd.getString(8),               // time
-                                    curCSVInd.getString(10),              // sexus
-                                    curCSVInd.getString(11),              // phase
-                                    "\"" + spstate0 + "\"",                  // status
-                                    iNotes                                   // indiv. notes
-                            };
-                    csvWrite.writeNext(arrIndividual);
+                    val arrIndividual =
+                        arrayOf<String?>(
+                            curCSVInd.getString(2),  // species name
+                            strcnts,  // indiv. counts
+                            "\"" + curCSVInd.getString(9) + "\"",  // locality
+                            lngi,  // longitude
+                            latit,  // latitude
+                            (uncer + 20).roundToInt().toString(),  // uncertainty + 20 m extra
+                            heigh.roundToInt().toString(),  // height
+                            "\"" + curCSVInd.getString(7) + "\"",  // date
+                            curCSVInd.getString(8),  // time
+                            curCSVInd.getString(10),  // sexus
+                            curCSVInd.getString(11),  // phase
+                            "\"" + spstate0 + "\"",  // status
+                            iNotes // indiv. notes
+                        )
+                    csvWrite.writeNext(arrIndividual)
 
-                    if (longi != 0) // Has coordinates
+                    if (longi != 0.0)  // Has coordinates
                     {
                         if (frst == 0) {
-                            loMin = longi;
-                            loMax = longi;
-                            laMin = lati;
-                            laMax = lati;
-                            uncer1 = uncer;
-                            frst = 1; // Just 1 with coordinates
+                            loMin = longi
+                            loMax = longi
+                            laMin = lati
+                            laMax = lati
+                            uncer1 = uncer
+                            frst = 1 // Just 1 with coordinates
                         } else {
-                            loMin = Math.min(loMin, longi);
-                            loMax = Math.max(loMax, longi);
-                            laMin = Math.min(laMin, lati);
-                            laMax = Math.max(laMax, lati);
-                            uncer1 = Math.max(uncer1, uncer);
+                            loMin = min(loMin, longi)
+                            loMax = max(loMax, longi)
+                            laMin = min(laMin, lati)
+                            laMax = max(laMax, lati)
+                            uncer1 = max(uncer1, uncer)
                         }
                     }
                 }
-                curCSVInd.close();
+                curCSVInd.close()
 
                 // Empty row
-                csvWrite.writeNext(arrEmpt);
+                csvWrite.writeNext(arrEmpt)
 
                 // Write Average Coords
-                String[] arrACoordHead =
-                        {
-                                "",
-                                "",
-                                "",
-                                getString(R.string.ycoord),
-                                getString(R.string.xcoord),
-                                getString(R.string.uncerti)
-                        };
-                csvWrite.writeNext(arrACoordHead);
+                val arrACoordHead =
+                    arrayOf<String?>(
+                        "",
+                        "",
+                        "",
+                        getString(R.string.ycoord),
+                        getString(R.string.xcoord),
+                        getString(R.string.uncerti)
+                    )
+                csvWrite.writeNext(arrACoordHead)
 
-                lo = (loMax + loMin) / 2;   // average longitude
-                la = (laMax + laMin) / 2;   // average latitude
+                lo = (loMax + loMin) / 2 // average longitude
+                la = (laMax + laMin) / 2 // average latitude
 
                 // Simple distance calculation between 2 coordinates within the temperate zone in meters (Pythagoras):
                 //   uc = (((loMax-loMin)*71500)² + ((laMax-laMin)*111300)²)½ 
-                uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
-                uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
-                if (uc <= uncer1)
-                    uc = uncer1;
+                uc =
+                    sqrt(((((loMax - loMin) * 71500).pow(2.0)) + (((laMax - laMin) * 111300).pow(2.0))))
+                uc = round(uc / 2) + 20 // average uncertainty radius + default gps uncertainty
+                if (uc <= uncer1) uc = uncer1
 
-                try {
-                    lngi = String.valueOf(lo).substring(0, 8); //longitude
-                } catch (StringIndexOutOfBoundsException e) {
-                    lngi = String.valueOf(lo);
+                lngi = try {
+                    lo.toString().substring(0, 8) //longitude
+                } catch (_: StringIndexOutOfBoundsException) {
+                    lo.toString()
                 }
 
-                try {
-                    latit = String.valueOf(la).substring(0, 8); // latitude
-                } catch (StringIndexOutOfBoundsException e) {
-                    latit = String.valueOf(la);
+                latit = try {
+                    la.toString().substring(0, 8) // latitude
+                } catch (_: StringIndexOutOfBoundsException) {
+                    la.toString()
                 }
 
-                String[] arrAvCoords =
-                        {
-                                "",
-                                "",
-                                getString(R.string.avCoords),
-                                lngi, // average longitude
-                                latit, // average latitude
-                                String.valueOf(Math.round(uc)) // average uncertainty radius
-                        };
-                csvWrite.writeNext(arrAvCoords);
+                val arrAvCoords =
+                    arrayOf<String?>(
+                        "",
+                        "",
+                        getString(R.string.avCoords),
+                        lngi,  // average longitude
+                        latit,  // average latitude
+                        uc.roundToInt().toString() // average uncertainty radius
+                    )
+                csvWrite.writeNext(arrAvCoords)
 
-                csvWrite.close();
-                dbHelper.close();
+                csvWrite.close()
+                dbHelper!!.close()
 
-                mesg = getString(R.string.saveCSV);
+                mesg = getString(R.string.saveCSV)
                 Toast.makeText(this,
-                        fromHtml("<font color='blue'>" + mesg + "</font>"),
-                        Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                mesg = getString(R.string.saveFail);
+                    fromHtml("<font color='blue'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (_: IOException) {
+                mesg = getString(R.string.saveFail)
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
     // End of exportDb2CSV()
 
     /***********************************************************************************************
-     // Exports DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.xlsx to
-     // Documents/TourCount/ with purged data set.
-     // Spreadsheet programs can directly load this .xlsx file
+     * Exports DB contents as Tour_dL_tourname_yyyyMMdd_HHmm_si.xlsx to
+     * Documents/TourCount/ with purged data set.
+     * Spreadsheet programs can directly load this .xlsx file
      */
-    private void exportDb2XLSX() {
-        mesg = getString(R.string.saveXLSX);
-        Toast.makeText(this,
-                fromHtml("<font color='blue'>" + mesg + "</font>"),
-                Toast.LENGTH_SHORT).show();
+    private fun exportDb2XLSX() {
+        mesg = getString(R.string.saveXLSX)
+        Toast.makeText(
+            this,
+            fromHtml("<font color='blue'>$mesg</font>"),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        section = sectionDataSource!!.section
+        val temps: Int = section!!.tmp
+        val tempe: Int = section!!.tmp_end
+        val winds: Int = section!!.wind
+        val winde: Int = section!!.wind_end
+        val clouds: Int = section!!.clouds
+        val cloude: Int = section!!.clouds_end
 
         // Get environment data from DB
-        String date, start_tm, end_tm;
-        int temps, winds, clouds, tempe, winde, cloude;
+        val date: String = section!!.date
+        val startTM: String = section!!.start_tm
+        val endTM: String = section!!.end_tm
 
-        section = sectionDataSource.getSection();
-        temps = section.tmp;
-        tempe = section.tmp_end;
-        winds = section.wind;
-        winde = section.wind_end;
-        clouds = section.clouds;
-        cloude = section.clouds_end;
-        date = section.date;
-        start_tm = section.start_tm;
-        end_tm = section.end_tm;
-
-        boolean engl = false;
-        boolean hasDate = true;
-        String xslxDate, xslxTime;
-        String xslxDateEU, xslxDateEN;
+        var engl = false
+        var hasDate = true
+        var xslxDate: String
+        val xslxTime: String
+        val xslxDateEU: String
+        val xslxDateEN: String
 
         // Get year from date
-        if (!Objects.equals(date, "")) {
+        if (date != "") {
             // "-" at position 4 of the date means EN
-            if (Objects.equals(date.substring(4, 5), "-"))
-                engl = true;
+            if (date.substring(4, 5) == "-") engl = true
             // Create date for filename as YYYYMMDD from any format
-            xslxDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2);
-            xslxDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+            xslxDateEU = date.substring(6, 10) + date.substring(3, 5) + date.substring(0, 2)
+            xslxDateEN = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10)
         } else {
-            hasDate = false;
-            xslxDateEN = "";
-            xslxDateEU = "";
+            hasDate = false
+            xslxDateEN = ""
+            xslxDateEU = ""
         }
 
-        if (engl) {
-            xslxDate = xslxDateEN;
+        xslxDate = if (engl) {
+            xslxDateEN
         } else {
-            xslxDate = xslxDateEU;
+            xslxDateEU
         }
 
-        if (!Objects.equals(start_tm, "")) {
-            xslxTime = start_tm.substring(0, 2) + start_tm.substring(3, 5);
+        if (startTM != "") {
+            // has only a value when both date and start time are given
+            xslxTime = startTM.substring(0, 2) + startTM.substring(3, 5)
 
             if (hasDate)
-                xslxDate = xslxDate + "_" + xslxTime; // yyyymmdd_hhmm
-        } else
-            xslxDate = ""; // has only a value when both date and start time are given
+                xslxDate = xslxDate + "_" + xslxTime // yyyymmdd_hhmm
+        } else xslxDate = ""
 
         // outFile -> /storage/emulated/0/Documents/TourCount/Tour_DL_tourname_yyyyMMdd_HHmm_si.xlsx
-        File path;
-        path = Environment.getExternalStorageDirectory();
-        path = new File(path + "/Documents/TourCount");
+        var path = Environment.getExternalStorageDirectory()
+        path = File("$path/Documents/TourCount")
 
-        //noinspection ResultOfMethodCallIgnored
-        path.mkdirs(); // Just verify path, result ignored
-
-        String sortIdent;
-        if (outPref.equals("names")) {
-            sortIdent = "n"; // species name
+        path.mkdirs()
+        // Just verify path, result ignored
+        val sortIdent = if (outPref == "names") {
+            "n" // species name
         } else {
-            sortIdent = "c"; // species code
+            "c" // species code
         }
 
-        dataLanguage = prefs.getString("pref_sel_data_lang", "");
-        if (dataLanguage.isEmpty())
-            dataLanguage = "--";
+        dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
+        if (dataLanguage.isEmpty()) dataLanguage = "--"
 
         // Create xlsx-filename
-        if (Objects.equals(tourNameDir, "") && Objects.equals(xslxDate, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
-        else if (Objects.equals(tourNameDir, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + xslxDate + "_" + sortIdent + ".xlsx");
-        else if (Objects.equals(xslxDate, ""))
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + getcurDate() + "_" + sortIdent + ".xlsx");
-        else
-            outFile = new File(path, "/Tour_" + dataLanguage + "_" + tourNameDir + "_" + xslxDate + "_" + sortIdent + ".xlsx");
+        outFile = if (tourNameForDir == "" && xslxDate == "")
+            File(path,
+            "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + sortIdent + ".xlsx")
+        else if (tourNameForDir == "")
+            File(path,
+            "/Tour_" + dataLanguage + "_" + xslxDate + "_" + sortIdent + ".xlsx")
+        else if (xslxDate == "")
+            File(path,
+            "/Tour_" + dataLanguage + "_" + getcurDate() + "_" + tourNameForDir + "_" + sortIdent + ".xlsx")
+        else File(path,
+            "/Tour_" + dataLanguage + "_" + xslxDate + "_" + tourNameForDir + "_" + sortIdent + ".xlsx")
 
-        FileOutputStream outputStream;
+        val outputStream: FileOutputStream?
         try {
-            outputStream = new FileOutputStream(outFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            outputStream = FileOutputStream(outFile)
+        } catch (e: FileNotFoundException) {
+            throw RuntimeException(e)
         }
 
-        String sectName;
-        String sectNotes;
+        val head: Head?
 
-        Head head;
-        String country, b_state, inspecName;
-        String plz, city, place, locality;
-        int spstate;
-        String spstate0;
-        double longi, lati, heigh, uncer;
-        int frst, sum = 0;
-        int summf = 0, summ = 0, sumf = 0, sump = 0, suml = 0, sume = 0;
-        double lo, la, loMin = 0, loMax = 0, laMin = 0, laMax = 0, uc, uncer1 = 0;
+        val sectName: String
+        val inspecName: String
+        val sectNotes: String
+
+        val country: String
+        val bState: String
+        val plz: String
+        val city: String
+        val place: String
+        val locality: String
+
+        var spstate: Int
+        var spstate0: String
+
+        var longi: Double
+        var lati: Double
+        var heigh: Double
+        var uncer: Double
+
+        var frst: Int
+        var sum = 0
+        var summf = 0
+        var summ = 0
+        var sumf = 0
+        var sump = 0
+        var suml = 0
+        var sume = 0
+
+        val lo: Double
+        val la: Double
+        var loMin = 0.0
+        var loMax = 0.0
+        var laMin = 0.0
+        var laMax = 0.0
+        var uc: Double
+        var uncer1 = 0.0
 
         // Prepare the fastexcel Workbook
-        Workbook wb = new Workbook(outputStream, "TourCount", "1.0");
-        wb.properties().setTitle(getString(R.string.results)); //
-        wb.setGlobalDefaultFont("Arial", 11);
+        val wb = Workbook(outputStream, "TourCount", "1.0")
+        wb.properties().setTitle(getString(R.string.results)) //
+        wb.setGlobalDefaultFont("Arial", 11.0)
 
         // Prepare the fastexcel Worksheet
-        Worksheet ws = wb.newWorksheet(getString(R.string.results));
-        ws.paperSize(PaperSize.A4_PAPER);
-        ws.pageOrientation("landscape");
-        ws.freezePane(0,9); // Fixed lines when scrolling
-        ws.repeatRows(0, 1);                      // Fixed lines for printing
-        ws.firstPageNumber(1);
-        ws.footer("&P / &N", Position.CENTER);
-        ws.fitToWidth((short) 1);
-        ws.fitToHeight((short) 0);
+        val ws = wb.newWorksheet(getString(R.string.results))
+        ws.paperSize(PaperSize.A4_PAPER)
+        ws.pageOrientation("landscape")
+        ws.freezePane(0, 9) // Fixed lines when scrolling
+        ws.repeatRows(0, 1) // Fixed lines for printing
+        ws.firstPageNumber(1)
+        ws.footer("&P / &N", Position.CENTER)
+        ws.fitToWidth(1.toShort())
+        ws.fitToHeight(0.toShort())
 
         // Check if we can write the media
-        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED == storageState
 
         if (!mExternalStorageWriteable) {
-            mesg = getString(R.string.noCard);
+            mesg = getString(R.string.noCard)
             Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
         } else {
-            // ***********************************************
             // Export the purged count table to the .xlsx-file
 
-            // Get sorting mode of species list
-            String sortMode;
-            if (outPref.equals("names")) {
-                sortMode = getString(R.string.sort_names);
+            // Get sorting mode info of species list
+            val sortMode: String = if (outPref == "names") {
+                getString(R.string.sort_names)
             } else {
-                sortMode = getString(R.string.sort_codes);
+                getString(R.string.sort_codes)
             }
 
             // Consult Section on Head tables for head and meta info
-            section = sectionDataSource.getSection();
+            section = sectionDataSource!!.section
 
-            sectName = section.name;
-            sectNotes = section.notes;
+            sectName = section!!.name
+            sectNotes = section!!.notes
 
             if (metaPref) {
-                country = section.country;
-                b_state = section.b_state;
-                plz = section.plz;
-                city = section.city;
-                place = section.place;
-                locality = section.st_locality;
+                country = section!!.country
+                bState = section!!.b_state
+                plz = section!!.plz
+                city = section!!.city
+                place = section!!.place
+                locality = section!!.st_locality
             } else {
-                country = getString(R.string.not_available);
-                b_state = getString(R.string.not_available);
-                plz = getString(R.string.not_available);
-                city = getString(R.string.not_available);
-                place = getString(R.string.not_available);
-                locality = getString(R.string.not_available);
+                country = getString(R.string.not_available)
+                bState = getString(R.string.not_available)
+                plz = getString(R.string.not_available)
+                city = getString(R.string.not_available)
+                place = getString(R.string.not_available)
+                locality = getString(R.string.not_available)
             }
 
-            headDataSource.open();
-            head = headDataSource.getHead();
-            inspecName = head.observer;
-            headDataSource.close();
+            headDataSource!!.open()
+            head = headDataSource!!.head
+            inspecName = head.observer
+            headDataSource!!.close()
 
             //**************************
             // Start creating xlsx table
             // Row 0: Headline
-            ws.value(0,0, getString(R.string.zList) + ": " + sectName);
-            ws.value(0,4, getString(R.string.inspector) + ": " + inspecName);
-            ws.value(0,10, sortMode);
-            ws.style(0,10).horizontalAlignment("right").set();
-            ws.range(0,0,0,8).style().fillColor("CCCCCC").fontSize(12).bold().set();
-            ws.range(0,0,0,2).merge();
-            ws.range(0,4,0,8).merge();
-            ws.range(0,10,0,13).merge();
+            ws.value(0, 0, getString(R.string.zList) + ": " + sectName)
+            ws.value(0, 4, getString(R.string.inspector) + ": " + inspecName)
+            ws.value(0, 10, sortMode)
+            ws.style(0, 10).horizontalAlignment("right").set()
+            ws.range(0, 0, 0, 8).style().fillColor("CCCCCC").fontSize(12)
+                .bold().set()
+            ws.range(0, 0, 0, 2).merge()
+            ws.range(0, 4, 0, 8).merge()
+            ws.range(0, 10, 0, 13).merge()
 
             // Row 1
-            ws.value(1,10, getString(R.string.sort_time));
-            ws.style(1,10).horizontalAlignment("right").set();
-            ws.range(1,10,1,13).merge();
+            ws.value(1, 10, getString(R.string.sort_time))
+            ws.style(1, 10).horizontalAlignment("right").set()
+            ws.range(1, 10, 1, 13).merge()
 
             // Row 2: Set location headline
-            ws.value(2,0, getString(R.string.country));
-            ws.value(2,1, getString(R.string.bstate));
-            ws.value(2,3, getString(R.string.plz));
-            ws.value(2,4, getString(R.string.city));
-            ws.value(2,6, getString(R.string.place));
-            ws.value(2,8, getString(R.string.slocality));
-            ws.range(2,0,2,13).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().set();
-            ws.range(2,1,2,2).merge();
-            ws.range(2,4,2,5).merge();
-            ws.range(2,6,2,7).merge();
-            ws.range(2,8,2,13).merge();
+            ws.value(2, 0, getString(R.string.country))
+            ws.value(2, 1, getString(R.string.bstate))
+            ws.value(2, 3, getString(R.string.plz))
+            ws.value(2, 4, getString(R.string.city))
+            ws.value(2, 6, getString(R.string.place))
+            ws.value(2, 8, getString(R.string.slocality))
+            ws.range(2, 0, 2, 13).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().set()
+            ws.range(2, 1, 2, 2).merge()
+            ws.range(2, 4, 2, 5).merge()
+            ws.range(2, 6, 2, 7).merge()
+            ws.range(2, 8, 2, 13).merge()
 
             // Row 3: Set location data line with data of 1. location
-            ws.value(3,0, country);
-            ws.value(3,1, b_state);
-            ws.value(3,3, plz);
-            ws.value(3,4, city);
-            ws.value(3,6, place);
-            ws.value(3,8, locality);
-            ws.range(3,1,3,2).merge();
-            ws.range(3,4,3,5).merge();
-            ws.range(3,6,3,7).merge();
-            ws.range(3,8,3,13).merge();
+            ws.value(3, 0, country)
+            ws.value(3, 1, bState)
+            ws.value(3, 3, plz)
+            ws.value(3, 4, city)
+            ws.value(3, 6, place)
+            ws.value(3, 8, locality)
+            ws.range(3, 1, 3, 2).merge()
+            ws.range(3, 4, 3, 5).merge()
+            ws.range(3, 6, 3, 7).merge()
+            ws.range(3, 8, 3, 13).merge()
 
             // Row 5: Set environment headline
-            ws.value(5,0, getString(R.string.date));        // date
-            ws.value(5,1, "");
-            ws.value(5,2, getString(R.string.tm));          // time
-            ws.value(5,3, getString(R.string.temperature)); // temperature
-            ws.value(5,4, getString(R.string.wind));        // wind
-            ws.value(5,5, getString(R.string.clouds));      // clouds
-            ws.value(5,10, getString(R.string.zlNotes));
-            ws.range(5,0,5,1).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().set();
-            ws.range(5,2,5,5).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().horizontalAlignment("center").set();
-            ws.range(5,6,5,13).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().set();
-            ws.range(5,10,5,13).merge();
+            ws.value(5, 0, getString(R.string.date)) // date
+            ws.value(5, 1, "")
+            ws.value(5, 2, getString(R.string.tm)) // time
+            ws.value(5, 3, getString(R.string.temperature)) // temperature
+            ws.value(5, 4, getString(R.string.wind)) // wind
+            ws.value(5, 5, getString(R.string.clouds)) // clouds
+            ws.value(5, 10, getString(R.string.zlNotes))
+            ws.range(5, 0, 5, 1).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().set()
+            ws.range(5, 2, 5, 5).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().horizontalAlignment("center").set()
+            ws.range(5, 6, 5, 13).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().set()
+            ws.range(5, 10, 5, 13).merge()
 
             // Row 6: Write 1. line of environment data
-            ws.value(6,0, date);
-            ws.value(6,1, getString(R.string.from));
-            ws.value(6,2, start_tm);
-            ws.value(6,3, String.valueOf(temps));
-            ws.value(6,4, String.valueOf(winds));
-            ws.value(6,5, String.valueOf(clouds));
-            ws.value(6,10, sectNotes);
-            ws.style(6,1).horizontalAlignment("right").set();
-            ws.range(6,2,6,5).style().horizontalAlignment("center").set();
-            ws.range(6,10,6,13).merge();
+            ws.value(6, 0, date)
+            ws.value(6, 1, getString(R.string.from))
+            ws.value(6, 2, startTM)
+            ws.value(6, 3, temps.toString())
+            ws.value(6, 4, winds.toString())
+            ws.value(6, 5, clouds.toString())
+            ws.value(6, 10, sectNotes)
+            ws.style(6, 1).horizontalAlignment("right").set()
+            ws.range(6, 2, 6, 5).style().horizontalAlignment("center").set()
+            ws.range(6, 10, 6, 13).merge()
 
             // Row 7: Write 2. line of environment data
-            ws.value(7,1, getString(R.string.endtm));
-            ws.value(7,2, end_tm);
-            ws.value(7,3, String.valueOf(tempe));
-            ws.value(7,4, String.valueOf(winde));
-            ws.value(7,5, String.valueOf(cloude));
-            ws.style(7,1).horizontalAlignment("right").set();
-            ws.range(7,2,7,5).style().horizontalAlignment("center").set();
+            ws.value(7, 1, getString(R.string.endtm))
+            ws.value(7, 2, endTM)
+            ws.value(7, 3, tempe.toString())
+            ws.value(7, 4, winde.toString())
+            ws.value(7, 5, cloude.toString())
+            ws.style(7, 1).horizontalAlignment("right").set()
+            ws.range(7, 2, 7, 5).style().horizontalAlignment("center").set()
 
-            String nameSpecG = Utils.nameSpecG(dataLanguage);
+            val nameSpecG = Utils.nameSpecG(dataLanguage)
 
             // Row 9: Write counts table headline
             //    Species Name, Local Name, Code, Counts, Spec.-Notes
-            ws.value(9,0, getString(R.string.name_spec)); // species name
-            ws.value(9,1, nameSpecG);                     // local name
-            ws.value(9,3, getString(R.string.speccode));  // code
-            ws.value(9,4, getString(R.string.cntsmf));    // counts
-            ws.value(9,5, getString(R.string.cntsm));
-            ws.value(9,6, getString(R.string.cntsf));
-            ws.value(9,7, getString(R.string.cntsp));
-            ws.value(9,8, getString(R.string.cntsl));
-            ws.value(9,9, getString(R.string.cntse));
-            ws.value(9,10, getString(R.string.bema));      // notes
+            ws.value(9, 0, getString(R.string.name_spec)) // species name
+            ws.value(9, 1, nameSpecG) // local name
+            ws.value(9, 3, getString(R.string.speccode)) // code
+            ws.value(9, 4, getString(R.string.cntsmf)) // counts
+            ws.value(9, 5, getString(R.string.cntsm))
+            ws.value(9, 6, getString(R.string.cntsf))
+            ws.value(9, 7, getString(R.string.cntsp))
+            ws.value(9, 8, getString(R.string.cntsl))
+            ws.value(9, 9, getString(R.string.cntse))
+            ws.value(9, 10, getString(R.string.bema)) // notes
 
             // Set styles for counts table headline
-            ws.range(9,1,9,2).merge();
-            ws.range(9,0,9,2).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().set();
-            ws.range(9,3,9,9).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().horizontalAlignment("center").set();
-            ws.range(9,10,9,13).style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .bold().set();
-            ws.range(9,10,9,13).merge();
-            ws.style(9,4).borderStyle(BorderSide.LEFT,"thin")
-                    .borderStyle(BorderSide.BOTTOM,"thin").set();
-            ws.style(9,10).bold().borderStyle(BorderSide.LEFT,"thin")
-                    .borderStyle(BorderSide.BOTTOM,"thin").set();
+            ws.range(9, 1, 9, 2).merge()
+            ws.range(9, 0, 9, 2).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().set()
+            ws.range(9, 3, 9, 9).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().horizontalAlignment("center").set()
+            ws.range(9, 10, 9, 13).style().borderStyle(BorderSide.BOTTOM, "thin")
+                .bold().set()
+            ws.range(9, 10, 9, 13).merge()
+            ws.style(9, 4).borderStyle(BorderSide.LEFT, "thin")
+                .borderStyle(BorderSide.BOTTOM, "thin").set()
+            ws.style(9, 10).bold().borderStyle(BorderSide.LEFT, "thin")
+                .borderStyle(BorderSide.BOTTOM, "thin").set()
 
             // Write counts data
-            dbHelper = new DbHelper(this);
-            database = dbHelper.getWritableDatabase();
+            dbHelper = DbHelper(this)
+            database = dbHelper!!.writableDatabase
 
-            Cursor curXLSXCnt; // Cursor for Counts table
+            val curXLSXCnt: Cursor? // Cursor for Counts table
 
             // Sort mode species list
-            if (outPref.equals("names")) {
-                curXLSXCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE " + " ("
-                        + DbHelper.C_NOTES + " = '0' or "
-                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-                        + " order by " + DbHelper.C_NAME, null, null);
+            if (outPref == "names") {
+                curXLSXCnt = database!!.rawQuery(
+                    ("select * from " + DbHelper.COUNT_TABLE
+                            + " WHERE " + " ("
+                            + DbHelper.C_NOTES + " = '0' or "
+                            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                            + " order by " + DbHelper.C_NAME), null, null
+                )
             } else {
-                curXLSXCnt = database.rawQuery("select * from " + DbHelper.COUNT_TABLE
-                        + " WHERE " + " ("
-                        + DbHelper.C_NOTES + " = '0' or "
-                        + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
-                        + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
-                        + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
-                        + " order by " + DbHelper.C_CODE, null, null);
+                curXLSXCnt = database!!.rawQuery(
+                    ("select * from " + DbHelper.COUNT_TABLE
+                            + " WHERE " + " ("
+                            + DbHelper.C_NOTES + " = '0' or "
+                            + DbHelper.C_COUNT_F1I + " > 0 or " + DbHelper.C_COUNT_F2I + " > 0 or "
+                            + DbHelper.C_COUNT_F3I + " > 0 or " + DbHelper.C_COUNT_PI + " > 0 or "
+                            + DbHelper.C_COUNT_LI + " > 0 or " + DbHelper.C_COUNT_EI + " > 0)"
+                            + " order by " + DbHelper.C_CODE), null, null
+                )
             }
 
             // Get the number of individuals with attributes
-            int cnts;       // individuals icount
-            int cntsmf;     // imago male or female
-            int cntsm = 0;  // imago male
-            int cntsf = 0;  // imago female
-            int cntsp = 0;  // pupa
-            int cntsl = 0;  // caterpillar
-            int cntse = 0;  // egg
-            String male = "m";
-            String fmale = "f";
-            String stadium1 = getString(R.string.stadium_1);
-            String stadium2 = getString(R.string.stadium_2);
-            String stadium3 = getString(R.string.stadium_3);
-            String stadium4 = getString(R.string.stadium_4);
+            var cnts: Int // individuals icount
+            var cntsmf: Int // imago male or female
+            var cntsm = 0 // imago male
+            var cntsf = 0 // imago female
+            var cntsp = 0 // pupa
+            var cntsl = 0 // caterpillar
+            var cntse = 0 // egg
 
-            String spname;
-            String spcode;
-            String slct; // Recording time to sort individuals
+            val male = "m"
+            val fmale = "f"
+            val stadium1 = getString(R.string.stadium_1)
+            val stadium2 = getString(R.string.stadium_2)
+            val stadium3 = getString(R.string.stadium_3)
+            val stadium4 = getString(R.string.stadium_4)
+
+            var spname: String
+            var spcode: String
 
             // Prepare species and individuals data
-            Cursor curXLSXInd;                       // Cursor for Individuals table
-            int specIndex = 0;
+            var curXLSXInd: Cursor? // Cursor for Individuals table
+            var specIndex = 0
             while (curXLSXCnt.moveToNext()) {
-                spname = curXLSXCnt.getString(7); // species name from count table
-                spcode = curXLSXCnt.getString(8); // species code from count table
-                slct = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
+                spname = curXLSXCnt.getString(7) // species name from count table
+                spcode = curXLSXCnt.getString(8) // species code from count table
+                val slct = ("SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
                         + DbHelper.I_NAME + " = ? AND "
                         + DbHelper.I_SEX + " = ? AND "
-                        + DbHelper.I_STADIUM + " = ?";
+                        + DbHelper.I_STADIUM + " = ?")
 
                 // Select male
-                curXLSXInd = database.rawQuery(slct, new String[]{spname, male, stadium1});
+                curXLSXInd = database!!.rawQuery(slct, arrayOf<String?>(spname, male, stadium1))
                 while (curXLSXInd.moveToNext()) {
-                    cnts = curXLSXInd.getInt(14);
-                    cntsm = cntsm + cnts;
+                    cnts = curXLSXInd.getInt(14)
+                    cntsm += cnts
                 }
-                curXLSXInd.close();
+                curXLSXInd.close()
 
                 // Select female
-                curXLSXInd = database.rawQuery(slct, new String[]{spname, fmale, stadium1});
+                curXLSXInd = database!!.rawQuery(slct, arrayOf<String?>(spname, fmale, stadium1))
                 while (curXLSXInd.moveToNext()) {
-                    cnts = curXLSXInd.getInt(14);
-                    cntsf = cntsf + cnts;
+                    cnts = curXLSXInd.getInt(14)
+                    cntsf += cnts
                 }
-                curXLSXInd.close();
+                curXLSXInd.close()
 
-                String slct1 = "SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE
-                        + " WHERE " + DbHelper.I_NAME + " = ? AND " + DbHelper.I_STADIUM + " = ?";
+                val slct1 = ("SELECT * FROM " + DbHelper.INDIVIDUALS_TABLE + " WHERE "
+                        + DbHelper.I_NAME + " = ? AND "
+                        + DbHelper.I_STADIUM + " = ?")
 
                 // Select pupa
-                curXLSXInd = database.rawQuery(slct1, new String[]{spname, stadium2});
+                curXLSXInd = database!!.rawQuery(slct1, arrayOf<String?>(spname, stadium2))
                 while (curXLSXInd.moveToNext()) {
-                    cnts = curXLSXInd.getInt(14);
-                    cntsp = cntsp + cnts;
+                    cnts = curXLSXInd.getInt(14)
+                    cntsp += cnts
                 }
-                curXLSXInd.close();
+                curXLSXInd.close()
 
                 // Select caterpillar
-                curXLSXInd = database.rawQuery(slct1, new String[]{spname, stadium3}); // select caterpillar
+                curXLSXInd = database!!.rawQuery(slct1,arrayOf<String?>(spname, stadium3))
                 while (curXLSXInd.moveToNext()) {
-                    cnts = curXLSXInd.getInt(14);
-                    cntsl = cntsl + cnts;
+                    cnts = curXLSXInd.getInt(14)
+                    cntsl += cnts
                 }
-                curXLSXInd.close();
+                curXLSXInd.close()
 
                 // Select egg
-                curXLSXInd = database.rawQuery(slct1, new String[]{spname, stadium4}); // select egg
+                curXLSXInd = database!!.rawQuery(slct1, arrayOf<String?>(spname, stadium4))
                 while (curXLSXInd.moveToNext()) {
-                    cnts = curXLSXInd.getInt(14);
-                    cntse = cntse + cnts;
+                    cnts = curXLSXInd.getInt(14)
+                    cntse += cnts
                 }
-                curXLSXInd.close();
+                curXLSXInd.close()
 
-                cntsmf = curXLSXCnt.getInt(1);
-                cntsm = curXLSXCnt.getInt(2);
-                cntsf = curXLSXCnt.getInt(3);
-                cntsp = curXLSXCnt.getInt(4);
-                cntsl = curXLSXCnt.getInt(5);
-                cntse = curXLSXCnt.getInt(6);
+                cntsmf = curXLSXCnt.getInt(1)
+                cntsm = curXLSXCnt.getInt(2)
+                cntsf = curXLSXCnt.getInt(3)
+                cntsp = curXLSXCnt.getInt(4)
+                cntsl = curXLSXCnt.getInt(5)
+                cntse = curXLSXCnt.getInt(6)
 
-                String sp_notes;   // species notes
-                sp_notes = curXLSXCnt.getString(9);
-                if (sp_notes == null)
-                    sp_notes = "";
+                val spNotes = curXLSXCnt.getString(9) // species notes
 
-                boolean even = specIndex % 2 == 0;
+                val even = specIndex % 2 == 0
 
                 // Species table entry with counts,
                 // Row 10 (+ index of species), alternating gray line background
-                ws.value(10 + specIndex,0, spname);                     // species name
-                ws.value(10 + specIndex,1, curXLSXCnt.getString(10)); // local name
-                ws.value(10 + specIndex,3, spcode);                     // species code
-                ws.value(10 + specIndex,4, cntsmf);                     // count ♂|♀
-                ws.value(10 + specIndex,5, cntsm);                      // count ♂
-                ws.value(10 + specIndex,6, cntsf);                      // count ♀
-                ws.value(10 + specIndex,7, cntsp);                      // count pupa
-                ws.value(10 + specIndex,8, cntsl);                      // count caterpillar
-                ws.value(10 + specIndex,9, cntse);                      // count egg
-                ws.value(10 + specIndex,10, sp_notes);                  // species notes
-                ws.style(10 + specIndex,4).borderStyle(BorderSide.LEFT,"thin").set();
-                ws.style(10 + specIndex,10).borderStyle(BorderSide.LEFT,"thin").set();
-                ws.range(10 + specIndex,1,10 + specIndex,2).merge();
-                ws.range(10 + specIndex,10,10 + specIndex,13).merge();
+                ws.value(10 + specIndex, 0, spname) // species name
+                ws.value(10 + specIndex, 1, curXLSXCnt.getString(10)) // local name
+                ws.value(10 + specIndex, 3, spcode) // species code
+
+                // Alignment for column code
+                ws.style(10 + specIndex, 3).horizontalAlignment("center").set()
+
+                if (cntsmf == 0) ws.value(10 + specIndex, 4, "") // count ♂|♀
+                else ws.value(10 + specIndex, 4, cntsmf)
+                if (cntsm == 0) ws.value(10 + specIndex, 5, "") // count ♂
+                else ws.value(10 + specIndex, 5, cntsm)
+                if (cntsf == 0) ws.value(10 + specIndex, 6, "") // count ♀
+                else ws.value(10 + specIndex, 6, cntsf)
+                if (cntsp == 0) ws.value(10 + specIndex, 7, "") // count pupa
+                else ws.value(10 + specIndex, 7, cntsp)
+                if (cntsl == 0) ws.value(10 + specIndex, 8, "") // count caterpillar
+                else ws.value(10 + specIndex, 8, cntsl)
+                if (cntse == 0) ws.value(10 + specIndex, 9, "") // count egg
+                else ws.value(10 + specIndex, 9, cntse)
+
+                ws.value(10 + specIndex, 10, spNotes) // species notes
+
+                ws.style(10 + specIndex, 4).borderStyle(BorderSide.LEFT, "thin").set()
+                ws.style(10 + specIndex, 10).borderStyle(BorderSide.LEFT, "thin").set()
+                ws.range(10 + specIndex, 1, 10 + specIndex, 2).merge()
+                ws.range(10 + specIndex, 10, 10 + specIndex, 13).merge()
 
                 // Conditional species notes, if "0" -> red
-                if (Objects.equals(sp_notes, "0"))
-                    ws.style(10 + specIndex,10).fontColor("FF0000").set();
+                if (spNotes == "0") ws.style(10 + specIndex, 10).fontColor("FF0000").set()
 
-                if (even) {
-                    // Conditional red color for value > 0, else transparent
-                    if (cntsmf > 0)
-                        ws.style(10 + specIndex,4).fontColor("FF0000").set(); // red
-                    else
-                        ws.style(10 + specIndex,4).fontColor("00FFFFFF").set(); // transparent
-                    if (cntsm > 0)
-                        ws.style(10 + specIndex,5).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,5).fontColor("00FFFFFF").set();
-                    if (cntsf > 0)
-                        ws.style(10 + specIndex,6).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,6).fontColor("00FFFFFF").set();
-                    if (cntsp > 0)
-                        ws.style(10 + specIndex,7).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,7).fontColor("00FFFFFF").set();
-                    if (cntsl > 0)
-                        ws.style(10 + specIndex,8).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,8).fontColor("00FFFFFF").set();
-                    if (cntse > 0)
-                        ws.style(10 + specIndex,9).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,9).fontColor("00FFFFFF").set();
+                // Alighnment and conditional red color for value > 0
+                ws.range(10 + specIndex, 4, 10 + specIndex, 9)
+                    .style().horizontalAlignment("center").fontColor("FF0000").set()
 
-                    // Alignment
-                    ws.range(10 + specIndex,3,10 + specIndex,9)
-                            .style().horizontalAlignment("center").set();
-                } else {
-                    // Conditional red color for value > 0, else light gray (cell background)
-                    if (cntsmf > 0)
-                        ws.style(10 + specIndex,4).fontColor("FF0000").set(); // red
-                    else
-                        ws.style(10 + specIndex,4).fontColor("DDDDDD").set(); // light gray
-                    if (cntsm > 0)
-                        ws.style(10 + specIndex,5).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,5).fontColor("DDDDDD").set();
-                    if (cntsf > 0)
-                        ws.style(10 + specIndex,6).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,6).fontColor("DDDDDD").set();
-                    if (cntsp > 0)
-                        ws.style(10 + specIndex,7).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,7).fontColor("DDDDDD").set();
-                    if (cntsl > 0)
-                        ws.style(10 + specIndex,8).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,8).fontColor("DDDDDD").set();
-                    if (cntse > 0)
-                        ws.style(10 + specIndex,9).fontColor("FF0000").set();
-                    else
-                        ws.style(10 + specIndex,9).fontColor("DDDDDD").set();
-
-                    // Background light gray and alignment
-                    ws.range(10 + specIndex,0,10 + specIndex,2)
-                            .style().fillColor("DDDDDD").set();
-                    ws.range(10 + specIndex,3,10 + specIndex,9)
-                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
-                    ws.range(10 + specIndex,10,10 + specIndex,13)
-                            .style().fillColor("DDDDDD").set();
+                if (!even) { // Background light gray
+                    ws.range(10 + specIndex, 0, 10 + specIndex, 13)
+                        .style().fillColor("DDDDDD").set()
                 }
 
-                sum = sum + cntsmf + cntsm + cntsf + cntsp + cntsl + cntse;
-                summf = summf + cntsmf;
-                summ = summ + cntsm;
-                sumf = sumf + cntsf;
-                sump = sump + cntsp;
-                suml = suml + cntsl;
-                sume = sume + cntse;
+                sum += cntsmf + cntsm + cntsf + cntsp + cntsl + cntse
+                summf += cntsmf
+                summ += cntsm
+                sumf += cntsf
+                sump += cntsp
+                suml += cntsl
+                sume += cntse
 
-                cntsm = 0;
-                cntsf = 0;
-                cntsp = 0;
-                cntsl = 0;
-                cntse = 0;
-                specIndex++;
+                cntsm = 0
+                cntsf = 0
+                cntsp = 0
+                cntsl = 0
+                cntse = 0
+                specIndex++
             }
-            curXLSXCnt.close();
+            curXLSXCnt.close()
             // End of Species table
 
-            int sumSpec = countDataSource.getDiffSpec(); // get number of different species
+            val sumSpec = countDataSource!!.diffSpec // get number of different species
 
             // Write totals line
             // Row 10 + specIndex
-            ws.value(10 + specIndex,0, getString(R.string.sumSpec) + " ");
-            ws.style(10 + specIndex,0).horizontalAlignment("right").bold().set();
-            ws.value(10 + specIndex,1, sumSpec);
-            ws.style(10 + specIndex,1).horizontalAlignment("center").bold().set();
-            ws.value(10 + specIndex,3, getString(R.string.sum) + " ");
-            ws.style(10 + specIndex,3).horizontalAlignment("right").bold().set();
-            ws.value(10 + specIndex,4, summf);
-            ws.value(10 + specIndex,5, summ);
-            ws.value(10 + specIndex,6, sumf);
-            ws.value(10 + specIndex,7, sump);
-            ws.value(10 + specIndex,8, suml);
-            ws.value(10 + specIndex,9, sume);
-            ws.range(10 + specIndex,4,10 + specIndex,9)
-                    .style().horizontalAlignment("center").bold().set();
-            ws.value(10 + specIndex,10, getString(R.string.sum_total) + " ");
-            ws.style(10 + specIndex,10).horizontalAlignment("right").bold().set();
-            ws.value(10 + specIndex,11,  sum);
-            ws.style(10 + specIndex,11).horizontalAlignment("center").bold().set();
+            ws.value(10 + specIndex, 0, getString(R.string.sumSpec) + " ")
+            ws.style(10 + specIndex, 0).horizontalAlignment("right").bold().set()
+            ws.value(10 + specIndex, 1, sumSpec)
+            ws.style(10 + specIndex, 1).horizontalAlignment("center").bold().set()
+            ws.value(10 + specIndex, 3, getString(R.string.sum) + " ")
+            ws.style(10 + specIndex, 3).horizontalAlignment("right").bold().set()
+            ws.value(10 + specIndex, 4, summf)
+            ws.value(10 + specIndex, 5, summ)
+            ws.value(10 + specIndex, 6, sumf)
+            ws.value(10 + specIndex, 7, sump)
+            ws.value(10 + specIndex, 8, suml)
+            ws.value(10 + specIndex, 9, sume)
+            ws.range(10 + specIndex, 4, 10 + specIndex, 9)
+                .style().horizontalAlignment("center").bold().set()
+            ws.value(10 + specIndex, 10, getString(R.string.sum_total) + " ")
+            ws.style(10 + specIndex, 10).horizontalAlignment("right").bold().set()
+            ws.value(10 + specIndex, 11, sum)
+            ws.style(10 + specIndex, 11).horizontalAlignment("center").bold().set()
 
-            if (summf == 0)
-                ws.style(10 + specIndex,4).fontColor("00FFFFFF").set(); // transparent
-            if (summ == 0)
-                ws.style(10 + specIndex,5).fontColor("00FFFFFF").set(); // transparent
-            if (sumf == 0)
-                ws.style(10 + specIndex,6).fontColor("00FFFFFF").set(); // transparent
-            if (sump == 0)
-                ws.style(10 + specIndex,7).fontColor("00FFFFFF").set(); // transparent
-            if (suml == 0)
-                ws.style(10 + specIndex,8).fontColor("00FFFFFF").set(); // transparent
-            if (sume == 0)
-                ws.style(10 + specIndex,9).fontColor("00FFFFFF").set(); // transparent
+            if (summf == 0) ws.style(10 + specIndex, 4).fontColor("00FFFFFF").set() // transparent
+            if (summ == 0) ws.style(10 + specIndex, 5).fontColor("00FFFFFF").set() // transparent
+            if (sumf == 0) ws.style(10 + specIndex, 6).fontColor("00FFFFFF").set() // transparent
+            if (sump == 0) ws.style(10 + specIndex, 7).fontColor("00FFFFFF").set() // transparent
+            if (suml == 0) ws.style(10 + specIndex, 8).fontColor("00FFFFFF").set() // transparent
+            if (sume == 0) ws.style(10 + specIndex, 9).fontColor("00FFFFFF").set() // transparent
 
             // Set borders for totals
-            ws.range(10 + specIndex,0,10 + specIndex,13).style()
-                    .borderStyle(BorderSide.TOP,"thin").set();
+            ws.range(10 + specIndex, 0, 10 + specIndex, 13).style()
+                .borderStyle(BorderSide.TOP, "thin").set()
 
-            ws.style(10+ specIndex,4)
-                    .borderStyle(BorderSide.LEFT,"thin")
-                    .borderStyle(BorderSide.TOP,"thin").set();
+            ws.style(10 + specIndex, 4)
+                .borderStyle(BorderSide.LEFT, "thin")
+                .borderStyle(BorderSide.TOP, "thin").set()
 
-            ws.style(10+ specIndex,10)
-                    .borderStyle(BorderSide.LEFT,"thin")
-                    .borderStyle(BorderSide.TOP,"thin").set();
+            ws.style(10 + specIndex, 10)
+                .borderStyle(BorderSide.LEFT, "thin")
+                .borderStyle(BorderSide.TOP, "thin").set()
             // End of totals
 
             // Individuals table headline
             //    Individuals, Counts, Locality, Longitude, Latitude, Uncertainty, Height,
             //    Date, Time, Sexus, Phase, State, Indiv.-Notes
             // Row 12 + specIndex
-            ws.value(12 + specIndex,0, getString(R.string.individuals));
-            ws.value(12 + specIndex,1, getString(R.string.locality));
-            ws.value(12 + specIndex,3, getString(R.string.cnts));
-            ws.value(12 + specIndex,4, getString(R.string.ycoord));
-            ws.value(12 + specIndex,5, getString(R.string.xcoord));
-            ws.value(12 + specIndex,6, getString(R.string.uncerti));
-            ws.value(12 + specIndex,7, getString(R.string.zcoord));
-            ws.value(12 + specIndex,8, getString(R.string.date));
-            ws.value(12 + specIndex,9, getString(R.string.time));
-            ws.value(12 + specIndex,10, getString(R.string.sex));
-            ws.value(12 + specIndex,11, getString(R.string.stadium));
-            ws.value(12 + specIndex,12, getString(R.string.status123));
-            ws.value(12 + specIndex,13, getString(R.string.bems));
+            ws.value(12 + specIndex, 0, getString(R.string.individuals))
+            ws.value(12 + specIndex, 1, getString(R.string.locality))
+            ws.value(12 + specIndex, 3, getString(R.string.cnts))
+            ws.value(12 + specIndex, 4, getString(R.string.ycoord))
+            ws.value(12 + specIndex, 5, getString(R.string.xcoord))
+            ws.value(12 + specIndex, 6, getString(R.string.uncerti))
+            ws.value(12 + specIndex, 7, getString(R.string.zcoord))
+            ws.value(12 + specIndex, 8, getString(R.string.date))
+            ws.value(12 + specIndex, 9, getString(R.string.time))
+            ws.value(12 + specIndex, 10, getString(R.string.sex))
+            ws.value(12 + specIndex, 11, getString(R.string.stadium))
+            ws.value(12 + specIndex, 12, getString(R.string.status123))
+            ws.value(12 + specIndex, 13, getString(R.string.bems))
             // Merge cells 1 + 2
-            ws.range(12 + specIndex,1,12 + specIndex,2).style().merge().set();
+            ws.range(12 + specIndex, 1, 12 + specIndex, 2).style().merge().set()
             // Cells 0 + 1 bottom line and bold
-            ws.range(12 + specIndex,0,12 + specIndex,2).style()
-                    .borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.range(12 + specIndex, 0, 12 + specIndex, 2).style()
+                .borderStyle(BorderSide.BOTTOM, "thin").bold().set()
             // Cells 3 - 12 bottom line, center and bold
-            ws.range(12 + specIndex,3,12 + specIndex,12).style().borderStyle(BorderSide
-                    .BOTTOM,"thin").bold().horizontalAlignment("center").set();
+            ws.range(12 + specIndex, 3, 12 + specIndex, 12).style().borderStyle(
+                BorderSide.BOTTOM, "thin"
+            ).bold().horizontalAlignment("center").set()
             // Cell 13 bottom line and bold
-            ws.style(12 + specIndex,13).borderStyle(BorderSide.BOTTOM,"thin").bold().set();
+            ws.style(12 + specIndex, 13).borderStyle(BorderSide.BOTTOM, "thin").bold().set()
 
             // Build the sorted individuals array
-            curXLSXInd = database.rawQuery("select * from " + DbHelper.INDIVIDUALS_TABLE
-                            + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP,
-                    null, null);
+            curXLSXInd = database!!.rawQuery(
+                ("select * from " + DbHelper.INDIVIDUALS_TABLE
+                        + " order by " + DbHelper.I_DATE_STAMP + ", " + DbHelper.I_TIME_STAMP),
+                null, null
+            )
 
-            String lngi, latit;
-            frst = 0;
-            int indIndex = specIndex;
+            var lngi: String
+            var latit: String
+            frst = 0
+            var indIndex = specIndex
             while (curXLSXInd.moveToNext()) {
-                longi = curXLSXInd.getDouble(4);
-                lati = curXLSXInd.getDouble(3);
-                uncer = Math.rint(curXLSXInd.getDouble(6));
-                heigh = Math.rint(curXLSXInd.getDouble(5));
-                spstate = curXLSXInd.getInt(12);
-                if (spstate == 0)
-                    spstate0 = "-";
-                else
-                    spstate0 = Integer.toString(spstate);
-                cnts = curXLSXInd.getInt(14);
+                longi = curXLSXInd.getDouble(4)
+                lati = curXLSXInd.getDouble(3)
+                uncer = round(curXLSXInd.getDouble(6))
+                heigh = round(curXLSXInd.getDouble(5))
+                spstate = curXLSXInd.getInt(12)
+                spstate0 = if (spstate == 0) "-"
+                else spstate.toString()
+                cnts = curXLSXInd.getInt(14)
 
-                try {
-                    lngi = String.valueOf(longi).substring(0, 8); // longitude
-                } catch (StringIndexOutOfBoundsException e) {
-                    lngi = String.valueOf(longi);
+                lngi = try {
+                    longi.toString().substring(0, 8) // longitude
+                } catch (_: StringIndexOutOfBoundsException) {
+                    longi.toString()
                 }
 
-                try {
-                    latit = String.valueOf(lati).substring(0, 8); // latitude
-                } catch (StringIndexOutOfBoundsException e) {
-                    latit = String.valueOf(lati);
+                latit = try {
+                    lati.toString().substring(0, 8) // latitude
+                } catch (_: StringIndexOutOfBoundsException) {
+                    lati.toString()
                 }
 
-                String iNotes = curXLSXInd.getString(13);
-                if (iNotes == null)
-                    iNotes = "";
+                val iNotes = curXLSXInd.getString(13)
 
-                boolean even = indIndex % 2 == 0;
+                val even = indIndex % 2 == 0
 
                 // Individuals table entries
                 if (even) {
-                    ws.value(13 + indIndex,0, curXLSXInd.getString(2));               // species name
-                    ws.value(13 + indIndex,1, curXLSXInd.getString(9));               // locality
-                    ws.value(13 + indIndex,3, cnts);                                    // indiv. counts
-                    ws.value(13 + indIndex,4, lngi);                                    // longitude
-                    ws.value(13 + indIndex,5, latit);                                   // latitude
-                    ws.value(13 + indIndex,6, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
-                    ws.value(13 + indIndex,7, String.valueOf(Math.round(heigh)));       // height
-                    ws.value(13 + indIndex,8, curXLSXInd.getString(7));               // date
-                    ws.value(13 + indIndex,9, curXLSXInd.getString(8));               // time
-                    ws.value(13 + indIndex,10, curXLSXInd.getString(10));             // sexus
-                    ws.value(13 + indIndex,11, curXLSXInd.getString(11));             // phase
-                    ws.value(13 + indIndex,12, spstate0);                               // status
-                    ws.value(13 + indIndex,13, iNotes);                                 // indiv. notes
+                    ws.value(13 + indIndex, 0, curXLSXInd.getString(2)) // species name
+                    ws.value(13 + indIndex, 1, curXLSXInd.getString(9)) // locality
+                    ws.value(13 + indIndex, 3, cnts) // indiv. counts
+                    ws.value(13 + indIndex, 4, lngi) // longitude
+                    ws.value(13 + indIndex, 5, latit) // latitude
+                    ws.value(
+                        13 + indIndex,
+                        6,
+                        (uncer + 20).roundToInt().toString()
+                    ) // uncertainty + 20 m extra
+                    ws.value(13 + indIndex, 7, heigh.roundToInt().toString()) // height
+                    ws.value(13 + indIndex, 8, curXLSXInd.getString(7)) // date
+                    ws.value(13 + indIndex, 9, curXLSXInd.getString(8)) // time
+                    ws.value(13 + indIndex, 10, curXLSXInd.getString(10)) // sexus
+                    ws.value(13 + indIndex, 11, curXLSXInd.getString(11)) // phase
+                    ws.value(13 + indIndex, 12, spstate0) // status
+                    ws.value(13 + indIndex, 13, iNotes) // indiv. notes
                     // Merge cells 1 + 2
-                    ws.range(13 + indIndex,1, 13 + indIndex,2).style().merge().set();
+                    ws.range(13 + indIndex, 1, 13 + indIndex, 2).style().merge().set()
                     // Cells 3 - 12 center
-                    ws.range(13 + indIndex,3,13 + indIndex,12)
-                            .style().horizontalAlignment("center").set();
+                    ws.range(13 + indIndex, 3, 13 + indIndex, 12)
+                        .style().horizontalAlignment("center").set()
                 } else {
-                    ws.value(13 + indIndex,0, curXLSXInd.getString(2));               // species name
-                    ws.value(13 + indIndex,1, curXLSXInd.getString(9));               // locality
-                    ws.value(13 + indIndex,3, cnts);                                    // indiv. counts
-                    ws.value(13 + indIndex,4, lngi);                                    // longitude
-                    ws.value(13 + indIndex,5, latit);                                   // latitude
-                    ws.value(13 + indIndex,6, String.valueOf(Math.round(uncer + 20)));  // uncertainty + 20 m extra
-                    ws.value(13 + indIndex,7, String.valueOf(Math.round(heigh)));       // height
-                    ws.value(13 + indIndex,8, curXLSXInd.getString(7));               // date
-                    ws.value(13 + indIndex,9, curXLSXInd.getString(8));               // time
-                    ws.value(13 + indIndex,10, curXLSXInd.getString(10));             // sexus
-                    ws.value(13 + indIndex,11, curXLSXInd.getString(11));             // phase
-                    ws.value(13 + indIndex,12, spstate0);                               // status
-                    ws.value(13 + indIndex,13, iNotes);                                 // indiv. notes
+                    ws.value(13 + indIndex, 0, curXLSXInd.getString(2)) // species name
+                    ws.value(13 + indIndex, 1, curXLSXInd.getString(9)) // locality
+                    ws.value(13 + indIndex, 3, cnts) // indiv. counts
+                    ws.value(13 + indIndex, 4, lngi) // longitude
+                    ws.value(13 + indIndex, 5, latit) // latitude
+                    ws.value(
+                        13 + indIndex,
+                        6,
+                        (uncer + 20).roundToInt().toString()
+                    ) // uncertainty + 20 m extra
+                    ws.value(13 + indIndex, 7, heigh.roundToInt().toString()) // height
+                    ws.value(13 + indIndex, 8, curXLSXInd.getString(7)) // date
+                    ws.value(13 + indIndex, 9, curXLSXInd.getString(8)) // time
+                    ws.value(13 + indIndex, 10, curXLSXInd.getString(10)) // sexus
+                    ws.value(13 + indIndex, 11, curXLSXInd.getString(11)) // phase
+                    ws.value(13 + indIndex, 12, spstate0) // status
+                    ws.value(13 + indIndex, 13, iNotes) // indiv. notes
                     // Merge cells 1 + 2
-                    ws.range(13 + indIndex,1, 13 + indIndex,2).style().merge().set();
+                    ws.range(13 + indIndex, 1, 13 + indIndex, 2).style().merge().set()
                     // Cells 0 - 2 color "DDDDDD"
-                    ws.range(13 + indIndex,0,13 + indIndex,2).style().fillColor("DDDDDD").set();
+                    ws.range(13 + indIndex, 0, 13 + indIndex, 2).style().fillColor("DDDDDD").set()
                     // Cells 3 - 12 center
-                    ws.range(13 + indIndex,3,13 + indIndex,12)
-                            .style().fillColor("DDDDDD").horizontalAlignment("center").set();
-                    ws.style(13 + indIndex,13).fillColor("DDDDDD").set();
+                    ws.range(13 + indIndex, 3, 13 + indIndex, 12)
+                        .style().fillColor("DDDDDD").horizontalAlignment("center").set()
+                    ws.style(13 + indIndex, 13).fillColor("DDDDDD").set()
                 }
 
-                if (longi != 0) // Has coordinates
+                if (longi != 0.0)  // Has coordinates
                 {
                     if (frst == 0) {
-                        loMin = longi;
-                        loMax = longi;
-                        laMin = lati;
-                        laMax = lati;
-                        uncer1 = uncer;
-                        frst = 1; // Just 1 with coordinates
+                        loMin = longi
+                        loMax = longi
+                        laMin = lati
+                        laMax = lati
+                        uncer1 = uncer
+                        frst = 1 // Just 1 with coordinates
                     } else {
-                        loMin = Math.min(loMin, longi);
-                        loMax = Math.max(loMax, longi);
-                        laMin = Math.min(laMin, lati);
-                        laMax = Math.max(laMax, lati);
-                        uncer1 = Math.max(uncer1, uncer);
+                        loMin = min(loMin, longi)
+                        loMax = max(loMax, longi)
+                        laMin = min(laMin, lati)
+                        laMax = max(laMax, lati)
+                        uncer1 = max(uncer1, uncer)
                     }
                 }
-
-                indIndex++; // Last increment adds an empty row
+                indIndex++ // Last increment adds an empty row
             }
-            curXLSXInd.close();
+            curXLSXInd.close()
 
             // Write Average Coords headline
-            ws.value(14 + indIndex,4, getString(R.string.ycoord));
-            ws.value(14 + indIndex,5, getString(R.string.xcoord));
-            ws.value(14 + indIndex,6, getString(R.string.uncerti));
+            ws.value(14 + indIndex, 4, getString(R.string.ycoord))
+            ws.value(14 + indIndex, 5, getString(R.string.xcoord))
+            ws.value(14 + indIndex, 6, getString(R.string.uncerti))
 
             // Merge cells 2 + 3
-            ws.range(14 + indIndex,2, 14 + indIndex,3).style().merge().set();
+            ws.range(14 + indIndex, 2, 14 + indIndex, 3).style().merge().set()
             // Set for cells 4 - 6 bottom line, center and bold
-            ws.range(14 + indIndex,2,14 + indIndex,6)
-                    .style().borderStyle(BorderSide.BOTTOM,"thin")
-                    .horizontalAlignment("center").bold().set();
+            ws.range(14 + indIndex, 2, 14 + indIndex, 6)
+                .style().borderStyle(BorderSide.BOTTOM, "thin")
+                .horizontalAlignment("center").bold().set()
             // Set left line in cell (14 + indIndex, 4)
-            ws.style(14 + indIndex,4).borderStyle(BorderSide.BOTTOM,"thin")
-                    .borderStyle(BorderSide.LEFT,"thin").set();
+            ws.style(14 + indIndex, 4).borderStyle(BorderSide.BOTTOM, "thin")
+                .borderStyle(BorderSide.LEFT, "thin").set()
             // Set left line in cell (15 + indIndex, 4)
-            ws.style(15 + indIndex,4).borderStyle(BorderSide.LEFT,"thin").set();
+            ws.style(15 + indIndex, 4).borderStyle(BorderSide.LEFT, "thin").set()
 
-            lo = (loMax + loMin) / 2; // average longitude
-            la = (laMax + laMin) / 2; // average latitude
+            lo = (loMax + loMin) / 2 // average longitude
+            la = (laMax + laMin) / 2 // average latitude
 
             // Simple distance calculation between 2 coordinates within the temperate zone in meters (Pythagoras):
             //   uc = (((loMax-loMin)*71500)² + ((laMax-laMin)*111300)²)½
-            uc = sqrt(((Math.pow((loMax - loMin) * 71500, 2)) + (Math.pow((laMax - laMin) * 111300, 2))));
-            uc = Math.rint(uc / 2) + 20; // average uncertainty radius + default gps uncertainty
-            if (uc <= uncer1)
-                uc = uncer1;
+            uc = sqrt(((((loMax - loMin) * 71500).pow(2.0)) + (((laMax - laMin) * 111300).pow(2.0))))
+            uc = round(uc / 2) + 20 // average uncertainty radius + default gps uncertainty
+            if (uc <= uncer1) uc = uncer1
 
-            try {
-                lngi = String.valueOf(lo).substring(0, 8); //longitude
-            } catch (StringIndexOutOfBoundsException e) {
-                lngi = String.valueOf(lo);
+            lngi = try {
+                lo.toString().substring(0, 8) //longitude
+            } catch (_: StringIndexOutOfBoundsException) {
+                lo.toString()
             }
 
-            try {
-                latit = String.valueOf(la).substring(0, 8); // latitude
-            } catch (StringIndexOutOfBoundsException e) {
-                latit = String.valueOf(la);
+            latit = try {
+                la.toString().substring(0, 8) // latitude
+            } catch (_: StringIndexOutOfBoundsException) {
+                la.toString()
             }
 
             // Write Average Coords
-            ws.value(15 + indIndex,1, getString(R.string.avCoords));
-            ws.value(15 + indIndex,4, lngi);
-            ws.value(15 + indIndex,5, latit);
-            ws.value(15 + indIndex,6, String.valueOf(Math.round(uc))); // average uncertainty radius)
+            ws.value(15 + indIndex, 1, getString(R.string.avCoords))
+            ws.value(15 + indIndex, 4, lngi)
+            ws.value(15 + indIndex, 5, latit)
+            ws.value(15 + indIndex, 6, uc.roundToInt().toString()) // average uncertainty radius
 
-            ws.range(15 + indIndex,1,15 + indIndex,3).style().merge()
-                    .horizontalAlignment("right").bold().set();
-            ws.range(15 + indIndex,4,15 + indIndex,6)
-                    .style().horizontalAlignment("center").set();
+            ws.range(15 + indIndex, 1, 15 + indIndex, 3).style().merge()
+                .horizontalAlignment("right").bold().set()
+            ws.range(15 + indIndex, 4, 15 + indIndex, 6)
+                .style().horizontalAlignment("center").set()
 
-            dbHelper.close();
+            dbHelper!!.close()
 
             try {
                 // Export purged db as xlsx
-                wb.finish();
-                outputStream.close();
-                wb.close();
-            } catch (IOException e) {
-                mesg = getString(R.string.saveFail);
+                wb.finish()
+                outputStream.close()
+                wb.close()
+            } catch (_: IOException) {
+                mesg = getString(R.string.saveFail)
                 Toast.makeText(this,
-                        fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                        Toast.LENGTH_LONG).show();
+                    fromHtml("<font color='red'><b>$mesg</b></font>"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
     // End of exportDb2XLSX()
 
-    /**
-     * @noinspection ResultOfMethodCallIgnored
-     ********************************************************************************************/
-    // Export current species list to both data directories
-    //  /Documents/TransektCount/species_ll_tour_YYYYMMDD_hhmmss.csv and
-    //  /Documents/TourCount/species_ll_tour_YYYYMMDD_hhmmss.csv
-    private void exportSpeciesList() {
-        // outFileTour -> /storage/emulated/0/Documents/TourCount/species_ll_Tour_tourname_yyyyMMdd_HHmmss.csv
-        // outFileTransect -> /storage/emulated/0/Documents/TransektCount/species_ll_Tour_tourname_yyyyMMdd_HHmmss.csv
-        File pathTour, outFileTour, pathTransect, outFileTransect;
-        pathTransect = new File(Environment.getExternalStorageDirectory() + "/Documents/TransektCount");
-        pathTour = new File(Environment.getExternalStorageDirectory() + "/Documents/TourCount");
+    // Export current species list species_ll_tourname_YYYYMMDD_hhmmss.csv to both data directories
+    //  /Documents/TransektCount and /Documents/TourCount
+    private fun exportSpeciesList() {
+        val outFileTour: File
+        val outFileTransect: File
+
+        val pathTransect =
+            File(Environment.getExternalStorageDirectory().toString() + "/Documents/TransektCount")
+        val pathTour =
+            File(Environment.getExternalStorageDirectory().toString() + "/Documents/TourCount")
 
         // Check if we can write the media
-        mExternalStorageWriteable = Environment.MEDIA_MOUNTED.equals(sState);
+        mExternalStorageWriteable = Environment.MEDIA_MOUNTED == storageState
 
         if (!mExternalStorageWriteable) {
-            mesg = getString(R.string.noCard);
+            mesg = getString(R.string.noCard)
             Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
         } else {
             // Export species list into species_ll_tour_Tourname_yyyyMMdd_HHmmss.csv
-            dataLanguage = prefs.getString("pref_sel_data_lang", "");
-            if (dataLanguage.isEmpty())
-                dataLanguage = "--";
-            String[] codeArray;
-            String[] nameArray;
-            String[] nameArrayL;
+            dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
+            if (dataLanguage.isEmpty()) dataLanguage = "--"
 
-            codeArray = countDataSource.getAllStringsSrtCode("code");
-            nameArray = countDataSource.getAllStringsSrtCode("name");
-            nameArrayL = countDataSource.getAllStringsSrtCode("name_g");
+            val codeArray = countDataSource!!.getAllStringsSrtCode("code")
+            val nameArray = countDataSource!!.getAllStringsSrtCode("name")
+            val nameArrayL = countDataSource!!.getAllStringsSrtCode("name_g")
 
-            int specNum = codeArray.length;
+            val specNum = codeArray.size
 
-            pathTransect.mkdirs(); // Just verify pathTransect, result ignored
-            pathTour.mkdirs(); // Just verify pathTour, result ignored
+            pathTransect.mkdirs() // Just verify pathTransect, result ignored
+            pathTour.mkdirs() // Just verify pathTour, result ignored
 
-            switch (dataLanguage) {
-                case "de" -> {
-                    if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_de_Tour_"
-                                + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_de_Tour_"
-                                + getcurDate() + ".csv");
+            when (dataLanguage) {
+                "de" -> {
+                    if (tourNameForDir == "") {
+                        outFileTransect = File(
+                            pathTransect, ("/species_de_"
+                                    + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_de_"
+                                    + getcurDate() + ".csv")
+                        )
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_de_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_de_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTransect = File(
+                            pathTransect, ("/species_de_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_de_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
                     }
                 }
-                case "en" -> {
-                    if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_en_Tour_"
-                                + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_en_Tour_"
-                                + getcurDate() + ".csv");
+
+                "en" -> {
+                    if (tourNameForDir == "") {
+                        outFileTransect = File(
+                            pathTransect, ("/species_en_"
+                                    + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_en_"
+                                    + getcurDate() + ".csv")
+                        )
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_en_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_en_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTransect = File(
+                            pathTransect, ("/species_en_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_en_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
                     }
                 }
-                case "fr" -> {
-                    if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_fr_Tour_"
-                                + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_fr_Tour_"
-                                + getcurDate() + ".csv");
+
+                "fr" -> {
+                    if (tourNameForDir == "") {
+                        outFileTransect = File(
+                            pathTransect, ("/species_fr_"
+                                    + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_fr_"
+                                    + getcurDate() + ".csv")
+                        )
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_fr_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_fr_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTransect = File(
+                            pathTransect, ("/species_fr_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_fr_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
                     }
                 }
-                case "it" -> {
-                    if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_it_Tour_"
-                                + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_it_Tour_"
-                                + getcurDate() + ".csv");
+
+                "it" -> {
+                    if (tourNameForDir == "") {
+                        outFileTransect = File(
+                            pathTransect, ("/species_it_"
+                                    + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_it_"
+                                    + getcurDate() + ".csv")
+                        )
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_it_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_it_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTransect = File(
+                            pathTransect, ("/species_it_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_it_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
                     }
                 }
-                case "es" -> {
-                    if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_es_Tour_"
-                                + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_es_Tour_"
-                                + getcurDate() + ".csv");
+
+                "es" -> {
+                    if (tourNameForDir == "") {
+                        outFileTransect = File(
+                            pathTransect, ("/species_es_"
+                                    + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_es_"
+                                    + getcurDate() + ".csv")
+                        )
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_es_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_es_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTransect = File(
+                            pathTransect, ("/species_es_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_es_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
                     }
                 }
-                default -> {
+
+                else -> {
                     // No data language given
-                    if (Objects.equals(tourNameDir, "")) {
-                        outFileTransect = new File(pathTransect, "/species_--_Tour_"
-                                + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_--_Tour_"
-                                + getcurDate() + ".csv");
+                    if (tourNameForDir == "") {
+                        outFileTransect = File(
+                            pathTransect, ("/species_--_"
+                                    + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_--_"
+                                    + getcurDate() + ".csv")
+                        )
                     } else {
-                        outFileTransect = new File(pathTransect, "/species_--_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
-                        outFileTour = new File(pathTour, "/species_--_Tour_"
-                                + tourNameDir + "_" + getcurDate() + ".csv");
+                        outFileTransect = File(
+                            pathTransect, ("/species_--_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
+                        outFileTour = File(
+                            pathTour, ("/species_--_"
+                                    + tourNameForDir + "_" + getcurDate() + ".csv")
+                        )
                     }
                 }
             }
 
             // If TransektCount is installed export to /Documents/TransektCount
-            if (pathTransect.exists() && pathTransect.isDirectory()) {
+            if (pathTransect.exists() && pathTransect.isDirectory) {
                 try {
-                    CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTransect));
+                    val csvWrite = CSVWriter(FileWriter(outFileTransect))
 
-                    // 1. line contains 0: String "nocode", 1: String "language", 2: String "de"|"en"|"fr"|"it"|"es"
-                    String[] specLine1 = {"nocode,language," + dataLanguage};
-                    csvWrite.writeNext(specLine1);
+                    // 1. line of species list contains
+                    //   field 0: String "nocode",
+                    //   field 1: String "language",
+                    //   field 2: String "de"|"en"|"fr"|"it"|"es"
+                    val specLine1 = arrayOf<String?>("nocode,language,$dataLanguage")
+                    csvWrite.writeNext(specLine1)
 
-                    int i = 0;
+                    var i = 0
                     while (i < specNum) {
-                        String[] specLine =
-                                {
-                                        codeArray[i],
-                                        nameArray[i],
-                                        nameArrayL[i]
-                                };
-                        i++;
-                        csvWrite.writeNext(specLine);
+                        val specLine =
+                            arrayOf(
+                                codeArray[i],
+                                nameArray[i],
+                                nameArrayL[i]
+                            )
+                        i++
+                        csvWrite.writeNext(specLine)
                     }
-                    csvWrite.close();
-                } catch (Exception e) {
-                    mesg = getString(R.string.saveFailListTransect);
+                    csvWrite.close()
+                } catch (_: Exception) {
+                    mesg = getString(R.string.saveFailListTransect)
                     Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
+                        fromHtml("<font color='red'><b>$mesg</b></font>"),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 
             // Export to /Documents/TourCount
-            if (pathTour.exists() && pathTour.isDirectory()) {
+            if (pathTour.exists() && pathTour.isDirectory) {
                 try {
-                    CSVWriter csvWrite = new CSVWriter(new FileWriter(outFileTour));
+                    val csvWrite = CSVWriter(FileWriter(outFileTour))
 
                     // 1. line with nocode, language, de|en|fr|it|es
-                    String[] specLine1 = {"nocode,language," + dataLanguage};
-                    csvWrite.writeNext(specLine1);
+                    val specLine1 = arrayOf<String?>("nocode,language,$dataLanguage")
+                    csvWrite.writeNext(specLine1)
 
-                    int i = 0;
+                    var i = 0
                     while (i < specNum) {
-                        String[] specLine =
-                                {
-                                        codeArray[i],
-                                        nameArray[i],
-                                        nameArrayL[i]
-                                };
-                        i++;
-                        csvWrite.writeNext(specLine);
+                        val specLine =
+                            arrayOf(
+                                codeArray[i],
+                                nameArray[i],
+                                nameArrayL[i]
+                            )
+                        i++
+                        csvWrite.writeNext(specLine)
                     }
-                    csvWrite.close();
+                    csvWrite.close()
 
-                    mesg = getString(R.string.saveList);
-                    Toast.makeText(this,
-                            fromHtml("<font color='blue'>" + mesg + "</font>"),
-                            Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    mesg = getString(R.string.saveFailList);
-                    Toast.makeText(this,
-                            fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                            Toast.LENGTH_LONG).show();
+                    mesg = getString(R.string.saveList)
+                    Toast.makeText(
+                        this,
+                        fromHtml("<font color='blue'>$mesg</font>"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (_: Exception) {
+                    mesg = getString(R.string.saveFailList)
+                    Toast.makeText(
+                        this,
+                        fromHtml("<font color='red'><b>$mesg</b></font>"),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
     }
     // End of exportSpeciesList()
 
-    /**********************************************************************************************/
-    // Clear all relevant DB values, reset to basic DB 
-    private void resetToBasisDb() {
+    // Clear all relevant DB values, reset to basic DB
+    private fun resetToBasisDb() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "2989, resetToBasisDb");
+            Log.i(TAG, "3002, resetToBasisDb")
 
         // Confirm dialogue before anything else takes place
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setMessage(R.string.confirmResetDB);
-        builder.setCancelable(false);
-        builder.setPositiveButton(R.string.deleteButton, (dialog, id) ->
-        {
-            boolean r_ok = clearDBValues();
-            if (r_ok) {
-                mesg = getString(R.string.reset2basic);
-                Toast.makeText(this, // bright green
-                        fromHtml("<font color='#008000'>" + mesg + "</font>"),
-                        Toast.LENGTH_SHORT).show();
+        val builder = AlertDialog.Builder(this)
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setMessage(R.string.confirmResetDB)
+        builder.setCancelable(false)
+        builder.setPositiveButton(
+            R.string.deleteButton
+        ) { _: DialogInterface?, _: Int ->
+            val resOK = clearDBValues()
+            if (resOK) {
+                mesg = getString(R.string.reset2basic)
+                Toast.makeText(this,  // bright green
+                    fromHtml("<font color='#008000'>$mesg</font>"),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            Objects.requireNonNull(getSupportActionBar()).setTitle("");
-        });
-        builder.setNegativeButton(R.string.cancelButton, (dialog, id) -> dialog.cancel());
-        alert = builder.create();
-        alert.show();
+            supportActionBar!!.title = ""
+        }
+        builder.setNegativeButton(
+            R.string.cancelButton
+        ) { dialog: DialogInterface?, _: Int -> dialog!!.cancel() }
+        alert = builder.create()
+        alert.show()
     }
 
     // Clear DB and location values for basic DB
-    private boolean clearDBValues() {
+    private fun clearDBValues(): Boolean {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "3015, clearDBValues");
+            Log.i(TAG, "3032, clearDBValues")
 
-        dbHelper = new DbHelper(this);
-        database = dbHelper.getWritableDatabase();
-        boolean r_ok = true;
+        dbHelper = DbHelper(this)
+        database = dbHelper!!.writableDatabase
+        var resOK = true
 
         try {
-            String sql = "UPDATE " + DbHelper.COUNT_TABLE + " SET "
+            var sql = ("UPDATE " + DbHelper.COUNT_TABLE + " SET "
                     + DbHelper.C_COUNT_F1I + " = 0, "
                     + DbHelper.C_COUNT_F2I + " = 0, "
                     + DbHelper.C_COUNT_F3I + " = 0, "
                     + DbHelper.C_COUNT_PI + " = 0, "
                     + DbHelper.C_COUNT_LI + " = 0, "
                     + DbHelper.C_COUNT_EI + " = 0, "
-                    + DbHelper.C_NOTES + " = '';";
-            database.execSQL(sql);
+                    + DbHelper.C_NOTES + " = '';")
+            database!!.execSQL(sql)
 
-            sql = "UPDATE " + DbHelper.SECTION_TABLE + " SET "
+            sql = ("UPDATE " + DbHelper.SECTION_TABLE + " SET "
                     + DbHelper.S_NAME + " = '', "
                     + DbHelper.S_COUNTRY + " = '', "
                     + DbHelper.S_PLZ + " = '', "
@@ -3046,48 +3063,75 @@ public class WelcomeActivity
                     + DbHelper.S_END_TM + " = '', "
                     + DbHelper.S_NOTES + " = '', "
                     + DbHelper.S_STATE + " = '', "
-                    + DbHelper.S_ST_LOCALITY + " = '';";
-            database.execSQL(sql);
+                    + DbHelper.S_ST_LOCALITY + " = '';")
+            database!!.execSQL(sql)
 
-            sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE;
-            database.execSQL(sql);
-        } catch (Exception e) {
-            mesg = getString(R.string.resetFail);
+            sql = "DELETE FROM " + DbHelper.INDIVIDUALS_TABLE
+            database!!.execSQL(sql)
+        } catch (_: Exception) {
+            mesg = getString(R.string.resetFail)
             Toast.makeText(this,
-                    fromHtml("<font color='red'><b>" + mesg + "</b></font>"),
-                    Toast.LENGTH_LONG).show();
+                fromHtml("<font color='red'><b>$mesg</b></font>"),
+                Toast.LENGTH_LONG
+            ).show()
 
-            r_ok = false;
+            resOK = false
         }
-        dbHelper.close();
+        dbHelper!!.close()
 
-        lat = 0.0;
-        lon = 0.0;
-        heightNN = 0.0;
-        uncertainty = 0.0;
-        tLocality = "";
-        isFirstLocality = true;
+        TourCountApplication.lat = 0.0
+        TourCountApplication.lon = 0.0
+        TourCountApplication.heightNN = 0.0
+        TourCountApplication.uncertainty = 0.0
+        TourCountApplication.tLocality = ""
+        TourCountApplication.isFirstLocality = true
 
         // Restart Location Service and try to read location
         if (fineLocationPermGranted) {
             // Start location service and get 1. location
-            locationDispatcher(1); // Start LocationService
+            locationDispatcher(1) // Start LocationService
         }
-
-        return r_ok;
+        return resOK
     }
     // End of resetToBasisDb()
 
     // Red warning message
-    private void showSnackbarRed(String str)
-    {
-        baseLayout = findViewById(R.id.baseLayout); // in WelcomeActivity
-        Snackbar sB = Snackbar.make(baseLayout, str, Snackbar.LENGTH_LONG);
-        TextView tv = sB.getView().findViewById(R.id.snackbar_text);
-        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        tv.setTextColor(Color.RED);
-        tv.setGravity(Gravity.CENTER);
-        sB.show();
+    private fun showSnackbarRed(str: String) {
+        baseLayout = findViewById(R.id.baseLayout)
+        val sB = Snackbar.make(baseLayout!!, str, Snackbar.LENGTH_LONG)
+        val tv = sB.getView().findViewById<TextView>(R.id.snackbar_text)
+        tv.setTypeface(tv.typeface, Typeface.BOLD)
+        tv.setTextColor(Color.RED)
+        tv.gravity = Gravity.CENTER
+        sB.show()
+    }
+
+    companion object {
+        private const val TAG = "WelcomeAct"
+
+        // Date for filename of exported data
+        private fun getcurDate(): String {
+            val date = Date()
+            @SuppressLint("SimpleDateFormat") val dform: DateFormat =
+                SimpleDateFormat("yyyyMMdd_HHmmss")
+            return dform.format(date)
+        }
+
+        // Copy file block-wise
+        @Throws(IOException::class)
+        private fun copy(src: File?, dst: File?) {
+            val fIS = FileInputStream(src)
+            val fOS = FileOutputStream(dst)
+
+            // Transfer bytes from in to out
+            val buf = ByteArray(1024)
+            var len: Int
+            while ((fIS.read(buf).also { len = it }) > 0) {
+                fOS.write(buf, 0, len)
+            }
+            fIS.close()
+            fOS.close()
+        }
     }
 
 }

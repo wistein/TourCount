@@ -1,7 +1,6 @@
 package com.wmstein.tourcount
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -26,11 +25,11 @@ import com.wmstein.tourcount.database.HeadDataSource
  * Adapted for TourCount by wmstein on 2016-05-15,
  * last edited in Java on 2023-06-09
  * converted to Kotlin on 2023-07-09
- * last edited on 2026-05-26
+ * last edited on 2026-07-21
  */
 class SettingsActivity : AppCompatActivity() {
-    private var editor: SharedPreferences.Editor? = null
     private var prefs = TourCountApplication.getPrefs()
+    private var editor = prefs.edit()
     private var headDataSource: HeadDataSource? = null
 
     @SuppressLint("CommitPrefEdits", "SourceLockedOrientationActivity")
@@ -103,18 +102,18 @@ class SettingsActivity : AppCompatActivity() {
         val alertSoundUri =
             ("android.resource://com.wmstein.tourcount/" + R.raw.alert).toUri()
         ringtone = alertSoundUri.toString()
-        editor?.putString("alert_sound", ringtone)
+        editor.putString("alert_sound", ringtone)
 
         val buttonSoundUri =
             ("android.resource://com.wmstein.tourcount/" + R.raw.button).toUri()
         ringtone = buttonSoundUri.toString()
-        editor?.putString("button_sound", ringtone)
+        editor.putString("button_sound", ringtone)
 
         val buttonSoundUriM =
             ("android.resource://com.wmstein.tourcount/" + R.raw.button_minus).toUri()
         ringtone = buttonSoundUriM.toString()
-        editor?.putString("button_sound_minus", ringtone)
-        editor?.commit()
+        editor.putString("button_sound_minus", ringtone)
+        editor.commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
