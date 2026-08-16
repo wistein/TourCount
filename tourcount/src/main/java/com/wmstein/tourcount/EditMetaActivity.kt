@@ -431,28 +431,28 @@ class EditMetaActivity : AppCompatActivity() {
     }
     // End of saveData()
 
+    // Formatted date
+    fun getformDate(date: Date): String {
+        val dform: DateFormat?
+        val lng = Locale.getDefault().toString().substring(0, 2)
+
+        dform = when (lng) {
+            "de" -> SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
+            "en" -> SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            else  // for fr, it and es
+                -> SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
+        }
+        return dform.format(date)
+    }
+
+    // Derive start_tm and end_tm from date
+    fun getformTime(date: Date): String {
+        val dform: DateFormat = SimpleDateFormat("HH:mm", Locale.US)
+        return dform.format(date)
+    }
+
     companion object {
         private const val TAG = "EditMetaAct"
-
-        // Formatted date
-        fun getformDate(date: Date): String {
-            val dform: DateFormat?
-            val lng = Locale.getDefault().toString().substring(0, 2)
-
-            dform = when (lng) {
-                "de" -> SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
-                "en" -> SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                else  // for fr, it and es
-                    -> SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
-            }
-            return dform.format(date)
-        }
-
-        // Derive start_tm and end_tm from date
-        fun getformTime(date: Date): String {
-            val dform: DateFormat = SimpleDateFormat("HH:mm", Locale.US)
-            return dform.format(date)
-        }
     }
 
 }

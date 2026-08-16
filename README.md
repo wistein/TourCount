@@ -31,10 +31,10 @@ For more background on this and how to overcome the restriction you may visit ht
 
 ### Prerequisites
 The app requires permits for 
-- storage access for im-/exporting the counting data, results or species lists, 
+- storage access for im-/exporting the counting data, results or species lists from/to Documents/TourCount/, 
 - reading location data by GPS for coordinates and location info per counted individual, 
 - internet access for OpenStreetMap reverse geocoding requests and 
-- preventing the sleep mode.
+- preventing the sleep mode while counting.
 
 The device screen should have a minimum resolution of 1920 x 1024 pixels.  
 The app is usable with Android version 11 or newer.
@@ -44,11 +44,10 @@ The app is usable with Android version 11 or newer.
 Documentation is provided under  
 https://github.com/wistein/TourCount/tree/master/docs.
 
-Please read the user guide (provided in German and English) or consult its contents in the app's help 
-before using the app.  
-There are further documents e.g. for setting up and using the app as well as sample species lists for different regions and in different languages or basic databases (tourcount0_de_xxx.db) provided under /docs. 
+Please read the user guide (provided in German and English) or consult its contents in the app's help before using the app.  
+There are further documents e.g. for setting up and using the app as well as sample species lists for different regions and in different languages (German, English, French and Italian) or basic databases (tourcount0_de_xxx.db) provided. 
 
-The complete development history is listed in History.md in /docs.
+The complete development history is listed in History.md (https://github.com/wistein/TourCount/tree/master/docs/History.md).
 
 Source file structure is for compilation by Android Studio.
 
@@ -90,4 +89,4 @@ Code and illustrations provided by other authors remain the copyright of those a
 reproduced or distributed other than with their license.
 
 For detailed copyrights on external code and pictures see "Licenses" in the app's main menu or the separate document "License.txt" under 
-https://github.com/wistein/TourCount/tree/master/docs.
+https://github.com/wistein/TourCount/tree/master/docs/License.txt.

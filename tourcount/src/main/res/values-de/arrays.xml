@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml German array strings,
-     last edited 2026-04-29 -->
+     last edited 2026-08-12 -->
 
 <resources>
 
@@ -41,6 +41,21 @@
 		<item>10 sec (&#8793; 11 m zu Fuß)</item>
 		<item>15 sec (&#8793; 16 m zu Fuß)</item>
 		<item>20 sec (&#8793; 22 m zu Fuß)</item>
+	</string-array>
+
+	<string-array name="indiv_notes_options">
+		<item>Foto</item>
+		<item>Vorbeiflug</item>
+		<item>Auf Blüte von </item>
+		<item>Futterpflanze: </item>
+		<item>Totfund</item>
+		<item>Unsicher</item>
+	</string-array>
+
+	<string-array name="spec_notes_options">
+		<item>Neue Art</item>
+		<item>1. in Saison</item>
+		<item>Unsicher</item>
 	</string-array>
 
 </resources>

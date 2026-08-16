@@ -16,7 +16,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class EditMetaLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
@@ -46,7 +46,9 @@ class EditMetaLocationWidget(context: Context, attrs: AttributeSet?) : LinearLay
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_location, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_location, this, true)
+
         widgetCoT = findViewById(R.id.widgetCountryTitle)    // country
         widgetCoN = findViewById(R.id.widgetCountryName)
         widgetStateT = findViewById(R.id.widgetStateTitle)   // state

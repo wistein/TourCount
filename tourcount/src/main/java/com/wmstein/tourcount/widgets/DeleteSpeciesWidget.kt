@@ -20,7 +20,7 @@ import java.util.Objects
  * shows list of selectable species with name, code, picture and add checkbox
  *
  * Created for TourCount by wmstein on 2024-08-22,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -44,7 +44,9 @@ class DeleteSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
             as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_delete_spec, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_delete_spec, this, true)
+
         specName = findViewById(R.id.spName)
         specNameG = findViewById(R.id.spNameG)
         specCode = findViewById(R.id.spCode)

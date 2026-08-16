@@ -73,6 +73,18 @@ _ subtitle
   .
   _
 
+$ 3.8.4
+  % Version 3.8.4
+  _ 15.08.2026
+  * Code-Überarbeitung
+  * Das Datum in Namen exportierter Dateien geändert von „date_time“ in „date-time“
+  * Eingabe der Individuen-Bemerkungen mit Auswahl vorgeschlagener Begriffe wie "Foto", "Vorbeiflug", "Frisches Exemplar"
+  * Eingabe der Artbemerkungen mit Auswahl den vorgeschlagenen Begriffen "Neue Art", "1. in Saison" und "Unsicher"
+  * %-Eingabewert für Bewölkung wird auf 10er-Werte gerundet
+  * Striktere Plausi-Kontrolle für die Eingabe der numerischen Metadaten
+  * "Hilfe"-Text aktualisiert
+  * Doku aktualisiert
+
 $ 3.8.3
   % Version 3.8.3
   _ 28.07.2026

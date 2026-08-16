@@ -18,7 +18,7 @@ import java.util.Objects
  * used by CountingActivity
  *
  * Created by wmstein 2025-09-16,
- * last edited on 2026-05-23
+ * last edited on 2026-08-03
  */
 class CountingTourNotesWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -27,13 +27,16 @@ class CountingTourNotesWidget(context: Context, attrs: AttributeSet?) :
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_tour_notes, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_counting_tour_notes, this, true)
+
         tourNotesEdit = findViewById(R.id.tourNotesEdit)
     }
 
     fun setTourNotes(section: Section) {
         // set TextView tourNotes
         tourNotesEdit.text = section.notes
+
         // set ImageButton Edit
         val editButton = findViewById<ImageButton>(R.id.buttonTourNotes)
         editButton.tag = section.id

@@ -1,5 +1,5 @@
 // Build file where you can add configuration options for the module.
-// Last edited on 2026-07-17
+// Last edited on 2026-07-29
 
 plugins {
     id 'com.android.application'
@@ -13,8 +13,8 @@ android {
         applicationId "com.wmstein.tourcount"
         minSdk = 30
         targetSdk = 37
-        versionCode = 383
-        versionName = "3.8.3"
+        versionCode = 384
+        versionName = "3.8.4"
     }
 
     buildTypes {
@@ -55,9 +55,9 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
     implementation 'androidx.activity:activity-ktx:1.13.0'
     implementation 'androidx.annotation:annotation-jvm:1.10.0'
-    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     implementation 'androidx.core:core-ktx:1.19.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+    implementation 'androidx.fragment:fragment-ktx:1.9.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.11.0'
     implementation 'androidx.lifecycle:lifecycle-process:2.11.0'

@@ -15,12 +15,13 @@ import java.util.Objects
  * Created by wmstein on 2018-02-24,
  * last edited in Java on 2019-01-27,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-08-03
  */
 class ResultsLineWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_line, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_line, this, true)
     }
 
 }

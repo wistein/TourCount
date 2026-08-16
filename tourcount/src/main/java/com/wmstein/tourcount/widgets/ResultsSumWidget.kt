@@ -18,7 +18,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2017-05-27,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2025-03-04,
- * last edited on 2026-05-23
+ * last edited on 2026-08-03
  */
 class ResultsSumWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val sumSpecies: TextView
@@ -26,7 +26,9 @@ class ResultsSumWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_sum_species, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_sum_species, this, true)
+
         sumSpecies = findViewById(R.id.sumSpecies)
         sumIndividuals = findViewById(R.id.sumIndividuals)
     }

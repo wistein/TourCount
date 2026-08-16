@@ -16,7 +16,7 @@ import java.util.Objects
  * Created by wmstein on 2016-06-06,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class ResultsTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val listtitle: TextView
@@ -26,7 +26,9 @@ class ResultsTitleWidget(context: Context, attrs: AttributeSet?) : LinearLayout(
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_title, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_title, this, true)
+
         listtitle = findViewById(R.id.listTitle)
         listname = findViewById(R.id.listName)
         widgetname1 = findViewById(R.id.widgetName1)

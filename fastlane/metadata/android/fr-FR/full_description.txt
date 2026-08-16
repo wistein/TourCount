@@ -1,10 +1,14 @@
 TourCount permet l'enregistrement des papillons par espèce et avec localisation GPS individuelle.
 
-Nouveautés de la version 3.8.3 :
+Nouveautés de la version 3.8.4 :
 - Améliorations du code
-- Amélioration du tableau Excel exporté
-- Conversion des modules Java restants en Kotlin
-- Modification de la structure des noms des fichiers exportés
+- Les noms des fichiers exportés ont été modifiés, passant de « _date_time_ » à « _date-time_ »
+- Saisie de notes individuelles à partir des formulations prédéfinies « Photo », « Survol », « Imago récent », …
+- Saisie de notes sur les espèces à partir des formulations prédéfinies « Nouvelle espèce », « Incertain », …
+- La valeur saisie en % pour la nébulosité est arrondie aux dizaines
+- Contrôle de cohérence plus strict pour la saisie des métadonnées numériques
+- Mise à jour du texte « Aide »
+- Documents mis à jour
 
 Caractéristiques :
 - La collecte des données s'appuie sur un séjour dans une région où l'on peut s'attendre à observer des papillons.

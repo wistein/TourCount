@@ -23,7 +23,7 @@ import java.util.Objects
  * modified for TourCount on 2018-03-31,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-11,
- * last edited on 2026-05-22
+ * last edited on 2026-08-03
  */
 @SuppressLint("SetTextI18n")
 class CountingLHWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
@@ -49,11 +49,11 @@ class CountingLHWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(
 
     init {
         if (screenRatioBig) // > 2
-            Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lh_big,
-                this, true)
+            Objects.requireNonNull(inflater)
+                .inflate(R.layout.widget_counting_lh_big,this, true)
         else
-            Objects.requireNonNull(inflater).inflate(R.layout.widget_counting_lh_small,
-                this, true)
+            Objects.requireNonNull(inflater)
+                .inflate(R.layout.widget_counting_lh_small,this, true)
 
         namef1i = findViewById(R.id.f1iNameLH)
         namef2i = findViewById(R.id.f2iNameLH)

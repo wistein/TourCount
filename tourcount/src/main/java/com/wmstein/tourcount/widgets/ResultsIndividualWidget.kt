@@ -19,7 +19,7 @@ import java.util.Objects
  * Created by wmstein on 2018-02-22.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
     RelativeLayout(context, attrs) {
@@ -36,7 +36,9 @@ class ResultsIndividualWidget(context: Context, attrs: AttributeSet?) :
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_individual, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_individual, this, true)
+
         txtIndLoc = findViewById(R.id.txtIndLoc)
         txtIndSex = findViewById(R.id.txtIndSex)
         txtIndStad = findViewById(R.id.txtIndStad)

@@ -111,7 +111,7 @@
     <string name="saveIndividualButton">Speichern</string>
     <string name="sex">Geschlecht</string>
     <string name="stadium">Stadium</string>
-    <string name="stadium_1">Falter</string>
+    <string name="stadium_1">Imago</string>
     <string name="stadium_2">Puppe</string>
     <string name="stadium_3">Raupe</string>
     <string name="stadium_4">Ei</string>
@@ -245,9 +245,9 @@
     <!-- other stuff -->
     <string name="charZero">0</string>
     <string name="countCodeHint">Code</string>
-    <string name="countImagofHint">Falter ♀</string>
-    <string name="countImagomHint">Falter ♂</string>
-    <string name="countImagomfHint">Falter ♂|♀</string>
+    <string name="countImagofHint">Imago ♀</string>
+    <string name="countImagomHint">Imago ♂</string>
+    <string name="countImagomfHint">Imago ♂|♀</string>
     <string name="countLarvaHint">Raupe</string>
     <string name="countNameHint">Art-Name</string>
     <string name="countNameHintG">Art-Name (lokal)</string>

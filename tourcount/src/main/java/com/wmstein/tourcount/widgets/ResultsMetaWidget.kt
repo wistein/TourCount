@@ -18,7 +18,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-19,
  * last edited in Java on 2021-01-26,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-06-18
+ * last edited on 2026-08-03
  */
 class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -53,7 +53,9 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_meta, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_meta, this, true)
+
         widgetdate1 = findViewById(R.id.widgetLDate1)
         widgetdate2 = findViewById(R.id.widgetLDate2)
 
@@ -97,7 +99,6 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
         if (section.tmp_end > 0) widgetendtemp2.text = section.tmp_end.toString()
 
         // wind
-        context.getString(R.string.wind) + ":"
         widgetwind1.text = context.getString(R.string.wind) + ":"
         if (section.wind > 0) widgetstartwind2.text = section.wind.toString()
         if (section.wind_end > 0) widgetendwind2.text = section.wind_end.toString()

@@ -228,7 +228,7 @@
     <string name="countCode">Code</string>
     <string name="countName">New Species</string>
     <string name="countNameG">New Species (Common name)</string>
-    <string name="notesSpecies">Species notes:</string>
+    <string name="notesSpecies">Species Notes:</string>
     <string name="spec_Name">Name</string>
     <string name="spec_NameG">Common Name</string>
     <string name="titleNotesSpecies">Species Notes</string>

@@ -17,7 +17,7 @@ import java.util.Objects
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
  * converted to Kotlin on 2024-05-11,
- * last edited on 2026-05-23
+ * last edited on 2026-08-03
  */
 class EditSpeciesListHeadWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val splistTitle: TextView
@@ -28,7 +28,9 @@ class EditSpeciesListHeadWidget(context: Context, attrs: AttributeSet?) : Linear
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_head, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_head, this, true)
+
         splistTitle = findViewById(R.id.spListTitle)
         splistName = findViewById(R.id.spListName)
         notestitle = findViewById(R.id.notesTitle)

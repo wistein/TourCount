@@ -41,7 +41,7 @@ import java.util.Locale
  * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
  * last edited in Java on 2023-07-07,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-07-21.
+ * last edited on 2026-08-02.
  */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
@@ -273,7 +273,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             for (i in 0 until childcount) {
                 val esaw = editingSpeciesArea!!.getChildAt(i) as EditSpeciesListWidget
                 retValue =
-                    if (isNotEmpty(esaw.getCountName()) && isNotEmpty(esaw.getCountCode())) {
+                    if ((esaw.getCountName().isNotEmpty()) && (esaw.getCountCode().isNotEmpty())) {
                         // Update species names and codes
                         countDataSource!!.updateCountItem(
                             esaw.countId,
@@ -428,37 +428,6 @@ class EditSpeciesListActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "EditSpecListAct"
 
-        /**
-         * Checks if a CharSequence is empty ("") or null.
-         *
-         * isEmpty(null)      = true
-         * isEmpty("")        = true
-         * isEmpty(" ")       = false
-         * isEmpty("bob")     = false
-         * isEmpty("  bob  ") = false
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is empty or null
-         */
-        private fun isEmpty(cs: CharSequence?): Boolean {
-            return cs.isNullOrEmpty()
-        }
-
-        /**
-         * Checks if a CharSequence is not empty ("") and not null.
-         *
-         * isNotEmpty(null)      = false
-         * isNotEmpty("")        = false
-         * isNotEmpty(" ")       = true
-         * isNotEmpty("bob")     = true
-         * isNotEmpty("  bob  ") = true
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is not empty and not null
-         */
-        private fun isNotEmpty(cs: CharSequence?): Boolean {
-            return !isEmpty(cs)
-        }
     }
 
 }

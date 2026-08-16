@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
    widget_edit_individual.xml used by EditIndividualWidget.kt.
-   Last edited on 2026-01-01
+   Last edited on 2026-08-13
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -314,7 +314,7 @@
                     android:paddingTop="5dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/widget_IndivNote2"
                     style="@style/BoldText"
                     android:layout_width="match_parent"
@@ -327,9 +327,10 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
-                    tools:ignore="Autofill,LabelFor"
                     android:textColorHint="@color/BrightGray"
-                    android:hint="@string/titleHintShort" />
+                    android:hint="@string/titleHintShort"
+                    android:completionThreshold="0"
+                    android:popupBackground="@color/Navy" />
             </LinearLayout>
 
 </LinearLayout>

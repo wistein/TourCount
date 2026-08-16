@@ -17,14 +17,16 @@ import java.util.Objects
  * Created by wmstein on 2018-03-21.
  * Last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-23
+ * last edited on 2026-08-03
  */
 class ResultsIndivNoteWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtBemInd: TextView
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_indiv_rem, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_indiv_rem, this, true)
+
         txtBemInd = findViewById(R.id.txtBemInd)
     }
 

@@ -21,7 +21,7 @@ import androidx.preference.PreferenceManager
  * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
  * Adopted for TourCount by wmstein on 2016-02-18,
  * converted to Kotlin on 2024-12-09,
- * last edited on 2026-07-21.
+ * last edited on 2026-08-02.
  */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
@@ -113,35 +113,35 @@ class TourCountApplication : Application() {
         }
     }
 
+    // Scale background bitmap
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Int {
+        // Raw height and width of image
+        val height1 = options.outHeight
+        val width1 = options.outWidth
+        var inSampleSize = 1
+
+        if (height1 > reqHeight || width1 > reqWidth) {
+            val halfHeight = height1 / 2
+            val halfWidth = width1 / 2
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            //   height1 and width1 larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                && (halfWidth / inSampleSize) > reqWidth
+            ) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
+    }
+
     companion object {
         private const val TAG = "TourCountAppl"
         private var prefs: SharedPreferences? = null
-
-        // Scale background bitmap
-        private fun calculateInSampleSize(
-            options: BitmapFactory.Options,
-            reqWidth: Int,
-            reqHeight: Int
-        ): Int {
-            // Raw height and width of image
-            val height1 = options.outHeight
-            val width1 = options.outWidth
-            var inSampleSize = 1
-
-            if (height1 > reqHeight || width1 > reqWidth) {
-                val halfHeight = height1 / 2
-                val halfWidth = width1 / 2
-
-                // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-                //   height1 and width1 larger than the requested height and width.
-                while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth
-                ) {
-                    inSampleSize *= 2
-                }
-            }
-            return inSampleSize
-        }
 
         @JvmStatic
         fun getPrefs(): SharedPreferences {

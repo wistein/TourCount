@@ -2,8 +2,11 @@ package com.wmstein.tourcount.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.Editable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,7 +22,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
  * Last edited in Java on 2022-03-26,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-26
+ * last edited on 2026-08-13
  */
 class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // locality
@@ -38,10 +41,6 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
     private val widgetCnt1: TextView
     private val widgetCnt2: AutoFitEditText
 
-    // note
-    private val widgetIndNote1: TextView
-    private val widgetIndNote2: EditText
-
     // x-coord
     private val widgetXcoord1: TextView
     private val widgetXcoord2: TextView
@@ -54,72 +53,60 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
     private val widgetZcoord1: TextView
     private val widgetZcoord2: TextView
 
+    // notes
+    private val widgetIndNote1: TextView
+    private val widgetIndNote2: AutoCompleteTextView
+
+    private val suggestions = ArrayList(listOf(*resources.getStringArray(R.array.indiv_notes_options)))
+    private val indivNotesAdapter = ArrayAdapter(context, android.R.layout.select_dialog_item,
+        suggestions)
+    private var selectedValue = ""
+
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_individual, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_individual, this, true)
+
         widgetLoc1 = findViewById(R.id.widget_Locality1) // Locality
         widgetLoc2 = findViewById(R.id.widget_Locality2)
-        widgetStad1 = findViewById(R.id.widget_Stadium1) // Stadium
+        widgetZcoord1 = findViewById(R.id.widget_ZCoord1) // Height
+        widgetZcoord2 = findViewById(R.id.widget_ZCoord2)
+
+        widgetXcoord1 = findViewById(R.id.widget_XCoord1) // Latitude
+        widgetXcoord2 = findViewById(R.id.widget_XCoord2)
+        widgetYcoord1 = findViewById(R.id.widget_YCoord1) // Longitude
+        widgetYcoord2 = findViewById(R.id.widget_YCoord2)
+
+        widgetStad1 = findViewById(R.id.widget_Stadium1) // Phase
         widgetStad2 = findViewById(R.id.widget_Stadium2)
         widgetStat1 = findViewById(R.id.widget_State1) // State_1-6
         widgetStat2 = findViewById(R.id.widget_State2)
-        widgetCnt1 = findViewById(R.id.widget_Count1) // number of individuals
+        widgetCnt1 = findViewById(R.id.widget_Count1) // Number of individuals
         widgetCnt2 = findViewById(R.id.widget_Count2)
-        widgetIndNote1 = findViewById(R.id.widget_IndivNote1) // Note
-        widgetIndNote2 = findViewById(R.id.widget_IndivNote2)
-        widgetXcoord1 = findViewById(R.id.widget_XCoord1) // X-Coord (lat)
-        widgetXcoord2 = findViewById(R.id.widget_XCoord2)
-        widgetYcoord1 = findViewById(R.id.widget_YCoord1) // Y-Coord (lon)
-        widgetYcoord2 = findViewById(R.id.widget_YCoord2)
-        widgetZcoord1 = findViewById(R.id.widget_ZCoord1) // Height
-        widgetZcoord2 = findViewById(R.id.widget_ZCoord2)
+
+        widgetIndNote1 = findViewById(R.id.widget_IndivNote1) // Notes head
+        widgetIndNote2 = findViewById(R.id.widget_IndivNote2) // Notes text
+        widgetIndNote2.setAdapter(indivNotesAdapter)
+        widgetIndNote2.setOnFocusChangeListener {
+                _, hasFocus ->
+            if (hasFocus)
+                widgetIndNote2.showDropDown()
+        }
+        widgetIndNote2.setOnItemClickListener {
+                parent, _, position, _ ->
+            selectedValue = parent.getItemAtPosition(position).toString()
+        }
+        setIndivNotes(selectedValue)
     }
 
     // Following the SETS
-    // locality
+    // Locality
     fun setWidgetLocality1(title: String) {
         widgetLoc1.text = title
     }
 
-    // stadium
-    fun setWidgetStadium1(title: String) {
-        widgetStad1.text = title
-    }
-
-    // state
-    fun setWidgetState1(title: String) {
-        widgetStat1.text = title
-    }
-
-    // number of individuals
-    fun setWidgetCount1(title: String) {
-        widgetCnt1.text = title
-    }
-
-    // note
-    fun setWidgetIndivNote1(title: String) {
-        widgetIndNote1.text = title
-    }
-
-    // x-coord
-    fun setWidgetXCoord1(title: String) {
-        widgetXcoord1.text = title
-    }
-
-    fun setWidgetXCoord2(name: String) {
-        widgetXcoord2.text = name
-    }
-
-    // y-coord
-    fun setWidgetYCoord1(title: String) {
-        widgetYcoord1.text = title
-    }
-
-    fun setWidgetYCoord2(name: String) {
-        widgetYcoord2.text = name
-    }
-
-    // z-coord
+    // Height
     fun setWidgetZCoord1(title: String) {
         widgetZcoord1.text = title
     }
@@ -128,7 +115,45 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
         widgetZcoord2.text = name
     }
 
-    // following the GETS
+    // Latitude
+    fun setWidgetXCoord1(title: String) {
+        widgetXcoord1.text = title
+    }
+
+    fun setWidgetXCoord2(name: String) {
+        widgetXcoord2.text = name
+    }
+
+    // Longitude
+    fun setWidgetYCoord1(title: String) {
+        widgetYcoord1.text = title
+    }
+
+    fun setWidgetYCoord2(name: String) {
+        widgetYcoord2.text = name
+    }
+
+    // Phase
+    fun setWidgetStadium1(title: String) {
+        widgetStad1.text = title
+    }
+
+    // Status
+    fun setWidgetState1(title: String) {
+        widgetStat1.text = title
+    }
+
+    // Number of individuals
+    fun setWidgetCount1(title: String) {
+        widgetCnt1.text = title
+    }
+
+    // Notes
+    fun setWidgetIndivNote1(title: String) {
+        widgetIndNote1.text = title
+    }
+
+    // Following the GETS
     // get locality
     var widgetLocality2: String
         get() = widgetLoc2.text.toString()
@@ -187,7 +212,12 @@ class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayou
             widgetCnt2.setText(name.toString())
         }
 
-    // get note of individual
+    // Get selected text for notes
+    fun setIndivNotes(note: String) {
+        widgetIndNote2.text = Editable.Factory.getInstance().newEditable(note)
+    }
+
+    // Get notes of individual
     var widgetIndivNote2: String
         get() = widgetIndNote2.text.toString()
         set(name) {

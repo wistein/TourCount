@@ -20,7 +20,7 @@ import kotlin.math.roundToInt
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-07-03
+ * last edited on 2026-08-03
  */
 class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // country
@@ -61,7 +61,9 @@ class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayo
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_location, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_location, this, true)
+
         widgetCoT = findViewById(R.id.widgetLCountryTitle) // country
         widgetCoN = findViewById(R.id.widgetLCountryName)
         widgetstate1 = findViewById(R.id.widgetState1)     // federal state
@@ -91,19 +93,19 @@ class ResultsLocationWidget(context: Context, attrs: AttributeSet?) : LinearLayo
         val slocalityC = context.getString(R.string.slocality) + ":"
         val plzC = context.getString(R.string.plz) + ":"
 
-        widgetCoT.setText(countryC)
+        widgetCoT.text = countryC
         widgetCoN.text = section.country
-        widgetstate1.setText(bstateC)
+        widgetstate1.text = bstateC
         widgetstate2.text = section.b_state
 
-        widgetcity1.setText(cityC)
+        widgetcity1.text = cityC
         widgetcity2.text = section.city
-        widgetplace1.setText(placeC)
+        widgetplace1.text = placeC
         widgetplace2.text = section.place
 
-        widgetlocality1.setText(slocalityC)
+        widgetlocality1.text = slocalityC
         widgetlocality2.text = section.st_locality
-        widgetplz1.setText(plzC)
+        widgetplz1.text = plzC
         widgetplz2.text = section.plz
 
         widgetdlo1.setText(R.string.dLo)

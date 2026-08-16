@@ -1,9 +1,11 @@
 package com.wmstein.tourcount.widgets
 
 import android.content.Context
+import android.text.Editable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.EditText
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
 
@@ -17,32 +19,52 @@ import java.util.Objects
  * Created by wmstein on 2016-02-18,
  * last edited in Java on 2020-09-19,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-26
+ * last edited on 2026-08-13
  */
 class EditSpeciesNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val specNotesTitle: TextView
-    private val specNotesName: EditText
+    private val specNotesNotes: AutoCompleteTextView
+
+    val suggestions = ArrayList(listOf(*resources.getStringArray(R.array.spec_notes_options)))
+    val specNotesAdapter = ArrayAdapter(context, android.R.layout.select_dialog_item,
+        suggestions)
+
+    var selectedValue = ""
 
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_species_notes, this, true)
-        specNotesTitle = findViewById(R.id.spNotesTitle)
-        specNotesName = findViewById(R.id.spNotesNotes)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_species_notes, this, true)
+
+        specNotesTitle = findViewById(R.id.spNotesTitle) // Notes head
+        specNotesNotes = findViewById(R.id.spNotesNotes) // Notes text
+        specNotesNotes.setAdapter(specNotesAdapter)
+        specNotesNotes.setOnFocusChangeListener {
+            _, hasFocus ->
+            if (hasFocus)
+                specNotesNotes.showDropDown()
+        }
+        specNotesNotes.setOnItemClickListener {
+                parent, _, position, _ ->
+            selectedValue = parent.getItemAtPosition(position).toString()
+        }
+
+        setSpecNotes(selectedValue)
     }
 
     fun setSpNotesTitle(title: String) {
         specNotesTitle.text = title
     }
 
-    fun setHint(hint: String) {
-        specNotesName.hint = hint
+    fun setSpecNotes(note: String) {
+        specNotesNotes.text = Editable.Factory.getInstance().newEditable(note)
     }
 
     var spNotesNotes: String
-        get() = specNotesName.text.toString()
+        get() = specNotesNotes.text.toString()
         set(name) {
-            specNotesName.setText(name)
+            specNotesNotes.setText(name)
         }
 		
 }

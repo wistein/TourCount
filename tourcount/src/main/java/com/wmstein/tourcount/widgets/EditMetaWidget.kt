@@ -18,7 +18,7 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-26
+ * last edited on 2026-08-14
  */
 class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
@@ -53,19 +53,22 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     init {
         Objects.requireNonNull(inflater)
             .inflate(R.layout.widget_edit_meta, this, true)
-        widgetdate1 = findViewById(R.id.widgetDate1)
+
+        widgetdate1 = findViewById(R.id.widgetDate1) // date
         widgetdate2 = findViewById(R.id.widgetDate2)
         widgetstartTm1 = findViewById(R.id.widgetStartTm1)
         widgetstartTm2 = findViewById(R.id.widgetStartTm2)
         widgetendTm1 = findViewById(R.id.widgetEndTm1)
         widgetendTm2 = findViewById(R.id.widgetEndTm2)
 
-        widgettemp1 = findViewById(R.id.widgetTemp1) // temperature
+        widgettemp1 = findViewById(R.id.widgetTemp1) // temperature title
         widgettemp2 = findViewById(R.id.widgetStartTemp)
         widgettemp3 = findViewById(R.id.widgetEndTemp)
-        widgetwind1 = findViewById(R.id.widgetWind1) // wind
+
+        widgetwind1 = findViewById(R.id.widgetWind1) // wind title
         widgetwind2 = findViewById(R.id.widgetStartWind)
         widgetwind3 = findViewById(R.id.widgetEndWind)
+
         widgetclouds1 = findViewById(R.id.widgetClouds1) // clouds
         widgetclouds2 = findViewById(R.id.widgetStartClouds)
         widgetclouds3 = findViewById(R.id.widgetEndClouds)
@@ -110,14 +113,14 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     var widgetTemp2: Int
         get() {
             val text = widgettemp2.text.toString()
-            return if (isEmpty(text)) 0
+            return if (text.isEmpty()) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
             else {
                 try {
                     text.replace("\\D".toRegex(), "").toInt()
                 } catch (_: NumberFormatException) {
-                    100
+                    100 // value must be out of allowed range
                 }
             }
         }
@@ -129,7 +132,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     var widgetTemp3: Int
         get() {
             val text = widgettemp3.text.toString()
-            return if (isEmpty(text)) 0
+            return if (text.isEmpty()) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
             else {
@@ -149,7 +152,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     var widgetWind2: Int
         get() {
             val text = widgetwind2.text.toString()
-            return if (isEmpty(text)) 0
+            return if (text.isEmpty()) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
             else {
@@ -169,7 +172,7 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     var widgetWind3: Int
         get() {
             val text = widgetwind3.text.toString()
-            return if (isEmpty(text)) 0
+            return if (text.isEmpty()) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 100
             else {
@@ -189,12 +192,14 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     var widgetClouds2: Int
         get() {
             val text = widgetclouds2.text.toString()
-            return if (isEmpty(text)) 0
+            return if (text.isEmpty()) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 200
             else {
                 try {
-                    text.replace("\\D".toRegex(), "").toInt()
+                    // Round integer value to decade (number+5)/10*10
+                    val number = (text.replace("\\D".toRegex(), "").toInt() + 5) / 10 * 10
+                    number
                 } catch (_: NumberFormatException) {
                     200
                 }
@@ -208,12 +213,13 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
     var widgetClouds3: Int
         get() {
             val text = widgetclouds3.text.toString()
-            return if (isEmpty(text)) 0
+            return if (text.isEmpty()) 0
             else if (!text.trim { it <= ' ' }
                     .matches(regEx.toRegex())) 200
             else {
                 try {
-                    text.replace("\\D".toRegex(), "").toInt()
+                    val number = (text.replace("\\D".toRegex(), "").toInt() + 5) / 10 * 10
+                    number
                 } catch (_: NumberFormatException) {
                     200
                 }
@@ -239,24 +245,5 @@ class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         set(name) {
             widgetendTm2.text = name
         }
-
-    companion object {
-        /**
-         * Checks if a CharSequence is empty ("") or null.
-         *
-         *
-         * isEmpty(null)      = true
-         * isEmpty("")        = true
-         * isEmpty(" ")       = false
-         * isEmpty("bob")     = false
-         * isEmpty("  bob  ") = false
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is empty or null
-         */
-        private fun isEmpty(cs: CharSequence?): Boolean {
-            return cs.isNullOrEmpty()
-        }
-    }
 
 }

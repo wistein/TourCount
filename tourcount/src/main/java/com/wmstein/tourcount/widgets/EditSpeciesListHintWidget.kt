@@ -17,14 +17,16 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2023-05-16,
  * last edited in java on 2023-05-16,
  * converted to Kotlin on 2023-12-07,
- * last edited on 2026-05-27
+ * last edited on 2026-08-03
  */
 class EditSpeciesListHintWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private var searchE: EditText
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_hint, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_hint, this, true)
+
         searchE = findViewById(R.id.searchE)
     }
 

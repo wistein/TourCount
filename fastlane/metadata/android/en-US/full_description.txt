@@ -1,10 +1,14 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.8.3:
+New in Version 3.8.4:
 - Code improvements
-- Exported Excel spreadsheet improved
-- Remaining Java modules converted to Kotlin
-- Name composition for exported files changed
+- The date in names of exported files modified from "date_time" to "date-time"
+- Entering individuals notes proposed by predefined wordings like "Photo", "Flyby", "Fresh imago", …
+- Entering species notes proposed by the predefined wordings "New species", "1st in season" and "Not sure"
+- Cloud %-values rounded to multiples of 10
+- More restrictive plausi for input of metadata numbers
+- "Help" text updated
+- Docs updated
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

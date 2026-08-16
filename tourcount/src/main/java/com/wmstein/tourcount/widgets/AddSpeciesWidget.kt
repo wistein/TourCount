@@ -21,7 +21,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 2019-04-03,
  * last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-05-02
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
     Serializable {
@@ -44,7 +44,9 @@ class AddSpeciesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(co
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_add_spec, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_add_spec, this, true)
+
         specName = findViewById(R.id.specName)
         specNameG = findViewById(R.id.specNameG)
         specCode = findViewById(R.id.specCode)

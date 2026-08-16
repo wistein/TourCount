@@ -44,17 +44,16 @@ import androidx.core.graphics.toColorInt
  * Adopted for TourCount by wmstein on 2016-04-18,
  * last edited in Java on 2026-05-16,
  * converted to Kotlin on 2026-07-18,
- * last edited on 2026-07-19.
+ * last edited on 2026-08-03.
  */
 class ChangeLog(private val context: Context, prefs: SharedPreferences) {
     // Get version numbers of lastVersion and thisVersion to compare
-    private val lastVersion = prefs.getString(VERSION_KEY, NO_VERSION)!!
     private var thisVersion = ""
-
     private var listMode: ListMode? = ListMode.NONE
     private var sb: StringBuffer? = null
 
     private var prefs = getPrefs()
+    private val lastVersion = prefs.getString(VERSION_KEY, NO_VERSION)!!
     private var editor = prefs.edit()
 
     init {
@@ -66,10 +65,10 @@ class ChangeLog(private val context: Context, prefs: SharedPreferences) {
             thisVersion = NO_VERSION
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG,"69, Could not get version name from PackageManager! ",e)
+                Log.e(TAG,"68, Could not get version name from PackageManager! ",e)
         }
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG,"72, init, last Version: $lastVersion, curr. Version: $thisVersion")
+            Log.i(TAG,"71, init, last Version: $lastVersion, curr. Version: $thisVersion")
     }
 
     /**
@@ -164,7 +163,7 @@ class ChangeLog(private val context: Context, prefs: SharedPreferences) {
             var line: String?
             while ((br.readLine().also { line = it }) != null) {
                 line = line!!.trim { it <= ' ' }
-                val marker = if (!line.isEmpty()) line[0] else 0.toChar()
+                val marker = if (line.isNotEmpty()) line[0] else 0.toChar()
 
                 // begin of a version section
                 if (marker == '$') {

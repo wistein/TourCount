@@ -14,7 +14,7 @@ import com.wmstein.tourcount.database.DbHelper.Companion.INDIVIDUALS_TABLE
  * Created by wmstein for TourCount on 2016-04-20,
  * last edited in Java on 2022-03-24,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-06-23
+ * last edited on 2026-08-03
  */
 class IndividualsDataSource(context: Context) {
     // Database fields
@@ -83,7 +83,8 @@ class IndividualsDataSource(context: Context) {
             val insertId = database!!.insert(INDIVIDUALS_TABLE, null, values).toInt()
             val cursor = database!!.query(
                 INDIVIDUALS_TABLE,
-                allColumns, DbHelper.I_ID + " = " + insertId, null, null, null, null
+                allColumns, DbHelper.I_ID + " = " + insertId,
+                null, null, null, null
             )
             cursor.moveToFirst()
             val newIndividuals = cursorToIndividuals(cursor)
@@ -164,7 +165,7 @@ class IndividualsDataSource(context: Context) {
         }
     }
 
-    // get last individual of category of species
+    // Get last individual of category of species
     fun getLastIndiv(cId: Int, categ: Int): Int {
         val individuals: Individuals
         val cIdStr = cId.toString()
@@ -176,7 +177,7 @@ class IndividualsDataSource(context: Context) {
         )
         cursor.moveToLast()
 
-        // check for entries in individuals table, which are not there when bulk counts are entered
+        // Check for entries in individuals table, which are not there when bulk counts are entered
         return if (!cursor.isAfterLast) {
             individuals = cursorToIndividuals(cursor)
             cursor.close()
@@ -258,4 +259,5 @@ class IndividualsDataSource(context: Context) {
             database!!.update(INDIVIDUALS_TABLE, dataToInsert, where, whereArgs)
         }
     }
+
 }

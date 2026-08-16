@@ -102,7 +102,7 @@ import kotlin.system.exitProcess
  * Changes and additions for TourCount by wmstein since 2016-04-18,
  * last edited in Java on 2026-07-18,
  * converted to Kotlin on 2026-07-19,
- * last edited on 2026-07-28.
+ * last edited on 2026-08-02.
  */
 class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var tourCount: TourCountApplication? = null
@@ -1317,7 +1317,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         if (startTM != "") {
             dbTime = startTM.substring(0, 2) + startTM.substring(3, 5)
 
-            if (hasDate) dbDate = dbDate + "_" + dbTime // yyyymmdd_hhmm
+            if (hasDate) dbDate = "$dbDate-$dbTime" // yyyymmdd-hhmm
         } else dbDate = "" // has only a value when both date and start time are given
 
         path.mkdirs() // Just verify path, result ignored
@@ -1429,7 +1429,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         if (startTM != "") {
             csvTime = startTM.substring(0, 2) + startTM.substring(3, 5)
 
-            if (hasDate) csvDate = csvDate + "_" + csvTime // yyyymmdd_hhmm
+            if (hasDate) csvDate = "$csvDate-$csvTime" // yyyymmdd-hhmm
         } else csvDate = "" // has only a value when both date and start time are given
 
         path.mkdirs()
@@ -2082,7 +2082,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             xslxTime = startTM.substring(0, 2) + startTM.substring(3, 5)
 
             if (hasDate)
-                xslxDate = xslxDate + "_" + xslxTime // yyyymmdd_hhmm
+                xslxDate = "$xslxDate-$xslxTime" // yyyymmdd-hhmm
         } else xslxDate = ""
 
         // outFile -> /storage/emulated/0/Documents/TourCount/Tour_DL_tourname_yyyyMMdd_HHmm_si.xlsx
@@ -2167,6 +2167,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         // Prepare the fastexcel Worksheet
         val ws = wb.newWorksheet(getString(R.string.results))
         ws.paperSize(PaperSize.A4_PAPER)
+        //  the freezePane topRows value is set beneath the metadata
         ws.pageOrientation("landscape")
         ws.freezePane(0, 9) // Fixed lines when scrolling
         ws.repeatRows(0, 1) // Fixed lines for printing
@@ -3106,32 +3107,32 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         sB.show()
     }
 
+    // Date for filename of exported data
+    private fun getcurDate(): String {
+        val date = Date()
+        @SuppressLint("SimpleDateFormat") val dform: DateFormat =
+            SimpleDateFormat("yyyyMMdd-HHmm")
+        return dform.format(date)
+    }
+
+    // Copy file block-wise
+    @Throws(IOException::class)
+    private fun copy(src: File?, dst: File?) {
+        val fIS = FileInputStream(src)
+        val fOS = FileOutputStream(dst)
+
+        // Transfer bytes from in to out
+        val buf = ByteArray(1024)
+        var len: Int
+        while ((fIS.read(buf).also { len = it }) > 0) {
+            fOS.write(buf, 0, len)
+        }
+        fIS.close()
+        fOS.close()
+    }
+
     companion object {
         private const val TAG = "WelcomeAct"
-
-        // Date for filename of exported data
-        private fun getcurDate(): String {
-            val date = Date()
-            @SuppressLint("SimpleDateFormat") val dform: DateFormat =
-                SimpleDateFormat("yyyyMMdd_HHmmss")
-            return dform.format(date)
-        }
-
-        // Copy file block-wise
-        @Throws(IOException::class)
-        private fun copy(src: File?, dst: File?) {
-            val fIS = FileInputStream(src)
-            val fOS = FileOutputStream(dst)
-
-            // Transfer bytes from in to out
-            val buf = ByteArray(1024)
-            var len: Int
-            while ((fIS.read(buf).also { len = it }) > 0) {
-                fOS.write(buf, 0, len)
-            }
-            fIS.close()
-            fOS.close()
-        }
     }
 
 }

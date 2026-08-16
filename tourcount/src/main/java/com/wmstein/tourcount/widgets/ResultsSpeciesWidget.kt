@@ -20,7 +20,7 @@ import java.util.Objects
  * Created for TourCount by wmstein on 15.03.2016
  * Last edited in Java on 2020-10-18,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val txtSpecName: TextView
@@ -39,7 +39,9 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_list_species, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_list_species, this, true)
+
         txtSpecName = findViewById(R.id.txtSpecName)
         txtSpecNameG = findViewById(R.id.txtSpecNameG)
         txtSpecRemT = findViewById(R.id.txtSpecRemT)
@@ -88,7 +90,7 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
 
     // Parameter spec.* for use in ShowResultsActivity
     fun getSpecNotes(spec: Count): String {
-        return if (spec.notes != "")
+        return if (spec.notes.isNotEmpty())
             specNotes
         else
             ""
@@ -118,7 +120,6 @@ class ResultsSpeciesWidget(context: Context, attrs: AttributeSet?) : RelativeLay
         return spec.count_ei
     }
 
-    //Parameter speciesName for use in ShowResultsActivity
     fun getSpecname(newcount: Count): String {
         return newcount.name
     }

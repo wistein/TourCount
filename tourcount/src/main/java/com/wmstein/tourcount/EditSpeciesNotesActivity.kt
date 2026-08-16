@@ -29,7 +29,7 @@ import com.wmstein.tourcount.widgets.EditSpeciesNotesWidget
  * Adopted and changed by wmstein on 18.02.2016,
  * last edited in Java on 2023-05-13,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-05-26
+ * last edited on 2026-08-13
  */
 class EditSpeciesNotesActivity : AppCompatActivity() {
     private var speciesWidgetArea: LinearLayout? = null
@@ -124,9 +124,8 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
 
         // Set the widget for species notes
         esw = EditSpeciesNotesWidget(this, null)
-        esw!!.spNotesNotes = count!!.notes
         esw!!.setSpNotesTitle(getString(R.string.titleNotesSpecies))
-        esw!!.setHint(getString(R.string.notesHint))
+        esw!!.spNotesNotes = count!!.notes
         speciesWidgetArea!!.addView(esw)
     }
     // End of onResume()
@@ -155,7 +154,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "158, onPause")
+            Log.i(TAG, "157, onPause")
 
         countDataSource!!.close()
     }
@@ -179,10 +178,10 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
     private fun saveData(): Boolean {
         // Add species notes if the user has written some...
         val notesName = esw!!.spNotesNotes
-        if (isNotEmpty(notesName))
+        if (notesName.isNotEmpty())
             count!!.notes = notesName
         else {
-            if (isNotEmpty(count!!.notes))
+            if (count!!.notes.isNotEmpty())
                 count!!.notes = notesName
         }
         countDataSource!!.saveCountNotes(count!!)
@@ -191,40 +190,6 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "SpecNotesAct"
-
-        /**
-         * Checks if a CharSequence is empty ("") or null.
-         *
-         *
-         * isEmpty(null)      = true
-         * isEmpty("")        = true
-         * isEmpty(" ")       = false
-         * isEmpty("bob")     = false
-         * isEmpty("  bob  ") = false
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is empty or null
-         */
-        private fun isEmpty(cs: CharSequence?): Boolean {
-            return cs.isNullOrEmpty()
-        }
-
-        /**
-         * Checks if a CharSequence is not empty ("") and not null.
-         *
-         *
-         * isNotEmpty(null)      = false
-         * isNotEmpty("")        = false
-         * isNotEmpty(" ")       = true
-         * isNotEmpty("bob")     = true
-         * isNotEmpty("  bob  ") = true
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is not empty and not null
-         */
-        private fun isNotEmpty(cs: CharSequence?): Boolean {
-            return !isEmpty(cs)
-        }
     }
 
 }

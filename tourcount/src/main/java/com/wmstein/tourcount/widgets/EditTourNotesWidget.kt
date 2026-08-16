@@ -15,7 +15,7 @@ import java.util.Objects
  * EditTourNotesWidget used by EditTourNotesActivity
  *
  * Created by wmstein on 2025-09-16,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
 class EditTourNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val tourNotesTitle: TextView
@@ -24,7 +24,9 @@ class EditTourNotesWidget(context: Context, attrs: AttributeSet?) : LinearLayout
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_tour_notes, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_tour_notes, this, true)
+
         tourNotesTitle = findViewById(R.id.trNotesTitle)
         tourNotesName = findViewById(R.id.trNotesName)
     }

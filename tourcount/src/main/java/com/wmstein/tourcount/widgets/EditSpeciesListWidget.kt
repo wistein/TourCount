@@ -21,10 +21,10 @@ import java.util.Objects
  * Adopted for TourCount by wmstein on 2016-02-18
  * last edited in Java on 2020-10-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-26
+ * last edited on 2026-08-03
  */
-class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs),
-    Serializable {
+class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) :
+    LinearLayout(context, attrs), Serializable {
     @JvmField
     var countId = 0
 
@@ -42,7 +42,9 @@ class EditSpeciesListWidget(context: Context, attrs: AttributeSet?) : LinearLayo
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        Objects.requireNonNull(inflater).inflate(R.layout.widget_edit_count, this, true)
+        Objects.requireNonNull(inflater)
+            .inflate(R.layout.widget_edit_count, this, true)
+
         countName = findViewById(R.id.countName)
         countNameG = findViewById(R.id.countNameG)
         countCode = findViewById(R.id.countCode)

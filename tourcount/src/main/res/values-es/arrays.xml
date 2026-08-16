@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml Spanish array strings,
-     last edited 2026-04-29 -->
+     last edited 2026-08-12 -->
 
 <resources>
 
@@ -33,6 +33,21 @@
 		<item>Apagado</item>
 		<item>Medio</item>
 		<item>Alto</item>
+	</string-array>
+
+	<string-array name="indiv_notes_options">
+		<item>Foto</item>
+		<item>Visto de pasada</item>
+		<item>En la flor de </item>
+		<item>Planta forrajera: </item>
+		<item>Ejemplar muerto</item>
+		<item>No seguro</item>
+	</string-array>
+
+	<string-array name="spec_notes_options">
+		<item>Nueva especie</item>
+		<item>1. seguro</item>
+		<item>No seguro</item>
 	</string-array>
 
 	<string-array name="pref_sel_interval_entries">

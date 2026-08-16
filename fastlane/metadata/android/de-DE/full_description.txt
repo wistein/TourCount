@@ -1,10 +1,14 @@
 TourCount unterstützt Spezies-spezifisches und individuell GPS-lokalisiertes Registrieren von Schmetterlingen. 
 
-Neu in Version 3.8.3:
+Neu in Version 3.8.4:
 - Code-Überarbeitung
-- Exportierte Excel-Tabelle verbessert
-- Restliche Java-Module nach Kotlin konvertiert
-- Benennung der exportierten Dateien geändert
+- Das Datum in Namen exportierter Dateien geändert von „date_time“ in „date-time“
+- Eingabe der Individuen-Bemerkungen mit Auswahl vorgeschlagener Begriffe wie "Foto", "Vorbeiflug", "Frisches Exemplar"
+- Eingabe der Artbemerkungen mit Auswahl den vorgeschlagenen Begriffen "Neue Art", "1. in Saison" und "Unsicher"
+- %-Eingabewert für Bewölkung wird auf 10er-Werte gerundet
+- Striktere Plausi-Kontrolle für die Eingabe der numerischen Metadaten
+- "Hilfe"-Text aktualisiert
+- Doku aktualisiert
 
 Eigenschaften:
 - Die Datenerfassung orientiert sich an einem Aufenthalt in einer Region mit den dort erwarteten Schmetterlingen.

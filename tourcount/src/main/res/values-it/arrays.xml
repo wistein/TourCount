@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml Italian array strings,
-     last edited 2026-04-29 -->
+     last edited 2026-08-12 -->
 
 <resources>
 
@@ -41,6 +41,21 @@
         <item>10 sec (&#8793; 11 m a piedi)</item>
         <item>15 sec (&#8793; 16 m a piedi)</item>
         <item>20 sec (&#8793; 22 m a piedi)</item>
+    </string-array>
+
+    <string-array name="indiv_notes_options">
+        <item>Foto</item>
+        <item>Sorvolo</item>
+        <item>Sul fiore di </item>
+        <item>Pianta foraggera: </item>
+        <item>Esemplare morto</item>
+        <item>Non sicuro</item>
+    </string-array>
+
+    <string-array name="spec_notes_options">
+        <item>Nuova specie</item>
+        <item>1° della stagione</item>
+        <item>Non sicuro</item>
     </string-array>
 
 </resources>

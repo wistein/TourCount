@@ -27,7 +27,7 @@ import com.wmstein.tourcount.widgets.EditTourNotesWidget
  *
  * Based on EditSpeciesNotesActivity.kt.
  * Changed by wmstein on 16.09.2025,
- * last edited on 2026-05-29
+ * last edited on 2026-08-02
  */
 class EditTourNotesActivity : AppCompatActivity() {
     private var tourWidgetArea: LinearLayout? = null
@@ -171,10 +171,10 @@ class EditTourNotesActivity : AppCompatActivity() {
     private fun saveData(): Boolean {
         // Add tour notes if the user has written some...
         val tourName = etw!!.trNotesName
-        if (isNotEmpty(tourName))
+        if (tourName.isNotEmpty())
             section!!.notes = tourName
         else
-            if (isNotEmpty(section!!.notes))
+            if (section!!.notes.isNotEmpty())
                 section!!.notes = tourName
         sectionDataSource!!.saveSection(section!!)
         return true
@@ -182,38 +182,6 @@ class EditTourNotesActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "TourNotesAct"
-
-        /**
-         * Checks if a CharSequence is empty ("") or null.
-         *
-         * isEmpty(null)      = true
-         * isEmpty("")        = true
-         * isEmpty(" ")       = false
-         * isEmpty("bob")     = false
-         * isEmpty("  bob  ") = false
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is empty or null
-         */
-        private fun isEmpty(cs: CharSequence?): Boolean {
-            return cs.isNullOrEmpty()
-        }
-
-        /**
-         * Checks if a CharSequence is not empty ("") and not null.
-         *
-         * isNotEmpty(null)      = false
-         * isNotEmpty("")        = false
-         * isNotEmpty(" ")       = true
-         * isNotEmpty("bob")     = true
-         * isNotEmpty("  bob  ") = true
-         *
-         * @param cs the CharSequence to check, may be null
-         * @return `true` if the CharSequence is not empty and not null
-         */
-        private fun isNotEmpty(cs: CharSequence?): Boolean {
-            return !isEmpty(cs)
-        }
     }
 
 }

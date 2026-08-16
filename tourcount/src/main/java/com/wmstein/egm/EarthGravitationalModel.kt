@@ -47,7 +47,7 @@ import kotlin.math.sqrt
  * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last edit in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edit on 2026-07-28
+ * last edit on 2026-08-03
  */
 class EarthGravitationalModel : VerticalTransform() {
     // Maximum degree and order attained.
@@ -82,7 +82,7 @@ class EarthGravitationalModel : VerticalTransform() {
      */
     private val aClenshaw: DoubleArray
     private val bClenshaw: DoubleArray
-    private val `as`: DoubleArray
+    private val asDA: DoubleArray
 
     /* Temporary buffer for use by heightOffset only. Allocated once
      * for avoiding too many objects creation / destruction.
@@ -111,7 +111,7 @@ class EarthGravitationalModel : VerticalTransform() {
         bClenshaw = DoubleArray(cleanshawLength)
         cnmGeopCoef = DoubleArray(geopCoefLength)
         snmGeopCoef = DoubleArray(geopCoefLength)
-        `as` = DoubleArray(nmax + 1)
+        asDA = DoubleArray(nmax + 1)
         cr = DoubleArray(nmax + 1)
         sr = DoubleArray(nmax + 1)
         s11 = DoubleArray(nmax + 3)
@@ -119,7 +119,7 @@ class EarthGravitationalModel : VerticalTransform() {
     }
 
     /* Loads the coefficients from the specified ASCII file and initialize the internal
-     * clenshaw arrays.
+     * clenshaw arrays. inSR
      *
      * Note: ASCII may look like an unefficient format for binary distribution.
      * A binary file with coefficient values read by java.io.DataInput readDouble would
@@ -133,9 +133,9 @@ class EarthGravitationalModel : VerticalTransform() {
     @Throws(IOException::class)
     fun load(context: Context) {
         val egm = context.resources.openRawResource(R.raw.egm180)
-        val `in` = LineNumberReader(InputStreamReader(egm, StandardCharsets.ISO_8859_1))
+        val inSR = LineNumberReader(InputStreamReader(egm, StandardCharsets.ISO_8859_1))
         var line: String?
-        while (`in`.readLine().also { line = it } != null) {
+        while (inSR.readLine().also { line = it } != null) {
             val tokens = StringTokenizer(line)
             try {
                 /* Note: we use 'parseShort' instead of 'parseInt' as an easy way to ensure that
@@ -158,10 +158,10 @@ class EarthGravitationalModel : VerticalTransform() {
                  *   - NumberFormatException       if a number can't be parsed.
                  *   - IndexOutOfBoundsException   if 'n' or 'm' values are illegal.
                  */
-                throw IOException("egm180" + `in`.lineNumber, cause)
+                throw IOException("egm180" + inSR.lineNumber, cause)
             }
         }
-        `in`.close()
+        inSR.close()
         initialize()
     }
 
@@ -190,7 +190,7 @@ class EarthGravitationalModel : VerticalTransform() {
 
         // BUILD ALL CLENSHAW COEFFICIENT ARRAYS.
         for (i in 0..nmax) {
-            `as`[i] = -sqrt(1.0 + 1.0 / (2 * (i + 1)))
+            asDA[i] = -sqrt(1.0 + 1.0 / (2 * (i + 1)))
         }
         for (i in 0..nmax) {
             for (j in i + 1..nmax) {
@@ -254,12 +254,19 @@ class EarthGravitationalModel : VerticalTransform() {
                 s12[j] = ta * s12[j + 1] - tb * s12[j + 2] + snmGeopCoef[ll]
             }
             previousSht = sht
-            sht = -`as`[i] * y * f1 * sht + s11[i] * cr[i] + s12[i] * sr[i]
+            sht = -asDA[i] * y * f1 * sht + s11[i] * cr[i] + s12[i] * sr[i]
         }
 
         // Pre-computed values of some square roots.
         return (s11[0] + s12[0]) * f1 + previousSht * SQRT_03 * y * f2 * rkm /
                 (semiMajor * (gravn - height * 0.3086e-5))
+    }
+
+    /* Computes the index as it would be returned by the locating array iv
+     * locatingArray(n+1) == locatingArray(n) + n + 1.
+     */
+    private fun locatingArray(n: Int): Int {
+        return (n + 1) * n shr 1
     }
 
     companion object {
@@ -269,13 +276,6 @@ class EarthGravitationalModel : VerticalTransform() {
         private const val SQRT_13 = 3.605551275463989
         private const val SQRT_17 = 4.123105625617661
         private const val SQRT_21 = 4.58257569495584
-
-        /* Computes the index as it would be returned by the locating array iv
-         * locatingArray(n+1) == locatingArray(n) + n + 1.
-         */
-        private fun locatingArray(n: Int): Int {
-            return (n + 1) * n shr 1
-        }
     }
 
 }

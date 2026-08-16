@@ -17,7 +17,7 @@ import com.wmstein.tourcount.R
  * Created by wmstein 2016-12-18,
  * last edited in Java on 2022-04-25,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-27
+ * last edited on 2026-08-03
  */
 class CountingHead1Widget(
     context: Context,
@@ -26,11 +26,12 @@ class CountingHead1Widget(
     private val nameArrayG: Array<String?>,
     private val codeArray: Array<String?>,
     private val imageArray: Array<Int>
-) : ArrayAdapter<String?>(context, R.layout.widget_counting_species_select,
+) : ArrayAdapter<String?>(
+    context, R.layout.widget_counting_species_select,
     R.id.countName, nameArray) {
 
-    private val inflater: LayoutInflater = context.getSystemService(
-        Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private val inflater: LayoutInflater = context
+        .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     // Shows Spinner list
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -45,16 +46,22 @@ class CountingHead1Widget(
     private fun getCustomView(position: Int, parent: ViewGroup): View {
         val head1 = inflater.inflate(
             R.layout.widget_counting_species_select, parent, false)
+
         val countId = head1.findViewById<TextView>(R.id.countId)
         countId.text = idArray[position]
+
         val countName = head1.findViewById<TextView>(R.id.countName)
         countName.text = nameArray[position]
+
         val countNameg = head1.findViewById<TextView>(R.id.countNameg)
         countNameg.text = nameArrayG[position]
+
         val countCode = head1.findViewById<TextView>(R.id.countCode)
         countCode.text = codeArray[position]
+
         val pSpecies = head1.findViewById<ImageView>(R.id.pSpecies)
         pSpecies.setImageResource(imageArray[position])
+
         return head1
     }
 

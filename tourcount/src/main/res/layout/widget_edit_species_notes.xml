@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!--
     widget_edit_species_notes.xml is used by EditSpeciesNotesWidget.kt
-    Last edited on 2026-01-01
+    Last edited on 2026-08-13
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="5dp"
@@ -27,18 +26,19 @@
         android:padding="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/spNotesNotes"
         style="@style/BoldText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/count_background"
-        android:hint="@string/notesSpecies"
+        android:hint="@string/notesHint"
         android:inputType="textCapSentences"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        tools:ignore="Autofill,LabelFor" />
+        android:completionThreshold="0"
+        android:popupBackground="@color/Navy" />
 
 </LinearLayout>

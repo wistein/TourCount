@@ -135,20 +135,18 @@ class ShowTextDialog : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    companion object {
-        private fun readRawTextFile(id: Int, context: Context): String? {
-            val inputStream = context.resources.openRawResource(id)
-            val iSR = InputStreamReader(inputStream)
-            val buf = BufferedReader(iSR)
-            var line: String?
-            val text = StringBuilder()
-            try {
-                while ((buf.readLine().also { line = it }) != null) text.append(line)
-            } catch (_: IOException) {
-                return null
-            }
-            return text.toString()
+    private fun readRawTextFile(id: Int, context: Context): String? {
+        val inputStream = context.resources.openRawResource(id)
+        val iSR = InputStreamReader(inputStream)
+        val buf = BufferedReader(iSR)
+        var line: String?
+        val text = StringBuilder()
+        try {
+            while ((buf.readLine().also { line = it }) != null) text.append(line)
+        } catch (_: IOException) {
+            return null
         }
+        return text.toString()
     }
 
 }

@@ -12,13 +12,13 @@ import android.database.sqlite.SQLiteDatabase
  * Created by wmstein on 2016-04-18,
  * last modified in Java on 2022-03-23,
  * converted to Kotlin on 2023-07-05,
- * last modified on 2026-06-29
+ * last modified on 2026-08-03
  */
 class SectionDataSource(context: Context) {
     private var database: SQLiteDatabase? = null
     private val dbHelper: DbHelper = DbHelper(context)
-    // Database fields
-    // S_COUNTRY, S_PLZ, S_CITY, S_PLACE, S_STATE, S_ST_LOCALITY are the initial or edited location values
+    // Database fields with initial or edited location values are:
+    //   S_COUNTRY, S_PLZ, S_CITY, S_PLACE, S_STATE, S_ST_LOCALITY
     private val allColumns = arrayOf(
         DbHelper.S_ID,
         DbHelper.S_NAME,
