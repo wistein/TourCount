@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml Italian array strings,
-     last edited 2026-08-12 -->
+     last edited 2026-08-27 -->
 
 <resources>
 
@@ -46,8 +46,8 @@
     <string-array name="indiv_notes_options">
         <item>Foto</item>
         <item>Sorvolo</item>
-        <item>Sul fiore di </item>
-        <item>Pianta foraggera: </item>
+        <item>Sul fiore di\u0020</item>
+        <item>Pianta foraggera:\u0020</item>
         <item>Esemplare morto</item>
         <item>Non sicuro</item>
     </string-array>

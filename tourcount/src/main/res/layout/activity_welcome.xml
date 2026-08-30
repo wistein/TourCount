@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><!-- activity_welcome.xml is used by WelcomeActivity.java
-  ~ Shows starting page
-  ~ Last edited on 2026-01-01.
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_welcome.xml
+     used by WelcomeActivity.kt.
+     Shows starting page.
+     Last edited on 2026-08-27.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/baseLayout"

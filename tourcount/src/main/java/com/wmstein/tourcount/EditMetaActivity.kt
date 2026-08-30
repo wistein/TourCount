@@ -47,7 +47,7 @@ import java.util.Locale
  * Created by wmstein on 2016-04-19,
  * last edit in Java on 2026-07-01,
  * converted to kotlin on 2026-07-17,
- * last edited on 2026-07-21.
+ * last edited on 2026-08-21.
  */
 class EditMetaActivity : AppCompatActivity() {
     // Preferences
@@ -157,12 +157,13 @@ class EditMetaActivity : AppCompatActivity() {
         head = headDataSource!!.head
         section = sectionDataSource!!.section
 
-        // Display editable list title, observer name and notes by EditMetaTitleWidget
+        // Display the head data
         emtw = EditMetaTitleWidget(this, null)
         emtw!!.setWidgetTitle(getString(R.string.titleEdit))
         emtw!!.setWidgetOName1(getString(R.string.inspector) + ": ")
         emtw!!.setWidgetONotes1(getString(R.string.titleTourNotes))
 
+        // Display the editable head data
         emtw!!.widgetName = section!!.name
         emtw!!.widgetOName2 = head!!.observer
         emtw!!.widgetONotes2 = section!!.notes
@@ -188,8 +189,8 @@ class EditMetaActivity : AppCompatActivity() {
         // Display the editable metadata by EditMetaWidget
         emw = EditMetaWidget(this, null)
         emw!!.setWidgetDate1(getString(R.string.date) + ":")
-        emw!!.setWidgetStartTm1(getString(R.string.starttm))
-        emw!!.setWidgetEndTm1(getString(R.string.endtm))
+        emw!!.setWidgetStartTimeTitle(getString(R.string.starttm))
+        emw!!.setWidgetEndTimeTitle(getString(R.string.endtm))
 
         emw!!.widgetDate2 = section!!.date
         emw!!.widgetStartTm2 = section!!.start_tm
@@ -199,12 +200,12 @@ class EditMetaActivity : AppCompatActivity() {
         emw!!.setWidgetWind1(getString(R.string.wind) + ":")
         emw!!.setWidgetClouds1(getString(R.string.clouds) + ":")
 
-        emw!!.widgetTemp2 = section!!.tmp
-        emw!!.widgetTemp3 = section!!.tmp_end
-        emw!!.widgetWind2 = section!!.wind
-        emw!!.widgetWind3 = section!!.wind_end
-        emw!!.widgetClouds2 = section!!.clouds
-        emw!!.widgetClouds3 = section!!.clouds_end
+        emw!!.widgetTempS = section!!.tmp
+        emw!!.widgetTempE = section!!.tmp_end
+        emw!!.widgetWindS = section!!.wind
+        emw!!.widgetWindE = section!!.wind_end
+        emw!!.widgetCloudsS = section!!.clouds
+        emw!!.widgetCloudsE = section!!.clouds_end
         headArea!!.addView(emw)
 
         // Check for focus
@@ -218,9 +219,9 @@ class EditMetaActivity : AppCompatActivity() {
         pdate = Calendar.getInstance()
         ptime = Calendar.getInstance()
 
-        sDate = findViewById(R.id.widgetDate2)
-        sTime = findViewById(R.id.widgetStartTm2)
-        eTime = findViewById(R.id.widgetEndTm2)
+        sDate = findViewById(R.id.widgetDateValue)
+        sTime = findViewById(R.id.widgetStartTimeValue)
+        eTime = findViewById(R.id.widgetEndTimeValue)
 
         // Get current date by click
         sDate!!.setOnClickListener { _: View? ->
@@ -313,7 +314,7 @@ class EditMetaActivity : AppCompatActivity() {
         if (id == android.R.id.home)  // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "316, MenuItem home")
+                Log.i(TAG, "317, MenuItem home")
 
             finish()
             return true
@@ -321,7 +322,7 @@ class EditMetaActivity : AppCompatActivity() {
 
         if (id == R.id.menuSaveExit) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "324, MenuItem saveExit")
+                Log.i(TAG, "325, MenuItem saveExit")
 
             if (saveData()) finish()
             return true
@@ -333,7 +334,7 @@ class EditMetaActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "336, onPause")
+            Log.i(TAG, "337, onPause")
 
         headDataSource!!.close()
         sectionDataSource!!.close()
@@ -353,7 +354,7 @@ class EditMetaActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "356, onStop")
+            Log.i(TAG, "357, onStop")
 
         headArea = null
     }
@@ -362,12 +363,12 @@ class EditMetaActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "365, onDestroy")
+            Log.i(TAG, "366, onDestroy")
     }
 
     private fun saveData(): Boolean {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "370 saveData")
+            Log.i(TAG, "371 saveData")
 
         // Save head data
         head!!.observer = emtw!!.widgetOName2
@@ -386,40 +387,40 @@ class EditMetaActivity : AppCompatActivity() {
         section!!.st_locality = emlw!!.widgetLocality2
         section!!.plz = emlw!!.widgetPlz2
 
-        section!!.tmp = emw!!.widgetTemp2
-        section!!.tmp_end = emw!!.widgetTemp3
-
         // Check plausi for temperature
-        if (section!!.tmp !in 0..50 || section!!.tmp_end !in 0..50) {
+        if (emw!!.widgetTempS !in 0..50 || emw!!.widgetTempE !in 0..50) {
             mesg = getString(R.string.valTemp)
             Toast.makeText(this,  //orange
                 fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                 Toast.LENGTH_LONG).show()
             return false
+        } else {
+            section!!.tmp = emw!!.widgetTempS
+            section!!.tmp_end = emw!!.widgetTempE
         }
 
-        section!!.wind = emw!!.widgetWind2
-        section!!.wind_end = emw!!.widgetWind3
-
         // Check plausi for wind
-        if (section!!.wind !in 0..4 || section!!.wind_end !in 0..4) {
+        if (emw!!.widgetWindS !in 0..4 || emw!!.widgetWindE !in 0..4) {
             mesg = getString(R.string.valWind)
             Toast.makeText(this,  // orange
                 fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                 Toast.LENGTH_LONG).show()
             return false
+        } else {
+            section!!.wind = emw!!.widgetWindS
+            section!!.wind_end = emw!!.widgetWindE
         }
 
-        section!!.clouds = emw!!.widgetClouds2
-        section!!.clouds_end = emw!!.widgetClouds3
-
         // Check plausi for clouds
-        if (section!!.clouds !in 0..100 || section!!.clouds_end !in 0..100) {
+        if (emw!!.widgetCloudsS !in 0..100 || emw!!.widgetCloudsE !in 0..100) {
             mesg = getString(R.string.valClouds)
             Toast.makeText(this,  // orange
                 fromHtml("<font color='#ff6000'><b>$mesg</b></font>"),
                 Toast.LENGTH_LONG).show()
             return false
+        } else {
+            section!!.clouds = emw!!.widgetCloudsS
+            section!!.clouds_end = emw!!.widgetCloudsE
         }
 
         section!!.date = emw!!.widgetDate2

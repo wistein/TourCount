@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- widget_delete_spec.xml
-     used by DeleteSpeciesWidget.kt
-     Copyright © 2016-2024, Wilhelm Stein, Bonn, Germany.
-     Last change: 2024-07-27.
+     used by DeleteSpeciesWidget.kt.
+     Last change: 2026-08-27.
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

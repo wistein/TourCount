@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_del_species.xml is used by DelSpeciesActivity.kt in conjunction
-     with widget_delete_spec.xml
-     -->
-
+<!-- activity_del_species.xml
+     used by DelSpeciesActivity.kt in conjunction
+     with widget_delete_spec.xml.
+     Last edited on 2026-08-27
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/delSpec"
     android:background="@color/DarkerRed"

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_add_species.xml is used by AddSpeciesActivity.kt in conjunction
-     with widget_add_spec.xml
-     -->
-
+<!-- activity_add_species.xml
+     used by AddSpeciesActivity.kt in conjunction
+     with widget_add_spec.xml.
+     Last edited on 2026-08-27
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/addSpec"
     android:background="@color/Navy"

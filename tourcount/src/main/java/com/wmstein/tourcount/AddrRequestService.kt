@@ -79,7 +79,7 @@ open class AddrRequestService : Service {
         val prefs = TourCountApplication.getPrefs()
         emailString = prefs.getString("email_String", "")!!
         metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        selRequestInterval = prefs.getString("pref_request_interval", "10000")!!.toLong()
+        selRequestInterval = prefs.getString("pref_request_interval", "20000")!!.toLong()
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
         alertSound = prefs.getString("alert_sound", "")!!
         lastVersion = prefs.getString("PREFS_VERSION_KEY", "")!!

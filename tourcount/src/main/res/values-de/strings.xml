@@ -189,12 +189,12 @@
     <string name="pref_distance_title">Min. Distanz für GPS-Update</string>
     <string name="pref_email_string">Mail-Adresse für OSM-Geocoder</string>
     <string name="pref_email_string_summ">Erforderlich für die zuverlässige Abfrage der Adressdaten per OSM-Nominatim-Reverse-Geocoder.\nDie Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="pref_request_title">Adress-Abfrageinterval</string>
-    <string name="pref_interval_title">GPS-Abfrageinterval</string>
+    <string name="pref_request_title">Adress-Abfrageintervall</string>
+    <string name="pref_interval_title">GPS-Abfrageintervall</string>
     <string name="pref_left_hand">Linkshänder</string>
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
-    <string name="pref_metadata">GPS Reverse-Geocoding</string>
-    <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Reverse-Geocoding ermittelt und überschrieben werden sollen.</string>
+    <string name="pref_metadata">GPS inverse Geokodierung</string>
+    <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Inverse Geocodierung ermittelt und überschrieben werden sollen.</string>
     <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
     <string name="pref_proximity_title">Näherungsensor</string>
     <string name="pref_data_language">Wahl der Datensprache</string>

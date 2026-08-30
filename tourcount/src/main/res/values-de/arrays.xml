@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- arrays.xml German array strings,
-     last edited 2026-08-12 -->
+     last edited 2026-08-27 -->
 
 <resources>
 
@@ -46,8 +46,8 @@
 	<string-array name="indiv_notes_options">
 		<item>Foto</item>
 		<item>Vorbeiflug</item>
-		<item>Auf Blüte von </item>
-		<item>Futterpflanze: </item>
+		<item>Auf Blüte von\u0020</item>
+		<item>Futterpflanze:\u0020</item>
 		<item>Totfund</item>
 		<item>Unsicher</item>
 	</string-array>

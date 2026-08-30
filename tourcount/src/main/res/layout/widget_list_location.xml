@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  - widget_list_location.xml used by EditMetaActivity.java
-  ~ Copyright © 2016-2024, Wilhelm Stein, Bonn, Germany.
+<?xml version="1.0" encoding="utf-8"?>
+<!-- widget_list_location.xml
+     used by EditMetaActivity.kt
+     Last edited on 2026-08-27
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

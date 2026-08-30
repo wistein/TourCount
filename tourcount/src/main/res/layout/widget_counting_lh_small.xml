@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  - widget_counting_lh_small.xml (left-handed) is used by CountingLHWidget.kt
-  - It controls screens with an edge ratio < 2
-  - Last edited on 2026-05-22
+<!-- widget_counting_lh_small.xml (left-handed)
+     used by CountingLHWidget.kt.
+     It controls screens with an edge ratio < 2.
+     Last edited on 2026-08-27
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

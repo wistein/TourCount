@@ -5,7 +5,7 @@
 <html lang="de">
 
 <!-- TourCount Benutzeranleitung help_de.html --
-     Last edited on 2026-08-13
+     Last edited on 2026-08-21
  -->
 
 <h3><font color=#D9FDD9>1. Einführung</font></h3>
@@ -21,12 +21,18 @@ dort nach Anmeldung unter „Datenerfassung“ / „Einzelfundmeldungen“ oder 
 <br><br>
 Die App ist veröffentlicht unter<br>
 https://github.com/wistein/TourCount<br>
-mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: <br><br>
-- <b>Speicherzugriff</b> zwecks Import von DB-Dateien und Spezieslisten, Export von Daten und der Zählergebnisse in DB-, XLSX- oder CSV-Dateien,<br>
+mit Quellcode und Dokumentation. Sie ist Open Source, enthält weder Tracking- noch Werbefunktionen und verwendet keine Google-Play-Dienste, erfordert aber die folgenden Zugriffsrechte, die für die zweckdienlichen Funktionen der App nötig sind: <br><br>
+- <b>Speicherzugriff</b> zwecks Import von DB-Dateien und<br>
+&nbsp;&nbsp;&nbsp;Spezieslisten, Export von Daten und der Zählergebnisse<br>
+&nbsp;&nbsp;&nbsp;in DB-, XLSX- oder CSV-Dateien,<br>
 - <b>GPS-Zugriffsrechte</b> zur Ortsbestimmung der Funde sowie<br>
-- optional <b>Internetzugang</b> für inverse Geokodierung (Info über detaillierte Ortsdaten) durch den Nominatim-Dienst von OpenStreetMap und<br>
-- <b>Wakelock</b>, zwecks Verhinderung, dass die App bei Inaktivität vom Systen abgeschaltet wird, jedoch beim
-Einstecken oder nahe am Körper halten, solange den Bildschirm abdunkelt und berührungsunempfindlich macht.
+- optional <b>Internetzugang</b> für inverse Geokodierung<br>
+&nbsp;&nbsp;&nbsp;(Info über detaillierte Ortsdaten) durch den<br>
+&nbsp;&nbsp;&nbsp;Nominatim-Dienst von OpenStreetMap und<br>
+- <b>Wakelock</b>, zwecks Verhinderung, dass die App bei<br>
+&nbsp;&nbsp;&nbsp;Inaktivität vom Systen abgeschaltet wird, jedoch beim<br>
+&nbsp;&nbsp;&nbsp;Einstecken oder nahe am Körper halten, den Bildschirm<br>
+&nbsp;&nbsp;&nbsp;abdunkelt und berührungsunempfindlich macht.
 <br><br><br>
 
 <h3><font color=#D9FDD9>2. Einrichtung</font></h3>
@@ -72,11 +78,13 @@ Die ortsbezogenen Metadaten werden bei Internetverbindung und Nutzung der invers
 <br><br>
 Sind die allgemeingültigen Metadaten und alle erwarteten Spezies in die Zählliste eingegeben, ist die Datenbank fertig vorbereitet und sollte nun als „Basis-Datenbank“ exportiert werden.<br>
 Hierzu dient die Funktion „<b><font color="#D9FDD9">Export als Basis-DB</font></b>“ im Mennü der Startseite.<br>
-Hierdurch wird eine Kopie der vorbereiteten Datenbank als leere „<b>Basis-Datenbank</b>“ (tourcount0_ds_Tourname.db, mit „Tourname“, falls vorhanden aus den Metadaten) im Daten-Verzeichnis der App „<b>Documents/TourCount</b>“ abgelegt.<br>
+Hierdurch wird eine Kopie der vorbereiteten Datenbank als leere „<b>Basis-Datenbank</b>“ (tourcount0_ds_Tourname.db, mit „Tourname“, falls in den Metadaten eingegeben) im Daten-Verzeichnis der App „<b>Documents/TourCount</b>“ abgelegt.<br>
 Das App-Datenverzeichnis wird während des ersten App-Aufrufs angelegt. Bei Deinstallation von TransektCount werden dieses Verzeichnis und die Daten darin nicht gelöscht.<br>
-Die Basis-DB enthält keine Zähldaten, Bemerkungen und Inspektions-spezifischen Metadaten. Sie dient als leere Vorlage für weitere Touren in der Region. Die Basis-DB kann ggf. per Dateimanager entsprechend umbenannt werden,
+Der Export als Basis-DB ignoriert alle Zähldaten, Bemerkungen und Inspektions-spezifischen Metadaten. Sie dient als leere Vorlage für weitere Touren in der Region. Die Basis-DB kann ggf. per Dateimanager entsprechend umbenannt werden,
 z.B. in „tourcount0_de_Region xyz.db“.<br>
 <font color=#2C87FD><b>Merke:</b></font> Die Dateinamen der Basis-DBs beginnen immer mit „<b>tourcount0</b>“ („tourcount“ mit angehängter „0“).
+<br><br>
+Nach dem Import einer Basis-DB sind zur Vorbereitung einer Tour nur noch die tourspezifischen Metadaten (Datum, Startzeit, Temperatur, Wind und Wolken) einzugeben.
 <br><br>
 Alternativ kann auch eine selbst erstellte Basis-DB importiert und angepasst werden. Oder die Speziesliste kann durch eine zuvor exportierte Speziesliste aus TourCount oder TransektCount (falls installiert) per Import ersetzt werden. Beispieldateien, teilweise aus dem europäischen Ausland, können aus <br>
 https://github.com/wistein/TourCount/tree/master/docs<br>
@@ -94,22 +102,22 @@ mit
  <br><br>
 - <b><font color="#0060FF">blau</font></b> = gesetzte Zeichenfolgen,<br>
 - <b>ds</b> = Datensprache der lokalen Artnamen<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(„de“, „en“, „es“, „fr“, „it“),<br>
+&nbsp;&nbsp;&nbsp;(„de“, „en“, „es“, „fr“, „it“),<br>
 - <b>Tourname</b> = Tour-Bezeichnung<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(bereinigt für Dateinamenskonformität),<br>
+&nbsp;&nbsp;&nbsp;(bereinigt für Dateinamenskonformität),<br>
 - <b>StartDatum</b> = Datum und Zeit des Tourstarts<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(JJJJMMTT-hhmm).<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Wenn nicht angegeben, das aktuelle Speicherdatum,<br>
+&nbsp;&nbsp;&nbsp;(JJJJMMTT-hhmm).<br>
+&nbsp;&nbsp;&nbsp;Wenn nicht angegeben, das aktuelle Speicherdatum,<br>
 - <b>as</b> = Ausgabe-Sortiercode („n“ Namen, „c“ Codes),<br>
 - <b>AktDatum</b> = aktuelles Speicherdatum<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(JJJJMMTT-hhmm).
+&nbsp;&nbsp;&nbsp;(JJJJMMTT-hhmm).
 <br><br><br>
 
 <h3><font color=#D9FDD9>3. Benutzung</font></h3>
 Nach dem Start der App wird der erste GPS-Fix angezeigt und ggf. darauf hingewiesen, dass die festgestellte Position außerhalb des europäischen Faunenbereichs liegt (als Hinweis darauf, dass nur europäische Arten unterstützt werden).
 <br><br>
 Beginne mit „<b><font color="#D9FDD9">Metadaten editieren</font></b>“. Gib die relevanten Metadaten der Tour ein. Das aktuelle Datum und die momentane Uhrzeit kann durch Antippen des jeweiligen Felds eingegeben werden.<br>
-Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe-Dialog genutzt werden. Mit dem Speichern-Button beenden.
+Sollen ein anderes Datum oder andere Zeiten eingegeben werden, können diese Felder länger gedrückt werden und der sich dann öffnende Eingabe-Dialog genutzt werden. Unrealistische Werte für Temperatur, Wind oder Bewölkung werden mit Plausibilitätschecks abgefangen. Werte für Bewölkung werden beim Speichern auf Zehner gerundet. Mit dem „Speichern“-Button beenden.
 <br><br>
 Dann wähle „<b><font color="#D9FDD9">Zählen</font></b>“. Wähle die Art in der Scroll-Liste nach Antippen der Art-Zeile.<br>
 Zum Zählen tippe jeweils auf den entsprechenden (+)-Button der gesichteten Kategorie (♂|♀, ♂, ♀, Puppe, Raupe, Ei) der Art.<br>
@@ -139,13 +147,19 @@ Auf eine ggf. auftauchende Meldung „TourCount reagiert nicht“ bitte mit „<
 <h3><font color=#D9FDD9>4. Weitere Funktionen</font></h3>
 Das App-Menü auf der Eingangsseite bietet Einstellungs-, Reset-, Import-, Export-, Info- und Hilfefunktionen.
 <br><br>
-Unter „<b><font color="#D9FDD9">Einstellungen</font></b>“ können das Aussehen und Verhalten der App dem eigenen Geschmack angepasst werden, z.B. Sortierreihenfolge für Listen und Datenexport, Rechts-/ Linkshänder-Darstellung der Zählerseite oder Sounds und haptisches Button-Feedback.
+Unter „<b><font color="#D9FDD9">Einstellungen</font></b>“ können das Aussehen und Verhalten der App dem eigenen Geschmack angepasst werden, z.B. Sortierreihenfolge für Listen und Datenexport, Rechts-/ Linkshänder-Darstellung der Zählerseite, Sounds und haptisches Button-Feedback oder GPS-basierte inverse Geokodierung.
 <br><br>
-Mittels <b>inverser Geokodierung</b> lassen sich Ortsangaben (PLZ, Stadt, Ort) in die Metadaten und Lokalität in die Individuen-Daten automatisch einfügen.<br>
-Zur inversen Geokodierung (Erzeugung von Adressdaten aus GPS-Koordinaten) wird der kostenlose Nominatim-Dienst von OpenStreetMap verwendet (seit 2026 limitiert auf 1 Aufruf pro Sekunde und App).<br>
+Zu Letzterem einige Erläuterungen:<br>
+Durch die „<b><font color="#D9FDD9">GPS inverse Geokodierung</font></b>“ (Erzeugung von Adressdaten aus GPS-Koordinaten) werden nach erfolgter GPS-Synchronisation und erster erfolgreicher Adressanfrage die Ortsangaben des Startpunkts (Land, Bundesland, PLZ, Stadt, Ort, Lokalität) gewonnen. Beim Editieren der Metadaten werden diese ersten Ortsangaben in die Metadaten übernommen. Für gezählte Individuen wird dann die jeweils aktuelle Lokalität neben den Koordinaten- und Höhenangaben in den Individuen-Datensatz automatisch eingefügt.
+<br><br>
+Zur inversen Geokodierung wird der kostenlose Nominatim-Dienst von OpenStreetMap verwendet (seit 2026 limitiert auf 1 Aufruf pro Sekunde und App).<br>
 Zwecks Ausschluss von Missbrauch und für eine auf Dauer zuverlässige Abfrage der Adressdaten ist eine eigene, gültige E-Mail-Adresse erforderlich.<br>
-Die Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe<br>
- https://wiki.openstreetmap.org/wiki/Nominatim.
+Die Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren.<br>
+Für weitere Informationen siehe<br>
+https://wiki.openstreetmap.org/wiki/Nominatim.
+<br><br>
+Das „<b><font color="#D9FDD9">Adress-Abfrageintervall</font></b>“ kann zwischen 10 und 30 sec (20 sec voreingestellt) gewählt werden. Den kostenlosen Nominatim-Dienst sollte man nach örtlicher Erforderlichkeit und möglichst sparsam verwenden.<br>
+Für einen Kompromiss zwischen Performanz und Energieverbrauch können die „<b><font color="#D9FDD9">Min. Distanz für GPS-Update</font></b>“ zwischen 2 und 50 m (10 m voreingestellt) und das „<b><font color="#D9FDD9">GPS-Abfrageintervall</font></b>“ zwischen 2 und 20 sec (5 sec voreingestellt) gewählt werden.
 <br><br>
 Zwecks Vorbereitung einer neuen Tour können mittels „<b><font color="#D9FDD9">Reset Daten</font></b>“ die tourspezifischen Metadaten und alle Zähldaten gelöscht werden.<br>
 Alternativ können eine vorhandene Basis-DB, eine andere tourcount-DB oder eine Speziesliste importiert werden.
@@ -187,10 +201,10 @@ Die exportierten Ergebnisdateien können in einer Android-Tabellenkalkulations-A
 <br><br>
 Die exportierten .xlsx- oder .csv-Ergebnisdateien können auch für die weitere Bearbeitung auf einen PC übertragen und in einer Tabellenkalkulation geladen bzw. importiert werden (getestet mit MS Excel, LibreOffice Calc,und Softmaker PlanMaker).
 <br><br>
-IT-affine Anwender können exportierte .db-Dateien auf einen PC übertragen und mit Hilfe eines kostenlosen Tools wie „<b>DB Browser for SQLite</b>“ (https://sqlitebrowser.org) manuell oder per SQL-Script bearbeiten. Einige vorbereitete, ggf. nützliche Beispiel-SQL-Scripte finden sich im Doku-Verzeichnis der GitHub-Webseite:<br>
+IT-affine Anwender können exportierte .db-Dateien auf einen PC übertragen und mithilfe eines kostenlosen Tools wie „<b>DB Browser for SQLite</b>“ (https://sqlitebrowser.org) manuell oder per SQL-Script bearbeiten. Einige vorbereitete, ggf. nützliche Beispiel-SQL-Scripte finden sich im Doku-Verzeichnis der GitHub-Webseite:<br>
 https://github.com/wistein/TourCount/tree/master/docs.
 <br><br>
-Unter „<b><font color="#D9FDD9">App-Info</font></b>“ sind allgemeine Infos zur App, die E-Mail-Adresse des Autors und die Historie zur App-Entwicklung abrufbar.
+Unter „<b><font color="#D9FDD9">App-Info</font></b>“ sind allgemeine Informationen zur App, die E-Mail-Adresse des Autors und die Historie zur App-Entwicklung abrufbar.
 <br><br>
 Unter „<b><font color="#D9FDD9">Lizenzen</font></b>“ sind die Lizenzbestimmungen zum Code und den Abbildungen beschrieben.
 <br><br>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    widget_add_hint.xml
-    used by AddSpeciesHintWidget.kt
-    Last edited on 2026-05-24
+<!-- widget_add_hint.xml
+     used by AddSpeciesHintWidget.kt
+     Last edited on 2026-08-27
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

@@ -22,29 +22,29 @@ import java.util.Objects
  */
 class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
-    private val widgetdate1: TextView
-    private val widgetdate2: TextView
+    private val widgetDateHead: TextView
+    private val widgetDatum: TextView
 
     // start_tm
-    private val widgetstartTm1: TextView
-    private val widgetstartTm2: TextView
+    private val widgetStartTimeHead: TextView
+    private val widgetStartTime: TextView
 
     // end_tm
-    private val widgetendTm1: TextView
-    private val widgetendTm2: TextView
+    private val widgetEndTimeHead: TextView
+    private val widgetEndTime: TextView
 
     // temperature
-    private val widgettemp1: TextView
+    private val widgetTempHead: TextView
     private val widgetstarttemp2: TextView
     private val widgetendtemp2: TextView
 
     // wind
-    private val widgetwind1: TextView
+    private val widgetWindHead: TextView
     private val widgetstartwind2: TextView
     private val widgetendwind2: TextView
 
     // clouds
-    private val widgetclouds1: TextView
+    private val widgetCloudsHead: TextView
     private val widgetstartclouds2: TextView
     private val widgetendclouds2: TextView
 
@@ -56,24 +56,24 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
         Objects.requireNonNull(inflater)
             .inflate(R.layout.widget_list_meta, this, true)
 
-        widgetdate1 = findViewById(R.id.widgetLDate1)
-        widgetdate2 = findViewById(R.id.widgetLDate2)
+        widgetDateHead = findViewById(R.id.widgetLDate1)
+        widgetDatum = findViewById(R.id.widgetLDate2)
 
-        widgetstartTm1 = findViewById(R.id.widgetLStartTm1)
-        widgetstartTm2 = findViewById(R.id.widgetLStartTm2)
+        widgetStartTimeHead = findViewById(R.id.widgetLStartTm1)
+        widgetStartTime = findViewById(R.id.widgetLStartTm2)
 
-        widgetendTm1 = findViewById(R.id.widgetLEndTm1)
-        widgetendTm2 = findViewById(R.id.widgetLEndTm2)
+        widgetEndTimeHead = findViewById(R.id.widgetLEndTm1)
+        widgetEndTime = findViewById(R.id.widgetLEndTm2)
 
-        widgettemp1 = findViewById(R.id.widgetLTemp1)
+        widgetTempHead = findViewById(R.id.widgetLTemp1)
         widgetstarttemp2 = findViewById(R.id.widgetLStartTemp2)
         widgetendtemp2 = findViewById(R.id.widgetLEndTemp2)
 
-        widgetwind1 = findViewById(R.id.widgetLWind1)
+        widgetWindHead = findViewById(R.id.widgetLWind1)
         widgetstartwind2 = findViewById(R.id.widgetLStartWind2)
         widgetendwind2 = findViewById(R.id.widgetLEndWind2)
 
-        widgetclouds1 = findViewById(R.id.widgetLClouds1)
+        widgetCloudsHead = findViewById(R.id.widgetLClouds1)
         widgetstartclouds2 = findViewById(R.id.widgetLStartClouds2)
         widgetendclouds2 = findViewById(R.id.widgetLEndClouds2)
 
@@ -84,27 +84,27 @@ class ResultsMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(c
     // Following the SETS
     @SuppressLint("SetTextI18n")
     fun setListMetaWidget(section: Section) {
-        widgetdate1.text = context.getString(R.string.date) + ":"
-        widgetdate2.text = section.date
+        widgetDateHead.text = context.getString(R.string.date) + ":"
+        widgetDatum.text = section.date
 
-        widgetstartTm1.setText(R.string.starttm)
-        widgetstartTm2.text = section.start_tm
+        widgetStartTimeHead.setText(R.string.starttm)
+        widgetStartTime.text = section.start_tm
 
-        widgetendTm1.setText(R.string.endtm)
-        widgetendTm2.text = section.end_tm
+        widgetEndTimeHead.setText(R.string.endtm)
+        widgetEndTime.text = section.end_tm
 
         // temperature
-        widgettemp1.text = context.getString(R.string.temperature) + ":"
+        widgetTempHead.text = context.getString(R.string.temperature) + ":"
         if (section.tmp > 0) widgetstarttemp2.text = section.tmp.toString()
         if (section.tmp_end > 0) widgetendtemp2.text = section.tmp_end.toString()
 
         // wind
-        widgetwind1.text = context.getString(R.string.wind) + ":"
+        widgetWindHead.text = context.getString(R.string.wind) + ":"
         if (section.wind > 0) widgetstartwind2.text = section.wind.toString()
         if (section.wind_end > 0) widgetendwind2.text = section.wind_end.toString()
 
         // clouds
-        widgetclouds1.text = context.getString(R.string.clouds) + ":"
+        widgetCloudsHead.text = context.getString(R.string.clouds) + ":"
         if (section.clouds > 0) widgetstartclouds2.text = section.clouds.toString()
         if (section.clouds_end > 0) widgetendclouds2.text = section.clouds_end.toString()
     }

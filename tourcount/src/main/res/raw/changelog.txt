@@ -75,15 +75,15 @@ _ subtitle
 
 $ 3.8.4
   % Version 3.8.4
-  _ 2026-08-15
+  _ 2026-08-30
   * Code improvements
-  * The date in names of exported files modified from "date_time" to "date-time"
   * Entering individuals notes proposed by predefined wordings like "Photo", "Flyby", "Fresh imago", …
   * Entering species notes proposed by the predefined wordings "New species", "1st in season" and "Not sure"
   * Cloud %-values rounded to multiples of 10
   * More restrictive plausi for input of metadata numbers
   * "Help" text updated
   * Docs updated
+  * Bugfix for importing a species list
 
 $ 3.8.3
   % Version 3.8.3

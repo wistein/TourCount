@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    activity_counting_lh.xml is used by CountingActivity.java
-    Last edited on 2026-01-01
+<!-- activity_counting_lh.xml
+     used by CountingActivity.kt
+     Last edited on 2026-08-27
 -->
-
 <LinearLayout android:id="@+id/countingScreenLH"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"

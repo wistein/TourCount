@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_list_species.xml is used by ShowResultsActivity.kt -->
+<!-- activity_list_species.xml
+     used by ShowResultsActivity.kt.
+     Last edited on 2026-08-27
+  -->
 
 <ScrollView android:id="@+id/listSpecScreen"
             xmlns:android="http://schemas.android.com/apk/res/android"

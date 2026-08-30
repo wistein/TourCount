@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-    activity_edit_individual.xml
-    used by EditIndividualActivity.kt
+<!-- activity_edit_individual.xml
+     used by EditIndividualActivity.kt.
+     Last edited on 2026-08-27
   -->
 
 <ScrollView android:id="@+id/editIndividualScreen"

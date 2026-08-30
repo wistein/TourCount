@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-    widget_edit_species_notes.xml is used by EditSpeciesNotesWidget.kt
-    Last edited on 2026-08-13
+<?xml version="1.0" encoding="utf-8"?>
+<!-- widget_edit_species_notes.xml
+     used by EditSpeciesNotesWidget.kt.
+     Last edited on 2026-08-27
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    activity_edit_meta.xml
-    used by EditMetaActivity.java
+<!-- activity_edit_meta.xml
+     used by EditMetaActivity.kt
+     Last edited on 2026-08-27
   -->
 <ScrollView
     android:id="@+id/editHeadScreen"

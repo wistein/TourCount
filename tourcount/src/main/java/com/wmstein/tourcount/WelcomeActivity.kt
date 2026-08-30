@@ -102,7 +102,7 @@ import kotlin.system.exitProcess
  * Changes and additions for TourCount by wmstein since 2016-04-18,
  * last edited in Java on 2026-07-18,
  * converted to Kotlin on 2026-07-19,
- * last edited on 2026-08-02.
+ * last edited on 2026-08-30.
  */
 class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var tourCount: TourCountApplication? = null
@@ -199,7 +199,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
         // Set DarkMode when system is in BrightMode
         val nightModeFlags = Configuration.UI_MODE_NIGHT_MASK
-        val confUi = getResources().configuration.uiMode
+        val confUi = resources.configuration.uiMode
         if ((nightModeFlags and confUi) == Configuration.UI_MODE_NIGHT_NO) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
@@ -357,7 +357,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     val navBarMode: Int
         // Check for Navigation bar (1-, 2- or 3-button mode)
         get() {
-            val resources = this.getResources()
+            val resources = this.resources
 
             @SuppressLint("DiscouragedApi") val resourceId = resources.getIdentifier(
                 "config_navBarInteractionMode",
@@ -416,7 +416,6 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
         prefs = getPrefs()
         prefs.registerOnSharedPreferenceChangeListener(this)
-        editor = prefs.edit()
 
         outPref = prefs.getString("pref_sort_output", "names")!! // sort mode csv-export
         // Mail address for reliable query of Nominatim service
@@ -478,7 +477,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         isFineLocationPermGranted() // set fineLocationPermGranted from self permission
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG,"481, onResume, fineLocationPermGranted: $fineLocationPermGranted")
+            Log.i(TAG,"480, onResume, fineLocationPermGranted: $fineLocationPermGranted")
 
         // Start Location Service and try to read location
         if (fineLocationPermGranted) {
@@ -506,7 +505,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     // Get location data
                     if (!locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG,"509, locationDispatcher 1")
+                            Log.i(TAG,"508, locationDispatcher 1")
 
                         locationService = LocationService(applicationContext)
                         locIntent = Intent(applicationContext, LocationService::class.java)
@@ -521,7 +520,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     // Stop location service
                     if (locServiceOn) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG,"524, locationDispatcher 2")
+                            Log.i(TAG,"523, locationDispatcher 2")
 
                         locationService!!.stopListener()
                         locIntent = Intent(applicationContext, LocationService::class.java)
@@ -552,7 +551,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 // Get address data
                 if (!TourCountApplication.adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG,"555, addressDispatcher 1")
+                        Log.i(TAG,"554, addressDispatcher 1")
 
                     TourCountApplication.adrServiceOn = true
                     addrRequestService = AddrRequestService()
@@ -566,7 +565,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 // Stop AddrRequestService
                 if (TourCountApplication.adrServiceOn) {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG,"569, addressDispatcher 2")
+                        Log.i(TAG,"568, addressDispatcher 2")
 
                     addrRequestService!!.releaseSoundA()
                     addrRequestService!!.stopTimerTask()
@@ -759,7 +758,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "762, onPause")
+            Log.i(TAG, "761, onPause")
 
         countDataSource!!.close()
         sectionDataSource!!.close()
@@ -771,7 +770,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "774, onStop")
+            Log.i(TAG, "773, onStop")
 
         baseLayout!!.invalidate()
 
@@ -796,7 +795,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             addressDispatcher(2)
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, ("799, onStop, app not visible, running services Loc, Snd, Adr: "
+                Log.i(TAG, ("798, onStop, app not visible, running services Loc, Snd, Adr: "
                         + locServiceOn + ", " + sndServiceOn + ", " + TourCountApplication.adrServiceOn))
 
             finishAndRemoveTask()
@@ -807,7 +806,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "810, onDestroy")
+            Log.i(TAG, "809, onDestroy")
 
         exitProcess(0)
     }
@@ -815,7 +814,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Handle button click "Counting" here
     fun startCounting(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "818, startCounting, View: $view")
+            Log.i(TAG, "817, startCounting, View: $view")
 
         val intent = Intent(this@WelcomeActivity, CountingActivity::class.java)
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -824,7 +823,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Handle button click "Prepare Inspection" here
     fun editMeta(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "827, editMeta, View: $view")
+            Log.i(TAG, "826, editMeta, View: $view")
 
         val intent = Intent(this@WelcomeActivity, EditMetaActivity::class.java)
         // Wait for 500 msec to get results from AddrRequestService
@@ -836,7 +835,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Start ShowResultsActivity (by button)
     fun showResults(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "839, showResults, View: $view")
+            Log.i(TAG, "838, showResults, View: $view")
 
         mesg = getString(R.string.wait)
         Toast.makeText(this,
@@ -873,7 +872,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Choose a tourcount db-file to load and set it to tourcount.db
     private fun importDBFile() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "876, importDBFile")
+            Log.i(TAG, "875, importDBFile")
 
         val fileExtension = ".db"
         val fileNameStart = "tourcount_"
@@ -950,7 +949,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                         else headLanguage = headLanguage.substring(0, 2)
 
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "953, ImportFile, headLanguage: $headLanguage")
+                            Log.i(TAG, "952, ImportFile, headLanguage: $headLanguage")
 
                         // Save values for initial count-id and itemposition
                         editor.putInt("count_id", 1)
@@ -997,7 +996,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Select and import a species list (also from TransektCount file species_YYYY-MM-DD_hhmmss.csv)
     private fun importSpeciesList() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1000, importSpeciesList")
+            Log.i(TAG, "999, importSpeciesList")
 
         val fileExtension = ".csv"
         val fileNameStart = "species_"
@@ -1084,7 +1083,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Clear DB for import of external species list
     private fun clearDBforImport() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1087, clearDBforImport")
+            Log.i(TAG, "1086, clearDBforImport")
 
         dbHelper = DbHelper(this)
         database = dbHelper!!.writableDatabase
@@ -1129,12 +1128,11 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             val nameArray: MutableList<String?> = ArrayList()
             val nameGArray: MutableList<String?> = ArrayList()
 
-            var br = BufferedReader(FileReader(inFile))
+            val br = BufferedReader(FileReader(inFile))
             var hasDataLang = true
 
-            editor = prefs.edit()
             csvLine = br.readLine() // Read 1. line only
-            var specLine: Array<String?> =
+            val specLine: Array<String?> =
                 csvLine.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (specLine[0] == "nocode") {
                 dataLanguage = specLine[2]!!
@@ -1149,36 +1147,34 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
             br.close()
 
-            br = BufferedReader(FileReader(inFile))
-
-            var i = 0 // index of imported list
+            var iList = 0 // index of imported list
             var iCounts = 1 // index of id in table counts
+            inFile?.bufferedReader().use { reader ->
+                val lines = reader?.readLines()
 
-            while ((br.readLine().also { csvLine = it }) != null)  // for each csvLine
-            {
-                specLine =
-                    csvLine.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-                // 1. line fields contain String[0]: "nocode", [1]: "language", [2]: "de"|"en"|"fr"|"it"|"es"
-                if (specLine[0] == "nocode") {
-                    if (hasDataLang) {
-                        iCounts--
-                        i--
+                // For all species list lines
+                lines?.forEach { it1 ->
+                    val spLine = it1.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    // 1. line fields contain String[0]: "nocode", [1]: "language", [2]: "de"|"en"|"fr"|"it"|"es"
+                    if (spLine[0] == "nocode") {
+                        if (hasDataLang) {
+                            iCounts--
+                            iList--
+                        }
+                    } else {
+                        // comma-separated 0:code, 1:name, 2:nameL
+                        codeArray.add(iList, spLine[0])
+                        nameArray.add(iList, spLine[1])
+                        nameGArray.add(iList, spLine[2])
+                        countDataSource!!.writeCountItem(
+                            iCounts.toString(), codeArray[iList]!!,
+                            nameArray[iList]!!, nameGArray[iList]!!
+                        )
                     }
-                } else {
-                    // comma-separated 0:code, 1:name, 2:nameL
-                    codeArray.add(i, specLine[0])
-                    nameArray.add(i, specLine[1])
-                    nameGArray.add(i, specLine[2])
-                    countDataSource!!.writeCountItem(
-                        iCounts.toString(), codeArray[i]!!,
-                        nameArray[i]!!, nameGArray[i]!!
-                    )
+                    iList++
+                    iCounts++
                 }
-                i++
-                iCounts++
             }
-            br.close()
 
             mesg = getString(R.string.importList)
             Toast.makeText(this,  // bright green
@@ -3000,7 +2996,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Clear all relevant DB values, reset to basic DB
     private fun resetToBasisDb() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "3002, resetToBasisDb")
+            Log.i(TAG, "2999, resetToBasisDb")
 
         // Confirm dialogue before anything else takes place
         val builder = AlertDialog.Builder(this)
@@ -3030,7 +3026,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Clear DB and location values for basic DB
     private fun clearDBValues(): Boolean {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "3032, clearDBValues")
+            Log.i(TAG, "3029, clearDBValues")
 
         dbHelper = DbHelper(this)
         database = dbHelper!!.writableDatabase

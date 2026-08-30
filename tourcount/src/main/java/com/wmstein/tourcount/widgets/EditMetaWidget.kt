@@ -1,6 +1,5 @@
 package com.wmstein.tourcount.widgets
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -18,232 +17,225 @@ import java.util.Objects
  * Created by wmstein for com.wmstein.tourcount on 2016-04-02,
  * last edited in Java on 2019-02-12,
  * converted to Kotlin on 2023-07-09,
- * last edited on 2026-08-14
+ * last edited on 2026-08-21
  */
 class EditMetaWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // date
-    private val widgetdate1: TextView
-    private val widgetdate2: TextView
+    private val widgetDateHead: TextView
+    private val widgetDatum: TextView
 
     // start time
-    private val widgetstartTm1: TextView
-    private val widgetstartTm2: TextView
+    private val widgetStartTimeHead: TextView
+    private val widgetStartTime: TextView
 
     // end time
-    private val widgetendTm1: TextView
-    private val widgetendTm2: TextView
+    private val widgetEndTimeHead: TextView
+    private val widgetEndTime: TextView
 
     // temperature
-    private val widgettemp1: TextView
-    private val widgettemp2: EditText
-    private val widgettemp3: EditText
+    private val widgetTempHead: TextView
+    private val widgetStartTemp: EditText
+    private val widgetEndTemp: EditText
 
     // wind
-    private val widgetwind1: TextView
-    private val widgetwind2: EditText
-    private val widgetwind3: EditText
+    private val widgetWindHead: TextView
+    private val widgetStartWind: EditText
+    private val widgetEndWind: EditText
 
     // clouds
-    private val widgetclouds1: TextView
-    private val widgetclouds2: EditText
-    private val widgetclouds3: EditText
+    private val widgetCloudsHead: TextView
+    private val widgetStartClouds: EditText
+    private val widgetEndClouds: EditText
 
-    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
         Objects.requireNonNull(inflater)
             .inflate(R.layout.widget_edit_meta, this, true)
 
-        widgetdate1 = findViewById(R.id.widgetDate1) // date
-        widgetdate2 = findViewById(R.id.widgetDate2)
-        widgetstartTm1 = findViewById(R.id.widgetStartTm1)
-        widgetstartTm2 = findViewById(R.id.widgetStartTm2)
-        widgetendTm1 = findViewById(R.id.widgetEndTm1)
-        widgetendTm2 = findViewById(R.id.widgetEndTm2)
+        widgetDateHead = findViewById(R.id.widgetDateTitle) // date
+        widgetDatum = findViewById(R.id.widgetDateValue)
 
-        widgettemp1 = findViewById(R.id.widgetTemp1) // temperature title
-        widgettemp2 = findViewById(R.id.widgetStartTemp)
-        widgettemp3 = findViewById(R.id.widgetEndTemp)
+        widgetStartTimeHead = findViewById(R.id.widgetStartTimeTitle)
+        widgetStartTime = findViewById(R.id.widgetStartTimeValue)
 
-        widgetwind1 = findViewById(R.id.widgetWind1) // wind title
-        widgetwind2 = findViewById(R.id.widgetStartWind)
-        widgetwind3 = findViewById(R.id.widgetEndWind)
+        widgetEndTimeHead = findViewById(R.id.widgetEndTimeTitle)
+        widgetEndTime = findViewById(R.id.widgetEndTimeValue)
 
-        widgetclouds1 = findViewById(R.id.widgetClouds1) // clouds
-        widgetclouds2 = findViewById(R.id.widgetStartClouds)
-        widgetclouds3 = findViewById(R.id.widgetEndClouds)
+        widgetTempHead = findViewById(R.id.widgetTempTitle) // temperature title
+        widgetStartTemp = findViewById(R.id.widgetStartTempValue)
+        widgetEndTemp = findViewById(R.id.widgetEndTempValue)
+
+        widgetWindHead = findViewById(R.id.widgetWindTitle) // wind title
+        widgetStartWind = findViewById(R.id.widgetStartWindValue)
+        widgetEndWind = findViewById(R.id.widgetEndWindValue)
+
+        widgetCloudsHead = findViewById(R.id.widgetCloudsTitle) // clouds
+        widgetStartClouds = findViewById(R.id.widgetStartCloudsValue)
+        widgetEndClouds = findViewById(R.id.widgetEndCloudsValue)
     }
 
     // Following the SETS of heads
     // date
     fun setWidgetDate1(title: String) {
-        widgetdate1.text = title
+        widgetDateHead.text = title
     }
 
     // start_tm
-    fun setWidgetStartTm1(title: String) {
-        widgetstartTm1.text = title
+    fun setWidgetStartTimeTitle(title: String) {
+        widgetStartTimeHead.text = title
     }
 
     // end_tm
-    fun setWidgetEndTm1(title: String) {
-        widgetendTm1.text = title
+    fun setWidgetEndTimeTitle(title: String) {
+        widgetEndTimeHead.text = title
     }
 
     // temperature
     fun setWidgetTemp1(title: String) {
-        widgettemp1.text = title
+        widgetTempHead.text = title
     }
 
     // wind
     fun setWidgetWind1(title: String) {
-        widgetwind1.text = title
+        widgetWindHead.text = title
     }
 
     // clouds
     fun setWidgetClouds1(title: String) {
-        widgetclouds1.text = title
+        widgetCloudsHead.text = title
     }
 
-    // plausi for numeric input
+    // Plausi for numeric input
     private val regEx = "^[0-9]*$"
 
-    // following the GETS and SETS
-    // get temperature with plausi
-    var widgetTemp2: Int
-        get() {
-            val text = widgettemp2.text.toString()
-            return if (text.isEmpty()) 0
-            else if (!text.trim { it <= ' ' }
-                    .matches(regEx.toRegex())) 100
-            else {
-                try {
-                    text.replace("\\D".toRegex(), "").toInt()
-                } catch (_: NumberFormatException) {
-                    100 // value must be out of allowed range
-                }
-            }
-        }
-        @SuppressLint("SetTextI18n")
-        set(name) {
-            if (name > 0 ) widgettemp2.setText(name.toString())
-        }
-
-    var widgetTemp3: Int
-        get() {
-            val text = widgettemp3.text.toString()
-            return if (text.isEmpty()) 0
-            else if (!text.trim { it <= ' ' }
-                    .matches(regEx.toRegex())) 100
-            else {
-                try {
-                    text.replace("\\D".toRegex(), "").toInt()
-                } catch (_: NumberFormatException) {
-                    100
-                }
-            }
-        }
-        @SuppressLint("SetTextI18n")
-        set(name) {
-            if (name > 0 ) widgettemp3.setText(name.toString())
-        }
-
-    // get wind with plausi
-    var widgetWind2: Int
-        get() {
-            val text = widgetwind2.text.toString()
-            return if (text.isEmpty()) 0
-            else if (!text.trim { it <= ' ' }
-                    .matches(regEx.toRegex())) 100
-            else {
-                try {
-                    text.replace("\\D".toRegex(), "").toInt()
-                } catch (_: NumberFormatException) {
-                    100
-                }
-            }
-        }
-
-        @SuppressLint("SetTextI18n")
-        set(name) {
-            if (name > 0 ) widgetwind2.setText(name.toString())
-        }
-
-    var widgetWind3: Int
-        get() {
-            val text = widgetwind3.text.toString()
-            return if (text.isEmpty()) 0
-            else if (!text.trim { it <= ' ' }
-                    .matches(regEx.toRegex())) 100
-            else {
-                try {
-                    text.replace("\\D".toRegex(), "").toInt()
-                } catch (_: NumberFormatException) {
-                    100
-                }
-            }
-        }
-        @SuppressLint("SetTextI18n")
-        set(name) {
-            if (name > 0 ) widgetwind3.setText(name.toString())
-        }
-
-    // get clouds with plausi
-    var widgetClouds2: Int
-        get() {
-            val text = widgetclouds2.text.toString()
-            return if (text.isEmpty()) 0
-            else if (!text.trim { it <= ' ' }
-                    .matches(regEx.toRegex())) 200
-            else {
-                try {
-                    // Round integer value to decade (number+5)/10*10
-                    val number = (text.replace("\\D".toRegex(), "").toInt() + 5) / 10 * 10
-                    number
-                } catch (_: NumberFormatException) {
-                    200
-                }
-            }
-        }
-        @SuppressLint("SetTextI18n")
-        set(name) {
-            if (name > 0 ) widgetclouds2.setText(name.toString())
-        }
-
-    var widgetClouds3: Int
-        get() {
-            val text = widgetclouds3.text.toString()
-            return if (text.isEmpty()) 0
-            else if (!text.trim { it <= ' ' }
-                    .matches(regEx.toRegex())) 200
-            else {
-                try {
-                    val number = (text.replace("\\D".toRegex(), "").toInt() + 5) / 10 * 10
-                    number
-                } catch (_: NumberFormatException) {
-                    200
-                }
-            }
-        }
-        @SuppressLint("SetTextI18n")
-        set(name) {
-            if (name > 0 ) widgetclouds3.setText(name.toString())
-        }
-
+    // Following the GETS and SETS
     var widgetDate2: String
-        get() = widgetdate2.text.toString()
+        get() = widgetDatum.text.toString()
         set(name) {
-            widgetdate2.text = name
+            widgetDatum.text = name
         }
     var widgetStartTm2: String
-        get() = widgetstartTm2.text.toString()
+        get() = widgetStartTime.text.toString()
         set(name) {
-            widgetstartTm2.text = name
+            widgetStartTime.text = name
         }
     var widgetEndTm2: String
-        get() = widgetendTm2.text.toString()
+        get() = widgetEndTime.text.toString()
         set(name) {
-            widgetendTm2.text = name
+            widgetEndTime.text = name
+        }
+
+    // Get temperature with plausi
+    var widgetTempS: Int
+        get() {
+            val text = widgetStartTemp.text.toString()
+            return if (text.isEmpty()) 0
+            else if (!text.trim { it <= ' ' }.matches(regEx.toRegex())) 100
+            else try {
+                text.replace("\\D".toRegex(), "").toInt()
+            } catch (_: NumberFormatException) {
+                100 // value must be out of allowed range
+            }
+        }
+        set(value) {
+            if (value > 0) widgetStartTemp.setText(value.toString())
+        }
+
+    var widgetTempE: Int
+        get() {
+            val text = widgetEndTemp.text.toString()
+            return if (text.isEmpty()) 0
+            else if (!text.trim { it <= ' ' }.matches(regEx.toRegex())) 100
+            else try {
+                text.replace("\\D".toRegex(), "").toInt()
+            } catch (_: NumberFormatException) {
+                100
+            }
+        }
+        set(value) {
+            if (value > 0) widgetEndTemp.setText(value.toString())
+        }
+
+    // Get wind with plausi
+    var widgetWindS: Int
+        get() {
+            val text = widgetStartWind.text.toString()
+            return if (text.isEmpty()) 0
+            else if (!text.trim { it <= ' ' }.matches(regEx.toRegex())) 100
+            else try {
+                text.replace("\\D".toRegex(), "").toInt()
+            } catch (_: NumberFormatException) {
+                100
+            }
+
+        }
+
+        set(value) {
+            if (value > 0) widgetStartWind.setText(value.toString())
+        }
+
+    var widgetWindE: Int
+        get() {
+            val text = widgetEndWind.text.toString()
+            return if (text.isEmpty()) 0
+            else if (!text.trim { it <= ' ' }.matches(regEx.toRegex())) 100
+            else try {
+                text.replace("\\D".toRegex(), "").toInt()
+            } catch (_: NumberFormatException) {
+                100
+            }
+        }
+        set(value) {
+            if (value > 0) widgetEndWind.setText(value.toString())
+        }
+
+    // Get start clouds with plausi
+    var widgetCloudsS: Int
+        get() {
+            val text = widgetStartClouds.text.toString()
+            return if (text.isEmpty()) 0
+            else if (!text.trim { it <= ' ' }.matches(regEx.toRegex())) 200
+            else try {
+                val number = text.replace("\\D".toRegex(), "").toInt()
+                // Check plausi and round integer value to decade (number+5)/10*10
+                if (number in 0 .. 100)
+                    return (number + 5) / 10 * 10
+                else 200
+            } catch (_: NumberFormatException) {
+                200
+            }
+        }
+        set(value) {
+            if (value > 0) {
+                // Round integer value to decade by (number+5)/10*10
+                val value1 = (value + 5) / 10 * 10
+                widgetStartClouds.setText(value1.toString())
+            }
+        }
+
+    // Get end clouds with plausi
+    var widgetCloudsE: Int
+        get() {
+            val text = widgetEndClouds.text.toString()
+            return if (text.isEmpty()) 0
+            else if (!text.trim { it <= ' ' }.matches(regEx.toRegex())) 200
+            else try {
+                val number = text.replace("\\D".toRegex(), "").toInt()
+                // Check plausi and round integer value to decade (number+5)/10*10
+                if (number in 0 .. 100)
+                    return (number + 5) / 10 * 10
+                else 200
+            } catch (_: NumberFormatException) {
+                200
+            }
+        }
+        set(value) {
+            if (value > 0) {
+                // Round integer value to decade by (number+5)/10*10
+                val value1 = (value + 5) / 10 * 10
+                widgetEndClouds.setText(value1.toString())
+            }
         }
 
 }

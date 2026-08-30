@@ -2,15 +2,15 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
-#### Version 3.8.4 (2026-08-15)
+#### Version 3.8.4 (2026-08-30)
 - Code improvements
-- The date in names of exported files modified from "date_time" to "date-time"
 - Entering individuals notes proposed by predefined wordings like "Photo", "Flyby", "Fresh imago", …
 - Entering species notes proposed by the predefined wordings "New species", "1st in season" and "Not sure"
 - Cloud %-values rounded to multiples of 10
 - More restrictive plausi for input of metadata numbers
 - "Help" text updated
 - Docs updated
+- Bugfix for importing a species list
 
 #### Version 3.8.3 (2026-07-28)
 - Code improvements

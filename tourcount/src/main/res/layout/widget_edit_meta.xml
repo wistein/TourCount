@@ -35,7 +35,7 @@
             tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/widgetDate1"
+                android:id="@+id/widgetDateTitle"
                 style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/widgetDate2"
+                android:id="@+id/widgetDateValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:paddingEnd="5dp">
 
             <TextView
-                android:id="@+id/widgetStartTm1"
+                android:id="@+id/widgetStartTimeTitle"
                 style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/widgetStartTm2"
+                android:id="@+id/widgetStartTimeValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/widgetEndTm1"
+                android:id="@+id/widgetEndTimeTitle"
                 style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/widgetEndTm2"
+                android:id="@+id/widgetEndTimeValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                 android:paddingEnd="5dp">
 
             <TextView
-                android:id="@+id/widgetTemp1"
+                android:id="@+id/widgetTempTitle"
                 style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/widgetWind1"
+                android:id="@+id/widgetWindTitle"
                 style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/widgetClouds1"
+                android:id="@+id/widgetCloudsTitle"
                 style="@style/HeadlineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
             android:paddingEnd="5dp">
 
             <EditText
-                android:id="@+id/widgetStartTemp"
+                android:id="@+id/widgetStartTempValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -215,7 +215,7 @@
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
-                android:id="@+id/widgetStartWind"
+                android:id="@+id/widgetStartWindValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
-                android:id="@+id/widgetStartClouds"
+                android:id="@+id/widgetStartCloudsValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -260,7 +260,7 @@
             tools:ignore="RtlSymmetry">
 
             <EditText
-                android:id="@+id/widgetEndTemp"
+                android:id="@+id/widgetEndTempValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -277,7 +277,7 @@
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
-                android:id="@+id/widgetEndWind"
+                android:id="@+id/widgetEndWindValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
-                android:id="@+id/widgetEndClouds"
+                android:id="@+id/widgetEndCloudsValue"
                 style="@style/BoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

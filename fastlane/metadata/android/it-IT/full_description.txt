@@ -2,13 +2,13 @@ TourCount supporta la registrazione delle farfalle in base alla specie e con loc
 
 Novità della versione 3.8.4:
 - Miglioramenti al codice
-- I nomi dei file esportati sono stati modificati da “_date_time_” a “_date-time_”
 - Inserimento di note relative a singoli esemplari utilizzando le diciture predefinite “Foto”, ‘Sorvolo’, “Imago giovane”, …
 - Inserimento di note relative alle specie utilizzando le diciture predefinite “Nuova specie”, “Non sicuro” …
 - Il valore immesso in % relativo alla nuvolosità viene arrotondato ai valori più vicini a 10
 - Controlli di plausibilità più rigorosi per l'inserimento dei metadati numerici
 - Testo “Aiuto” aggiornato
 - Documenti aggiornati
+- Correzione di un bug relativo all'importazione di un elenco di specie
 
 Caratteristiche:
 - La raccolta dei dati si basa su un soggiorno in una regione in cui sono presenti le farfalle tipiche di quella zona.

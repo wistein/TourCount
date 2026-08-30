@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_edit_section.xml is used by EditSpeciesListActivity.kt
+<!-- activity_edit_section.xml
+     used by EditSpeciesListActivity.kt.
      ScrollView is always at the bottom of the view.
--->
+     Last edited on 2026-08-27
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/editSpecList"
     android:background="#006600"

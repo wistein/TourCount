@@ -5,7 +5,7 @@
 <html lang="en">
 
 <!-- User instructions help.html --
-     Last edited on 2026-08-13
+     Last edited on 2026-08-21
  -->
 
 <h3><font color=#D9FDD9>1. Introduction</font></h3>
@@ -17,11 +17,19 @@ Databases can be created individually per region and adapted regarding expected 
 <br><br>
 The recorded data (metadata, counts and remarks) may either be read on the smartphone for transfer into a butterfly registration system, <br>e.g. on https://www.falterfunde.de/platform/s4y/falterfunde/index.do<br> or exported and transferred to a PC for your own processing, where they can be better read or edited.
 <br><br>
-The app is published on https://github.com/wistein/TourCount with source code and documentation. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services. It demands only for permits which are needed for its serviceable functions:<br><br>
-- Storage access which is needed for importing species data and DB files, exporting data and the counting results to DB. XLSX or CSV files, <br>
-- Location service with GPS the get the location of each count,<br>
-- optional internet access for reverse geocoding (get detailed address data) by Nominatim service of OpenStreetMap and <br>
-- wakelock to hinder the app from being switched off by the system when inactive, but get dimmed and get an insensitive screen when pocketed or held near the body.
+The app is published on<br>
+https://github.com/wistein/TourCount<br>
+with source code and documentation. It is open source, has neither tracking nor advertising functions and does not make use of Google Play Services. It demands only for the following permits which are needed for its serviceable functions:<br><br>
+- <b>Storage access</b> which is needed for importing species<br>
+&nbsp;&nbsp;&nbsp;data and DB files, exporting data and the counting<br>
+&nbsp;&nbsp;&nbsp;results to DB. XLSX or CSV files, <br>
+- <b>GPS location service</b> the get the location of each count,<br>
+- optional <b>internet access</b> for reverse geocoding<br>
+&nbsp;&nbsp;&nbsp;(get detailed address data) by Nominatim service of<br>
+&nbsp;&nbsp;&nbsp;OpenStreetMap and<br>
+- <b>wakelock</b> to hinder the app from being switched off<br>
+&nbsp;&nbsp;&nbsp;by the system when inactive, but get dimmed and get an<br>
+&nbsp;&nbsp;&nbsp;insensitive screen when pocketed or held near the body.
 <br><br><br>
 
 <h3><font color=#D9FDD9>2. Setting up</font></h3>
@@ -65,9 +73,12 @@ Then you should enter general parts of the master data under "<b><font color="#D
 Location-related metadata derived from GPS coordinates will be inserted automatically, when reverse geocoding is activated under “Settings”. Some of those could also be manually edited or changed anytime later. Clicking the storage icon saves the data and finishes this function.
 <br><br>
 When you have created the counting list for all expected species and entered the metadata, the database is ready for export as a loadable "<b>Basic Database</b>" file by the function „<b><font color="#D9FDD9">Export as Basic DB</font></b>“ in the menu of the starting page. This saves a copy of the prepared database as an empty "<b>Basic Database</b>" (tourcount0_dl_Tourname.db, where “Tourname” is taken from the metadata, if available) within the app’s data directory "<b>Documents/TourCount</b>".<br>
-The app data directory is created during the first app call. When uninstalling TourCount you will not lose your data as this directory remains untouched.<br><br>
-The Basic DB does not contain any count data, comments, or inspection-specific metadata. It just stores the structure of the set-up DB and serves as a template for further tour recordings in the region. It should be renamed suitably, e.g. "tourcount0_en_region xyz.db".<br>
+The app data directory is created during the first app call. When uninstalling TourCount you will not lose your data as this directory remains untouched.
+<br><br>
+The Basic DB does not contain any count data, comments, or inspection-specific metadata. It just stores the structure of the set-up DB and serves as a template for further field surveys in the region. It should be renamed suitably, e.g. "tourcount0_en_region xyz.db".<br>
 <font color=#2C87FD><b>Note:</b></font> The file name of a Basic DB must always start with the string "<b>tourcount0</b>" ("tourcount" with a trailing "0").
+<br><br>
+After importing a Basic DB, all that remains to prepare for a field survey is to enter the survey-specific metadata (date, start time, temperature, wind, and cloud cover).
 <br><br>
 Alternatively you can import and adapt a self-created Basic DB for your tour. Or you may substitute the species list by importing a previously exported species list from TourCount or TransektCount (if installed). Examples for downloading, partly from other European countries than Germany, are provided on<br>
 https://github.com/wistein/TourCount/tree/master/docs.
@@ -86,22 +97,22 @@ with
 <br><br>
 - <b><font color="#0060FF">blue</font></b> = fixed string parts,<br>
 - <b>dl</b> = data language of local species names<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;("de", "en", "es", "fr", "it"),<br>
+&nbsp;&nbsp;&nbsp;("de", "en", "es", "fr", "it"),<br>
 - <b>Tourname</b> = tourname<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filtered for filename conformity),<br>
+&nbsp;&nbsp;&nbsp;(filtered for filename conformity),<br>
 - <b>StartDate</b> = date and time of the tour start<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(YYYYMMDD-hhmm).<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If not specified the current storage date,<br>
+&nbsp;&nbsp;&nbsp;(YYYYMMDD-hhmm).<br>
+&nbsp;&nbsp;&nbsp;If not specified the current storage date,<br>
 - <b>os</b> = output sorting code ("n" names, "c" codes),<br>
 - <b>CurrentDate</b> = current storage date<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(YYYYMMDD-hhmm).
+&nbsp;&nbsp;&nbsp;(YYYYMMDD-hhmm).
 <br><br><br>
 
 <h3><font color=#D9FDD9>3. Usage</font></h3>
 After starting the app, a message about the first GPS fix is displayed and, if applicable, with a message indicating that the detected position is outside the European fauna area (as a reminder that only European species are supported).
 <br><br>
 Start with "<b><font color="#D9FDD9">Edit Metadata</font></b>". Enter the specific metadata of the tour.<br>
-You may enter the current date and time by clicking the related field or enter any date and time by long pressing the related field. Finish with the "Save" button.
+You may enter the current date and time by clicking the related field or enter any date and time by long pressing the related field. To suppress unreal values for temperature, wind or clouds, plausibility checks are done when saving and refuse saving until suitable values are entered. The percentage value entered for cloud cover is rounded to the nearest ten when saved. Finish with the "Save" button.
 <br><br>
 Continue with "<b><font color="#D9FDD9">Counting</font></b>". Select the species by clicking the species line to scroll down the species list.<br>
 To count just click the (+)-button of the category (♂|♀, ♂, ♀, Pupa, Larva, Ovo) of the species. The counter will increment and the <b>Individuals page</b> opens. Location info, latitude, longitude, height as well as date and time will be added automatically. Location may be edited and condition rating state 0 - 6 with 0 (undefined), 1 (very good) and 6 (very bad) as well as multiple counts may be applied here.<br>
@@ -131,14 +142,19 @@ If the message "TourCount not responding" appears, please reply with "<b><font c
 <h3><font color=#D9FDD9>4. Further functions</font></h3>
 The app menu on the starting page has Settings, Reset, Import, Export, Info and Help functions.
 <br><br>
-In "<b><font color="#D9FDD9">Settings</font></b>" you may adapt the look an feel in some aspects to your wishes, e.g. sorting order of lists and data export, left-/right-hand counting page or sounds and haptic button feedback.
+In "<b><font color="#D9FDD9">Settings</font></b>" you may adapt the look an feel in some aspects to your wishes, e.g. sorting order of lists and data export, left-/right-hand counting page, sounds and haptic button feedback as well as GPS-based location assistance.
 <br><br>
-<b>Reverse Geocoding</b> allows for automatic insertion of statements of place (postal code, city, place) into metadata and location data into the individual's record.<br>
+Here are a few explanations regarding the latter:
+Through "<b><font color="#D9FDD9">GPS Reverse Geocoding</font></b>" (generating address data from GPS coordinates), the location details of the starting point (country, state, ZIP code, city, town, locality) are obtained after GPS synchronization and the first successful address query. When editing the metadata, this initial location information is incorporated into the metadata. For each counted individual, the current location is then automatically added to the individual’s data record alongside the coordinates and elevation data.
+<br><br>
 For Reverse Geocoding (to produce address info from GPS coordinates) the free service of Nominatim from OpenStreetMap is used (since 2026 limited to 1 request per second and app).<br>
 To exclude abuse and for durably reliable queries of address data a valid own email address is necessary.<br>
 The mail address will be treated confidentially and will only be used to contact you in case of service problems.<br>
 For more info see<br>
  https://wiki.openstreetmap.org/wiki/Nominatim.
+<br><br>
+The “<b><font color="#D9FDD9">Address request interval</font></b>” can be set between 10 and 30 seconds (default: 20 seconds). The free Nominatim service should be used only as needed locally and as sparingly as possible.<br>
+To strike a balance between performance and power consumption, the “<b><font color="#D9FDD9">Min. Distance for GPS Update</font></b>” can be set between 2 and 50 m (default: 10 m) and the “<b><font color="#D9FDD9">GPS Polling Interval</font></b>” between 2 and 20 sec (default: 5 sec).
 <br><br>
 For preparing a new tour you may use "<b><font color="#D9FDD9">Reset Data</font></b>" to reset the tour-specific metadata and all count data.<br>
 Alternatively you may import the Basic DB, another tourcount-DB or a species list.
