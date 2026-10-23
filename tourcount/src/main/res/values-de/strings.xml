@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml German strings,
-     last edited on 2026-07-16 -->
+
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     German strings
+
+     Last edited 2026-10-20
+************************************************************************************************ -->
 
 <resources>
 
@@ -30,9 +49,9 @@
     <string name="editMetaButton">Metadaten editieren</string>
     <string name="exportBasisMenu">Export Basis-DB</string>
     <string name="exportCSVMenu">Export d. Ergebnisse (csv)</string>
-    <string name="exportXLSXMenu">Export d. Ergebnisse (xlsx)</string>
     <string name="exportMenu">Export akt. DB</string>
     <string name="exportSpeciesListMenu">Export Speziesliste</string>
+    <string name="exportXLSXMenu">Export d. Ergebnisse (xlsx)</string>
     <string name="importBasisMenu">Import Basis-DB</string>
     <string name="importButton">Import</string>
     <string name="importDB">Die Datenbank wurde importiert.</string>
@@ -51,12 +70,12 @@
     <string name="results">TourCount-Ergebnis</string>
     <string name="saveBasisDB">Export der Basis-DB nach \'Documents/TourCount\'</string>
     <string name="saveCSV">Export der CSV-Datei nach \'Documents/TourCount\'</string>
-    <string name="saveXLSX">Export der XLSX-Datei nach \'Documents/TourCount\'</string>
     <string name="saveDB">Export der internen DB nach \'Documents/TourCount\'</string>
     <string name="saveFail">Die Datenbank konnte nicht exportiert werden!</string>
     <string name="saveFailList">Die Speziesliste konnte nicht exportiert werden!</string>
     <string name="saveFailListTransect">Export nach \'Documents/TransektCount\' schlug fehl!</string>
     <string name="saveList">Export der Speziesliste.</string>
+    <string name="saveXLSX">Export der XLSX-Datei nach \'Documents/TourCount\'</string>
     <string name="showResultsButton">Ergebnis anzeigen</string>
     <string name="sort_codes">Spezies sortiert nach Spezies-Codes</string>
     <string name="sort_names">Spezies sortiert nach Spezies-Namen</string>
@@ -68,16 +87,17 @@
     <string name="viewHelpTitle">Hilfe</string>
     <string name="viewLicenseTitle">Lizenzen</string>
     <string name="waitImport">Bitte warten, der Import läuft!</string>
+    <string name="yesButton">Ja</string>
     <string name="zList">Zählliste</string>
 
     <!-- FileChooser -->
+    <string name="br_Error">Es gibt ein Problem mit der gewählten Datei!</string>
     <string name="fileHeadlineBasicDB">TourCount Basis-DB-Dateien</string>
     <string name="fileHeadlineCSV">Spezieslisten</string>
     <string name="fileHeadlineDB">Liste der DB-Dateien</string>
     <string name="fileSize">Größe</string>
     <string name="importHead">Datenimport</string>
     <string name="noFile">Keine Datei vorhanden!</string>
-    <string name="br_Error">Es gibt ein Problem mit der gewählten Datei!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">Bundesland</string>
@@ -141,11 +161,11 @@
     <string name="hintNotYet">Keine</string>
     <string name="isDouble"> ist doppelt!</string>
     <string name="isEmpt">Name oder Code fehlt!</string>
-    <string name="savedChange">Änderungen wurden gespeichert</string>
     <string name="labelEditSpecButton">Liste editieren</string>
     <string name="notesHint">Bemerkung einfügen&#8230;</string>
     <string name="orCode"> oder Code</string>
     <string name="presentSpecs">Arten der Zählliste:</string>
+    <string name="savedChange">Änderungen wurden gespeichert</string>
     <string name="spname">Name</string>
     <string name="titleEdit">Tour-Name:</string>
     <string name="titleHint">Tour-Bezeichnung hier einfügen&#8230;</string>
@@ -158,8 +178,8 @@
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Arten hinzufügen</string>
     <string name="hintSearch">Such-String</string>
-    <string name="searchCharsL">Bitte >1 Buchst.</string>
     <string name="labelAddSpecButton">Arten hinzufügen</string>
+    <string name="searchCharsL">Bitte >1 Buchst.</string>
     <string name="specsCommonLang">Achtung, altes DB- oder Artenlistenformat! Zur korrekten Verwendung von lokalen Namen muss die Sprache der Daten unter "Einstellungen" gewählt werden.</string>
     <string name="specsToAdd">Weitere Arten:</string>
 
@@ -186,26 +206,26 @@
     <string name="pref_button_vib_summary">Erzeuge eine Vibration wenn ein Zähl-Button getippt wird.</string>
     <string name="pref_csv_output_dialog">Sortierung der Ergebnisse und der exportierten csv-Tabelle</string>
     <string name="pref_csv_output_title">Sortierung der Ergebnisse</string>
+    <string name="pref_data_language">Wahl der Datensprache</string>
+    <string name="pref_data_language_Summ">Wähle die Sprache für die Lokal-Namen der Schmetterlinge.</string>
+    <string name="pref_data_language_ok">Datensprache (automatisch erkannt)</string>
     <string name="pref_distance_title">Min. Distanz für GPS-Update</string>
     <string name="pref_email_string">Mail-Adresse für OSM-Geocoder</string>
     <string name="pref_email_string_summ">Erforderlich für die zuverlässige Abfrage der Adressdaten per OSM-Nominatim-Reverse-Geocoder.\nDie Mail-Adresse wird vertraulich behandelt und nur verwendet, um bei Problemen zu kontaktieren. Siehe https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="pref_request_title">Adress-Abfrageintervall</string>
+    <string name="pref_gps">GPS mit Ortsdaten</string>
+    <string name="pref_gps_summ">Wähle diese Option, wenn per GPS der aktuelle Standort bestimmt und die Ortsangaben durch Inverse Geocodierung ermittelt werden sollen.</string>
     <string name="pref_interval_title">GPS-Abfrageintervall</string>
     <string name="pref_left_hand">Linkshänder</string>
     <string name="pref_left_hand_summ">Zeige Zählansicht für Linkshänder.</string>
-    <string name="pref_metadata">GPS inverse Geokodierung</string>
-    <string name="pref_metadata_summ">Wähle diese Option, wenn die Ortsangaben durch Inverse Geocodierung ermittelt und überschrieben werden sollen.</string>
     <string name="pref_proximity_dialog">Wähle die Empfindlichkeit zwecks Abschalten des Bildschirms.</string>
     <string name="pref_proximity_title">Näherungsensor</string>
-    <string name="pref_data_language">Wahl der Datensprache</string>
-    <string name="pref_data_language_ok">Datensprache (automatisch erkannt)</string>
-    <string name="pref_data_language_Summ">Wähle die Sprache für die Lokal-Namen der Schmetterlinge.</string>
+    <string name="pref_request_title">Adress-Abfrageintervall</string>
     <string name="pref_sort_order">Sortierung der Arten</string>
     <string name="pref_sort_order_sp_summ">Sortierung der Artenliste.</string>
     <string name="prefs_appearance">Aussehen</string>
-    <string name="prefs_data">Daten</string>
     <string name="prefs_counting">Zählen</string>
     <string name="prefs_csv_output_title">Ausgabe</string>
+    <string name="prefs_data">Daten</string>
     <string name="prefs_metadata">Metadaten</string>
     <string name="prefs_sound_vib">Töne/Vibration</string>
 
@@ -258,19 +278,23 @@
     <string name="hintTitle">Titel:</string>
     <string name="hintTourNotes">Tour-Bem.:</string>
     <string name="no_provider">Kein Service-Provider verfügbar!</string>
+    <string name="not_available">Nicht verfügbar!</string>
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Bemerkung zur Tour:</string>
     <string name="warnCount">Nur Werte zwischen 1 … 999999 erlaubt!</string>
-    <string name="not_available">Nicht verfügbar!</string>
 
     <!-- Permissions -->
     <string name="app_settings">System-Einstellungen</string>
+    <string name="dialog_fine_location_denied">Sie haben die Standortberechtigung nicht erteilt.\n\nStandortdaten von Tour und Schmetterlingen können nun nicht per GPS gewonnen werden.\n\nDie Berechtigung kann ggf. später über die Android-System-Einstellungen erteilt werden.</string>
     <string name="dialog_fine_location_message">Die Registrierung der Schmetterlinge sollte mit möglichst genauem Standort erfolgen.</string>
     <string name="dialog_fine_location_title">Erlaube den genauen Standort zu erfassen.</string>
-
+    <string name="dialog_location_dropped">Sie haben die Standortberechtigung entzogen.\n\nStandortdaten von Tour und Schmetterlingen können nun nicht mehr per GPS gewonnen werden.\n\nDie Berechtigung kann nur wieder über die Android-System-Einstellungen erteilt werden.</string>
+    <string name="dialog_location_dropped_title">Standortberechtigung entzogen</string>
+    <string name="dialog_location_message">Um GPS-basierte Standortdaten für eine Tour und jeden einzelnen Schmetterling zu erhalten, müssen Sie die Standortberechtigung erteilen.\n\nBitte wählen Sie die Optionen „Zugriff nur während der Nutzung der App zulassen“ und „Genauen Standort verwenden“.</string>
+    <string name="dialog_location_title">Bitte Standort-Berechtigung zulassen</string>
     <string name="dialog_storage_message1">Bitte erteile TourCount die Berechtigung \'Zugriff auf alle Dateien\'\n\nzwecks Im- und Export von TourCount-Dateien.\n\nAnsonsten können weder Datenbanken, Listen noch Ergebnisse im- oder exportiert werden.</string>
     <string name="dialog_storage_message2">Bitte erteile TourCount die Berechtigung \'Zugriff auf alle Dateien\'\n\nzwecks Im- und Export von TourCount-Dateien.\n\nVersuche es danach erneut.</string>
-    <string name="dialog_storage_title">Erlaube den \'Zugriff auf alle Dateien\'\n(nur TourCount-spezifische).</string>
+    <string name="dialog_storage_title">Zugriff auf alle Dateien</string>
     <string name="storage_perm_denied">Die für TourCount notwendige Speicher-Berechtigung fehlt, Im- und Export von Daten ist nicht möglich.</string>
 
 </resources>

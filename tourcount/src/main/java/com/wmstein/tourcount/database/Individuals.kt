@@ -1,12 +1,29 @@
 package com.wmstein.tourcount.database
 
-/*************************************************
- * Definitions for table Individuals
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * Definitions for table 'Individuals'
+ *
  * Created by wmstein for TourCount on 2016-04-20
  * Last edited in Java on 2022-03-25,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-05-26
- */
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 class Individuals {
     @JvmField
     var id = 0

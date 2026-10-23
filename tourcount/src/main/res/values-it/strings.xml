@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml Italian strings,
-     last edited 2026-07-16 -->
+
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     Italian strings
+
+     Last edited 2026-10-20
+************************************************************************************************ -->
 
 <resources>
 
@@ -30,9 +49,9 @@
     <string name="editMetaButton">Modifica dei metadati</string>
     <string name="exportBasisMenu">Esporta DB di base</string>
     <string name="exportCSVMenu">Export dei risultati (csv)</string>
-    <string name="exportXLSXMenu">Export dei risultati (xlsx)</string>
     <string name="exportMenu">Esporta DB attuale</string>
     <string name="exportSpeciesListMenu">Esporta lista delle specie</string>
+    <string name="exportXLSXMenu">Export dei risultati (xlsx)</string>
     <string name="importBasisMenu">Imposta DB di base</string>
     <string name="importButton">Import</string>
     <string name="importDB">Il database è stato importato.</string>
@@ -51,12 +70,12 @@
     <string name="results">Risultato di TourCount</string>
     <string name="saveBasisDB">Esporre il database di base in \‘Documents/TourCount\‘</string>
     <string name="saveCSV">Esporre il file csv in \‘Documents/TourCount\‘</string>
-    <string name="saveXLSX">Esporre il file xlsx in \‘Documents/TourCount\‘</string>
     <string name="saveDB">Esporre il database interno in \‘Documents/TourCount\‘</string>
     <string name="saveFail">Impossibile esportare il database!</string>
     <string name="saveFailList">Impossibile esportare la lista delle specie!</string>
     <string name="saveFailListTransect">Esportazione in \‘Documents/TransektCount\’ non riuscita!</string>
     <string name="saveList">Esportazione lista specie</string>
+    <string name="saveXLSX">Esporre il file xlsx in \‘Documents/TourCount\‘</string>
     <string name="showResultsButton">Mostra risultato</string>
     <string name="sort_codes">Specie ordinate per codice specie</string>
     <string name="sort_names">Specie ordinate per nome della specie</string>
@@ -68,16 +87,17 @@
     <string name="viewHelpTitle">Aiuto</string>
     <string name="viewLicenseTitle">Licenze</string>
     <string name="waitImport">Attendere, l\'importazione è in corso!</string>
+    <string name="yesButton">Sì</string>
     <string name="zList">Lista di conteggio</string>
 
     <!-- FileChooser -->
+    <string name="br_Error">C\'è un problema con il file selezionato!</string>
     <string name="fileHeadlineBasicDB">File DB di base TourCount</string>
     <string name="fileHeadlineCSV">Lista delle specie TourCount</string>
     <string name="fileHeadlineDB">File DB TourCount</string>
     <string name="fileSize">Dimensioni</string>
     <string name="importHead">Importazione dati</string>
     <string name="noFile">Nessun file disponibile!</string>
-    <string name="br_Error">C\'è un problema con il file selezionato!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">Stato federale</string>
@@ -142,11 +162,11 @@
     <string name="hintNotYet">Nessuna</string>
     <string name="isDouble"> è doppio!</string>
     <string name="isEmpt">Manca il nome della sezione!</string>
-    <string name="savedChange">Modifiche sono state salvate</string>
     <string name="labelEditSpecButton">Modifica lista</string>
     <string name="notesHint">Inserisci una nota&#8230;</string>
     <string name="orCode"> o codice</string>
     <string name="presentSpecs">Specie nella lista:</string>
+    <string name="savedChange">Modifiche sono state salvate</string>
     <string name="spname">Nome</string>
     <string name="titleEdit">Nome della tour</string>
     <string name="titleHint">Inserire qui il nome del tour&#8230;</string>
@@ -159,8 +179,8 @@
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Aggiungi specie</string>
     <string name="hintSearch">Cerca</string>
-    <string name="searchCharsL">>1 lettere, per favore</string>
     <string name="labelAddSpecButton">Aggiungi specie</string>
+    <string name="searchCharsL">>1 lettere, per favore</string>
     <string name="specsCommonLang">Attenzione: vecchio formato del database o lista delle specie! Per utilizzare correttamente i nomi comuni, è necessario selezionare la lingua dei dati in «Impostazioni».</string>
     <string name="specsToAdd">Altre specie:</string>
 
@@ -187,26 +207,26 @@
     <string name="pref_button_vib_summary">Crea una vibrazione quando si preme un pulsante di conteggio</string>
     <string name="pref_csv_output_dialog">Ordinamento dei risultati e della tabella csv esportata</string>
     <string name="pref_csv_output_title">Ordinamento dei risultati</string>
+    <string name="pref_data_language">Seleziona la lingua dei dati</string>
+    <string name="pref_data_language_Summ">Seleziona la lingua per i nomi comuni delle farfalle.</string>
+    <string name="pref_data_language_ok">Lingua dei dati (rilevata automaticamente)</string>
     <string name="pref_distance_title">Distanza minima per l\'aggiornamento GPS</string>
     <string name="pref_email_string">Indirizzo e-mail per OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessario per la ricerca affidabile dei dati dell\'indirizzo tramite OSM-Nominatim-Reverse-Geocoder.\nL\'indirizzo e-mail sarà trattato in modo confidenziale e utilizzato solo per contattarti in caso di problemi. Vedi https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="pref_request_title">Intervallo di richiesta di indirizzi</string>
+    <string name="pref_gps">GPS con dati di localizzazione</string>
+    <string name="pref_gps_summ">Selezionare questa opzione se si desidera determinare la posizione attuale tramite GPS e ricavare i dati di localizzazione tramite geocodifica inversa.</string>
     <string name="pref_interval_title">Intervallo di interrogazione GPS</string>
     <string name="pref_left_hand">Mancino</string>
     <string name="pref_left_hand_summ">Mostra visualizzazione conteggio per mancini</string>
-    <string name="pref_metadata">Geocodifica inversa GPS</string>
-    <string name="pref_metadata_summ">Seleziona questa opzione se desideri che le informazioni sulla posizione vengano determinate tramite geocodifica inversa e sovrascritte.</string>
     <string name="pref_proximity_dialog">Seleziona la sensibilità per spegnere lo screen.</string>
     <string name="pref_proximity_title">Sensore di prossimità</string>
-    <string name="pref_data_language">Seleziona la lingua dei dati</string>
-    <string name="pref_data_language_ok">Lingua dei dati (rilevata automaticamente)</string>
-    <string name="pref_data_language_Summ">Seleziona la lingua per i nomi comuni delle farfalle.</string>
+    <string name="pref_request_title">Intervallo di richiesta di indirizzi</string>
     <string name="pref_sort_order">Ordinamento delle specie</string>
     <string name="pref_sort_order_sp_summ">Ordinamento della lista delle specie</string>
     <string name="prefs_appearance">Aspetto</string>
-    <string name="prefs_data">Dati</string>
     <string name="prefs_counting">Contare</string>
     <string name="prefs_csv_output_title">Emissione</string>
+    <string name="prefs_data">Dati</string>
     <string name="prefs_metadata">Metadati</string>
     <string name="prefs_sound_vib">Suono/Vibrazione</string>
 
@@ -259,19 +279,23 @@
     <string name="hintTitle">Titolo</string>
     <string name="hintTourNotes">Nota tour:</string>
     <string name="no_provider">Servizio GPS non disponibile!</string>
+    <string name="not_available">Non disponibile!</string>
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Nota sul tour:</string>
     <string name="warnCount">Sono ammessi solo valori compresi tra 1 e 999999!</string>
-    <string name="not_available">Non disponibile!</string>
 
     <!-- Permissions -->
     <string name="app_settings">Impostazioni di sistema</string>
+    <string name="dialog_fine_location_denied">Non è stata concessa l\'autorizzazione alla localizzazione.\n\nLe informazioni di localizzazione basate sul GPS relative al percorso e alle singole farfalle non sono disponibili.\n\nL\'autorizzazione può essere concessa in un secondo momento tramite le impostazioni di sistema di Android.</string>
     <string name="dialog_fine_location_message">Il riconoscimento dei tratti di transetto richiede la massima precisione possibile.</string>
     <string name="dialog_fine_location_title">Consenti la localizzazione precisa.</string>
-
+    <string name="dialog_location_dropped">Hai revocato l\'autorizzazione alla localizzazione.\n\nLe informazioni sulla posizione basate sul GPS relative al percorso e alle singole farfalle non sono più disponibili.\n\nL\'autorizzazione può essere riattivata solo tramite le impostazioni di sistema di Android.</string>
+    <string name="dialog_location_dropped_title">Autorizzazione alla localizzazione revocata</string>
+    <string name="dialog_location_message">Per utilizzare le informazioni di localizzazione basate sul GPS relative al percorso e a ciascuna farfalla, è necessario concedere l\'autorizzazione alla localizzazione.\n\nSeleziona le opzioni “Consenti solo durante l\'utilizzo dell\'app” e “Usa posizione precisa”.</string>
+    <string name="dialog_location_title">Autorizza l\'uso della localizzazione</string>
     <string name="dialog_storage_message1">Ti preghiamo di concedere l\'autorizzazione “Accesso a tutti i file” per TourCount\n\nal fine di importare ed esportare i file di TourCount.\n\nIn caso contrario, non sarà possibile importare né esportare né database, né elenchi, né risultati.</string>
     <string name="dialog_storage_message2">Ti preghiamo di concedere l\'autorizzazione “Accesso a tutti i file” per TourCount\n\nal fine di importare ed esportare i file di TourCount.\n\nProva poi di nuovo.</string>
-    <string name="dialog_storage_title">Autorizza la \'Accesso a tutti i file\'\n(solo quelle specifiche di TourCount).</string>
+    <string name="dialog_storage_title">Accesso a tutti i file</string>
     <string name="storage_perm_denied">Manca l\'autorizzazione di salvataggio necessaria per TourCount, non è possibile salvare.</string>
 
 </resources>

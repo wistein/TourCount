@@ -1,5 +1,28 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2025-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * ShowTextDialog.kt
+ * displays the html Help and License Dialogs
+ *
+ * Created by wmstein for TourCount and TransektCount on 2025-07-08,
+ * last edited on 2026-10-21.
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
@@ -24,13 +47,6 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.Locale
 
-/*******************************************************************
- * ShowTextDialog.kt
- * Custom class for displaying the Help and License Dialogs
- *
- * Created by wmstein for TourCount and TransektCount on 2025-07-08,
- * last edited on 2026-07-21.
- */
 class ShowTextDialog : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +64,11 @@ class ShowTextDialog : AppCompatActivity() {
         setContentView(R.layout.activity_dialog)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.show_dialog))
-        { v, windowInsets ->
+        { vc, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             // Apply the insets as a margin to the view. You can also update the view padding
             // if that's more appropriate.
-            v.updateLayoutParams<MarginLayoutParams> {
+            vc.updateLayoutParams<MarginLayoutParams> {
                 topMargin = insets.top
                 leftMargin = insets.left
                 bottomMargin = insets.bottom
@@ -137,12 +153,11 @@ class ShowTextDialog : AppCompatActivity() {
 
     private fun readRawTextFile(id: Int, context: Context): String? {
         val inputStream = context.resources.openRawResource(id)
-        val iSR = InputStreamReader(inputStream)
-        val buf = BufferedReader(iSR)
+        val bReader = BufferedReader(InputStreamReader(inputStream))
         var line: String?
         val text = StringBuilder()
         try {
-            while ((buf.readLine().also { line = it }) != null) text.append(line)
+            while ((bReader.readLine().also { line = it }) != null) text.append(line)
         } catch (_: IOException) {
             return null
         }

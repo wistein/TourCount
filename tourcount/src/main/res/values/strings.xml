@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml English strings
-     last edited on 2026-07-16 -->
+
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     English strings
+
+     Last edited 2026-10-20
+************************************************************************************************ -->
 
 <resources>
 
@@ -45,17 +64,17 @@
     <string name="editMetaButton">Edit Metadata</string>
     <string name="exportBasisMenu">Export Basic DB</string>
     <string name="exportCSVMenu">Export Results (csv)</string>
-    <string name="exportXLSXMenu">Export Results (xlsx)</string>
     <string name="exportMenu">Export Current DB</string>
     <string name="exportSpeciesListMenu">Export Species List</string>
+    <string name="exportXLSXMenu">Export Results (xlsx)</string>
     <string name="importBasisMenu">Import Basic DB</string>
     <string name="importButton">Import</string>
+    <string name="importDB">Your database has been imported.</string>
     <string name="importFail">Your database could not be imported!</string>
     <string name="importFileMenu">Import DB</string>
     <string name="importList">The species list has been imported.</string>
     <string name="importListFail">The species list could not be imported!</string>
     <string name="importSpeciesListMenu">Import Species List</string>
-    <string name="importDB">Your database has been imported.</string>
     <string name="individuals">Individuals</string>
     <string name="missingEmail">Please enter a valid email address under Settings for reliable location detection.</string>
     <string name="name_spec">Species Name</string>
@@ -66,12 +85,13 @@
     <string name="results">TourCount Result</string>
     <string name="saveBasisDB">Exporting Basic DB to \'Documents/TourCount\'</string>
     <string name="saveCSV">Exporting the CSV-file to \'Documents/TourCount\'</string>
-    <string name="saveXLSX">Exporting the XLSX-file to \'Documents/TourCount\'</string>
     <string name="saveDB">Exporting internal DB to \'Documents/TourCount\'</string>
     <string name="saveFail">Your database could not be exported!</string>
     <string name="saveFailList">The species list could not be exported!</string>
     <string name="saveFailListTransect">Export to \'Documents/TransektCount\' failed!</string>
     <string name="saveList">Species list exported.</string>
+    <string name="saveXLSX">Exporting the XLSX-file to \'Documents/TourCount\'</string>
+    <string name="showResultsButton">Show Results</string>
     <string name="sort_codes">Species sorted by species codes</string>
     <string name="sort_names">Species sorted by species names</string>
     <string name="sort_time">Individuals sorted by registered time</string>
@@ -81,18 +101,18 @@
     <string name="title">Species-specific counting\n\nof butterflies on walks</string>
     <string name="viewHelpTitle">Help</string>
     <string name="viewLicenseTitle">Licenses</string>
-    <string name="showResultsButton">Show Results</string>
     <string name="waitImport">Please wait, import may take a while!</string>
+    <string name="yesButton">Yes</string>
     <string name="zList">Counting List</string>
 
     <!-- FileChooser -->
+    <string name="br_Error">There is a problem with the selected file!</string>
     <string name="fileHeadlineBasicDB">TourCount Basic DB files</string>
     <string name="fileHeadlineCSV">Species lists</string>
     <string name="fileHeadlineDB">List of selectable DB files</string>
     <string name="fileSize">Size</string>
     <string name="importHead">Data Import</string>
     <string name="noFile">No file available!</string>
-    <string name="br_Error">There is a problem with the selected file!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">State</string>
@@ -139,7 +159,6 @@
     <string name="zcoord">Height (m)</string>
 
     <!-- CountingActivity -->
-	<string name="takePhoto">Take Photo</string>
     <string name="action_share">Share</string>
     <string name="chooserTitle">Select photo app</string>
     <string name="deleteButton">Remove</string>
@@ -149,6 +168,7 @@
     <string name="noPhotoPermit">The right to take photos is missing.</string>
     <string name="saveCountsButton">Save</string>
     <string name="send_to">Share notes</string>
+    <string name="takePhoto">Take Photo</string>
 
     <!-- EditSpeciesListActivity -->
     <string name="duplicate">Each name must be unique!</string>
@@ -156,11 +176,11 @@
     <string name="hintNotYet">None</string>
     <string name="isDouble"> is double!</string>
     <string name="isEmpt">Name or Code is empty!</string>
-    <string name="savedChange">Changes have been saved</string>
     <string name="labelEditSpecButton">Edit List</string>
     <string name="notesHint">Type notes here&#8230;</string>
     <string name="orCode"> or code</string>
     <string name="presentSpecs">Species in list:</string>
+    <string name="savedChange">Changes have been saved</string>
     <string name="spname">Name</string>
     <string name="titleEdit">Tour Name:</string>
     <string name="titleHint">Insert tour name here&#8230;</string>
@@ -173,8 +193,8 @@
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Add Species</string>
     <string name="hintSearch">Search string</string>
-    <string name="searchCharsL">Please, >1 chars.</string>
     <string name="labelAddSpecButton">Add Species</string>
+    <string name="searchCharsL">Please, >1 chars.</string>
     <string name="specsCommonLang">Note: This is the old DB or species list format! To ensure common names are displayed correctly, you must select the data language under “Settings”.</string>
     <string name="specsToAdd">Further species:</string>
 
@@ -183,7 +203,7 @@
     <string name="changelog_show_full">more&#8230;</string>
     <string name="changelog_title">What\'s New?</string>
     <string name="title_help_dialog">Help</string>
-    <string name="title_license_dialog">License</string>
+    <string name="title_license_dialog">Licenses</string>
 
     <!-- Preferences -->
     <string name="email_hint">Please type in a valid email address here</string>
@@ -201,26 +221,26 @@
     <string name="pref_button_vib_summary">Make a vibration upon pressing a count button.</string>
     <string name="pref_csv_output_dialog">Sort order of the results and exported csv-table</string>
     <string name="pref_csv_output_title">Sorting the Results</string>
+    <string name="pref_data_language">Select data language of species list</string>
+    <string name="pref_data_language_Summ">Set language for the common names of the butterflies.</string>
+    <string name="pref_data_language_ok">Data language (automatically detected)</string>
     <string name="pref_distance_title">Min. distance for GPS update</string>
     <string name="pref_email_string">Mail Address for OSM Geocoder</string>
     <string name="pref_email_string_summ">Necessary for reliable query of address data per OSM Nominatim Reverse Geocoder.\nThe mail address will be treated confidentially and will only be used to contact you in case of service problems. See https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="pref_request_title">Address request interval</string>
+    <string name="pref_gps">GPS with Locality Data</string>
+    <string name="pref_gps_summ">Select this option if you want the current location to be determined via GPS and the locality data to be derived through inverse geocoding.</string>
     <string name="pref_interval_title">GPS polling interval</string>
     <string name="pref_left_hand">Left-hander</string>
     <string name="pref_left_hand_summ">Show left-hander counter view.</string>
-    <string name="pref_metadata">GPS Reverse Geocoding</string>
-    <string name="pref_metadata_summ">When selected, tries to substitute the location metadata you entered by Reverse Geocoding.</string>
     <string name="pref_proximity_dialog">Set the sensitivity for switching off the screen.</string>
     <string name="pref_proximity_title">Proximity Sensor</string>
-    <string name="pref_data_language">Select data language of species list</string>
-    <string name="pref_data_language_ok">Data language (automatically detected)</string>
-    <string name="pref_data_language_Summ">Set language for the common names of the butterflies.</string>
+    <string name="pref_request_title">Address request interval</string>
     <string name="pref_sort_order">Sorting of Species</string>
     <string name="pref_sort_order_sp_summ">Sort order of your species list.</string>
-    <string name="prefs_data">Data</string>
     <string name="prefs_appearance">Appearance</string>
     <string name="prefs_counting">Counting</string>
     <string name="prefs_csv_output_title">Output</string>
+    <string name="prefs_data">Data</string>
     <string name="prefs_metadata">Metadata</string>
     <string name="prefs_sound_vib">Sound/Vibration</string>
 
@@ -273,19 +293,23 @@
     <string name="hintTitle">Title:</string>
     <string name="hintTourNotes">Tour notes:</string>
     <string name="no_provider">No Service Provider available!</string>
+    <string name="not_available">Not available!</string>
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Tour Notes:</string>
     <string name="warnCount">Only values between 1 … 999999 allowed!</string>
-    <string name="not_available">Not available!</string>
 
     <!-- Permissions -->
     <string name="app_settings">System Settings</string>
+    <string name="dialog_fine_location_denied">You have not granted location permission.\n\nGPS-based location info for the tour and individual butterflies is not available.\n\nThe permission may be granted later through the Android system settings.</string>
     <string name="dialog_fine_location_message">Registering butterflies should be done with precise location data.</string>
     <string name="dialog_fine_location_title">Allow to use precise location.</string>
-
+    <string name="dialog_location_dropped">You have revoked the location permission.\n\nGPS-based location info for the tour and individual butterflies is no longer available.\n\nThe permission can only be re-enabled through the Android system settings.</string>
+    <string name="dialog_location_dropped_title">Location permission revoked</string>
+    <string name="dialog_location_message">To use GPS-based location info for a tour and each butterfly, you must grant location permission.\n\nPlease select the options “Allow only while using the app” and “Use precise location".</string>
+    <string name="dialog_location_title">Allow to use location</string>
     <string name="dialog_storage_message1">Please grant the "All files access" permission for TourCount\n\nin order to import or export TourCount files.\n\nOtherwise, neither databases, lists, nor results can be imported or exported.</string>
     <string name="dialog_storage_message2">Please grant the “All files access” permission for TourCount\n\nso that TourCount files can be imported and exported.\n\nThen try again.</string>
-    <string name="dialog_storage_title">Allow to use "All files access"\n(only TourCount-specific files).</string>
+    <string name="dialog_storage_title">All files access</string>
     <string name="storage_perm_denied">Required storage permission for TourCount is missing, file import and export is not possible.</string>
 	
 </resources>

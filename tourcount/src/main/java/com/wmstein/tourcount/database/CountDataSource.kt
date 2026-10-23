@@ -1,5 +1,32 @@
 package com.wmstein.tourcount.database
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * Class CountDataSource provides methods for table Count
+ *
+ * Basic structure from CountDataSource.java of BeeCount created by Milo Thurston (knirirr)
+ * on 2014-05-05, licensed under the Apache License, Version 2.0.
+ *
+ * Adapted for TourCount by wmstein on 2016-02-18,
+ * last change on 2022-03-23,
+ * converted to Kotlin on 2023-07-06,
+ * last edited on 2026-10-21
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
@@ -9,14 +36,6 @@ import android.database.sqlite.SQLiteDatabase
 
 import com.wmstein.tourcount.database.DbHelper.Companion.COUNT_TABLE
 
-/********************************************************
- * Class CountDataSource provides methods for table Count
- * Basic structure by milo on 05/05/2014.
- * Created by wmstein on 2016-02-18,
- * last change on 2022-03-23,
- * converted to Kotlin on 2023-07-06,
- * last edited on 2026-05-26
- */
 class CountDataSource(context: Context) {
     // Database fields
     private var database: SQLiteDatabase? = null
@@ -451,9 +470,8 @@ class CountDataSource(context: Context) {
         database!!.execSQL(sql)
 
         // Insert the whole COUNT_TABLE data sorted into counts
-        sql = ("INSERT INTO 'counts' (" +
-                "'count_f1i', 'count_f2i', 'count_f3i', 'count_pi', 'count_li', 'count_ei', " +
-                "'name', 'code', 'notes', 'name_g') " +
+        sql = ("INSERT INTO 'counts' ('count_f1i', 'count_f2i', 'count_f3i', 'count_pi', " +
+                "'count_li', 'count_ei', 'name', 'code', 'notes', 'name_g') " +
                 "SELECT " +
                 "count_f1i, count_f2i, count_f3i, count_pi, count_li, count_ei, " +
                 "name, code, notes, name_g " +

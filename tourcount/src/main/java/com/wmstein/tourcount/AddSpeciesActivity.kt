@@ -1,5 +1,34 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * AddSpeciesActivity lets you insert new species into the species list
+ * AddSpeciesActivity is called from CountingActivity
+ * Uses AddSpeciesWidget.kt, widget_add_spec.xml.
+ *
+ * The sorting order of the species to add cannot be changed, as it is
+ * determined by 3 interdependent and correlated arrays in arrays.xml
+ *
+ * Created for TourCount by wmstein on 2019-04-12,
+ * last edited in Java on 2023-05-13,
+ * converted to Kotlin on 2023-05-26,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -32,19 +61,6 @@ import com.wmstein.tourcount.widgets.AddSpeciesWidget
 
 import java.util.Locale
 
-/**********************************************************************
- * AddSpeciesActivity lets you insert new species into the species list
- * AddSpeciesActivity is called from CountingActivity
- * Uses AddSpeciesWidget.kt, widget_add_spec.xml.
- *
- * The sorting order of the species to add cannot be changed, as it is
- * determined by 3 interdependent and correlated arrays in arrays.xml
- *
- * Created for TourCount by wmstein on 2019-04-12,
- * last edited in Java on 2023-05-13,
- * converted to Kotlin on 2023-05-26,
- * last edited on 2026-07-21.
- */
 class AddSpeciesActivity : AppCompatActivity() {
     private var addArea: LinearLayout? = null
     private var addHintArea: LinearLayout? = null
@@ -85,7 +101,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "88, onCreate")
+            Log.i(TAG, "104, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -138,7 +154,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "141, onResume")
+            Log.i(TAG, "157, onResume")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -207,7 +223,7 @@ class AddSpeciesActivity : AppCompatActivity() {
     // Parameter view is necessary for error-free function call
     fun getAddSearchChars(view: View) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "210, View: $view")
+            Log.i(TAG, "226, View: $view")
 
         // Read EditText searchAdd from widget_add_hint.xml
         val searchAdd: EditText = findViewById(R.id.searchA)
@@ -396,7 +412,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "399, onPause")
+            Log.i(TAG, "415, onPause")
 
         countDataSource!!.close()
 
@@ -414,7 +430,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "417, onStop")
+            Log.i(TAG, "433, onStop")
 
         addArea = null
         addHintArea = null
@@ -424,7 +440,7 @@ class AddSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "427, onDestroy")
+            Log.i(TAG, "443, onDestroy")
     }
 
     companion object {

@@ -1,5 +1,29 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * EditMetaActivity collects, partly edits and shows metadata for the current tour
+ *
+ * Created by wmstein on 2016-04-19,
+ * last edit in Java on 2026-07-01,
+ * converted to kotlin on 2026-07-17,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
@@ -41,14 +65,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-/*********************************************************************************
- * EditMetaActivity collects, partly edits and shows metadata for the current tour
- * 
- * Created by wmstein on 2016-04-19,
- * last edit in Java on 2026-07-01,
- * converted to kotlin on 2026-07-17,
- * last edited on 2026-08-21.
- */
 class EditMetaActivity : AppCompatActivity() {
     // Preferences
     private val prefs = getPrefs()
@@ -75,7 +91,7 @@ class EditMetaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "78, onCreate")
+            Log.i(TAG, "94, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM)  // SDK 35+
         {
@@ -118,7 +134,7 @@ class EditMetaActivity : AppCompatActivity() {
             val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG,"121, handleOnBackPressed")
+                        Log.i(TAG,"137, handleOnBackPressed")
 
                     finish()
                     remove()
@@ -143,7 +159,7 @@ class EditMetaActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "146, onResume")
+            Log.i(TAG, "162, onResume")
 
         // Setup data sources
         headDataSource!!.open()
@@ -314,7 +330,7 @@ class EditMetaActivity : AppCompatActivity() {
         if (id == android.R.id.home)  // back button in actionBar
         {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "317, MenuItem home")
+                Log.i(TAG, "333, MenuItem home")
 
             finish()
             return true
@@ -322,7 +338,7 @@ class EditMetaActivity : AppCompatActivity() {
 
         if (id == R.id.menuSaveExit) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "325, MenuItem saveExit")
+                Log.i(TAG, "341, MenuItem saveExit")
 
             if (saveData()) finish()
             return true
@@ -334,7 +350,7 @@ class EditMetaActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "337, onPause")
+            Log.i(TAG, "353, onPause")
 
         headDataSource!!.close()
         sectionDataSource!!.close()
@@ -354,7 +370,7 @@ class EditMetaActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "357, onStop")
+            Log.i(TAG, "373, onStop")
 
         headArea = null
     }
@@ -363,12 +379,12 @@ class EditMetaActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "366, onDestroy")
+            Log.i(TAG, "382, onDestroy")
     }
 
     private fun saveData(): Boolean {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "371 saveData")
+            Log.i(TAG, "387 saveData")
 
         // Save head data
         head!!.observer = emtw!!.widgetOName2

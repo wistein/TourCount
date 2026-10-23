@@ -1,14 +1,15 @@
 TourCount supports species-specific and individually GPS-localized registering of butterflies. 
 
-New in Version 3.8.4:
+New in Version 3.8.5:
 - Code improvements
-- Entering individuals notes proposed by predefined wordings like "Photo", "Flyby", "Fresh imago", …
-- Entering species notes proposed by the predefined wordings "New species", "1st in season" and "Not sure"
-- Cloud %-values rounded to multiples of 10
-- More restrictive plausi for input of metadata numbers
+- Location (GPS) service and Nominatim address service were combined into one settings option
+- Fixed: Changing the settings option "GPS with Locality Data" to take effect needs not restarting the app anymore
+- Fixed: On the Settings page, the “Data Language” option activated for imported old files (DB and Species) now displays the selected data language along with the corresponding icon immediately.
+- Some dialogs supplemented with headlines and icons
+- Location permission handling was redesigned and respective dialogs were improved
+- License information supplemented
 - "Help" text updated
 - Docs updated
-- Bugfix for importing a species list
 
 Features:
 - Data recording is organized for a regional tour with its expected butterfly species.

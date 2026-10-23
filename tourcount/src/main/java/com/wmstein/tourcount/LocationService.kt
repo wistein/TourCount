@@ -1,5 +1,52 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2018-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * Parts based on LocationSrv created by anupamchugh on 28/11/16, published on
+ * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
+ * Copyright © 2016 anupamchugh.
+ *
+ * Licensed under the MIT License (MIT):
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************************************
+ *
+ * LocationService does not rely on Google Play Services.
+ * It provides the location data: latitude, longitude, heightGPS, uncertainty
+ * on request. Its data may be read by several TourCount activities.
+ *
+ * Partly taken from anupamchugh's code and adopted for TourCount by wmstein on 2018-07-26.
+ * Last edited in Java on 2023-05-30,
+ * converted to Kotlin on 2023-05-26,
+ * last edited on 2026-10-21
+ **************************************************************************************************/
+
 import android.Manifest
 import android.app.Service
 import android.content.Context
@@ -23,20 +70,6 @@ import com.wmstein.tourcount.Utils.fromHtml
 
 import java.io.IOException
 
-/*****************************************************************************************
- * LocationService provides the location data: latitude, longitude, heightGPS, uncertainty
- * on request. Its data may be read by most TourCount activities.
- *
- * Based on LocationSrv created by anupamchugh on 28/11/16, published under
- * https://github.com/journaldev/journaldev/tree/master/Android/GPSLocationTracking
- * licensed under the MIT License.
- *
- * Part of that code was adopted for TourCount by wmstein since 2018-07-26.
- *
- * Last edited in Java on 2023-05-30,
- * converted to Kotlin on 2023-05-26,
- * last edited on 2026-05-26
- */
 open class LocationService : Service, LocationListener {
     private var mContext: Context? = null
     private var locationAttributionContext: Context? = null
@@ -58,7 +91,7 @@ open class LocationService : Service, LocationListener {
     constructor(context: Context) {
         this.mContext = context
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "61, getLocation")
+            Log.i(TAG, "93, getLocation")
 
         locationAttributionContext =
             mContext!!.createAttributionContext("locationCheck")
@@ -123,7 +156,7 @@ open class LocationService : Service, LocationListener {
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "126, Error in getLocation: $e")
+                Log.e(TAG, "158, Error in getLocation: $e")
         }
     }
 
@@ -190,11 +223,11 @@ open class LocationService : Service, LocationListener {
                 locationManager = null
 
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "193, StopListener: Stop GPS service.")
+                    Log.i(TAG, "225, StopListener: Stop GPS service.")
             }
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "197, Error in StopListener: $e")
+                Log.e(TAG, "229, Error in StopListener: $e")
         }
     }
 
@@ -242,7 +275,7 @@ open class LocationService : Service, LocationListener {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "245, onDestroy")
+            Log.i(TAG, "277, onDestroy")
 
         super.onDestroy()
     }

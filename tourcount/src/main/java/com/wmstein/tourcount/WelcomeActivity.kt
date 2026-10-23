@@ -1,5 +1,38 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * WelcomeActivity provides the starting page with menu and buttons for
+ * import/export/help/info methods and lets you call
+ * EditMetaActivity, CountingActivity and ShowResultsActivity.
+ * It uses further LocationService and PermissionLocationDialogFragment.
+ *
+ * Database handling is mainly controlled in WelcomeActivity as e.g. upgrade
+ * to current DB version when importing an older DB file by importDBFile().
+ *
+ * Parts based on BeeCount's WelcomeActivity.java of BeeCount created by Milo Thurston (knirirr) on 2014-05-05,
+ * licensed under the Apache License, Version 2.0.
+ *
+ * Changes and additions for TourCount by wmstein since 2016-04-18,
+ * last edited in Java on 2026-07-18,
+ * converted to Kotlin on 2026-07-19,
+ * last edited on 2026-10-19.
+ **************************************************************************************************/
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -53,7 +86,16 @@ import com.wmstein.changelog.ChangeLog
 import com.wmstein.filechooser.AdvFileChooser
 import com.wmstein.tourcount.PermissionsLocationDialogFragment.Companion.newInstance
 import com.wmstein.tourcount.TCLifecycleHandler.Companion.isApplicationVisible
+import com.wmstein.tourcount.TourCountApplication.Companion.addrServiceOn
 import com.wmstein.tourcount.TourCountApplication.Companion.getPrefs
+import com.wmstein.tourcount.TourCountApplication.Companion.heightNN
+import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLocality
+import com.wmstein.tourcount.TourCountApplication.Companion.isFirstStart
+import com.wmstein.tourcount.TourCountApplication.Companion.isStorPermReq
+import com.wmstein.tourcount.TourCountApplication.Companion.lat
+import com.wmstein.tourcount.TourCountApplication.Companion.lon
+import com.wmstein.tourcount.TourCountApplication.Companion.tLocality
+import com.wmstein.tourcount.TourCountApplication.Companion.uncertainty
 import com.wmstein.tourcount.Utils.fromHtml
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.database.DbHelper
@@ -89,21 +131,6 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.system.exitProcess
 
-/***************************************************************************************************
- * WelcomeActivity provides the starting page with menu and buttons for
- * import/export/help/info methods and lets you call
- * EditMetaActivity, CountingActivity and ShowResultsActivity.
- * It uses further LocationService and PermissionLocationDialogFragment.
- *
- * Database handling is mainly controlled in WelcomeActivity as e.g. upgrade
- * to current DB version when importing an older DB file by importDBFile().
- *
- * Based on BeeCount's WelcomeActivity.java by milo on 05/05/2014.
- * Changes and additions for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-07-18,
- * converted to Kotlin on 2026-07-19,
- * last edited on 2026-08-30.
- */
 class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var tourCount: TourCountApplication? = null
     private var baseLayout: View? = null
@@ -111,10 +138,9 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
     // Services
     var locationService: LocationService? = null
-    private var locServiceOn = false // Initial location service state (WelcomeActivity only)
     private lateinit var locIntent: Intent
     var addrRequestService: AddrRequestService? = null
-    var adrIntent: Intent? = null
+    var addrIntent: Intent? = null
     var soundService: SoundService? = null
     private var sndServiceOn = false // Initial sound service state (WelcomeActivity only)
     var sndIntent: Intent? = null
@@ -139,12 +165,12 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var buttonSoundPref = false
     private var alertSoundPref = false
     private var dataLanguage = ""
-    private var metaPref = false
+    private var gpsPref = false
 
     // Permissions
     private var storagePermGranted = false // Storage permission state
     var stoIntent: Intent? = null
-    private var fineLocationPermGranted = false // Foreground location permission state
+    private var locationPermGranted = false // Location permission state
 
     // DB handling, data sources
     private var database: SQLiteDatabase? = null
@@ -164,7 +190,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "167, onCreate")
+            Log.i(TAG, "193, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -173,6 +199,9 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         // Initialize sound service
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false) // Prepare SoundService
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
+
+        // Options to use GPS
+        gpsPref = prefs.getBoolean("pref_gps", false)
 
         if (buttonSoundPref) {
             soundService = SoundService(applicationContext)
@@ -231,14 +260,13 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             Objects.requireNonNull<AlertDialog>(cl!!.logDialog).show()
 
         // Check initial storage permission state and if not granted provide dialog
-        storagePermGranted = isStoragePermGranted()
-        if (!storagePermGranted)  // in self permission
+        if (!isStoragePermGranted())  // in self permission
         {
             // Provide dialog for storage permission request with explanation
             requestAllFilesAccessPermission(1)
 
-            // Prepare to ask foreground location permission only once
-            editor.putBoolean("has_asked_foreground", false)
+            // Prepare to ask location permission only once
+            editor.putBoolean("has_asked_location", false)
             editor.commit()
         }
 
@@ -274,8 +302,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         tourNameForDir = tourName
         if (tourNameForDir != "") tourNameForDir = tourNameForDir.replace(regexFilename.toRegex(), "")
 
-        storagePermGranted = isStoragePermGranted()
-        if (storagePermGranted) {
+        if (isStoragePermGranted()) {
             // Test for existence of directory /storage/emulated/0/Documents/TourCount
             var path = Environment.getExternalStorageDirectory()
             path = File("$path/Documents/TourCount")
@@ -294,13 +321,6 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             }
         }
 
-        // Option for use of Nominatim service for locality data
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
-        if (metaPref) {
-            TourCountApplication.adrServiceOn = false // will be set true by addressDispatcher
-            addressDispatcher(1) // Start AddrRequestService
-        }
-
         // New onBackPressed logic
         // Different Navigation Bar modes and layouts:
         // - Classic three-button navigation: NavBarMode = 0
@@ -317,24 +337,29 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Check storage self permission
     private fun isStoragePermGranted(): Boolean {
         // Check permission MANAGE_EXTERNAL_STORAGE for Android >= 11
-        val storageGranted: Boolean = Environment.isExternalStorageManager()
+        storagePermGranted = Environment.isExternalStorageManager()
+        return storagePermGranted
+    }
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG,"323, ManageStoragePermission: $storageGranted")
-
-        return storageGranted
+    // Check location self permission
+    private fun isLocationPermGranted(): Boolean {
+        locationPermGranted = (ContextCompat.checkSelfPermission(
+            this,Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        return locationPermGranted
     }
 
     // Request All-Files-Access Permission
     fun requestAllFilesAccessPermission(m: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG,"331, requestAllFilesAccessPermission")
+            Log.i(TAG,"355, requestAllFilesAccessPermission")
 
         if (m == 1) mesg = getString(R.string.dialog_storage_message1)
         else if (m == 2) mesg = getString(R.string.dialog_storage_message2)
 
         // Provide dialog for storage permission request
         AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_dialog_alert)
             .setTitle(getString(R.string.dialog_storage_title))
             .setMessage(mesg)
             .setPositiveButton(
@@ -343,7 +368,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 stoIntent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
                 val packageUri = Uri.fromParts("package", packageName, null)
                 stoIntent!!.data = packageUri
-                TourCountApplication.isStorPermReq = true
+                isStorPermReq = true
                 startActivity(stoIntent)
             }
             .setNegativeButton(
@@ -380,7 +405,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                         m1Handler.removeCallbacks(r1)
 
                         // Stop button sound (SoundService)
-                        if (sndServiceOn) {
+                        if (soundService != null) {
                             soundService!!.releaseSoundM()
                             soundService!!.releaseSoundP()
 
@@ -389,7 +414,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                         }
 
                         // Stop AddrRequestService
-                        if (metaPref) addressDispatcher(2)
+                        if (gpsPref) addressDispatcher(2)
 
                         finish()
                         remove()
@@ -412,23 +437,24 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "415, onResume")
+            Log.i(TAG, "440, onResume")
 
         prefs = getPrefs()
         prefs.registerOnSharedPreferenceChangeListener(this)
 
         outPref = prefs.getString("pref_sort_output", "names")!! // sort mode csv-export
+        gpsPref = prefs.getBoolean("pref_gps", false) // Option to use GPS
+
         // Mail address for reliable query of Nominatim service
         val emailString: String = prefs.getString("email_String", "")!!
-        // Option for use of Nominatim service for locality data
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
+
         dataLanguage = prefs.getString("pref_sel_data_lang", "")!!
         if (dataLanguage.isEmpty()) dataLanguage = "--"
 
         // Set storagePermGranted from self permission
-        storagePermGranted = isStoragePermGranted()
+        isStoragePermGranted()
 
-        if (TourCountApplication.isFirstStart && metaPref) {
+        if (isFirstStart && gpsPref) {
             // This is to remind a missing email address for Nominatim Reverse Geocoder.
             if (emailString == "") {
                 mesg = getString(R.string.missingEmail)
@@ -436,7 +462,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     fromHtml("<font color='#ff6000'>$mesg</font>"),
                     Toast.LENGTH_SHORT
                 ).show()}
-            TourCountApplication.isFirstStart = false
+            isFirstStart = false
         }
 
         sectionDataSource!!.open()
@@ -455,62 +481,61 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         if (tourNameForDir != "") tourNameForDir = tourNameForDir.replace(regexFilename.toRegex(), "")
 
         // Location permissions handling:
-        isFineLocationPermGranted() // Get flag fineLocationPermGranted from self permissions
+        if (gpsPref) {
+            isLocationPermGranted() // Get flag locationPermGranted from self permissions
 
-        // If location permission is not yet granted prepare and query for it
-        if (storagePermGranted && !fineLocationPermGranted) {
-            // Get flag 'has_asked_foreground' for foreground location permission
-            val hasAskedForegroundLocation = prefs.getBoolean("has_asked_foreground", false)
+            // If location permission is not yet granted prepare and query for it
+            if (storagePermGranted && !locationPermGranted) {
+                // Get flag 'has_asked_foreground' for foreground location permission
+                val hasAskedForegroundLocation = prefs.getBoolean("has_asked_foreground", false)
 
-            if (!hasAskedForegroundLocation) {
-                // Query foreground location permission first and set flag 'has_asked_foreground'
-                // Ask necessary fine location permission with info in PermissionsLocationDialog
-                newInstance().show(
-                    supportFragmentManager,PermissionsLocationDialogFragment::class.java.name)
+                if (!hasAskedForegroundLocation) {
+                    // Query foreground location permission first and set flag 'has_asked_foreground'
+                    // Ask necessary fine location permission with info in PermissionsLocationDialog
+                    newInstance().show(
+                        supportFragmentManager, PermissionsLocationDialogFragment::class.java.name
+                    )
 
-                editor.putBoolean("has_asked_foreground", true)
-                editor.commit()
+                    // Start Location Service and try to read location
+                    if (isLocationPermGranted()) {
+                        // Start location service and get 1. location
+                        locationDispatcher(1)
+                    }
+
+                    editor.putBoolean("has_asked_foreground", true)
+                    editor.commit()
+                }
             }
-        }
 
-        // Get new location self permission state
-        isFineLocationPermGranted() // set fineLocationPermGranted from self permission
+            // Start Location Service and try to read location
+            if (isLocationPermGranted()) {
+                if (gpsPref) {
+                // Start location service and get 1. location
+                locationDispatcher(1)
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG,"480, onResume, fineLocationPermGranted: $fineLocationPermGranted")
-
-        // Start Location Service and try to read location
-        if (fineLocationPermGranted) {
-            // Start location service and get 1. location
-            locationDispatcher(1)
+                // Start Nominatim service for locality data
+                addressDispatcher(1)
+                }
+            }
         }
     }
     // End of onResume()
-
-    // Check initial fine location permission
-    private fun isFineLocationPermGranted() {
-        fineLocationPermGranted = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
 
     // Control location service by locationDispatcherMode:
     //  1 = start location service and periodic location requests
     //  2 = end location service when app is invisible
     private fun locationDispatcher(locationDispatcherMode: Int) {
-        if (fineLocationPermGranted) {
+        if (isLocationPermGranted() && gpsPref) {
             when (locationDispatcherMode) {
                 1 -> {
                     // Get location data
-                    if (!locServiceOn) {
+                    if (locationService == null) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG,"508, locationDispatcher 1")
+                            Log.i(TAG,"534, locationDispatcher 1")
 
                         locationService = LocationService(applicationContext)
                         locIntent = Intent(applicationContext, LocationService::class.java)
                         startService(locIntent)
-                        locServiceOn = true
                     }
 
                     this.loc // Get position
@@ -518,29 +543,33 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
                 2 -> {
                     // Stop location service
-                    if (locServiceOn) {
+                    if (locationService != null) {
                         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG,"523, locationDispatcher 2")
+                            Log.i(TAG,"548, locationDispatcher 2")
 
                         locationService!!.stopListener()
                         locIntent = Intent(applicationContext, LocationService::class.java)
                         stopService(locIntent)
-                        locServiceOn = false
+                        locationService = null
                     }
                 }
             }
         }
     }
 
-    @get:SuppressLint("DefaultLocale")
+    // Get the location data and store values in global variables
     val loc: Unit
-        // Get the location data and store values in global variables
         get() {
-            if (locationService!!.canGetLocation()) {
-                locationService!!.getLongitude()
-                locationService!!.getLatitude()
-                locationService!!.getAltitude()
-                locationService!!.getAccuracy()
+            if (locationService != null) {
+                if (locationService!!.canGetLocation()) {
+                    locationService!!.getLongitude()
+                    locationService!!.getLatitude()
+                    locationService!!.getAltitude()
+                    locationService!!.getAccuracy()
+                }
+            } else {
+                if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                    Log.i(TAG,"572, locationService = null")
             }
         }
 
@@ -549,29 +578,29 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         when (addrDispatcherMode) {
             1 -> {
                 // Get address data
-                if (!TourCountApplication.adrServiceOn) {
-                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG,"554, addressDispatcher 1")
-
-                    TourCountApplication.adrServiceOn = true
+                  if ((addrRequestService == null) && gpsPref) {
                     addrRequestService = AddrRequestService()
-                    adrIntent = Intent(applicationContext, AddrRequestService::class.java)
-                    startService(adrIntent)
+                    addrIntent = Intent(applicationContext, AddrRequestService::class.java)
+                    startService(addrIntent)
+                    addrServiceOn = true
                     addrRequestService!!.stopTimerTask()
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "588, nach start services, locServOn: $locationService, addrRequestService: $addrRequestService")
                 }
             }
 
             2 -> {
                 // Stop AddrRequestService
-                if (TourCountApplication.adrServiceOn) {
-                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG,"568, addressDispatcher 2")
-
+                if (addrRequestService != null) {
                     addrRequestService!!.releaseSoundA()
                     addrRequestService!!.stopTimerTask()
-                    adrIntent = Intent(applicationContext, AddrRequestService::class.java)
-                    stopService(adrIntent)
-                    TourCountApplication.adrServiceOn = false
+                    addrIntent = Intent(applicationContext, AddrRequestService::class.java)
+                    stopService(addrIntent)
+                    addrServiceOn = false
+                    addrRequestService = null
+
+                    if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+                        Log.i(TAG, "603, nach stop services, locServOn: $locationService, addrRequestService: $addrRequestService")
                 }
             }
         }
@@ -736,20 +765,20 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         outPref = prefs.getString("pref_sort_output", "names")!!
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
-        metaPref = prefs.getBoolean("pref_metadata", false)
+        gpsPref = prefs.getBoolean("pref_gps", false)
 
         // Handle sound service when changed in settings
-        if (!buttonSoundPref && sndServiceOn) {
+        if (!buttonSoundPref && (soundService != null)) {
             stopService(sndIntent)
             sndServiceOn = false
         }
 
-        if (buttonSoundPref && !sndServiceOn) {
+        if (buttonSoundPref && (soundService == null)) {
             startService(sndIntent)
             sndServiceOn = true
         }
 
-        if (!alertSoundPref && fineLocationPermGranted && TourCountApplication.adrServiceOn) {
+        if ((!alertSoundPref || !gpsPref) && isLocationPermGranted() && addrServiceOn) {
             addrRequestService!!.stopSoundA()
         }
     }
@@ -758,7 +787,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "761, onPause")
+            Log.i(TAG, "790, onPause")
 
         countDataSource!!.close()
         sectionDataSource!!.close()
@@ -770,33 +799,38 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "773, onStop")
+            Log.i(TAG, "802, onStop")
 
         baseLayout!!.invalidate()
 
         // Stop Services when app should finish
         if (!isApplicationVisible) {
-            if (TourCountApplication.adrServiceOn) {
+            if (addrRequestService != null) {
                 addrRequestService!!.releaseSoundA()
             }
 
-            if (sndServiceOn) {
+            if ((soundService != null)) {
                 soundService!!.releaseSoundM()
                 soundService!!.releaseSoundP()
                 stopService(sndIntent)
                 sndServiceOn = false
             }
 
-            locationDispatcher(2)
-            TourCountApplication.lat = 0.0 // prohibits calls to Nominatim service
-            TourCountApplication.lon = 0.0
+            if (gpsPref) {
+                lat = 0.0 // prohibits calls to Nominatim service
+                lon = 0.0
 
-            if (TourCountApplication.adrServiceOn) addrRequestService!!.stopTimerTask()
-            addressDispatcher(2)
+                if (addrRequestService != null) {
+                    addrRequestService!!.stopAddrService()
+                }
+                addressDispatcher(2)
+
+                locationDispatcher(2)
+            }
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, ("798, onStop, app not visible, running services Loc, Snd, Adr: "
-                        + locServiceOn + ", " + sndServiceOn + ", " + TourCountApplication.adrServiceOn))
+                Log.i(TAG, ("832, onStop, app not visible, running services Loc, Snd, Adr: "
+                        + locationService + ", " + sndServiceOn + ", " + addrRequestService))
 
             finishAndRemoveTask()
         }
@@ -806,15 +840,15 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "809, onDestroy")
+            Log.i(TAG, "843, onDestroy")
 
-        exitProcess(0)
+        exitProcess(0) // Terminates the running process
     }
 
     // Handle button click "Counting" here
     fun startCounting(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "817, startCounting, View: $view")
+            Log.i(TAG, "851, startCounting, View: $view")
 
         val intent = Intent(this@WelcomeActivity, CountingActivity::class.java)
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -823,7 +857,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Handle button click "Prepare Inspection" here
     fun editMeta(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "826, editMeta, View: $view")
+            Log.i(TAG, "860, editMeta, View: $view")
 
         val intent = Intent(this@WelcomeActivity, EditMetaActivity::class.java)
         // Wait for 500 msec to get results from AddrRequestService
@@ -835,7 +869,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Start ShowResultsActivity (by button)
     fun showResults(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "838, showResults, View: $view")
+            Log.i(TAG, "872, showResults, View: $view")
 
         mesg = getString(R.string.wait)
         Toast.makeText(this,
@@ -872,7 +906,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Choose a tourcount db-file to load and set it to tourcount.db
     private fun importDBFile() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "875, importDBFile")
+            Log.i(TAG, "909, importDBFile")
 
         val fileExtension = ".db"
         val fileNameStart = "tourcount_"
@@ -928,7 +962,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 builder.setMessage(R.string.confirmDBImport)
                 builder.setCancelable(false)
                 builder.setPositiveButton(
-                    R.string.importButton
+                    R.string.yesButton
                 ) { _: DialogInterface?, _: Int ->
                     try {
                         countDataSource!!.close()
@@ -947,9 +981,6 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
                         if (headLanguage == "") hasDataLang = false
                         else headLanguage = headLanguage.substring(0, 2)
-
-                        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                            Log.i(TAG, "952, ImportFile, headLanguage: $headLanguage")
 
                         // Save values for initial count-id and itemposition
                         editor.putInt("count_id", 1)
@@ -996,7 +1027,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Select and import a species list (also from TransektCount file species_YYYY-MM-DD_hhmmss.csv)
     private fun importSpeciesList() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "999, importSpeciesList")
+            Log.i(TAG, "1030, importSpeciesList")
 
         val fileExtension = ".csv"
         val fileNameStart = "species_"
@@ -1066,7 +1097,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 } else {
                     builder.setCancelable(false)
                     builder.setPositiveButton(
-                        R.string.importButton
+                        R.string.yesButton
                     ) { _: DialogInterface?, _: Int ->
                         clearDBforImport()
                         readSpeciesCSV(inFile)
@@ -1083,7 +1114,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Clear DB for import of external species list
     private fun clearDBforImport() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "1086, clearDBforImport")
+            Log.i(TAG, "1117, clearDBforImport")
 
         dbHelper = DbHelper(this)
         database = dbHelper!!.writableDatabase
@@ -1096,19 +1127,19 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
         dbHelper!!.close()
 
-        TourCountApplication.lat = 0.0
-        TourCountApplication.lon = 0.0
-        TourCountApplication.heightNN = 0.0
-        TourCountApplication.uncertainty = 0.0
-        TourCountApplication.tLocality = ""
-        TourCountApplication.isFirstLocality = true
+        lat = 0.0
+        lon = 0.0
+        heightNN = 0.0
+        uncertainty = 0.0
+        tLocality = ""
+        isFirstLocality = true
 
         editor.putInt("item_Position", 0)
         editor.putInt("count_id", 1)
         editor.apply()
 
         // Restart Location Service and try to read location
-        if (fineLocationPermGranted) {
+        if (isLocationPermGranted() && gpsPref) {
             // Start location service and get 1. location
             locationDispatcher(1) // Start LocationService
         }
@@ -1524,7 +1555,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 sectName = "\"" + section!!.name + "\""
                 sectNotes = "\"" + section!!.notes + "\""
 
-                if (metaPref) {
+                if (gpsPref) {
                     country = "\"" + section!!.country + "\""
                     bState = "\"" + section!!.b_state + "\""
                     plz = "\"" + section!!.plz + "\""
@@ -2197,7 +2228,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             sectName = section!!.name
             sectNotes = section!!.notes
 
-            if (metaPref) {
+            if (gpsPref) {
                 country = section!!.country
                 bState = section!!.b_state
                 plz = section!!.plz
@@ -2996,7 +3027,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Clear all relevant DB values, reset to basic DB
     private fun resetToBasisDb() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "2999, resetToBasisDb")
+            Log.i(TAG, "3030, resetToBasisDb")
 
         // Confirm dialogue before anything else takes place
         val builder = AlertDialog.Builder(this)
@@ -3004,7 +3035,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         builder.setMessage(R.string.confirmResetDB)
         builder.setCancelable(false)
         builder.setPositiveButton(
-            R.string.deleteButton
+            R.string.yesButton
         ) { _: DialogInterface?, _: Int ->
             val resOK = clearDBValues()
             if (resOK) {
@@ -3026,7 +3057,7 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     // Clear DB and location values for basic DB
     private fun clearDBValues(): Boolean {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "3029, clearDBValues")
+            Log.i(TAG, "3060, clearDBValues")
 
         dbHelper = DbHelper(this)
         database = dbHelper!!.writableDatabase
@@ -3076,15 +3107,15 @@ class WelcomeActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
         dbHelper!!.close()
 
-        TourCountApplication.lat = 0.0
-        TourCountApplication.lon = 0.0
-        TourCountApplication.heightNN = 0.0
-        TourCountApplication.uncertainty = 0.0
-        TourCountApplication.tLocality = ""
-        TourCountApplication.isFirstLocality = true
+        lat = 0.0
+        lon = 0.0
+        heightNN = 0.0
+        uncertainty = 0.0
+        tLocality = ""
+        isFirstLocality = true
 
         // Restart Location Service and try to read location
-        if (fineLocationPermGranted) {
+        if (isLocationPermGranted() && gpsPref) {
             // Start location service and get 1. location
             locationDispatcher(1) // Start LocationService
         }

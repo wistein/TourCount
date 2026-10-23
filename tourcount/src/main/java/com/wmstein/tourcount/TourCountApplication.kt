@@ -1,5 +1,31 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * Provides global app data and handles background image and prefs
+ *
+ * Partly based on BeeCountApplication.java of BeeCount by Milo Thurston (knirirr) on 2014-05-14,
+ * licensed under the Apache License, Version 2.0.
+ *
+ * Adopted for TourCount by wmstein on 2016-02-18,
+ * converted to Kotlin on 2024-12-09,
+ * last edited on 2026-10-19.
+ **************************************************************************************************/
+
 import android.app.Application
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -15,14 +41,6 @@ import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.PreferenceManager
 
-/*********************************************************************
- * Provide global app data and handle background image and prefs
- *
- * Partly derived from BeeCountApplication.java by milo on 14/05/2014.
- * Adopted for TourCount by wmstein on 2016-02-18,
- * converted to Kotlin on 2024-12-09,
- * last edited on 2026-08-02.
- */
 class TourCountApplication : Application() {
     var bMapDraw: BitmapDrawable? = null
     var width = 0
@@ -33,7 +51,7 @@ class TourCountApplication : Application() {
 
         // Support to debug "A resource failed to call ..." (close, dispose or similar)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "36, StrictMode.setVmPolicy")
+            Log.i(TAG, "54, StrictMode.setVmPolicy")
             StrictMode.setVmPolicy(
                 VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
@@ -45,7 +63,7 @@ class TourCountApplication : Application() {
             prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         } catch (e: Exception) {
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "48, Error: $e")
+                Log.e(TAG, "66, Error: $e")
         }
 
         // Initiate ActivityLifecycle for stopping periodic location requests
@@ -65,7 +83,7 @@ class TourCountApplication : Application() {
         width = metrics.bounds.right + metrics.bounds.left
         height = metrics.bounds.top + metrics.bounds.bottom
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "68, Width: $width Height: $height")
+            Log.i(TAG, "86, Width: $width Height: $height")
 
         screenRatioBig = height / width > 2
 
@@ -167,7 +185,7 @@ class TourCountApplication : Application() {
         var tLocality = "" // set by getAddressL() in LocationService and getAddressC() in CountingActivity
 
         @JvmField
-        var adrServiceOn = false // controlled in WelcomeActivity
+        var addrServiceOn = false // controlled in WelcomeActivity and SettingsActivity
 
         @JvmField
         var isFirstLocality = true // true for showing an info message for the 1. GPS lock

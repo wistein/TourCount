@@ -1,14 +1,15 @@
 TourCount permet l'enregistrement des papillons par espèce et avec localisation GPS individuelle.
 
-Nouveautés de la version 3.8.4 :
+Nouveautés de la version 3.8.5 :
 - Améliorations du code
-- Saisie de notes individuelles à partir des formulations prédéfinies « Photo », « Survol », « Imago récent », …
-- Saisie de notes sur les espèces à partir des formulations prédéfinies « Nouvelle espèce », « Incertain », …
-- La valeur saisie en % pour la nébulosité est arrondie aux dizaines
-- Contrôle de cohérence plus strict pour la saisie des métadonnées numériques
+- Le service de localisation (GPS) et le service d'adresses Nominatim regroupés en une seule option de paramétrage
+- Correction : il n'est désormais plus nécessaire de redémarrer l'application pour que la modification de l'option « GPS avec données de localisation » prenne effet.
+- Correction : désormais, sur la page des paramètres, l'option « Langue des données » pour les fichiers importés dans l'ancien format (DB et Species) affiche immédiatement la langue des données sélectionnée ainsi que l'icône correspondante.
+- Certaines boîtes de dialogue sont accompagnées de titres et d'icônes
+- Refonte de la gestion des autorisations de localisation et amélioration des boîtes de dialogue correspondantes
+- Informations sur la licence complétées
 - Mise à jour du texte « Aide »
 - Documents mis à jour
-- Correction d'un bug lié à l'importation d'une liste d'espèces
 
 Caractéristiques :
 - La collecte des données s'appuie sur un séjour dans une région où l'on peut s'attendre à observer des papillons.

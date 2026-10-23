@@ -1,17 +1,27 @@
 # TourCount
-TourCount is an Android app that supports species-specific and individually localized registering of butterflies on walks. 
+
+TourCount is an Android app that supports registering of butterflies on walks. 
+It allows to register individuals species-specific, separated by gender and metamorphic stages and 
+individually localized with locality data.
 
 ### New Google restrictions
-Unfortunately, Google is enforcing its monopoly position as they decided to restrict the use of free Android software.
-Starting September 2026, a silent update, nonconsensually pushed by Google, will block every Android app whose developers have not registered with Google, signed their contract, paid up a fee, and handed over their government ID.
+Unfortunately, Google is enforcing its monopoly position as they decided to restrict the use of free
+Android software. Starting September 2026, a silent update, nonconsensually pushed by Google, will
+block every Android app whose developers have not registered with Google, signed their contract, 
+paid up a fee, and handed over their government ID.
 I am NOT willing to accept neither these registration conditions nor the procedure.
-For more background on this and how to overcome the restriction you may visit https://keepandroidopen.org/.
+
+For more background on this and how to overcome the restriction you may visit
+https://keepandroidopen.org/.
 
 ### Features
 - Data recording is organized for a tour in nature with its expected butterfly species.
- That means, you will use a fresh database instance per tour by clearing the current database or importing a prepared regional basic database.
-- The app comes with a prepared basic database with the most common species in Europe as a starting point.
-- Databases can be individually created and adapted within the app regarding metadata and expected butterfly species.
+  That means, you will use a fresh database instance per tour by clearing the current database or 
+  importing a prepared regional basic database.
+- The app contains a prepared basic database with the most common species in Europe as a starting 
+  point.
+- Databases can be individually created and adapted within the app regarding metadata and expected 
+  butterfly species.
 - You may use an individual species list per region.
 - There are editors 
   - to setup or adapt the current species list with add, delete and edit species functions,
@@ -21,20 +31,26 @@ For more background on this and how to overcome the restriction you may visit ht
 - Separate counters for ♂|♀, ♂, ♀, pupa, larva or egg.
 - The app automatically inserts date, time, coordinates and height as well as
   location data by reverse OSM-geocoding from OpenStreetMap when GPS and internet access are granted.
-- Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly registration.
+- Results are prepared for easy readout to transfer them to the science4you entry mask for butterfly 
+  registration.
 - Results are shown with metadata, totals, remarks, species results and individual data.
-- The results can be exported in formatted XLSX or CSV format, as well as in an SQLite database file (e.g. to transfer them to a PC, for easier reading in a spreadsheet program, or for further processing).
-- The current butterfly list can be exported for later re-import or imported by the complementary app TransektCount.
+- The results can be exported in formatted XLSX or CSV format, as well as in an SQLite database file
+  (e.g. to transfer them to a PC, for easier reading, or for further processing).
+- The current butterfly list can be exported for later re-import or imported by the complementary 
+  app TransektCount.
 - Help contains a detailed user guide.
 - TourCount uses the codes of the European coding scheme for butterflies from Karsholt/Razowski.
-- TourCount supports counting in German, English, French, Italian and Spanish language and provides locale species names in these languages.
+- TourCount supports counting in German, English, French, Italian and Spanish language and provides 
+  locale species names in these languages.
 
 ### Prerequisites
-The app requires permits for 
-- storage access for im-/exporting the counting data, results or species lists from/to Documents/TourCount/, 
-- reading location data by GPS for coordinates and location info per counted individual, 
-- internet access for OpenStreetMap reverse geocoding requests and 
-- preventing the sleep mode while counting.
+The app requires permissions for 
+- storage access (Manage all files) for im-/exporting the counting data, results or species lists 
+  from/to Documents/TourCount/ and if the TransektCount app is installed also from 
+  Documents/TransektCount/. TourCount doesn't access any other files, 
+- (optionally) reading location data by GPS for coordinates and location info per counted individual,
+  in conjunction with internet access for OpenStreetMap reverse geocoding requests and 
+- (optionally) preventing the sleep mode while counting.
 
 The device screen should have a minimum resolution of 1920 x 1024 pixels.  
 The app is usable with Android version 11 or newer.
@@ -44,22 +60,24 @@ The app is usable with Android version 11 or newer.
 Documentation is provided under  
 https://github.com/wistein/TourCount/tree/master/docs.
 
-Please read the user guide (provided in German and English) or consult its contents in the app's help before using the app.  
-There are further documents e.g. for setting up and using the app as well as sample species lists for different regions and in different languages (German, English, French and Italian) or basic databases (tourcount0_de_xxx.db) provided. 
+Please read the user guide (provided in German and English) or consult its contents in the app's 
+help before using the app.
+There are further documents e.g. for setting up and using the app as well as sample species lists 
+for different regions and in different languages (German, English, French and Italian) provided. 
 
-The complete development history is listed in History.md (https://github.com/wistein/TourCount/tree/master/docs/History.md).
+The complete development history is listed in History.md in https://github.com/wistein/TourCount/tree/master/docs/History.md.
 
-Source file structure is for compilation by Android Studio.
+The source files structure is for compilation by Android Studio.
 
 #### Availability
 The app is available on F-Droid under  
 https://f-droid.org/packages/com.wmstein.tourcount/.
  
-All versions of the apk-file 'tourcount-release_nnn.apk' are provided in the GitHub repository under 
-https://github.com/wistein/TourCount.
+All versions of the apk-file 'tourcount-release_nnn.apk' are also provided in the GitHub repository 
+under https://github.com/wistein/TourCount.
 
-Please note that both apk versions (F-Droid and GitHub) are compiled from the same sources but signed 
-differently and so cannot be mutually updated.
+Please note that both apk versions (F-Droid and GitHub) are compiled from the same sources but 
+signed differently and so cannot be mutually updated.
 
 On GitHub you will find the published stable version when clicking the "master"-button and select 
 the Tag with the highest Branch number n.n.n. Then get the file tourcount-release_nnn.apk under apk. 
@@ -68,7 +86,6 @@ The latest development version of 'tourcount-release_nnn.apk' is also provided i
 repository under the master branch https://github.com/wistein/TourCount/tree/master/apk.
 
 #### Licenses
-
 Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
 TourCount is licensed under the Apache License, Version 2.0 (the "License");
@@ -83,10 +100,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Pictures of this work by Wilhelm Stein may only be used for scientific or other non-commercial purposes.
+Pictures of this work by Wilhelm Stein may only be used for scientific or other non-commercial 
+purposes.
 
-Code and illustrations provided by other authors remain the copyright of those authors and should not be
-reproduced or distributed other than with their license.
+Code and illustrations from other authors are subject to those authors' copyrights and licenses and
+may not be used or distributed without complying with their licenses.
 
-For detailed copyrights on external code and pictures see "Licenses" in the app's main menu or the separate document "License.txt" under 
-https://github.com/wistein/TourCount/tree/master/docs/License.txt.
+For detailed copyrights on external code and pictures see "Licenses" in the app's main menu or the
+separate document "Licenses.txt" under 
+https://github.com/wistein/TourCount/tree/master/docs/.

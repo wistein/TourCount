@@ -1,14 +1,15 @@
 TourCount supporta la registrazione delle farfalle in base alla specie e con localizzazione GPS individuale.
 
-Novità della versione 3.8.4:
+Novità della versione 3.8.5:
 - Miglioramenti al codice
-- Inserimento di note relative a singoli esemplari utilizzando le diciture predefinite “Foto”, ‘Sorvolo’, “Imago giovane”, …
-- Inserimento di note relative alle specie utilizzando le diciture predefinite “Nuova specie”, “Non sicuro” …
-- Il valore immesso in % relativo alla nuvolosità viene arrotondato ai valori più vicini a 10
-- Controlli di plausibilità più rigorosi per l'inserimento dei metadati numerici
+- Il servizio di localizzazione (GPS) e il servizio di indirizzi Nominatim sono stati riuniti in un’unica opzione delle impostazioni
+- Risolto: per rendere effettiva la modifica dell'opzione di impostazione “GPS con dati di località” non è più necessario riavviare l'app
+- Risolto: ora, nella pagina delle impostazioni, l'opzione “Lingua dei dati” per i file importati nel vecchio formato (DB e Specie) mostra immediatamente la lingua dei dati selezionata insieme all'icona corrispondente.
+- Alcune finestre di dialogo corredate da titoli e icone
+- Riorganizzazione della gestione delle autorizzazioni relative alla posizione e miglioramento delle relative finestre di dialogo
+- Informazioni sulla licenza completate
 - Testo “Aiuto” aggiornato
 - Documenti aggiornati
-- Correzione di un bug relativo all'importazione di un elenco di specie
 
 Caratteristiche:
 - La raccolta dei dati si basa su un soggiorno in una regione in cui sono presenti le farfalle tipiche di quella zona.

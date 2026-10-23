@@ -1,5 +1,31 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * DelSpeciesActivity lets you delete species from the species lists.
+ * It is called from CountingActivity.
+ * Uses DelSpeciesWidget.kt, EditMetaTitleWidget.kt,
+ * activity_del_species.xml, widget_edit_title.xml.
+ *
+ * Based on EditSpeciesListActivity.kt.
+ * Created on 2024-08-22 by wmstein,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Build
@@ -29,16 +55,6 @@ import com.wmstein.tourcount.widgets.DeleteSpeciesWidget
 
 import java.util.Locale
 
-/********************************************************************
- * DelSpeciesActivity lets you delete species from the species lists.
- * It is called from CountingActivity.
- * Uses DelSpeciesWidget.kt, EditMetaTitleWidget.kt,
- * activity_del_species.xml, widget_edit_title.xml.
- *
- * Based on EditSpeciesListActivity.kt.
- * Created on 2024-08-22 by wmstein,
- * last edited on 2026-07-21
- */
 class DelSpeciesActivity : AppCompatActivity() {
     // Data
     private var specCode = ""
@@ -65,7 +81,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "68, onCreate")
+            Log.i(TAG, "84, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -97,7 +113,7 @@ class DelSpeciesActivity : AppCompatActivity() {
             searchChars = extras.getString("search_Chars").toString()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "100 onCreate, searchChars: $searchChars")
+            Log.i(TAG, "116 onCreate, searchChars: $searchChars")
 
         listToDelete = ArrayList()
 
@@ -124,7 +140,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "127 onResume")
+            Log.i(TAG, "143 onResume")
 
         // Load preference
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -167,7 +183,7 @@ class DelSpeciesActivity : AppCompatActivity() {
     // Parameter view is necessary for error-free function call
     fun getDelSearchChars(view: View) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "170, View: $view")
+            Log.i(TAG, "186, View: $view")
 
         // Read EditText searchDel from widget_del_hint.xml
         val searchDel: EditText = findViewById(R.id.searchD)
@@ -305,7 +321,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "305, onPause")
+            Log.i(TAG, "324, onPause")
 
         // Close the data sources
         sectionDataSource!!.close()
@@ -326,7 +342,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "326, onStop")
+            Log.i(TAG, "345, onStop")
 
         deleteArea = null
         delHintArea = null
@@ -336,7 +352,7 @@ class DelSpeciesActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "336, onDestroy")
+            Log.i(TAG, "355, onDestroy")
     }
 
     companion object {

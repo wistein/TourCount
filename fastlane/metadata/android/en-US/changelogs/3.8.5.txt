@@ -1,0 +1,10 @@
+Version 3.8.5 (2026-10-23)
+- Code improvements
+- Location (GPS) service and Nominatim address service were combined into one settings option
+- Fixed: Changing the settings option "GPS with Locality Data" to take effect needs not restarting the app anymore
+- Fixed: On the Settings page, the “Data Language” option activated for imported old files (DB and Species) now displays the selected data language along with the corresponding icon immediately.
+- Some dialogs supplemented with headlines and icons
+- Location permission handling was redesigned and respective dialogs were improved
+- License information supplemented
+- "Help" text updated
+- Docs updated

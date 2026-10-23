@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Rotation is set to portrait mode as the incorporated Spinner functionality
+
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     Rotation is set to portrait mode as the incorporated Spinner functionality
      crashes when the device gets rotated and landscape mode is even on tablets less useful.
 
      Multiwindow crashes when rotating the screen,
@@ -7,8 +24,8 @@
      Solution: application attribute android:resizeableActivity="false"
      prohibits multi-window-mode.
 
-     Last edited 2026-06-15
--->
+     Last edited 2026-10-19
+************************************************************************************************ -->
 
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"

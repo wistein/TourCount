@@ -1,5 +1,32 @@
 package com.wmstein.filechooser
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * FileArrayAdapter is part of filechooser.
+ * It will be called within AdvFileChooser.
+ *
+ * Based on android-file-chooser, 2011, Google Code Archiv, under GNU GPL v3 license.
+ *
+ * Adopted by wmstein on 2016-06-18,
+ * modifications for TourCount by wmstein on 2020-04-17,
+ * converted to Kotlin on 2023-07-05,
+ * last edited on 2025-05-19
+ **************************************************************************************************/
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +39,6 @@ import com.wmstein.tourcount.R
 
 import java.util.Locale
 
-/**
- * FileArrayAdapter is part of filechooser.
- * It will be called within AdvFileChooser.
- * Based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- * Adopted by wmstein on 2016-06-18,
- * modifications for TourCount by wmstein on 2020-04-17,
- * converted to Kotlin on 2023-07-05,
- * last edited on 2025-05-19
- */
 internal class FileArrayAdapter(
     private val faaContext: Context,
     private val id: Int,

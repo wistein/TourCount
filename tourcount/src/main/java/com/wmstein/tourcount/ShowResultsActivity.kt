@@ -1,5 +1,30 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * ShowResultsActivity shows list of counting results
+ *
+ * Created by wmstein on 2016-03-15 as ListSpeciesActivity,
+ * last edited in Java on 2022-05-21,
+ * converted to Kotlin on 2023-07-09,
+ * renamed to ShowResultsActivity on 2025-02-25,
+ * last edited on 2026-10-19.
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.database.Cursor
 import android.os.Build
@@ -37,15 +62,6 @@ import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
-/**********************************************************
- * ShowResultsActivity shows list of counting results
- *
- * Created by wmstein on 2016-03-15 as ListSpeciesActivity,
- * last edited in Java on 2022-05-21,
- * converted to Kotlin on 2023-07-09,
- * renamed to ShowResultsActivity on 2025-02-25,
- * last edited on 2026-06-16
- */
 class ShowResultsActivity : AppCompatActivity() {
     private var tourCount: TourCountApplication? = null
 
@@ -69,7 +85,7 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "72, onCreate")
+            Log.i(TAG, "88, onCreate")
 
         tourCount = application as TourCountApplication
 
@@ -125,7 +141,7 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "128, onResume")
+            Log.i(TAG, "144, onResume")
 
         if (awakePref) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -327,7 +343,7 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "330, onPause")
+            Log.i(TAG, "346, onPause")
 
         // Close the data sources
         headDataSource!!.close()
@@ -344,7 +360,7 @@ class ShowResultsActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "347, onDestroy")
+            Log.i(TAG, "363, onDestroy")
 
         specArea = null
     }

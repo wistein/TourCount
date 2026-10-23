@@ -1,22 +1,39 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * TCLifecycleHandler controls the state of all activities and checks if your application
+ * is in foreground or background.
+ * Needed to stop AddrRequestService when app is finished but not yet destroyed and
+ * takes care of the special activity handling of the permit dialog of MANAGE_EXTERNAL_STORAGE.
+ *
+ * Inspired by Cornstalks answer on https://stackoverflow.com/questions/3667022/
+ *
+ * Checking if an android application is running in the background
+ *
+ * Adopted from TransektCount for TourCount and converted to Kotlin by wmstein on 2026-05-11,
+ * last edited on 2026-10-21.
+ **************************************************************************************************/
+
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 import android.util.Log
 
-/**********************************************************************************************
- * TCLifecycleHandler controls the state of all activities and checks if your application
- * is in foreground or background.
- * Needed to stop AddrRequestService when app is finished but not yet destroyed and
- * takes care of the special activity handling of the permit dialog of MANAGE_EXTERNAL_STORAGE.
- * 
- * Inspired by https://stackoverflow.com/questions/3667022/
- * checking-if-an-android-application-is-running-in-the-background/13809991#13809991
- * 
- * Adopted for TourCount in Kotlin by wmstein on 2026-05-11,
- * Last edited on 2026-07-18
- */
 class TCLifecycleHandler : ActivityLifecycleCallbacks {
     var activityName: String = ""
     var isWelcomeActivity = false
@@ -29,7 +46,7 @@ class TCLifecycleHandler : ActivityLifecycleCallbacks {
         started++ // counts any activity
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i("TCLifecycleHandler ","32, Activities started: $started times")
+            Log.i("TCLifecycleHandler ","49, Activities started: $started times")
     }
 
     // After requestAllFilesAccessPermission in WelcomeActivity, WelcomeActivity resumes,
@@ -47,7 +64,7 @@ class TCLifecycleHandler : ActivityLifecycleCallbacks {
             stopped++ // counts only for isStorPermReq in WelcomeActivity
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i("TCLifecycleHandler ","50, $activityName resumed, activities stopped: $stopped times")
+                Log.i("TCLifecycleHandler ","67, $activityName resumed, activities stopped: $stopped times")
 
             TourCountApplication.isStorPermReq = false
         }
@@ -71,7 +88,7 @@ class TCLifecycleHandler : ActivityLifecycleCallbacks {
             started++ // counts only for isStorPermReq in WelcomeActivity
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i("TCLifecycleHandler ","74, $activityName paused, activities started: $started times")
+                Log.i("TCLifecycleHandler ","91, $activityName paused, activities started: $started times")
         }
     }
 
@@ -80,8 +97,8 @@ class TCLifecycleHandler : ActivityLifecycleCallbacks {
         stopped++ // counts any activity
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i("TCLifecycleHandler ", "83, Activities stopped: $stopped times")
-            Log.i("TCLifecycleHandler ", "84, Application is visible: $isApplicationVisible")
+            Log.i("TCLifecycleHandler ", "100, Activities stopped: $stopped times")
+            Log.i("TCLifecycleHandler ", "101, Application is visible: $isApplicationVisible")
         }
     }
 

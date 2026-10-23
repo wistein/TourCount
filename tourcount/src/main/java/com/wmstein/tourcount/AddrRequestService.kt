@@ -1,5 +1,33 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * AddrRequestService provides the address data: country, state, city, locality, street
+ * and postal code on request in a background thread.
+ * It shows a message and makes a sound when the initial locality is determined.
+ * When counting on the way the current locality is added to each individual record.
+ *
+ * To get this data it sends an HTTP request with the current location to the Nominatim
+ * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
+ *
+ * Created by wmstein on 2026-05-07,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -16,7 +44,7 @@ import android.widget.Toast
 
 import androidx.core.net.toUri
 
-import com.wmstein.tourcount.TourCountApplication.Companion.adrServiceOn
+import com.wmstein.tourcount.TourCountApplication.Companion.addrServiceOn
 import com.wmstein.tourcount.TourCountApplication.Companion.isFirstLocality
 import com.wmstein.tourcount.TourCountApplication.Companion.lat
 import com.wmstein.tourcount.TourCountApplication.Companion.lon
@@ -35,24 +63,13 @@ import java.util.TimerTask
 
 import javax.net.ssl.HttpsURLConnection
 
-/**************************************************************************************
- * AddrRequestService provides the address data: country, state, city, locality, street
- * and postal code on request in a background thread.
- * It shows a message and makes a sound when the initial locality is determined.
- * When counting on the way the current locality is added to each individual record.
- * 
- * To get this data it sends an HTTP request with the current location to the Nominatim
- * website of OpenStreetMap in a configurable interval (of e.g. 10 seconds).
- *
- * Created by wmstein on 2026-05-07,
- * last edited on 2026-07-19
- */
 open class AddrRequestService : Service {
     private lateinit var audioAttributionContext: Context
 
     // Prefs
+    private val prefs = TourCountApplication.getPrefs()
     private var selRequestInterval: Long = 10000 // Default time interval for updates
-    private var metaPref = false // Option to use Nominatim service
+    private var gpsPref = false // Option to use Nominatim service
     private var emailString = "" // Needed for reliable Nominatim service
     private var alertSoundPref = false
     private var alertSound = ""
@@ -74,50 +91,49 @@ open class AddrRequestService : Service {
 
     constructor() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "77, constructor")
+            Log.i(TAG, "94, constructor")
 
-        val prefs = TourCountApplication.getPrefs()
         emailString = prefs.getString("email_String", "")!!
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
+        gpsPref = prefs.getBoolean("pref_gps", false) // Use GPS and Reverse Geocoding
         selRequestInterval = prefs.getString("pref_request_interval", "20000")!!.toLong()
         alertSoundPref = prefs.getBoolean("pref_alert_sound", false)
         alertSound = prefs.getString("alert_sound", "")!!
         lastVersion = prefs.getString("PREFS_VERSION_KEY", "")!!
-
-        // Service runs in 2nd thread and with background priority
-        HandlerThread("ServiceStartArguments", Process.THREAD_PRIORITY_BACKGROUND).apply {
-            start()
-
-            // Get the HandlerThread's Looper and use it for our Handler
-            serviceLooper = looper
-            serviceHandler = ServiceHandler(looper)
-        }
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "101, onStartCommand")
+        gpsPref = prefs.getBoolean("pref_gps", false) // Use GPS and Reverse Geocoding
+
+        if (gpsPref) {
+            // Service runs in 2nd thread and with background priority THREAD_PRIORITY_BACKGROUND
+            HandlerThread("ServiceStartArguments", Process.THREAD_PRIORITY_FOREGROUND).apply {
+                start()
+
+                // Get the HandlerThread's Looper and use it for our Handler
+                serviceLooper = looper
+                serviceHandler = ServiceHandler(looper)
+            }
+        }
 
         serviceHandler?.obtainMessage()?.also { msg ->
             msg.arg1 = startId
             serviceHandler?.sendMessage(msg) // to MessageQueue for the 2. thread
         }
 
-        // If stopped, restart
-        return START_STICKY
+        return START_STICKY // If stopped by system, restart
     }
 
     // Handler in 2. thread that receives messages from the main thread
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
+
         // Receive the message from onStartCommand()
         override fun handleMessage(msg: Message) {
-            if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "117, handleMessage")
-
             // Do the work here
-            if (adrServiceOn) {
+            gpsPref = prefs.getBoolean("pref_gps", false) // Use GPS and Reverse Geocoding
+
+            if (gpsPref && addrServiceOn) {
                 try {
                     startTimer()
                 } catch (_: InterruptedException) {
@@ -133,25 +149,26 @@ open class AddrRequestService : Service {
     }
 
     fun startTimer() {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "137, startTimer")
+        gpsPref = prefs.getBoolean("pref_gps", false) // Use GPS and Reverse Geocoding
 
-        timer = Timer()
-        initialiseTimerTask()
+        if (gpsPref) {
+            timer = Timer()
+            initialiseTimerTask()
 
-        // Schedule the timer, after a delay of 100 ms to wake up every 10 s (default)
-        timer?.schedule(
-            timerTask,
-            100, // 0 doesn't work
-            selRequestInterval
-        ) // delay = 100 ms, request period = 10000 ms
+            // Schedule the timer, after a delay of 100 ms to wake up every 10 s (default)
+            timer?.schedule(
+                timerTask,
+                100, // 0 doesn't work
+                selRequestInterval
+            ) // delay = 100 ms, request period = 10000 ms
+        }
     }
 
     fun initialiseTimerTask() {
         timerTask = object : TimerTask() {
             override fun run() {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "154, initialiseTimerTask: " + counter++)
+                    Log.i(TAG, "171, initialiseTimerTask: " + counter++)
 
                 // Prepare alertSound
                 audioAttributionContext =
@@ -164,18 +181,121 @@ open class AddrRequestService : Service {
 
                 rToneA = MediaPlayer.create(audioAttributionContext, uriB)
 
+                gpsPref = prefs.getBoolean("pref_gps", false) // Use GPS and Reverse Geocoding
                 val isPos: Boolean = (lat != 0.0 || lon != 0.0) // Has a position
-                if (metaPref && isPos) {
+
+                if (gpsPref && isPos) {
                     getAddress() // Get address only when position is given
                 }
             }
         }
     }
 
+    fun firstLocality() {
+        soundSoundA()    // Indicate the 1. locality found
+
+        // European fauna area defined as inside the rectangle with
+        //   latitude:   27.6 < lat < 71.2
+        //   longitude: -31.3 < lon < 50.8
+        if ((lat in 27.6..71.2) && (lon in -31.3..50.8)) {
+            // inside Europe
+            val mesg = applicationContext.getString(R.string.newLoc) + " $tLocality"
+            Toast.makeText( // blue
+                applicationContext,
+                fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            val mesg = applicationContext.getString(R.string.newLoc) + " $tLocality,\n" +
+                    applicationContext.getString(R.string.outsideEurope)
+            Toast.makeText( // red
+                applicationContext,
+                fromHtml("<bold><font color='#ff6000'>$mesg</font></bold>"),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        isFirstLocality = false
+    }
+
+    fun stopTimerTask() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "222, stopTimerTask")
+
+        // Stop the timer, if it's not already null
+        if (timer != null) {
+            timer!!.cancel()
+            timer = null
+        }
+
+        if (addrServiceOn)
+            stopSelf()
+    }
+
+    fun stopAddrService() {
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "236, stopAddrService")
+
+        stopTimerTask()
+
+        if (alertSoundPref && rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+    }
+
+    // If the user has set the preference for an audible alert, then sound it here.
+    fun soundSoundA() {
+        if (alertSoundPref) {
+            if (rToneA!!.isPlaying) {
+                rToneA!!.stop()
+                rToneA!!.release()
+            }
+
+            rToneA!!.start()
+        }
+    }
+
+    // Release alert sound, called by WelcomeActivity
+    fun releaseSoundA() {
+        if (alertSoundPref && rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+    }
+
+    // Stop alert sound, called by WelcomeActivity when denied in settings
+    fun stopSoundA() {
+        if (rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+    }
+
+    // onDestroy is called right after constructor
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
+            Log.i(TAG, "282, onDestroy")
+
+        if (!addrServiceOn)
+            stopTimerTask()
+
+        // Stop rToneA after 1 sound ?
+        if (alertSoundPref && rToneA != null) {
+            rToneA!!.reset()
+            rToneA!!.release()
+            rToneA = null
+        }
+    }
+
     // Get the address data by reverse geocoding from Nominatim service
     private fun getAddress() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "178, getAddress")
+            Log.i(TAG, "298, getAddress")
 
         val sb = StringBuilder()
         val urlString = if (emailString == "") {
@@ -206,7 +326,7 @@ open class AddrRequestService : Service {
             // Handle connection error
             if (status != HttpsURLConnection.HTTP_OK) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "209, Nominatim status: $status")
+                    Log.e(TAG, "329, Nominatim status: $status")
 
                 urlConnection.disconnect()
             }
@@ -222,7 +342,7 @@ open class AddrRequestService : Service {
                 }
             } catch (e: IOException) {
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.e(TAG, "225, Problem converting Stream to String: $e")
+                    Log.e(TAG, "345, Problem converting Stream to String: $e")
             } finally {
                 reader.close()
                 iStream.close()
@@ -230,7 +350,7 @@ open class AddrRequestService : Service {
         } catch (e: IOException) {
             // SocketTimeoutException without email
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.e(TAG, "233, Problem with internet address handling: $e")
+                Log.e(TAG, "353, Problem with internet address handling: $e")
         } finally {
             urlConnection.disconnect()
         }
@@ -251,7 +371,7 @@ open class AddrRequestService : Service {
             var send = xmlString.indexOf("</addressparts>")
             xmlString = xmlString.substring(sstart, send)
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "254, <addressparts>: $xmlString")
+                Log.i(TAG, "374, <addressparts>: $xmlString")
 
             val locality = StringBuilder() // quarter, road or street
             val locality1 = StringBuilder() // quarter, road or street
@@ -342,9 +462,9 @@ open class AddrRequestService : Service {
                 }
                 tLocality = locality.toString() // current temporary locality
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "345, tLocality: $tLocality")
+                    Log.i(TAG, "465, tLocality: $tLocality")
 
-                // 6.  Get plz (postcode)
+                // 6.  Get plz (zip code)
                 if (xmlString.contains("<postcode>")) {
                     sstart = xmlString.indexOf("<postcode>") + 10
                     send = xmlString.indexOf("</postcode>")
@@ -416,91 +536,6 @@ open class AddrRequestService : Service {
                 }
             }
             tLocality = locality1.toString() // current temporary locality
-        }
-    }
-
-    fun firstLocality() {
-        soundSoundA()    // Indicate the 1. locality found
-
-        // European fauna area defined as inside the rectangle with
-        //   latitude:   27.6 < lat < 71.2
-        //   longitude: -31.3 < lon < 50.8
-        if ((lat in 27.6..71.2) && (lon in -31.3..50.8)) {
-            // inside Europe
-            val mesg = applicationContext.getString(R.string.newLoc) + " $tLocality"
-            Toast.makeText( // blue
-                applicationContext,
-                fromHtml("<bold><font color='#008000'>$mesg</font></bold>"),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            val mesg = applicationContext.getString(R.string.newLoc) + " $tLocality,\n" +
-                    applicationContext.getString(R.string.outsideEurope)
-            Toast.makeText( // red
-                applicationContext,
-                fromHtml("<bold><font color='#ff6000'>$mesg</font></bold>"),
-                Toast.LENGTH_LONG
-            ).show()
-        }
-        isFirstLocality = false
-    }
-
-    fun stopTimerTask() {
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "450, stopTimerTask")
-
-        // Stop the timer, if it's not already null
-        if (timer != null) {
-            timer!!.cancel()
-            timer = null
-        }
-
-        stopSelf()
-    }
-
-    // If the user has set the preference for an audible alert, then sound it here.
-    fun soundSoundA() {
-        if (alertSoundPref) {
-            if (rToneA!!.isPlaying) {
-                rToneA!!.stop()
-                rToneA!!.release()
-            }
-
-            rToneA!!.start()
-        }
-    }
-
-    // Release alert sound, called by WelcomeActivity
-    fun releaseSoundA() {
-        if (alertSoundPref && rToneA != null) {
-            rToneA!!.reset()
-            rToneA!!.release()
-            rToneA = null
-        }
-    }
-
-    // Stop alert sound, called by WelcomeActivity when denied in settings
-    fun stopSoundA() {
-        if (rToneA != null) {
-            rToneA!!.reset()
-            rToneA!!.release()
-            rToneA = null
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "495, onDestroy")
-
-        if (!adrServiceOn)
-            stopTimerTask()
-
-        if (alertSoundPref && rToneA != null) {
-            rToneA!!.reset()
-            rToneA!!.release()
-            rToneA = null
         }
     }
 

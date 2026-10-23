@@ -1,5 +1,28 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * SoundService produces the button sounds for CountingActivity and EditIndividualActivity
+ * in background.
+ *
+ * Created for TourCount (and TransektCount) by wmstein on 2026-02-24,
+ * last edited on 2026-10-19.
+ **************************************************************************************************/
+
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -11,13 +34,6 @@ import android.util.Log
 
 import androidx.core.net.toUri
 
-/*****************************************************************************************
- * SoundService produces the button sounds for CountingActivity and EditIndividualActivity
- * in background.
- *
- * Created for TourCount (and TransektCount) by wmstein on 2026-02-24,
- * last edited on 2026-05-26
- */
 class SoundService : Service {
     private var mContext: Context? = null
     private var audioAttributionContext: Context? = null
@@ -42,7 +58,7 @@ class SoundService : Service {
     constructor(context: Context) {
         this.mContext = context
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "45, onCreate")
+            Log.i(TAG, "61, onCreate")
 
         audioAttributionContext = mContext!!.createAttributionContext("ringSound")
 
@@ -54,7 +70,7 @@ class SoundService : Service {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "57, onStartCommand")
+            Log.i(TAG, "73, onStartCommand")
 
         return START_STICKY
     }
@@ -113,7 +129,7 @@ class SoundService : Service {
 
     override fun onDestroy() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "116, onDestroy")
+            Log.i(TAG, "132, onDestroy")
 
         releaseSoundM()
         releaseSoundP()

@@ -1,4 +1,4 @@
-Version 3.8.4 (30.08.2027)
+Version 3.8.4 (30.08.2026)
 - Code-Überarbeitung
 - Eingabe der Individuen-Bemerkungen mit Auswahl vorgeschlagener Begriffe wie "Foto", "Vorbeiflug", "Frisches Exemplar"
 - Eingabe der Artbemerkungen mit Auswahl den vorgeschlagenen Begriffen "Neue Art", "1. in Saison" und "Unsicher"

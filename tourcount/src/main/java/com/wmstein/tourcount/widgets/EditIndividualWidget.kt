@@ -1,5 +1,29 @@
 package com.wmstein.tourcount.widgets
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * EditIndividualWidget.kt is used by EditIndividualActivity.kt
+ *
+ * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
+ * Last edited in Java on 2022-03-26,
+ * converted to Kotlin on 2023-07-09,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
@@ -16,14 +40,6 @@ import com.wmstein.tourcount.R
 
 import java.util.Objects
 
-/*************************************************************
- * EditIndividualWidget.kt used by EditIndividualActivity.kt
- *
- * Created by wmstein for com.wmstein.tourcount on 2016-05-15.
- * Last edited in Java on 2022-03-26,
- * converted to Kotlin on 2023-07-09,
- * last edited on 2026-08-13
- */
 class EditIndividualWidget(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     // locality
     private val widgetLoc1: TextView

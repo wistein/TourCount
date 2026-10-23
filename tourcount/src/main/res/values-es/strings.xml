@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml German strings,
-     last edited on 2026-07-16 -->
+
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     Spanish strings
+
+     Last edited 2026-10-20
+************************************************************************************************ -->
 
 <resources>
 
@@ -30,9 +49,9 @@
     <string name="editMetaButton">Editar metadatos</string>
     <string name="exportBasisMenu">Exportar BD básica</string>
     <string name="exportCSVMenu">Exportar los resultados (csv)</string>
-    <string name="exportXLSXMenu">Exportar los resultados (xlsx)</string>
     <string name="exportMenu">Exportar BD actual</string>
     <string name="exportSpeciesListMenu">Exportar lista de especies</string>
+    <string name="exportXLSXMenu">Exportar los resultados (xlsx)</string>
     <string name="importBasisMenu">Importar BD básica</string>
     <string name="importButton">Importar</string>
     <string name="importDB">La base de datos se ha importado.</string>
@@ -51,12 +70,12 @@
     <string name="results">Resultado de TourCount</string>
     <string name="saveBasisDB">Exportar la BD básica a Documents/TourCount</string>
     <string name="saveCSV">Exportar el fichero CSV a Documentos/TourCount</string>
-    <string name="saveXLSX">Exportar el fichero XLSX a Documentos/TourCount</string>
     <string name="saveDB">Exportar la BD interna a Documents/TourCount</string>
     <string name="saveFail">¡No se ha podido exportar la BD!</string>
     <string name="saveFailList">¡No se ha podido exportar la lista de especies!</string>
     <string name="saveFailListTransect">¡La exportación a Documents/TransektCount ha fallado!</string>
     <string name="saveList">Exportar la lista de especies.</string>
+    <string name="saveXLSX">Exportar el fichero XLSX a Documentos/TourCount</string>
     <string name="showResultsButton">Mostrar resultado</string>
     <string name="sort_codes">Especies ordenadas por códigos de especie</string>
     <string name="sort_names">Especies ordenadas por nombre de especie</string>
@@ -68,16 +87,17 @@
     <string name="viewHelpTitle">Ayuda</string>
     <string name="viewLicenseTitle">Licencias</string>
     <string name="waitImport">¡Por favor, espere, la importación está en curso!</string>
+    <string name="yesButton">Sí</string>
     <string name="zList">Lista de recuento</string>
 
     <!-- FileChooser -->
+    <string name="br_Error">¡Hay un problema con el archivo seleccionado!</string>
     <string name="fileHeadlineBasicDB">Ficheros de BD básica de TourCount</string>
     <string name="fileHeadlineCSV">Listas de especies</string>
     <string name="fileHeadlineDB">Ficheros DB de TourCount</string>
     <string name="fileSize">Tamaño</string>
     <string name="importHead">Importación de datos</string>
     <string name="noFile">¡No hay ningún fichero!</string>
-    <string name="br_Error">¡Hay un problema con el archivo seleccionado!</string>
 
     <!-- EditMetaActivity -->
     <string name="bstate">Estado federado</string>
@@ -141,11 +161,11 @@
     <string name="hintNotYet">Ninguna</string>
     <string name="isDouble"> está duplicado!</string>
     <string name="isEmpt">¡Falta el nombre o el código!</string>
-    <string name="savedChange">Las alteraciones se han guardado</string>
     <string name="labelEditSpecButton">Editar lista</string>
     <string name="notesHint">Insertar nota&#8230;</string>
     <string name="orCode"> o código</string>
     <string name="presentSpecs">Especies de la lista de conteo:</string>
+    <string name="savedChange">Las alteraciones se han guardado</string>
     <string name="spname">Nombre</string>
     <string name="titleEdit">Nombre del tour:</string>
     <string name="titleHint">Insertar aquí el nombre del tour&#8230;</string>
@@ -158,8 +178,8 @@
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Añadir especies</string>
     <string name="hintSearch">Búsqueda</string>
-    <string name="searchCharsL">Por favor, >1 letras</string>
     <string name="labelAddSpecButton">Añadir especies</string>
+    <string name="searchCharsL">Por favor, >1 letras</string>
     <string name="specsCommonLang">¡Atención, formato de BD o lista de especies antiguas! Para utilizar correctamente los nombres comunes, hay que seleccionar el idioma de los datos en «Configuración».</string>
     <string name="specsToAdd">Otras especies:</string>
 
@@ -186,26 +206,26 @@
     <string name="pref_button_vib_summary">Genera una vibración cuando se pulse el botón de recuento.</string>
     <string name="pref_csv_output_dialog">Ordenación de los resultados y de la tabla CSV exportada</string>
     <string name="pref_csv_output_title">Ordenar los resultados</string>
+    <string name="pref_data_language">Selecciona el idioma de los datos</string>
+    <string name="pref_data_language_Summ">Selecciona el lenguaje para los nombres locales de las mariposas.</string>
+    <string name="pref_data_language_ok">Idioma de los Datos (detectado automático)</string>
     <string name="pref_distance_title">Distancia mínima para la actualización del GPS</string>
     <string name="pref_email_string">Dirección de email para el geocodificador de OSM</string>
     <string name="pref_email_string_summ">Es necesario para poder consultar de forma fiable los datos de direcciones mediante el geocodificador inverso OSM-Nominatim.\nLa dirección de email se tratará de forma confidencial y solo se utilizará para ponernos en contacto contigo en caso de que surja algún problema. Consulta https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="pref_request_title">Intervalo de solicitud de direcciones</string>
+    <string name="pref_gps">GPS con datos de ubicación</string>
+    <string name="pref_gps_summ">Selecciona esta opción si deseas que se determine la ubicación actual mediante GPS y que los datos de ubicación se obtengan mediante geocodificación inversa.</string>
     <string name="pref_interval_title">Intervalo de consultas GPS</string>
     <string name="pref_left_hand">Zurdo</string>
     <string name="pref_left_hand_summ">Mostrar vista de conteo para zurdos.</string>
-    <string name="pref_metadata">Geocodificación inversa por GPS</string>
-    <string name="pref_metadata_summ">Selecciona esta opción si deseas que los datos de ubicación se determinen mediante geocodificación inversa y se sobrescriban.</string>
     <string name="pref_proximity_dialog">Selecciona la sensibilidad para que se apague la pantalla.</string>
     <string name="pref_proximity_title">Sensor de proximidad</string>
-    <string name="pref_data_language">Selecciona el idioma de los datos</string>
-    <string name="pref_data_language_ok">Idioma de los Datos (detectado automático)</string>
-    <string name="pref_data_language_Summ">Selecciona el lenguaje para los nombres locales de las mariposas.</string>
+    <string name="pref_request_title">Intervalo de solicitud de direcciones</string>
     <string name="pref_sort_order">Ordenación de las especies</string>
     <string name="pref_sort_order_sp_summ">Ordenación de la lista de especies.</string>
     <string name="prefs_appearance">Apariencia</string>
-    <string name="prefs_data">Datos</string>
     <string name="prefs_counting">Contar</string>
     <string name="prefs_csv_output_title">Resultado</string>
+    <string name="prefs_data">Datos</string>
     <string name="prefs_metadata">Metadatos</string>
     <string name="prefs_sound_vib">Sonidos/Vibración</string>
 
@@ -258,19 +278,23 @@
     <string name="hintTitle">Título:</string>
     <string name="hintTourNotes">Nota del tour:</string>
     <string name="no_provider">¡No hay ningún proveedor de servicios disponible!</string>
+    <string name="not_available">¡No está disponible!</string>
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Nota de la excursión:</string>
     <string name="warnCount">¡Solo se permiten valores entre 1 y 999999!</string>
-    <string name="not_available">¡No está disponible!</string>
 
     <!-- Permissions -->
     <string name="app_settings">Configuración del sistema</string>
+    <string name="dialog_fine_location_denied">No has concedido el permiso de ubicación.\n\nNo se dispone de información de ubicación basada en GPS para el recorrido ni para las mariposas individuales.\n\nEl permiso se puede conceder más adelante a través de los ajustes del sistema de Android.</string>
     <string name="dialog_fine_location_message">El registro de las mariposas debe realizarse indicando la ubicación con la mayor precisión posible.</string>
     <string name="dialog_fine_location_title">Permite que se registre tu ubicación exacta.</string>
-
+    <string name="dialog_location_dropped">Has revocado el permiso de ubicación.\n\nYa no está disponible la información de ubicación basada en GPS para el recorrido y las mariposas individuales.\n\nEl permiso solo se puede volver a activar a través de los ajustes del sistema de Android.</string>
+    <string name="dialog_location_dropped_title">Permiso de ubicación revocado</string>
+    <string name="dialog_location_message">Para utilizar la información de ubicación basada en GPS para el recorrido y cada mariposa, debes conceder permiso de ubicación.\n\nSelecciona las opciones «Permitir solo mientras se utiliza la aplicación» y «Usar ubicación precisa».</string>
+    <string name="dialog_location_title">Permitir el uso de la ubicación</string>
     <string name="dialog_storage_message1">Por favor, concede el permiso «Acceso a todos los archivos» a TourCount\n\npara poder importar y exportar archivos de TourCount.\n\nDe lo contrario, no se podrán importar ni exportar bases de datos, listas ni resultados.</string>
     <string name="dialog_storage_message2">Por favor, concede el permiso «Acceso a todos los archivos» a TourCount\n\npara poder importar y exportar archivos de TourCount.\n\nDespués, vuelve a intentarlo.</string>
-    <string name="dialog_storage_title">Permitir el «Acceso a todos los archivos»\n(solo las específicas de TourCount).</string>
+    <string name="dialog_storage_title">Acceso a todos los archivos</string>
     <string name="storage_perm_denied">Falta el permiso de almacenamiento necesario para TourCount; no es posible guardar.</string>
 
 </resources>

@@ -1,5 +1,36 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * EditSpeciesListActivity lets you edit the species list
+ * (change head and species data).
+ * EditSpeciesListActivity is called from CountingActivity
+ * Uses EditSpeciesListHeadWidget.kt, EditSpeciesListWidget.kt, EditSpeciesListHintWidget.kt,
+ * activity_edit_section.xml, widget_edit_head.xml, widget_edit_count.xml.
+ *
+ * Based on EditProjectActivity.java of BeeCount by Milo Thurston (knirirr) on 2014-05-05,
+ * licensed under the Apache License, Version 2.0.
+ *
+ * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
+ * last edited in Java on 2023-07-07,
+ * converted to Kotlin on 2023-07-09,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Build
@@ -30,19 +61,6 @@ import com.wmstein.tourcount.widgets.EditSpeciesListHintWidget
 
 import java.util.Locale
 
-/*************************************************************************
- * EditSpeciesListActivity lets you edit the species list
- * (change head and species data).
- * EditSpeciesListActivity is called from CountingActivity
- * Uses EditSpeciesListHeadWidget.kt, EditSpeciesListWidget.kt, EditSpeciesListHintWidget.kt,
- * activity_edit_section.xml, widget_edit_head.xml, widget_edit_count.xml.
- *
- * Based on EditProjectActivity.java by milo on 05/05/2014.
- * Adopted, modified and enhanced for TourCount by wmstein on 2016-02-18,
- * last edited in Java on 2023-07-07,
- * converted to Kotlin on 2023-07-09,
- * last edited on 2026-08-02.
- */
 class EditSpeciesListActivity : AppCompatActivity() {
     // Data
     private var countDataSource: CountDataSource? = null
@@ -75,7 +93,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "78, onCreate")
+            Log.i(TAG, "96, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -132,7 +150,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "135 onResume")
+            Log.i(TAG, "153 onResume")
 
         // Load preferences
         brightPref = prefs.getBoolean("pref_bright", true)
@@ -174,7 +192,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
     // Parameter view is necessary for error-free function call
     fun getEditSearchChars(view: View) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "177, View: $view")
+            Log.i(TAG, "195, View: $view")
 
         // Read EditText searchEdit from widget_edit_hint.xml
         val searchEdit: EditText = findViewById(R.id.searchE)
@@ -335,7 +353,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpSpeciesNames!!.contains(name)) {
                 isDblName = name
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "335, Double name = $isDblName")
+                    Log.i(TAG, "356, Double name = $isDblName")
                 break
             }
             cmpSpeciesNames!!.add(name)
@@ -357,7 +375,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
             if (cmpSpeciesCodes!!.contains(code)) {
                 isDblCode = code
                 if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                    Log.i(TAG, "357, Double code = $isDblCode")
+                    Log.i(TAG, "378, Double code = $isDblCode")
                 break
             }
             cmpSpeciesCodes!!.add(code)
@@ -393,7 +411,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "393, onPause")
+            Log.i(TAG, "414, onPause")
 
         countDataSource!!.close()
         individualsDataSource!!.close()
@@ -412,7 +430,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "412, onStop")
+            Log.i(TAG, "433, onStop")
 
         editingSpeciesArea = null
         editHintArea = null
@@ -422,7 +440,7 @@ class EditSpeciesListActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "422, onDestroy")
+            Log.i(TAG, "443, onDestroy")
     }
 
     companion object {

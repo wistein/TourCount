@@ -1,5 +1,31 @@
 package com.wmstein.tourcount.widgets
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * Interface for widget_counting_*.xml
+ * used by CountingActivity
+ *
+ * Created by wmstein for TransektCount on 2016-12-18,
+ * modified for TourCount on 2018-03-31,
+ * last edited in Java on 2021-01-26,
+ * converted to Kotlin on 2023-07-11,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
@@ -15,16 +41,6 @@ import com.wmstein.tourcount.TourCountApplication.Companion.screenRatioBig
 
 import java.util.Objects
 
-/*****************************************************
- * Interface for widget_counting_*.xml
- * used by CountingActivity
- *
- * Created by wmstein for TransektCount on 2016-12-18,
- * modified for TourCount on 2018-03-31,
- * last edited in Java on 2021-01-26,
- * converted to Kotlin on 2023-07-11,
- * last edited on 2026-08-03
- */
 @SuppressLint("SetTextI18n")
 class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     private val namef1i: TextView
@@ -120,51 +136,51 @@ class CountingWidget(context: Context, attrs: AttributeSet?) : RelativeLayout(co
     // Count up/down and set value on screen
     fun countUpf1i() {
         // increase count_f1i
-        countCountf1i.text = count!!.increase_f1i().toString()
+        countCountf1i.text = count!!.increaseF1i().toString()
     }
 
     fun countDownf1i() {
-        countCountf1i.text = count!!.safe_decrease_f1i().toString()
+        countCountf1i.text = count!!.safeDecreaseF1i().toString()
     }
 
     fun countUpf2i() {
-        countCountf2i.text = count!!.increase_f2i().toString()
+        countCountf2i.text = count!!.increaseF2i().toString()
     }
 
     fun countDownf2i() {
-        countCountf2i.text = count!!.safe_decrease_f2i().toString()
+        countCountf2i.text = count!!.safeDecreaseF2i().toString()
     }
 
     fun countUpf3i() {
-        countCountf3i.text = count!!.increase_f3i().toString()
+        countCountf3i.text = count!!.increaseF3i().toString()
     }
 
     fun countDownf3i() {
-        countCountf3i.text = count!!.safe_decrease_f3i().toString()
+        countCountf3i.text = count!!.safeDecreaseF3i().toString()
     }
 
     fun countUppi() {
-        countCountpi.text = count!!.increase_pi().toString()
+        countCountpi.text = count!!.increasePi().toString()
     }
 
     fun countDownpi() {
-        countCountpi.text = count!!.safe_decrease_pi().toString()
+        countCountpi.text = count!!.safeDecreasePi().toString()
     }
 
     fun countUpli() {
-        countCountli.text = count!!.increase_li().toString()
+        countCountli.text = count!!.increaseLi().toString()
     }
 
     fun countDownli() {
-        countCountli.text = count!!.safe_decrease_li().toString()
+        countCountli.text = count!!.safeDecreaseLi().toString()
     }
 
     fun countUpei() {
-        countCountei.text = count!!.increase_ei().toString()
+        countCountei.text = count!!.increaseEi().toString()
     }
 
     fun countDownei() {
-        countCountei.text = count!!.safe_decrease_ei().toString()
+        countCountei.text = count!!.safeDecreaseEi().toString()
     }
 
 }

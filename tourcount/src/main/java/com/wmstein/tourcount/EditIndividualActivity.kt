@@ -1,5 +1,30 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * EditIndividualActivity is called from CountingActivity and collects additional info to an
+ * individual's data record
+ *
+ * Created by wmstein on 2016-05-15,
+ * last modification in Java an 2023-07-09,
+ * converted to Kotlin on 2023-07-11,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
@@ -31,15 +56,6 @@ import com.wmstein.tourcount.database.Individuals
 import com.wmstein.tourcount.database.IndividualsDataSource
 import com.wmstein.tourcount.widgets.EditIndividualWidget
 
-/*******************************************************************************************
- * EditIndividualActivity is called from CountingActivity and collects additional info to an
- * individual's data record
- *
- * Created by wmstein on 2016-05-15,
- * last modification in Java an 2023-07-09,
- * converted to Kotlin on 2023-07-11,
- * last edited on 2026-07-01
- */
 class EditIndividualActivity : AppCompatActivity() {
     private var individuals: Individuals? = null
     private var counts: Count? = null
@@ -53,10 +69,10 @@ class EditIndividualActivity : AppCompatActivity() {
     // Preferences
     private val prefs = TourCountApplication.getPrefs()
     private var awakePref = false
-    private var brightPref = false // option for full bright screen
+    private var brightPref = false // Option for full bright screen
     private var buttonSoundPref = false
     private var buttonVibPref = false
-    private var metaPref = false // use Reverse Geocoding
+    private var gpsPref = false // Use GPS and Reverse Geocoding
 
     // Prepare sound service
     private var soundService: SoundService? = null
@@ -83,13 +99,13 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "86, onCreate")
+            Log.i(TAG, "102, onCreate")
 
-        awakePref = prefs.getBoolean("pref_awake", true) // keep screen on
+        awakePref = prefs.getBoolean("pref_awake", true) // Keep screen on
         brightPref = prefs.getBoolean("pref_bright", true)
         buttonSoundPref = prefs.getBoolean("pref_button_sound", false)
         buttonVibPref = prefs.getBoolean("pref_button_vib", false)
-        metaPref = prefs.getBoolean("pref_metadata", false) // use Reverse Geocoding
+        gpsPref = prefs.getBoolean("pref_gps", false) // Use GPS and Reverse Geocoding
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -160,7 +176,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "163, onResume")
+            Log.i(TAG, "179, onResume")
 
         // Clear any existing views
         indivArea!!.removeAllViews()
@@ -185,7 +201,7 @@ class EditIndividualActivity : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     fun displayData() {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG) {
-            Log.i(TAG, "188, displayData: $tLocality")
+            Log.i(TAG, "204, displayData: $tLocality")
         }
 
         eiw = EditIndividualWidget(this, null)
@@ -249,7 +265,7 @@ class EditIndividualActivity : AppCompatActivity() {
         eiw!!.setWidgetYCoord2(String.format("%.6f", lon))
         eiw!!.setWidgetLocality1(getString(R.string.locality) + ":")
 
-        if (metaPref)
+        if (gpsPref)
             eiw!!.widgetLocality2 = tLocality
         else
             eiw!!.widgetLocality2 = "-"
@@ -261,7 +277,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "264, onPause")
+            Log.i(TAG, "280, onPause")
 
         // Close the data sources
         individualsDataSource!!.close()
@@ -272,7 +288,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "275, onStop")
+            Log.i(TAG, "291, onStop")
 
         if (buttonSoundPref)
             soundService!!.releaseSoundP()
@@ -286,7 +302,7 @@ class EditIndividualActivity : AppCompatActivity() {
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "289, onDestroy")
+            Log.i(TAG, "305, onDestroy")
     }
 
     private fun saveData(): Boolean {

@@ -1,18 +1,10 @@
 package com.wmstein.tourcount
 
-import java.io.Closeable
-import java.io.Flushable
-import java.io.IOException
-import java.io.PrintWriter
-import java.io.Writer
-
-/*******************************************************************************
- * Based on "A very simple CSV writer" by
- * @author Glen Smith
- * Copyright 2015 Bytecode Pty Ltd.
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * you may not use any of its files except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * https://www.apache.org/licenses/LICENSE-2.0
@@ -22,16 +14,28 @@ import java.io.Writer
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ ***************************************************************************************************
  *
- * Code is extracted from the OpenCSV library and reduced to needed functions
- * and modifications for TourCount by wmstein on 2016-05-27.
+ * Based on "A very simple CSV writer" by
+ * @author Glen Smith
+ * Copyright 2015 Bytecode Pty Ltd. (Apache License 2.0)
+ *
+ * Some code for needed functions is extracted from the OpenCSV library and modified for
+ * TourCount by wmstein on 2016-05-27.
  *
  * Input fields should provide leading and trailing "\"" to mark them as String.
  *
  * Last edited in Java on 2023-06-17,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-07-21
- */
+ * last edited on 2026-10-21
+ **************************************************************************************************/
+
+import java.io.Closeable
+import java.io.Flushable
+import java.io.IOException
+import java.io.PrintWriter
+import java.io.Writer
+
 internal class CSVWriter private constructor(
     private val rawWriter: Writer,
     // separator is the delimiter to use for separating entries

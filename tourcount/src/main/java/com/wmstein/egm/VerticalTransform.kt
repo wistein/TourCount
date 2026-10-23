@@ -1,21 +1,23 @@
 package com.wmstein.egm
 
-/*****************************************************************************
- *    Derived from:
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
  *
- *    © 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ * Derived from:
+ * GeoTools - The Open Source Java GIS Toolkit
+ * https://geotools.org
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * Base class for transformations from a height above the ellipsoid to a
  * height above the geoid. This transform expects three-dimensional geographic
@@ -26,12 +28,14 @@ package com.wmstein.egm
  * @version $Id$
  * @since 2.3
  *
+ * Creates a new instance of VerticalTransform.
+ *
  * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last edited in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edited on 2026-02-28.
- */
-// Creates a new instance of VerticalTransform.
+ * last edited on 2026-10-20
+ **************************************************************************************************/
+
 abstract class VerticalTransform internal constructor() : AbstractMathTransform() {
 
     // Gets the dimension of input points.

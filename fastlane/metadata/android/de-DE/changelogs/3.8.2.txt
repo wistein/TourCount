@@ -1,4 +1,4 @@
-Version 3.8.2 (15.07.2027)
+Version 3.8.2 (15.07.2026)
 - Exportierte Excel-Tabelle verbessert
 - Code-Verbesserungen
 - Überarbeitete Speicherberechtigungserteilung

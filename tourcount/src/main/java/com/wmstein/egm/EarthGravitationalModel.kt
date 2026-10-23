@@ -1,21 +1,8 @@
 package com.wmstein.egm
 
-import android.content.Context
-
-import com.wmstein.tourcount.R
-
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.LineNumberReader
-import java.nio.charset.StandardCharsets
-import java.util.StringTokenizer
-
-import kotlin.math.atan
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
-
-/******************
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
  * Derived from:
  * GeoTools - The Open Source Java GIS Toolkit
  * https://geotools.org
@@ -44,11 +31,29 @@ import kotlin.math.sqrt
  * @version $Id$
  * @since 2.3
  *
+ * Provides the functions to create an earth model
+ *
  * Code adaptation for use by TourCount by wmstein on 2017-08-22,
  * last edit in Java on 2020-04-17,
  * converted to Kotlin on 2023-07-05,
- * last edit on 2026-08-03
- */
+ * last edited on 2026-10-20
+ **************************************************************************************************/
+
+import android.content.Context
+
+import com.wmstein.tourcount.R
+
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.LineNumberReader
+import java.nio.charset.StandardCharsets
+import java.util.StringTokenizer
+
+import kotlin.math.atan
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
+
 class EarthGravitationalModel : VerticalTransform() {
     // Maximum degree and order attained.
     private val nmax: Int = 180
@@ -128,7 +133,7 @@ class EarthGravitationalModel : VerticalTransform() {
      * is only 222 kb after ZIP or JAR compression. The same data as a binary file is 257 kb
      * uncompressed and 248 kb compressed. So surprisingly, the ASCII file is more compact than
      * the binary file after compression. Since it is the primary format provided by the
-     * Earth-Info web site, we use it directly in order to avoid a multiplication of formats.
+     * Earth-Info website, we use it directly in order to avoid a multiplication of formats.
      */
     @Throws(IOException::class)
     fun load(context: Context) {

@@ -1,5 +1,39 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * CountingActivity is the central activity of TourCount.
+ * It provides six counters, starts GPS-location polling, starts AddSpeciesActivity, DelSpeciesActivity,
+ * EditSpeciesListActivity, EditSpeciesNotesActivity, EditTourNotesActivity and EditIndividualActivity,
+ * switches screen off when the device is pocketed
+ * and allows taking pictures and sending notes.
+ *
+ * CountingActivity uses CountingWidget.kt, CountingLHWidget.kt, NotesWidget.kt,
+ * activity_counting.xml and activity_counting_lh.xml
+ *
+ * Basic counting functions created in java by Milo Thurston (knirirr) for BeeCount on 2014-05-05,
+ * licensed under the Apache License, Version 2.0.
+ *
+ * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
+ * last edited in Java on 2026-06-08,
+ * converted to Kotlin on 2026-07-17,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
@@ -57,22 +91,6 @@ import java.util.Date
 import java.util.Locale
 import java.util.Objects
 
-/***************************************************************************************
- * CountingActivity is the central activity of TourCount.
- * It provides six counters, starts GPS-location polling, starts AddSpeciesActivity, DelSpeciesActivity,
- * EditSpeciesListActivity, EditSpeciesNotesActivity, EditTourNotesActivity and EditIndividualActivity,
- * switches screen off when the device is pocketed
- * and allows taking pictures and sending notes.
- *
- * CountingActivity uses CountingWidget.kt, CountingLHWidget.kt, NotesWidget.kt,
- * activity_counting.xml and activity_counting_lh.xml
- *
- * Basic counting functions created by milo for BeeCount on 2014-05-05.
- * Adopted, modified and enhanced for TourCount by wmstein since 2016-04-18,
- * last edited in Java on 2026-06-08,
- * converted to Kotlin on 2026-07-17,
- * last edited on 2026-07-21.
- */
 class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, SensorEventListener {
     private var countScreen: LinearLayout? = null
     private var countArea: LinearLayout? = null
@@ -129,7 +147,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "132, onCreate")
+            Log.i(TAG, "150, onCreate")
 
         val tourCount = application as TourCountApplication
         setPrefVariables() // set all stored preferences into their variables
@@ -261,7 +279,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "264, onResume")
+            Log.i(TAG, "282, onResume")
 
         sensorManager!!.registerListener(this,
             proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
@@ -549,7 +567,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
     // Edit species notes by EditSpeciesNotesActivity by button in widget_counting_species_notes.xml
     fun editSpeciesNotes(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "552, View: $view")
+            Log.i(TAG, "570, View: $view")
 
         disableProximitySensor()
 
@@ -561,7 +579,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
     // Edit tour notes by EditTourNotesActivity by button in widget_counting_tour_notes.xml
     fun editTourNotes(view: View?) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "564, View: $view")
+            Log.i(TAG, "582, View: $view")
 
         disableProximitySensor()
 
@@ -578,7 +596,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "581, onPause")
+            Log.i(TAG, "599, onPause")
 
         disableProximitySensor()
 
@@ -606,7 +624,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
         super.onStop()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "609, onStop")
+            Log.i(TAG, "627, onStop")
 
         countScreen!!.invalidate()
 
@@ -621,7 +639,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
         super.onDestroy()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "624, onDestroy")
+            Log.i(TAG, "642, onDestroy")
     }
 
     // Spinner listener
@@ -647,13 +665,13 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
                     count = countDataSource!!.getCountById(iid)
                     countingScreen(count!!)
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.i(TAG, ("650, SpinnerListener, count id: " + count!!.id
+                        Log.i(TAG, ("668, SpinnerListener, count id: " + count!!.id
                                 + ", code: " + count!!.code + ", name: " + count!!.name))
                 } catch (e: Exception) {
                     // Exception may occur when permissions are changed while activity is paused
                     //  or when spinner is rapidly repeatedly pressed
                     if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                        Log.e(TAG,"656, SpinnerListener: $e"
+                        Log.e(TAG,"674, SpinnerListener: $e"
                     )
                 }
             }
@@ -723,7 +741,7 @@ class CountingActivity : AppCompatActivity(), OnSharedPreferenceChangeListener, 
     fun countUpf1i(view: View) {
         val tempCountId = view.tag.toString().toInt()
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "726, countUpf1i, count Id: $tempCountId")
+            Log.i(TAG, "744, countUpf1i, count Id: $tempCountId")
 
         // iAtt used by EditIndividualActivity to decide where to store bulk count value
         val iAtt = 1 // 1 f1i, 2 f2i, 3 f3i, 4 pi, 5 li, 6 ei

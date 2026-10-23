@@ -1,14 +1,15 @@
 TourCount permite registrar mariposas de forma específica por especie y con localización GPS individualizada.
 
-Novedades de la versión 3.8.4:
+Novedades de la versión 3.8.5:
 - Mejoras en el código
-- Incluir notas individuales propuestas con expresiones predefinidas «Foto», «Visto de pasada», «Imago recién emergida», …
-- Incluir notas sobre especies propuestas con expresiones predefinidas como «Nueva especie», «No seguro», …
-- El valor introducido en porcentaje para la nubosidad se redondea a valores de 10
-- Controles de plausibilidad más estrictos para la introducción de metadatos numéricos
-- Se ha actualizado el texto de «Ayuda»
+- El servicio de localización (GPS) y el servicio de direcciones Nominatim se han combinado en una única opción de configuración.
+- Corregido: ya no es necesario reiniciar la aplicación para que surta efecto el cambio en la opción de configuración «GPS con datos de localidad».
+- Corregido: ahora, en la página de configuración, la opción «Idioma de los datos» para los archivos importados en el formato antiguo (DB y Especies) muestra inmediatamente el idioma de los datos seleccionado junto con el icono correspondiente.
+- Algunos cuadros de diálogo complementados con títulos e iconos.
+- Se ha rediseñado la gestión de los permisos de ubicación y se han mejorado los cuadros de diálogo correspondientes
+- Se ha completado la información sobre la licencia
+- Se ha actualizado el texto de «Ayuda».
 - Documentación actualizada
-- Corrección de un error en la importación de una lista de especies
 
 Características:
 - El registro de datos se basa en una estancia en una región con las mariposas que se esperan encontrar en ella.

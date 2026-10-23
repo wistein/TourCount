@@ -1,5 +1,32 @@
 package com.wmstein.filechooser
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * AdvFileChooser lets you select files from user's Documents directory.
+ * It will be called within WelcomeActivity and uses FileArrayAdapter and Option.
+ *
+ * Based on android-file-chooser, 2011, Google Code Archiv, under GNU GPL v3 license.
+ *
+ * Adopted by wmstein on 2016-06-18,
+ * last change in Java on 2022-05-21,
+ * converted to Kotlin on 2023-07-09,
+ * last edited on 2026-10-21
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
@@ -30,15 +57,6 @@ import java.io.FileFilter
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-/********************************************************************************
- * AdvFileChooser lets you select files from user's Documents directory.
- * It will be called within WelcomeActivity and uses FileArrayAdapter and Option.
- * Based on android-file-chooser, 2011, Google Code Archiv, GNU GPL v3.
- * Adopted by wmstein on 2016-06-18,
- * last change in Java on 2022-05-21,
- * converted to Kotlin on 2023-07-09,
- * last edited on 2026-05-26
- */
 class AdvFileChooser : AppCompatActivity() {
     private var currentDir: File? = null
     private var adapter: FileArrayAdapter? = null
@@ -52,7 +70,7 @@ class AdvFileChooser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "55, onCreate")
+            Log.i(TAG, "73, onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) // SDK 35+
         {
@@ -179,7 +197,7 @@ class AdvFileChooser : AppCompatActivity() {
         intent.putExtra("fileSelected", fileSelected.absolutePath)
         setResult(RESULT_OK, intent)
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "182, Selected file: $fileSelected")
+            Log.i(TAG, "200, Selected file: $fileSelected")
         finish()
     }
 

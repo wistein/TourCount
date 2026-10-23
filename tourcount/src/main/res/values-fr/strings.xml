@@ -1,6 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- strings.xml French strings,
-     last edited on 2026-07-16 -->
+
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     French strings
+
+     Last edited 2026-10-20
+************************************************************************************************ -->
 
 <resources>
 
@@ -30,17 +49,17 @@
     <string name="editMetaButton">Éditer métadonnées</string>
     <string name="exportBasisMenu">Exp. la structure de BD</string>
     <string name="exportCSVMenu">Exp. les résultats (csv)</string>
-    <string name="exportXLSXMenu">Exp. les résultats (xlsx)</string>
     <string name="exportMenu">Exp. le act. BD</string>
     <string name="exportSpeciesListMenu">Exp. liste des espèces</string>
+    <string name="exportXLSXMenu">Exp. les résultats (xlsx)</string>
     <string name="importBasisMenu">Imp. la structure de BD</string>
     <string name="importButton">Importer</string>
+    <string name="importDB">La BD a été importée.</string>
     <string name="importFail">Impossible d\'importer la BD !</string>
     <string name="importFileMenu">Import BD</string>
     <string name="importList">La liste des espèces a été importée.</string>
     <string name="importListFail">La liste des espèces n\'a pas pu être importée !</string>
     <string name="importSpeciesListMenu">Imp. liste des espèces</string>
-    <string name="importDB">La BD a été importée.</string>
     <string name="individuals">Individus</string>
     <string name="missingEmail">Veuillez saisir une adresse e-mail valide dans les paramètres pour garantir la fiabilité de la localisation.</string>
     <string name="name_spec">Nom de l\'espèce</string>
@@ -51,12 +70,13 @@
     <string name="results">Résultat de TourCount</string>
     <string name="saveBasisDB">Exporter la structure de BD vers \'Documents/TourCount\'</string>
     <string name="saveCSV">Exporter le fichier CSV vers \'Documents/TourCount\'</string>
-    <string name="saveXLSX">Exporter le fichier XLSX vers \'Documents/TourCount\'</string>
     <string name="saveDB">Exporter la BD vers \'Documents/TourCount\'</string>
     <string name="saveFail">Impossible d\'exporter la BD !</string>
     <string name="saveFailList">La liste des espèces n\'a pas pu être exportée !</string>
     <string name="saveFailListTransect">L\'exportation vers \'Documents/TransektCount\' a échoué !</string>
     <string name="saveList">Exporter la liste des espèces.</string>
+    <string name="saveXLSX">Exporter le fichier XLSX vers \'Documents/TourCount\'</string>
+    <string name="showResultsButton">Afficher le résultat</string>
     <string name="sort_codes">Espèces classées par codes d\'espèces</string>
     <string name="sort_names">Espèces classées par nom d\'espèce</string>
     <string name="sort_time">Individus classés par date d\'enregistrement</string>
@@ -66,8 +86,8 @@
     <string name="title">Recensement des papillons\n\nlors de vos déplacements</string>
     <string name="viewHelpTitle">Aide</string>
     <string name="viewLicenseTitle">Licences</string>
-    <string name="showResultsButton">Afficher le résultat</string>
     <string name="waitImport">Veuillez patienter, l\'importation est en cours !</string>
+    <string name="yesButton">Oui</string>
     <string name="zList">Liste de comptage</string>
 
     <!-- FileChooser -->
@@ -141,11 +161,11 @@
     <string name="hintNotYet">Aucune</string>
     <string name="isDouble"> est double !</string>
     <string name="isEmpt">Nom ou code manquant !</string>
-    <string name="savedChange">Les modifs ont été enregistrés</string>
     <string name="labelEditSpecButton">Modifier la liste</string>
     <string name="notesHint">Insérer une note&#8230;</string>
     <string name="orCode"> ou code</string>
     <string name="presentSpecs">Espèces en liste:</string>
+    <string name="savedChange">Les modifs ont été enregistrés</string>
     <string name="spname">Nom</string>
     <string name="titleEdit">Nom du tour:</string>
     <string name="titleHint">Insérer ici le nom du tour&#8230;</string>
@@ -158,8 +178,8 @@
     <!-- AddSpeciesActivity -->
     <string name="addTitle">Ajouter des espèces</string>
     <string name="hintSearch">Rechercher</string>
-    <string name="searchCharsL">>1 lettres, svp.</string>
     <string name="labelAddSpecButton">Ajouter des espèces</string>
+    <string name="searchCharsL">>1 lettres, svp.</string>
     <string name="specsCommonLang">Attention, ancien format de BD ou liste des espèces ! Pour utiliser correctement les noms communs, il faut sélectionner la langue des données dans « Paramètres ».</string>
     <string name="specsToAdd">Autres espèces:</string>
 
@@ -186,26 +206,26 @@
     <string name="pref_button_vib_summary">Générer une vibration lorsqu\'un bouton de comptage est enfoncé.</string>
     <string name="pref_csv_output_dialog">Tri des résultats et du tableau CSV exporté</string>
     <string name="pref_csv_output_title">Tri des résultats</string>
+    <string name="pref_data_language">Sélectionnez la langue des données</string>
+    <string name="pref_data_language_Summ">Sélectionnez la langue pour les noms communs des papillons.</string>
+    <string name="pref_data_language_ok">Langue des données (détectée automatiquement)</string>
     <string name="pref_distance_title">Distance min. pour la requête GPS</string>
     <string name="pref_email_string">Adresse e-mail pour OSM-Geocoder</string>
     <string name="pref_email_string_summ">Nécessaire pour la consultation fiable des données d\'adresse via OSM-Nominatim-Reverse-Geocoder.\nL\'adresse e-mail est traitée de manière confidentielle et n\'est utilisée que pour vous contacter en cas de problème. Voir https://wiki.openstreetmap.org/wiki/Nominatim.</string>
-    <string name="pref_request_title">Intervalle de requêtes d\'adresse</string>
+    <string name="pref_gps">GPS avec données de localisation</string>
+    <string name="pref_gps_summ">Sélectionnez cette option si vous souhaitez que la position actuelle soit déterminée par GPS et que les coordonnées géographiques soient obtenues par géocodage inverse.</string>
     <string name="pref_interval_title">Intervalle d\'interrogation GPS</string>
     <string name="pref_left_hand">Gaucher</string>
     <string name="pref_left_hand_summ">Afficher la vue de comptage pour gauchers.</string>
-    <string name="pref_metadata">GPS inverse Géolocalisation</string>
-    <string name="pref_metadata_summ">Sélectionnez cette option si les informations de localisation doivent être déterminées et remplacées par géocodage inversé.</string>
     <string name="pref_proximity_dialog">Sélectionnez la sensibilité pour éteindre l\'écran.</string>
     <string name="pref_proximity_title">Sonde de proximité</string>
-    <string name="pref_data_language">Sélectionnez la langue des données</string>
-    <string name="pref_data_language_ok">Langue des données (détectée automatiquement)</string>
-    <string name="pref_data_language_Summ">Sélectionnez la langue pour les noms communs des papillons.</string>
+    <string name="pref_request_title">Intervalle de requêtes d\'adresse</string>
     <string name="pref_sort_order">Tri des espèces</string>
     <string name="pref_sort_order_sp_summ">Ordre de la liste des espèces.</string>
     <string name="prefs_appearance">Apparence</string>
-    <string name="prefs_data">Données</string>
     <string name="prefs_counting">Compter</string>
     <string name="prefs_csv_output_title">Résultat</string>
+    <string name="prefs_data">Données</string>
     <string name="prefs_metadata">Métadonnées</string>
     <string name="prefs_sound_vib">Sons/vibrations</string>
 
@@ -258,19 +278,23 @@
     <string name="hintTitle">Titre:</string>
     <string name="hintTourNotes">Tour note :</string>
     <string name="no_provider">Aucun fournisseur d\'accès disponible !</string>
+    <string name="not_available">Indisponible !</string>
     <string name="ok_button">OK</string>
     <string name="titleTourNotes">Note sur le tour:</string>
     <string name="warnCount">Seules les valeurs comprises entre  1 … 999999 sont autorisées !</string>
-    <string name="not_available">Indisponible !</string>
 
     <!-- Permissions -->
     <string name="app_settings">Paramètres système</string>
+    <string name="dialog_fine_location_denied">Vous n\'avez pas accordé l\'autorisation d\'accès à la localisation.\n\nLes informations de localisation par GPS pour le circuit et les papillons individuels ne sont pas disponibles.\n\nVous pouvez accorder cette autorisation ultérieurement via les paramètres système d\'Android.</string>
     <string name="dialog_fine_location_message">L\'enregistrement des papillons doit être effectué avec une localisation aussi précise que possible.</string>
     <string name="dialog_fine_location_title">Autoriser la localisation précise.</string>
-
+    <string name="dialog_location_dropped">Vous avez désactivé l\'autorisation de localisation.\n\nLes informations de localisation par GPS pour le circuit et chaque papillon ne sont plus disponibles.\n\nCette autorisation ne peut être réactivée qu\'à partir des paramètres système d\'Android.</string>
+    <string name="dialog_location_dropped_title">Autorisation de localisation révoquée</string>
+    <string name="dialog_location_message">Pour utiliser les informations de localisation par GPS dans le cadre d\'un circuit et pour chaque papillon, vous devez autoriser l\'accès à votre position.\n\nVeuillez sélectionner les options « Autoriser uniquement pendant l\'utilisation de l\'application » et « Utiliser la localisation précise ».</string>
+    <string name="dialog_location_title">Autoriser l\'accès à la localisation</string>
     <string name="dialog_storage_message1">Veuillez attribuer l\'autorisation « Accès à tous les fichiers » à TourCount\n\nafin de permettre l\'importation et l\'exportation des fichiers TourCount.\n\nSinon, ni les bases de données, ni les listes, ni les résultats ne pourront être importés ou exportés.</string>
     <string name="dialog_storage_message2">Veuillez accorder l\'autorisation « Accès à tous les fichiers » à TourCount\n\nafin de pouvoir importer et exporter des fichiers TourCount.\n\nRéessayez ensuite.</string>
-    <string name="dialog_storage_title">Autoriser le \'Accès à tous les fichiers\'\n(seulement ceux spécifiques à TourCount).</string>
+    <string name="dialog_storage_title">Accès à tous les fichiers</string>
     <string name="storage_perm_denied">L\'autorisation de stockage nécessaire pour TourCount fait défaut, l\'enregistrement n\'est pas possible.</string>
 
 </resources>

@@ -1,17 +1,21 @@
 package com.wmstein.tourcount
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Paint
-import android.util.AttributeSet
-import android.util.TypedValue
-import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.widget.TextView
-
-import androidx.appcompat.widget.AppCompatTextView
-
-/**************************************************************************************************
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
  * This class builds a new android Widget named AutoFitText which can be used instead of a TextView
  * to have the text font size in it automatically fit to match the screen width. Credits go largely
  * to Dunni, gjpc, gregm and speedplane from Stackoverflow, method has been (style-) optimized and
@@ -27,8 +31,20 @@ import androidx.appcompat.widget.AppCompatTextView
  * Bug fixed (height of single character), cleaned of unused code and context comments changed,
  * last edited in Java on 2023-05-24,
  * converted to Kotlin on 2023-07-06,
- * last edited on 2026-08-02.
- */
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Paint
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.TextView
+
+import androidx.appcompat.widget.AppCompatTextView
+
 class AutoFitText @SuppressLint("NewApi") constructor(context: Context, attrs: AttributeSet?) :
     AppCompatTextView(context, attrs) {
     /**

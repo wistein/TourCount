@@ -9,20 +9,19 @@ by two parties cannot be updated with each other.
 
 This tourcount-release.apk is signed with the author's signing key.
 
-Therefore, it is is not installable as an update of the TourCount-App from the
+Therefore, it is not installable as an update of the TourCount-App from the
 F-Droid app store and vice versa, as the F-Droid's compilation of TourCount
-is signed with the F-Droid's signing key.
+is signed with their signing key.
 
 
 German version:
-Jede Android App muss beim Kompilieren mit den Signaturschlüssel der kompilierenden
+Jede Android App muss beim Kompilieren mit dem Signaturschlüssel der kompilierenden
 Partei signiert werden.
 
-Dadurch entsteht das Problem, das die aus identischem Quellcode kompilierten Apps
-zweier Parteien nicht untereinander updatebar sind.
+Dadurch entsteht das Problem, dass die aus identischem Quellcode kompilierten Apps
+zweier Parteien nicht untereinander update-fähig sind.
 
-Diese tourcount-release.apk ist signiert mit dem Signaturschlüssel des Autors.
+Diese tourcount_release_nnn.apk ist signiert mit dem Signaturschlüssel des Autors.
 
-Sie ist daher nicht als Update der App des F-Droid-Stores installierbar (und umgekehrt),
-da die Kompilation von TourCount durch F-Droid mit dem Signaturschlüssel von F-Droid
-signiert ist.
+Sie ist daher nicht als Update der App aus dem F-Droid-Store installierbar (und umgekehrt),
+da die Kompilation von TourCount durch F-Droid mit deren Signaturschlüssel signiert ist.

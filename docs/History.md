@@ -2,6 +2,17 @@
 
 #### TourCount Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
 
+#### Version 3.8.5 (2026-10-23)
+- Code improvements
+- Location (GPS) service and Nominatim address service were combined into one settings option 
+- Fixed: Changing the settings option "GPS with Locality Data" to take effect needs not restarting the app anymore
+- Fixed: On the Settings page, the “Data Language” option activated for imported old files (DB and Species) now displays the selected data language along with the corresponding icon immediately.
+- Some dialogs supplemented with headlines and icons
+- Location permission handling was redesigned and respective dialogs were improved
+- License information supplemented 
+- "Help" text updated
+- Docs updated
+
 #### Version 3.8.4 (2026-08-30)
 - Code improvements
 - Entering individuals notes proposed by predefined wordings like "Photo", "Flyby", "Fresh imago", …
@@ -124,7 +135,7 @@
 - Docs updated
 
 #### Version 3.7.0 (2026-01-03)
-- Code improvement: Gray-out preference items "Button Vibration" and "Proximity Sensor" when not available in device
+- Code improvement: Gray-out settings items "Button Vibration" and "Proximity Sensor" when not available in device
 - Bugfix for sound-related crash under Android versions 7.1 - 10
 
 #### Version 3.6.9 (2025-12-28)

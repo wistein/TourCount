@@ -1,5 +1,46 @@
 package com.wmstein.tourcount.database
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * DbHelper.kt is the database helper class for SQLite functionality of TourCount
+ * onUpgrade is called with the 1. call of dbHelper.getWritableDatabase()
+ *   when newVersion != oldVersion
+ *
+ * Basic structure derived from DbHelper.java of BeeCount created by Milo Thurston (knirirr)
+ * on 2014-05-05, licensed under the Apache License, Version 2.0.
+ *
+ * Adopted for TourCount by wmstein on 2016-04-19,
+ * updated to version 2 on 2017-09-09, rel. 219,
+ * updated to version 3 on 2018-03-31, rel. 304,
+ * updated to version 4 on 2019-03-25, rel. 308,
+ * last edited in Java on 2022-03-24,
+ * converted to Kotlin on 2023-07-06,
+ * updated to version 5 on 2023-12-17, rel. 345,
+ * updated to version 6 on 2024-05-15, rel. 347,
+ * updated to version 7 on 2024-08-26, rel. 350,
+ * updated to version 8 on 2025-02-25, rel. 362,
+ * updated to version 9 on 2026-04-07, rel. 374,
+ * last edited on 2026-10-21.
+ ***************************************************************************************************
+ *
+ * ATTENTION!
+ * Current DATABASE_VERSION 9 must be set under 'companion object'
+ **************************************************************************************************/
+
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
@@ -13,30 +54,6 @@ import com.wmstein.tourcount.R
 
 import java.util.Locale
 
-/********************************************************************************
- * DbHelper.kt is the database helper class for SQLite functionality of TourCount
- * onUpgrade is called with 1. call of dbHelper.getWritableDatabase()
- *   if newVersion != oldVersion
- *
- * Basic structure of DbHelper.java by milo on 05/05/2014.
- * Adopted for TourCount by wmstein on 2016-04-19,
- * updated to version 2 on 2017-09-09, rel. 219,
- * updated to version 3 on 2018-03-31, rel. 304,
- * updated to version 4 on 2019-03-25, rel. 308,
- * last edited in Java on 2022-03-24,
- * converted to Kotlin on 2023-07-06,
- * updated to version 5 on 2023-12-17, rel. 345,
- * updated to version 6 on 2024-05-15, rel. 347,
- * updated to version 7 on 2024-08-26, rel. 350,
- * updated to version 8 on 2025-02-25, rel. 362,
- * updated to version 9 on 2026-04-07, rel. 374,
- * last edited on 2026-08-03
- *
- * ***************************************************************
- * ATTENTION!
- * Current DATABASE_VERSION 9 must be set under 'companion object'
- * ***************************************************************
- */
 class DbHelper (private val mContext: Context) :
     SQLiteOpenHelper(mContext, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -133,7 +150,7 @@ class DbHelper (private val mContext: Context) :
     // Called once on database creation
     override fun onCreate(db: SQLiteDatabase) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "136, Creating database: $DATABASE_NAME")
+            Log.i(TAG, "153, Creating database: $DATABASE_NAME")
 
         var sql = ("CREATE TABLE " + SECTION_TABLE + " ("
                 + S_ID + " integer primary key, "
@@ -243,7 +260,7 @@ class DbHelper (private val mContext: Context) :
         initialCounts(db)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "246, Success!")
+            Log.i(TAG, "263, Success!")
     }
 
     // Initial data for COUNT_TABLE
@@ -284,7 +301,7 @@ class DbHelper (private val mContext: Context) :
     // See https://guides.codepath.org/android/local-databases-with-sqliteopenhelper
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "287, start upGrade -> DB Ver. 9")
+            Log.i(TAG, "304, start upGrade -> DB Ver. 9")
 
         if (oldVersion == 8) {
             version9(db)
@@ -350,7 +367,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
         
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "353, Upgraded database to version 2")
+            Log.i(TAG, "370, Upgraded database to version 2")
     }
 
     /*** V3 ***/
@@ -433,7 +450,7 @@ class DbHelper (private val mContext: Context) :
             db.execSQL(sql)
 
             if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-                Log.i(TAG, "436, Upgraded database to version 3")
+                Log.i(TAG, "453, Upgraded database to version 3")
         }
     }
 
@@ -480,7 +497,7 @@ class DbHelper (private val mContext: Context) :
         }
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "483, Upgraded database to version 4")
+            Log.i(TAG, "500, Upgraded database to version 4")
     }
 
     /*** V5 ***/
@@ -535,7 +552,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "538, Upgraded database to version 5")
+            Log.i(TAG, "555, Upgraded database to version 5")
     }
 
     /*** V6 ***/
@@ -590,7 +607,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "593, Upgraded database to version 6")
+            Log.i(TAG, "610, Upgraded database to version 6")
     }
 
     /*** V7 ***/
@@ -613,7 +630,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "616, Upgraded database to version 7")
+            Log.i(TAG, "633, Upgraded database to version 7")
     }
 
     /*** V8 ***/
@@ -629,7 +646,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "632, Upgraded database to version 8")
+            Log.i(TAG, "649, Upgraded database to version 8")
     }
 
     /*** V9 ***/
@@ -643,7 +660,7 @@ class DbHelper (private val mContext: Context) :
         db.execSQL(sql)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "646, Upgraded database to version 9")
+            Log.i(TAG, "663, Upgraded database to version 9")
     }
 
 }

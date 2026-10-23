@@ -1,5 +1,34 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * EditSpeciesNotesActivity
+ * Edit notes for a counted species
+ * uses EditSpeciesNotesWidget.kt and activity_count_options.xml
+ *
+ * Based on EditSpeciesNotesActivity.java of BeeCount by Milo Thurston (knirirr) on 2014-05-05,
+ * licensed under the Apache License, Version 2.0.
+ *
+ * Adopted and changed by wmstein on 18.02.2016,
+ * last edited in Java on 2023-05-13,
+ * converted to Kotlin on 2023-07-06,
+ * last edited on 2026-10-19
+ **************************************************************************************************/
+
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -20,17 +49,6 @@ import com.wmstein.tourcount.database.Count
 import com.wmstein.tourcount.database.CountDataSource
 import com.wmstein.tourcount.widgets.EditSpeciesNotesWidget
 
-/*************************************************************
- * EditSpeciesNotesActivity
- * Edit notes for a counted species
- * uses EditSpeciesNotesWidget.kt and activity_count_options.xml
- *
- * Based on EditSpeciesNotesActivity.kt by milo on 05/05/2014.
- * Adopted and changed by wmstein on 18.02.2016,
- * last edited in Java on 2023-05-13,
- * converted to Kotlin on 2023-07-06,
- * last edited on 2026-08-13
- */
 class EditSpeciesNotesActivity : AppCompatActivity() {
     private var speciesWidgetArea: LinearLayout? = null
     private var esw: EditSpeciesNotesWidget? = null
@@ -47,7 +65,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "50, onCreate")
+            Log.i(TAG, "68, onCreate")
 
         brightPref = prefs.getBoolean("pref_bright", true)
         awakePref = prefs.getBoolean("pref_awake", true)
@@ -110,7 +128,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onResume()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "113, onResume")
+            Log.i(TAG, "131, onResume")
 
         // Clear any existing views
         speciesWidgetArea!!.removeAllViews()
@@ -154,7 +172,7 @@ class EditSpeciesNotesActivity : AppCompatActivity() {
         super.onPause()
 
         if (IsRunningOnEmulator.DLOG || BuildConfig.DEBUG)
-            Log.i(TAG, "157, onPause")
+            Log.i(TAG, "175, onPause")
 
         countDataSource!!.close()
     }

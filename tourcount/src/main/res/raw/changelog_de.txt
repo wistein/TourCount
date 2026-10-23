@@ -1,15 +1,35 @@
 <html>
 
-<!--
-Formatting commands:
-% title
-_ subtitle
-! free text
-& bold
-# numbered list item
-* bullet list item
-. blank line
--->
+<!-- ***********************************************************************************************
+     Copyright © 2016-2026, Wilhelm Stein, Bonn, Germany
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use any of its files except in compliance with the License.
+     You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+****************************************************************************************************
+
+     German changelog
+
+     Formatting commands:
+     --------------------
+     % title
+     _ subtitle
+     ! free text
+     & bold text
+     # numbered list item
+     * bullet list item
+     . empty line
+
+     Last edited 2026-10-23
+************************************************************************************************ -->
 
   <head>
     <style type='text/css'>
@@ -72,6 +92,19 @@ _ subtitle
   _
   .
   _
+
+$ 3.8.5
+  % Version 3.8.5
+  _ 23.10.2026
+  * Code-Überarbeitung
+  * Standort-(GPS)-Dienst und Nominatim Adress-Dienst wurden in einer Einstellungsoption kombiniert
+  * Fix: Änderung der Einstellungsoption "GPS mit Ortsdaten" wirkt nun sofort, es ist kein Neustart der App mehr erforderlich
+  * Fix: Für importierte DB- oder Spezies-Dateien im alten Format zeigt nun unter "Einstellungen" die Option "Datensprache" die dort gewählte Datensprache sofort mit passendem Icon an
+  * Einige Dialoge mit Überschrift und Icon ergänzt
+  * Die Standort-Berechtigungserteilung und ihre Dialoge überarbeitet
+  * Lizenzinformationen vervollständigt
+  * "Hilfe"-Text aktualisiert
+  * Doku aktualisiert
 
 $ 3.8.4
   % Version 3.8.4

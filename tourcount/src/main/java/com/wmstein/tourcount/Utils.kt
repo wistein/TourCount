@@ -1,24 +1,40 @@
 package com.wmstein.tourcount
 
+/***************************************************************************************************
+ * Copyright © 2017-2026, Wilhelm Stein, Bonn, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use any of its files except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************
+ *
+ * Utils has string functions
+ *
+ * - fromHtml() cares for Android versions compatibility
+ *   in Toasts and text dialogs with HTML formatting
+ *
+ * - nameSpecG sets the system language name title for the data language
+ *
+ * Created by wmstein on 2017-09-25,
+ * last modified in Java on 2018-06-13,
+ * converted to Kotlin on 2024-09-30,
+ * last edited on 2026-10-19.
+ **************************************************************************************************/
+
 import android.text.Spanned
 
 import androidx.core.text.HtmlCompat
 
 import java.util.Locale
 
-/***************************************************
- * Utils has string functions
- *
- * - fromHtml() cares for Android versions compatibility
- *   in Toasts and text dialogs with HTML formatting
- *
- * - nameSpecG sets the system language name titel for the data language
- *
- * Created by wmstein on 2017-09-25,
- * last modified in Java on 2018-06-13,
- * converted to Kotlin on 2024-09-30,
- * last edited on 2026-07-21.
- */
 internal object Utils {
     @JvmStatic
     fun fromHtml(source: String?): Spanned {
